@@ -8,6 +8,13 @@
       "when": 1780113694726,
       "tag": "0000_bizarre_loki",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780127146243,
+      "tag": "0001_demonic_proudstar",
+      "breakpoints": true
     }
   ]
 }

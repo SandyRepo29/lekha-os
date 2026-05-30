@@ -18,6 +18,9 @@ export type VendorRow = {
   score: number;
   docs: number;
   expiring: number;
+  ownerName: string | null;
+  ownerEmail: string | null;
+  ownerDepartment: string | null;
 };
 
 export type VendorMetrics = {
@@ -53,6 +56,9 @@ function toRow(v: Vendor, counts?: DocCounts): VendorRow {
     score: v.complianceScore,
     docs: counts?.total ?? 0,
     expiring: counts?.expiring ?? 0,
+    ownerName: v.ownerName,
+    ownerEmail: v.ownerEmail,
+    ownerDepartment: v.ownerDepartment,
   };
 }
 
@@ -130,7 +136,11 @@ export async function updateVendor(params: {
   orgId: string;
   actorId: string;
   vendorId: string;
-  input: { name: string; category?: string | null; contactEmail?: string | null; risk?: string };
+  input: {
+    name: string; category?: string | null; contactEmail?: string | null; risk?: string;
+    ownerName?: string | null; ownerEmail?: string | null; ownerDepartment?: string | null;
+    vendorTypeId?: string | null;
+  };
 }): Promise<void> {
   const vendor = await vendorRepo.findById(params.orgId, params.vendorId);
   if (!vendor) throw new DomainError("Vendor not found.");
@@ -142,7 +152,16 @@ export async function updateVendor(params: {
   await db.transaction(async (tx) => {
     await vendorRepo.updateVendor(
       params.vendorId,
-      { name, category: params.input.category?.trim() || null, contactEmail: params.input.contactEmail?.trim() || null, riskLevel: risk },
+      {
+        name,
+        category: params.input.category?.trim() || null,
+        contactEmail: params.input.contactEmail?.trim() || null,
+        riskLevel: risk,
+        ownerName: params.input.ownerName?.trim() || null,
+        ownerEmail: params.input.ownerEmail?.trim() || null,
+        ownerDepartment: params.input.ownerDepartment?.trim() || null,
+        vendorTypeId: (params.input as { vendorTypeId?: string | null }).vendorTypeId || null,
+      },
       tx
     );
     await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "vendor.updated", entityType: "vendor", entityId: params.vendorId, metadata: { name, risk } }, tx);
@@ -197,7 +216,11 @@ export async function recomputeVendorScore(orgId: string, vendorId: string): Pro
 export async function createVendor(params: {
   orgId: string;
   actorId: string;
-  input: { name: string; category?: string | null; contactEmail?: string | null; risk?: string };
+  input: {
+    name: string; category?: string | null; contactEmail?: string | null; risk?: string;
+    ownerName?: string | null; ownerEmail?: string | null; ownerDepartment?: string | null;
+    vendorTypeId?: string | null;
+  };
 }): Promise<{ id: string }> {
   const name = (params.input.name || "").trim();
   if (name.length < 2) {
@@ -216,6 +239,9 @@ export async function createVendor(params: {
         status: "active",
         complianceScore: STARTING_SCORE[risk],
         createdBy: params.actorId,
+        ownerName: params.input.ownerName?.trim() || null,
+        ownerEmail: params.input.ownerEmail?.trim() || null,
+        ownerDepartment: params.input.ownerDepartment?.trim() || null,
       },
       tx
     );

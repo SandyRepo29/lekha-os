@@ -12,14 +12,19 @@ import { DocumentActions } from "@/components/vendors/document-actions";
 import { DocumentEdit } from "@/components/vendors/document-edit";
 import { DeleteVendor } from "@/components/vendors/delete-vendor";
 import { ComplianceBreakdown } from "@/components/vendors/compliance-breakdown";
+import { ComplianceChecklist } from "@/components/vendors/compliance-checklist";
 import { VendorStatus } from "@/components/vendors/vendor-status";
 import { VendorNotes } from "@/components/vendors/vendor-notes";
 import { requireUser } from "@/lib/auth/session";
 import { getVendor } from "@/lib/services/vendor-service";
 import { listForVendor } from "@/lib/services/document-service";
+import { getChecklistForVendor } from "@/lib/services/template-service";
 import { isGeminiConfigured } from "@/lib/ai/gemini";
+import { AiSummary } from "@/components/vendors/ai-summary";
 import { createSignedUrl } from "@/lib/storage/server";
 import { riskTone, docStatusTone } from "@/lib/ui-maps";
+import { listVendorActivity } from "@/lib/repositories/activity-repo";
+import { ActivityFeed } from "@/components/activity/activity-feed";
 
 export default async function VendorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,7 +34,11 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
   const vendor = await getVendor(session.org.id, id);
   if (!vendor) notFound();
 
-  const docs = await listForVendor(session.org.id, id);
+  const [docs, checklist, vendorActivity] = await Promise.all([
+    listForVendor(session.org.id, id),
+    getChecklistForVendor(session.org.id, id),
+    listVendorActivity(session.org.id, id, 12),
+  ]);
   const urls = await Promise.all(docs.map((d) => d.storagePath ? createSignedUrl(d.storagePath) : null));
 
   const expiredCount = docs.filter((d) => d.status === "expired").length;
@@ -57,10 +66,16 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
             {expiredCount > 0 && <Badge tone="danger">{expiredCount} expired</Badge>}
             {expiringCount > 0 && <Badge tone="warn">{expiringCount} expiring</Badge>}
           </div>
-          <div className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-ink-faint)]">
-            <Clock className="h-3.5 w-3.5" />
-            Added {new Date(vendor.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-            {vendor.contactEmail && <span className="ml-1">· {vendor.contactEmail}</span>}
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--color-ink-faint)]">
+            <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />Added {new Date(vendor.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+            {vendor.contactEmail && <span>· {vendor.contactEmail}</span>}
+            {vendor.ownerName && (
+              <span className="flex items-center gap-1 text-[var(--color-ink-dim)]">
+                · Owner: <strong className="font-medium">{vendor.ownerName}</strong>
+                {vendor.ownerDepartment && <span>({vendor.ownerDepartment})</span>}
+                {vendor.ownerEmail && <a href={`mailto:${vendor.ownerEmail}`} className="text-[var(--color-blue)] hover:underline">{vendor.ownerEmail}</a>}
+              </span>
+            )}
           </div>
         </div>
         <div className="shrink-0 text-center">
@@ -142,12 +157,39 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
           <Card className="p-5">
             <VendorNotes vendorId={vendor.id} notes={vendor.notes} />
           </Card>
+
+          {/* Activity */}
+          {vendorActivity.length > 0 && (
+            <Card>
+              <div className="border-b border-[var(--color-line)] px-5 py-4">
+                <h2 className="font-[family-name:var(--font-display)] font-semibold">Activity</h2>
+              </div>
+              <div className="px-5 py-3">
+                <ActivityFeed items={vendorActivity} />
+              </div>
+            </Card>
+          )}
         </div>
 
-        {/* Right: Compliance breakdown */}
-        <Card className="p-5">
-          <ComplianceBreakdown risk={vendor.riskLevel} currentScore={vendor.complianceScore} docs={docs} />
-        </Card>
+        {/* Right: AI Summary + Checklist + Compliance breakdown */}
+        <div className="space-y-5">
+          <Card className="p-5">
+            <AiSummary
+              vendorId={vendor.id}
+              summary={vendor.aiSummary}
+              summaryAt={vendor.aiSummaryAt}
+              aiEnabled={isGeminiConfigured()}
+            />
+          </Card>
+          {checklist && (
+            <Card className="p-5">
+              <ComplianceChecklist checklist={checklist} />
+            </Card>
+          )}
+          <Card className="p-5">
+            <ComplianceBreakdown risk={vendor.riskLevel} currentScore={vendor.complianceScore} docs={docs} />
+          </Card>
+        </div>
       </div>
     </div>
   );

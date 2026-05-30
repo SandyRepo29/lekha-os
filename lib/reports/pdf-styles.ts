@@ -1,0 +1,28 @@
+import { StyleSheet } from "@react-pdf/renderer";
+
+export const styles = StyleSheet.create({
+  page: { fontFamily: "Helvetica", fontSize: 10, padding: 40, backgroundColor: "#ffffff", color: "#1a1a2e" },
+  header: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, paddingBottom: 16, borderBottom: "2pt solid #4f46e5" },
+  brandName: { fontSize: 20, fontFamily: "Helvetica-Bold", color: "#4f46e5" },
+  brandTag: { fontSize: 8, color: "#9aa0b5", marginTop: 2 },
+  reportTitle: { textAlign: "right" },
+  reportName: { fontSize: 14, fontFamily: "Helvetica-Bold", color: "#1a1a2e" },
+  reportMeta: { fontSize: 8, color: "#646a82", marginTop: 3 },
+  section: { marginBottom: 20 },
+  sectionTitle: { fontSize: 11, fontFamily: "Helvetica-Bold", color: "#4f46e5", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 },
+  table: { width: "100%" },
+  tableHeader: { flexDirection: "row", backgroundColor: "#f1f3ff", padding: "6 8", borderRadius: 4, marginBottom: 2 },
+  tableRow: { flexDirection: "row", padding: "5 8", borderBottom: "0.5pt solid #e8eaf2" },
+  tableCell: { flex: 1, fontSize: 9 },
+  tableCellBold: { flex: 1, fontSize: 9, fontFamily: "Helvetica-Bold" },
+  badge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, fontSize: 8 },
+  badgeGreen: { backgroundColor: "#d1fae5", color: "#065f46" },
+  badgeRed: { backgroundColor: "#fee2e2", color: "#991b1b" },
+  badgeYellow: { backgroundColor: "#fef3c7", color: "#92400e" },
+  badgeGray: { backgroundColor: "#f1f3ff", color: "#4f46e5" },
+  summaryGrid: { flexDirection: "row", gap: 12, marginBottom: 16 },
+  summaryCard: { flex: 1, padding: 12, backgroundColor: "#f8f9ff", borderRadius: 6, border: "0.5pt solid #e8eaf2" },
+  summaryValue: { fontSize: 20, fontFamily: "Helvetica-Bold", color: "#4f46e5" },
+  summaryLabel: { fontSize: 8, color: "#646a82", marginTop: 2 },
+  footer: { position: "absolute", bottom: 28, left: 40, right: 40, flexDirection: "row", justifyContent: "space-between", fontSize: 8, color: "#9aa0b5", borderTop: "0.5pt solid #e8eaf2", paddingTop: 8 },
+});

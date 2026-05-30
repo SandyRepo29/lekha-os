@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";
 import { VENDOR_CATEGORIES, RISK_LEVELS } from "@/lib/constants/vendor-options";
+import { OwnerFields } from "./owner-fields";
 
-export function EditVendorForm({ vendor }: { vendor: Vendor }) {
+export function EditVendorForm({ vendor, children }: { vendor: Vendor; children?: React.ReactNode }) {
   const [state, formAction, pending] = useActionState<VendorState, FormData>(updateVendor, undefined);
 
   const initialCategory = VENDOR_CATEGORIES.flatMap((g) => g.items as readonly string[]).includes(vendor.category ?? "")
@@ -64,6 +65,12 @@ export function EditVendorForm({ vendor }: { vendor: Vendor }) {
           </p>
         )}
       </div>
+
+      <div className="border-t border-[var(--color-line)] pt-4">
+        <OwnerFields ownerName={vendor.ownerName} ownerEmail={vendor.ownerEmail} ownerDepartment={vendor.ownerDepartment} />
+      </div>
+
+      {children}
 
       {state?.error && (
         <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">{state.error}</p>

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getVendor } from "@/lib/services/vendor-service";
 import { EditVendorForm } from "@/components/vendors/edit-vendor-form";
+import { TemplateSelect } from "@/components/vendors/template-select";
 
 export default async function EditVendorPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -26,7 +27,11 @@ export default async function EditVendorPage({ params }: { params: Promise<{ id:
         <p className="text-sm text-[var(--color-ink-dim)]">Update details for {vendor.name}.</p>
       </div>
       <Card className="p-6">
-        <EditVendorForm vendor={vendor} />
+        <EditVendorForm vendor={vendor}>
+          <div className="border-t border-[var(--color-line)] pt-4">
+            <TemplateSelect orgId={session.org.id} currentId={vendor.vendorTypeId} />
+          </div>
+        </EditVendorForm>
       </Card>
     </div>
   );

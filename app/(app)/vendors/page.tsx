@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Plus, Building2, Download } from "lucide-react";
+import { Plus, Building2, Download, FileText } from "lucide-react";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ export default async function VendorsPage({
   let totalDocs = 0;
 
   if (session.demo || !session.org) {
-    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring }));
+    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring, ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment }));
     total = vendors.length; totalPages = 1;
   } else {
     const result = await listVendorsPaged(session.org.id, page, PAGE_SIZE);
@@ -52,9 +52,17 @@ export default async function VendorsPage({
         </div>
         <div className="flex items-center gap-2">
           {!session.demo && session.org && (
-            <a href="/vendors/export" download="vendors.csv">
-              <Button variant="outline" size="sm"><Download className="h-4 w-4" /> Export CSV</Button>
-            </a>
+            <>
+              <a href="/reports/compliance" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm"><FileText className="h-4 w-4" /> PDF Report</Button>
+              </a>
+              <a href="/reports/expiry" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm"><FileText className="h-4 w-4" /> Expiry PDF</Button>
+              </a>
+              <a href="/vendors/export" download="vendors.csv">
+                <Button variant="outline" size="sm"><Download className="h-4 w-4" /> CSV</Button>
+              </a>
+            </>
           )}
           <Link href="/vendors/new">
             <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add vendor</Button>

@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";
 import { VENDOR_CATEGORIES, RISK_LEVELS } from "@/lib/constants/vendor-options";
+import { OwnerFields } from "./owner-fields";
 
-export function NewVendorForm() {
+export function NewVendorForm({ children }: { children?: React.ReactNode }) {
   const [state, formAction, pending] = useActionState<VendorState, FormData>(
     createVendor,
     undefined
@@ -62,6 +63,12 @@ export function NewVendorForm() {
           </p>
         )}
       </div>
+
+      <div className="border-t border-[var(--color-line)] pt-4">
+        <OwnerFields />
+      </div>
+
+      {children}
 
       {state?.error && (
         <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">

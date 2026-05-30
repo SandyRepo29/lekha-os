@@ -23,6 +23,8 @@ import {
   type VendorRow,
   type VendorMetrics,
 } from "@/lib/services/vendor-service";
+import { listOrgActivity } from "@/lib/repositories/activity-repo";
+import { ActivityFeed } from "@/components/activity/activity-feed";
 import { demoMetrics, demoVendors } from "@/lib/demo-data";
 import { riskTone } from "@/lib/ui-maps";
 
@@ -38,14 +40,20 @@ export default async function DashboardPage() {
       id: String(i), name: v.name, category: v.category,
       status: v.status, risk: v.risk, score: v.score,
       docs: v.docs, expiring: v.expiring,
+      ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment,
     }));
   } else {
-    metrics = await getMetrics(session.org.id);
-    recent = (await listVendors(session.org.id)).slice(0, 5);
+    [metrics, recent] = await Promise.all([
+      getMetrics(session.org.id),
+      listVendors(session.org.id).then((v) => v.slice(0, 5)),
+    ]);
   }
 
   const insights = deriveInsights(metrics);
   const empty = metrics.totalVendors === 0;
+  const activity = (!session.demo && session.org)
+    ? await listOrgActivity(session.org.id, 10)
+    : [];
   const scoreColor = metrics.complianceScore >= 80 ? "text-emerald-400"
     : metrics.complianceScore >= 60 ? "text-[var(--color-blue)]"
     : metrics.complianceScore >= 40 ? "text-amber-400" : "text-red-400";
@@ -200,6 +208,18 @@ export default async function DashboardPage() {
           </div>
         )}
       </Card>
+
+      {/* Activity feed */}
+      {activity.length > 0 && (
+        <Card>
+          <div className="flex items-center justify-between border-b border-[var(--color-line)] px-5 py-4">
+            <h2 className="font-[family-name:var(--font-display)] font-semibold">Recent activity</h2>
+          </div>
+          <div className="px-5 py-3">
+            <ActivityFeed items={activity} />
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

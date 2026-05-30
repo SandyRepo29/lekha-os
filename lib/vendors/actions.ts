@@ -35,6 +35,10 @@ export async function createVendor(
         category,
         contactEmail: String(formData.get("contactEmail") || ""),
         risk: String(formData.get("risk") || ""),
+        ownerName: String(formData.get("ownerName") || "") || null,
+        ownerEmail: String(formData.get("ownerEmail") || "") || null,
+        ownerDepartment: String(formData.get("ownerDepartment") || "") || null,
+        vendorTypeId: String(formData.get("vendorTypeId") || "") || null,
       },
     });
   } catch (err) {
@@ -73,7 +77,11 @@ export async function updateVendor(
         category,
         contactEmail: String(formData.get("contactEmail") || ""),
         risk: String(formData.get("risk") || ""),
-      },
+        ownerName: String(formData.get("ownerName") || "") || null,
+        ownerEmail: String(formData.get("ownerEmail") || "") || null,
+        ownerDepartment: String(formData.get("ownerDepartment") || "") || null,
+        vendorTypeId: String(formData.get("vendorTypeId") || "") || null,
+      } as any,
     });
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };

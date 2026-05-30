@@ -14,6 +14,9 @@ export type NewVendor = {
   status: "active" | "pending" | "inactive";
   complianceScore: number;
   createdBy: string;
+  ownerName?: string | null;
+  ownerEmail?: string | null;
+  ownerDepartment?: string | null;
 };
 
 export async function insertVendor(
@@ -46,7 +49,13 @@ export async function updateScore(
 
 export async function updateVendor(
   id: string,
-  values: { name?: string; category?: string | null; contactEmail?: string | null; riskLevel?: Risk; status?: "active" | "pending" | "inactive"; notes?: string | null },
+  values: {
+    name?: string; category?: string | null; contactEmail?: string | null;
+    riskLevel?: Risk; status?: "active" | "pending" | "inactive";
+    notes?: string | null; ownerName?: string | null; ownerEmail?: string | null;
+    ownerDepartment?: string | null; aiSummary?: string | null; aiSummaryAt?: Date | null;
+    checklistScore?: number; vendorTypeId?: string | null;
+  },
   exec: Executor = db
 ): Promise<void> {
   await exec.update(vendors).set({ ...values, updatedAt: new Date() }).where(eq(vendors.id, id));
