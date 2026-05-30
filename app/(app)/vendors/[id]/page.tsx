@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, FileText, Download, Sparkles, Pencil } from "lucide-react";
+import { ArrowLeft, FileText, Download, Sparkles, Pencil, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,6 +56,11 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
             <Badge tone={riskTone(vendor.riskLevel)}>{vendor.riskLevel} risk</Badge>
             {expiredCount > 0 && <Badge tone="danger">{expiredCount} expired</Badge>}
             {expiringCount > 0 && <Badge tone="warn">{expiringCount} expiring</Badge>}
+          </div>
+          <div className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-ink-faint)]">
+            <Clock className="h-3.5 w-3.5" />
+            Added {new Date(vendor.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+            {vendor.contactEmail && <span className="ml-1">· {vendor.contactEmail}</span>}
           </div>
         </div>
         <div className="shrink-0 text-center">

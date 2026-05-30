@@ -106,7 +106,7 @@ export async function updateVendorNotes(vendorId: string, notes: string): Promis
   const session = await requireUser();
   if (session.demo || !session.org) return { error: "Not available in demo mode." };
   try {
-    await vendorService.updateVendorNotes({ orgId: session.org.id, vendorId, notes });
+    await vendorService.updateVendorNotes({ orgId: session.org.id, actorId: session.id, vendorId, notes });
     revalidatePath(`/vendors/${vendorId}`);
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };

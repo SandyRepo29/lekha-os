@@ -105,6 +105,7 @@ export default async function DashboardPage() {
             icon={CalendarClock}
             accent={metrics.expiringSoon > 0 ? "warn" : "neutral"}
             alert={metrics.expiringSoon > 0}
+            href={metrics.expiringSoon > 0 ? "/vendors?expiring=1" : undefined}
           />
           <StatCard
             label="High Risk"
@@ -112,6 +113,7 @@ export default async function DashboardPage() {
             icon={AlertTriangle}
             accent={metrics.highRisk > 0 ? "danger" : "neutral"}
             alert={metrics.highRisk > 0}
+            href={metrics.highRisk > 0 ? "/vendors?risk=high" : undefined}
           />
         </div>
       </div>

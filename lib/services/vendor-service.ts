@@ -30,8 +30,12 @@ export type VendorMetrics = {
 
 export type Insight = { tone: "info" | "warn" | "danger" | "live"; text: string };
 
-// Starting heuristic until document completeness drives the real score.
-const STARTING_SCORE: Record<Risk, number> = { low: 88, medium: 68, high: 45, critical: 25 };
+/**
+ * Initial score on creation = computeScore with 0 documents, so the first
+ * document upload never causes a confusing score drop.
+ * Must stay in sync with the base values inside computeScore.
+ */
+const STARTING_SCORE: Record<Risk, number> = { low: 70, medium: 60, high: 45, critical: 30 };
 
 function toRisk(value: string | undefined): Risk {
   return (["low", "medium", "high", "critical"] as const).includes(value as Risk)
@@ -93,11 +97,15 @@ export async function updateVendorStatus(params: {
 }
 
 export async function updateVendorNotes(params: {
-  orgId: string; vendorId: string; notes: string;
+  orgId: string; actorId: string; vendorId: string; notes: string;
 }): Promise<void> {
   const vendor = await vendorRepo.findById(params.orgId, params.vendorId);
   if (!vendor) throw new DomainError("Vendor not found.");
-  await vendorRepo.updateVendor(params.vendorId, { notes: params.notes.trim() || null });
+  const notes = params.notes.trim() || null;
+  await db.transaction(async (tx) => {
+    await vendorRepo.updateVendor(params.vendorId, { notes }, tx);
+    await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "vendor.notes_updated", entityType: "vendor", entityId: params.vendorId, metadata: { hasNotes: !!notes } }, tx);
+  });
 }
 
 export async function listVendorsPaged(

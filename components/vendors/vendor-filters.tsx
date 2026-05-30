@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Search, X, FileText, CalendarClock, ShieldAlert } from "lucide-react";
 import type { VendorRow } from "@/lib/services/vendor-service";
@@ -10,9 +11,18 @@ import { riskTone, statusTone } from "@/lib/ui-maps";
 const ALL = "all";
 
 export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
-  const [query, setQuery] = useState("");
-  const [risk, setRisk] = useState(ALL);
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const [risk, setRisk] = useState(searchParams.get("risk") ?? ALL);
   const [status, setStatus] = useState(ALL);
+  const [expiringOnly, setExpiringOnly] = useState(searchParams.get("expiring") === "1");
+
+  // Sync with URL changes (e.g. topbar search or dashboard card link)
+  useEffect(() => {
+    setQuery(searchParams.get("q") ?? "");
+    setRisk(searchParams.get("risk") ?? ALL);
+    setExpiringOnly(searchParams.get("expiring") === "1");
+  }, [searchParams]);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -20,13 +30,14 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
       if (q && !v.name.toLowerCase().includes(q) && !(v.category ?? "").toLowerCase().includes(q)) return false;
       if (risk !== ALL && v.risk !== risk) return false;
       if (status !== ALL && v.status !== status) return false;
+      if (expiringOnly && v.expiring === 0) return false;
       return true;
     });
-  }, [vendors, query, risk, status]);
+  }, [vendors, query, risk, status, expiringOnly]);
 
-  const active = query || risk !== ALL || status !== ALL;
+  const active = query || risk !== ALL || status !== ALL || expiringOnly;
 
-  function clear() { setQuery(""); setRisk(ALL); setStatus(ALL); }
+  function clear() { setQuery(""); setRisk(ALL); setStatus(ALL); setExpiringOnly(false); }
 
   return (
     <>
@@ -45,6 +56,12 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
 
         <FilterChip label="Risk" value={risk} options={[ALL, "low", "medium", "high", "critical"]} labels={{ all: "All risks" }} onChange={setRisk} />
         <FilterChip label="Status" value={status} options={[ALL, "active", "pending", "inactive"]} labels={{ all: "All status" }} onChange={setStatus} />
+        <button
+          onClick={() => setExpiringOnly(!expiringOnly)}
+          className={`h-[38px] rounded-xl border px-3 text-sm transition-colors ${expiringOnly ? "border-amber-500/60 bg-amber-500/10 text-amber-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
+        >
+          ⏰ Expiring
+        </button>
 
         {active && (
           <button onClick={clear} className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">

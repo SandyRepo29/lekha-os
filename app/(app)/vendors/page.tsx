@@ -2,10 +2,11 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, Building2, Download } from "lucide-react";
+import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { listVendorsPaged, getMetrics, type VendorRow } from "@/lib/services/vendor-service";
+import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service";
 import { demoVendors } from "@/lib/demo-data";
 import { VendorFilters } from "@/components/vendors/vendor-filters";
 
@@ -84,7 +85,7 @@ export default async function VendorsPage({
         </Card>
       ) : (
         <>
-          <VendorFilters vendors={vendors} />
+          <Suspense><VendorFilters vendors={vendors} /></Suspense>
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3">
