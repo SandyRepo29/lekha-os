@@ -2,7 +2,8 @@
 
 **The Trust, Governance & Compliance Operating System for Indian Businesses.**
 
-Version: 0.1.0 · Last updated: May 2026
+Version: 0.2.0 · Last updated: May 2026  
+Live: https://lekha-os.vercel.app
 
 ---
 
@@ -11,7 +12,7 @@ Version: 0.1.0 · Last updated: May 2026
 Lekha OS is a multi-tenant, AI-native GRC (Governance, Risk & Compliance) operating system built specifically for Indian businesses. It replaces spreadsheets, emails and disconnected point solutions with a single platform that manages vendors, compliance, audits, risk and governance.
 
 **Positioning:** Category-defining OS, not a point solution.  
-**First module:** Vendor Governance (live).  
+**First module:** Vendor Governance — **commercially launch-ready.**  
 **Target:** SaaS, Fintech, Healthcare, Manufacturing, IT Services.
 
 ---
@@ -20,72 +21,143 @@ Lekha OS is a multi-tenant, AI-native GRC (Governance, Risk & Compliance) operat
 
 | Module | Status | Description |
 |---|---|---|
-| **Vendor Governance** | ✅ Live | Manage vendor onboarding, documents, certifications and compliance |
-| **Compliance Management** | 🔜 Coming Soon | Track compliance frameworks, controls, policies and readiness |
-| **Audit Workspace** | 🔜 Coming Soon | Centralize audit preparation and evidence collection |
-| **DPDP Privacy** | 🔜 Coming Soon | India's Digital Personal Data Protection Act compliance |
-| **Risk Management** | 🔜 Coming Soon | Risk register, assessments and remediation tracking |
-| **Board Governance** | 🔵 Future | Board meetings, resolutions and governance calendar |
+| **Vendor Governance** | ✅ Launch-Ready | Complete vendor registry, document tracking, AI extraction, risk, compliance |
+| **Compliance Management** | 🔜 Next | Controls, policies, evidence, framework compliance scores |
+| **Audit Workspace** | 🔜 Roadmap | Evidence repository, audit requests, findings tracking |
+| **DPDP Privacy** | 🔜 Roadmap | India's DPDP Act compliance |
+| **Risk Management** | 🔜 Roadmap | Risk register, assessments, heat maps, remediation |
+| **Board Governance** | 🔵 Future | Board meetings, resolutions, governance calendar |
 | **Trust Center** | 🔵 Future | Public-facing compliance and trust documentation |
 
 ---
 
-## Module 1 — Vendor Governance ✅ Live
+## Module 1 — Vendor Governance ✅ Launch-Ready
 
 ### Vendor Registry
 
-- **Add vendor** — name, category (grouped dropdown with 20+ Indian B2B categories), risk level, contact email
-- **Edit vendor** — update all fields post-creation including risk level reassignment
-- **Delete vendor** — cascades all documents; purges stored files from storage atomically
-- **Vendor status** — inline dropdown toggle: Active / Pending / Inactive
-- **Vendor notes** — free-text internal notes with inline edit; all changes audited
-- **Vendor list** — paginated (20/page), sortable by newest first
-- **Vendor detail page** — full profile with compliance score, documents, notes and score breakdown
-- **Created date** — "Added on [date]" shown on vendor detail
+- **Add vendor** — name, category (20+ grouped Indian B2B categories), risk level, contact email
+- **Edit vendor** — update all fields including risk level reassignment
+- **Delete vendor** — cascades documents, purges storage files atomically
+- **Vendor status** — inline dropdown: Active / Pending / Inactive (audited)
+- **Vendor notes** — free-text internal notes with inline edit (audited)
+- **Vendor owner** — assign internal owner: name, email, department (accountability)
+- **Vendor type template** — assign compliance template (Cloud, SaaS, IT Services, Finance, Staffing, Legal, General)
+- **Created date** — "Added on [date]" on vendor detail
 
 ### Search & Filter
 
-- **Topbar search** — type vendor name, press Enter to navigate directly to filtered list
-- **Name/category search** — client-side filter on the vendors list
-- **Risk filter** — filter by low / medium / high / critical
-- **Status filter** — filter by active / pending / inactive
-- **Expiring filter** — one-click filter to show only vendors with expiring documents
-- **URL-driven filters** — dashboard stat cards link directly to pre-filtered vendor lists (`?expiring=1`, `?risk=high`)
-- **Results count** — shows "X of Y vendors" when filters are active
-- **Clear all** — single button resets all filters
+- **Topbar search** — type + Enter → navigates to `/vendors?q=term`
+- **Name/category filter** — client-side search on vendor list
+- **Risk filter** — low / medium / high / critical
+- **Status filter** — active / pending / inactive
+- **Expiring filter** — ⏰ chip shows only vendors with expiring documents
+- **URL-driven filters** — dashboard stat cards link to pre-filtered lists (`?expiring=1`, `?risk=high`)
+- **Pagination** — 20/page, URL `?page=N`
+- **Results count** — shown when filters active
 
 ### Compliance Scoring
 
-- **Document-driven score** — 0–100 score computed from: risk base + valid documents (×5, max +40) − expiring (×10) − expired (×20)
-- **Consistent from creation** — initial score matches the formula with 0 docs; no score drop on first upload
-- **Real-time recompute** — score updates automatically after every document upload, edit or delete
-- **Score breakdown panel** — per-vendor panel showing current score, max achievable score, and a checklist of what's needed to reach 100
-- **Score progress bar** — visual bar in the vendor list coloured by score range (green ≥80, indigo ≥60, amber ≥40, red <40)
-- **Key document tracking** — breakdown panel tracks presence of ISO 27001, SOC 2 Type II, MSA, DPA
+- **Document-driven score** — 0–100: risk base + valid docs (×5, max +40) − expiring (×10) − expired (×20)
+- **Consistent from creation** — starting score matches formula with 0 docs (no drop on first upload)
+- **Real-time recompute** — after every document upload, edit, or delete
+- **Score breakdown panel** — shows current / max achievable / checklist of what's needed
+- **Score progress bar** — colour-coded in vendor list (green ≥80, indigo ≥60, amber ≥40, red <40)
+
+### Vendor Type Templates & Compliance Checklist
+
+- **7 default templates** — Cloud Provider, SaaS Vendor, IT Services, Finance Vendor, Staffing/Outsourcing, Legal/Consulting, General Vendor
+- **Required + optional documents** per template (e.g. Cloud: ISO 27001, SOC 2, GST, MSA, DPA, Cyber Insurance)
+- **Template selector** — on add/edit vendor forms
+- **Compliance checklist panel** — on vendor detail: ✅ uploaded + valid / ⚠ expiring / ❌ expired / ○ missing
+- **Completion score** — 0–100% (required docs only)
 
 ### Document Management
 
-- **Upload** — PDF, PNG, JPG, JPEG, WEBP, TXT (up to Supabase Storage limits)
-- **Document types** — 25+ predefined types across Security, India Compliance, Quality, Contracts and Insurance; custom "Other" fallback
-- **AI extraction** — Gemini 2.5 Flash extracts document type, issuer, issue date, expiry date and summary from uploaded files
-- **Status tracking** — valid / expiring (≤30 days) / expired — auto-set from expiry date
-- **Manual edit** — edit document type, issued date and expiry date via inline modal if AI extraction is incorrect
-- **Re-run extraction** — re-submit any document to Gemini with one click
-- **Download** — signed download URLs (1-hour expiry) for all stored documents
-- **Delete document** — removes storage file + database row + audit entry; rescores vendor
-- **Extraction metadata shown** — issuer, issue date, expiry date and AI summary visible on each document row
+- **Upload** — PDF, PNG, JPG, JPEG, WEBP, TXT
+- **25+ document types** — Security, India Compliance, Quality, Contracts, Insurance; "Other / Custom" fallback
+- **AI extraction** — Gemini 2.5 Flash: document type, issuer, issue date, expiry date, summary
+- **Status tracking** — valid / expiring (≤30 days) / expired — auto-set from expiry
+- **Manual edit** — edit type, issued date, expiry via modal (if AI got it wrong)
+- **Re-run extraction** — resubmit to Gemini with one click
+- **Download** — signed URLs (1hr expiry)
+- **Delete** — removes file from storage + DB row + audit entry, rescores vendor
+
+### Document Request Workflow
+
+- **Create requests** — document type, message, due date, priority (low/medium/high)
+- **Status flow** — Requested → Submitted → Approved / Rejected / Expired
+- **Inline management** — create + update status from vendor detail page
+- **Audit logged** — every status change recorded
+
+### Vendor Portal (Self-Service)
+
+- **Magic link** — generate a secure 30-day link per vendor (no account required)
+- **Vendor capabilities** — upload documents, view pending requests, see expiring docs
+- **Portal route** — `/portal/[token]` — standalone, no Supabase auth, token-validated
+- **Copy link** — one click to copy and share with the vendor
+
+### AI Capabilities
+
+- **Document extraction** — Gemini 2.5 Flash structured extraction (dates normalized to ISO 8601)
+- **AI Vendor Summary** — Gemini-generated 3–5 sentence executive summary per vendor (from metadata, docs, score, notes). Cached in DB. Regeneratable.
+- **AI Insights** — Data-driven dashboard insight cards (expiry warnings, high-risk, score health)
+- **Graceful degradation** — extraction failures never block upload; can manually edit or re-run
+
+### Risk Engine
+
+- **Computed risk score** — 0–100 numeric risk from: risk level base + compliance score + expired docs + expiring docs + no documents + assessment score + no owner assigned
+- **Risk level** — low / medium / high / critical (derived from score)
+- **Risk panel** — on vendor detail with score bar + labelled factors
+- **Dashboard linkage** — "High Risk" stat card links to filtered vendor list
+
+### Security Assessments
+
+- **17 standard questions** across 6 categories: Access Management, Encryption, Incident Response, Backup & Recovery, Vulnerability Management, Data Protection
+- **Responses** — Yes / No / Partial / N/A (weighted scoring)
+- **Assessment score** — 0–100 (weighted: yes=1, partial=0.5, no=0, na=skip)
+- **Assessment page** — `/vendors/[id]/assessment` with full questionnaire form
+- **History** — previous completed assessments shown; scores feed into risk engine
+
+### Vendor Reviews
+
+- **Review types** — Annual, Quarterly, Security, Compliance
+- **Status flow** — Pending → Approved / Rejected / Needs Follow-Up
+- **Log reviews** — with summary notes and next review date
+- **Full history** — all reviews stored and displayed
 
 ### Dashboard
 
-- **Compliance score ring** — org-wide average score with status label (Healthy / Improving / Needs Attention / Critical)
-- **Stat cards** — Vendors Tracked, Documents Managed, Expiring Soon, High Risk — colour-coded by severity
-- **Clickable stat cards** — Expiring Soon and High Risk link directly to filtered vendor views
-- **AI Insights panel** — data-driven insight cards (expiry warnings, high-risk flags, score health, action prompts)
-- **Recent vendors** — last 5 vendors with score bars and risk badges
+- **Compliance score ring** — org-wide average with status label (Healthy/Improving/Needs Attention/Critical)
+- **4 stat cards** — Vendors Tracked, Documents Managed, Expiring Soon, High Risk — colour-coded, clickable
+- **AI Insights panel** — data-driven cards (expiry warnings, risk flags, score health)
+- **Recent vendors** — last 5, with score bars + risk badges
+- **Activity feed** — org-wide recent audit log (last 10 actions, human-readable)
 
-### Data Export
+### Reports & Export
 
-- **CSV export** — one-click export of the full vendor list with name, category, status, risk, score, document count, expiring count
+- **Vendor Compliance PDF** — all vendors, summary stats, full table (branded)
+- **Expiry Report PDF** — documents expiring in 60 days, days-left column (branded)
+- **Audit Package PDF** — per-vendor: summary, documents, checklist, assessment, review history (branded)
+- **CSV export** — full vendor list with all fields
+- **Download buttons** — from vendors page (Compliance PDF, Expiry PDF, CSV) and vendor detail (Audit Package)
+
+### Audit Log
+
+Every meaningful action is recorded:
+
+| Action | Trigger |
+|---|---|
+| `organization.created` | Workspace creation |
+| `organization.renamed` | Org name changed |
+| `vendor.created/updated/deleted` | Vendor CRUD |
+| `vendor.status_changed` | Status toggled (from→to) |
+| `vendor.notes_updated` | Notes saved |
+| `document.uploaded/deleted` | Document CRUD |
+| `document_request.created/status_changed` | Request workflow |
+| `assessment.created/completed` | Assessment lifecycle |
+| `review.created/status_changed` | Review lifecycle |
+| `team.member_invited/role_changed/deactivated/reactivated` | Team management |
+| `portal.link_generated` | Vendor portal link created |
 
 ---
 
@@ -93,122 +165,112 @@ Lekha OS is a multi-tenant, AI-native GRC (Governance, Risk & Compliance) operat
 
 ### Authentication & Identity
 
-- **Signup** — email + password; instant session (email confirmation optional)
+- **Signup** — email + password → onboarding (create workspace) → dashboard
 - **Login** — email + password with redirect preservation
-- **Onboarding** — new users create their workspace (organization) on first login
-- **Sign out** — from settings page
+- **Onboarding** — new users without an org are routed to `/onboarding` to create their workspace
+- **Sign out** — from Settings page
 
 ### Multi-Tenancy & Security
 
-- **Organization-scoped data** — every row in every table is scoped to an organization
-- **Row-Level Security** — Postgres RLS enforces tenant isolation at the database layer; users can only access their org's data
-- **RLS helper functions** — `is_org_member()` and `has_org_role()` prevent cross-tenant data leaks even in edge cases
-- **Roles** — Owner, Admin, Member, Viewer (enforced; org rename restricted to Owner/Admin)
-- **Supabase Storage RLS** — vendor document bucket scoped by org ID; no cross-tenant file access
+- **Organization-scoped data** — every row scoped to an org
+- **Row-Level Security** — Postgres RLS enforced at DB layer; helpers `is_org_member()` / `has_org_role()`
+- **Roles** — Owner, Admin, Member, Viewer (enforced in app + RLS)
+- **Storage RLS** — vendor documents bucket scoped by org ID path
 
-### Audit Log
+### Team Management
 
-Every meaningful action is recorded in `audit_logs`:
-
-| Action | Trigger |
-|---|---|
-| `organization.created` | Workspace created on onboarding |
-| `organization.renamed` | Org name changed in settings |
-| `vendor.created` | New vendor added |
-| `vendor.updated` | Vendor details edited |
-| `vendor.status_changed` | Status toggled (with from/to values) |
-| `vendor.notes_updated` | Notes saved or cleared |
-| `vendor.deleted` | Vendor deleted |
-| `document.uploaded` | Document uploaded and registered |
-| `document.deleted` | Document removed |
+- **Invite members** — by email (Supabase inviteUserByEmail sends invite email)
+- **Manage roles** — Owner / Admin / Member / Viewer; inline dropdown
+- **Deactivate / reactivate** — soft deactivation (is_active flag)
+- **Role permissions** — Owner: full access; Admin: manage vendors+team; Member: add/manage vendors; Viewer: read-only
+- **Team page** — `/settings/team`
 
 ### Settings & Profile
 
-- **Profile** — edit full name; displayed as avatar initial in topbar
-- **Organization** — edit org name (owner/admin only); view slug, member count and your role
-- **Sign out** — from dedicated Account section
-- **Settings accessible** — from sidebar link and topbar avatar click
+- **Profile** — edit full name; shown as avatar initial in topbar
+- **Organization** — edit org name (owner/admin only); view slug, member count, role
+- **Sign out** — dedicated Account section
+- **Access** — from sidebar "Settings" link or topbar avatar click
 
 ### App Shell
 
-- **Sidebar** — module navigation with "Soon" labels on unbuilt modules; Settings link; Lekha AI panel
-- **Topbar** — functional search, org name, email, profile avatar (links to settings)
-- **Demo mode** — amber banner when Supabase is not connected; app shows illustrative data
+- **Sidebar** — all modules (Coming Soon labels for unbuilt), Settings, Team links, Lekha AI panel
+- **Topbar** — functional search (Enter to search vendors), org name, avatar → settings
+- **Demo mode** — amber banner + illustrative data when Supabase not configured
 
-### AI (Lekha AI)
+### Infrastructure
 
-- **Provider** — Google Gemini 2.5 Flash (configurable via `GEMINI_MODEL` env var)
-- **Document extraction** — structured JSON output via response schema: document type, issuer, issued date, expiry date, summary
-- **Date normalization** — all dates normalized to ISO 8601 (YYYY-MM-DD) regardless of source format
-- **Graceful degradation** — AI extraction failures never block the upload; document is saved with "valid" status and can be manually edited or re-extracted
-- **Extractable formats** — PDF, PNG, JPG, WEBP, plain text
-- **Insights engine** — data-driven dashboard insights derived from live metrics (no static copy)
-
-### Infrastructure & Data
-
-- **Framework** — Next.js 16 (App Router) + TypeScript
-- **Database** — Supabase Postgres (Mumbai / ap-south-1) — India data residency
-- **ORM** — Drizzle with typed schema and migrations
-- **Storage** — Supabase Storage (private bucket, org-scoped RLS)
-- **Connection pooling** — Supavisor transaction pooler (port 6543) for serverless compatibility
-- **Hosting** — Vercel (Mumbai `bom1` region) + Supabase (ap-south-1) — full India residency
-- **Architecture** — layered modular monolith: UI → server actions (transport) → services (business logic) → repositories (data access) → Postgres
+- **Framework** — Next.js 16 (App Router) + TypeScript, all protected pages `force-dynamic`
+- **Database** — Supabase Postgres, Mumbai ap-south-1 — India data residency
+- **ORM** — Drizzle with lazy DB init (prevents Vercel build failures)
+- **Connection pooling** — Supavisor transaction pooler (port 6543)
+- **Storage** — Supabase Storage, private bucket, org-scoped RLS
+- **AI** — Google Gemini 2.5 Flash (`@google/genai`)
+- **PDF** — `@react-pdf/renderer`
+- **Architecture** — layered modular monolith: UI → server actions → services → repositories → Postgres
 
 ### Design System
 
-- **Theme** — dark glassmorphism; deep indigo / purple / electric blue palette
-- **Typography** — Inter (body) + Sora (display headings)
-- **Components** — Button, Card, Badge, Input, Select, ScoreRing — all custom-themed
-- **Responsive** — mobile-first; sidebar collapses on small screens
+- **Theme** — dark glassmorphism, near-black background
+- **Palette** — deep indigo / purple / electric blue
+- **Typography** — Inter (body) + Sora (display/headings)
+- **Components** — Button, Card, Badge, Input, Select (custom dark-themed), ScoreRing
+- **Responsive** — mobile-first; sidebar hidden on small screens
 - **Reduced motion** — respects `prefers-reduced-motion`
 
 ---
 
 ## Investor Landing Page
 
-- Hero with platform mockup (compliance ring, vendor risk, AI copilot)
-- Social proof section with illustrative metrics
-- Problem section (6 pain points)
-- Vision platform map (all 7 modules)
-- Platform modules section (all 6 modules with status)
-- AI-Native section (7 capabilities)
-- Product demo screen mockups (6 screens)
-- Why India section (6 cards)
-- Market Opportunity (70M+ businesses, 63M+ MSMEs)
-- Founder section with mission statement
-- Roadmap timeline (2026–2030)
-- Final CTA with "Request Demo" and "Become a Design Partner"
-- Scroll animations, hover effects, animated metrics
-- Fully responsive (mobile, tablet, desktop)
+- Hero with animated platform mockup (compliance ring, vendor risk, AI copilot)
+- Social proof, problem section, vision platform map, 6 platform modules
+- AI-Native section, product demo mockups, Why India, Market Opportunity
+- Founder section, 2026–2030 roadmap timeline, final CTA
+- Scroll animations, hover effects, animated counters, fully responsive
 
 ---
 
 ## Roadmap
 
-### 2026 — Vendor Governance ✅
-Core vendor registry, document tracking, AI extraction, compliance scoring.
+### 2026 — Vendor Governance ✅ Complete
+Full vendor registry, document management, AI extraction, compliance scoring, risk engine, security assessments, reviews, audit packages, team management, vendor portal.
 
 ### 2027 — Compliance Management
-Control frameworks (ISO 27001, SOC 2, India-specific), policies library, evidence collection, compliance score by framework.
+Control frameworks (ISO 27001, SOC 2, India-specific), policies library, evidence collection, compliance score by framework, compliance calendar.
 
 ### 2028 — DPDP & Audit Workspace
-India's Digital Personal Data Protection Act module; audit request management, evidence repository, findings tracking.
+India's Digital Personal Data Protection Act compliance module. Audit request management, evidence repository, findings tracking, auditor collaboration.
 
 ### 2029 — Risk Management
-Risk register, risk assessments with scoring, treatment plans, remediation tracking, risk heat maps.
+Risk register with scoring, risk assessments, treatment plans, remediation tracking, risk heat maps, risk appetite configuration.
 
-### 2030 — India's Governance Operating System
-Board Governance, Trust Center, full platform integration. Category-defining OS for Indian enterprise governance.
+### 2030 — India's Governance OS
+Board Governance, Trust Center, full platform integration — the definitive GRC OS for Indian enterprise.
 
 ---
 
-## Coming Next (Phase 1 Additions)
+## Parked / Not Yet Built
 
-- Invite teammates to the organization (member management UI)
-- Vendor onboarding checklist / required documents by category
-- Expiring documents email notifications
-- Compliance report PDF export
-- Custom domain (`app.lekhaos.in`)
+**Email Notification Engine** (parked — needs email provider decision: Resend recommended)
+- Document expiry alerts: 90/60/30/15/7 days before + on expiry
+- Weekly compliance digest: expiring docs, high-risk vendors, missing documents
+- Delivery: email → future: Slack, Teams, WhatsApp
+- Infrastructure needed: Vercel Cron Jobs, `notification_preferences` + `notification_history` tables
+
+---
+
+## Launch Criteria Status (from PRODUCT VENDOR GAPS.md)
+
+| Criterion | Status |
+|---|---|
+| ✅ Email Notifications | Parked (not blocking) |
+| ✅ Vendor Owner Assignment | Complete |
+| ✅ Vendor Type Templates | Complete |
+| ✅ Compliance Checklist | Complete |
+| ✅ PDF Reports | Complete |
+| ✅ Vendor Portal | Complete |
+| ✅ Document Requests | Complete |
+| ✅ AI Vendor Summary | Complete |
 
 ---
 
