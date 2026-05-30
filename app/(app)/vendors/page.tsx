@@ -32,7 +32,7 @@ export default async function VendorsPage({
     vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring }));
     total = vendors.length; totalPages = 1;
   } else {
-    const result = await listVendorsPaged(session.org.id, PAGE_SIZE, page);
+    const result = await listVendorsPaged(session.org.id, page, PAGE_SIZE);
     vendors = result.vendors; total = result.total; totalPages = result.totalPages;
   }
 
