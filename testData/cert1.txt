@@ -1,0 +1,14 @@
+CERTIFICATE OF CONFORMITY
+ISO/IEC 27001:2022 — Information Security Management System
+
+Certified Organisation: Acme Technologies Pvt Ltd
+Registration Number: IS 12345678
+
+Certification Body: BSI Assurance UK Ltd
+Accreditation: UKAS 003
+
+Original Issue Date: 10 March 2024
+Expiry Date: 09 March 2027
+
+This certificate is valid for the scope:
+Design, development and operation of cloud-based SaaS platforms.

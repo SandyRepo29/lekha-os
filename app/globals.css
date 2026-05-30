@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LEKHA OS — Design system (Tailwind v4 theme)
+   ============================================================ */
+@theme {
+  /* Brand palette */
+  --color-bg: #06070d;
+  --color-bg-2: #0a0c16;
+  --color-surface: #0d0f1a;
+  --color-indigo: #4f46e5;
+  --color-indigo-deep: #3730a3;
+  --color-purple: #7c3aed;
+  --color-blue: #2dd4ff;
+  --color-blue-deep: #0ea5e9;
+
+  --color-ink: #e8eaf2;
+  --color-ink-dim: #9aa0b5;
+  --color-ink-faint: #646a82;
+
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.14);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Sora", "Inter", sans-serif;
+
+  /* Radii */
+  --radius-card: 18px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Shared gradient helpers used across app + marketing */
+.grad-brand {
+  background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 45%, #2dd4ff 110%);
+}
+.grad-text {
+  background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 45%, #2dd4ff 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Thin scrollbar for app surfaces */
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 8px; }
+.scroll-thin::-webkit-scrollbar-track { background: transparent; }
