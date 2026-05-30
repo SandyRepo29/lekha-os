@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, FileText, Download, Sparkles, Pencil, Clock } from "lucide-react";
+import { ArrowLeft, FileText, Download, Sparkles, Pencil, Clock, Package } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,16 @@ import { isGeminiConfigured } from "@/lib/ai/gemini";
 import { AiSummary } from "@/components/vendors/ai-summary";
 import { createSignedUrl } from "@/lib/storage/server";
 import { riskTone, docStatusTone } from "@/lib/ui-maps";
+import { computeRiskScore } from "@/lib/services/risk-engine";
+import { RiskPanel } from "@/components/vendors/risk-panel";
+import { listAssessments } from "@/lib/services/assessment-service";
+import { listReviews } from "@/lib/services/review-service";
+import { VendorReviews } from "@/components/vendors/vendor-reviews";
 import { listVendorActivity } from "@/lib/repositories/activity-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
+import { DocumentRequests } from "@/components/vendors/document-requests";
+import { listRequests } from "@/lib/services/request-service";
+import { PortalLink } from "@/components/vendors/portal-link";
 
 export default async function VendorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -34,15 +42,20 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
   const vendor = await getVendor(session.org.id, id);
   if (!vendor) notFound();
 
-  const [docs, checklist, vendorActivity] = await Promise.all([
+  const [docs, checklist, vendorActivity, requests, assessments, reviews] = await Promise.all([
     listForVendor(session.org.id, id),
     getChecklistForVendor(session.org.id, id),
     listVendorActivity(session.org.id, id, 12),
+    listRequests(session.org.id, id),
+    listAssessments(session.org.id, id),
+    listReviews(session.org.id, id),
   ]);
   const urls = await Promise.all(docs.map((d) => d.storagePath ? createSignedUrl(d.storagePath) : null));
 
   const expiredCount = docs.filter((d) => d.status === "expired").length;
   const expiringCount = docs.filter((d) => d.status === "expiring").length;
+  const docCounts = { total: docs.length, valid: docs.filter((d) => d.status === "valid").length, expiring: expiringCount, expired: expiredCount };
+  const riskScore = computeRiskScore(vendor, docCounts, null);
 
   return (
     <div className="space-y-5">
@@ -82,10 +95,13 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
           <ScoreRing value={vendor.complianceScore} size={104} />
           <div className="mt-1 text-xs text-[var(--color-ink-faint)]">Compliance score</div>
         </div>
-        <div className="flex shrink-0 gap-2 self-start">
+        <div className="flex shrink-0 flex-wrap gap-2 self-start">
           <Link href={`/vendors/${vendor.id}/edit`}>
             <Button variant="outline" size="sm"><Pencil className="h-4 w-4" /> Edit</Button>
           </Link>
+          <a href={`/vendors/${vendor.id}/audit-package`} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="sm"><Package className="h-4 w-4" /> Audit Package</Button>
+          </a>
           <DeleteVendor vendorId={vendor.id} vendorName={vendor.name} />
         </div>
       </Card>
@@ -158,6 +174,21 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
             <VendorNotes vendorId={vendor.id} notes={vendor.notes} />
           </Card>
 
+          {/* Document requests */}
+          <Card className="p-5">
+            <DocumentRequests requests={requests} vendorId={vendor.id} />
+          </Card>
+
+          {/* Reviews */}
+          <Card className="p-5">
+            <VendorReviews reviews={reviews} vendorId={vendor.id} />
+          </Card>
+
+          {/* Vendor portal */}
+          <Card className="p-5">
+            <PortalLink vendorId={vendor.id} />
+          </Card>
+
           {/* Activity */}
           {vendorActivity.length > 0 && (
             <Card>
@@ -186,6 +217,37 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
               <ComplianceChecklist checklist={checklist} />
             </Card>
           )}
+          <Card className="p-5">
+            <RiskPanel risk={riskScore} />
+          </Card>
+
+          {/* Assessment summary */}
+          <Card className="p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold text-[var(--color-ink)]">Security assessments</span>
+              <Link href={`/vendors/${vendor.id}/assessment`} className="text-xs text-[var(--color-blue)] hover:underline">
+                {assessments.length === 0 ? "Start assessment" : "New assessment"}
+              </Link>
+            </div>
+            {assessments.length === 0 ? (
+              <p className="text-xs text-[var(--color-ink-faint)]">No assessments completed yet.</p>
+            ) : (
+              <div className="space-y-2">
+                {assessments.slice(0, 3).map((a) => (
+                  <div key={a.id} className="flex items-center justify-between text-sm">
+                    <span className="text-[var(--color-ink-dim)] truncate">{a.title}</span>
+                    {a.score !== null ? (
+                      <span className="ml-2 shrink-0 font-bold font-[family-name:var(--font-display)]" style={{ color: a.score >= 70 ? "#10b981" : a.score >= 50 ? "#f59e0b" : "#ef4444" }}>
+                        {a.score}/100
+                      </span>
+                    ) : (
+                      <span className="ml-2 text-xs text-[var(--color-ink-faint)]">In progress</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
           <Card className="p-5">
             <ComplianceBreakdown risk={vendor.riskLevel} currentScore={vendor.complianceScore} docs={docs} />
           </Card>
