@@ -13,6 +13,7 @@ import {
   Sparkles,
   Settings,
   Users,
+  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -100,6 +101,18 @@ export function Sidebar() {
       >
         <Users className="h-[18px] w-[18px]" />
         <span className="flex-1">Team</span>
+      </Link>
+      <Link
+        href="/settings/notifications"
+        className={cn(
+          "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+          pathname === "/settings/notifications"
+            ? "bg-white/[0.06] text-[var(--color-ink)]"
+            : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+        )}
+      >
+        <Bell className="h-[18px] w-[18px]" />
+        <span className="flex-1">Notifications</span>
       </Link>
 
       <div className="mt-3 rounded-xl border border-[var(--color-blue)]/25 bg-[var(--color-blue)]/[0.06] p-3">

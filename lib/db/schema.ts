@@ -334,6 +334,42 @@ export const vendorPortalTokens = pgTable(
 );
 
 /* ============================================================
+   Notification Preferences + History
+   ============================================================ */
+
+export const notificationPreferences = pgTable("notification_preferences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .unique()
+    .references(() => organizations.id, { onDelete: "cascade" }),
+  expiryAlertsEnabled: boolean("expiry_alerts_enabled").notNull().default(true),
+  weeklyDigestEnabled: boolean("weekly_digest_enabled").notNull().default(true),
+  recipientEmails: jsonb("recipient_emails").default([]),
+  alertDaysBefore: jsonb("alert_days_before").default([90, 60, 30, 15, 7]),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const notificationHistory = pgTable(
+  "notification_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    notificationType: text("notification_type").notNull(),
+    entityId: uuid("entity_id"),
+    sentTo: jsonb("sent_to").notNull(),
+    resendId: text("resend_id"),
+    sentAt: timestamp("sent_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("notif_history_org_idx").on(t.organizationId, t.sentAt),
+    index("notif_history_dedup_idx").on(t.organizationId, t.notificationType, t.entityId),
+  ]
+);
+
+/* ============================================================
    Audit log
    ============================================================ */
 export const auditLogs = pgTable(
@@ -368,4 +404,6 @@ export type Assessment = typeof assessments.$inferSelect;
 export type AssessmentResponse = typeof assessmentResponses.$inferSelect;
 export type VendorReview = typeof vendorReviews.$inferSelect;
 export type VendorPortalToken = typeof vendorPortalTokens.$inferSelect;
+export type NotificationPreferences = typeof notificationPreferences.$inferSelect;
+export type NotificationHistory = typeof notificationHistory.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
