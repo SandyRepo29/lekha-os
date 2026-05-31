@@ -65,7 +65,7 @@ export function Sidebar() {
               )}
               onClick={soon ? (e) => e.preventDefault() : undefined}
             >
-              <Icon className="h-[18px] w-[18px]" />
+              <Icon className="h-5 w-5" />
               <span className="flex-1">{label}</span>
               {soon && (
                 <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-[var(--color-ink-faint)]">

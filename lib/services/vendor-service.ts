@@ -5,9 +5,10 @@ import * as vendorRepo from "@/lib/repositories/vendor-repo";
 import * as documentRepo from "@/lib/repositories/document-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
 
-export type DocCounts = { total: number; valid: number; expiring: number; expired: number };
-
-export type Risk = "low" | "medium" | "high" | "critical";
+// Re-export pure types and functions from scoring.ts so existing imports work
+export type { DocCounts, Risk } from "./scoring";
+export { computeScore, computeDocStatus } from "./scoring";
+import { computeScore, type DocCounts, type Risk } from "./scoring";
 
 export type VendorRow = {
   id: string;
@@ -62,30 +63,7 @@ function toRow(v: Vendor, counts?: DocCounts): VendorRow {
   };
 }
 
-/** Document status derived from its expiry date. */
-export function computeDocStatus(
-  expiresOn: string | null
-): "valid" | "expiring" | "expired" {
-  if (!expiresOn) return "valid";
-  const today = new Date();
-  const exp = new Date(expiresOn);
-  if (exp < today) return "expired";
-  if (exp < new Date(Date.now() + 30 * 86_400_000)) return "expiring";
-  return "valid";
-}
-
-/**
- * Transparent compliance score: a risk-based base, raised by valid documents
- * and lowered by expiring/expired ones. (Placeholder for the Lekha AI engine.)
- */
-export function computeScore(risk: Risk, c: DocCounts): number {
-  const base: Record<Risk, number> = { low: 70, medium: 60, high: 45, critical: 30 };
-  let score = base[risk];
-  score += Math.min(c.valid * 5, 40);
-  score -= c.expiring * 10;
-  score -= c.expired * 20;
-  return Math.max(0, Math.min(100, Math.round(score)));
-}
+// computeScore and computeDocStatus are re-exported from ./scoring
 
 export async function getVendor(orgId: string, id: string): Promise<Vendor | null> {
   return vendorRepo.findById(orgId, id);

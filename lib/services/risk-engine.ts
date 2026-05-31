@@ -1,5 +1,5 @@
 import type { Vendor, VendorDocument } from "@/lib/db/schema";
-import type { DocCounts } from "./vendor-service";
+import type { DocCounts } from "./scoring";
 
 export type RiskScore = {
   level: "low" | "medium" | "high" | "critical";

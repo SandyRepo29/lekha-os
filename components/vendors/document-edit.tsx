@@ -42,8 +42,8 @@ export function DocumentEdit({ documentId, documentType, issuedOn, expiresOn }: 
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <div className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--color-line-strong)] bg-[#0d0f1a] p-6 shadow-2xl">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="relative z-[60] w-full max-w-md rounded-2xl border border-[var(--color-line-strong)] bg-[#0d0f1a] p-6 shadow-2xl">
             <h3 className="mb-4 font-[family-name:var(--font-display)] text-lg font-semibold">Edit document</h3>
             <form action={onAction} className="space-y-4">
               <input type="hidden" name="documentId" value={documentId} />

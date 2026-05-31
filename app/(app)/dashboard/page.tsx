@@ -27,6 +27,10 @@ import { listOrgActivity } from "@/lib/repositories/activity-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
 import { demoMetrics, demoVendors } from "@/lib/demo-data";
 import { riskTone } from "@/lib/ui-maps";
+import { scoreBarGradient, scoreTextColor, scoreLabel, scoreLabelColor } from "@/lib/ui/colors";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { EmptyState } from "@/components/ui/empty-state";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 export default async function DashboardPage() {
   const session = await requireUser();
@@ -54,9 +58,7 @@ export default async function DashboardPage() {
   const activity = (!session.demo && session.org)
     ? await listOrgActivity(session.org.id, 10)
     : [];
-  const scoreColor = metrics.complianceScore >= 80 ? "text-emerald-400"
-    : metrics.complianceScore >= 60 ? "text-[var(--color-blue)]"
-    : metrics.complianceScore >= 40 ? "text-amber-400" : "text-red-400";
+  const scoreColor = scoreLabelColor(metrics.complianceScore);
 
   return (
     <div className="space-y-5">
@@ -84,7 +86,7 @@ export default async function DashboardPage() {
             </div>
             <ScoreRing value={metrics.complianceScore} size={120} />
             <div className={`mt-2 text-sm font-semibold ${scoreColor}`}>
-              {metrics.complianceScore >= 80 ? "Healthy" : metrics.complianceScore >= 60 ? "Improving" : metrics.complianceScore >= 40 ? "Needs Attention" : "Critical"}
+              {scoreLabel(metrics.complianceScore)}
             </div>
             <div className="mt-0.5 text-xs text-[var(--color-ink-faint)]">
               {empty ? "Add vendors to begin" : `Across ${metrics.totalVendors} vendor${metrics.totalVendors !== 1 ? "s" : ""}`}
@@ -251,9 +253,5 @@ function StatCard({ label, value, icon: Icon, accent, alert, href }: {
   return href ? <Link href={href}>{inner}</Link> : inner;
 }
 
-function scoreBarColor(score: number) {
-  if (score >= 80) return "linear-gradient(90deg, #10b981, #34d058)";
-  if (score >= 60) return "linear-gradient(90deg, #6366f1, #8b5cf6)";
-  if (score >= 40) return "linear-gradient(90deg, #f59e0b, #fbbf24)";
-  return "linear-gradient(90deg, #ef4444, #f87171)";
-}
+// Use shared scoreBarGradient from lib/ui/colors
+const scoreBarColor = scoreBarGradient;

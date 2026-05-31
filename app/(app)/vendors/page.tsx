@@ -9,6 +9,7 @@ import { requireUser } from "@/lib/auth/session";
 import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service";
 import { demoVendors } from "@/lib/demo-data";
 import { VendorFilters } from "@/components/vendors/vendor-filters";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const PAGE_SIZE = 20;
 
@@ -81,15 +82,17 @@ export default async function VendorsPage({
       )}
 
       {vendors.length === 0 ? (
-        <Card className="flex flex-col items-center gap-3 px-5 py-16 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.04] text-[var(--color-ink-faint)]">
-            <Building2 className="h-7 w-7" />
-          </div>
-          <h2 className="font-[family-name:var(--font-display)] text-lg font-semibold">No vendors yet</h2>
-          <p className="max-w-sm text-sm text-[var(--color-ink-dim)]">Register your first vendor to start tracking documents, certifications, expiry and risk.</p>
-          <Link href="/vendors/new" className="mt-1">
-            <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add your first vendor</Button>
-          </Link>
+        <Card>
+          <EmptyState
+            icon={Building2}
+            title="No vendors yet"
+            description="Register your first vendor to start tracking documents, certifications, expiry and risk."
+            action={
+              <Link href="/vendors/new">
+                <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add your first vendor</Button>
+              </Link>
+            }
+          />
         </Card>
       ) : (
         <>

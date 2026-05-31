@@ -1,25 +1,43 @@
+import {
+  Building2, Pencil, Plus, Trash2, FileText, RefreshCw,
+  Mail, Key, UserX, UserCheck, StickyNote, ArrowRightLeft,
+  ClipboardCheck, Shield, Link2, Send,
+} from "lucide-react";
 import type { ActivityItem } from "@/lib/repositories/activity-repo";
+import type { LucideIcon } from "lucide-react";
 
-const ACTION_LABELS: Record<string, { icon: string; label: (m: any) => string }> = {
-  "organization.created":   { icon: "🏢", label: (m) => `Created workspace "${m?.name ?? ""}"` },
-  "organization.renamed":   { icon: "✏️",  label: (m) => `Renamed organization to "${m?.name ?? ""}"` },
-  "vendor.created":         { icon: "➕", label: (m) => `Added vendor "${m?.name ?? ""}"` },
-  "vendor.updated":         { icon: "✏️",  label: (m) => `Updated vendor "${m?.name ?? ""}"` },
-  "vendor.status_changed":  { icon: "🔄", label: (m) => `Changed vendor status: ${m?.from ?? ""} → ${m?.to ?? ""}` },
-  "vendor.notes_updated":   { icon: "📝", label: (_) => "Updated vendor notes" },
-  "vendor.deleted":         { icon: "🗑️",  label: (m) => `Deleted vendor "${m?.name ?? ""}"` },
-  "document.uploaded":      { icon: "📄", label: (m) => `Uploaded ${m?.documentType ?? "document"}` },
-  "document.deleted":       { icon: "🗑️",  label: (m) => `Deleted ${m?.documentType ?? "document"}` },
-  "team.member_invited":    { icon: "📧", label: (m) => `Invited ${m?.email ?? "member"} as ${m?.role ?? "member"}` },
-  "team.role_changed":      { icon: "🔑", label: (m) => `Changed role to ${m?.role ?? ""}` },
-  "team.member_deactivated":{ icon: "🚫", label: (_) => "Deactivated team member" },
-  "team.member_reactivated":{ icon: "✅", label: (_) => "Reactivated team member" },
+type ActionDef = { icon: LucideIcon; color: string; label: (m: any) => string };
+
+const ACTION_MAP: Record<string, ActionDef> = {
+  "organization.created":        { icon: Building2, color: "text-indigo-400", label: (m) => `Created workspace "${m?.name ?? ""}"` },
+  "organization.renamed":        { icon: Pencil,    color: "text-indigo-400", label: (m) => `Renamed organization to "${m?.name ?? ""}"` },
+  "vendor.created":              { icon: Plus,      color: "text-emerald-400", label: (m) => `Added vendor "${m?.name ?? ""}"` },
+  "vendor.updated":              { icon: Pencil,    color: "text-[var(--color-blue)]", label: (m) => `Updated vendor "${m?.name ?? ""}"` },
+  "vendor.status_changed":       { icon: ArrowRightLeft, color: "text-amber-400", label: (m) => `Vendor status: ${m?.from ?? ""} → ${m?.to ?? ""}` },
+  "vendor.notes_updated":        { icon: StickyNote, color: "text-[var(--color-ink-faint)]", label: () => "Updated vendor notes" },
+  "vendor.deleted":              { icon: Trash2,    color: "text-red-400", label: (m) => `Deleted vendor "${m?.name ?? ""}"` },
+  "document.uploaded":           { icon: FileText,  color: "text-[var(--color-blue)]", label: (m) => `Uploaded ${m?.documentType ?? "document"}` },
+  "document.deleted":            { icon: Trash2,    color: "text-red-400", label: (m) => `Deleted ${m?.documentType ?? "document"}` },
+  "document_request.created":    { icon: Send,      color: "text-amber-400", label: (m) => `Requested ${m?.documentType ?? "document"}` },
+  "document_request.status_changed": { icon: RefreshCw, color: "text-[var(--color-blue)]", label: (m) => `Request status: ${m?.to ?? ""}` },
+  "assessment.created":          { icon: ClipboardCheck, color: "text-[var(--color-blue)]", label: () => "Started security assessment" },
+  "assessment.completed":        { icon: Shield,    color: "text-emerald-400", label: (m) => `Assessment completed: ${m?.score ?? "—"}/100` },
+  "review.created":              { icon: ClipboardCheck, color: "text-indigo-400", label: (m) => `Logged ${m?.type ?? ""} review` },
+  "review.status_changed":       { icon: RefreshCw, color: "text-[var(--color-blue)]", label: (m) => `Review status: ${m?.status ?? ""}` },
+  "portal.link_generated":       { icon: Link2,     color: "text-[var(--color-blue)]", label: () => "Generated vendor portal link" },
+  "team.member_invited":         { icon: Mail,      color: "text-emerald-400", label: (m) => `Invited ${m?.email ?? "member"} as ${m?.role ?? "member"}` },
+  "team.role_changed":           { icon: Key,       color: "text-amber-400", label: (m) => `Changed role to ${m?.role ?? ""}` },
+  "team.member_deactivated":     { icon: UserX,     color: "text-red-400", label: () => "Deactivated team member" },
+  "team.member_reactivated":     { icon: UserCheck, color: "text-emerald-400", label: () => "Reactivated team member" },
+};
+
+const FALLBACK: ActionDef = {
+  icon: RefreshCw, color: "text-[var(--color-ink-faint)]", label: () => "Action logged",
 };
 
 function fmt(date: Date) {
   const d = new Date(date);
-  const now = Date.now();
-  const diff = now - d.getTime();
+  const diff = Date.now() - d.getTime();
   if (diff < 60_000) return "just now";
   if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
   if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
@@ -27,30 +45,36 @@ function fmt(date: Date) {
   return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 }
 
-export function ActivityFeed({ items, emptyMessage = "No activity yet." }: { items: ActivityItem[]; emptyMessage?: string }) {
+export function ActivityFeed({
+  items,
+  emptyMessage = "No activity yet.",
+}: {
+  items: ActivityItem[];
+  emptyMessage?: string;
+}) {
   if (items.length === 0) {
-    return <p className="text-sm text-[var(--color-ink-dim)] text-center py-6">{emptyMessage}</p>;
+    return <p className="py-6 text-center text-sm text-[var(--color-ink-dim)]">{emptyMessage}</p>;
   }
 
   return (
-    <ol className="space-y-0 relative">
+    <ol className="relative space-y-0">
       {items.map((item, i) => {
-        const def = ACTION_LABELS[item.action] ?? { icon: "◦", label: () => item.action };
+        const def = ACTION_MAP[item.action] ?? FALLBACK;
+        const Icon = def.icon;
         const label = def.label(item.metadata);
         const actor = item.actorName || item.actorEmail || "System";
 
         return (
-          <li key={item.id} className="flex gap-3 py-2.5 relative">
-            {/* Vertical line */}
+          <li key={item.id} className="relative flex gap-3 py-2.5">
             {i < items.length - 1 && (
-              <div className="absolute left-[17px] top-[32px] bottom-0 w-px bg-[var(--color-line)]" />
+              <div className="absolute left-[17px] top-[34px] bottom-0 w-px bg-[var(--color-line)]" />
             )}
-            <span className="h-9 w-9 shrink-0 grid place-items-center rounded-full bg-white/[0.04] border border-[var(--color-line)] text-base z-10">
-              {def.icon}
+            <span className={`z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] ${def.color}`}>
+              <Icon className="h-4 w-4" />
             </span>
             <div className="min-w-0 pt-1.5">
               <p className="text-sm text-[var(--color-ink)] leading-snug">{label}</p>
-              <p className="text-xs text-[var(--color-ink-faint)] mt-0.5">
+              <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">
                 {actor} · {fmt(item.createdAt)}
               </p>
             </div>
