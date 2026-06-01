@@ -49,6 +49,7 @@ export async function updateExtraction(
   values: {
     status?: "valid" | "expiring" | "expired" | "missing";
     documentType?: string;
+    category?: "security" | "privacy" | "legal" | "financial" | "quality" | "operational" | "other" | null;
     issuedOn?: string | null;
     expiresOn?: string | null;
     extracted?: Record<string, unknown> | null;

@@ -1,0 +1,2 @@
+CREATE TYPE "public"."document_category" AS ENUM('security', 'privacy', 'legal', 'financial', 'quality', 'operational', 'other');--> statement-breakpoint
+ALTER TABLE "vendor_documents" ADD COLUMN "category" "document_category";

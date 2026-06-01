@@ -42,6 +42,16 @@ export const documentStatus = pgEnum("document_status", [
   "missing",
 ]);
 
+export const documentCategory = pgEnum("document_category", [
+  "security",
+  "privacy",
+  "legal",
+  "financial",
+  "quality",
+  "operational",
+  "other",
+]);
+
 export const requestStatus = pgEnum("request_status", [
   "requested",
   "submitted",
@@ -176,8 +186,11 @@ export const vendorDocuments = pgTable(
     documentType: text("document_type").notNull(),
     storagePath: text("storage_path"),
     status: documentStatus("status").notNull().default("missing"),
+    /** AI-classified document category. */
+    category: documentCategory("category"),
     issuedOn: date("issued_on"),
     expiresOn: date("expires_on"),
+    /** Structured fields extracted by Lekha AI (v2: richer metadata). */
     extracted: jsonb("extracted"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

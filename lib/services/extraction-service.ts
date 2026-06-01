@@ -4,12 +4,11 @@ import * as documentRepo from "@/lib/repositories/document-repo";
 import { computeDocStatus, recomputeVendorScore } from "./vendor-service";
 
 /**
- * Extract structured fields from an uploaded document and update its row,
+ * Extract structured fields from an uploaded document (v2) and update its row,
  * then recompute the vendor's compliance score.
  *
- * Runs inline after upload today. This is the unit that lifts out into an
- * async worker/queue later (it already has no Next.js coupling beyond the
- * storage adapter). Extraction failures never block the upload.
+ * New in v2: category classification + richer metadata (certificationNumber,
+ * standardVersion, certificationScope, certificationBody, applicableRegions).
  */
 export async function extractDocument(params: {
   orgId: string;
@@ -27,9 +26,21 @@ export async function extractDocument(params: {
           issuedOn: ex.issuedOn,
           expiresOn: ex.expiresOn,
           status: computeDocStatus(ex.expiresOn),
-          extracted: { issuer: ex.issuer, summary: ex.summary, source: "gemini" },
+          // Store all rich metadata in the extracted JSONB
+          extracted: {
+            issuer:              ex.issuer,
+            summary:             ex.summary,
+            source:              "gemini-v2",
+            certificationNumber: ex.certificationNumber,
+            standardVersion:     ex.standardVersion,
+            certificationScope:  ex.certificationScope,
+            certificationBody:   ex.certificationBody,
+            applicableRegions:   ex.applicableRegions,
+          },
         };
+
         if (ex.documentType) patch.documentType = ex.documentType;
+        if (ex.category)     patch.category = ex.category;
 
         await documentRepo.updateExtraction(params.documentId, patch);
       }

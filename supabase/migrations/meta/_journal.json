@@ -29,6 +29,13 @@
       "when": 1780315135348,
       "tag": "0003_dazzling_jack_power",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1780315935363,
+      "tag": "0004_slimy_satana",
+      "breakpoints": true
     }
   ]
 }

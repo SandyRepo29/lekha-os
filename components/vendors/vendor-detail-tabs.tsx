@@ -9,6 +9,10 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { DocumentUpload } from "./document-upload";
 import { DocumentActions } from "./document-actions";
 import { DocumentEdit } from "./document-edit";
+import { DocumentCategoryBadge } from "./document-category-badge";
+import { DocumentMetadata } from "./document-metadata";
+import { DOCUMENT_CATEGORY_LABELS, DOCUMENT_CATEGORY_COLORS } from "@/lib/ai/gemini";
+import { cn } from "@/lib/utils";
 import { DocumentRequests } from "./document-requests";
 import { ComplianceChecklist } from "./compliance-checklist";
 import { ComplianceBreakdown } from "./compliance-breakdown";
@@ -115,7 +119,6 @@ export function VendorDetailTabs({
                 ) : (
                   <div className="divide-y divide-[var(--color-line)]">
                     {docs.map((d, i) => {
-                      const ex = (d.extracted ?? {}) as { issuer?: string | null; summary?: string | null };
                       return (
                         <div key={d.id} className="flex items-start gap-3 px-5 py-3.5">
                           <FileText className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
@@ -123,15 +126,13 @@ export function VendorDetailTabs({
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="text-sm font-semibold text-[var(--color-ink)]">{d.documentType}</span>
                               <StatusBadge value={d.status} />
+                              <DocumentCategoryBadge category={(d as any).category} />
                             </div>
-                            <div className="mt-0.5 text-xs text-[var(--color-ink-faint)]">
-                              {ex.issuer && `${ex.issuer} · `}
-                              {d.issuedOn && `Issued ${d.issuedOn} · `}
-                              {d.expiresOn ? `Expires ${d.expiresOn}` : "No expiry recorded"}
-                            </div>
-                            {ex.summary && (
-                              <p className="mt-1 text-xs italic text-[var(--color-ink-faint)]">{ex.summary}</p>
-                            )}
+                            <DocumentMetadata
+                              extracted={d.extracted as Record<string, unknown> | null}
+                              issuedOn={d.issuedOn}
+                              expiresOn={d.expiresOn}
+                            />
                           </div>
                           <div className="flex shrink-0 items-center gap-1.5">
                             {urls[i] && (
@@ -217,6 +218,10 @@ export function VendorDetailTabs({
                 </Card>
               </div>
               <div className="space-y-5">
+                {/* Document category breakdown */}
+                {docs.length > 0 && (
+                  <CategoryBreakdown docs={docs} />
+                )}
                 {/* Checklist */}
                 {checklist ? (
                   <Card className="p-5">
@@ -340,5 +345,41 @@ export function VendorDetailTabs({
         </>
       )}
     </Tabs>
+  );
+}
+
+// ─── Category breakdown helper ────────────────────────────────────────────────
+
+function CategoryBreakdown({ docs }: { docs: { category?: string | null }[] }) {
+  const counts: Record<string, number> = {};
+  docs.forEach((d) => {
+    const cat = (d as any).category ?? "other";
+    counts[cat] = (counts[cat] ?? 0) + 1;
+  });
+
+  const hasCategories = docs.some((d) => (d as any).category);
+  if (!hasCategories) return null;
+
+  return (
+    <Card className="p-4">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">
+        Documents by category
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {Object.entries(counts).map(([cat, n]) => {
+          const colors = DOCUMENT_CATEGORY_COLORS[cat] ?? DOCUMENT_CATEGORY_COLORS.other;
+          const label = DOCUMENT_CATEGORY_LABELS[cat] ?? "Other";
+          return (
+            <div key={cat} className={cn(
+              "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold",
+              colors.text, colors.bg, colors.border
+            )}>
+              {label}
+              <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px]">{n}</span>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
   );
 }
