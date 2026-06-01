@@ -1,0 +1,14 @@
+import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
+const sql = postgres(process.env.DATABASE_URL, { prepare: false, onnotice: () => {} });
+const orgs = await sql`select id, name from organizations order by created_at desc limit 3`;
+const [v] = await sql`select count(*)::int n from vendors`;
+const [d] = await sql`select count(*)::int n from vendor_documents`;
+const [a] = await sql`select count(*)::int n from assessments`;
+const [r] = await sql`select count(*)::int n from vendor_reviews`;
+const me = await sql`select id, email from profiles limit 5`;
+console.log("orgs:", JSON.stringify(orgs));
+console.log("vendors:", v.n, "| docs:", d.n, "| assessments:", a.n, "| reviews:", r.n);
+console.log("profiles:", JSON.stringify(me));
+await sql.end();
