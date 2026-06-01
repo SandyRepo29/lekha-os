@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Unit + Service + Component tests ─────────────────────────────────────
+  unit-tests:
+    name: Unit & Component Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run Vitest with coverage
+        run: npm run test:coverage
+        env:
+          # Pure function tests need NO env vars.
+          # Service tests mock all I/O, so DATABASE_URL is never touched.
+          NODE_ENV: test
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: unit
+          fail_ci_if_error: false
+
+  # ─── Build check ─────────────────────────────────────────────────────────
+  build:
+    name: Next.js Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          # Dummy values so the build doesn't fail on env guards
+          NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
+          DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+          NEXT_PUBLIC_SITE_URL: "https://placeholder.vercel.app"
+          GEMINI_API_KEY: ""
+          RESEND_API_KEY: ""
+          CRON_SECRET: "placeholder"
+
+  # ─── E2E tests (only on push to main, requires secrets) ──────────────────
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [unit-tests, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Seed E2E test data
+        run: node scripts/seed-e2e.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL:   ${{ secrets.TEST_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+          DATABASE_URL:               ${{ secrets.TEST_DATABASE_URL }}
+          E2E_USER_EMAIL:             ${{ secrets.E2E_USER_EMAIL }}
+          E2E_USER_PASSWORD:          ${{ secrets.E2E_USER_PASSWORD }}
+
+      - name: Run Playwright tests
+        run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_SUPABASE_URL:   ${{ secrets.TEST_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+          DATABASE_URL:               ${{ secrets.TEST_DATABASE_URL }}
+          E2E_USER_EMAIL:             ${{ secrets.E2E_USER_EMAIL }}
+          E2E_USER_PASSWORD:          ${{ secrets.E2E_USER_PASSWORD }}
+          NEXT_PUBLIC_SITE_URL:       "https://lekha-os.vercel.app"
+          GEMINI_API_KEY:             ""
+          RESEND_API_KEY:             ""
+          CRON_SECRET:                ${{ secrets.CRON_SECRET }}
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
