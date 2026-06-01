@@ -19,6 +19,7 @@ export type VendorRow = {
   score: number;
   docs: number;
   expiring: number;
+  expired: number;
   ownerName: string | null;
   ownerEmail: string | null;
   ownerDepartment: string | null;
@@ -57,6 +58,7 @@ function toRow(v: Vendor, counts?: DocCounts): VendorRow {
     score: v.complianceScore,
     docs: counts?.total ?? 0,
     expiring: counts?.expiring ?? 0,
+    expired: counts?.expired ?? 0,
     ownerName: v.ownerName,
     ownerEmail: v.ownerEmail,
     ownerDepartment: v.ownerDepartment,

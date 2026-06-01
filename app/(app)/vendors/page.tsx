@@ -11,16 +11,17 @@ import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service"
 import { demoVendors } from "@/lib/demo-data";
 import { VendorFilters } from "@/components/vendors/vendor-filters";
 import { EmptyState } from "@/components/ui/empty-state";
+import { parseNaturalLanguageSearch, isNaturalLanguageQuery, type NLSearchFilters } from "@/lib/services/nl-search-service";
 
 const PAGE_SIZE = 20;
 
 export default async function VendorsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; nlq?: string; q?: string }>;
 }) {
   const session = await requireUser();
-  const { page: pageStr } = await searchParams;
+  const { page: pageStr, nlq, q } = await searchParams;
   const page = Math.max(1, parseInt(pageStr ?? "1", 10));
 
   let vendors: VendorRow[];
@@ -32,7 +33,7 @@ export default async function VendorsPage({
   let totalDocs = 0;
 
   if (session.demo || !session.org) {
-    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring, ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment }));
+    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring, expired: v.expired, ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment }));
     total = vendors.length; totalPages = 1;
   } else {
     const result = await listVendorsPaged(session.org.id, page, PAGE_SIZE);
@@ -43,6 +44,17 @@ export default async function VendorsPage({
   highRisk = vendors.filter((v) => v.risk === "high" || v.risk === "critical").length;
   expiring = vendors.reduce((n, v) => n + v.expiring, 0);
   avgScore = vendors.length ? Math.round(vendors.reduce((n, v) => n + v.score, 0) / vendors.length) : 0;
+
+  // Parse natural language query if present
+  let nlFilters: NLSearchFilters | null = null;
+  const rawNlQuery = nlq ?? (q && isNaturalLanguageQuery(q) ? q : null);
+  if (rawNlQuery && !session.demo && session.org) {
+    try {
+      nlFilters = await parseNaturalLanguageSearch(rawNlQuery);
+    } catch {
+      // Fall back to simple text search
+    }
+  }
 
   return (
     <div className="space-y-5">
@@ -111,7 +123,7 @@ export default async function VendorsPage({
         </Card>
       ) : (
         <>
-          <Suspense><VendorFilters vendors={vendors} /></Suspense>
+          <Suspense><VendorFilters vendors={vendors} nlFilters={nlFilters} rawNlQuery={rawNlQuery ?? undefined} /></Suspense>
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3">

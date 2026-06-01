@@ -2,8 +2,19 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { useState } from "react";
+
+const NL_TRIGGERS = ["with","without","missing","expired","expiring","risk","score",
+  "below","above","less than","more than","show","find","vendors","who","high risk",
+  "low risk","critical","pending","inactive","insurance","certificate","dpa","iso",
+  "soc","owner","department","payment","saas","cloud","staffing","it services"];
+
+function isNL(q: string) {
+  if (q.length < 15) return false;
+  const lower = q.toLowerCase();
+  return NL_TRIGGERS.some((t) => lower.includes(t));
+}
 
 export function Topbar({ email, orgName, fullName }: {
   email: string; orgName: string; fullName?: string | null;
@@ -12,10 +23,17 @@ export function Topbar({ email, orgName, fullName }: {
   const [query, setQuery] = useState("");
   const display = fullName || email;
   const initial = (display?.[0] ?? "?").toUpperCase();
+  const looksNL = isNL(query);
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && query.trim()) {
-      router.push(`/vendors?q=${encodeURIComponent(query.trim())}`);
+      const q = query.trim();
+      // Route NL queries to ?nlq= param, simple text to ?q=
+      if (isNL(q)) {
+        router.push(`/vendors?nlq=${encodeURIComponent(q)}`);
+      } else {
+        router.push(`/vendors?q=${encodeURIComponent(q)}`);
+      }
       setQuery("");
     }
     if (e.key === "Escape") setQuery("");
@@ -23,17 +41,21 @@ export function Topbar({ email, orgName, fullName }: {
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-[var(--color-line)] bg-[var(--color-bg)]/80 px-5 backdrop-blur-md">
-      <div className="flex flex-1 max-w-sm items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm transition-colors focus-within:border-[var(--color-blue)]/60">
-        <Search className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
+      <div className={`flex flex-1 max-w-sm items-center gap-2 rounded-full border bg-white/[0.03] px-3 py-1.5 text-sm transition-colors focus-within:border-[var(--color-blue)]/60 ${looksNL ? "border-[var(--color-blue)]/40" : "border-[var(--color-line)]"}`}>
+        {looksNL
+          ? <Sparkles className="h-4 w-4 shrink-0 text-[var(--color-blue)] animate-pulse" />
+          : <Search className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />}
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Search vendors…"
+          placeholder="Search vendors or ask in plain English…"
           className="flex-1 bg-transparent text-sm text-[var(--color-ink)] outline-none placeholder:text-[var(--color-ink-faint)]"
         />
         {query && (
-          <span className="text-xs text-[var(--color-ink-faint)]">↵</span>
+          <span className={`text-xs ${looksNL ? "text-[var(--color-blue)]" : "text-[var(--color-ink-faint)]"}`}>
+            {looksNL ? "✦ AI" : "↵"}
+          </span>
         )}
       </div>
 

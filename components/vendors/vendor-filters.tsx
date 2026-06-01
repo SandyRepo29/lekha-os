@@ -1,46 +1,96 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, X, FileText, CalendarClock, ShieldAlert } from "lucide-react";
+import { Search, X, FileText, CalendarClock, ShieldAlert, Sparkles } from "lucide-react";
 import type { VendorRow } from "@/lib/services/vendor-service";
+import type { NLSearchFilters } from "@/lib/services/nl-search-service";
 import { Badge } from "@/components/ui/badge";
 import { riskTone, statusTone } from "@/lib/ui-maps";
 
 const ALL = "all";
 
-export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
+interface Props {
+  vendors: VendorRow[];
+  nlFilters?: NLSearchFilters | null;
+  rawNlQuery?: string;
+}
+
+export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") ?? "");
-  const [risk, setRisk] = useState(searchParams.get("risk") ?? ALL);
-  const [status, setStatus] = useState(ALL);
-  const [expiringOnly, setExpiringOnly] = useState(searchParams.get("expiring") === "1");
 
-  // Sync with URL changes (e.g. topbar search or dashboard card link)
+  // Initialise from URL params or NL-parsed filters
+  const [query,       setQuery]       = useState(nlFilters?.query ?? searchParams.get("q") ?? "");
+  const [risk,        setRisk]        = useState(nlFilters?.risk?.[0] ?? searchParams.get("risk") ?? ALL);
+  const [status,      setStatus]      = useState(nlFilters?.status?.[0] ?? ALL);
+  const [expiringOnly,setExpiringOnly]= useState(nlFilters?.hasExpiring ?? searchParams.get("expiring") === "1");
+  const [expiredOnly, setExpiredOnly] = useState(nlFilters?.hasExpired ?? false);
+  const [minScore,    setMinScore]    = useState<number | "">(nlFilters?.minScore ?? "");
+  const [maxScore,    setMaxScore]    = useState<number | "">(nlFilters?.maxScore ?? "");
+  const [ownerSearch, setOwnerSearch] = useState(nlFilters?.ownerSearch ?? "");
+  const [categoryFilter, setCategoryFilter] = useState(nlFilters?.category ?? "");
+  const [nlActive,    setNlActive]    = useState(!!nlFilters);
+
+  // Re-sync when URL search params change (dashboard card links)
   useEffect(() => {
-    setQuery(searchParams.get("q") ?? "");
-    setRisk(searchParams.get("risk") ?? ALL);
-    setExpiringOnly(searchParams.get("expiring") === "1");
-  }, [searchParams]);
+    if (!nlFilters) {
+      setQuery(searchParams.get("q") ?? "");
+      setRisk(searchParams.get("risk") ?? ALL);
+      setExpiringOnly(searchParams.get("expiring") === "1");
+    }
+  }, [searchParams, nlFilters]);
 
+  // Apply filtering
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
+    const catQ = categoryFilter.toLowerCase();
+    const ownerQ = ownerSearch.toLowerCase();
     return vendors.filter((v) => {
       if (q && !v.name.toLowerCase().includes(q) && !(v.category ?? "").toLowerCase().includes(q)) return false;
+      if (catQ && !(v.category ?? "").toLowerCase().includes(catQ)) return false;
       if (risk !== ALL && v.risk !== risk) return false;
       if (status !== ALL && v.status !== status) return false;
       if (expiringOnly && v.expiring === 0) return false;
+      if (expiredOnly && (v as any).expired === 0) return false;
+      if (minScore !== "" && v.score < minScore) return false;
+      if (maxScore !== "" && v.score > maxScore) return false;
+      if (ownerQ && !(v.ownerName ?? "").toLowerCase().includes(ownerQ) && !(v.ownerDepartment ?? "").toLowerCase().includes(ownerQ)) return false;
       return true;
     });
-  }, [vendors, query, risk, status, expiringOnly]);
+  }, [vendors, query, risk, status, expiringOnly, expiredOnly, minScore, maxScore, ownerSearch, categoryFilter]);
 
-  const active = query || risk !== ALL || status !== ALL || expiringOnly;
+  const active = nlActive || query || risk !== ALL || status !== ALL || expiringOnly || expiredOnly || minScore !== "" || maxScore !== "" || ownerSearch || categoryFilter;
 
-  function clear() { setQuery(""); setRisk(ALL); setStatus(ALL); setExpiringOnly(false); }
+  function clearAll() {
+    setQuery(""); setRisk(ALL); setStatus(ALL);
+    setExpiringOnly(false); setExpiredOnly(false);
+    setMinScore(""); setMaxScore(""); setOwnerSearch(""); setCategoryFilter("");
+    setNlActive(false);
+    // Clear NL param from URL
+    if (rawNlQuery) router.push("/vendors");
+  }
 
   return (
     <>
+      {/* AI Natural Language Result Banner */}
+      {nlActive && nlFilters && (
+        <div className="flex items-center gap-2 rounded-xl border border-[var(--color-blue)]/30 bg-[var(--color-blue)]/[0.06] px-4 py-2.5">
+          <Sparkles className="h-4 w-4 shrink-0 text-[var(--color-blue)]" />
+          <div className="flex-1 min-w-0">
+            <span className="text-xs font-semibold text-[var(--color-blue)]">AI Search: </span>
+            <span className="text-xs text-[var(--color-ink-dim)]">{nlFilters.summary}</span>
+            {rawNlQuery && (
+              <span className="ml-2 text-xs text-[var(--color-ink-faint)]">· "{rawNlQuery}"</span>
+            )}
+          </div>
+          <button onClick={clearAll} className="shrink-0 text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Filter bar */}
       <div className="flex flex-wrap items-center gap-2">
         <div className="flex flex-1 min-w-[200px] items-center gap-2 rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-3 py-2">
@@ -54,8 +104,9 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
           {query && <button onClick={() => setQuery("")} className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]"><X className="h-3.5 w-3.5" /></button>}
         </div>
 
-        <FilterChip label="Risk" value={risk} options={[ALL, "low", "medium", "high", "critical"]} labels={{ all: "All risks" }} onChange={setRisk} />
-        <FilterChip label="Status" value={status} options={[ALL, "active", "pending", "inactive"]} labels={{ all: "All status" }} onChange={setStatus} />
+        <FilterChip label="Risk"   value={risk}   options={[ALL,"low","medium","high","critical"]} labels={{ all: "All risks" }}   onChange={setRisk} />
+        <FilterChip label="Status" value={status} options={[ALL,"active","pending","inactive"]}   labels={{ all: "All status" }} onChange={setStatus} />
+
         <button
           onClick={() => setExpiringOnly(!expiringOnly)}
           className={`h-[38px] rounded-xl border px-3 text-sm transition-colors ${expiringOnly ? "border-amber-500/60 bg-amber-500/10 text-amber-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
@@ -63,8 +114,15 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
           ⏰ Expiring
         </button>
 
+        <button
+          onClick={() => setExpiredOnly(!expiredOnly)}
+          className={`h-[38px] rounded-xl border px-3 text-sm transition-colors ${expiredOnly ? "border-red-500/60 bg-red-500/10 text-red-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
+        >
+          ⛔ Expired
+        </button>
+
         {active && (
-          <button onClick={clear} className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
+          <button onClick={clearAll} className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
             <X className="h-3.5 w-3.5" /> Clear
           </button>
         )}
@@ -85,7 +143,7 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
 
         {filtered.length === 0 ? (
           <div className="px-5 py-12 text-center text-sm text-[var(--color-ink-dim)]">
-            No vendors match your filters.
+            {nlActive ? "No vendors match the AI-interpreted filters. Try refining your search." : "No vendors match your filters."}
           </div>
         ) : (
           <div className="divide-y divide-[var(--color-line)]">
@@ -98,15 +156,18 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
                   </div>
                   <div className="min-w-0">
                     <div className="truncate text-sm font-semibold text-[var(--color-ink)]">{v.name}</div>
-                    <div className="text-xs text-[var(--color-ink-faint)]">{v.category ?? "—"}</div>
+                    <div className="text-xs text-[var(--color-ink-faint)]">
+                      {v.category ?? "—"}
+                      {v.ownerName && <span className="ml-2 text-[var(--color-ink-faint)]/70">· {v.ownerName}</span>}
+                    </div>
                   </div>
                 </div>
-                <div><Badge tone={statusTone(v.status)}>{v.status}</Badge></div>
-                <div><Badge tone={riskTone(v.risk)}>{v.risk}</Badge></div>
+                <div><span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusToneStyles(v.status)}`}>{v.status}</span></div>
+                <div><span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${riskToneStyles(v.risk)}`}>{v.risk}</span></div>
                 <div className="flex items-center gap-3 text-sm text-[var(--color-ink-dim)]">
                   <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" />{v.docs}</span>
                   {v.expiring > 0 && <span className="flex items-center gap-1 text-amber-400"><CalendarClock className="h-3.5 w-3.5" />{v.expiring}</span>}
-                  {(v.risk === "high" || v.risk === "critical") && v.docs === 0 && <span className="text-red-400"><ShieldAlert className="h-3.5 w-3.5" /></span>}
+                  {(v as any).expired > 0 && <span className="flex items-center gap-1 text-red-400"><ShieldAlert className="h-3.5 w-3.5" />{(v as any).expired}</span>}
                 </div>
                 <div className="flex items-center justify-end gap-3">
                   <div className="hidden flex-1 md:block">
@@ -126,14 +187,11 @@ export function VendorFilters({ vendors }: { vendors: VendorRow[] }) {
 }
 
 function FilterChip({ label, value, options, labels, onChange }: {
-  label: string; value: string; options: string[];
-  labels?: Record<string, string>; onChange: (v: string) => void;
+  label: string; value: string; options: string[]; labels?: Record<string,string>; onChange: (v: string) => void;
 }) {
   const isActive = value !== ALL;
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+    <select value={value} onChange={(e) => onChange(e.target.value)}
       className={`h-[38px] appearance-none rounded-xl border px-3 pr-7 text-sm cursor-pointer bg-[#0d0f1a] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30 ${isActive ? "border-[var(--color-blue)]/60 text-[var(--color-ink)]" : "border-[var(--color-line-strong)] text-[var(--color-ink-dim)]"}`}
     >
       {options.map((o) => (
@@ -145,15 +203,23 @@ function FilterChip({ label, value, options, labels, onChange }: {
   );
 }
 
-function scoreBarColor(score: number) {
-  if (score >= 80) return "linear-gradient(90deg, #10b981, #34d058)";
-  if (score >= 60) return "linear-gradient(90deg, #6366f1, #8b5cf6)";
-  if (score >= 40) return "linear-gradient(90deg, #f59e0b, #fbbf24)";
-  return "linear-gradient(90deg, #ef4444, #f87171)";
+function scoreBarColor(s: number) {
+  if (s >= 80) return "linear-gradient(90deg,#10b981,#34d058)";
+  if (s >= 60) return "linear-gradient(90deg,#6366f1,#8b5cf6)";
+  if (s >= 40) return "linear-gradient(90deg,#f59e0b,#fbbf24)";
+  return "linear-gradient(90deg,#ef4444,#f87171)";
 }
-function scoreTextColor(score: number) {
-  if (score >= 80) return "text-emerald-400";
-  if (score >= 60) return "text-[var(--color-blue)]";
-  if (score >= 40) return "text-amber-400";
+function scoreTextColor(s: number) {
+  if (s >= 80) return "text-emerald-400";
+  if (s >= 60) return "text-[var(--color-blue)]";
+  if (s >= 40) return "text-amber-400";
   return "text-red-400";
+}
+function statusToneStyles(s: string) {
+  const m: Record<string,string> = { active: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", pending: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10", inactive: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]" };
+  return m[s] ?? m.inactive;
+}
+function riskToneStyles(r: string) {
+  const m: Record<string,string> = { low: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", medium: "text-amber-400 border-amber-500/30 bg-amber-500/10", high: "text-red-400 border-red-500/30 bg-red-500/10", critical: "text-red-300 border-red-500/40 bg-red-500/15" };
+  return m[r] ?? m.low;
 }

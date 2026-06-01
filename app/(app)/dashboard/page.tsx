@@ -44,7 +44,7 @@ export default async function DashboardPage() {
       id: String(i), name: v.name, category: v.category,
       status: v.status, risk: v.risk, score: v.score,
       docs: v.docs, expiring: v.expiring,
-      ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment,
+      ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment, expired: v.expired,
     }));
   } else {
     [metrics, recent] = await Promise.all([
