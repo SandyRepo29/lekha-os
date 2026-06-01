@@ -231,3 +231,126 @@ Write in professional but plain English. Be specific about which control areas a
 
   return text;
 }
+
+/* ============================================================
+   5. Executive Summary Report (per-vendor, board-grade narrative)
+   ============================================================ */
+
+export type ExecutiveSummaryReport = {
+  executiveOverview: string;
+  complianceAnalysis: string;
+  riskAssessment: string;
+  governanceStatus: string;
+  keyRecommendations: string[];
+  conclusion: string;
+};
+
+export async function generateExecutiveSummaryReport(
+  orgId: string,
+  vendorId: string
+): Promise<ExecutiveSummaryReport> {
+  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+
+  const vendor  = await vendorRepo.findById(orgId, vendorId);
+  if (!vendor) throw new Error("Vendor not found.");
+  const docs    = await documentRepo.listByVendor(orgId, vendorId);
+
+  const valid    = docs.filter((d) => d.status === "valid");
+  const expiring = docs.filter((d) => d.status === "expiring");
+  const expired  = docs.filter((d) => d.status === "expired");
+  const docList  = docs.map((d) => `- ${d.documentType} [${d.status}${d.expiresOn ? ", expires " + d.expiresOn : ""}]`).join("\n") || "None";
+
+  const prompt = `You are a senior compliance analyst writing a formal Executive Compliance Summary for a vendor. This document will be presented to a board or senior management team.
+
+VENDOR DATA:
+Name: ${vendor.name}
+Category: ${vendor.category ?? "Unknown"}
+Risk Level: ${vendor.riskLevel} (${vendor.complianceScore}/100 compliance score)
+Internal Owner: ${vendor.ownerName ?? "Not assigned"} (${vendor.ownerDepartment ?? "—"})
+Status: ${vendor.status}
+
+DOCUMENTS ON FILE (${docs.length} total):
+${docList}
+
+SUMMARY:
+- Valid documents: ${valid.length}
+- Expiring within 30 days: ${expiring.length}
+- Expired: ${expired.length}
+
+AI SUMMARY ON FILE: ${vendor.aiSummary ?? "Not generated"}
+
+Write a professional executive compliance summary with these EXACT sections. Be specific, factual, and use board-appropriate language. Do not invent data.
+
+Return valid JSON with these exact keys:
+{
+  "executiveOverview": "3-4 sentence opening paragraph summarising who this vendor is, their role in the organisation, and their overall compliance standing",
+  "complianceAnalysis": "2-3 sentences analysing the compliance score, what is driving it, and what the maximum achievable score is",
+  "riskAssessment": "2-3 sentences on the current risk level, the primary risk factors, and the potential business impact",
+  "governanceStatus": "2-3 sentences on the state of documentation, certifications held, and any expiry concerns",
+  "keyRecommendations": ["recommendation 1", "recommendation 2", "recommendation 3"],
+  "conclusion": "1-2 sentence closing summary suitable for a board pack"
+}`;
+
+  const res = await gemini().models.generateContent({
+    model: MODEL,
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          executiveOverview:   { type: Type.STRING },
+          complianceAnalysis:  { type: Type.STRING },
+          riskAssessment:      { type: Type.STRING },
+          governanceStatus:    { type: Type.STRING },
+          keyRecommendations:  { type: Type.ARRAY, items: { type: Type.STRING } },
+          conclusion:          { type: Type.STRING },
+        },
+        required: ["executiveOverview", "complianceAnalysis", "riskAssessment", "governanceStatus", "keyRecommendations", "conclusion"],
+      },
+      temperature: TEMP,
+    },
+  });
+
+  return JSON.parse(res.text ?? "{}") as ExecutiveSummaryReport;
+}
+
+/* ============================================================
+   6. AI Weekly Executive Brief
+   ============================================================ */
+
+export type WeeklyBriefData = {
+  orgName: string;
+  totalVendors: number;
+  avgScore: number;
+  highRiskCount: number;
+  expiringSoon: { vendorName: string; documentType: string; daysLeft: number }[];
+  recentlyUpdated: number;
+};
+
+export async function generateWeeklyBrief(data: WeeklyBriefData): Promise<string> {
+  if (!isGeminiConfigured()) return "";
+
+  const expiryLines = data.expiringSoon
+    .slice(0, 5)
+    .map((e) => `  - ${e.vendorName}: ${e.documentType} (${e.daysLeft <= 0 ? "EXPIRED" : `${e.daysLeft} days`})`)
+    .join("\n");
+
+  const prompt = `You are a compliance advisor writing a brief weekly update email for the compliance team at ${data.orgName}.
+
+This week's data:
+- Total vendors tracked: ${data.totalVendors}
+- Average compliance score: ${data.avgScore}/100
+- High or critical risk vendors: ${data.highRiskCount}
+- Documents expiring soon:
+${expiryLines || "  None this week"}
+
+Write a 3-4 sentence executive brief that:
+1. Opens with the overall posture (good/mixed/concerning) for the week
+2. Calls out the most urgent items by name if any exist
+3. Ends with a single clear call to action for the team
+
+Write in a direct, professional tone suitable for a compliance manager. No bullet points — flowing prose only. Keep it under 100 words.`;
+
+  return generateText(prompt, 150);
+}

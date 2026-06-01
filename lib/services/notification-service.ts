@@ -4,6 +4,7 @@ import { vendors, vendorDocuments, memberships, profiles } from "@/lib/db/schema
 import * as notifRepo from "@/lib/repositories/notification-repo";
 import { getResend, FROM, isResendConfigured } from "@/lib/email/resend";
 import { expiryAlertHtml, weeklyDigestHtml } from "@/lib/email/templates";
+import { generateWeeklyBrief } from "./ai-insights-service";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lekha-os.vercel.app";
 
@@ -160,20 +161,35 @@ export async function runWeeklyDigest(): Promise<{ sent: number; skipped: number
     const recipients = await buildRecipients(orgId, prefs);
     if (!recipients.length) { skipped++; continue; }
 
+    const expiryItems = expiringDocs.map((d) => ({
+      vendorName: d.vendorName,
+      documentType: d.documentType,
+      expiresOn: d.expiresOn ?? "—",
+      daysLeft: d.expiresOn ? Math.round((new Date(d.expiresOn).getTime() - Date.now()) / 86_400_000) : 0,
+    }));
+
+    // Generate AI brief — graceful fallback if Gemini unavailable
+    let aiBrief = "";
+    try {
+      aiBrief = await generateWeeklyBrief({
+        orgName: orgId,
+        totalVendors: allVendors.length,
+        avgScore,
+        highRiskCount: highRisk.length,
+        expiringSoon: expiryItems,
+        recentlyUpdated: 0,
+      });
+    } catch { /* non-blocking — email still sends without AI brief */ }
+
     const { subject, html } = weeklyDigestHtml({
       orgName: orgId,
-      expiringSoon: expiringDocs.map((d) => ({
-        vendorName: d.vendorName,
-        documentType: d.documentType,
-        expiresOn: d.expiresOn ?? "—",
-        daysLeft: d.expiresOn ? Math.round((new Date(d.expiresOn).getTime() - Date.now()) / 86_400_000) : 0,
-      })),
+      expiringSoon: expiryItems,
       highRisk: highRisk.map((v) => ({ vendorName: v.name, riskLevel: v.riskLevel, score: v.complianceScore })),
       missingRequired: [],
       totalVendors: allVendors.length,
       avgScore,
       dashboardUrl: `${SITE_URL}/dashboard`,
-    });
+    }, aiBrief);
 
     try {
       const resend = getResend();

@@ -77,7 +77,7 @@ export type WeeklyDigestData = {
   dashboardUrl: string;
 };
 
-export function weeklyDigestHtml(d: WeeklyDigestData): { subject: string; html: string } {
+export function weeklyDigestHtml(d: WeeklyDigestData, aiBrief?: string): { subject: string; html: string } {
   const subject = `📊 Weekly compliance digest — ${d.orgName}`;
   const hasAlerts = d.expiringSoon.length > 0 || d.highRisk.length > 0 || d.missingRequired.length > 0;
 
@@ -89,9 +89,17 @@ export function weeklyDigestHtml(d: WeeklyDigestData): { subject: string; html: 
     </tr>
   `).join("");
 
+  const aiBriefBlock = aiBrief ? `
+    <div style="background:rgba(99,102,241,0.08);border-left:3px solid #6366f1;border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:28px">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">✦ Lekha AI — Executive Brief</div>
+      <p style="margin:0;font-size:14px;color:#e8eaf2;line-height:1.6">${aiBrief}</p>
+    </div>
+  ` : "";
+
   const body = `
     <h2 style="margin:0 0 4px;font-size:22px;font-weight:700">Weekly Compliance Digest</h2>
-    <p style="color:#9aa0b5;margin:0 0 28px;font-size:15px">${d.orgName} · ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</p>
+    <p style="color:#9aa0b5;margin:0 0 20px;font-size:15px">${d.orgName} · ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</p>
+    ${aiBriefBlock}
 
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px">
       ${[

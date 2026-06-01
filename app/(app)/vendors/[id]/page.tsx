@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Pencil, Package, Clock, User, Link2 } from "lucide-react";
+import { ArrowLeft, Pencil, Package, Clock, User, FileBarChart } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -128,6 +128,15 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </Button>
               </Link>
+              <a
+                href={`/vendors/${vendor.id}/executive-report`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: "primary", size: "sm" }), "gap-1.5")}
+                title="AI-generated executive summary — board-ready"
+              >
+                <FileBarChart className="h-3.5 w-3.5" /> Executive Report
+              </a>
               <a
                 href={`/vendors/${vendor.id}/audit-package`}
                 target="_blank"
