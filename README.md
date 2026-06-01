@@ -127,6 +127,47 @@ npm run dev
 | `npm run db:studio` | Drizzle Studio GUI |
 | `node scripts/apply-sql.mjs <file>` | Apply raw SQL to DB |
 | `node scripts/seed-templates.mjs` | Seed default vendor type templates |
+| `npm run test` | Run all 201 Vitest tests |
+| `npm run test:watch` | Vitest watch mode |
+| `npm run test:coverage` | Vitest with coverage report (`coverage/`) |
+| `npm run test:e2e` | Playwright E2E (auto-starts dev server) |
+| `npm run test:all` | Vitest then Playwright |
+
+---
+
+## Testing
+
+Two independent layers. Unit/service/component tests need **no env vars** (all I/O is mocked); E2E tests need Supabase + E2E user credentials.
+
+| Layer | Runner | Config | Location |
+|---|---|---|---|
+| Unit / Service / Component | Vitest 4 + RTL 16 | `vitest.config.ts` | colocated `*.test.ts(x)` next to source |
+| End-to-end | Playwright 1.60 | `playwright.config.ts` | `tests/e2e/*.spec.ts` |
+
+**Status: 13 Vitest files, 201 tests — all passing (~2s).**
+
+### Vitest layers
+- **Pure functions (~100%):** `scoring.ts`, `risk-engine.ts`, `colors.ts`, `email/templates.ts`, `assessment-questions.ts`
+- **Service layer (mocked repos):** `vendor-service.ts`, `document-service.ts`, `notification-service.ts`
+- **Components (RTL, jsdom):** `Tabs`, `StatusBadge`, `ActivityFeed`, `ComplianceBreakdown`, `VendorStatus`
+
+Config notes (`vitest.config.ts`): `node` env globally, `*.test.tsx` → jsdom via `environmentMatchGlobs`; `next/navigation`, `next/cache`, `next/server` aliased to hand-written mocks in `tests/setup/__mocks__/`; coverage is **allowlisted** to tested source files only (thresholds: lines/statements 65, functions 58, branches 55).
+
+### Service-test mocking idiom
+Tests mock **repositories**, not `lib/db`. The transaction mock must call through, or the transaction body is silently skipped:
+```ts
+vi.mock("@/lib/repositories/vendor-repo", () => ({ findById: vi.fn(), insertVendor: vi.fn() }));
+vi.mock("@/lib/db", () => ({ db: { transaction: vi.fn((fn) => fn({})) } })); // ⚠ must call through
+```
+Fixtures: `makeVendor(overrides)` / `makeDocument(overrides)` in `tests/fixtures/`.
+
+### E2E (Playwright)
+- 4 specs / 17 tests: `auth`, `vendor-crud`, `settings`, `portal`.
+- Authenticated tests **auto-skip** unless `E2E_USER_EMAIL` is set (`test.skip(...)`); unauthenticated tests (landing render, redirect-to-login) always run.
+- To activate: set `E2E_USER_EMAIL` / `E2E_USER_PASSWORD` in `.env.local`, run `node scripts/seed-e2e.mjs`, then `npm run test:e2e`.
+
+### CI (`.github/workflows/ci.yml`)
+Node 20, 3 jobs: **unit-tests** (coverage → Codecov) and **build** run on every PR + push; **e2e-tests** runs only on push to `main` (needs `TEST_SUPABASE_*` / `E2E_USER_*` / `CRON_SECRET` secrets).
 
 ---
 

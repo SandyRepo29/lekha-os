@@ -33,38 +33,41 @@ test.describe("Vendor CRUD", () => {
 
   test("full vendor CRUD flow", async ({ page }) => {
     const vendorName = `E2E Vendor ${Date.now()}`;
+    const detailUrl = /\/vendors\/[0-9a-f-]{36}$/;
 
-    // 1. Navigate to add vendor
+    // 1. Create a vendor — the app redirects to the vendor LIST (not detail)
     await page.goto("/vendors/new");
     await page.getByLabel(/vendor name/i).fill(vendorName);
     await page.getByRole("button", { name: /add vendor/i }).click();
 
-    // 2. Redirected to vendor detail
-    await page.waitForURL(/\/vendors\/.+/, { timeout: 10_000 });
-    await expect(page.getByText(vendorName)).toBeVisible();
+    // 2. Land on the list; the new vendor is present
+    await page.waitForURL(/\/vendors(\?.*)?$/, { timeout: 10_000 });
+    const listLink = page.getByRole("link", { name: new RegExp(vendorName) });
+    await expect(listLink).toBeVisible();
 
-    // 3. Score ring is visible
-    await expect(page.locator("svg").first()).toBeVisible();
+    // 3. Open the vendor detail page
+    await listLink.click();
+    await page.waitForURL(detailUrl, { timeout: 10_000 });
+    await expect(page.getByText(vendorName).first()).toBeVisible();
 
     // 4. Documents tab is the default
     await expect(page.getByRole("tab", { name: /documents/i })).toBeVisible();
 
     // 5. Edit vendor
-    await page.getByRole("link", { name: /edit/i }).click();
-    await page.waitForURL(/\/vendors\/.+\/edit/);
+    await page.getByRole("link", { name: /edit/i }).first().click();
+    await page.waitForURL(/\/vendors\/[0-9a-f-]{36}\/edit/);
     await expect(page.getByLabel(/vendor name/i)).toHaveValue(vendorName);
 
-    // 6. Go back
-    await page.getByRole("link", { name: /back/i }).click();
-    await page.waitForURL(/\/vendors\/.+/);
+    // 6. Return to detail
+    await page.goBack();
+    await page.waitForURL(detailUrl);
 
-    // 7. Delete vendor
-    await page.getByRole("button", { name: /delete/i }).click();
-    // Confirm browser dialog
-    page.on("dialog", (d) => d.accept());
-    await page.waitForURL("/vendors", { timeout: 10_000 });
+    // 7. Delete vendor (native confirm — accept it)
+    page.once("dialog", (d) => d.accept());
+    await page.getByRole("button", { name: /^delete$/i }).click();
 
-    // 8. Vendor no longer in list
-    await expect(page.getByText(vendorName)).not.toBeVisible();
+    // 8. Redirected to the list; vendor no longer present
+    await page.waitForURL(/\/vendors(\?.*)?$/, { timeout: 10_000 });
+    await expect(page.getByRole("link", { name: new RegExp(vendorName) })).toHaveCount(0);
   });
 });

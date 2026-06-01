@@ -7,16 +7,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    // Per-file environment overrides use the // @vitest-environment jsdom
+    // docblock at the top of each *.test.tsx file (Vitest 4 approach).
     // Exclude Playwright E2E specs — they use @playwright/test, not vitest
     exclude: [
       "tests/e2e/**",
       "tests/e2e/helpers/**",
       "**/node_modules/**",
       "**/.next/**",
-    ],
-    environmentMatchGlobs: [
-      ["**/*.test.tsx", "jsdom"],
-      ["components/**/*.test.ts", "jsdom"],
     ],
     setupFiles: ["./tests/setup/vitest.setup.ts"],
     coverage: {

@@ -10,21 +10,21 @@ test.describe("Settings", () => {
 
   test("settings page loads with profile and org sections", async ({ page }) => {
     await page.goto("/settings");
-    await expect(page.getByRole("heading", { name: /settings/i })).toBeVisible();
-    await expect(page.getByText(/profile/i)).toBeVisible();
-    await expect(page.getByText(/organization/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Settings", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Your profile" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Organization", exact: true })).toBeVisible();
   });
 
   test("team page loads with invite form", async ({ page }) => {
     await page.goto("/settings/team");
-    await expect(page.getByRole("heading", { name: /team/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Team", exact: true })).toBeVisible();
   });
 
   test("notifications page loads with preference toggles", async ({ page }) => {
     await page.goto("/settings/notifications");
-    await expect(page.getByRole("heading", { name: /notifications/i })).toBeVisible();
-    await expect(page.getByText(/expiry alerts/i)).toBeVisible();
-    await expect(page.getByText(/weekly/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Notifications", exact: true })).toBeVisible();
+    await expect(page.getByText(/expiry alerts/i).first()).toBeVisible();
+    await expect(page.getByText(/weekly/i).first()).toBeVisible();
   });
 
   test("sign out button is present on settings page", async ({ page }) => {

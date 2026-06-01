@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Plus, Building2, Download, FileText } from "lucide-react";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { requireUser } from "@/lib/auth/session";
 import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service";
 import { demoVendors } from "@/lib/demo-data";
@@ -54,14 +55,28 @@ export default async function VendorsPage({
         <div className="flex items-center gap-2">
           {!session.demo && session.org && (
             <>
-              <a href="/reports/compliance" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm"><FileText className="h-4 w-4" /> PDF Report</Button>
+              <a
+                href="/reports/compliance"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+              >
+                <FileText className="h-4 w-4" /> PDF Report
               </a>
-              <a href="/reports/expiry" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm"><FileText className="h-4 w-4" /> Expiry PDF</Button>
+              <a
+                href="/reports/expiry"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+              >
+                <FileText className="h-4 w-4" /> Expiry PDF
               </a>
-              <a href="/vendors/export" download="vendors.csv">
-                <Button variant="outline" size="sm"><Download className="h-4 w-4" /> CSV</Button>
+              <a
+                href="/vendors/export"
+                download="vendors.csv"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+              >
+                <Download className="h-4 w-4" /> CSV
               </a>
             </>
           )}

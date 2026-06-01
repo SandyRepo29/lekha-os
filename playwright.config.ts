@@ -16,9 +16,12 @@ export default defineConfig({
     video: "retain-on-failure",
   },
   projects: [
+    // Signs in once and saves the session for authenticated specs.
+    { name: "setup", testMatch: /auth\.setup\.ts/ },
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      dependencies: ["setup"],
     },
   ],
   webServer: {

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Pencil, Package, Clock, User, Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ScoreRing } from "@/components/app-shell/score-ring";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { DeleteVendor } from "@/components/vendors/delete-vendor";
@@ -127,10 +128,13 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </Button>
               </Link>
-              <a href={`/vendors/${vendor.id}/audit-package`} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">
-                  <Package className="h-3.5 w-3.5" /> Audit PDF
-                </Button>
+              <a
+                href={`/vendors/${vendor.id}/audit-package`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+              >
+                <Package className="h-3.5 w-3.5" /> Audit PDF
               </a>
               <DeleteVendor vendorId={vendor.id} vendorName={vendor.name} />
             </div>

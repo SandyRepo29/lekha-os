@@ -44,7 +44,9 @@ export async function updateSession(request: NextRequest) {
     path.startsWith("/dashboard") ||
     path.startsWith("/vendors") ||
     path.startsWith("/onboarding") ||
-    path.startsWith("/settings");
+    path.startsWith("/settings") ||
+    path.startsWith("/reports") ||
+    path.startsWith("/portal");
   const isAuthRoute = path === "/login" || path === "/signup";
 
   if (!user && isAppRoute) {

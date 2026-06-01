@@ -23,10 +23,12 @@ export function Tabs({ tabs, defaultTab, children, className }: TabsProps) {
   return (
     <div className={cn("space-y-5", className)}>
       {/* Tab bar */}
-      <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div role="tablist" className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            role="tab"
+            aria-selected={active === tab.id}
             onClick={() => setActive(tab.id)}
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-all",

@@ -5,7 +5,17 @@
       "Bash(npm *)",
       "Bash(npx *)",
       "Bash(node *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(cat .github/workflows/ci.yml)",
+      "Bash(ls scripts/seed-e2e.mjs)",
+      "Bash(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" && echo \"E2E_USER_EMAIL set:    $\\(grep -q '^E2E_USER_EMAIL=' .env.local && echo yes || echo NO\\)\"; echo \"E2E_USER_PASSWORD set: $\\(grep -q '^E2E_USER_PASSWORD=' .env.local && echo yes || echo NO\\)\"; echo \"playwright installed:  $\\(ls node_modules/.bin/playwright >/dev/null 2>&1 && echo yes || echo NO\\)\"; echo \"chromium browser:      $\\(ls ~/AppData/Local/ms-playwright 2>/dev/null | grep -i chromium | head -1 || echo 'not found — needs install'\\)\")",
+      "Bash(grep -q ^__TRACKED_VAR__= .env.local)",
+      "Bash(E2E_USER_EMAIL=e2e@lekhaos.test E2E_USER_PASSWORD='E2ETest123!' npx playwright test --reporter=list)",
+      "Bash(E2E_USER_EMAIL=e2e@lekhaos.test E2E_USER_PASSWORD='E2ETest123!' npx playwright test --project=setup --reporter=list)",
+      "Bash(awk '/^- main:/,0' \"test-results/settings-Settings-settings-c179a-th-profile-and-org-sections-chromium/error-context.md\")",
+      "Bash(sed -n '15,35p' \"test-results/settings-Settings-team-page-loads-with-invite-form-chromium/error-context.md\")",
+      "Bash(sed -n '15,35p' \"test-results/settings-Settings-notifica-d05dc-ads-with-preference-toggles-chromium/error-context.md\")",
+      "Bash(awk '/# Page snapshot/,/^```$/{print}' \"test-results/vendor-crud-Vendor-CRUD-full-vendor-CRUD-flow-chromium/error-context.md\")"
     ]
   }
 }
