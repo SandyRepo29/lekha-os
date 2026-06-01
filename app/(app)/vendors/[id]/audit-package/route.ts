@@ -1,8 +1,6 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { renderToBuffer } = require("@react-pdf/renderer");
 import React from "react";
 import { requireUser } from "@/lib/auth/session";
 import { getVendor } from "@/lib/services/vendor-service";
@@ -45,7 +43,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       riskScore: { level: riskScore.level, score: riskScore.score },
     });
 
-    const buffer: Buffer = await renderToBuffer(doc);
+    const { renderToBuffer } = await import("@react-pdf/renderer");
+    const buffer = await renderToBuffer(doc as any);
     const safeName = vendor.name.replace(/[^a-zA-Z0-9]/g, "-").slice(0, 40);
     const date = new Date().toISOString().slice(0, 10);
 
@@ -56,7 +55,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       },
     });
   } catch (err) {
-    console.error("[/audit-package] PDF generation failed:", err);
+    console.error("[/audit-package]", err);
     return NextResponse.json(
       { error: "PDF generation failed", detail: err instanceof Error ? err.message : String(err) },
       { status: 500 }

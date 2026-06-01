@@ -1,8 +1,6 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { renderToBuffer } = require("@react-pdf/renderer");
 import React from "react";
 import { requireUser } from "@/lib/auth/session";
 import { listVendors, getMetrics } from "@/lib/services/vendor-service";
@@ -22,7 +20,11 @@ export async function GET() {
 
     const generatedBy = profile?.fullName || session.email;
     const doc = React.createElement(VendorComplianceReport, { orgName: session.orgName, generatedBy, vendors, metrics });
-    const buffer: Buffer = await renderToBuffer(doc);
+
+    // Dynamic import keeps renderToBuffer in the same ESM module graph as
+    // the template files (which import Document/Page/Text via ESM).
+    const { renderToBuffer } = await import("@react-pdf/renderer");
+    const buffer = await renderToBuffer(doc as any);
     const date = new Date().toISOString().slice(0, 10);
 
     return new NextResponse(new Uint8Array(buffer), {
@@ -32,7 +34,7 @@ export async function GET() {
       },
     });
   } catch (err) {
-    console.error("[/reports/compliance] PDF generation failed:", err);
+    console.error("[/reports/compliance]", err);
     return NextResponse.json(
       { error: "PDF generation failed", detail: err instanceof Error ? err.message : String(err) },
       { status: 500 }
