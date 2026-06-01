@@ -22,6 +22,13 @@
       "when": 1780197828856,
       "tag": "0002_violet_santa_claus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780315135348,
+      "tag": "0003_dazzling_jack_power",
+      "breakpoints": true
     }
   ]
 }

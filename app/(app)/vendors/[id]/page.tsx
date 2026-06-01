@@ -151,7 +151,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
 
       {/* Tabbed content */}
       <VendorDetailTabs
-        vendor={vendor}
+        vendor={vendor as any}
         docs={docs}
         urls={urls}
         checklist={checklist}

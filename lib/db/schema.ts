@@ -136,6 +136,15 @@ export const vendors = pgTable(
     /** AI-generated executive summary. */
     aiSummary: text("ai_summary"),
     aiSummaryAt: timestamp("ai_summary_at", { withTimezone: true }),
+    /** AI-generated score explanation (plain-English why). */
+    aiScoreExplanation: text("ai_score_explanation"),
+    aiScoreExplainedAt: timestamp("ai_score_explained_at", { withTimezone: true }),
+    /** AI-generated risk narrative. */
+    aiRiskExplanation: text("ai_risk_explanation"),
+    aiRiskExplainedAt: timestamp("ai_risk_explained_at", { withTimezone: true }),
+    /** AI-generated recommended actions (JSON array). */
+    aiRecommendedActions: jsonb("ai_recommended_actions"),
+    aiActionsGeneratedAt: timestamp("ai_actions_generated_at", { withTimezone: true }),
     /** Internal owner — the person accountable for this vendor. */
     ownerName: text("owner_name"),
     ownerEmail: text("owner_email"),
@@ -262,6 +271,9 @@ export const assessments = pgTable(
     status: text("status").notNull().default("draft"),
     conductedBy: uuid("conducted_by").references(() => profiles.id),
     completedAt: timestamp("completed_at", { withTimezone: true }),
+    /** AI-generated narrative summary of the assessment results. */
+    aiSummary: text("ai_summary"),
+    aiSummaryAt: timestamp("ai_summary_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },

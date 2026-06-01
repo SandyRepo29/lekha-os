@@ -14,6 +14,10 @@ import { ComplianceChecklist } from "./compliance-checklist";
 import { ComplianceBreakdown } from "./compliance-breakdown";
 import { AiSummary } from "./ai-summary";
 import { RiskPanel } from "./risk-panel";
+import { AiInsightPanel } from "@/components/ai/ai-insight-panel";
+import { AiRecommendedActions } from "@/components/ai/ai-recommended-actions";
+import { refreshScoreExplanation, refreshRiskExplanation } from "@/lib/vendors/ai-insights-actions";
+import type { RecommendedAction } from "@/lib/services/ai-insights-service";
 import { VendorNotes } from "./vendor-notes";
 import { VendorReviews } from "./vendor-reviews";
 import { PortalLink } from "./portal-link";
@@ -28,7 +32,14 @@ import { docStatusTone } from "@/lib/ui-maps";
 import { Badge } from "@/components/ui/badge";
 
 type Props = {
-  vendor: Vendor;
+  vendor: Omit<Vendor, "aiRecommendedActions"> & {
+    aiScoreExplanation?: string | null;
+    aiScoreExplainedAt?: Date | null;
+    aiRiskExplanation?: string | null;
+    aiRiskExplainedAt?: Date | null;
+    aiRecommendedActions?: RecommendedAction[] | null;
+    aiActionsGeneratedAt?: Date | null;
+  };
   docs: VendorDocument[];
   urls: (string | null)[];
   checklist: ChecklistResult | null;
@@ -167,7 +178,7 @@ export function VendorDetailTabs({
           {activeTab === "compliance" && (
             <div className="grid gap-5 lg:grid-cols-2">
               <div className="space-y-5">
-                {/* AI Summary */}
+                {/* AI Vendor Summary */}
                 <Card className="p-5">
                   <AiSummary
                     vendorId={vendor.id}
@@ -176,12 +187,32 @@ export function VendorDetailTabs({
                     aiEnabled={aiEnabled}
                   />
                 </Card>
-                {/* Score breakdown */}
-                <Card className="p-5">
+                {/* Score breakdown + AI Explain Score */}
+                <Card className="p-5 space-y-5">
                   <ComplianceBreakdown
                     risk={vendor.riskLevel}
                     currentScore={vendor.complianceScore}
                     docs={docs}
+                  />
+                  <div className="border-t border-[var(--color-line)] pt-4">
+                    <AiInsightPanel
+                      title="Explain this score"
+                      content={vendor.aiScoreExplanation ?? null}
+                      generatedAt={vendor.aiScoreExplainedAt ?? null}
+                      isStale={!!vendor.aiScoreExplainedAt && new Date(vendor.updatedAt) > new Date(vendor.aiScoreExplainedAt)}
+                      aiEnabled={aiEnabled}
+                      onGenerate={() => refreshScoreExplanation(vendor.id)}
+                    />
+                  </div>
+                </Card>
+                {/* AI Recommended Actions */}
+                <Card className="p-5">
+                  <AiRecommendedActions
+                    vendorId={vendor.id}
+                    actions={(vendor.aiRecommendedActions as RecommendedAction[] | null) ?? null}
+                    generatedAt={vendor.aiActionsGeneratedAt ?? null}
+                    isStale={!!vendor.aiActionsGeneratedAt && new Date(vendor.updatedAt) > new Date(vendor.aiActionsGeneratedAt)}
+                    aiEnabled={aiEnabled}
                   />
                 </Card>
               </div>
@@ -214,8 +245,18 @@ export function VendorDetailTabs({
           {activeTab === "risk" && (
             <div className="grid gap-5 lg:grid-cols-2">
               <div className="space-y-5">
-                <Card className="p-5">
+                <Card className="p-5 space-y-5">
                   <RiskPanel risk={riskScore} />
+                  <div className="border-t border-[var(--color-line)] pt-4">
+                    <AiInsightPanel
+                      title="Explain this risk"
+                      content={vendor.aiRiskExplanation ?? null}
+                      generatedAt={vendor.aiRiskExplainedAt ?? null}
+                      isStale={!!vendor.aiRiskExplainedAt && new Date(vendor.updatedAt) > new Date(vendor.aiRiskExplainedAt)}
+                      aiEnabled={aiEnabled}
+                      onGenerate={() => refreshRiskExplanation(vendor.id, riskScore.factors)}
+                    />
+                  </div>
                 </Card>
               </div>
               <div className="space-y-5">

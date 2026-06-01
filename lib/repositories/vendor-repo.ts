@@ -54,6 +54,9 @@ export async function updateVendor(
     riskLevel?: Risk; status?: "active" | "pending" | "inactive";
     notes?: string | null; ownerName?: string | null; ownerEmail?: string | null;
     ownerDepartment?: string | null; aiSummary?: string | null; aiSummaryAt?: Date | null;
+    aiScoreExplanation?: string | null; aiScoreExplainedAt?: Date | null;
+    aiRiskExplanation?: string | null; aiRiskExplainedAt?: Date | null;
+    aiRecommendedActions?: unknown; aiActionsGeneratedAt?: Date | null;
     checklistScore?: number; vendorTypeId?: string | null;
   },
   exec: Executor = db

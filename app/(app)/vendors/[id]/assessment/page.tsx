@@ -8,7 +8,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getVendor } from "@/lib/services/vendor-service";
 import { startAssessment, submitAssessment } from "@/lib/assessments/actions";
 import { listAssessments, getAssessment } from "@/lib/services/assessment-service";
+import { isGeminiConfigured } from "@/lib/ai/gemini";
 import { AssessmentForm } from "@/components/assessments/assessment-form";
+import { AiAssessmentSummary } from "@/components/assessments/ai-assessment-summary";
 
 export default async function AssessmentPage({
   params, searchParams,
@@ -24,7 +26,6 @@ export default async function AssessmentPage({
   const vendor = await getVendor(session.org.id, id);
   if (!vendor) notFound();
 
-  // If no assessmentId, create one and redirect
   if (!assessmentId) {
     const result = await startAssessment(id);
     if (result.error) return <div className="p-8 text-red-400">{result.error}</div>;
@@ -35,6 +36,7 @@ export default async function AssessmentPage({
   if (!assessment) notFound();
 
   const past = await listAssessments(session.org.id, id);
+  const scoreColor = (assessment.assessment.score ?? 0) >= 70 ? "#10b981" : (assessment.assessment.score ?? 0) >= 50 ? "#f59e0b" : "#ef4444";
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -55,7 +57,8 @@ export default async function AssessmentPage({
             {past.filter((a) => a.status === "completed").map((a) => (
               <div key={a.id} className="flex items-center justify-between text-sm">
                 <span className="text-[var(--color-ink-dim)]">{a.title}</span>
-                <span className="font-bold font-[family-name:var(--font-display)]" style={{ color: (a.score ?? 0) >= 70 ? "#10b981" : (a.score ?? 0) >= 50 ? "#f59e0b" : "#ef4444" }}>
+                <span className="font-bold font-[family-name:var(--font-display)]"
+                  style={{ color: (a.score ?? 0) >= 70 ? "#10b981" : (a.score ?? 0) >= 50 ? "#f59e0b" : "#ef4444" }}>
                   {a.score ?? "—"}/100
                 </span>
               </div>
@@ -65,15 +68,29 @@ export default async function AssessmentPage({
       )}
 
       {assessment.assessment.status === "completed" ? (
-        <Card className="p-6 text-center">
-          <div className="text-5xl font-bold font-[family-name:var(--font-display)] mb-2" style={{ color: (assessment.assessment.score ?? 0) >= 70 ? "#10b981" : "#f59e0b" }}>
-            {assessment.assessment.score}/100
-          </div>
-          <div className="text-[var(--color-ink-dim)]">Assessment completed</div>
-          <Link href={`/vendors/${id}/assessment`} className="mt-4 inline-block text-sm text-[var(--color-blue)] hover:underline">
-            Start a new assessment
-          </Link>
-        </Card>
+        <div className="space-y-5">
+          {/* Score card */}
+          <Card className="p-6 text-center">
+            <div className="text-5xl font-bold font-[family-name:var(--font-display)] mb-2" style={{ color: scoreColor }}>
+              {assessment.assessment.score}/100
+            </div>
+            <div className="text-[var(--color-ink-dim)] mb-4">Assessment completed</div>
+            <Link href={`/vendors/${id}/assessment`} className="text-sm text-[var(--color-blue)] hover:underline">
+              Start a new assessment
+            </Link>
+          </Card>
+
+          {/* AI Assessment Summary */}
+          <Card className="p-5">
+            <AiAssessmentSummary
+              assessmentId={assessmentId}
+              vendorId={id}
+              summary={(assessment.assessment as any).aiSummary ?? null}
+              summaryAt={(assessment.assessment as any).aiSummaryAt ?? null}
+              aiEnabled={isGeminiConfigured()}
+            />
+          </Card>
+        </div>
       ) : (
         <AssessmentForm
           assessmentId={assessmentId}
