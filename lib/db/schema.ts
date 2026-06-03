@@ -415,6 +415,325 @@ export const auditLogs = pgTable(
 );
 
 /* ============================================================
+   Compliance Module — Enums
+   ============================================================ */
+
+export const frameworkStatus = pgEnum("framework_status", [
+  "not_started",
+  "in_progress",
+  "ready",
+  "certified",
+  "expired",
+]);
+
+export const controlStatus = pgEnum("control_status", [
+  "implemented",
+  "partial",
+  "not_implemented",
+  "not_applicable",
+]);
+
+export const controlPriority = pgEnum("control_priority", [
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+export const evidenceStatus = pgEnum("evidence_status", [
+  "draft",
+  "pending_review",
+  "approved",
+  "expired",
+  "archived",
+]);
+
+export const evidenceSource = pgEnum("evidence_source", [
+  "vendor_document",
+  "vendor_assessment",
+  "vendor_review",
+  "manual",
+  "policy",
+]);
+
+export const policyStatus = pgEnum("policy_status", [
+  "draft",
+  "review",
+  "approved",
+  "archived",
+  "expired",
+]);
+
+/* ============================================================
+   Compliance Module — Tables
+   ============================================================ */
+
+/** A compliance framework the org is working towards (ISO 27001, SOC 2, etc.) */
+export const frameworks = pgTable(
+  "frameworks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description"),
+    version: text("version"),
+    owner: text("owner"),
+    status: frameworkStatus("status").notNull().default("not_started"),
+    reviewDate: date("review_date"),
+    /** AI-generated narrative summary of framework readiness. */
+    aiSummary: text("ai_summary"),
+    aiSummaryAt: timestamp("ai_summary_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("frameworks_org_idx").on(t.organizationId)]
+);
+
+/** Individual control within a framework (e.g. ISO 27001 A.5.1). */
+export const controls = pgTable(
+  "controls",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id")
+      .notNull()
+      .references(() => frameworks.id, { onDelete: "cascade" }),
+    /** Human-readable reference code, e.g. "A.5.1", "CC1.2", "Req 1". */
+    controlRef: text("control_ref").notNull(),
+    name: text("name").notNull(),
+    description: text("description"),
+    category: text("category"),
+    owner: text("owner"),
+    status: controlStatus("status").notNull().default("not_implemented"),
+    priority: controlPriority("priority").notNull().default("medium"),
+    reviewDate: date("review_date"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("controls_org_idx").on(t.organizationId),
+    index("controls_framework_idx").on(t.frameworkId),
+  ]
+);
+
+/** A piece of evidence that satisfies one or more controls. */
+export const evidence = pgTable(
+  "evidence",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    source: evidenceSource("source").notNull().default("manual"),
+    /**
+     * Polymorphic FK — points to vendor_documents.id, assessments.id, or
+     * vendor_reviews.id depending on the source value.
+     */
+    sourceEntityId: uuid("source_entity_id"),
+    owner: text("owner"),
+    expiresOn: date("expires_on"),
+    status: evidenceStatus("status").notNull().default("draft"),
+    storagePath: text("storage_path"),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("evidence_org_idx").on(t.organizationId),
+    index("evidence_source_idx").on(t.organizationId, t.source),
+    index("evidence_expiry_idx").on(t.organizationId, t.expiresOn),
+  ]
+);
+
+/** Many-to-many: which evidence satisfies which control. */
+export const controlEvidenceMappings = pgTable(
+  "control_evidence_mappings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    controlId: uuid("control_id")
+      .notNull()
+      .references(() => controls.id, { onDelete: "cascade" }),
+    evidenceId: uuid("evidence_id")
+      .notNull()
+      .references(() => evidence.id, { onDelete: "cascade" }),
+    /** "manual" or "ai_suggested" */
+    mappingType: text("mapping_type").notNull().default("manual"),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("control_evidence_uniq").on(t.controlId, t.evidenceId),
+    index("cem_control_idx").on(t.controlId),
+    index("cem_evidence_idx").on(t.evidenceId),
+  ]
+);
+
+/** Organisational compliance policies with version history. */
+export const policies = pgTable(
+  "policies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    policyType: text("policy_type"),
+    version: text("version").notNull().default("1.0"),
+    owner: text("owner"),
+    status: policyStatus("status").notNull().default("draft"),
+    reviewDate: date("review_date"),
+    approvalDate: date("approval_date"),
+    approver: text("approver"),
+    storagePath: text("storage_path"),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("policies_org_idx").on(t.organizationId)]
+);
+
+/** Immutable version snapshot for a policy document. */
+export const policyVersions = pgTable(
+  "policy_versions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    policyId: uuid("policy_id")
+      .notNull()
+      .references(() => policies.id, { onDelete: "cascade" }),
+    version: text("version").notNull(),
+    storagePath: text("storage_path"),
+    notes: text("notes"),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("policy_versions_policy_idx").on(t.policyId)]
+);
+
+/**
+ * Materialised readiness score per framework.
+ * Recomputed by readiness-service whenever controls/evidence/policies change.
+ */
+export const readinessScores = pgTable(
+  "readiness_scores",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id")
+      .notNull()
+      .references(() => frameworks.id, { onDelete: "cascade" }),
+    /** 0–100 weighted overall readiness. */
+    overallScore: integer("overall_score").notNull().default(0),
+    /** % of controls that are Implemented or Partial. */
+    controlCoverage: integer("control_coverage").notNull().default(0),
+    /** % of controls that have at least one approved evidence item. */
+    evidenceCoverage: integer("evidence_coverage").notNull().default(0),
+    /** % of applicable policy types that have an approved policy. */
+    policyCoverage: integer("policy_coverage").notNull().default(0),
+    computedAt: timestamp("computed_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("readiness_org_framework_uniq").on(t.organizationId, t.frameworkId),
+    index("readiness_org_idx").on(t.organizationId),
+  ]
+);
+
+/** Compliance gaps detected by gap-service (rule-based + AI). */
+export const gapAnalysis = pgTable(
+  "gap_analysis",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id")
+      .notNull()
+      .references(() => frameworks.id, { onDelete: "cascade" }),
+    /**
+     * missing_control | missing_evidence | expired_evidence |
+     * expired_policy | unmapped_control | incomplete_coverage
+     */
+    gapType: text("gap_type").notNull(),
+    controlId: uuid("control_id").references(() => controls.id, { onDelete: "set null" }),
+    evidenceId: uuid("evidence_id").references(() => evidence.id, { onDelete: "set null" }),
+    description: text("description").notNull(),
+    /** low | medium | high | critical */
+    severity: text("severity").notNull().default("medium"),
+    isAiDetected: boolean("is_ai_detected").notNull().default(false),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("gaps_org_framework_idx").on(t.organizationId, t.frameworkId),
+    index("gaps_control_idx").on(t.controlId),
+  ]
+);
+
+/** Generated compliance reports (PDF metadata + AI narrative payload). */
+export const complianceReports = pgTable(
+  "compliance_reports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    /**
+     * framework_readiness | control_coverage | evidence_coverage |
+     * gap_analysis | policy_status | executive_summary
+     */
+    reportType: text("report_type").notNull(),
+    frameworkId: uuid("framework_id").references(() => frameworks.id, { onDelete: "set null" }),
+    generatedBy: uuid("generated_by").references(() => profiles.id),
+    storagePath: text("storage_path"),
+    aiContent: jsonb("ai_content"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("compliance_reports_org_idx").on(t.organizationId)]
+);
+
+/**
+ * Cached AI insights for the compliance module.
+ * Unique per (org, insightType, targetId) — same stale-data pattern as vendor AI.
+ */
+export const aiComplianceInsights = pgTable(
+  "ai_compliance_insights",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    /**
+     * framework_summary | control_explanation | gap_summary |
+     * readiness_explanation | evidence_suggestion | executive_summary
+     */
+    insightType: text("insight_type").notNull(),
+    /** frameworkId, controlId, or orgId depending on insightType. */
+    targetId: uuid("target_id").notNull(),
+    content: text("content").notNull(),
+    generatedAt: timestamp("generated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("ai_insights_type_target_uniq").on(
+      t.organizationId,
+      t.insightType,
+      t.targetId
+    ),
+    index("ai_insights_org_idx").on(t.organizationId),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -432,3 +751,15 @@ export type VendorPortalToken = typeof vendorPortalTokens.$inferSelect;
 export type NotificationPreferences = typeof notificationPreferences.$inferSelect;
 export type NotificationHistory = typeof notificationHistory.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
+
+// Compliance Module
+export type Framework = typeof frameworks.$inferSelect;
+export type Control = typeof controls.$inferSelect;
+export type Evidence = typeof evidence.$inferSelect;
+export type ControlEvidenceMapping = typeof controlEvidenceMappings.$inferSelect;
+export type Policy = typeof policies.$inferSelect;
+export type PolicyVersion = typeof policyVersions.$inferSelect;
+export type ReadinessScore = typeof readinessScores.$inferSelect;
+export type GapAnalysisRow = typeof gapAnalysis.$inferSelect;
+export type ComplianceReport = typeof complianceReports.$inferSelect;
+export type AiComplianceInsight = typeof aiComplianceInsights.$inferSelect;

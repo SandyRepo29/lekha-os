@@ -27,7 +27,7 @@ type Item = {
 const items: Item[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/vendors", label: "Vendors", icon: Building2 },
-  { href: "/compliance", label: "Compliance", icon: ShieldCheck, soon: true },
+  { href: "/compliance", label: "Compliance", icon: ShieldCheck },
   { href: "/audits", label: "Audits", icon: ClipboardCheck, soon: true },
   { href: "/risks", label: "Risks", icon: AlertTriangle, soon: true },
   { href: "/privacy", label: "DPDP Privacy", icon: Lock, soon: true },

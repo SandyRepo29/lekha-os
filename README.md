@@ -8,6 +8,18 @@ Live: https://lekha-os.vercel.app · GitHub: github.com/SandyRepo29/lekha-os
 
 ---
 
+## Modules
+
+| Module | Status |
+|---|---|
+| **Vendor Governance** | ✅ Launch-ready |
+| **Compliance Management** | 🚧 In progress (Phases 1–3 of 8 complete) |
+| DPDP Privacy + Audit | Roadmap |
+| Risk Management | Roadmap |
+| Board Governance | Roadmap |
+
+---
+
 ## Quick Start
 
 ```bash
@@ -36,6 +48,7 @@ In Supabase → Auth → Email → turn **OFF** "Confirm email" for sandbox.
 | `npm run build` | Production build |
 | `npm run test` | 201 Vitest unit/component tests |
 | `npm run test:e2e` | Playwright E2E |
+| `npm run db:generate` | Generate Drizzle migration from schema changes |
 | `npm run db:migrate` | Apply DB migrations |
 | `npm run db:studio` | Drizzle Studio |
 | `git push origin main` | Auto-deploy to Vercel |
@@ -43,6 +56,10 @@ In Supabase → Auth → Email → turn **OFF** "Confirm email" for sandbox.
 ## Stack
 
 Next.js 16 · TypeScript · Supabase (Mumbai) · Drizzle · Gemini AI · Resend · react-pdf · Tailwind v4 · Vitest · Playwright
+
+## Database
+
+**25 tables** — 15 Vendor Governance + 10 Compliance Module (migration 0005 applied).
 
 ---
 

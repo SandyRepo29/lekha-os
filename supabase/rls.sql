@@ -143,3 +143,103 @@ create policy "members read audit" on public.audit_logs
 drop policy if exists "members append audit" on public.audit_logs;
 create policy "members append audit" on public.audit_logs
   for insert with check (public.is_org_member(organization_id));
+
+-- ============================================================
+-- Compliance Module RLS
+-- ============================================================
+
+-- frameworks --------------------------------------------------
+alter table public.frameworks enable row level security;
+
+drop policy if exists "members read frameworks" on public.frameworks;
+create policy "members read frameworks" on public.frameworks
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write frameworks" on public.frameworks;
+create policy "members write frameworks" on public.frameworks
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- controls ----------------------------------------------------
+alter table public.controls enable row level security;
+
+drop policy if exists "members read controls" on public.controls;
+create policy "members read controls" on public.controls
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write controls" on public.controls;
+create policy "members write controls" on public.controls
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- evidence ----------------------------------------------------
+alter table public.evidence enable row level security;
+
+drop policy if exists "members read evidence" on public.evidence;
+create policy "members read evidence" on public.evidence
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write evidence" on public.evidence;
+create policy "members write evidence" on public.evidence
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- policies ----------------------------------------------------
+alter table public.policies enable row level security;
+
+drop policy if exists "members read policies" on public.policies;
+create policy "members read policies" on public.policies
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write policies" on public.policies;
+create policy "members write policies" on public.policies
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- readiness_scores (written by service, readable by all members) --
+alter table public.readiness_scores enable row level security;
+
+drop policy if exists "members read readiness" on public.readiness_scores;
+create policy "members read readiness" on public.readiness_scores
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write readiness" on public.readiness_scores;
+create policy "members write readiness" on public.readiness_scores
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- gap_analysis ------------------------------------------------
+alter table public.gap_analysis enable row level security;
+
+drop policy if exists "members read gaps" on public.gap_analysis;
+create policy "members read gaps" on public.gap_analysis
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write gaps" on public.gap_analysis;
+create policy "members write gaps" on public.gap_analysis
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- compliance_reports ------------------------------------------
+alter table public.compliance_reports enable row level security;
+
+drop policy if exists "members read compliance reports" on public.compliance_reports;
+create policy "members read compliance reports" on public.compliance_reports
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write compliance reports" on public.compliance_reports;
+create policy "members write compliance reports" on public.compliance_reports
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- ai_compliance_insights --------------------------------------
+alter table public.ai_compliance_insights enable row level security;
+
+drop policy if exists "members read ai compliance insights" on public.ai_compliance_insights;
+create policy "members read ai compliance insights" on public.ai_compliance_insights
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write ai compliance insights" on public.ai_compliance_insights;
+create policy "members write ai compliance insights" on public.ai_compliance_insights
+  for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));

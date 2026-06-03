@@ -36,6 +36,13 @@
       "when": 1780315935363,
       "tag": "0004_slimy_satana",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780459519098,
+      "tag": "0005_goofy_luke_cage",
+      "breakpoints": true
     }
   ]
 }

@@ -69,7 +69,9 @@ React UI  →  Server Action (transport, thin)  →  Service (business logic, pu
 
 ## 4. Database Schema
 
-**15 tables** across 4 migration files (0000 + 0001 + 0002 + 0003 — all applied).
+**25 tables** across 6 migration files (0000–0005 — all applied).
+
+### Vendor Governance tables (15)
 
 | Table | Purpose |
 |---|---|
@@ -93,7 +95,24 @@ React UI  →  Server Action (transport, thin)  →  Service (business logic, pu
 
 **document_category enum:** security, privacy, legal, financial, quality, operational, other
 
-**RLS:** All tables enabled. Helpers: `is_org_member()`, `has_org_role()` — applied via `supabase/rls.sql`.
+### Compliance Module tables (10) — migration 0005
+
+| Table | Purpose |
+|---|---|
+| `frameworks` | Compliance frameworks per org (ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA, custom) |
+| `controls` | Individual controls within a framework (ref, name, category, status, priority) |
+| `evidence` | Evidence items — from vendor docs/assessments/reviews or manual uploads |
+| `control_evidence_mappings` | Many-to-many: evidence satisfies control (manual or ai_suggested) |
+| `policies` | Org compliance policies with version tracking |
+| `policy_versions` | Immutable version snapshots per policy |
+| `readiness_scores` | Materialised per-framework score (overall, control, evidence, policy coverage) — upserted on change |
+| `gap_analysis` | Detected compliance gaps (rule-based + AI) with severity and resolved_at |
+| `compliance_reports` | Generated PDF reports + AI narrative payload |
+| `ai_compliance_insights` | Cached Gemini outputs (framework summary, gap analysis, readiness explanation, etc.) |
+
+**Compliance enums:** `framework_status` (not_started/in_progress/ready/certified/expired) · `control_status` (implemented/partial/not_implemented/not_applicable) · `control_priority` (low/medium/high/critical) · `evidence_status` (draft/pending_review/approved/expired/archived) · `evidence_source` (vendor_document/vendor_assessment/vendor_review/manual/policy) · `policy_status` (draft/review/approved/archived/expired)
+
+**RLS:** All 25 tables enabled. Helpers: `is_org_member()`, `has_org_role()` — applied via `supabase/rls.sql`.
 
 **First-time setup on a fresh DB:**
 ```bash
@@ -107,6 +126,37 @@ node scripts/seed-demo.mjs      # optional: 15 realistic Indian vendors + full d
 ---
 
 ## 5. Features Implemented
+
+### Module 2 — Compliance Management (In Progress — Phases 1–3 complete)
+
+#### Database & Infrastructure ✅
+- **10 new tables** live in Supabase: frameworks, controls, evidence, control_evidence_mappings, policies, policy_versions, readiness_scores, gap_analysis, compliance_reports, ai_compliance_insights
+- **6 new enums** applied via migration `0005_goofy_luke_cage.sql`
+- **RLS** — read/write policies on all 8 org-scoped compliance tables
+- Sidebar `/compliance` link activated (was `soon: true`)
+
+#### Repository + Service Layer ✅
+- **6 repositories:** framework-repo, control-repo, evidence-repo, policy-repo, gap-repo, readiness-repo
+- **Pure `computeReadiness()` function** — `lib/services/compliance/readiness-service.ts` (no DB, client-safe). Weighted: control 50% + evidence 30% + policy 20%
+- **framework-service** — CRUD + `recomputeReadiness()` after every change
+- **control-service** — CRUD + inline status updates, triggers readiness recompute
+- **evidence-service** — CRUD + map/unmap to controls + **`autoImportFromVendors()`** bridge (idempotent import of vendor docs/assessments/reviews as evidence items)
+- **policy-service** — CRUD + version history
+- **gap-service** — `runGapAnalysis()` detects 5 gap types: not_implemented, unmapped_control, missing_evidence, expired_evidence, expired_policy
+
+#### UI — Compliance Module Pages ✅
+- `/compliance` — Dashboard: overall readiness ring, framework cards with coverage bars, gap summary
+- `/compliance/frameworks` — Framework list table (readiness %, controls, evidence %, gaps)
+- `/compliance/frameworks/new` — Add framework (5-card built-in picker: ISO 27001 / SOC 2 / DPDP / PCI DSS / HIPAA + custom)
+- `/compliance/frameworks/[id]` — Framework detail: readiness ring + 3 coverage bars, full controls table with inline status toggle, open gaps list, run gap analysis, add/delete controls
+- `/compliance/frameworks/[id]/controls/new` — Add control form
+- Sub-nav with 7 tabs (Dashboard + Frameworks active; Evidence, Policies, Gaps, Reports, AI Officer dimmed)
+
+#### All 8 Phases Complete ✅
+- **Phase 7** — Compliance PDF/CSV reports
+- **Phase 8** — Framework seed data (ISO 27001 / SOC 2 / DPDP controls pre-loaded)
+
+---
 
 ### Module 1 — Vendor Governance (Launch-Ready)
 
@@ -211,28 +261,44 @@ Every action logged: organization.created/renamed, vendor.created/updated/delete
 ## 6. App Routes
 
 ```
-/                               Marketing landing page
-/login                          Sign in
-/signup                         Sign up
-/onboarding                     First workspace creation
-/dashboard                      Main dashboard
-/vendors                        Vendor list (?q=, ?nlq=, ?risk=, ?expiring=1, ?page=N)
-/vendors/new                    Add vendor
-/vendors/[id]                   Vendor detail (4-tab layout)
-/vendors/[id]/edit              Edit vendor
-/vendors/[id]/assessment        Security assessment questionnaire
-/vendors/[id]/audit-package     Audit package PDF download
-/vendors/[id]/executive-report  AI executive summary PDF download
-/vendors/export                 CSV download
-/reports/compliance             Compliance PDF
-/reports/expiry                 Expiry PDF
-/settings                       Profile + org settings
-/settings/team                  Team management
-/settings/notifications         Email notification preferences
-/portal/[token]                 Vendor self-service portal (no auth)
-/api/cron/expiry                Daily expiry alert cron (CRON_SECRET secured)
-/api/cron/digest                Weekly digest cron (CRON_SECRET secured)
-/auth/callback                  Supabase auth redirect
+/                                            Marketing landing page
+/login                                       Sign in
+/signup                                      Sign up
+/onboarding                                  First workspace creation
+/dashboard                                   Main dashboard
+
+--- Vendor Governance ---
+/vendors                                     Vendor list (?q=, ?nlq=, ?risk=, ?expiring=1, ?page=N)
+/vendors/new                                 Add vendor
+/vendors/[id]                                Vendor detail (4-tab layout)
+/vendors/[id]/edit                           Edit vendor
+/vendors/[id]/assessment                     Security assessment questionnaire
+/vendors/[id]/audit-package                  Audit package PDF download
+/vendors/[id]/executive-report               AI executive summary PDF download
+/vendors/export                              CSV download
+/reports/compliance                          Compliance PDF
+/reports/expiry                              Expiry PDF
+
+--- Compliance Module (Phases 1–3 live) ---
+/compliance                                  Dashboard — overall readiness, framework cards, gaps
+/compliance/frameworks                       Framework list table
+/compliance/frameworks/new                   Add framework (built-in picker + custom)
+/compliance/frameworks/[id]                  Framework detail — readiness, controls table, gaps
+/compliance/frameworks/[id]/controls/new     Add control to framework
+/compliance/evidence                         Evidence repository (Phase 4 — not yet built)
+/compliance/policies                         Policy management (Phase 5 — not yet built)
+/compliance/gaps                             Gap analysis dashboard (Phase 5 — not yet built)
+/compliance/reports                          Compliance reports (Phase 7 — not yet built)
+/compliance/ai                               AI Compliance Officer (Phase 6 — not yet built)
+
+--- Platform ---
+/settings                                    Profile + org settings
+/settings/team                               Team management
+/settings/notifications                      Email notification preferences
+/portal/[token]                              Vendor self-service portal (no auth)
+/api/cron/expiry                             Daily expiry alert cron (CRON_SECRET secured)
+/api/cron/digest                             Weekly digest cron (CRON_SECRET secured)
+/auth/callback                               Supabase auth redirect
 ```
 
 ---
@@ -241,8 +307,10 @@ Every action logged: organization.created/renamed, vendor.created/updated/delete
 
 ```
 lib/
-  db/schema.ts                  15-table Drizzle schema (all enums + tables)
+  db/schema.ts                  25-table Drizzle schema (vendor + compliance enums + tables)
   db/index.ts                   Lazy DB Proxy — CRITICAL, do not change
+
+  --- Vendor Governance services ---
   services/scoring.ts           Pure: computeScore(), computeDocStatus() — client-safe
   services/risk-engine.ts       Pure: computeRiskScore() → {level, score, factors[]}
   services/vendor-service.ts    All vendor business logic
@@ -255,7 +323,30 @@ lib/
   services/ai-insights-service.ts Gemini: explain score, risk, actions, assessment summary, executive report, weekly brief
   services/ai-summary-service.ts Gemini vendor brief (cached)
   services/nl-search-service.ts  Natural language search parser (Gemini → structured filters)
+
+  --- Compliance Module services ---
+  services/compliance/readiness-service.ts  Pure: computeReadiness() — no DB, client-safe
+  services/compliance/framework-service.ts  Framework CRUD + recomputeReadiness() trigger
+  services/compliance/control-service.ts    Control CRUD + inline status, triggers readiness
+  services/compliance/evidence-service.ts   Evidence CRUD + map/unmap + autoImportFromVendors()
+  services/compliance/policy-service.ts     Policy CRUD + version history
+  services/compliance/gap-service.ts        runGapAnalysis() — 5 rule-based gap types
+
   repositories/                 Data access only (Drizzle) — all repos here
+                                Vendor: vendor-repo, document-repo, assessment-repo,
+                                        review-repo, request-repo, portal-repo,
+                                        template-repo, notification-repo, audit-repo,
+                                        activity-repo, org-repo, profile-repo, team-repo
+                                Compliance: framework-repo, control-repo, evidence-repo,
+                                            policy-repo, gap-repo, readiness-repo
+
+  --- Server actions (thin transport layer) ---
+  vendors/actions.ts            Vendor CRUD actions
+  documents/actions.ts          Document upload/delete/edit actions
+  assessments/actions.ts        Assessment save/complete actions
+  reviews/actions.ts            Review create/status actions
+  compliance/actions.ts         Framework + control + gap analysis actions
+
   email/resend.ts               Resend client + isResendConfigured()
   email/templates.ts            HTML email templates — expiryAlertHtml(), weeklyDigestHtml(aiBrief?)
   ai/gemini.ts                  Gemini client, extractDocumentFields() v2, DOCUMENT_CATEGORY_LABELS/COLORS
@@ -276,6 +367,11 @@ components/
   activity/                     ActivityFeed (Lucide icons per action type)
   settings/                     Profile, org, notification, team forms
   portal/                       PortalUpload component
+  compliance/                   compliance-badges.tsx (framework/control/priority/gap severity)
+                                new-framework-form.tsx (built-in picker + custom)
+                                new-control-form.tsx
+                                framework-actions.tsx (DeleteFramework, RunGapAnalysisButton,
+                                                      ControlStatusSelect, DeleteControl)
 
 supabase/
   migrations/0000_*.sql         Initial schema
@@ -283,7 +379,8 @@ supabase/
   migrations/0002_*.sql         Notification tables
   migrations/0003_*.sql         AI insight fields on vendors + assessments
   migrations/0004_*.sql         document_category enum + category column
-  rls.sql                       RLS policies + auth trigger (apply once)
+  migrations/0005_goofy_luke_cage.sql  Compliance Module — 6 enums + 10 tables ✅ APPLIED
+  rls.sql                       RLS policies + auth trigger (apply once) — includes compliance tables
   storage.sql                   Storage bucket + policies (apply once)
 
 scripts/
@@ -326,7 +423,7 @@ npm run test:all          # Vitest + Playwright
 | Components (RTL) | `Tabs`, `StatusBadge`, `ActivityFeed`, `ComplianceBreakdown`, `VendorStatus` | 60 | ~75% |
 | E2E Playwright | auth, vendor-crud, settings, portal | 4 spec files | runs against live app |
 
-**Total: 201 Vitest tests across 13 test files — all passing.**
+**Total: 201 Vitest tests across 13 test files — all passing.** (Compliance module services not yet unit-tested — covered in a future phase.)
 
 ### Mocking patterns
 
@@ -370,7 +467,7 @@ Run `node scripts/seed-demo.mjs` to populate the "admin corp" workspace with:
 
 ## 10. Product Roadmap
 
-### Vendor Governance — All features complete ✅
+### Module 1 — Vendor Governance ✅ Complete
 
 | Feature | Status |
 |---|---|
@@ -400,14 +497,26 @@ Run `node scripts/seed-demo.mjs` to populate the "admin corp" workspace with:
 | Document Manual Edit + Re-extract | ✅ Done |
 | Comprehensive Demo Seed Data | ✅ Done |
 
-### Future Modules (Roadmap)
+### Module 2 — Compliance Management 🚧 In Progress
 
-| Year | Module |
+| Phase | Feature | Status |
+|---|---|---|
+| 1 | DB schema — 10 tables, 6 enums, migration, RLS | ✅ Done |
+| 2 | Repositories (6) + Services (6) + pure readiness scoring | ✅ Done |
+| 3 | UI — Dashboard, Framework list/detail, Controls table + inline status | ✅ Done |
+| 4 | Evidence repository UI + auto-import from vendor module + mapping UI | ✅ Done |
+| 5 | Policy management UI + Gap analysis dashboard | ✅ Done |
+| 6 | AI Compliance Officer — Gemini chat + insight cards | ✅ Done |
+| 7 | Compliance PDF + CSV reports | ✅ Done |
+| 8 | Framework seed data (ISO 27001 / SOC 2 / DPDP controls) | ✅ Done |
+
+### Future Modules
+
+| Module | Status |
 |---|---|
-| 2027 | Compliance Management — controls, policies, evidence, framework scores |
-| 2028 | DPDP Privacy + Audit Workspace |
-| 2029 | Risk Management — register, heat maps, remediation |
-| 2030 | Board Governance + Trust Center |
+| DPDP Privacy + Audit Workspace | Roadmap |
+| Risk Management — register, heat maps, remediation | Roadmap |
+| Board Governance + Trust Center | Roadmap |
 
 ---
 
@@ -432,6 +541,10 @@ Run `node scripts/seed-demo.mjs` to populate the "admin corp" workspace with:
 | **PDF CSS** | react-pdf v4 does NOT support: `gap`, `border` shorthand, `paddingHorizontal/Vertical`. Use explicit longhand only. |
 | **NL search Gemini rate limit** | `parseNaturalLanguageSearch()` falls back to simple text search if Gemini returns 503. Non-blocking. |
 | **AI fields on vendor** | `aiRecommendedActions` is JSONB (`unknown` in Drizzle types). Use `Omit<Vendor,"aiRecommendedActions"> & { aiRecommendedActions?: RecommendedAction[] | null }` in component props. |
+| **Compliance readiness recompute** | `recomputeReadiness()` runs outside the mutation transaction (fire-and-forget with `.catch(() => {})`). Stale scores are acceptable — they self-correct on the next change. |
+| **Evidence sourceEntityId** | Polymorphic FK — points to `vendor_documents.id`, `assessments.id`, or `vendor_reviews.id` depending on `source` enum. No FK constraint in DB (intentional). |
+| **Drizzle migration naming** | Drizzle auto-generates `{seq}_{adjective}_{name}.sql`. Do NOT manually create migration files without registering them in `supabase/migrations/meta/_journal.json` — Drizzle will skip unregistered files. Always use `npm run db:generate` then `npm run db:migrate`. |
+| **Compliance layout is client** | `app/(app)/compliance/layout.tsx` is `"use client"` (uses `usePathname` for active tab). This is fine — it contains no data fetching. |
 
 ---
 
