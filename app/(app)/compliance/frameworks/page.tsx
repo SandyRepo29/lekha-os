@@ -12,10 +12,15 @@ import { scoreTextColor } from "@/lib/ui/colors";
 
 export default async function FrameworksPage() {
   const session = await requireUser();
+
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={ShieldCheck} title="Frameworks" description="Connect Supabase to manage compliance frameworks." />
+        <EmptyState
+          icon={ShieldCheck}
+          title="Frameworks"
+          description="Connect Supabase to manage compliance frameworks."
+        />
       </Card>
     );
   }
@@ -23,16 +28,19 @@ export default async function FrameworksPage() {
   const frameworks = await listFrameworks(session.org.id);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Frameworks</h2>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Frameworks</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {frameworks.length} framework{frameworks.length !== 1 ? "s" : ""}
           </p>
         </div>
         <Link href="/compliance/frameworks/new">
-          <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add framework</Button>
+          <Button variant="primary" size="sm">
+            <Plus className="h-4 w-4" /> Add framework
+          </Button>
         </Link>
       </div>
 
@@ -44,7 +52,9 @@ export default async function FrameworksPage() {
             description="Add ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA or a custom framework."
             action={
               <Link href="/compliance/frameworks/new">
-                <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add framework</Button>
+                <Button variant="primary" size="sm">
+                  <Plus className="h-4 w-4" /> Add framework
+                </Button>
               </Link>
             }
           />
@@ -52,8 +62,8 @@ export default async function FrameworksPage() {
       ) : (
         <Card>
           <div className="divide-y divide-[var(--color-line)]">
-            {/* Header row */}
-            <div className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] gap-4 px-5 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide">
+            {/* Table header */}
+            <div className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] gap-4 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
               <span>Framework</span>
               <span>Status</span>
               <span className="text-right">Readiness</span>
@@ -68,42 +78,52 @@ export default async function FrameworksPage() {
               return (
                 <div
                   key={fw.id}
-                  className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] items-center gap-4 px-5 py-4 hover:bg-white/[0.02] transition-colors"
+                  className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
                 >
                   <div>
                     <Link
                       href={`/compliance/frameworks/${fw.id}`}
-                      className="font-medium text-sm hover:text-[var(--color-blue)] transition-colors"
+                      className="text-sm font-medium transition-colors hover:text-[var(--color-blue)]"
                     >
                       {fw.name}
                     </Link>
                     {fw.version && (
-                      <span className="ml-2 text-xs text-[var(--color-ink-faint)]">v{fw.version}</span>
+                      <span className="ml-2 text-xs text-[var(--color-ink-faint)]">
+                        v{fw.version}
+                      </span>
                     )}
                     {fw.owner && (
-                      <p className="text-xs text-[var(--color-ink-faint)] mt-0.5">{fw.owner}</p>
+                      <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">{fw.owner}</p>
                     )}
                   </div>
 
                   <FrameworkStatusBadge status={fw.status} />
 
-                  <span className={`text-right font-[family-name:var(--font-display)] font-bold text-sm ${scoreTextColor(score)}`}>
+                  <span
+                    className={`text-right font-[family-name:var(--font-display)] text-sm font-bold ${scoreTextColor(score)}`}
+                  >
                     {score}%
                   </span>
 
-                  <span className="text-right text-sm text-[var(--color-ink-dim)]">{fw.controlCount}</span>
+                  <span className="text-right text-sm text-[var(--color-ink-dim)]">
+                    {fw.controlCount}
+                  </span>
 
                   <span className="text-right text-sm text-[var(--color-ink-dim)]">
                     {fw.readiness?.evidenceCoverage ?? 0}%
                   </span>
 
-                  <span className={`text-right text-sm font-medium ${fw.openGapCount > 0 ? "text-amber-400" : "text-[var(--color-ink-faint)]"}`}>
+                  <span
+                    className={`text-right text-sm font-medium ${
+                      fw.openGapCount > 0 ? "text-amber-400" : "text-[var(--color-ink-faint)]"
+                    }`}
+                  >
                     {fw.openGapCount}
                   </span>
 
                   <Link
                     href={`/compliance/frameworks/${fw.id}`}
-                    className="text-xs text-[var(--color-ink-faint)] hover:text-[var(--color-ink)] transition-colors text-right"
+                    className="text-right text-xs text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink)]"
                   >
                     →
                   </Link>

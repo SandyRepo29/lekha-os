@@ -10,6 +10,7 @@ import { requireUser } from "@/lib/auth/session";
 import { listFrameworks } from "@/lib/services/compliance/framework-service";
 import { getGapSummary } from "@/lib/services/compliance/gap-service";
 import { FrameworkStatusBadge } from "@/components/compliance/compliance-badges";
+import { ComplianceStat, CoverageBar } from "@/components/compliance/compliance-ui";
 import { scoreTextColor, scoreLabel } from "@/lib/ui/colors";
 
 export default async function ComplianceDashboardPage() {
@@ -81,6 +82,7 @@ export default async function ComplianceDashboardPage() {
         <>
           {/* Top metrics */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Overall readiness ring card */}
             <Card className="flex items-center gap-4 p-5">
               <ScoreRing value={overallScore} size={80} />
               <div>
@@ -91,25 +93,50 @@ export default async function ComplianceDashboardPage() {
               </div>
             </Card>
 
-            <StatCard
-              icon={<ShieldCheck className="h-5 w-5 text-[var(--color-blue)]" />}
-              label="Frameworks"
-              value={String(frameworks.length)}
-              sub={`${implementedFrameworks} certified / ready`}
-            />
-            <StatCard
-              icon={<CheckCircle2 className="h-5 w-5 text-emerald-400" />}
-              label="Controls"
-              value={String(totalControls)}
-              sub="across all frameworks"
-            />
-            <StatCard
-              icon={<AlertTriangle className="h-5 w-5 text-amber-400" />}
-              label="Open Gaps"
-              value={String(gapSummary.total)}
-              sub={`${gapSummary.critical} critical · ${gapSummary.high} high`}
-              accent={gapSummary.critical > 0 ? "danger" : gapSummary.total > 0 ? "warn" : "good"}
-            />
+            <Card className="p-5">
+              <div className="mb-2 flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 text-[var(--color-blue)]" />
+                <span className="text-xs text-[var(--color-ink-faint)]">Frameworks</span>
+              </div>
+              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+                {frameworks.length}
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
+                {implementedFrameworks} certified / ready
+              </p>
+            </Card>
+
+            <Card className="p-5">
+              <div className="mb-2 flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                <span className="text-xs text-[var(--color-ink-faint)]">Controls</span>
+              </div>
+              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+                {totalControls}
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">across all frameworks</p>
+            </Card>
+
+            <Card
+              className={`p-5 ${
+                gapSummary.critical > 0
+                  ? "border-red-500/25"
+                  : gapSummary.total > 0
+                  ? "border-amber-500/25"
+                  : "border-emerald-500/25"
+              }`}
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-amber-400" />
+                <span className="text-xs text-[var(--color-ink-faint)]">Open Gaps</span>
+              </div>
+              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+                {gapSummary.total}
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
+                {gapSummary.critical} critical · {gapSummary.high} high
+              </p>
+            </Card>
           </div>
 
           {/* Frameworks grid */}
@@ -125,12 +152,14 @@ export default async function ComplianceDashboardPage() {
                     <Card className="cursor-pointer p-5 transition-colors hover:border-[var(--color-line-strong)] hover:bg-white/[0.05]">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="font-[family-name:var(--font-display)] font-semibold text-sm leading-snug">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-[family-name:var(--font-display)] text-sm font-semibold leading-snug">
                               {fw.name}
                             </h3>
                             {fw.version && (
-                              <span className="text-xs text-[var(--color-ink-faint)]">v{fw.version}</span>
+                              <span className="text-xs text-[var(--color-ink-faint)]">
+                                v{fw.version}
+                              </span>
                             )}
                           </div>
                           <div className="mt-1.5">
@@ -141,28 +170,30 @@ export default async function ComplianceDashboardPage() {
                       </div>
 
                       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                        <div>
-                          <p className="text-[10px] text-[var(--color-ink-faint)]">Controls</p>
-                          <p className="font-semibold text-sm">{fw.controlCount}</p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] text-[var(--color-ink-faint)]">Evidence</p>
-                          <p className="font-semibold text-sm">
-                            {fw.readiness?.evidenceCoverage ?? 0}%
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] text-[var(--color-ink-faint)]">Gaps</p>
-                          <p className={`font-semibold text-sm ${fw.openGapCount > 0 ? "text-amber-400" : "text-emerald-400"}`}>
-                            {fw.openGapCount}
-                          </p>
-                        </div>
+                        <FrameworkStat label="Controls" value={fw.controlCount} />
+                        <FrameworkStat
+                          label="Evidence"
+                          value={`${fw.readiness?.evidenceCoverage ?? 0}%`}
+                        />
+                        <FrameworkStat
+                          label="Gaps"
+                          value={fw.openGapCount}
+                          color={fw.openGapCount > 0 ? "text-amber-400" : "text-emerald-400"}
+                        />
                       </div>
 
                       {fw.readiness && (
                         <div className="mt-3 space-y-1.5">
-                          <CoverageBar label="Controls" value={fw.readiness.controlCoverage} />
-                          <CoverageBar label="Evidence" value={fw.readiness.evidenceCoverage} />
+                          <CoverageBar
+                            label="Controls"
+                            value={fw.readiness.controlCoverage}
+                            labelWidth="w-14"
+                          />
+                          <CoverageBar
+                            label="Evidence"
+                            value={fw.readiness.evidenceCoverage}
+                            labelWidth="w-14"
+                          />
                         </div>
                       )}
                     </Card>
@@ -175,17 +206,17 @@ export default async function ComplianceDashboardPage() {
           {/* Gap summary strip */}
           {gapSummary.total > 0 && (
             <Card className="p-5">
-              <div className="flex items-center gap-2 mb-3">
+              <div className="mb-3 flex items-center gap-2">
                 <FileSearch className="h-4 w-4 text-amber-400" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">
                   Open Gaps
                 </h2>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <GapStat label="Critical" value={gapSummary.critical} color="text-red-400" />
-                <GapStat label="High" value={gapSummary.high} color="text-red-300" />
-                <GapStat label="Medium" value={gapSummary.medium} color="text-amber-400" />
-                <GapStat label="Low" value={gapSummary.low} color="text-[var(--color-ink-dim)]" />
+                <GapCount label="Critical" value={gapSummary.critical} color="text-red-400" />
+                <GapCount label="High"     value={gapSummary.high}     color="text-red-300" />
+                <GapCount label="Medium"   value={gapSummary.medium}   color="text-amber-400" />
+                <GapCount label="Low"      value={gapSummary.low}      color="text-[var(--color-ink-dim)]" />
               </div>
             </Card>
           )}
@@ -195,55 +226,40 @@ export default async function ComplianceDashboardPage() {
   );
 }
 
-function StatCard({
-  icon,
+/* Small helpers — too specific to the dashboard to extract globally. */
+
+function FrameworkStat({
   label,
   value,
-  sub,
-  accent,
+  color,
 }: {
-  icon: React.ReactNode;
   label: string;
-  value: string;
-  sub?: string;
-  accent?: "good" | "warn" | "danger";
+  value: number | string;
+  color?: string;
 }) {
-  const border =
-    accent === "danger"
-      ? "border-red-500/25"
-      : accent === "warn"
-      ? "border-amber-500/25"
-      : accent === "good"
-      ? "border-emerald-500/25"
-      : "border-[var(--color-line)]";
   return (
-    <Card className={`p-5 ${border}`}>
-      <div className="flex items-center gap-2 mb-2">{icon}<span className="text-xs text-[var(--color-ink-faint)]">{label}</span></div>
-      <p className="font-[family-name:var(--font-display)] text-2xl font-bold">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{sub}</p>}
-    </Card>
-  );
-}
-
-function CoverageBar({ label, value }: { label: string; value: number }) {
-  const color =
-    value >= 75 ? "bg-emerald-500" : value >= 50 ? "bg-[var(--color-blue)]" : value >= 25 ? "bg-amber-500" : "bg-red-500";
-  return (
-    <div className="flex items-center gap-2">
-      <span className="w-14 text-[10px] text-[var(--color-ink-faint)]">{label}</span>
-      <div className="flex-1 h-1.5 rounded-full bg-white/[0.06]">
-        <div className={`h-1.5 rounded-full ${color} transition-all`} style={{ width: `${value}%` }} />
-      </div>
-      <span className="w-8 text-right text-[10px] text-[var(--color-ink-dim)]">{value}%</span>
+    <div>
+      <p className="text-[10px] text-[var(--color-ink-faint)]">{label}</p>
+      <p className={`text-sm font-semibold ${color ?? ""}`}>{value}</p>
     </div>
   );
 }
 
-function GapStat({ label, value, color }: { label: string; value: number; color: string }) {
+function GapCount({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) {
   return (
     <div>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
-      <p className={`mt-0.5 font-[family-name:var(--font-display)] text-xl font-bold ${color}`}>{value}</p>
+      <p className={`mt-0.5 font-[family-name:var(--font-display)] text-xl font-bold ${color}`}>
+        {value}
+      </p>
     </div>
   );
 }

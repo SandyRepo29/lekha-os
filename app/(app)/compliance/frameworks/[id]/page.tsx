@@ -29,7 +29,7 @@ import {
   FrameworkSummaryPanel,
   ReadinessExplanationPanel,
 } from "@/components/compliance/framework-ai-panels";
-import { scoreTextColor } from "@/lib/ui/colors";
+import { ComplianceStat, CoverageBar } from "@/components/compliance/compliance-ui";
 
 export default async function FrameworkDetailPage({
   params,
@@ -60,18 +60,16 @@ export default async function FrameworkDetailPage({
       {/* Back */}
       <Link
         href="/compliance/frameworks"
-        className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition-colors hover:text-[var(--color-ink)]"
       >
         <ArrowLeft className="h-4 w-4" /> Frameworks
       </Link>
 
-      {/* Header */}
+      {/* Header card */}
       <Card className="p-5">
         <div className="flex flex-wrap items-start gap-5">
-          {/* Score ring */}
           <ScoreRing value={score} size={96} />
 
-          {/* Info */}
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
@@ -89,17 +87,15 @@ export default async function FrameworkDetailPage({
               <p className="mt-1 text-xs text-[var(--color-ink-faint)]">Owner: {fw.owner}</p>
             )}
 
-            {/* Readiness breakdown bars */}
             {fw.readiness && (
-              <div className="mt-4 space-y-2 max-w-sm">
-                <ReadinessBar label="Control coverage" value={fw.readiness.controlCoverage} />
-                <ReadinessBar label="Evidence coverage" value={fw.readiness.evidenceCoverage} />
-                <ReadinessBar label="Policy coverage" value={fw.readiness.policyCoverage} />
+              <div className="mt-4 max-w-sm space-y-2">
+                <CoverageBar label="Control coverage"  value={fw.readiness.controlCoverage} />
+                <CoverageBar label="Evidence coverage" value={fw.readiness.evidenceCoverage} />
+                <CoverageBar label="Policy coverage"   value={fw.readiness.policyCoverage} />
               </div>
             )}
           </div>
 
-          {/* Actions */}
           <div className="flex flex-wrap items-center gap-2">
             <RunGapAnalysisButton frameworkId={id} />
             <Link href={`/compliance/frameworks/${id}/controls/new`}>
@@ -112,12 +108,12 @@ export default async function FrameworkDetailPage({
         </div>
       </Card>
 
-      {/* Control status summary strip */}
+      {/* Control status summary */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <MiniStat label="Implemented" value={summary.implemented} color="text-emerald-400" />
-        <MiniStat label="Partial" value={summary.partial} color="text-amber-400" />
-        <MiniStat label="Not Implemented" value={summary.notImplemented} color="text-[var(--color-ink-dim)]" />
-        <MiniStat label="N/A" value={summary.notApplicable} color="text-[var(--color-ink-faint)]" />
+        <ComplianceStat label="Implemented"     value={summary.implemented}   color="text-emerald-400" />
+        <ComplianceStat label="Partial"         value={summary.partial}       color="text-amber-400" />
+        <ComplianceStat label="Not Implemented" value={summary.notImplemented} />
+        <ComplianceStat label="N/A"             value={summary.notApplicable} color="text-[var(--color-ink-faint)]" />
       </div>
 
       {/* AI insights */}
@@ -146,7 +142,9 @@ export default async function FrameworkDetailPage({
             </span>
           </h2>
           <Link href={`/compliance/frameworks/${id}/controls/new`}>
-            <Button variant="ghost" size="sm"><Plus className="h-4 w-4" /> Add control</Button>
+            <Button variant="ghost" size="sm">
+              <Plus className="h-4 w-4" /> Add control
+            </Button>
           </Link>
         </div>
 
@@ -155,10 +153,12 @@ export default async function FrameworkDetailPage({
             <EmptyState
               icon={FileSearch}
               title="No controls yet"
-              description="Add controls manually or run gap analysis once controls are added."
+              description="Add controls manually or seed from a built-in template."
               action={
                 <Link href={`/compliance/frameworks/${id}/controls/new`}>
-                  <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add first control</Button>
+                  <Button variant="primary" size="sm">
+                    <Plus className="h-4 w-4" /> Add first control
+                  </Button>
                 </Link>
               }
             />
@@ -169,51 +169,57 @@ export default async function FrameworkDetailPage({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[var(--color-line)] text-left">
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide w-24">Ref</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide">Control</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide">Category</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide">Priority</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide">Status</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-[var(--color-ink-faint)] uppercase tracking-wide text-right">Evidence</th>
-                    <th className="px-4 py-3 w-8" />
+                    <Th className="w-24">Ref</Th>
+                    <Th>Control</Th>
+                    <Th>Category</Th>
+                    <Th>Priority</Th>
+                    <Th>Status</Th>
+                    <Th className="text-right">Evidence</Th>
+                    <th className="w-8 px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody>
                   {controls.map((control) => (
                     <tr
                       key={control.id}
-                      className="border-b border-[var(--color-line)] last:border-0 hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-[var(--color-line)] transition-colors last:border-0 hover:bg-white/[0.02]"
                     >
-                      <td className="px-4 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
+                      <td className="px-5 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
                         {control.controlRef}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-3">
                         <p className="font-medium text-[var(--color-ink)]">{control.name}</p>
                         {control.description && (
-                          <p className="mt-0.5 text-xs text-[var(--color-ink-faint)] line-clamp-1">
+                          <p className="mt-0.5 line-clamp-1 text-xs text-[var(--color-ink-faint)]">
                             {control.description}
                           </p>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
+                      <td className="px-5 py-3 text-xs text-[var(--color-ink-dim)]">
                         {control.category ?? "—"}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-3">
                         <ControlPriorityBadge priority={control.priority} />
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-3">
                         <ControlStatusSelect
                           controlId={control.id}
                           frameworkId={id}
                           currentStatus={control.status}
                         />
                       </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className={`text-sm font-medium ${control.evidenceCount > 0 ? "text-emerald-400" : "text-[var(--color-ink-faint)]"}`}>
+                      <td className="px-5 py-3 text-right">
+                        <span
+                          className={`text-sm font-medium ${
+                            control.evidenceCount > 0
+                              ? "text-emerald-400"
+                              : "text-[var(--color-ink-faint)]"
+                          }`}
+                        >
                           {control.evidenceCount}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-5 py-3 text-right">
                         <DeleteControl controlId={control.id} frameworkId={id} />
                       </td>
                     </tr>
@@ -230,16 +236,18 @@ export default async function FrameworkDetailPage({
         <div>
           <h2 className="mb-3 font-[family-name:var(--font-display)] text-base font-semibold">
             Open Gaps
-            <span className="ml-2 text-sm font-normal text-[var(--color-ink-faint)]">({gaps.length})</span>
+            <span className="ml-2 text-sm font-normal text-[var(--color-ink-faint)]">
+              ({gaps.length})
+            </span>
           </h2>
           <Card>
             <div className="divide-y divide-[var(--color-line)]">
               {gaps.slice(0, 10).map((gap) => (
-                <div key={gap.id} className="flex items-start gap-3 px-5 py-3">
+                <div key={gap.id} className="flex items-start gap-3 px-5 py-3.5">
                   <GapSeverityBadge severity={gap.severity} />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-[var(--color-ink)]">{gap.description}</p>
-                    <p className="mt-0.5 text-xs text-[var(--color-ink-faint)] capitalize">
+                    <p className="mt-0.5 text-xs capitalize text-[var(--color-ink-faint)]">
                       {gap.gapType.replace(/_/g, " ")}
                       {gap.isAiDetected && " · AI detected"}
                     </p>
@@ -248,7 +256,10 @@ export default async function FrameworkDetailPage({
               ))}
               {gaps.length > 10 && (
                 <p className="px-5 py-3 text-xs text-[var(--color-ink-faint)]">
-                  +{gaps.length - 10} more gaps · run analysis to refresh
+                  +{gaps.length - 10} more gaps — view all on the{" "}
+                  <Link href="/compliance/gaps" className="text-[var(--color-blue)] hover:underline">
+                    Gaps page
+                  </Link>
                 </p>
               )}
             </div>
@@ -259,31 +270,18 @@ export default async function FrameworkDetailPage({
   );
 }
 
-function ReadinessBar({ label, value }: { label: string; value: number }) {
-  const color =
-    value >= 75
-      ? "bg-emerald-500"
-      : value >= 50
-      ? "bg-[var(--color-blue)]"
-      : value >= 25
-      ? "bg-amber-500"
-      : "bg-red-500";
+function Th({
+  children,
+  className = "",
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="w-32 shrink-0 text-xs text-[var(--color-ink-faint)]">{label}</span>
-      <div className="flex-1 h-1.5 rounded-full bg-white/[0.06]">
-        <div className={`h-1.5 rounded-full ${color} transition-all`} style={{ width: `${value}%` }} />
-      </div>
-      <span className={`w-10 text-right text-xs font-semibold ${scoreTextColor(value)}`}>{value}%</span>
-    </div>
-  );
-}
-
-function MiniStat({ label, value, color }: { label: string; value: number; color: string }) {
-  return (
-    <Card className="px-4 py-3">
-      <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
-      <p className={`mt-1 font-[family-name:var(--font-display)] text-2xl font-bold ${color}`}>{value}</p>
-    </Card>
+    <th
+      className={`px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)] ${className}`}
+    >
+      {children}
+    </th>
   );
 }

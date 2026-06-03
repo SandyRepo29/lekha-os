@@ -57,16 +57,16 @@ export default async function AiOfficerPage() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-blue)]/10">
           <Sparkles className="h-5 w-5 text-[var(--color-blue)]" />
         </div>
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
             AI Compliance Officer
-          </h2>
+          </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {aiEnabled
               ? "Gemini-powered insights across all your compliance frameworks."
@@ -77,9 +77,9 @@ export default async function AiOfficerPage() {
 
       {/* Executive summary */}
       <section className="space-y-3">
-        <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+        <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">
           Executive Summary
-        </h3>
+        </h2>
         <Card className="p-5">
           <AiInsightPanel
             title="Organisation Compliance Posture"
@@ -95,9 +95,9 @@ export default async function AiOfficerPage() {
       {/* Per-framework insights */}
       {frameworks.length > 0 && (
         <section className="space-y-4">
-          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+          <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">
             Framework Insights
-          </h3>
+          </h2>
           {perFramework.map(({ fw, summary, explanation, gap }) => (
             <Card key={fw.id} className="p-5 space-y-4">
               <div className="flex items-center justify-between">
@@ -148,9 +148,9 @@ export default async function AiOfficerPage() {
 
       {/* Chat */}
       <section className="space-y-3">
-        <h3 className="font-[family-name:var(--font-display)] text-base font-semibold">
+        <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">
           Ask the AI Officer
-        </h3>
+        </h2>
         <Card>
           <AiComplianceChat aiEnabled={aiEnabled} />
         </Card>

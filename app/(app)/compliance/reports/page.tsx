@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { SectionLabel } from "@/components/compliance/compliance-ui";
 
 export default async function ComplianceReportsPage() {
   const session = await requireUser();
@@ -21,10 +22,10 @@ export default async function ComplianceReportsPage() {
   const frameworks = await listFrameworks(session.org.id);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Reports</h2>
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Reports</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">
           Download compliance reports in PDF or CSV format.
         </p>
@@ -32,9 +33,7 @@ export default async function ComplianceReportsPage() {
 
       {/* PDF reports */}
       <section className="space-y-3">
-        <h3 className="font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-          PDF Reports
-        </h3>
+        <SectionLabel>PDF Reports</SectionLabel>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Executive summary */}
@@ -72,9 +71,7 @@ export default async function ComplianceReportsPage() {
 
       {/* CSV exports */}
       <section className="space-y-3">
-        <h3 className="font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-          CSV Exports
-        </h3>
+        <SectionLabel>CSV Exports</SectionLabel>
 
         <div className="grid gap-4 sm:grid-cols-3">
           <ReportCard

@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listPolicies } from "@/lib/services/compliance/policy-service";
-import { PolicyStatusBadge } from "@/components/compliance/policy-status-badge";
+import { PolicyStatusBadge } from "@/components/compliance/compliance-badges";
+import { ComplianceStat } from "@/components/compliance/compliance-ui";
 
 export default async function PoliciesPage() {
   const session = await requireUser();
@@ -15,7 +16,11 @@ export default async function PoliciesPage() {
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={FileText} title="Policies" description="Connect Supabase to manage compliance policies." />
+        <EmptyState
+          icon={FileText}
+          title="Policies"
+          description="Connect Supabase to manage compliance policies."
+        />
       </Card>
     );
   }
@@ -28,27 +33,29 @@ export default async function PoliciesPage() {
   const review   = policies.filter((p) => p.status === "review").length;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Policies</h2>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Policies</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {policies.length} polic{policies.length !== 1 ? "ies" : "y"} · {approved} approved
           </p>
         </div>
         <Link href="/compliance/policies/new">
-          <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add policy</Button>
+          <Button variant="primary" size="sm">
+            <Plus className="h-4 w-4" /> Add policy
+          </Button>
         </Link>
       </div>
 
       {/* Stat strip */}
       {policies.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatChip label="Approved"  value={approved} color="text-emerald-400" />
-          <StatChip label="In Review" value={review}   color="text-[var(--color-blue)]" />
-          <StatChip label="Draft"     value={draft} />
-          <StatChip label="Expired"   value={expired}  color={expired > 0 ? "text-amber-400" : undefined} />
+          <ComplianceStat label="Approved"  value={approved} color="text-emerald-400" accent={approved > 0 ? "good" : undefined} />
+          <ComplianceStat label="In Review" value={review}   color="text-[var(--color-blue)]" />
+          <ComplianceStat label="Draft"     value={draft} />
+          <ComplianceStat label="Expired"   value={expired}  color={expired > 0 ? "text-amber-400" : undefined} accent={expired > 0 ? "warn" : undefined} />
         </div>
       )}
 
@@ -61,7 +68,9 @@ export default async function PoliciesPage() {
             description="Add your first compliance policy — information security, vendor management, access control and more."
             action={
               <Link href="/compliance/policies/new">
-                <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add policy</Button>
+                <Button variant="primary" size="sm">
+                  <Plus className="h-4 w-4" /> Add policy
+                </Button>
               </Link>
             }
           />
@@ -70,7 +79,7 @@ export default async function PoliciesPage() {
         <Card>
           <div className="divide-y divide-[var(--color-line)]">
             {/* Table header */}
-            <div className="grid grid-cols-[1fr_160px_100px_100px_100px_40px] gap-4 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
+            <div className="grid grid-cols-[1fr_160px_80px_100px_120px_40px] gap-4 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
               <span>Policy</span>
               <span>Type</span>
               <span>Version</span>
@@ -88,12 +97,12 @@ export default async function PoliciesPage() {
               return (
                 <div
                   key={p.id}
-                  className="grid grid-cols-[1fr_160px_100px_100px_100px_40px] items-center gap-4 px-5 py-4 hover:bg-white/[0.02] transition-colors"
+                  className="grid grid-cols-[1fr_160px_80px_100px_120px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
                 >
                   <div>
                     <Link
                       href={`/compliance/policies/${p.id}`}
-                      className="font-medium text-sm hover:text-[var(--color-blue)] transition-colors"
+                      className="text-sm font-medium transition-colors hover:text-[var(--color-blue)]"
                     >
                       {p.name}
                     </Link>
@@ -110,15 +119,23 @@ export default async function PoliciesPage() {
 
                   <PolicyStatusBadge status={p.status} />
 
-                  <span className={`text-xs ${overdue ? "text-amber-400 font-medium" : "text-[var(--color-ink-dim)]"}`}>
+                  <span
+                    className={`text-xs ${
+                      overdue ? "font-medium text-amber-400" : "text-[var(--color-ink-dim)]"
+                    }`}
+                  >
                     {p.reviewDate
-                      ? new Date(p.reviewDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+                      ? new Date(p.reviewDate).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })
                       : "—"}
                   </span>
 
                   <Link
                     href={`/compliance/policies/${p.id}`}
-                    className="text-xs text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]"
+                    className="text-xs text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink)]"
                   >
                     →
                   </Link>
@@ -129,16 +146,5 @@ export default async function PoliciesPage() {
         </Card>
       )}
     </div>
-  );
-}
-
-function StatChip({ label, value, color }: { label: string; value: number; color?: string }) {
-  return (
-    <Card className="px-4 py-3">
-      <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
-      <p className={`mt-1 font-[family-name:var(--font-display)] text-xl font-bold ${color ?? "text-[var(--color-ink)]"}`}>
-        {value}
-      </p>
-    </Card>
   );
 }
