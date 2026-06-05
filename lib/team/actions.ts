@@ -20,7 +20,7 @@ export async function inviteMember(_prev: TeamState, formData: FormData): Promis
       orgId: session.org.id,
       actorId: session.id,
       email: String(formData.get("email") || ""),
-      role: String(formData.get("role") || "member") as "owner" | "admin" | "member" | "viewer",
+      role: String(formData.get("role") || "member") as Parameters<typeof teamService.inviteMember>[0]["role"],
     });
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };
