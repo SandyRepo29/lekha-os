@@ -78,14 +78,19 @@ async function upsertDoc(vendorId, doc) {
     SELECT id FROM vendor_documents
     WHERE vendor_id=${vendorId} AND document_type=${doc.type} LIMIT 1`;
   if (existing) return;
+  const filename = doc.filename ?? `${doc.type.toLowerCase().replace(/\s+/g, "_")}.pdf`;
   await sql`
     INSERT INTO vendor_documents
       (organization_id, vendor_id, document_type, status, category,
-       issued_on, expires_on, extracted)
+       issued_on, expires_on, extracted,
+       filename, content_type, file_size, storage_bucket, storage_provider, uploaded_by)
     VALUES
       (${ORG}, ${vendorId}, ${doc.type}, ${doc.status},
        ${doc.category ?? null}, ${doc.issued ?? null}, ${doc.expires ?? null},
-       ${sql.json(doc.extracted ?? {})})
+       ${sql.json(doc.extracted ?? {})},
+       ${filename}, 'application/pdf',
+       ${doc.fileSize ?? Math.floor(200_000 + Math.random() * 800_000)},
+       'compliance-documents', 'supabase', ${USER})
     ON CONFLICT DO NOTHING`;
 }
 
