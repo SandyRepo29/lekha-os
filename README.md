@@ -12,8 +12,8 @@ Live: https://lekha-os.vercel.app · GitHub: github.com/SandyRepo29/lekha-os
 
 | Module | Status |
 |---|---|
-| **Vendor Governance** | ✅ Launch-ready |
-| **Compliance Management** | 🚧 In progress (Phases 1–3 of 8 complete) |
+| **Vendor Governance** | ✅ Complete |
+| **Compliance Management** | ✅ Complete (all 8 phases) |
 | DPDP Privacy + Audit | Roadmap |
 | Risk Management | Roadmap |
 | Board Governance | Roadmap |
@@ -34,8 +34,10 @@ cp .env.example .env.local    # fill in Supabase values
 npm run db:migrate
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
-node scripts/seed-templates.mjs
-node scripts/seed-demo.mjs    # optional: 15 realistic Indian vendors
+node scripts/seed-templates.mjs          # vendor type templates
+node scripts/seed-demo.mjs               # 15 realistic Indian vendors + documents
+node scripts/seed-compliance-frameworks.mjs   # 5 frameworks + 174 standard controls
+node scripts/seed-compliance-demo.mjs         # realistic statuses, evidence, policies, gaps
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email" for sandbox.
@@ -51,6 +53,8 @@ In Supabase → Auth → Email → turn **OFF** "Confirm email" for sandbox.
 | `npm run db:generate` | Generate Drizzle migration from schema changes |
 | `npm run db:migrate` | Apply DB migrations |
 | `npm run db:studio` | Drizzle Studio |
+| `npm run db:seed-compliance` | Seed 5 frameworks + 174 standard controls |
+| `npm run db:seed-compliance-demo` | Seed statuses, evidence, policies, gaps |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ## Stack
