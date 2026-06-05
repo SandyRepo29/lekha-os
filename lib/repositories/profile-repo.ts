@@ -13,7 +13,15 @@ export async function findProfile(userId: string) {
 
 export async function updateProfile(
   userId: string,
-  values: { fullName?: string | null },
+  values: {
+    fullName?: string | null;
+    jobTitle?: string | null;
+    department?: string | null;
+    phone?: string | null;
+    timezone?: string | null;
+    language?: string | null;
+    avatarUrl?: string | null;
+  },
   exec: Executor = db
 ): Promise<void> {
   await exec.update(profiles).set(values).where(eq(profiles.id, userId));
@@ -21,12 +29,23 @@ export async function updateProfile(
 
 export async function updateOrganization(
   orgId: string,
-  values: { name?: string },
+  values: {
+    name?: string;
+    legalName?: string | null;
+    industry?: string | null;
+    companySize?: string | null;
+    website?: string | null;
+    country?: string | null;
+    state?: string | null;
+    timezone?: string | null;
+    logoUrl?: string | null;
+  },
   exec: Executor = db
 ): Promise<void> {
   await exec
     .update(organizations)
-    .set({ ...values, updatedAt: new Date() })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .set({ ...values, updatedAt: new Date() } as any)
     .where(eq(organizations.id, orgId));
 }
 

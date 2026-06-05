@@ -127,34 +127,65 @@ node scripts/seed-demo.mjs      # optional: 15 realistic Indian vendors + full d
 
 ## 5. Features Implemented
 
-### Module 2 — Compliance Management (In Progress — Phases 1–3 complete)
+### Module 2 — Compliance Management ✅ Complete (All 8 Phases)
 
-#### Database & Infrastructure ✅
+#### Database & Infrastructure (Phase 1) ✅
 - **10 new tables** live in Supabase: frameworks, controls, evidence, control_evidence_mappings, policies, policy_versions, readiness_scores, gap_analysis, compliance_reports, ai_compliance_insights
 - **6 new enums** applied via migration `0005_goofy_luke_cage.sql`
 - **RLS** — read/write policies on all 8 org-scoped compliance tables
 - Sidebar `/compliance` link activated (was `soon: true`)
 
-#### Repository + Service Layer ✅
-- **6 repositories:** framework-repo, control-repo, evidence-repo, policy-repo, gap-repo, readiness-repo
+#### Repository + Service Layer (Phase 2) ✅
+- **7 repositories:** framework-repo, control-repo, evidence-repo, policy-repo, gap-repo, readiness-repo, ai-compliance-repo
 - **Pure `computeReadiness()` function** — `lib/services/compliance/readiness-service.ts` (no DB, client-safe). Weighted: control 50% + evidence 30% + policy 20%
-- **framework-service** — CRUD + `recomputeReadiness()` after every change
+- **framework-service** — CRUD + `recomputeReadiness()` trigger + `seedFrameworkControls()` for built-in templates
 - **control-service** — CRUD + inline status updates, triggers readiness recompute
 - **evidence-service** — CRUD + map/unmap to controls + **`autoImportFromVendors()`** bridge (idempotent import of vendor docs/assessments/reviews as evidence items)
 - **policy-service** — CRUD + version history
 - **gap-service** — `runGapAnalysis()` detects 5 gap types: not_implemented, unmapped_control, missing_evidence, expired_evidence, expired_policy
+- **ai-compliance-service** — Gemini: framework summary, readiness explanation, gap narrative, executive summary, contextual NL chat
 
-#### UI — Compliance Module Pages ✅
+#### Core UI — Dashboard, Frameworks, Controls (Phase 3) ✅
 - `/compliance` — Dashboard: overall readiness ring, framework cards with coverage bars, gap summary
 - `/compliance/frameworks` — Framework list table (readiness %, controls, evidence %, gaps)
-- `/compliance/frameworks/new` — Add framework (5-card built-in picker: ISO 27001 / SOC 2 / DPDP / PCI DSS / HIPAA + custom)
-- `/compliance/frameworks/[id]` — Framework detail: readiness ring + 3 coverage bars, full controls table with inline status toggle, open gaps list, run gap analysis, add/delete controls
+- `/compliance/frameworks/new` — Add framework (5-card built-in picker: ISO 27001 / SOC 2 / DPDP / PCI DSS / HIPAA + custom); selecting built-in auto-seeds all standard controls
+- `/compliance/frameworks/[id]` — Framework detail: readiness ring + 3 coverage bars, AI insight panels, full controls table with inline status toggle, open gaps list
 - `/compliance/frameworks/[id]/controls/new` — Add control form
-- Sub-nav with 7 tabs (Dashboard + Frameworks active; Evidence, Policies, Gaps, Reports, AI Officer dimmed)
 
-#### All 8 Phases Complete ✅
-- **Phase 7** — Compliance PDF/CSV reports
-- **Phase 8** — Framework seed data (ISO 27001 / SOC 2 / DPDP controls pre-loaded)
+#### Evidence Repository (Phase 4) ✅
+- `/compliance/evidence` — Evidence list with stat strip, source/status filters, auto-import button
+- `/compliance/evidence/new` — Manual evidence creation
+- `/compliance/evidence/[id]` — Evidence detail with two-column layout: EvidenceMapper (checkbox → control mapping, grouped by framework, search) + mapped controls panel
+- Auto-import — one click syncs all vendor docs/assessments/approved reviews as evidence (idempotent)
+
+#### Policy Management + Gap Analysis (Phase 5) ✅
+- `/compliance/policies` — Policy list with stat strip (approved/review/draft/expired counts)
+- `/compliance/policies/new` — Create policy with 10 standard type options
+- `/compliance/policies/[id]` — Policy detail: workflow buttons (Draft→Review→Approve→Archive), version history, overdue warning
+- `/compliance/gaps` — Cross-framework gap dashboard: 5 severity cards, gap-type chips, framework/severity filters, gaps grouped by framework, resolve button per gap
+
+#### AI Compliance Officer (Phase 6) ✅
+- `/compliance/ai` — AI Officer hub: executive summary card, per-framework insight accordion (summary / readiness explanation / gap narrative), live chat interface
+- Inline AI panels on framework detail page (generate on demand, cached)
+- Chat — contextual NL Q&A with organisation compliance posture as context; quick prompt chips
+- All AI outputs cached in `ai_compliance_insights` — stale-data pattern identical to vendor AI
+
+#### Reports (Phase 7) ✅
+- `/compliance/reports` — Report hub with download buttons
+- **Framework PDF** — per-framework: readiness breakdown, controls table, AI summary block, gaps table
+- **Executive PDF** — AI-narrated org-wide summary with score bars, gap breakdown, policy overview
+- **CSV exports** — controls, evidence, gaps (all with framework name resolved)
+- Routes: `/reports/compliance/framework/[id]`, `/reports/compliance/executive`, `/reports/compliance/controls`, `/reports/compliance/evidence`, `/reports/compliance/gaps`
+
+#### Framework Seed Data (Phase 8) ✅
+- `lib/constants/compliance-framework-templates.ts` — 174 controls across 5 frameworks
+  - ISO 27001:2022 (93) · SOC 2 Type II (33) · DPDP Act 2023 (18) · PCI DSS v4.0 (12) · HIPAA (18)
+- `scripts/seed-compliance-frameworks.mjs` — seeds built-in frameworks + all controls (idempotent, per-org or all-orgs)
+- `scripts/seed-compliance-demo.mjs` — seeds realistic control statuses, evidence, 104 mappings, 8 policies, gap analysis runs, readiness scores
+- Selecting a built-in framework in the UI auto-seeds all its standard controls on create
+
+#### Sub-nav — all 7 tabs live ✅
+Dashboard · Frameworks · Evidence · Policies · Gaps · Reports · AI Officer
 
 ---
 
@@ -279,17 +310,26 @@ Every action logged: organization.created/renamed, vendor.created/updated/delete
 /reports/compliance                          Compliance PDF
 /reports/expiry                              Expiry PDF
 
---- Compliance Module (Phases 1–3 live) ---
-/compliance                                  Dashboard — overall readiness, framework cards, gaps
-/compliance/frameworks                       Framework list table
-/compliance/frameworks/new                   Add framework (built-in picker + custom)
-/compliance/frameworks/[id]                  Framework detail — readiness, controls table, gaps
+--- Compliance Module (all phases live) ---
+/compliance                                  Dashboard — overall readiness, framework cards, gap summary
+/compliance/frameworks                       Framework list (readiness %, controls, evidence %, gaps)
+/compliance/frameworks/new                   Add framework (built-in picker auto-seeds controls + custom)
+/compliance/frameworks/[id]                  Framework detail — readiness ring, AI panels, controls table, gaps
 /compliance/frameworks/[id]/controls/new     Add control to framework
-/compliance/evidence                         Evidence repository (Phase 4 — not yet built)
-/compliance/policies                         Policy management (Phase 5 — not yet built)
-/compliance/gaps                             Gap analysis dashboard (Phase 5 — not yet built)
-/compliance/reports                          Compliance reports (Phase 7 — not yet built)
-/compliance/ai                               AI Compliance Officer (Phase 6 — not yet built)
+/compliance/evidence                         Evidence repository (list, filters, auto-import button)
+/compliance/evidence/new                     Create manual evidence item
+/compliance/evidence/[id]                    Evidence detail + EvidenceMapper (checkbox → controls)
+/compliance/policies                         Policy list (approved/review/draft/expired)
+/compliance/policies/new                     Create policy
+/compliance/policies/[id]                    Policy detail + workflow buttons + version history
+/compliance/gaps                             Gap analysis dashboard (filter by framework/severity/type)
+/compliance/reports                          Report hub — PDF + CSV downloads
+/compliance/ai                               AI Compliance Officer (insights + chat)
+/reports/compliance/framework/[id]           Per-framework PDF download
+/reports/compliance/executive                Executive compliance PDF (AI-narrated)
+/reports/compliance/controls                 Controls CSV export
+/reports/compliance/evidence                 Evidence CSV export
+/reports/compliance/gaps                     Gaps CSV export
 
 --- Platform ---
 /settings                                    Profile + org settings
@@ -325,12 +365,14 @@ lib/
   services/nl-search-service.ts  Natural language search parser (Gemini → structured filters)
 
   --- Compliance Module services ---
-  services/compliance/readiness-service.ts  Pure: computeReadiness() — no DB, client-safe
-  services/compliance/framework-service.ts  Framework CRUD + recomputeReadiness() trigger
-  services/compliance/control-service.ts    Control CRUD + inline status, triggers readiness
-  services/compliance/evidence-service.ts   Evidence CRUD + map/unmap + autoImportFromVendors()
-  services/compliance/policy-service.ts     Policy CRUD + version history
-  services/compliance/gap-service.ts        runGapAnalysis() — 5 rule-based gap types
+  services/compliance/readiness-service.ts    Pure: computeReadiness() — no DB, client-safe
+  services/compliance/framework-service.ts    Framework CRUD + recomputeReadiness() + seedFrameworkControls()
+  services/compliance/control-service.ts      Control CRUD + inline status, triggers readiness
+  services/compliance/evidence-service.ts     Evidence CRUD + map/unmap + autoImportFromVendors()
+  services/compliance/policy-service.ts       Policy CRUD + version history
+  services/compliance/gap-service.ts          runGapAnalysis() — 5 rule-based gap types
+  services/compliance/ai-compliance-service.ts Gemini: framework summary, readiness explanation,
+                                              gap narrative, executive summary, contextual chat
 
   repositories/                 Data access only (Drizzle) — all repos here
                                 Vendor: vendor-repo, document-repo, assessment-repo,
@@ -338,14 +380,16 @@ lib/
                                         template-repo, notification-repo, audit-repo,
                                         activity-repo, org-repo, profile-repo, team-repo
                                 Compliance: framework-repo, control-repo, evidence-repo,
-                                            policy-repo, gap-repo, readiness-repo
+                                            policy-repo, gap-repo, readiness-repo,
+                                            ai-compliance-repo
 
   --- Server actions (thin transport layer) ---
   vendors/actions.ts            Vendor CRUD actions
   documents/actions.ts          Document upload/delete/edit actions
   assessments/actions.ts        Assessment save/complete actions
   reviews/actions.ts            Review create/status actions
-  compliance/actions.ts         Framework + control + gap analysis actions
+  compliance/actions.ts         All compliance actions — frameworks, controls, evidence,
+                                policies, gaps, AI (generateFrameworkSummary, complianceChat, etc.)
 
   email/resend.ts               Resend client + isResendConfigured()
   email/templates.ts            HTML email templates — expiryAlertHtml(), weeklyDigestHtml(aiBrief?)
@@ -354,7 +398,9 @@ lib/
   constants/vendor-options.ts   Categories, risk levels, doc types (25+)
   constants/vendor-templates.ts 7 default template definitions
   constants/assessment-questions.ts 17 standard questions + calculateScore() + groupByCategory()
-  reports/                      react-pdf templates: compliance, expiry, audit-package, executive-summary
+  constants/compliance-framework-templates.ts 174 controls across ISO 27001/SOC 2/DPDP/PCI DSS/HIPAA
+  reports/                      react-pdf templates: vendor-compliance, expiry, audit-package,
+                                executive-summary, compliance-framework-pdf, compliance-executive-pdf
 
 components/
   ui/                           Button, Card, Badge, StatusBadge, Input, Select, Tabs,
@@ -367,11 +413,27 @@ components/
   activity/                     ActivityFeed (Lucide icons per action type)
   settings/                     Profile, org, notification, team forms
   portal/                       PortalUpload component
-  compliance/                   compliance-badges.tsx (framework/control/priority/gap severity)
-                                new-framework-form.tsx (built-in picker + custom)
-                                new-control-form.tsx
-                                framework-actions.tsx (DeleteFramework, RunGapAnalysisButton,
-                                                      ControlStatusSelect, DeleteControl)
+  compliance/
+    compliance-badges.tsx       FrameworkStatusBadge, ControlStatusBadge, ControlPriorityBadge,
+                                EvidenceStatusBadge, EvidenceSourceBadge, PolicyStatusBadge,
+                                GapSeverityBadge — all badges in one file
+    compliance-ui.tsx           Shared helpers: ComplianceStat, FilterChip, CoverageBar,
+                                SectionLabel, formatDate, isExpiredDate
+    new-framework-form.tsx      Built-in picker (auto-seeds controls on select) + custom form
+    new-control-form.tsx        Add control form
+    new-evidence-form.tsx       Create manual evidence form
+    new-policy-form.tsx         Create policy form
+    framework-actions.tsx       DeleteFramework, RunGapAnalysisButton, ControlStatusSelect,
+                                DeleteControl
+    evidence-mapper.tsx         Checkbox-based evidence→control mapper (grouped by framework,
+                                immediate toggle, search filter)
+    evidence-actions.tsx        EvidenceStatusSelect, DeleteEvidence
+    policy-actions.tsx          PolicyWorkflowButtons (Draft→Review→Approve→Archive), DeletePolicy
+    resolve-gap-button.tsx      One-click gap resolve with optimistic state
+    auto-import-button.tsx      "Import from vendors" button with count feedback
+    framework-ai-panels.tsx     FrameworkSummaryPanel, ReadinessExplanationPanel, GapNarrativePanel
+    ai-chat.tsx                 AI Compliance Officer chat UI (conversation history, quick prompts)
+    policy-status-badge.tsx     Re-export from compliance-badges.tsx (backwards compat)
 
 supabase/
   migrations/0000_*.sql         Initial schema
@@ -389,6 +451,9 @@ scripts/
   seed-demo.mjs                 Seed 15 realistic Indian vendors + 67 docs + assessments (idempotent)
   seed-e2e.mjs                  Seed E2E test user + workspace
   check-db.mjs                  Quick DB state check (counts)
+  seed-compliance-frameworks.mjs  Seed 5 built-in frameworks + 174 standard controls (idempotent)
+  seed-compliance-demo.mjs      Seed realistic control statuses, evidence, 104 mappings, 8 policies,
+                                gap analysis, readiness scores for demo testing (idempotent)
 
 tests/
   setup/vitest.setup.ts         jest-dom matchers
@@ -453,15 +518,41 @@ E2E tests skip automatically when no auth session exists. To activate:
 
 ## 9. Demo Seed Data
 
-Run `node scripts/seed-demo.mjs` to populate the "admin corp" workspace with:
+### Vendor Governance seed — `node scripts/seed-demo.mjs`
 
-- **19 vendors** — Razorpay, HDFC Bank, Freshworks, TCS, Zoho, Wipro, Keka, Darwinbox, Infosys BPM, Quess Corp, Sify Technologies, Yotta Data Services, Apollo HealthCo, Birlasoft, GreytHR — covering every risk level, status, compliance state, and document category
+Populates the "admin corp" workspace with:
+
+- **15 vendors** — Razorpay, HDFC Bank, Freshworks, TCS, Zoho, Wipro, Keka, Darwinbox, Infosys BPM, Quess Corp, Sify Technologies, Yotta Data Services, Apollo HealthCo, Birlasoft, GreytHR — covering every risk level, status, compliance state, and document category
 - **67 documents** — v2 metadata pre-populated (cert numbers, scopes, accreditation bodies, regions)
 - **6 assessments** — complete with all 17 question responses
 - **11 reviews** — annual, quarterly, security, compliance; including one rejected review
 - **9 document requests** — pending requests for high-risk / underdocumented vendors
 - **Pre-written AI summaries** for 9 key vendors
 - Idempotent — safe to re-run (uses ON CONFLICT DO NOTHING throughout)
+
+### Compliance framework seed — `node scripts/seed-compliance-frameworks.mjs`
+
+Seeds all 5 built-in frameworks with their standard controls:
+
+- **ISO 27001:2022** — 93 controls (A.5–A.8, all categories + priorities)
+- **SOC 2 Type II** — 33 Trust Service Criteria (CC1–CC9)
+- **DPDP Act 2023** — 18 principal obligations (India-specific)
+- **PCI DSS v4.0** — 12 requirements
+- **HIPAA** — 18 administrative/physical/technical safeguard standards
+
+Options: `node scripts/seed-compliance-frameworks.mjs <orgId>` for a specific org, `--list` to show template stats. Idempotent.
+
+### Compliance demo seed — `node scripts/seed-compliance-demo.mjs`
+
+Builds on top of the framework seed to create a fully testable state:
+
+- **Control statuses** — realistic distribution (ISO 27001: 35 impl · 25 partial · 27 not impl; SOC 2: 21 impl · 12 partial; DPDP: 12 impl · 3 partial; etc.)
+- **12 manual evidence items** — ISP, Pen Test Report, Internal Audit, Access Review, BCP, VAPT, etc.
+- **104 control-evidence mappings** — evidence linked to specific controls by framework
+- **8 policies** — approved (ISP, Vendor Mgmt, Access Control, Privacy), review (Incident Response), draft (BCP, Acceptable Use), expired (Data Retention)
+- **107 open gaps** — across all 5 frameworks with mixed severities
+- **5 readiness scores** — DPDP 75% · SOC 2 67% · ISO 27001 51% · PCI DSS 34% · HIPAA 25%
+- Idempotent — safe to re-run
 
 ---
 
@@ -497,18 +588,18 @@ Run `node scripts/seed-demo.mjs` to populate the "admin corp" workspace with:
 | Document Manual Edit + Re-extract | ✅ Done |
 | Comprehensive Demo Seed Data | ✅ Done |
 
-### Module 2 — Compliance Management 🚧 In Progress
+### Module 2 — Compliance Management ✅ Complete
 
 | Phase | Feature | Status |
 |---|---|---|
 | 1 | DB schema — 10 tables, 6 enums, migration, RLS | ✅ Done |
-| 2 | Repositories (6) + Services (6) + pure readiness scoring | ✅ Done |
+| 2 | Repositories (7) + Services (7) + pure readiness scoring | ✅ Done |
 | 3 | UI — Dashboard, Framework list/detail, Controls table + inline status | ✅ Done |
 | 4 | Evidence repository UI + auto-import from vendor module + mapping UI | ✅ Done |
 | 5 | Policy management UI + Gap analysis dashboard | ✅ Done |
 | 6 | AI Compliance Officer — Gemini chat + insight cards | ✅ Done |
 | 7 | Compliance PDF + CSV reports | ✅ Done |
-| 8 | Framework seed data (ISO 27001 / SOC 2 / DPDP controls) | ✅ Done |
+| 8 | Framework seed data — 174 controls (ISO 27001 / SOC 2 / DPDP / PCI DSS / HIPAA) | ✅ Done |
 
 ### Future Modules
 
@@ -566,10 +657,15 @@ npm run db:studio              # Drizzle Studio GUI
 # SQL utilities
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
-node scripts/seed-templates.mjs   # Seed 7 default vendor type templates
-node scripts/seed-demo.mjs        # Seed 15 realistic Indian vendors (idempotent)
-node scripts/seed-e2e.mjs         # Seed E2E test user + workspace
-node scripts/check-db.mjs         # Quick DB state check
+node scripts/seed-templates.mjs             # Seed 7 default vendor type templates
+node scripts/seed-demo.mjs                  # Seed 15 realistic Indian vendors (idempotent)
+node scripts/seed-e2e.mjs                   # Seed E2E test user + workspace
+node scripts/check-db.mjs                   # Quick DB state check
+
+# Compliance seeds
+npm run db:seed-compliance                  # Seed 5 frameworks + 174 standard controls
+npm run db:seed-compliance-demo             # Seed statuses, evidence, policies, gaps, scores
+node scripts/seed-compliance-frameworks.mjs --list   # Show built-in template stats
 
 # Tests
 npm run test                   # Run all 201 Vitest tests

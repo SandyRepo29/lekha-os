@@ -36,7 +36,12 @@ export async function updateRole(membershipId: string, role: string): Promise<Te
   if (session.demo || !session.org) return { error: "Not available in demo mode." };
   try {
     requireAdmin(session.org.role);
-    await teamService.updateRole({ orgId: session.org.id, actorId: session.id, membershipId, role: role as "owner" | "admin" | "member" | "viewer" });
+    await teamService.updateRole({
+      orgId: session.org.id,
+      actorId: session.id,
+      membershipId,
+      role: role as Parameters<typeof teamService.updateRole>[0]["role"],
+    });
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };
     return { error: "Could not update role." };
@@ -70,5 +75,41 @@ export async function reactivateMember(membershipId: string): Promise<TeamState>
     return { error: "Could not reactivate member." };
   }
   revalidatePath("/settings/team");
+  return { ok: true };
+}
+
+export async function transferOwnership(
+  targetMembershipId: string,
+  actorMembershipId: string
+): Promise<TeamState> {
+  const session = await requireUser();
+  if (session.demo || !session.org) return { error: "Not available in demo mode." };
+  if (session.org.role !== "owner") return { error: "Only the owner can transfer ownership." };
+  try {
+    await teamService.transferOwnership({
+      orgId: session.org.id,
+      actorId: session.id,
+      targetMembershipId,
+      actorMembershipId,
+    });
+  } catch (err) {
+    if (err instanceof DomainError) return { error: err.message };
+    return { error: "Could not transfer ownership." };
+  }
+  revalidatePath("/settings/team");
+  revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+export async function resendInvite(email: string): Promise<TeamState> {
+  const session = await requireUser();
+  if (session.demo || !session.org) return { error: "Not available in demo mode." };
+  try {
+    requireAdmin(session.org.role);
+    await teamService.resendInvite({ orgId: session.org.id, actorId: session.id, email });
+  } catch (err) {
+    if (err instanceof DomainError) return { error: err.message };
+    return { error: "Could not resend invite." };
+  }
   return { ok: true };
 }

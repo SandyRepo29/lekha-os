@@ -6,7 +6,10 @@ import { recordAudit } from "@/lib/repositories/audit-repo";
 
 export type { TeamMember } from "@/lib/repositories/team-repo";
 
-const ROLES = ["owner", "admin", "member", "viewer"] as const;
+const ROLES = [
+  "owner", "admin", "member", "viewer",
+  "compliance_manager", "security_manager", "procurement_manager",
+] as const;
 type Role = typeof ROLES[number];
 
 export async function listTeam(orgId: string) {
@@ -86,5 +89,54 @@ export async function reactivateMember(params: {
   await db.transaction(async (tx) => {
     await teamRepo.setMemberActive(params.membershipId, true, tx);
     await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "team.member_reactivated", entityType: "membership", entityId: params.membershipId }, tx);
+  });
+}
+
+export async function transferOwnership(params: {
+  orgId: string;
+  actorId: string;
+  targetMembershipId: string;
+  actorMembershipId: string;
+}): Promise<void> {
+  await db.transaction(async (tx) => {
+    // Demote current owner to admin
+    await teamRepo.updateMemberRole(params.actorMembershipId, "admin", tx);
+    // Promote target to owner
+    await teamRepo.updateMemberRole(params.targetMembershipId, "owner", tx);
+    await recordAudit({
+      organizationId: params.orgId,
+      actorId: params.actorId,
+      action: "team.ownership_transferred",
+      entityType: "membership",
+      entityId: params.targetMembershipId,
+    }, tx);
+  });
+}
+
+export async function resendInvite(params: {
+  orgId: string;
+  actorId: string;
+  email: string;
+}): Promise<void> {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!serviceRoleKey || serviceRoleKey === "placeholder-service-role-key" || !supabaseUrl) {
+    throw new DomainError("Service role key not configured.");
+  }
+
+  const admin = createAdminClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
+  const { error } = await admin.auth.admin.inviteUserByEmail(params.email, { redirectTo });
+  if (error) throw new DomainError(`Resend failed: ${error.message}`);
+
+  await recordAudit({
+    organizationId: params.orgId,
+    actorId: params.actorId,
+    action: "team.invite_resent",
+    entityType: "profile",
+    metadata: { email: params.email },
   });
 }

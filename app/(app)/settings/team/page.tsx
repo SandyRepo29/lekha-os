@@ -11,6 +11,11 @@ export default async function TeamPage() {
   const session = await requireUser();
   const members = session.demo || !session.org ? [] : await listTeam(session.org.id);
   const canInvite = session.org?.role === "owner" || session.org?.role === "admin";
+  const isOwner = session.org?.role === "owner";
+  const myMembership = members.find((m) => m.userId === session.id);
+
+  const active = members.filter((m) => m.isActive);
+  const inactive = members.filter((m) => !m.isActive);
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
@@ -18,6 +23,22 @@ export default async function TeamPage() {
         <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Team</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Manage who has access to {session.orgName}.</p>
       </div>
+
+      {/* Analytics strip */}
+      {members.length > 0 && (
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: "Total members", value: members.length },
+            { label: "Active", value: active.length },
+            { label: "Inactive", value: inactive.length },
+          ].map(({ label, value }) => (
+            <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-center">
+              <div className="text-2xl font-bold text-[var(--color-ink)]">{value}</div>
+              <div className="mt-0.5 text-xs text-[var(--color-ink-faint)]">{label}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Invite */}
       {canInvite && (
@@ -30,7 +51,7 @@ export default async function TeamPage() {
             <CardHeader><CardTitle>Invite a teammate</CardTitle></CardHeader>
             <CardContent>
               <p className="mb-4 text-sm text-[var(--color-ink-dim)]">
-                They'll receive an email to join <strong>{session.orgName}</strong> on Lekha OS.
+                They&apos;ll receive an email to join <strong>{session.orgName}</strong> on Lekha OS.
               </p>
               <InviteForm />
             </CardContent>
@@ -59,6 +80,8 @@ export default async function TeamPage() {
                   member={m}
                   currentUserId={session.id}
                   currentRole={session.org?.role ?? "viewer"}
+                  isOwner={isOwner}
+                  ownerMembershipId={myMembership?.membershipId}
                 />
               ))}
             </div>
@@ -71,13 +94,16 @@ export default async function TeamPage() {
         <h3 className="mb-3 text-sm font-semibold text-[var(--color-ink)]">Role permissions</h3>
         <div className="space-y-2 text-sm">
           {[
-            { role: "Owner", desc: "Full access. Manage billing, team, org settings." },
+            { role: "Owner", desc: "Full access. Manage billing, team, org settings. Can transfer ownership." },
             { role: "Admin", desc: "Manage vendors, documents, team members. Cannot change billing." },
+            { role: "Compliance Manager", desc: "Full access to Compliance module. Read-only for vendors." },
+            { role: "Security Manager", desc: "Full access to Security settings and Audit logs." },
+            { role: "Procurement Manager", desc: "Full access to Vendor Governance module." },
             { role: "Member", desc: "Add and manage vendors and documents." },
             { role: "Viewer", desc: "Read-only access to all data." },
           ].map(({ role, desc }) => (
             <div key={role} className="flex gap-3">
-              <span className="w-16 shrink-0 font-medium text-[var(--color-ink)]">{role}</span>
+              <span className="w-40 shrink-0 font-medium text-[var(--color-ink)]">{role}</span>
               <span className="text-[var(--color-ink-dim)]">{desc}</span>
             </div>
           ))}

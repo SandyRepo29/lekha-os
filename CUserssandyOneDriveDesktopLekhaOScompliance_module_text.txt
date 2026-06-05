@@ -1,0 +1,444 @@
+Total pages: 19
+
+========== PAGE 1 ==========
+LEKHA OS
+Compliance Module V1
+Product Specification
+Version 1.0
+Objective
+Transform Lekha from a Vendor Governance platform into a Compliance Management Platform.
+The Compliance module should allow organizations to:
+• Manage compliance frameworks
+• Track controls
+• Map evidence
+• Measure readiness
+• Identify gaps
+• Generate compliance reports
+This release should leverage data already available within the Vendor Governance module.
+The Compliance module becomes the system of record for organizational compliance readiness.
+Core Principle
+Vendor Module produces evidence.
+Compliance Module consumes evidence.
+Example:
+Vendor Document
+↓
+Evidence
+1
+
+========== PAGE 2 ==========
+↓
+Control
+↓
+Framework
+↓
+Readiness Score
+MVP Scope
+The first version of Compliance focuses on:
+• Framework Management
+• Control Management
+• Evidence Mapping
+• Policy Management
+• Readiness Scoring
+• Gap Analysis
+• AI Compliance Officer
+No audit workflows.
+No DPDP workflows.
+No risk register.
+No remediation engine.
+Navigation
+Add new menu:
+Compliance
+Subsections:
+Dashboard
+2
+
+========== PAGE 3 ==========
+Frameworks
+Controls
+Evidence
+Policies
+Reports
+AI Compliance Officer
+Module 1
+Compliance Dashboard
+Purpose:
+Single view of compliance posture.
+Dashboard Widgets
+Overall Compliance Score
+Framework Readiness
+Open Gaps
+Controls Implemented
+Evidence Coverage
+Policies Active
+Recent Compliance Activity
+Example
+Overall Readiness
+3
+
+========== PAGE 4 ==========
+82%
+Frameworks
+3
+Controls
+127
+Implemented
+95
+Partial
+18
+Missing
+14
+Module 2
+Framework Library
+Purpose:
+Manage compliance frameworks.
+Supported Frameworks
+ISO27001
+SOC2
+DPDP
+PCI DSS
+HIPAA
+4
+
+========== PAGE 5 ==========
+Custom Framework
+Framework Fields
+Name
+Description
+Version
+Owner
+Status
+Created Date
+Review Date
+Framework Status
+Not Started
+In Progress
+Ready
+Certified
+Expired
+Framework Dashboard
+Display:
+Framework Name
+Readiness Score
+Control Coverage
+Evidence Coverage
+5
+
+========== PAGE 6 ==========
+Gap Count
+Module 3
+Controls Management
+Purpose:
+Manage framework controls.
+Control Fields
+Control ID
+Control Name
+Framework
+Description
+Category
+Owner
+Status
+Priority
+Review Date
+Status
+Implemented
+Partially Implemented
+Not Implemented
+Not Applicable
+6
+
+========== PAGE 7 ==========
+Priority
+Low
+Medium
+High
+Critical
+Example
+ISO27001
+A.5.1
+Information Security Policies
+Status: Implemented
+Controls View
+Filters:
+Framework
+Owner
+Status
+Priority
+Category
+Module 4
+Evidence Repository
+Purpose:
+7
+
+========== PAGE 8 ==========
+Central evidence management.
+Evidence Sources
+Vendor Documents
+Vendor Assessments
+Vendor Reviews
+Vendor Reports
+Manual Uploads
+Policies
+Future Integrations
+Evidence Fields
+Title
+Description
+Source
+Owner
+Linked Controls
+Linked Frameworks
+Review Date
+Expiry Date
+Status
+Evidence Status
+Draft
+8
+
+========== PAGE 9 ==========
+Pending Review
+Approved
+Expired
+Archived
+Search & Filters
+Framework
+Control
+Vendor
+Owner
+Status
+Expiry
+Module 5
+Evidence Mapping
+Purpose:
+Connect evidence to controls.
+Mapping Example
+Vendor:
+AWS
+Document:
+SOC2 Report
+9
+
+========== PAGE 10 ==========
+Mapped To:
+SOC2 CC1.2
+SOC2 CC6.1
+ISO27001 A.15
+Features
+Manual Mapping
+Bulk Mapping
+AI Suggested Mapping
+Control Coverage View
+Coverage View
+Control
+↓
+Mapped Evidence
+↓
+Coverage %
+Module 6
+Policy Management
+Purpose:
+Manage organizational policies.
+10
+
+========== PAGE 11 ==========
+Policy Types
+Information Security Policy
+Vendor Management Policy
+Access Control Policy
+Incident Response Policy
+Privacy Policy
+Business Continuity Policy
+Custom Policy
+Policy Fields
+Name
+Owner
+Version
+Status
+Review Date
+Approval Date
+Approver
+Status
+Draft
+Review
+Approved
+Archived
+11
+
+========== PAGE 12 ==========
+Expired
+Features
+Upload Policy
+Version History
+Approval Workflow
+Policy Search
+Policy Library
+Module 7
+Gap Analysis
+Purpose:
+Identify compliance deficiencies.
+Gap Types
+Missing Controls
+Missing Evidence
+Expired Evidence
+Expired Policies
+Unmapped Controls
+Incomplete Coverage
+Gap Dashboard
+Total Gaps
+12
+
+========== PAGE 13 ==========
+Critical Gaps
+High Priority Gaps
+Framework Readiness
+Example
+Framework:
+ISO27001
+Total Controls:
+93
+Implemented:
+71
+Partial:
+12
+Missing:
+10
+Readiness:
+82%
+Module 8
+Readiness Scoring
+Purpose:
+Measure compliance maturity.
+13
+
+========== PAGE 14 ==========
+Inputs
+Control Status
+Evidence Coverage
+Policy Coverage
+Review Completion
+Vendor Compliance Data
+Outputs
+Framework Readiness
+Overall Compliance Score
+Control Health
+Coverage Percentage
+Example
+ISO27001
+82%
+SOC2
+74%
+DPDP
+21%
+Overall
+76%
+14
+
+========== PAGE 15 ==========
+Module 9
+AI Compliance Officer
+Purpose:
+Provide compliance guidance.
+Capabilities
+Framework Summary
+Control Explanation
+Gap Analysis
+Evidence Recommendations
+Readiness Explanation
+Policy Recommendations
+Compliance Insights
+Example Questions
+What controls are missing for ISO27001?
+Why is SOC2 readiness low?
+Show controls with no evidence.
+Which vendors impact compliance most?
+Summarize compliance posture.
+AI Outputs
+Compliance Summary
+15
+
+========== PAGE 16 ==========
+Gap Summary
+Control Recommendations
+Evidence Recommendations
+Executive Insights
+Module 10
+Compliance Reports
+Purpose:
+Generate executive reporting.
+Reports
+Framework Readiness Report
+Control Coverage Report
+Evidence Coverage Report
+Gap Analysis Report
+Policy Status Report
+Executive Compliance Summary
+Export Formats
+PDF
+Excel
+CSV
+16
+
+========== PAGE 17 ==========
+Database Entities
+Frameworks
+Controls
+Evidence
+ControlMappings
+Policies
+PolicyVersions
+ReadinessScores
+GapAnalysis
+ComplianceReports
+AIComplianceInsights
+AI Features
+AI Framework Summary
+AI Control Explanation
+AI Gap Detection
+AI Evidence Suggestions
+AI Readiness Explanation
+AI Executive Compliance Summary
+AI Control Mapping Suggestions
+Dashboard Metrics
+Overall Readiness
+17
+
+========== PAGE 18 ==========
+Framework Readiness
+Control Coverage
+Evidence Coverage
+Policy Coverage
+Open Gaps
+Critical Gaps
+Expiring Evidence
+Expiring Policies
+Release Success Criteria
+The Compliance Module is considered complete when:
+✓ Frameworks can be created and managed
+✓ Controls can be managed
+✓ Evidence can be mapped
+✓ Policies can be managed
+✓ Readiness scores are calculated
+✓ Gap analysis works
+✓ Compliance reports can be generated
+✓ AI Compliance Officer is operational
+✓ Vendor Governance data can be linked into controls
+Out Of Scope
+Do NOT build in this release:
+18
+
+========== PAGE 19 ==========
+Audit Workspace
+CAPA
+Findings Management
+Risk Register
+DPDP Workflows
+Board Governance
+Trust Center
+Continuous Monitoring
+Third-Party Integrations
+These belong to future Lekha OS releases.
+Strategic Outcome
+After this release, Lekha evolves from:
+Vendor Governance Platform
+↓
+Vendor Governance + Compliance Management Platform
+This becomes the foundation for future Audit, Risk, DPDP and Governance modules.
+19

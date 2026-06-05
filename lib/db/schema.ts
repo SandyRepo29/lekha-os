@@ -20,6 +20,57 @@ export const membershipRole = pgEnum("membership_role", [
   "admin",
   "member",
   "viewer",
+  "compliance_manager",
+  "security_manager",
+  "procurement_manager",
+]);
+
+export const industryType = pgEnum("industry_type", [
+  "saas",
+  "it_services",
+  "fintech",
+  "healthcare",
+  "manufacturing",
+  "government",
+  "education",
+  "other",
+]);
+
+export const companySizeRange = pgEnum("company_size_range", [
+  "1_10",
+  "11_50",
+  "51_200",
+  "201_500",
+  "501_1000",
+  "1000_plus",
+]);
+
+export const apiKeyStatus = pgEnum("api_key_status", ["active", "revoked"]);
+
+export const apiKeyPermission = pgEnum("api_key_permission", [
+  "read_only",
+  "read_write",
+  "admin",
+]);
+
+export const integrationProvider = pgEnum("integration_provider", [
+  "resend",
+  "smtp",
+  "google_workspace",
+  "microsoft_365",
+  "slack",
+  "teams",
+  "whatsapp",
+  "google_drive",
+  "onedrive",
+  "sharepoint",
+]);
+
+export const integrationStatus = pgEnum("integration_status", [
+  "connected",
+  "disconnected",
+  "error",
+  "pending",
 ]);
 
 export const vendorStatus = pgEnum("vendor_status", [
@@ -90,6 +141,14 @@ export const organizations = pgTable("organizations", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
+  legalName: text("legal_name"),
+  industry: industryType("industry"),
+  companySize: companySizeRange("company_size"),
+  website: text("website"),
+  country: text("country").default("India"),
+  state: text("state"),
+  timezone: text("timezone").default("Asia/Kolkata"),
+  logoUrl: text("logo_url"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
@@ -100,6 +159,11 @@ export const profiles = pgTable("profiles", {
   email: text("email").notNull(),
   fullName: text("full_name"),
   avatarUrl: text("avatar_url"),
+  jobTitle: text("job_title"),
+  department: text("department"),
+  phone: text("phone"),
+  timezone: text("timezone").default("Asia/Kolkata"),
+  language: text("language").default("en"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
@@ -115,6 +179,7 @@ export const memberships = pgTable(
       .notNull()
       .references(() => profiles.id, { onDelete: "cascade" }),
     role: membershipRole("role").notNull().default("member"),
+    department: text("department"),
     isActive: boolean("is_active").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
@@ -412,6 +477,128 @@ export const auditLogs = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => [index("audit_logs_org_idx").on(t.organizationId, t.createdAt)]
+);
+
+/* ============================================================
+   Settings Module — Tables
+   ============================================================ */
+
+/** Org-level branding and report customization settings. */
+export const organizationSettings = pgTable("organization_settings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .unique()
+    .references(() => organizations.id, { onDelete: "cascade" }),
+  primaryColor: text("primary_color").default("#6366f1"),
+  accentColor: text("accent_color").default("#8b5cf6"),
+  reportFooter: text("report_footer"),
+  emailSignature: text("email_signature"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/** Authentication event history per user. */
+export const loginHistory = pgTable(
+  "login_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    location: text("location"),
+    /** success | failed | suspicious */
+    status: text("status").notNull().default("success"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("login_history_org_idx").on(t.organizationId),
+    index("login_history_user_idx").on(t.userId, t.createdAt),
+  ]
+);
+
+/** Available subscription plans (seeded at setup). */
+export const billingPlans = pgTable("billing_plans", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  description: text("description"),
+  priceMonthly: integer("price_monthly").notNull().default(0),
+  priceYearly: integer("price_yearly").notNull().default(0),
+  features: jsonb("features").default([]),
+  maxUsers: integer("max_users").notNull().default(5),
+  maxVendors: integer("max_vendors").notNull().default(10),
+  maxStorageGb: integer("max_storage_gb").notNull().default(1),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/** Active subscription per org. */
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .unique()
+    .references(() => organizations.id, { onDelete: "cascade" }),
+  planId: uuid("plan_id")
+    .notNull()
+    .references(() => billingPlans.id),
+  /** active | trial | cancelled | past_due */
+  status: text("status").notNull().default("trial"),
+  /** monthly | yearly | trial */
+  billingCycle: text("billing_cycle").notNull().default("trial"),
+  currentPeriodStart: timestamp("current_period_start", { withTimezone: true }).defaultNow(),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/** API keys for programmatic access. Plain key shown once; only hash stored. */
+export const apiKeys = pgTable(
+  "api_keys",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    name: text("name").notNull(),
+    /** First 8 chars of the plain key for display (e.g. "lk_live_"). */
+    keyPrefix: text("key_prefix").notNull(),
+    /** bcrypt hash of the full key — never returned to client. */
+    keyHash: text("key_hash").notNull(),
+    permissions: apiKeyPermission("permissions").notNull().default("read_only"),
+    lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
+    status: apiKeyStatus("status").notNull().default("active"),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("api_keys_org_idx").on(t.organizationId)]
+);
+
+/** External integration connections per org. One row per provider. */
+export const integrations = pgTable(
+  "integrations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    provider: integrationProvider("provider").notNull(),
+    displayName: text("display_name").notNull(),
+    /** Provider-specific config (API keys, host, etc.) — plaintext for now. */
+    config: jsonb("config").default({}),
+    status: integrationStatus("status").notNull().default("disconnected"),
+    connectedAt: timestamp("connected_at", { withTimezone: true }),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("integrations_org_provider_uniq").on(t.organizationId, t.provider),
+    index("integrations_org_idx").on(t.organizationId),
+  ]
 );
 
 /* ============================================================
@@ -751,6 +938,14 @@ export type VendorPortalToken = typeof vendorPortalTokens.$inferSelect;
 export type NotificationPreferences = typeof notificationPreferences.$inferSelect;
 export type NotificationHistory = typeof notificationHistory.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
+
+// Settings Module
+export type OrganizationSettings = typeof organizationSettings.$inferSelect;
+export type LoginHistory = typeof loginHistory.$inferSelect;
+export type BillingPlan = typeof billingPlans.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type ApiKey = typeof apiKeys.$inferSelect;
+export type Integration = typeof integrations.$inferSelect;
 
 // Compliance Module
 export type Framework = typeof frameworks.$inferSelect;
