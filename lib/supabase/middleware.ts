@@ -43,6 +43,7 @@ export async function updateSession(request: NextRequest) {
   const isAppRoute =
     path.startsWith("/dashboard") ||
     path.startsWith("/vendors") ||
+    path.startsWith("/compliance") ||
     path.startsWith("/onboarding") ||
     path.startsWith("/settings") ||
     path.startsWith("/reports") ||

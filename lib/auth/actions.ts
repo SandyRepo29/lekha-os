@@ -30,7 +30,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -40,6 +40,12 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   });
 
   if (error) return { error: error.message };
+
+  // If Supabase "Confirm email" is ON, the session is null after signup.
+  // Redirect to a confirmation page instead of onboarding (which requires a session).
+  if (!data.session) {
+    redirect("/signup/confirm");
+  }
 
   revalidatePath("/", "layout");
   redirect("/onboarding");

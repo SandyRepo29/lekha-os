@@ -25,11 +25,11 @@ export function AuthForm({
   return (
     <Card className="p-7">
       <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
-        {isSignup ? "Request a demo" : "Welcome back"}
+        {isSignup ? "Create your account" : "Welcome back"}
       </h1>
       <p className="mt-1.5 text-sm text-[var(--color-ink-dim)]">
         {isSignup
-          ? "Create your workspace and explore Lekha OS."
+          ? "Set up your Lekha OS workspace in minutes."
           : "Sign in to your Lekha OS workspace."}
       </p>
 
@@ -83,7 +83,7 @@ export function AuthForm({
           <>
             New to Lekha OS?{" "}
             <Link href="/signup" className="font-semibold text-[var(--color-blue)] hover:underline">
-              Request a demo
+              Create an account
             </Link>
           </>
         )}
