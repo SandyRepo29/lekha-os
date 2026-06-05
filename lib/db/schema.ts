@@ -6,6 +6,7 @@ import {
   timestamp,
   date,
   integer,
+  bigint,
   boolean,
   jsonb,
   index,
@@ -249,7 +250,21 @@ export const vendorDocuments = pgTable(
       .notNull()
       .references(() => vendors.id, { onDelete: "cascade" }),
     documentType: text("document_type").notNull(),
+    /** Original file name as uploaded by the user. */
+    filename: text("filename"),
+    /** MIME type (e.g. "application/pdf"). */
+    contentType: text("content_type"),
+    /** File size in bytes. */
+    fileSize: bigint("file_size", { mode: "number" }),
+    /** Storage provider key (e.g. "supabase"). References storage_providers.name. */
+    storageProvider: text("storage_provider").default("supabase"),
+    /** Bucket name where the file lives. Used for bucket-aware downloads/deletes. */
+    storageBucket: text("storage_bucket").default("vendor-documents"),
     storagePath: text("storage_path"),
+    /** SHA-256 hex digest of the file content for integrity verification. */
+    checksum: text("checksum"),
+    /** User who uploaded the file. */
+    uploadedBy: uuid("uploaded_by").references(() => profiles.id),
     status: documentStatus("status").notNull().default("missing"),
     /** AI-classified document category. */
     category: documentCategory("category"),
@@ -473,11 +488,35 @@ export const auditLogs = pgTable(
     action: text("action").notNull(),
     entityType: text("entity_type"),
     entityId: uuid("entity_id"),
+    /** Client IP address captured at the transport layer. */
+    ipAddress: text("ip_address"),
     metadata: jsonb("metadata"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => [index("audit_logs_org_idx").on(t.organizationId, t.createdAt)]
 );
+
+/* ============================================================
+   Data Governance — Storage Provider Registry
+   ============================================================ */
+
+/**
+ * Registry of storage providers available to the platform.
+ * Phase 1: single "supabase" (platform-managed) entry.
+ * Future: customer-owned S3, Azure Blob, SharePoint, OneDrive, Google Drive.
+ * Documents reference this table via storageProvider (name key).
+ */
+export const storageProviders = pgTable("storage_providers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** Short key referenced by vendor_documents.storage_provider (e.g. "supabase"). */
+  name: text("name").notNull().unique(),
+  /** "platform" = Lekha-managed; "customer" = customer-owned (future). */
+  type: text("type").notNull().default("platform"),
+  isActive: boolean("is_active").notNull().default(true),
+  /** Provider-specific config — region, endpoint, bucket, etc. */
+  configJson: jsonb("config_json").default({}),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
 
 /* ============================================================
    Settings Module — Tables
@@ -938,6 +977,7 @@ export type VendorPortalToken = typeof vendorPortalTokens.$inferSelect;
 export type NotificationPreferences = typeof notificationPreferences.$inferSelect;
 export type NotificationHistory = typeof notificationHistory.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
+export type StorageProviderRow = typeof storageProviders.$inferSelect;
 
 // Settings Module
 export type OrganizationSettings = typeof organizationSettings.$inferSelect;

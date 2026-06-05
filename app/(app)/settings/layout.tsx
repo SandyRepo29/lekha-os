@@ -5,14 +5,15 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/settings",              label: "Profile",       active: true },
-  { href: "/settings/organization", label: "Organization",  active: true },
-  { href: "/settings/team",         label: "Team",          active: true },
-  { href: "/settings/security",     label: "Security",      active: true },
-  { href: "/settings/audit-logs",   label: "Audit Logs",    active: true },
-  { href: "/settings/billing",      label: "Billing",       active: true },
-  { href: "/settings/api-keys",     label: "API Keys",      active: true },
-  { href: "/settings/integrations", label: "Integrations",  active: true },
+  { href: "/settings",                   label: "Profile",          active: true },
+  { href: "/settings/organization",      label: "Organization",     active: true },
+  { href: "/settings/team",              label: "Team",             active: true },
+  { href: "/settings/security",          label: "Security",         active: true },
+  { href: "/settings/audit-logs",        label: "Audit Logs",       active: true },
+  { href: "/settings/billing",           label: "Billing",          active: true },
+  { href: "/settings/api-keys",          label: "API Keys",         active: true },
+  { href: "/settings/integrations",      label: "Integrations",     active: true },
+  { href: "/settings/data-governance",   label: "Data Governance",  active: true },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
