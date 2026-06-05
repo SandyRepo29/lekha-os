@@ -33,13 +33,14 @@ function getInstance(): DrizzleDB {
       );
     }
 
-    const isProd = process.env.NODE_ENV === "production";
-
     const client = postgres(connectionString, {
       prepare: false,
-      // Production: enforce TLS with certificate verification.
-      // Development: require TLS but don't verify the cert (self-signed OK).
-      ssl: isProd ? { rejectUnauthorized: true } : "require",
+      // Supabase's connection pooler (Supavisor) uses a certificate that is NOT
+      // in Node.js's default CA bundle. rejectUnauthorized: true causes
+      // SELF_SIGNED_CERT_IN_CHAIN and breaks all DB queries on Vercel.
+      // "require" enforces TLS encryption without verifying the cert chain —
+      // this is the correct setting for Supabase pooler connections.
+      ssl: "require",
       // Connection pool settings — Supavisor handles pooling externally,
       // so keep this small to avoid exceeding the pooler connection limit.
       max: 10,
