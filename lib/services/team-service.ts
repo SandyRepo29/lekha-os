@@ -1,7 +1,8 @@
-import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { db } from "@/lib/db";
 import { DomainError } from "./errors";
+import { getAuthProvider } from "@/lib/providers/auth";
 import * as teamRepo from "@/lib/repositories/team-repo";
+import * as profileRepo from "@/lib/repositories/profile-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
 
 export type { TeamMember } from "@/lib/repositories/team-repo";
@@ -24,25 +25,11 @@ export async function inviteMember(params: {
 }): Promise<void> {
   if (!ROLES.includes(params.role)) throw new DomainError("Invalid role.");
 
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!serviceRoleKey || serviceRoleKey === "placeholder-service-role-key" || !supabaseUrl) {
-    throw new DomainError("Service role key not configured. Add SUPABASE_SERVICE_ROLE_KEY to env vars.");
-  }
-
-  const admin = createAdminClient(supabaseUrl, serviceRoleKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
-
   const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
-  const { data, error } = await admin.auth.admin.inviteUserByEmail(params.email, { redirectTo });
-  if (error) throw new DomainError(`Invite failed: ${error.message}`);
+  const { userId } = await getAuthProvider().inviteUser(params.email, redirectTo);
 
-  const userId = data.user?.id;
-  if (!userId) throw new DomainError("Could not get invited user ID.");
-
-  // Ensure profile exists
-  await admin.from("profiles").upsert({ id: userId, email: params.email }, { onConflict: "id" });
+  // Ensure profile row exists (repo handles on-conflict)
+  await profileRepo.upsertProfile(userId, params.email);
 
   // Add membership (upsert in case they were previously deactivated)
   const existing = await teamRepo.findMembership(params.orgId, userId);
@@ -53,12 +40,20 @@ export async function inviteMember(params: {
     });
   } else {
     const { memberships: mTable } = await import("@/lib/db/schema");
-    await db.insert(mTable).values({ organizationId: params.orgId, userId, role: params.role, isActive: true });
+    await db.insert(mTable).values({
+      organizationId: params.orgId,
+      userId,
+      role: params.role,
+      isActive: true,
+    });
   }
 
   await recordAudit({
-    organizationId: params.orgId, actorId: params.actorId,
-    action: "team.member_invited", entityType: "profile", entityId: userId,
+    organizationId: params.orgId,
+    actorId: params.actorId,
+    action: "team.member_invited",
+    entityType: "profile",
+    entityId: userId,
     metadata: { email: params.email, role: params.role },
   });
 }
@@ -69,7 +64,11 @@ export async function updateRole(params: {
   if (!ROLES.includes(params.role)) throw new DomainError("Invalid role.");
   await db.transaction(async (tx) => {
     await teamRepo.updateMemberRole(params.membershipId, params.role, tx);
-    await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "team.role_changed", entityType: "membership", entityId: params.membershipId, metadata: { role: params.role } }, tx);
+    await recordAudit({
+      organizationId: params.orgId, actorId: params.actorId,
+      action: "team.role_changed", entityType: "membership",
+      entityId: params.membershipId, metadata: { role: params.role },
+    }, tx);
   });
 }
 
@@ -79,7 +78,11 @@ export async function deactivateMember(params: {
   if (params.actorId === params.targetUserId) throw new DomainError("You cannot deactivate yourself.");
   await db.transaction(async (tx) => {
     await teamRepo.setMemberActive(params.membershipId, false, tx);
-    await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "team.member_deactivated", entityType: "membership", entityId: params.membershipId }, tx);
+    await recordAudit({
+      organizationId: params.orgId, actorId: params.actorId,
+      action: "team.member_deactivated", entityType: "membership",
+      entityId: params.membershipId,
+    }, tx);
   });
 }
 
@@ -88,7 +91,11 @@ export async function reactivateMember(params: {
 }): Promise<void> {
   await db.transaction(async (tx) => {
     await teamRepo.setMemberActive(params.membershipId, true, tx);
-    await recordAudit({ organizationId: params.orgId, actorId: params.actorId, action: "team.member_reactivated", entityType: "membership", entityId: params.membershipId }, tx);
+    await recordAudit({
+      organizationId: params.orgId, actorId: params.actorId,
+      action: "team.member_reactivated", entityType: "membership",
+      entityId: params.membershipId,
+    }, tx);
   });
 }
 
@@ -99,9 +106,7 @@ export async function transferOwnership(params: {
   actorMembershipId: string;
 }): Promise<void> {
   await db.transaction(async (tx) => {
-    // Demote current owner to admin
     await teamRepo.updateMemberRole(params.actorMembershipId, "admin", tx);
-    // Promote target to owner
     await teamRepo.updateMemberRole(params.targetMembershipId, "owner", tx);
     await recordAudit({
       organizationId: params.orgId,
@@ -118,19 +123,8 @@ export async function resendInvite(params: {
   actorId: string;
   email: string;
 }): Promise<void> {
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!serviceRoleKey || serviceRoleKey === "placeholder-service-role-key" || !supabaseUrl) {
-    throw new DomainError("Service role key not configured.");
-  }
-
-  const admin = createAdminClient(supabaseUrl, serviceRoleKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
-
   const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
-  const { error } = await admin.auth.admin.inviteUserByEmail(params.email, { redirectTo });
-  if (error) throw new DomainError(`Resend failed: ${error.message}`);
+  await getAuthProvider().inviteUser(params.email, redirectTo);
 
   await recordAudit({
     organizationId: params.orgId,

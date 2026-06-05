@@ -1,5 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import { isGeminiConfigured } from "@/lib/ai/gemini";
+import { generateText, isAIConfigured } from "@/lib/providers/ai";
 import * as vendorRepo from "@/lib/repositories/vendor-repo";
 import * as documentRepo from "@/lib/repositories/document-repo";
 import type { VendorDocument } from "@/lib/db/schema";
@@ -38,7 +37,7 @@ Notes: ${vendor.notes ?? "None"}
 }
 
 export async function generateVendorSummary(orgId: string, vendorId: string): Promise<string | null> {
-  if (!isGeminiConfigured()) return null;
+  if (!isAIConfigured()) return null;
 
   const vendor = await vendorRepo.findById(orgId, vendorId);
   if (!vendor) return null;
@@ -46,16 +45,10 @@ export async function generateVendorSummary(orgId: string, vendorId: string): Pr
   const docs = await documentRepo.listByVendor(orgId, vendorId);
   const context = formatVendorContext(vendor, docs);
 
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-  const res = await ai.models.generateContent({
-    model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
-    contents: [{ role: "user", parts: [{ text: `${PROMPT}\n\n${context}` }] }],
-    config: { responseMimeType: "text/plain", temperature: 0.4, maxOutputTokens: 300 },
-  });
+  const summary = await generateText(`${PROMPT}\n\n${context}`, { maxTokens: 300, temperature: 0.4 });
 
-  const summary = res.text?.trim() ?? null;
   if (summary) {
     await vendorRepo.updateVendor(vendorId, { aiSummary: summary, aiSummaryAt: new Date() });
   }
-  return summary;
+  return summary || null;
 }

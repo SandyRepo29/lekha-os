@@ -20,7 +20,35 @@ function getInstance(): DrizzleDB {
   if (!_db) {
     const connectionString = process.env.DATABASE_URL;
     if (!connectionString) throw new Error("DATABASE_URL environment variable is not set.");
-    const client = postgres(connectionString, { prepare: false });
+
+    // Warn if not using the Supavisor pooler in production — direct connections
+    // are IPv6-only and fail on most hosting providers including Vercel.
+    if (
+      process.env.NODE_ENV === "production" &&
+      !connectionString.includes("pooler.supabase.com")
+    ) {
+      console.warn(
+        "[db] WARNING: DATABASE_URL does not appear to use the Supabase pooler. " +
+          "Direct connections are IPv6-only and may fail on Vercel."
+      );
+    }
+
+    const isProd = process.env.NODE_ENV === "production";
+
+    const client = postgres(connectionString, {
+      prepare: false,
+      // Production: enforce TLS with certificate verification.
+      // Development: require TLS but don't verify the cert (self-signed OK).
+      ssl: isProd ? { rejectUnauthorized: true } : "require",
+      // Connection pool settings — Supavisor handles pooling externally,
+      // so keep this small to avoid exceeding the pooler connection limit.
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 10,
+      // Suppress NOTICE messages from migrations/DDL that leak into app logs.
+      onnotice: () => {},
+    });
+
     _db = drizzle(client, { schema });
   }
   return _db;

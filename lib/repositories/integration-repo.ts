@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { integrations } from "@/lib/db/schema";
 import type { Integration } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { encryptConfig, decryptConfig } from "@/lib/providers/crypto/config-cipher";
 
 const ALL_PROVIDERS: Array<{
   provider: Integration["provider"];
@@ -19,12 +20,21 @@ const ALL_PROVIDERS: Array<{
   { provider: "sharepoint",       displayName: "SharePoint" },
 ];
 
+/** Decrypt config on each row before returning. */
+function decryptRow(row: Integration): Integration {
+  return {
+    ...row,
+    config: decryptConfig(row.config as Record<string, unknown>),
+  };
+}
+
 export async function listByOrg(orgId: string): Promise<Integration[]> {
-  return db
+  const rows = await db
     .select()
     .from(integrations)
     .where(eq(integrations.organizationId, orgId))
     .orderBy(integrations.provider);
+  return rows.map(decryptRow);
 }
 
 /** Ensure all provider rows exist for the org (disconnected by default). */
@@ -57,7 +67,7 @@ export async function upsert(
       organizationId: orgId,
       provider,
       displayName: ALL_PROVIDERS.find((p) => p.provider === provider)?.displayName ?? provider,
-      config: values.config ?? {},
+      config: encryptConfig(values.config ?? {}),
       status: values.status,
       connectedAt: values.connectedAt ?? null,
       updatedAt: new Date(),
@@ -65,7 +75,7 @@ export async function upsert(
     .onConflictDoUpdate({
       target: [integrations.organizationId, integrations.provider],
       set: {
-        config: values.config ?? {},
+        config: encryptConfig(values.config ?? {}),
         status: values.status,
         connectedAt: values.connectedAt ?? null,
         updatedAt: new Date(),
@@ -82,5 +92,5 @@ export async function findByProvider(
     .from(integrations)
     .where(and(eq(integrations.organizationId, orgId), eq(integrations.provider, provider)))
     .limit(1);
-  return row ?? null;
+  return row ? decryptRow(row) : null;
 }

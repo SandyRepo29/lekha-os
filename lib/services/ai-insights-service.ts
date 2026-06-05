@@ -1,25 +1,15 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import { isGeminiConfigured } from "@/lib/ai/gemini";
+import { generateText as _generateText, getAI, AI_MODEL, isAIConfigured } from "@/lib/providers/ai";
+import { Type } from "@google/genai";
 import * as vendorRepo from "@/lib/repositories/vendor-repo";
 import * as documentRepo from "@/lib/repositories/document-repo";
 import * as assessmentRepo from "@/lib/repositories/assessment-repo";
 import { STANDARD_QUESTIONS } from "@/lib/constants/assessment-questions";
 
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
 const TEMP = 0.4;
 
-function gemini() {
-  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-}
-
-/** Plain-text generation shortcut. */
+/** Plain-text generation — delegates to the AI provider singleton. */
 async function generateText(prompt: string, maxTokens = 400): Promise<string> {
-  const res = await gemini().models.generateContent({
-    model: MODEL,
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    config: { temperature: TEMP, maxOutputTokens: maxTokens },
-  });
-  return res.text?.trim() ?? "";
+  return _generateText(prompt, { maxTokens, temperature: TEMP });
 }
 
 /* ============================================================
@@ -27,7 +17,7 @@ async function generateText(prompt: string, maxTokens = 400): Promise<string> {
    ============================================================ */
 
 export async function generateScoreExplanation(orgId: string, vendorId: string): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
   const vendor = await vendorRepo.findById(orgId, vendorId);
   if (!vendor) throw new Error("Vendor not found.");
   const docs = await documentRepo.listByVendor(orgId, vendorId);
@@ -70,7 +60,7 @@ export async function generateRiskExplanation(
   vendorId: string,
   riskFactors: { label: string; impact: string; detail: string }[]
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
   const vendor = await vendorRepo.findById(orgId, vendorId);
   if (!vendor) throw new Error("Vendor not found.");
 
@@ -118,7 +108,7 @@ export async function generateRecommendedActions(
   orgId: string,
   vendorId: string
 ): Promise<RecommendedAction[]> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
   const vendor = await vendorRepo.findById(orgId, vendorId);
   if (!vendor) throw new Error("Vendor not found.");
   const docs = await documentRepo.listByVendor(orgId, vendorId);
@@ -149,8 +139,8 @@ Return ONLY valid JSON as an array of objects with these exact fields:
 
 Return only the JSON array, no other text.`;
 
-  const res = await gemini().models.generateContent({
-    model: MODEL,
+  const res = await getAI().models.generateContent({
+    model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     config: {
       responseMimeType: "application/json",
@@ -187,7 +177,7 @@ export async function generateAssessmentSummary(
   orgId: string,
   assessmentId: string
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
   const result = await assessmentRepo.getWithResponses(orgId, assessmentId);
   if (!result) throw new Error("Assessment not found.");
   const { assessment, responses } = result;
@@ -249,7 +239,7 @@ export async function generateExecutiveSummaryReport(
   orgId: string,
   vendorId: string
 ): Promise<ExecutiveSummaryReport> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const vendor  = await vendorRepo.findById(orgId, vendorId);
   if (!vendor) throw new Error("Vendor not found.");
@@ -291,8 +281,8 @@ Return valid JSON with these exact keys:
   "conclusion": "1-2 sentence closing summary suitable for a board pack"
 }`;
 
-  const res = await gemini().models.generateContent({
-    model: MODEL,
+  const res = await getAI().models.generateContent({
+    model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     config: {
       responseMimeType: "application/json",
@@ -329,7 +319,7 @@ export type WeeklyBriefData = {
 };
 
 export async function generateWeeklyBrief(data: WeeklyBriefData): Promise<string> {
-  if (!isGeminiConfigured()) return "";
+  if (!isAIConfigured()) return "";
 
   const expiryLines = data.expiringSoon
     .slice(0, 5)

@@ -2,6 +2,17 @@ import { eq } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { profiles, organizations, memberships } from "@/lib/db/schema";
 
+export async function upsertProfile(
+  userId: string,
+  email: string,
+  exec: Executor = db
+): Promise<void> {
+  await exec
+    .insert(profiles)
+    .values({ id: userId, email })
+    .onConflictDoNothing();
+}
+
 export async function findProfile(userId: string) {
   const [row] = await db
     .select()

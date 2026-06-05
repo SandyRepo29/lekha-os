@@ -108,6 +108,16 @@ export async function updateOrgBranding(params: {
   });
 }
 
-export { getOrgWithMemberCount } from "@/lib/repositories/profile-repo";
-export { findProfile } from "@/lib/repositories/profile-repo";
-export { findByOrg as getOrgSettings } from "@/lib/repositories/organization-settings-repo";
+// ---- Queries (proper service wrappers, not bare re-exports) ----------------
+
+export async function getOrgWithMemberCount(orgId: string) {
+  return profileRepo.getOrgWithMemberCount(orgId);
+}
+
+export async function findProfile(userId: string) {
+  return profileRepo.findProfile(userId);
+}
+
+export async function getOrgSettings(orgId: string) {
+  return orgSettingsRepo.findByOrg(orgId);
+}

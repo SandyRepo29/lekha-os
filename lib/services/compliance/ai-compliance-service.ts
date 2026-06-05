@@ -3,8 +3,7 @@
  * All outputs cached in ai_compliance_insights (upsert on org+type+target).
  * Follows the same pattern as lib/services/ai-insights-service.ts.
  */
-import { GoogleGenAI } from "@google/genai";
-import { isGeminiConfigured } from "@/lib/ai/gemini";
+import { generateText, getAI, AI_MODEL, isAIConfigured } from "@/lib/providers/ai";
 import * as aiComplianceRepo from "@/lib/repositories/ai-compliance-repo";
 import * as frameworkRepo from "@/lib/repositories/framework-repo";
 import * as controlRepo from "@/lib/repositories/control-repo";
@@ -13,19 +12,8 @@ import * as gapRepo from "@/lib/repositories/gap-repo";
 import * as policyRepo from "@/lib/repositories/policy-repo";
 import * as readinessRepo from "@/lib/repositories/readiness-repo";
 
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
-
-function gemini() {
-  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-}
-
 async function generate(prompt: string, maxTokens = 500): Promise<string> {
-  const res = await gemini().models.generateContent({
-    model: MODEL,
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    config: { temperature: 0.4, maxOutputTokens: maxTokens },
-  });
-  return res.text?.trim() ?? "";
+  return generateText(prompt, { maxTokens, temperature: 0.4 });
 }
 
 /* ============================================================
@@ -36,7 +24,7 @@ export async function generateFrameworkSummary(
   orgId: string,
   frameworkId: string
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const [fw, score, statusCounts, gaps] = await Promise.all([
     frameworkRepo.findById(orgId, frameworkId),
@@ -82,7 +70,7 @@ export async function explainReadiness(
   orgId: string,
   frameworkId: string
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const [fw, score, statusCounts] = await Promise.all([
     frameworkRepo.findById(orgId, frameworkId),
@@ -121,7 +109,7 @@ export async function generateGapNarrative(
   orgId: string,
   frameworkId: string
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const [fw, gaps] = await Promise.all([
     frameworkRepo.findById(orgId, frameworkId),
@@ -167,7 +155,7 @@ Write 2-3 sentences summarising the gap situation. Then give 3 prioritised remed
    ============================================================ */
 
 export async function generateExecutiveSummary(orgId: string): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const [frameworks, scores, allGaps, policies] = await Promise.all([
     frameworkRepo.findByOrg(orgId),
@@ -219,7 +207,7 @@ export async function chat(
   message: string,
   history: ChatMessage[] = []
 ): Promise<string> {
-  if (!isGeminiConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) throw new Error("Gemini not configured.");
 
   const [frameworks, scores, allGaps, policies, evidence] = await Promise.all([
     frameworkRepo.findByOrg(orgId),
@@ -266,8 +254,8 @@ Answer in 2-4 sentences. Be specific and use the data above.`;
     );
   }
 
-  const res = await gemini().models.generateContent({
-    model: MODEL,
+  const res = await getAI().models.generateContent({
+    model: AI_MODEL,
     contents,
     config: { temperature: 0.5, maxOutputTokens: 400 },
   });

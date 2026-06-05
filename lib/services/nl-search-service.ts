@@ -1,7 +1,5 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import { isGeminiConfigured } from "@/lib/ai/gemini";
-
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+import { Type } from "@google/genai";
+import { getAI, AI_MODEL, isAIConfigured } from "@/lib/providers/ai";
 
 export type NLSearchFilters = {
   /** Free-text search within vendor name or category */
@@ -76,13 +74,12 @@ const responseSchema = {
 };
 
 export async function parseNaturalLanguageSearch(query: string): Promise<NLSearchFilters> {
-  if (!isGeminiConfigured()) {
+  if (!isAIConfigured()) {
     return { query, summary: `Search: "${query}"` };
   }
 
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-  const res = await ai.models.generateContent({
-    model: MODEL,
+  const res = await getAI().models.generateContent({
+    model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: `${PROMPT}\n\nUser query: "${query}"` }] }],
     config: { responseMimeType: "application/json", responseSchema, temperature: 0 },
   });
