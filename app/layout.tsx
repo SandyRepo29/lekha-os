@@ -16,14 +16,14 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "Lekha OS — The Trust, Governance & Compliance Operating System for Indian Businesses",
+  title: "AUDT | Governance Built on Proof",
   description:
-    "Manage vendors, compliance, audits, risks and governance from a single AI-powered platform built for India.",
+    "AI-native trust, risk, compliance, and governance platform for managing vendors, evidence, controls, audits, and organizational trust.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
-    title: "Lekha OS",
+    title: "AUDT | Governance Built on Proof",
     description:
-      "The Trust, Governance & Compliance Operating System for Indian Businesses.",
+      "AI-native trust, risk, compliance, and governance platform for managing vendors, evidence, controls, audits, and organizational trust.",
     type: "website",
   },
 };
