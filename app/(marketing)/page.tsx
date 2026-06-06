@@ -64,6 +64,26 @@ export default function LandingPage() {
       );
     };
 
+    // Score counter animation for trust intelligence section
+    const animateScores = () => {
+      document.querySelectorAll<HTMLElement>(".score-num[data-score]").forEach((el) => {
+        if (el.dataset.done) return;
+        el.dataset.done = "1";
+        const target = parseInt(el.getAttribute("data-score") || "0", 10);
+        const dur = 1800;
+        let start: number | null = null;
+        const step = (ts: number) => {
+          if (start === null) start = ts;
+          const p = Math.min((ts - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = String(Math.floor(target * eased));
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = String(target);
+        };
+        requestAnimationFrame(step);
+      });
+    };
+
     let io: IntersectionObserver | null = null;
     if ("IntersectionObserver" in window && !reduce) {
       io = new IntersectionObserver(
@@ -76,6 +96,9 @@ export default function LandingPage() {
             el.querySelectorAll<HTMLElement>(".counter").forEach((c) => {
               if (!c.dataset.done) { c.dataset.done = "1"; animateCounter(c); }
             });
+            if (el.classList.contains("trust-scores") || el.querySelector(".score-num")) {
+              animateScores();
+            }
             io?.unobserve(el);
           });
         },
@@ -88,6 +111,9 @@ export default function LandingPage() {
       document.querySelectorAll<HTMLElement>(".counter").forEach((c) => {
         const t = parseFloat(c.getAttribute("data-target") || "0");
         c.textContent = t >= 1000 ? t.toLocaleString("en-IN") : String(t);
+      });
+      document.querySelectorAll<HTMLElement>(".score-num[data-score]").forEach((el) => {
+        el.textContent = el.getAttribute("data-score") || "0";
       });
       activateMockViz();
     }
@@ -121,30 +147,31 @@ export default function LandingPage() {
       <div className="bg-grid" aria-hidden="true" />
       <div className="bg-glow bg-glow--1" aria-hidden="true" />
       <div className="bg-glow bg-glow--2" aria-hidden="true" />
+      <div className="bg-glow bg-glow--3" aria-hidden="true" />
 
       {/* NAV */}
       <header className="nav" id="nav">
         <div className="container nav__inner">
-          <a href="#top" className="logo" aria-label="Lekha OS home">
+          <a href="#top" className="logo" aria-label="AUDT home">
             <span className="logo__mark" aria-hidden="true">
-              <span className="logo__dot" />
+              <span className="logo__icon">A</span>
             </span>
-            <span className="logo__text">LEKHA<span className="logo__os">OS</span></span>
+            <span className="logo__text">AUDT</span>
           </a>
 
           <nav className="nav__menu" aria-label="Primary">
             <a href="#platform">Platform</a>
-            <a href="#solutions">Lekha AI</a>
-            <a href="#why-india">Why India</a>
-            <a href="#about">About</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#trust-intelligence">Trust Intelligence</a>
+            <a href="#roadmap">Resources</a>
+            <a href="#contact">Pricing</a>
             <a href="#contact">Contact</a>
           </nav>
 
-          <div className="nav__actions" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <a href="/login" className="nav__signin" style={{ color: "var(--text-dim)", fontSize: "15px" }}>
-              Sign in
-            </a>
-            <a href="/signup" className="btn btn--primary btn--sm">Get Started Free</a>
+          <div className="nav__actions">
+            <a href="/login" className="nav__signin">Sign in</a>
+            <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost btn--sm">Book Demo</a>
+            <a href="/signup" className="btn btn--primary btn--sm">Start Free</a>
           </div>
 
           <button className="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
@@ -153,46 +180,49 @@ export default function LandingPage() {
         </div>
         <div className="nav__mobile" id="navMobile">
           <a href="#platform">Platform</a>
-          <a href="#solutions">Lekha AI</a>
-          <a href="#why-india">Why India</a>
-          <a href="#about">About</a>
+          <a href="#solutions">Solutions</a>
+          <a href="#trust-intelligence">Trust Intelligence</a>
+          <a href="#roadmap">Resources</a>
+          <a href="#contact">Pricing</a>
           <a href="#contact">Contact</a>
           <a href="/login">Sign in</a>
-          <a href="/signup" className="btn btn--primary">Get Started Free</a>
+          <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost">Book Demo</a>
+          <a href="/signup" className="btn btn--primary">Start Free</a>
         </div>
       </header>
 
       <main id="top">
+
         {/* HERO */}
         <section className="hero">
           <div className="container hero__inner">
             <div className="hero__copy reveal">
               <div className="badge">
                 <span className="badge__pulse" />
-                3 Modules Live &nbsp;·&nbsp; Production Ready
+                AI-Native · Governance OS · audt.tech
               </div>
               <h1 className="hero__title">
-                The <span className="grad-text">Trust, Governance &amp; Compliance</span> Operating
-                System for Indian Businesses
+                Governance<br />
+                <span className="grad-text">Built on Proof.</span>
               </h1>
               <p className="hero__sub">
-                Vendor governance, compliance management, security and team administration —
-                all in one AI-native platform built for India. Live today. Start in minutes.
+                AUDT is the AI-native Trust, Risk &amp; Compliance platform that helps organizations
+                govern vendors, controls, policies, audits, and compliance through a single source of truth.
               </p>
               <div className="hero__cta">
-                <a href="/signup" className="btn btn--primary btn--lg">Get Started Free</a>
-                <a href="#platform" className="btn btn--ghost btn--lg">
-                  Explore Platform <span className="arrow">→</span>
+                <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
+                <a href="/signup" className="btn btn--ghost btn--lg">
+                  Start Free <span className="arrow">→</span>
                 </a>
               </div>
               <div className="hero__trust">
                 <span>Vendor Governance</span>
-                <span className="dot">•</span>
+                <span className="dot">·</span>
                 <span>Compliance</span>
-                <span className="dot">•</span>
-                <span>AI-Native</span>
-                <span className="dot">•</span>
-                <span>India Data Residency</span>
+                <span className="dot">·</span>
+                <span>Audit Management</span>
+                <span className="dot">·</span>
+                <span>Trust Intelligence™</span>
               </div>
             </div>
 
@@ -200,62 +230,65 @@ export default function LandingPage() {
               <div className="mock">
                 <div className="mock__chrome">
                   <span className="mock__dot" /><span className="mock__dot" /><span className="mock__dot" />
-                  <div className="mock__url">app.lekhaos.in</div>
+                  <div className="mock__url">app.audt.tech</div>
                 </div>
                 <div className="mock__body">
                   <aside className="mock__side">
-                    <div className="mock__brand"><span className="logo__dot" /> Lekha</div>
+                    <div className="mock__brand">
+                      <span className="mock__brand-icon">A</span>
+                      AUDT
+                    </div>
                     <div className="mock__nav active">▦ Dashboard</div>
                     <div className="mock__nav">▤ Vendors</div>
                     <div className="mock__nav">◷ Compliance</div>
-                    <div className="mock__nav">⚙ Settings</div>
                     <div className="mock__nav">◎ Audits</div>
-                    <div className="mock__nav copilot">✦ AI Officer</div>
+                    <div className="mock__nav">⚠ Risk</div>
+                    <div className="mock__nav copilot">✦ Copilot</div>
                   </aside>
                   <div className="mock__main">
                     <div className="mock__row">
                       <div className="mcard mcard--score">
-                        <div className="mcard__label">Compliance Score</div>
-                        <div className="ring" data-ring="87">
+                        <div className="mcard__label">Trust Score™</div>
+                        <div className="ring" data-ring="92">
                           <svg viewBox="0 0 120 120">
                             <circle className="ring__bg" cx="60" cy="60" r="52" />
                             <circle className="ring__fg" cx="60" cy="60" r="52" />
                           </svg>
                           <div className="ring__val">
-                            <span className="counter" data-target="87">0</span>
+                            <span className="counter" data-target="92">0</span>
                             <i>%</i>
                           </div>
                         </div>
                       </div>
                       <div className="mcard mcard--risk">
-                        <div className="mcard__label">Vendor Risk</div>
+                        <div className="mcard__label">Risk Overview</div>
                         <div className="bars">
-                          <div className="bar"><span style={{ "--h": "40%" } as CSSVars} /><em>Low</em></div>
-                          <div className="bar"><span style={{ "--h": "70%" } as CSSVars} /><em>Med</em></div>
-                          <div className="bar"><span style={{ "--h": "30%" } as CSSVars} /><em>High</em></div>
-                          <div className="bar"><span style={{ "--h": "88%" } as CSSVars} /><em>Ok</em></div>
+                          <div className="bar"><span style={{ "--h": "30%" } as CSSVars} /><em>Low</em></div>
+                          <div className="bar"><span style={{ "--h": "65%" } as CSSVars} /><em>Med</em></div>
+                          <div className="bar"><span style={{ "--h": "25%" } as CSSVars} /><em>High</em></div>
+                          <div className="bar"><span style={{ "--h": "90%" } as CSSVars} /><em>OK</em></div>
                         </div>
                       </div>
                     </div>
                     <div className="mock__row">
                       <div className="mcard mcard--audit">
-                        <div className="mcard__label">ISO 27001 Readiness</div>
+                        <div className="mcard__label">Audit Readiness</div>
                         <div className="mcard__big">
-                          <span className="counter" data-target="74">0</span>%
+                          <span className="counter" data-target="94">0</span>%
                         </div>
-                        <div className="progress"><span style={{ "--w": "74%" } as CSSVars} /></div>
+                        <div className="progress"><span style={{ "--w": "94%" } as CSSVars} /></div>
                       </div>
                       <div className="mcard mcard--ai">
-                        <div className="ai-chip">✦ Lekha AI</div>
-                        <p className="ai-line">3 vendor certificates expire in 14 days.</p>
-                        <p className="ai-line muted">12 controls need evidence mapping.</p>
+                        <div className="ai-chip">✦ Governance Copilot™</div>
+                        <p className="ai-line">2 vendor certs expire in 14 days.</p>
+                        <p className="ai-line muted">ISO 27001 — 8 controls need evidence.</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="float-chip float-chip--1">✓ SOC 2 evidence mapped</div>
-              <div className="float-chip float-chip--2">✦ AI extracted 48 fields</div>
+              <div className="float-chip float-chip--1">✓ Evidence Vault™ synced</div>
+              <div className="float-chip float-chip--2">✦ Trust Score™ updated</div>
             </div>
           </div>
         </section>
@@ -264,11 +297,11 @@ export default function LandingPage() {
         <section className="proof">
           <div className="container">
             <p className="proof__head reveal">
-              Production-grade GRC for India&apos;s leading enterprises
+              Built for governance teams across SaaS, Fintech, Healthcare, Manufacturing &amp; IT Services
             </p>
             <div className="proof__logos reveal">
               <span>SaaS</span><span>Fintech</span><span>Healthcare</span>
-              <span>Manufacturing</span><span>IT Services</span>
+              <span>Manufacturing</span><span>IT Services</span><span>Legal</span>
             </div>
             <div className="proof__metrics">
               <div className="metric reveal">
@@ -280,7 +313,7 @@ export default function LandingPage() {
                 <div className="metric__label">Frameworks — ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA</div>
               </div>
               <div className="metric reveal" data-delay="160">
-                <div className="metric__num"><span className="counter" data-target="3">0</span></div>
+                <div className="metric__num"><span className="counter" data-target="4">0</span></div>
                 <div className="metric__label">Modules Live &amp; In Production</div>
               </div>
             </div>
@@ -292,146 +325,118 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">The Problem</span>
-              <h2>Compliance Is Still Broken</h2>
-              <p>Indian enterprises manage critical GRC processes using spreadsheets, email threads and disconnected tools — creating risk, burning time and failing audits.</p>
+              <h2>Governance Is Fragmented.</h2>
+              <p>
+                Most organizations manage vendors, compliance evidence, risks, policies, and audits
+                across disconnected systems. This creates blind spots, duplicated effort, audit delays,
+                and unnecessary risk. AUDT unifies governance into a single operating system.
+              </p>
             </div>
             <div className="pain-grid">
-              <div className="pain reveal"><span className="pain__icon">🗂️</span>Vendor documents scattered across drives</div>
-              <div className="pain reveal" data-delay="60"><span className="pain__icon">🔍</span>Audit evidence impossible to find fast</div>
-              <div className="pain reveal" data-delay="120"><span className="pain__icon">🌫️</span>No real-time visibility into compliance risk</div>
-              <div className="pain reveal" data-delay="60"><span className="pain__icon">✍️</span>Manual tracking in spreadsheets fails at scale</div>
-              <div className="pain reveal" data-delay="120"><span className="pain__icon">📈</span>Regulatory requirements multiplying every year</div>
-              <div className="pain reveal" data-delay="180"><span className="pain__icon">🔗</span>Third-party risk growing with every vendor added</div>
+              <div className="pain reveal"><span className="pain__icon">🔍</span>Missing evidence at audit time</div>
+              <div className="pain reveal" data-delay="60"><span className="pain__icon">🌫️</span>Compliance gaps no one can see</div>
+              <div className="pain reveal" data-delay="120"><span className="pain__icon">📦</span>Vendor blind spots &amp; third-party risk</div>
+              <div className="pain reveal"><span className="pain__icon">✍️</span>Manual audits burning weeks every quarter</div>
+              <div className="pain reveal" data-delay="60"><span className="pain__icon">📋</span>Policy sprawl with no version control</div>
+              <div className="pain reveal" data-delay="120"><span className="pain__icon">🔗</span>Risk data siloed across teams and tools</div>
             </div>
           </div>
         </section>
 
-        {/* VISION */}
-        <section className="section section--alt" id="vision">
-          <div className="container">
-            <div className="section__head reveal">
-              <span className="eyebrow">The Vision</span>
-              <h2>One Operating System. Complete Governance.</h2>
-              <p>A single platform connecting every layer of trust, compliance and governance — not a point solution, an OS.</p>
-            </div>
-            <div className="map reveal">
-              <div className="map__core">LEKHA OS</div>
-              <div className="map__rail">
-                <div className="map__node">Vendor Governance</div>
-                <div className="map__node">Compliance Management</div>
-                <div className="map__node">Audit Workspace</div>
-                <div className="map__node">DPDP Privacy</div>
-                <div className="map__node">Risk Management</div>
-                <div className="map__node">Board Governance</div>
-                <div className="map__node map__node--trust">Trust Center</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PLATFORM MODULES */}
-        <section className="section" id="platform">
+        {/* GOVERNANCE OS PILLARS */}
+        <section className="section section--alt" id="platform">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">The Platform</span>
-              <h2>Everything Needed To Build Trust</h2>
-              <p>Three modules live and in production today. More shipping through 2026–2027.</p>
+              <h2>One Platform For Organizational Trust.</h2>
+              <p>Everything needed to govern your organization from a single source of truth.</p>
             </div>
-            <div className="modules">
+            <div className="pillars">
 
-              {/* M1 — Vendor Governance */}
-              <article className="module module--featured reveal">
-                <div className="module__top">
-                  <span className="module__icon">▤</span>
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">▤</div>
                   <span className="status status--live">Live</span>
                 </div>
-                <h3>Vendor Governance</h3>
-                <p>Complete vendor lifecycle management — from onboarding to expiry monitoring and AI-powered risk assessment.</p>
-                <ul className="module__feats">
+                <h3>Vendor Hub™</h3>
+                <p>Manage vendors, suppliers, partners, and third parties — from onboarding to risk and expiry monitoring.</p>
+                <ul className="pillar__feats">
                   <li>Vendor Registry &amp; Profiles</li>
-                  <li>Document Management + AI Extraction</li>
-                  <li>Expiry Alerts &amp; Notifications</li>
+                  <li>AI Document Extraction</li>
+                  <li>Expiry Alerts</li>
                   <li>Security Assessments</li>
-                  <li>AI Vendor Briefs &amp; Risk Scores</li>
-                  <li>Executive PDF Reports</li>
-                  <li>Vendor Self-Service Portal</li>
-                  <li>Natural Language Search</li>
+                  <li>Risk Scoring</li>
+                  <li>Vendor Portal</li>
                 </ul>
               </article>
 
-              {/* M2 — Compliance Management */}
-              <article className="module module--featured reveal" data-delay="60">
-                <div className="module__top">
-                  <span className="module__icon">◷</span>
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🗄</div>
                   <span className="status status--live">Live</span>
                 </div>
-                <h3>Compliance Management</h3>
-                <p>Full compliance framework management with AI insights, gap analysis and automated evidence collection.</p>
-                <ul className="module__feats">
-                  <li>ISO 27001 · SOC 2 · DPDP · PCI DSS · HIPAA</li>
-                  <li>174 Pre-built Standard Controls</li>
-                  <li>Evidence Repository + Auto-import</li>
-                  <li>AI Compliance Officer (Chat)</li>
-                  <li>Gap Analysis &amp; Readiness Scores</li>
-                  <li>Policy Management + Version History</li>
-                  <li>Compliance PDF &amp; CSV Reports</li>
+                <h3>Evidence Vault™</h3>
+                <p>Collect, organize, and maintain proof across every framework — auto-imported from vendors and assessments.</p>
+                <ul className="pillar__feats">
+                  <li>ISO 27001 · SOC 2 · DPDP</li>
+                  <li>174 Standard Controls</li>
+                  <li>Auto-import Pipeline</li>
+                  <li>Gap Analysis</li>
+                  <li>Readiness Scores</li>
+                  <li>Policy Management</li>
                 </ul>
               </article>
 
-              {/* M3 — Settings & Org Management */}
-              <article className="module module--featured reveal" data-delay="120">
-                <div className="module__top">
-                  <span className="module__icon">⚙</span>
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">◎</div>
                   <span className="status status--live">Live</span>
                 </div>
-                <h3>Organisation Management</h3>
-                <p>Enterprise-grade administration — team RBAC, API access, audit trails and integration management.</p>
-                <ul className="module__feats">
-                  <li>7-Role RBAC (Owner → Viewer)</li>
-                  <li>Full Audit Log with CSV Export</li>
-                  <li>REST API + API Key Management</li>
-                  <li>10 Integration Connectors</li>
-                  <li>Billing &amp; Usage Metering</li>
-                  <li>Branding &amp; Report Customisation</li>
+                <h3>Audit Management</h3>
+                <p>Stay continuously audit-ready with structured programs, findings tracking, and CAPA workflows.</p>
+                <ul className="pillar__feats">
+                  <li>Audit Programs</li>
+                  <li>Findings Management</li>
+                  <li>CAPA Tracker</li>
+                  <li>AI Finding Generator</li>
+                  <li>PDF Reports</li>
+                  <li>AI Auditor Chat</li>
                 </ul>
               </article>
 
-              {/* M4 — Audit Workspace */}
-              <article className="module reveal">
-                <div className="module__top">
-                  <span className="module__icon">◎</span>
-                  <span className="status status--soon">Coming 2026</span>
+              <article className="pillar reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">⚠</div>
+                  <span className="status status--soon">Coming Next</span>
                 </div>
-                <h3>Audit Workspace</h3>
-                <p>Centralised audit preparation, evidence collection and findings management.</p>
-                <ul className="module__feats">
-                  <li>Evidence Repository</li><li>Audit Request Workflows</li><li>Findings Management</li>
+                <h3>Risk Lens™</h3>
+                <p>Identify, assess, and mitigate risks with a unified register and visual heat maps.</p>
+                <ul className="pillar__feats">
+                  <li>Risk Register</li><li>Heat Maps</li><li>Remediation Tracking</li>
                 </ul>
               </article>
 
-              {/* M5 — DPDP */}
-              <article className="module reveal" data-delay="60">
-                <div className="module__top">
-                  <span className="module__icon">🛡</span>
-                  <span className="status status--soon">Coming 2026</span>
+              <article className="pillar reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">◻</div>
+                  <span className="status status--soon">Coming Next</span>
                 </div>
-                <h3>DPDP Privacy</h3>
-                <p>Native compliance for India&apos;s Digital Personal Data Protection Act 2023.</p>
-                <ul className="module__feats">
-                  <li>Data Inventory</li><li>Consent Tracking</li><li>Retention Policies</li>
+                <h3>Control Center™</h3>
+                <p>Track and monitor every control across frameworks with live health signals.</p>
+                <ul className="pillar__feats">
+                  <li>Control Library</li><li>Status Tracking</li><li>Coverage Analytics</li>
                 </ul>
               </article>
 
-              {/* M6 — Risk */}
-              <article className="module reveal" data-delay="120">
-                <div className="module__top">
-                  <span className="module__icon">⚠</span>
-                  <span className="status status--future">2027</span>
+              <article className="pillar reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">📜</div>
+                  <span className="status status--future">Future</span>
                 </div>
-                <h3>Risk Management</h3>
-                <p>Enterprise risk register, heat maps and remediation tracking.</p>
-                <ul className="module__feats">
-                  <li>Risk Register</li><li>Risk Heat Maps</li><li>Remediation Tracking</li>
+                <h3>Policy Governance</h3>
+                <p>Manage full policy lifecycle — drafting, versioning, approvals, and ownership.</p>
+                <ul className="pillar__feats">
+                  <li>Policy Lifecycle</li><li>Version History</li><li>Owner Assignments</li>
                 </ul>
               </article>
 
@@ -439,142 +444,283 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* AI */}
+        {/* TRUST INTELLIGENCE */}
+        <section className="section" id="trust-intelligence">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Trust Intelligence™</span>
+              <h2>Trust Intelligence™ For Every Decision.</h2>
+              <p>
+                AUDT continuously evaluates governance posture using evidence, controls, risks,
+                audits, and compliance signals — giving you a live view of organizational trust.
+              </p>
+            </div>
+            <div className="trust-scores reveal">
+              <div className="tscore">
+                <div className="tscore__ring">
+                  <svg viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#tg1)" strokeWidth="6"
+                      strokeDasharray="213.6" strokeDashoffset="17" strokeLinecap="round"
+                      transform="rotate(-90 40 40)" />
+                    <defs>
+                      <linearGradient id="tg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#6366f1" />
+                        <stop offset="100%" stopColor="#2dd4ff" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="tscore__val">
+                    <span className="score-num" data-score="92">0</span>
+                  </div>
+                </div>
+                <div className="tscore__label">Vendor Trust Score™</div>
+                <div className="tscore__sub">↑ 4 pts this month</div>
+              </div>
+              <div className="tscore">
+                <div className="tscore__ring">
+                  <svg viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#tg2)" strokeWidth="6"
+                      strokeDasharray="213.6" strokeDashoffset="26" strokeLinecap="round"
+                      transform="rotate(-90 40 40)" />
+                    <defs>
+                      <linearGradient id="tg2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#7c3aed" />
+                        <stop offset="100%" stopColor="#6366f1" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="tscore__val">
+                    <span className="score-num" data-score="88">0</span>
+                  </div>
+                </div>
+                <div className="tscore__label">Control Health Score</div>
+                <div className="tscore__sub">3 controls need review</div>
+              </div>
+              <div className="tscore tscore--featured">
+                <div className="tscore__ring">
+                  <svg viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#tg3)" strokeWidth="6"
+                      strokeDasharray="213.6" strokeDashoffset="13" strokeLinecap="round"
+                      transform="rotate(-90 40 40)" />
+                    <defs>
+                      <linearGradient id="tg3" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#2dd4ff" />
+                        <stop offset="100%" stopColor="#6366f1" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="tscore__val">
+                    <span className="score-num" data-score="94">0</span>
+                  </div>
+                </div>
+                <div className="tscore__label">Audit Readiness</div>
+                <div className="tscore__sub">ISO 27001 — Ready</div>
+              </div>
+              <div className="tscore">
+                <div className="tscore__ring">
+                  <svg viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#tg4)" strokeWidth="6"
+                      strokeDasharray="213.6" strokeDashoffset="21" strokeLinecap="round"
+                      transform="rotate(-90 40 40)" />
+                    <defs>
+                      <linearGradient id="tg4" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#4f46e5" />
+                        <stop offset="100%" stopColor="#7c3aed" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="tscore__val">
+                    <span className="score-num" data-score="90">0</span>
+                  </div>
+                </div>
+                <div className="tscore__label">Compliance Score</div>
+                <div className="tscore__sub">SOC 2 in progress</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* AI COPILOT */}
         <section className="section section--alt" id="solutions">
           <div className="container ai-sec">
             <div className="ai-sec__copy reveal">
-              <span className="eyebrow">Lekha AI</span>
-              <h2>AI That Actually Works For Compliance</h2>
+              <span className="eyebrow">Governance Copilot™</span>
+              <h2>Ask Questions. Get Governance Answers.</h2>
               <p>
-                Not a chatbot bolted on. Lekha AI is woven through every module —
-                extracting document fields, explaining risk scores, writing compliance
-                narratives, detecting gaps, and answering questions about your exact
-                compliance posture in plain English.
+                Not a chatbot bolted on. The Governance Copilot™ is woven through every module —
+                extracting evidence, explaining risk, writing audit narratives, detecting gaps,
+                and answering questions about your exact governance posture in plain English.
               </p>
-              <a href="/signup" className="btn btn--primary">Get Started Free</a>
+              <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary">Book a Demo</a>
             </div>
-            <div className="ai-caps reveal" data-delay="100">
-              <div className="ai-cap">Document Field Extraction (10 fields per doc)</div>
-              <div className="ai-cap">Vendor Risk Explanation</div>
-              <div className="ai-cap">Compliance Score Breakdown</div>
-              <div className="ai-cap">Gap Narrative Generation</div>
-              <div className="ai-cap">Framework Readiness Summary</div>
-              <div className="ai-cap">AI Compliance Officer Chat</div>
-              <div className="ai-cap">Natural Language Vendor Search</div>
-              <div className="ai-cap">Executive Board Reports</div>
-              <div className="ai-cap">AI Weekly Digest</div>
+            <div className="ai-chat reveal" data-delay="100">
+              <div className="chat__header">
+                <span className="chat__dot" style={{ background: "#ff5f57" }} />
+                <span className="chat__dot" style={{ background: "#febc2e" }} />
+                <span className="chat__dot" style={{ background: "#28c840" }} />
+                <span className="chat__title">✦ Governance Copilot™</span>
+              </div>
+              <div className="chat__body">
+                <div className="chat__q">Which vendors have expired certifications?</div>
+                <div className="chat__a">3 vendors have expired ISO certs — Infosys Ltd (30 days), TechCorp (14 days), Wipro Digital (overdue). View in Vendor Hub™ →</div>
+                <div className="chat__q">Which controls failed this quarter?</div>
+                <div className="chat__a">12 controls are non-compliant. 4 critical: AC-2, RA-3, SI-7, AU-6. Evidence Vault™ shows 8 gaps requiring remediation.</div>
+                <div className="chat__q">What evidence is missing for ISO 27001?</div>
+                <div className="chat__a">8 controls lack evidence: A.8.2.1, A.9.4.2 (+6 more). Auto-import from vendor documents can fill 5 of these gaps now.</div>
+              </div>
+              <div className="chat__input">
+                <span>Ask about your governance posture...</span>
+                <span className="chat__send">✦</span>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* WHAT YOU GET */}
-        <section className="section" id="demo">
+        {/* SOLUTIONS */}
+        <section className="section" id="solutions-grid">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">What You Get</span>
-              <h2>A Complete Platform From Day One</h2>
-              <p>No months of setup. No professional services. Sign up, connect Supabase, run the seed scripts. Live in an afternoon.</p>
+              <span className="eyebrow">Solutions</span>
+              <h2>Solutions Built On The Governance OS</h2>
+              <p>Purpose-built solutions for every governance team — powered by the same intelligence layer.</p>
             </div>
-            <div className="screens">
-              <div className="screen reveal"><span className="screen__tag">Vendor Dashboard</span><div className="screen__art art-dashboard" /></div>
-              <div className="screen reveal" data-delay="60"><span className="screen__tag">Compliance Frameworks</span><div className="screen__art art-profile" /></div>
-              <div className="screen reveal" data-delay="120"><span className="screen__tag">AI Document Extraction</span><div className="screen__art art-extract" /></div>
-              <div className="screen reveal"><span className="screen__tag">Gap Analysis</span><div className="screen__art art-cscore" /></div>
-              <div className="screen reveal" data-delay="60"><span className="screen__tag">AI Officer Chat</span><div className="screen__art art-copilot" /></div>
-              <div className="screen reveal" data-delay="120"><span className="screen__tag">Audit Logs &amp; API</span><div className="screen__art art-upload" /></div>
+            <div className="solutions">
+              <div className="sol reveal">
+                <div className="sol__icon">▤</div>
+                <h3>Vendor Governance</h3>
+                <p>Third-party risk, vendor lifecycle, document management, and AI-powered assessments.</p>
+              </div>
+              <div className="sol reveal" data-delay="60">
+                <div className="sol__icon">🛡</div>
+                <h3>Third-Party Risk</h3>
+                <p>Continuous vendor risk scoring, certification monitoring, and supply chain visibility.</p>
+              </div>
+              <div className="sol reveal" data-delay="120">
+                <div className="sol__icon">◷</div>
+                <h3>Compliance Management</h3>
+                <p>Framework readiness, control tracking, gap analysis, and evidence collection at scale.</p>
+              </div>
+              <div className="sol reveal">
+                <div className="sol__icon">◎</div>
+                <h3>Audit Readiness</h3>
+                <p>Structured audit programs, findings, CAPAs, and AI-generated executive reports.</p>
+              </div>
+              <div className="sol reveal" data-delay="60">
+                <div className="sol__icon">📜</div>
+                <h3>Policy Governance</h3>
+                <p>Policy lifecycle management, version history, owner accountability, and review workflows.</p>
+              </div>
+              <div className="sol reveal" data-delay="120">
+                <div className="sol__icon">✦</div>
+                <h3>AI Governance <span className="sol__badge">Coming Soon</span></h3>
+                <p>Governance frameworks for AI systems, model risk, and responsible AI practices.</p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* WHY INDIA */}
-        <section className="section section--alt" id="why-india">
+        {/* WHY AUDT */}
+        <section className="section section--alt" id="why-audt">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Built For India</span>
-              <h2>Designed For India&apos;s Regulatory Reality</h2>
-              <p>Not a global tool localised for India. An OS built ground-up for how Indian enterprises operate and what Indian regulations demand.</p>
+              <span className="eyebrow">Why AUDT</span>
+              <h2>Built For Modern Governance Teams.</h2>
+              <p>Every role that touches governance has a purpose-built experience in AUDT.</p>
             </div>
-            <div className="why-grid">
-              <div className="why reveal">
-                <h3>India Data Residency</h3>
-                <p>All data hosted in Supabase Mumbai (ap-south-1) and Vercel Mumbai (bom1). Your data never leaves India.</p>
+            <div className="audience-grid">
+              <div className="aud reveal">
+                <div className="aud__icon">◷</div>
+                <h3>Compliance</h3>
+                <p>Framework management, controls, evidence, readiness scores, and gap narratives.</p>
               </div>
-              <div className="why reveal" data-delay="60">
-                <h3>DPDP Native</h3>
-                <p>Built with India&apos;s Digital Personal Data Protection Act 2023 as a first-class framework — not an afterthought.</p>
+              <div className="aud reveal" data-delay="60">
+                <div className="aud__icon">🔐</div>
+                <h3>Security</h3>
+                <p>Vendor assessments, security controls, incident tracking, and risk visibility.</p>
               </div>
-              <div className="why reveal" data-delay="120">
-                <h3>Indian Supply Chain Complexity</h3>
-                <p>Designed for the layered vendor ecosystems of Indian IT, fintech, healthcare and manufacturing enterprises.</p>
+              <div className="aud reveal" data-delay="120">
+                <div className="aud__icon">⚠</div>
+                <h3>Risk</h3>
+                <p>Risk registers, heat maps, control effectiveness, and remediation tracking.</p>
               </div>
-              <div className="why reveal">
-                <h3>Multi-Regulatory</h3>
-                <p>ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA — all built in. One platform for a fast-evolving compliance landscape.</p>
+              <div className="aud reveal">
+                <div className="aud__icon">▤</div>
+                <h3>Procurement</h3>
+                <p>Vendor onboarding, document collection, third-party risk, and contract oversight.</p>
               </div>
-              <div className="why reveal" data-delay="60">
-                <h3>Enterprise RBAC</h3>
-                <p>Seven roles from Owner to Viewer. Compliance Managers, Security Managers, Procurement Managers — mapped to how Indian teams are structured.</p>
+              <div className="aud reveal" data-delay="60">
+                <div className="aud__icon">◎</div>
+                <h3>Internal Audit</h3>
+                <p>Audit programs, evidence collection, findings management, and CAPA workflows.</p>
               </div>
-              <div className="why reveal" data-delay="120">
-                <h3>AI in Indian Context</h3>
-                <p>AI features trained and tuned for Indian vendor documents, certifications and regulatory terminology. Not generic English.</p>
+              <div className="aud reveal" data-delay="120">
+                <div className="aud__icon">📊</div>
+                <h3>Executive Leadership</h3>
+                <p>AI-narrated executive reports, Trust Score™, and board-ready governance dashboards.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* MARKET */}
-        <section className="section" id="market">
+        {/* ARCHITECTURE */}
+        <section className="section" id="architecture">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">The Market</span>
-              <h2>A Massive Untapped Opportunity</h2>
+              <span className="eyebrow">Platform Architecture</span>
+              <h2>Built On A Shared Intelligence Layer.</h2>
+              <p>Every module is powered by the same evidence, intelligence, and workflow engine — no data silos.</p>
             </div>
-            <div className="market">
-              <div className="stat reveal">
-                <div className="stat__num"><span className="counter" data-target="70">0</span><i>M+</i></div>
-                <div className="stat__label">Indian Businesses</div>
+            <div className="arch reveal">
+              <div className="arch__top">
+                <div className="arch__layer arch__layer--primary">Governance Copilot™</div>
+                <div className="arch__layer">Trust Intelligence™</div>
+                <div className="arch__layer">Knowledge Graph™</div>
               </div>
-              <div className="stat reveal" data-delay="60">
-                <div className="stat__num"><span className="counter" data-target="63">0</span><i>M+</i></div>
-                <div className="stat__label">MSMEs Needing GRC</div>
+              <div className="arch__divider">
+                <span className="arch__arrow">↓</span>
+                <span className="arch__core">Evidence Layer™ · Workflow Engine™</span>
+                <span className="arch__arrow">↓</span>
               </div>
-              <div className="stat reveal" data-delay="120">
-                <div className="stat__num">₹1,000Cr+</div>
-                <div className="stat__label">GRC Software Market India</div>
-              </div>
-              <div className="stat reveal" data-delay="180">
-                <div className="stat__num stat__num--sm">Zero</div>
-                <div className="stat__label">India-native GRC Operating Systems</div>
+              <div className="arch__bottom">
+                <div className="arch__node">Vendors</div>
+                <div className="arch__node">Policies</div>
+                <div className="arch__node">Controls</div>
+                <div className="arch__node">Audits</div>
+                <div className="arch__node">Risks</div>
+                <div className="arch__node">Contracts</div>
+                <div className="arch__node">Frameworks</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ABOUT */}
-        <section className="section section--alt" id="about">
-          <div className="container founder">
-            <div className="founder__copy reveal">
-              <span className="eyebrow">The Team</span>
-              <h2>Built By Enterprise Software Leaders</h2>
-              <p>Lekha OS is built by experienced enterprise software leaders with deep expertise across SaaS platforms, security, compliance and AI systems.</p>
-              <div className="founder__tags">
-                <span>SaaS Platforms</span>
-                <span>Security</span>
-                <span>Compliance</span>
-                <span>AI Systems</span>
-                <span>Enterprise Operations</span>
-              </div>
-              <blockquote className="founder__mission">
-                &ldquo;To become the operating system for trust and governance across every Indian business.&rdquo;
-              </blockquote>
+        {/* METRICS */}
+        <section className="section section--alt" id="metrics">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Impact</span>
+              <h2>Govern With Confidence.</h2>
             </div>
-            <div className="founder__visual reveal" data-delay="100">
-              <div className="orbit">
-                <div className="orbit__core">LEKHA<span>OS</span></div>
-                <span className="orbit__ring orbit__ring--1" />
-                <span className="orbit__ring orbit__ring--2" />
-                <span className="orbit__ring orbit__ring--3" />
+            <div className="metrics-grid">
+              <div className="mstat reveal">
+                <div className="mstat__num"><span className="counter" data-target="95">0</span>%</div>
+                <div className="mstat__label">Reduction in evidence collection effort</div>
+              </div>
+              <div className="mstat reveal" data-delay="60">
+                <div className="mstat__num"><span className="counter" data-target="70">0</span>%</div>
+                <div className="mstat__label">Faster vendor onboarding</div>
+              </div>
+              <div className="mstat reveal" data-delay="120">
+                <div className="mstat__num">3×</div>
+                <div className="mstat__label">Faster compliance reviews</div>
+              </div>
+              <div className="mstat reveal" data-delay="180">
+                <div className="mstat__num">100%</div>
+                <div className="mstat__label">Governance visibility from day one</div>
               </div>
             </div>
           </div>
@@ -585,33 +731,43 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Roadmap</span>
-              <h2>What&apos;s Shipped. What&apos;s Next.</h2>
+              <h2>From Compliance To Organizational Trust.</h2>
+              <p>AUDT is building the Governance OS — starting with today&apos;s use cases and expanding to the full category.</p>
             </div>
-            <div className="timeline">
-              <div className="tl reveal">
-                <div className="tl__year" style={{ color: "#4ade80" }}>✓ Live</div>
-                <div className="tl__dot" style={{ background: "#4ade80" }} />
-                <div className="tl__label">Vendor Governance — 25 features</div>
+            <div className="roadmap-grid">
+              <div className="rmap rmap--done reveal">
+                <div className="rmap__label">Today</div>
+                <div className="rmap__items">
+                  <div className="rmap__item rmap__item--done">✓ Vendor Hub™ — Vendor Governance</div>
+                  <div className="rmap__item rmap__item--done">✓ Evidence Vault™ — Compliance Evidence</div>
+                  <div className="rmap__item rmap__item--done">✓ Audit Management</div>
+                  <div className="rmap__item rmap__item--done">✓ Organisation &amp; API Management</div>
+                </div>
               </div>
-              <div className="tl reveal" data-delay="60">
-                <div className="tl__year" style={{ color: "#4ade80" }}>✓ Live</div>
-                <div className="tl__dot" style={{ background: "#4ade80" }} />
-                <div className="tl__label">Compliance Management — ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA</div>
+              <div className="rmap reveal" data-delay="80">
+                <div className="rmap__label">Next</div>
+                <div className="rmap__items">
+                  <div className="rmap__item">◎ Risk Lens™ — Risk Management</div>
+                  <div className="rmap__item">◎ Control Center™ — Control Management</div>
+                  <div className="rmap__item">◎ Policy Governance</div>
+                  <div className="rmap__item">◎ DPDP Privacy Module</div>
+                </div>
               </div>
-              <div className="tl reveal" data-delay="120">
-                <div className="tl__year" style={{ color: "#4ade80" }}>✓ Live</div>
-                <div className="tl__dot" style={{ background: "#4ade80" }} />
-                <div className="tl__label">Organisation Management — API, Audit Logs, Integrations, Billing</div>
+              <div className="rmap reveal" data-delay="160">
+                <div className="rmap__label">Future</div>
+                <div className="rmap__items">
+                  <div className="rmap__item rmap__item--future">◈ Contract Governance</div>
+                  <div className="rmap__item rmap__item--future">◈ AI Governance</div>
+                  <div className="rmap__item rmap__item--future">◈ Continuous Monitoring</div>
+                  <div className="rmap__item rmap__item--future">◈ Trust Graph™</div>
+                </div>
               </div>
-              <div className="tl reveal" data-delay="180">
-                <div className="tl__year">2026</div>
-                <div className="tl__dot" />
-                <div className="tl__label">DPDP Privacy Module + Audit Workspace</div>
-              </div>
-              <div className="tl reveal tl--final" data-delay="240">
-                <div className="tl__year">2027</div>
-                <div className="tl__dot" />
-                <div className="tl__label">Risk Management + Board Governance + Trust Center</div>
+              <div className="rmap rmap--vision reveal" data-delay="240">
+                <div className="rmap__label">Vision</div>
+                <div className="rmap__vision">
+                  <span className="grad-text">Governance OS</span>
+                  <p>The operating system for organizational trust.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -620,19 +776,14 @@ export default function LandingPage() {
         {/* FINAL CTA */}
         <section className="cta-final" id="contact">
           <div className="container cta-final__inner reveal">
-            <h2>Start Building Your Compliance OS Today</h2>
+            <div className="cta-final__badge">audt.tech</div>
+            <h2>Stop Managing Governance In Silos.</h2>
             <p>
-              Three modules. Fully production-ready. India data residency.
-              Get started in minutes — no credit card required.
+              Unify trust, risk, compliance, audits, controls, and vendor governance with AUDT.
             </p>
             <div className="cta-final__btns">
-              <a href="/signup" className="btn btn--primary btn--lg">Get Started Free</a>
-              <a
-                href="mailto:hello@lekhaos.in?subject=Lekha%20OS%20Demo%20Request"
-                className="btn btn--ghost btn--lg"
-              >
-                Book a Demo
-              </a>
+              <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
+              <a href="/signup" className="btn btn--ghost btn--lg">Start Free →</a>
             </div>
           </div>
         </section>
@@ -643,23 +794,36 @@ export default function LandingPage() {
         <div className="container footer__inner">
           <div className="footer__brand">
             <a href="#top" className="logo">
-              <span className="logo__mark" aria-hidden="true"><span className="logo__dot" /></span>
-              <span className="logo__text">LEKHA<span className="logo__os">OS</span></span>
+              <span className="logo__mark" aria-hidden="true"><span className="logo__icon">A</span></span>
+              <span className="logo__text">AUDT</span>
             </a>
-            <p className="footer__tag">Trust. Governance. Compliance.</p>
+            <p className="footer__tag">Governance Built on Proof.</p>
+            <p className="footer__sub">AI-Native Trust, Risk &amp; Compliance Platform.</p>
           </div>
-          <nav className="footer__links" aria-label="Footer">
-            <a href="#platform">Platform</a>
-            <a href="#why-india">Why India</a>
-            <a href="#roadmap">Roadmap</a>
-            <a href="#contact">Privacy</a>
-            <a href="mailto:hello@lekhaos.in">hello@lekhaos.in</a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          </nav>
+          <div className="footer__cols">
+            <div className="footer__col">
+              <div className="footer__col-head">Product</div>
+              <a href="#platform">Platform</a>
+              <a href="#solutions">Solutions</a>
+              <a href="#contact">Pricing</a>
+            </div>
+            <div className="footer__col">
+              <div className="footer__col-head">Resources</div>
+              <a href="#roadmap">Roadmap</a>
+              <a href="#contact">Documentation</a>
+              <a href="#contact">Security</a>
+            </div>
+            <div className="footer__col">
+              <div className="footer__col-head">Company</div>
+              <a href="#contact">About</a>
+              <a href="#contact">Careers</a>
+              <a href="mailto:hello@audt.tech">Contact</a>
+            </div>
+          </div>
         </div>
         <div className="container footer__bottom">
-          <span>© <span id="year" /> Lekha OS. All rights reserved.</span>
-          <span>Built for India 🇮🇳 · Data hosted in Mumbai</span>
+          <span>© <span id="year" /> AUDT. All rights reserved.</span>
+          <span>audt.tech · Governance Built on Proof.</span>
         </div>
       </footer>
     </>

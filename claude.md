@@ -10,7 +10,7 @@
 Replaces spreadsheets and disconnected tools with a single AI-native platform for vendor governance, compliance, audits, risk and board governance.
 
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Governance · Compliance Management · Settings & Org Management
+- **Modules shipped:** Vendor Governance · Compliance Management · Settings & Org Management · Data Governance (Phase 1) · Audit Management
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services (India)
 - **Live:** https://lekha-os.vercel.app
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -27,7 +27,7 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 | Database | Supabase Postgres + Row-Level Security |
 | ORM | Drizzle — lazy init via Proxy in `lib/db/index.ts` |
 | Auth | Supabase Auth + org-based RBAC (7 roles) |
-| Storage | Supabase Storage — `vendor-documents` bucket, org-scoped RLS |
+| Storage | Supabase Storage — `vendor-documents` (legacy) + `compliance-documents` (new) buckets, org-scoped RLS, tenant-prefixed paths |
 | AI | Google Gemini 2.5 Flash (`@google/genai`) |
 | Email | Resend — expiry alerts + weekly digests (AI-written) |
 | PDF | `@react-pdf/renderer` |
@@ -84,7 +84,7 @@ Browser / API client
 
 ## 5. Database Schema
 
-**31 tables** across 7 migration files (0000–0006 — all applied).
+**37 tables** across 9 migration files (0000–0008 — all applied).
 
 ### Vendor Governance tables (15)
 
@@ -94,7 +94,7 @@ Browser / API client
 | `profiles` | Mirrors auth.users (extended: jobTitle, department, phone, timezone, language) |
 | `memberships` | User↔org join with role + department + `is_active` |
 | `vendors` | Core vendor registry (25 cols incl. owner, AI fields, checklist score) |
-| `vendor_documents` | Documents with AI-extracted fields + `category` enum |
+| `vendor_documents` | Documents with AI-extracted fields + `category` enum + storage metadata (filename, content_type, file_size, storage_bucket, storage_provider, uploaded_by, checksum) |
 | `vendor_types` | Compliance templates (7 defaults seeded, custom org-specific allowed) |
 | `vendor_type_documents` | Required/optional doc types per template |
 | `document_requests` | Request workflow (requested→submitted→approved/rejected/expired) |
@@ -104,7 +104,13 @@ Browser / API client
 | `vendor_portal_tokens` | Magic-link tokens for vendor self-service |
 | `notification_preferences` | Per-org notification settings |
 | `notification_history` | Email deduplication + audit |
-| `audit_logs` | Every meaningful action recorded (with actor profile join for UI) |
+| `audit_logs` | Every meaningful action recorded (with actor profile join for UI) + `ip_address` |
+
+### Data Governance tables (1) — migration 0007
+
+| Table | Purpose |
+|---|---|
+| `storage_providers` | Registry of storage backends — name, type (platform/customer), isActive, configJson. Phase 1: "supabase/platform" seeded. Future: customer S3, Azure Blob, SharePoint, OneDrive, Google Drive |
 
 ### Settings Module tables (6) — migration 0006
 
@@ -132,13 +138,25 @@ Browser / API client
 | `compliance_reports` | Generated PDF reports + AI narrative payload |
 | `ai_compliance_insights` | Cached Gemini outputs |
 
+### Audit Management tables (5) — migration 0008
+
+| Table | Purpose |
+|---|---|
+| `audits` | Audit registry — name, type, framework_id (nullable), scope, objective, auditor_name, start/end dates, status, ai_summary, created_by |
+| `audit_programs` | Per-audit checklist items linked to controls — status: pending/reviewed/passed/failed |
+| `audit_findings` | Findings per audit — severity (critical/high/medium/low), status (open/remediating/closed/accepted), linked to control + evidence |
+| `corrective_actions` | CAPAs per finding — owner, due_date, status (open/in_progress/completed/overdue), completion_notes, completed_at |
+| `audit_reports` | Immutable report generation log — storage_path, generated_by, generated_at |
+
 **Membership roles (7):** `owner` · `admin` · `member` · `viewer` · `compliance_manager` · `security_manager` · `procurement_manager`
 
 **Settings enums:** `industry_type` · `company_size_range` · `api_key_status` · `api_key_permission` · `integration_provider` · `integration_status`
 
 **Compliance enums:** `framework_status` · `control_status` · `control_priority` · `evidence_status` · `evidence_source` · `policy_status`
 
-**RLS:** All 31 tables enabled. Helpers: `is_org_member()`, `has_org_role()`.
+**Audit enums:** `audit_type` · `audit_status` · `audit_program_status` · `finding_severity` · `finding_status` · `corrective_action_status`
+
+**RLS:** All 37 tables enabled. Helpers: `is_org_member()`, `has_org_role()`.
 
 **First-time setup on a fresh DB:**
 ```bash
@@ -156,6 +174,19 @@ node scripts/seed-compliance-demo.mjs               # optional: realistic demo s
 
 ## 6. Features Implemented
 
+### Module 4 — Audit Management ✅ Complete (2026-06-06)
+
+6-tab sub-nav at `/audits/*`. Full audit lifecycle: plan → execute → findings → CAPAs → reports → AI.
+
+| Tab | Features |
+|---|---|
+| **Dashboard** | Metrics: total / planned / active / completed / overdue audits · open findings · critical findings · CAPAs due soon |
+| **Audits** | Filterable list (status + type); create audit form; detail page with program checklist + AI summary panel; Start/Complete/Cancel actions |
+| **Findings** | Org-wide findings (filter by severity + status); per-audit findings list; close finding; AI Finding Generator (observation → structured finding) |
+| **CAPAs** | Org-wide CAPA tracker with due-date highlighting; per-audit CAPA list; complete CAPA; AI CAPA Suggestions (3 per finding) |
+| **Reports** | Per-audit: Full Report PDF · Findings PDF · CAPAs PDF · Findings CSV · CAPAs CSV |
+| **AI Auditor** | AI Executive Report (board narrative, cached); live NL chat ("Which CAPAs are overdue?", "Summarize my audit posture") |
+
 ### Module 3 — Settings & Organization Management ✅ Complete
 
 8-tab settings layout at `/settings/*` mirroring the compliance sub-nav pattern.
@@ -170,6 +201,7 @@ node scripts/seed-compliance-demo.mjs               # optional: realistic demo s
 | **Billing** | `/settings/billing` | Plan card; usage meters (users/vendors/storage vs plan limits); upgrade CTA; invoice history placeholder |
 | **API Keys** | `/settings/api-keys` | Create/rotate/revoke; key shown once in modal with copy/reveal; bcrypt hash stored |
 | **Integrations** | `/settings/integrations` | 10 providers grouped (Email/Communication/Storage); connect modal with per-provider fields; config encrypted at rest |
+| **Data Governance** | `/settings/data-governance` | Stats dashboard; data residency (Mumbai/DPDP badge); retention policy; AI transparency (no-training guarantee); security checklist; Export Tenant Data (ZIP of CSVs); Request Data Deletion workflow |
 
 ### Module 2 — Compliance Management ✅ Complete (All 8 Phases)
 
@@ -222,7 +254,7 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /reports/compliance/executive                Executive compliance PDF
 /reports/compliance/controls|evidence|gaps   CSV exports
 
---- Settings (8-tab sub-nav) ---
+--- Settings (9-tab sub-nav) ---
 /settings                                    Profile + notifications
 /settings/organization                       Org profile + branding
 /settings/team                               Team management
@@ -231,7 +263,27 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /settings/billing                            Plan overview + usage meters
 /settings/api-keys                           API key management
 /settings/integrations                       Integration provider cards
+/settings/data-governance                    Data governance dashboard (Phase 1)
 /settings/notifications                      (redirected to /settings — notifications merged into Profile tab)
+
+--- Audit Management ---
+/audits                                      Dashboard (metrics)
+/audits/list                                 Filterable audit list
+/audits/new                                  Create audit
+/audits/[id]                                 Audit detail (program checklist, AI summary, findings)
+/audits/[id]/edit
+/audits/[id]/findings                        Findings per audit
+/audits/[id]/findings/new                    Add finding (with AI generator)
+/audits/[id]/capas                           CAPAs per audit
+/audits/findings                             Org-wide findings (filter by severity/status)
+/audits/capas                                Org-wide CAPA tracker
+/audits/reports                              Reports listing + download buttons
+/audits/ai                                   AI Auditor Assistant (executive report + chat)
+/reports/audits/[id]                         Full audit PDF
+/reports/audits/[id]/findings                Findings PDF
+/reports/audits/[id]/capas                   CAPAs PDF
+/reports/audits/[id]/findings/csv            Findings CSV
+/reports/audits/[id]/capas/csv               CAPAs CSV
 
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
@@ -239,11 +291,21 @@ GET /api/v1/vendors/[id]                     Single vendor
 GET /api/v1/compliance/frameworks            All frameworks with readiness
 GET /api/v1/compliance/gaps                  Open gaps (?severity=, ?resolved=)
 GET /api/v1/audit-logs                       Event stream (?module=, ?from=, ?to=, ?userId=)
+GET /api/v1/audits                           Paginated audit list (?status=, ?type=)
+POST /api/v1/audits                          Create audit (read_write key)
+GET /api/v1/audits/[id]                      Single audit with findings
+PUT /api/v1/audits/[id]                      Update audit (read_write key)
+DELETE /api/v1/audits/[id]                   Delete audit (read_write key)
+GET /api/v1/findings                         Org-wide findings (?severity=, ?status=, ?auditId=)
+POST /api/v1/findings                        Create finding (read_write key)
+GET /api/v1/capas                            Org-wide CAPAs (?status=, ?findingId=)
+POST /api/v1/capas                           Create CAPA (read_write key)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
 /api/export/audit-logs                       CSV export (session auth)
+/api/export/tenant-data                      ZIP export: vendors + docs + assessments + team + audit (session auth)
 /auth/callback                               Supabase auth redirect
 ```
 
@@ -254,15 +316,15 @@ GET /api/v1/audit-logs                       Event stream (?module=, ?from=, ?to
 ```
 lib/
   db/
-    schema.ts                   31-table Drizzle schema — all enums + tables + inferred types
+    schema.ts                   37-table Drizzle schema — all enums + tables + inferred types
     index.ts                    Lazy DB Proxy — ssl:"require", pool config — CRITICAL, do not change
 
   providers/                    ← INFRASTRUCTURE ADAPTERS (only place SDKs are imported)
     ai/index.ts                 Lazy GoogleGenAI singleton · generateText() · getAI() · AI_MODEL · isAIConfigured()
     auth/index.ts               AuthProvider interface + factory (getAuthProvider())
     auth/supabase.ts            Supabase Admin SDK implementation (inviteUser)
-    storage/index.ts            StorageProvider interface
-    storage/supabase.ts         Supabase Storage implementation
+    storage/index.ts            StorageProvider interface — uploadFile, downloadFile, deleteFile, generateSignedUrl, exists
+    storage/supabase.ts         Supabase Storage implementation (all 5 methods, 15-min signed URL TTL)
     crypto/config-cipher.ts     AES-256-GCM encryptConfig() / decryptConfig() — reads ENCRYPTION_KEY
     rate-limit/index.ts         In-memory sliding window · checkRateLimit(keyId, permissions)
 
@@ -291,6 +353,7 @@ lib/
     ai-insights-service.ts      Gemini: explain score, risk, actions, assessment summary, executive report
     ai-summary-service.ts       Gemini: vendor brief (cached)
     nl-search-service.ts        Natural language → structured filters (Gemini)
+    data-governance-service.ts  Stats (docs, storage, vendors, assessments, users) + recent audit events
 
   --- Compliance Module services ---
   services/compliance/
@@ -302,6 +365,14 @@ lib/
     gap-service.ts              runGapAnalysis() — 5 rule-based gap types
     ai-compliance-service.ts    Gemini: framework summary, readiness explanation,
                                 gap narrative, executive summary, contextual NL chat
+
+  --- Audit Management services ---
+  services/audit/
+    audit-service.ts            Audit CRUD + getDashboardMetrics() + generateAuditProgram() from framework controls
+    finding-service.ts          Finding CRUD + closeFinding() (validates status transition)
+    capa-service.ts             CAPA CRUD + completeCorrectiveAction() + auto-moves finding to "remediating" on create
+    ai-audit-service.ts         Gemini: audit summary (cached), finding from observation (JSON),
+                                CAPA suggestions, executive report (cached), contextual NL chat
 
   repositories/                 Data access only (Drizzle + optional Executor for transactions)
     --- Vendor Governance ---
@@ -317,6 +388,11 @@ lib/
     --- Compliance ---
     framework-repo, control-repo, evidence-repo, policy-repo, gap-repo
     readiness-repo, ai-compliance-repo
+    --- Audit Management ---
+    audit-management-repo       Audit CRUD + countByStatus + countOverdue
+    audit-program-repo          Program item CRUD (bulk insert from framework controls)
+    audit-finding-repo          Finding CRUD + findByOrg with filters + countBySeverity
+    corrective-action-repo      CAPA CRUD + findByOrg with status filter + countDueSoon
 
   --- Server actions (thin transport — auth + service call + revalidatePath) ---
   vendors/actions.ts
@@ -326,10 +402,12 @@ lib/
   compliance/actions.ts         All compliance actions (frameworks, controls, evidence, policies, gaps, AI)
   settings/actions.ts           Profile, org, branding, password, API keys, integrations
   team/actions.ts               Invite, role, deactivate, reactivate, transfer ownership, resend invite
+  audit/actions.ts              All audit actions: audit CRUD + status + program + findings + CAPAs + all AI
 
   storage/
-    server.ts                   Thin delegator → providers/storage/supabase.ts (4 lines)
-    paths.ts                    buildVendorDocPath() — pure path utility
+    server.ts                   Bucket-aware delegator — uploadFile, downloadObject, removeObjects,
+                                createSignedUrl, objectExists. Auto-routes by path prefix (tenant_=compliance-documents)
+    paths.ts                    COMPLIANCE_DOCS_BUCKET, buildDocPath(), buildVendorDocPath(), bucketForPath()
 
   ai/
     gemini.ts                   extractDocumentFields() v2 (complex structured output stays here)
@@ -357,7 +435,7 @@ lib/
 
 app/
   (app)/                        Authenticated Next.js App Router pages
-    dashboard/, vendors/, compliance/, settings/   (see Section 7 for full route list)
+    dashboard/, vendors/, compliance/, audits/, settings/   (see Section 7 for full route list)
   api/
     v1/                         REST API — Bearer auth + rate limiting (see Section 7)
     cron/                       Scheduled cron jobs
@@ -378,24 +456,44 @@ components/
     compliance-badges.tsx       All compliance status badges
     compliance-ui.tsx           Shared helpers: ComplianceStat, FilterChip, CoverageBar
     [all other compliance components]
+  audit/
+    audit-status-badge.tsx      AuditStatusBadge, SeverityBadge, FindingStatusBadge, CapaStatusBadge, AuditTypeBadge
+    audit-ui.tsx                AuditStat, AuditFilterChip, formatDate, isDueSoon, isOverdue
+    audit-ai-chat.tsx           AI Auditor NL chat (mirrors AiComplianceChat pattern)
+    audit-detail-actions.tsx    Start/Complete/Cancel audit status buttons
+    new-audit-form.tsx          Create audit form (useActionState)
+    edit-audit-form.tsx         Edit audit form
+    new-finding-form.tsx        Add finding + AI Finding Generator (observation → structured finding)
+    new-capa-form.tsx           Add CAPA with finding selector
+    finding-actions.tsx         Close finding + Add CAPA link
+    capa-actions.tsx            Mark Complete button
+
+lib/reports/
+  audit-report-pdf.tsx          Full audit report (overview, AI narrative, findings by severity, CAPAs table)
+  audit-findings-pdf.tsx        Findings-only PDF
+  audit-capa-pdf.tsx            CAPA Tracker PDF
 
 supabase/
   migrations/
     0000–0004_*.sql             Initial schema through document_category enum
     0005_goofy_luke_cage.sql    Compliance Module — 6 enums + 10 tables ✅ APPLIED
     0006_clear_freak.sql        Settings Module — 6 enums + 6 tables + column extensions ✅ APPLIED
-  rls.sql                       RLS policies + auth trigger (apply once)
-  storage.sql                   Storage bucket + policies (apply once)
+    0007_data_governance.sql    Data Governance Phase 1 — storage_providers table, vendor_documents
+                                storage metadata columns, audit_logs.ip_address ✅ APPLIED
+    0008_audit_management_apply.sql  Audit Management — 6 enums + 5 tables ✅ APPLIED
+  rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
+  storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
 
 scripts/
   apply-sql.mjs                 Apply raw SQL to DB
   seed-templates.mjs            7 default vendor type templates
-  seed-demo.mjs                 15 realistic Indian vendors + 67 docs (idempotent)
+  seed-demo.mjs                 15 realistic Indian vendors + 67 docs (idempotent; populates new storage columns)
   seed-e2e.mjs                  E2E test user + workspace
-  check-db.mjs                  Quick DB state check (counts)
+  check-db.mjs                  Quick DB state check (counts all tables incl. new ones)
   seed-compliance-frameworks.mjs   5 frameworks + 174 controls (idempotent)
   seed-compliance-demo.mjs         Statuses, evidence, 104 mappings, 8 policies, gaps, scores
   seed-billing-plans.mjs           Starter/Growth/Enterprise plans; --assign-all flag
+  seed-data-governance.mjs      Backfills doc storage metadata, org_settings, login_history, 25 audit events
 ```
 
 ---
@@ -436,6 +534,8 @@ vi.mock("@/lib/db", () => ({
 ### Module 1 — Vendor Governance ✅ Complete
 ### Module 2 — Compliance Management ✅ Complete (8 phases)
 ### Module 3 — Settings & Organization Management ✅ Complete
+### Phase 1 — Data Governance ✅ Complete (2026-06-05)
+### Module 4 — Audit Management ✅ Complete (2026-06-06)
 
 | Future Module | Status |
 |---|---|
@@ -449,14 +549,20 @@ vi.mock("@/lib/db", () => ({
 |---|---|
 | Provider layer — auth, AI, storage, crypto, rate-limit | ✅ Done |
 | AES-256-GCM integration config encryption | ✅ Done |
-| REST API v1 — 5 read-only endpoints | ✅ Done |
+| REST API v1 — 11 endpoints (5 read-only + 6 audit CRUD with write) | ✅ Done |
 | API key auth middleware (bcrypt Bearer validation) | ✅ Done |
 | DB connection pool config (max=10, idle/connect timeouts) | ✅ Done |
 | DB SSL — `ssl:"require"` (TLS enforced, no cert chain verification) | ✅ Done |
 | In-memory rate limiting (100/300/1000 per 60s) | ✅ Done |
-| API write endpoints (POST/PUT/DELETE /api/v1/*) | Roadmap |
+| compliance-documents private bucket + tenant-prefixed paths | ✅ Done |
+| storage_providers registry table (future S3/Azure/SharePoint) | ✅ Done |
+| Data Governance module (/settings/data-governance) | ✅ Done |
+| Audit Management module (/audits/*) | ✅ Done |
 | Redis-backed rate limiting (multi-instance) | Roadmap |
+| S3 storage provider (`lib/providers/storage/s3.ts`) | ⚠ Pending — awaiting AWS provisioning |
 | SUPABASE_SERVICE_ROLE_KEY configured | ⚠ Pending — team invite blocked |
+| RESEND_API_KEY set in Vercel | ⚠ Pending — email alerts won't send |
+| CRON_SECRET set in Vercel | ⚠ Pending — cron endpoints unprotected |
 
 ---
 
@@ -484,6 +590,8 @@ vi.mock("@/lib/db", () => ({
 | **Compliance readiness recompute** | `recomputeReadiness()` is fire-and-forget (`.catch(() => {})`). Stale scores are acceptable. |
 | **PDF CSS** | react-pdf v4 does NOT support `gap`, `border` shorthand, `paddingHorizontal/Vertical`. Use explicit longhand. |
 | **Scoring module** | Pure functions in `lib/services/scoring.ts` — separate from `vendor-service.ts` so client components can import without pulling in DB. |
+| **Storage bucket routing** | `lib/storage/server.ts` auto-detects bucket from path prefix: `tenant_` prefix → `compliance-documents`; plain UUID prefix → legacy `vendor-documents`. Never hardcode a bucket name in services. Use `buildVendorDocPath()` for new uploads — it generates the `tenant_` prefix automatically. |
+| **StorageProvider interface** | Methods are `uploadFile`, `downloadFile`, `deleteFile`, `generateSignedUrl`, `exists`. Old names (`download`, `delete`, `signedUrl`) no longer exist — don't use them. |
 
 ---
 

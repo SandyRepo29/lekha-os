@@ -641,6 +641,54 @@ export const integrations = pgTable(
 );
 
 /* ============================================================
+   Audit Management — Enums
+   ============================================================ */
+
+export const auditType = pgEnum("audit_type", [
+  "internal",
+  "external",
+  "vendor",
+  "security",
+  "compliance",
+  "regulatory",
+]);
+
+export const auditStatus = pgEnum("audit_status", [
+  "planned",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+
+export const auditProgramStatus = pgEnum("audit_program_status", [
+  "pending",
+  "reviewed",
+  "passed",
+  "failed",
+]);
+
+export const findingSeverity = pgEnum("finding_severity", [
+  "critical",
+  "high",
+  "medium",
+  "low",
+]);
+
+export const findingStatus = pgEnum("finding_status", [
+  "open",
+  "accepted",
+  "remediating",
+  "closed",
+]);
+
+export const correctiveActionStatus = pgEnum("corrective_action_status", [
+  "open",
+  "in_progress",
+  "completed",
+  "overdue",
+]);
+
+/* ============================================================
    Compliance Module — Enums
    ============================================================ */
 
@@ -960,6 +1008,151 @@ export const aiComplianceInsights = pgTable(
 );
 
 /* ============================================================
+   Audit Management — Tables
+   ============================================================ */
+
+/** A formal audit (internal, external, vendor, regulatory, etc.) */
+export const audits = pgTable(
+  "audits",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    auditType: auditType("audit_type").notNull().default("internal"),
+    /** Optional link to a compliance framework. */
+    frameworkId: uuid("framework_id").references(() => frameworks.id, { onDelete: "set null" }),
+    scope: text("scope"),
+    objective: text("objective"),
+    /** Internal owner accountable for the audit. */
+    ownerId: uuid("owner_id").references(() => profiles.id),
+    /** Name of external auditor or audit firm. */
+    auditorName: text("auditor_name"),
+    startDate: date("start_date"),
+    endDate: date("end_date"),
+    status: auditStatus("audit_status").notNull().default("planned"),
+    /** AI-generated executive summary of the audit. */
+    aiSummary: text("ai_summary"),
+    aiSummaryAt: timestamp("ai_summary_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("audits_org_idx").on(t.organizationId),
+    index("audits_org_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Individual checklist items within an audit — one per control or custom item. */
+export const auditPrograms = pgTable(
+  "audit_programs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    auditId: uuid("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    /** Optional control this program item covers. */
+    controlId: uuid("control_id").references(() => controls.id, { onDelete: "set null" }),
+    expectedEvidence: text("expected_evidence"),
+    status: auditProgramStatus("audit_program_status").notNull().default("pending"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("audit_programs_audit_idx").on(t.auditId),
+    index("audit_programs_org_idx").on(t.organizationId),
+  ]
+);
+
+/** A finding raised during an audit. */
+export const auditFindings = pgTable(
+  "audit_findings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    auditId: uuid("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    /** Optional control this finding relates to. */
+    controlId: uuid("control_id").references(() => controls.id, { onDelete: "set null" }),
+    /** Optional evidence item that surfaces this finding. */
+    evidenceId: uuid("evidence_id").references(() => evidence.id, { onDelete: "set null" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    severity: findingSeverity("finding_severity").notNull().default("medium"),
+    recommendation: text("recommendation"),
+    status: findingStatus("finding_status").notNull().default("open"),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("audit_findings_audit_idx").on(t.auditId),
+    index("audit_findings_org_idx").on(t.organizationId),
+    index("audit_findings_severity_idx").on(t.organizationId, t.severity),
+  ]
+);
+
+/** Corrective and Preventive Action (CAPA) assigned to resolve a finding. */
+export const correctiveActions = pgTable(
+  "corrective_actions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    findingId: uuid("finding_id")
+      .notNull()
+      .references(() => auditFindings.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    ownerId: uuid("owner_id").references(() => profiles.id),
+    dueDate: date("due_date"),
+    status: correctiveActionStatus("corrective_action_status").notNull().default("open"),
+    completionNotes: text("completion_notes"),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("corrective_actions_finding_idx").on(t.findingId),
+    index("corrective_actions_org_idx").on(t.organizationId),
+    index("corrective_actions_due_idx").on(t.organizationId, t.dueDate),
+  ]
+);
+
+/** Metadata record for a generated audit report PDF. */
+export const auditReports = pgTable(
+  "audit_reports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    auditId: uuid("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    reportName: text("report_name").notNull(),
+    storagePath: text("storage_path"),
+    generatedBy: uuid("generated_by").references(() => profiles.id),
+    generatedAt: timestamp("generated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("audit_reports_audit_idx").on(t.auditId),
+    index("audit_reports_org_idx").on(t.organizationId),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -986,6 +1179,13 @@ export type BillingPlan = typeof billingPlans.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type Integration = typeof integrations.$inferSelect;
+
+// Audit Management Module
+export type Audit = typeof audits.$inferSelect;
+export type AuditProgram = typeof auditPrograms.$inferSelect;
+export type AuditFinding = typeof auditFindings.$inferSelect;
+export type CorrectiveAction = typeof correctiveActions.$inferSelect;
+export type AuditReport = typeof auditReports.$inferSelect;
 
 // Compliance Module
 export type Framework = typeof frameworks.$inferSelect;

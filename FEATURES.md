@@ -1,6 +1,6 @@
 # Lekha OS — Features Implemented to Date
 
-> Last updated: 2026-06-06 · Build: clean · Tests: 201/201 · Live: https://lekha-os.vercel.app
+> Last updated: 2026-06-06 · Build: clean · Tests: 201/201 · Live: https://lekha-os.vercel.app · Modules: 4 shipped
 
 ---
 
@@ -15,9 +15,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 5 read-only endpoints with Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
+| **REST API v1** | 11 endpoints (5 original read-only + 6 new audit/findings/CAPAs with GET+POST, audits with PUT+DELETE) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 32 tables across 8 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 37 tables across 9 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -90,6 +90,31 @@
 
 ---
 
+## 🔍 Module 4 — Audit Management
+
+> Completed 2026-06-06
+
+| Feature | Detail |
+|---|---|
+| **Audit lifecycle** | Plan → In Progress → Completed / Cancelled. Full CRUD with type (Internal / External / Vendor / Security / Compliance / Regulatory), scope, objective, auditor name, date range |
+| **Audit program** | Auto-generate checklist from linked compliance framework controls. Status per item: Pending / Reviewed / Passed / Failed |
+| **Findings** | Record audit findings with severity (Critical / High / Medium / Low) and status (Open / Remediating / Closed / Accepted). Linked to controls and evidence. Org-wide filterable list |
+| **Corrective Actions (CAPAs)** | Full CAPA lifecycle: Open → In Progress → Completed / Overdue. Due-date tracking with overdue (red) and due-soon (amber) highlights. Linked to findings — creating a CAPA auto-moves finding to "remediating" |
+| **AI Finding Generator** | Paste an observation → Gemini returns structured title, severity, description, recommendation |
+| **AI CAPA Suggestions** | 3 AI-suggested remediation steps per finding |
+| **AI Audit Summary** | Gemini 3–4 sentence executive summary per audit; cached in `ai_compliance_insights` |
+| **AI Executive Report** | Board-level multi-paragraph narrative per audit; cached in `ai_compliance_insights` |
+| **AI Auditor Assistant** | Live NL chat — ask anything about audits, findings, CAPAs |
+| **Dashboard metrics** | Total / Planned / Active / Completed / Overdue audits · Open findings · Critical findings · CAPAs due soon |
+| **Org-wide views** | Cross-audit findings list (filter by severity + status) · CAPA tracker (filter by status, due-date highlighting) |
+| **PDF reports** | Full Audit Report (overview, AI narrative, findings by severity, CAPAs table) · Findings-only PDF · CAPA Tracker PDF |
+| **CSV exports** | Findings CSV · CAPAs CSV — per audit |
+| **REST API** | `GET/POST /api/v1/audits` · `GET/PUT/DELETE /api/v1/audits/[id]` · `GET/POST /api/v1/findings` · `GET/POST /api/v1/capas` — all Bearer auth + rate limited |
+| **RBAC** | All mutations require owner/admin/member/compliance_manager/security_manager/procurement_manager role. Viewers read-only via RLS |
+| **Audit logging** | `audit.created`, `audit.finding_created`, `audit.finding_closed`, `audit.capa_created`, `audit.capa_completed`, `audit.updated`, `audit.completed`, `audit.cancelled` |
+
+---
+
 ## 🛡️ Phase 1 — Data Governance
 
 > Completed 2026-06-05
@@ -112,7 +137,7 @@
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits *(soon)* · Risks *(soon)* · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks *(soon)* · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 

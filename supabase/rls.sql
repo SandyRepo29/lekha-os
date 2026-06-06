@@ -243,3 +243,66 @@ drop policy if exists "members write ai compliance insights" on public.ai_compli
 create policy "members write ai compliance insights" on public.ai_compliance_insights
   for all using (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]))
   with check (public.has_org_role(organization_id, array['owner','admin','member']::public.membership_role[]));
+
+-- ============================================================
+-- Audit Management Module RLS (added 2026-06-06)
+-- ============================================================
+
+-- audits ------------------------------------------------------
+alter table public.audits enable row level security;
+
+drop policy if exists "members read audits" on public.audits;
+create policy "members read audits" on public.audits
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write audits" on public.audits;
+create policy "members write audits" on public.audits
+  for all using (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]));
+
+-- audit_programs ----------------------------------------------
+alter table public.audit_programs enable row level security;
+
+drop policy if exists "members read audit programs" on public.audit_programs;
+create policy "members read audit programs" on public.audit_programs
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write audit programs" on public.audit_programs;
+create policy "members write audit programs" on public.audit_programs
+  for all using (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]));
+
+-- audit_findings ----------------------------------------------
+alter table public.audit_findings enable row level security;
+
+drop policy if exists "members read audit findings" on public.audit_findings;
+create policy "members read audit findings" on public.audit_findings
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write audit findings" on public.audit_findings;
+create policy "members write audit findings" on public.audit_findings
+  for all using (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]));
+
+-- corrective_actions ------------------------------------------
+alter table public.corrective_actions enable row level security;
+
+drop policy if exists "members read corrective actions" on public.corrective_actions;
+create policy "members read corrective actions" on public.corrective_actions
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members write corrective actions" on public.corrective_actions;
+create policy "members write corrective actions" on public.corrective_actions
+  for all using (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]))
+  with check (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]));
+
+-- audit_reports (immutable — insert only, no update/delete) ---
+alter table public.audit_reports enable row level security;
+
+drop policy if exists "members read audit reports" on public.audit_reports;
+create policy "members read audit reports" on public.audit_reports
+  for select using (public.is_org_member(organization_id));
+
+drop policy if exists "members insert audit reports" on public.audit_reports;
+create policy "members insert audit reports" on public.audit_reports
+  for insert with check (public.has_org_role(organization_id, array['owner','admin','member','compliance_manager','security_manager','procurement_manager']::public.membership_role[]));
