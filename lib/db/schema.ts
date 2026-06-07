@@ -229,6 +229,12 @@ export const vendors = pgTable(
     vendorTypeId: uuid("vendor_type_id"),
     /** Onboarding checklist completion 0–100. */
     checklistScore: integer("checklist_score").notNull().default(0),
+    /** Trust Score™ — 0–100 computed from 6 governance signals. */
+    trustScore: integer("trust_score"),
+    trustScoreAt: timestamp("trust_score_at", { withTimezone: true }),
+    /** AI-generated trust narrative (board-ready summary). */
+    aiTrustNarrative: text("ai_trust_narrative"),
+    aiTrustNarrativeAt: timestamp("ai_trust_narrative_at", { withTimezone: true }),
     createdBy: uuid("created_by").references(() => profiles.id),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
@@ -739,6 +745,47 @@ export const policyStatus = pgEnum("policy_status", [
 ]);
 
 /* ============================================================
+   Control Center™ — Enums
+   ============================================================ */
+
+export const controlType = pgEnum("control_type", [
+  "preventive",
+  "detective",
+  "corrective",
+  "compensating",
+  "administrative",
+  "technical",
+  "physical",
+  "hybrid",
+]);
+
+export const controlFrequency = pgEnum("control_frequency", [
+  "continuous",
+  "daily",
+  "weekly",
+  "monthly",
+  "quarterly",
+  "semi_annual",
+  "annual",
+  "ad_hoc",
+]);
+
+export const automationLevel = pgEnum("automation_level", [
+  "manual",
+  "semi_automated",
+  "automated",
+  "ai_assisted",
+]);
+
+export const controlTestResult = pgEnum("control_test_result", [
+  "passed",
+  "failed",
+  "partially_effective",
+  "exception",
+  "not_tested",
+]);
+
+/* ============================================================
    Compliance Module — Tables
    ============================================================ */
 
@@ -766,7 +813,7 @@ export const frameworks = pgTable(
   (t) => [index("frameworks_org_idx").on(t.organizationId)]
 );
 
-/** Individual control within a framework (e.g. ISO 27001 A.5.1). */
+/** Individual control — platform entity (framework link is optional). */
 export const controls = pgTable(
   "controls",
   {
@@ -774,18 +821,31 @@ export const controls = pgTable(
     organizationId: uuid("organization_id")
       .notNull()
       .references(() => organizations.id, { onDelete: "cascade" }),
-    frameworkId: uuid("framework_id")
-      .notNull()
-      .references(() => frameworks.id, { onDelete: "cascade" }),
+    /** Legacy single-framework FK — nullable so controls can be standalone. */
+    frameworkId: uuid("framework_id").references(() => frameworks.id, {
+      onDelete: "cascade",
+    }),
     /** Human-readable reference code, e.g. "A.5.1", "CC1.2", "Req 1". */
     controlRef: text("control_ref").notNull(),
     name: text("name").notNull(),
     description: text("description"),
+    objective: text("objective"),
     category: text("category"),
+    /** Text owner label (legacy / compliance module). */
     owner: text("owner"),
+    /** Structured owner FK — used by Control Center™. */
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
     status: controlStatus("status").notNull().default("not_implemented"),
     priority: controlPriority("priority").notNull().default("medium"),
+    controlType: controlType("control_type"),
+    frequency: controlFrequency("frequency"),
+    automationLevel: automationLevel("automation_level").default("manual"),
+    healthScore: integer("health_score"),
+    effectivenessScore: integer("effectiveness_score"),
     reviewDate: date("review_date"),
+    nextReviewDate: date("next_review_date"),
+    lastTested: date("last_tested"),
+    nextTestDate: date("next_test_date"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },
@@ -1404,6 +1464,103 @@ export const riskEvidence = pgTable(
 );
 
 /* ============================================================
+   Control Center™ — Tables
+   ============================================================ */
+
+/** Many-to-many: a control can satisfy multiple frameworks (Control Center™). */
+export const controlFrameworks = pgTable(
+  "control_frameworks",
+  {
+    controlId: uuid("control_id")
+      .notNull()
+      .references(() => controls.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id")
+      .notNull()
+      .references(() => frameworks.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("control_frameworks_framework_idx").on(t.frameworkId),
+  ]
+);
+
+/** Many-to-many: a control applies to specific vendors. */
+export const controlVendors = pgTable(
+  "control_vendors",
+  {
+    controlId: uuid("control_id")
+      .notNull()
+      .references(() => controls.id, { onDelete: "cascade" }),
+    vendorId: uuid("vendor_id")
+      .notNull()
+      .references(() => vendors.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("control_vendors_vendor_idx").on(t.vendorId),
+  ]
+);
+
+/** Control test run — captures test date, result, tester, method. */
+export const controlTests = pgTable(
+  "control_tests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    controlId: uuid("control_id")
+      .notNull()
+      .references(() => controls.id, { onDelete: "cascade" }),
+    testDate: date("test_date").notNull(),
+    testerId: uuid("tester_id").references(() => profiles.id, { onDelete: "set null" }),
+    testerName: text("tester_name"),
+    method: text("method"),
+    result: controlTestResult("result").notNull().default("not_tested"),
+    evidenceRef: text("evidence_ref"),
+    comments: text("comments"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("control_tests_control_idx").on(t.controlId),
+    index("control_tests_org_idx").on(t.organizationId),
+  ]
+);
+
+/* ============================================================
+   Trust Score™ — History Table
+   ============================================================ */
+
+/** Daily snapshots of each vendor's Trust Score™ and component breakdown. */
+export const vendorTrustHistory = pgTable(
+  "vendor_trust_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    vendorId: uuid("vendor_id")
+      .notNull()
+      .references(() => vendors.id, { onDelete: "cascade" }),
+    overallScore: integer("overall_score").notNull(),
+    evidenceScore: integer("evidence_score").notNull(),
+    complianceScore: integer("compliance_score").notNull(),
+    riskScore: integer("risk_score").notNull(),
+    assessmentScore: integer("assessment_score").notNull(),
+    operationalScore: integer("operational_score").notNull(),
+    freshnessScore: integer("freshness_score").notNull(),
+    /** What triggered this snapshot (document_upload, risk_created, assessment_completed, manual, etc.) */
+    triggerEvent: text("trigger_event"),
+    snapshotAt: timestamp("snapshot_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("vendor_trust_history_vendor_idx").on(t.vendorId),
+    index("vendor_trust_history_org_idx").on(t.organizationId),
+    index("vendor_trust_history_snapshot_idx").on(t.vendorId, t.snapshotAt),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -1460,3 +1617,11 @@ export type RiskPolicy = typeof riskPolicies.$inferSelect;
 export type RiskFramework = typeof riskFrameworks.$inferSelect;
 export type RiskEvidenceLink = typeof riskEvidence.$inferSelect;
 export type AiComplianceInsight = typeof aiComplianceInsights.$inferSelect;
+
+// Control Center™
+export type ControlFrameworkLink = typeof controlFrameworks.$inferSelect;
+export type ControlVendorLink = typeof controlVendors.$inferSelect;
+export type ControlTest = typeof controlTests.$inferSelect;
+
+// Trust Score™
+export type VendorTrustHistory = typeof vendorTrustHistory.$inferSelect;

@@ -1,6 +1,6 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 5 shipped
+> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 7 shipped (+ Trust Score™)
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -32,9 +32,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 11 endpoints (5 read-only + 6 audit/findings/CAPAs with GET+POST, audits with PUT+DELETE) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
+| **REST API v1** | 21 endpoints (read-only + full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ per vendor) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 37 tables across 9 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 48 tables across 10 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -161,6 +161,55 @@
 
 ---
 
+## 🏆 Trust Score™
+
+> Completed 2026-06-07 · Integrated into Vendor Hub™ · API-first
+
+Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal that answers *"Can this vendor be trusted?"* across 6 weighted governance dimensions.
+
+### Scoring Model
+
+| Component | Weight | Source | Calculation |
+|---|---|---|---|
+| **Evidence** | 25% | Vendor documents | 100 − penalties for expired (−10ea), expiring (−5ea), missing required types (−15ea); hard cap of 25 if no docs at all |
+| **Compliance** | 20% | `vendor.complianceScore` | Direct passthrough from existing compliance scoring |
+| **Risk** | 20% | Risk Lens™ linked risks | 100 − 25 per critical open risk (inherentScore ≥ 20) − 12 per high − 5 per medium; 100 if no linked risks |
+| **Assessment** | 15% | Security assessments | Latest completed assessment score; baseline 30 if never assessed |
+| **Operational** | 10% | Reviews + doc requests | Deducts for no reviews (−35), no review in 12mo (−20), open unfulfilled requests (proportional) |
+| **Freshness** | 10% | Recency of governance activity | Deducts based on days since last review (−45 if >365d) and last assessment (−25 if >365d) |
+
+**Formula:** `round(evidence×0.25 + compliance×0.20 + risk×0.20 + assessment×0.15 + operational×0.10 + freshness×0.10)`
+
+### Trust Levels
+
+| Range | Level | Colour |
+|---|---|---|
+| 95–100 | Exceptional | Emerald |
+| 90–94 | Trusted | Emerald |
+| 80–89 | Strong | Green |
+| 70–79 | Moderate | Yellow |
+| 60–69 | Needs Attention | Amber |
+| 0–59 | High Concern | Red |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Auto-computation** | Score recomputes on vendor detail page load if stale (>1 hour). Trigger events: `page_load`, `manual`, `api`, `seed`, `document_upload`, `risk_created`, `assessment_completed`, `review_completed` |
+| **Component breakdown** | All 6 component scores stored per snapshot — full traceability of what drives the overall score |
+| **Trust history** | `vendor_trust_history` table — one row per snapshot; supports 7d / 30d / 90d / 12mo trend views |
+| **Explainability widget** | `TrustScoreWidget` — live breakdown bars, strengths list (✓), concerns list (⚠), Recalculate button |
+| **Strengths & Concerns** | Auto-generated from component scores: e.g. "Current SOC 2", "No critical risks", "DPA expires in 30 days", "Annual review overdue" |
+| **Recommendations engine** | Up to 5 prioritised action items auto-derived from the scoring inputs (renew expired docs, complete assessment, schedule review, etc.) |
+| **AI Trust Narrative** | Gemini-generated 2–3 sentence executive summary per vendor; cached 24 hours; refresh button in widget |
+| **Trust Score badge** | `TrustScoreBadge` — inline level chip displayed in vendor header and list views |
+| **Vendor header** | Trust Score box shown alongside the existing Compliance Score ring on the vendor detail page |
+| **REST API** | `GET /api/v1/vendors/[id]/trust-score` — returns score, all 6 component scores, 30-day history array, AI narrative, strengths, concerns, recommendations |
+| **Seed script** | `node scripts/seed-trust-scores.mjs` — pure SQL scoring; scores all active vendors and writes 1 history row each |
+| **Pure engine** | `lib/services/trust-score.ts` — zero DB imports; fully testable; same logic used by seed script and service |
+
+---
+
 ## 🛡️ Phase 1 — Data Governance
 
 > Completed 2026-06-05
@@ -183,7 +232,9 @@
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors (with Trust Score™ inline) · Compliance · Audits · Risks · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+
+**Trust Intelligence™** (future dedicated sidebar section): Vendor Trust · Control Trust · Organization Trust · Insights · Benchmarks
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -195,8 +246,10 @@
 |---|---|
 | **Brand** | ✅ Rebranded to AUDT — landing page, page title, OpenGraph, footer, mock dashboard all updated |
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress (~4–6 hrs) |
-| **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code pushed, current commit `ee734a9` |
+| **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — currently live at lekha-os.vercel.app and audt.tech (SSL pending) |
+| **Trust Score™** | ✅ Complete — pure engine, service, repo, widget, badge, API, seed script |
+| **Migration 0010** | ⚠ Pending apply — `node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql` |
 | **DB** | ✅ 37 tables, 9 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |

@@ -15,6 +15,7 @@ npm run db:migrate
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
 node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
+node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
 node scripts/seed-templates.mjs
 node scripts/seed-billing-plans.mjs --assign-all
 node scripts/seed-demo.mjs
@@ -22,6 +23,7 @@ node scripts/seed-compliance-frameworks.mjs
 node scripts/seed-compliance-demo.mjs
 node scripts/seed-data-governance.mjs
 node scripts/seed-risk-lens.mjs
+node scripts/seed-trust-scores.mjs
 ```
 
 ---
@@ -37,6 +39,7 @@ node scripts/seed-risk-lens.mjs
 | `seed-compliance-demo.mjs` | Evidence Vault™ | Control statuses · 12 manual evidence · 104 mappings · 8 policies · gaps · readiness scores |
 | `seed-data-governance.mjs` | Settings / Data Gov | Branding · login history · 25 rich audit events · doc storage metadata |
 | `seed-risk-lens.mjs` | Risk Lens™ | 20 risks · 25 treatments · 8 reviews · 15 vendor links · 5 control links · 14 framework links |
+| `seed-trust-scores.mjs` | Trust Score™ | Computes 6-component Trust Score™ for all 15 active vendors + seeds 1 history snapshot each |
 
 ---
 
@@ -219,6 +222,48 @@ Pass `<orgId>` to seed for a specific org. Pass `--list` to see available orgs.
 
 ---
 
+## Trust Score™
+
+### `seed-trust-scores.mjs` — Vendor Trust Scores
+
+**Prerequisites:** All prior seeds must be run first (vendors, docs, assessments, reviews, risk-lens).
+
+Computes and stores the Trust Score™ for every active vendor in the org. Each vendor gets:
+- One row in `vendor_trust_history` with all 6 component scores + `trigger_event = "seed"`
+- `trust_score` and `trust_score_at` updated on the `vendors` row
+
+**Expected scores after full demo seed (all 15 vendors):**
+
+| Vendor | Est. Trust Score | Level | Key Drivers |
+|---|---|---|---|
+| **HDFC Bank Ltd** | ~85–90 | Strong | 7 valid docs, low risk, high compliance, has assessment |
+| **Razorpay Software Pvt Ltd** | ~80–86 | Strong | 8 docs (1 expiring), low risk, 94 compliance, has assessment |
+| **Keka Technologies Pvt Ltd** | ~75–82 | Strong / Moderate | 5 valid docs, low risk, 82 compliance, no assessment |
+| **Zoho Corporation Pvt Ltd** | ~75–82 | Strong / Moderate | 5 valid docs, low risk, 87 compliance, no assessment |
+| **Freshworks Inc** | ~70–78 | Moderate | DPA expiring, low risk, 88 compliance, no assessment |
+| **Greytip Software Pvt Ltd** | ~70–78 | Moderate | 5 docs valid, low risk, 78 compliance, no review |
+| **Wipro Limited** | ~68–76 | Moderate | 5 docs, medium risk, 78 compliance, no assessment |
+| **Infosys BPM Ltd** | ~65–73 | Moderate | Missing BCP doc, medium risk, 76 compliance |
+| **TCS Ltd** | ~65–73 | Moderate | 1 expiring doc (Prof Indemnity), medium risk, 72 compliance |
+| **Birlasoft Ltd** | ~62–70 | Moderate | Medium risk, 74 compliance, no reviews |
+| **Quess Corp Ltd** | ~58–66 | Needs Attention | No assessment, medium risk, 70 compliance, no review |
+| **Darwinbox Digital Solutions** | ~55–65 | Needs Attention | DPA expiring, missing SOC 2, medium risk, 65 compliance |
+| **Sify Technologies Ltd** | ~40–52 | High Concern | 1 expired ISO 27001, high risk, 40 compliance, no assessment |
+| **Yotta Data Services Pvt Ltd** | ~30–42 | High Concern | Only 2 docs, high risk, 35 compliance, no assessment, no review |
+| **Apollo HealthCo Ltd** | ~18–30 | High Concern | 1 doc only, critical risk, 28 compliance, no assessment, no review |
+
+**Component scoring summary:**
+- **Evidence (25%):** Apollo/Yotta score lowest — almost no docs. HDFC/Razorpay score highest (all valid, certs current).
+- **Compliance (20%):** Passes `vendor.complianceScore` directly — same as the existing ring score.
+- **Risk (20%):** Vendors with linked critical/high risks from Risk Lens™ (Phishing → Razorpay, Data Breach → multiple, DPA → Freshworks/Darwinbox) are penalised.
+- **Assessment (15%):** Only 4 vendors have completed assessments (Razorpay, HDFC, Infosys BPM, one other). Others receive baseline score of 30.
+- **Operational (10%):** Vendors with no reviews or open document requests score lower.
+- **Freshness (10%):** Vendors with recent reviews/assessments score higher.
+
+**History rows created: 15** (one per active vendor, `trigger_event = "seed"`)
+
+---
+
 ## Module 5 — Risk Lens™
 
 ### `seed-risk-lens.mjs` — Risks, Treatments & Reviews (20 risks)
@@ -301,7 +346,7 @@ Or set `E2E_USER_EMAIL` and `E2E_USER_PASSWORD` in `.env.local` first.
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 46 tables |
+| `check-db.mjs` | Quick table row counts for all 48 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB (migrations, RLS, storage policies) |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -340,3 +385,6 @@ Or set `E2E_USER_EMAIL` and `E2E_USER_PASSWORD` in `.env.local` first.
 | `risk_controls` | 5 |
 | `risk_frameworks` | 14 |
 | `storage_providers` | 1 (supabase/platform) |
+| `vendor_trust_history` | 15 (one per active vendor) |
+
+> **vendors.trust_score** is also populated for all 15 active vendors after `seed-trust-scores.mjs` runs.

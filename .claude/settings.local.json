@@ -23,7 +23,12 @@
       "Bash(Get-ChildItem -Force)",
       "Bash(taskkill /F /IM node.exe)",
       "PowerShell(Get-Process -Name \"node\" -ErrorAction SilentlyContinue)",
-      "PowerShell(Stop-Process -Force)"
+      "PowerShell(Stop-Process -Force)",
+      "Bash(curl -s http://localhost:3000/risks/treatments -o /dev/null -w \"%{http_code}\")",
+      "PowerShell(Stop-Process -Name node -Force -ErrorAction SilentlyContinue)",
+      "Bash(mkdir -p \"C:/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/vendors/[id]/trust-score\")",
+      "Bash(ls *.md scripts/SEED.md)",
+      "Bash(ls scripts/*.md)"
     ]
   }
 }

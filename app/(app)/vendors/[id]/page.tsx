@@ -23,6 +23,9 @@ import { createSignedUrl } from "@/lib/storage/server";
 import { isGeminiConfigured } from "@/lib/ai/gemini";
 import { computeRiskScore } from "@/lib/services/risk-engine";
 import { scoreLabelColor, scoreLabel } from "@/lib/ui/colors";
+import { computeAndSaveTrustScore } from "@/lib/services/trust-score-service";
+import { TrustScoreWidget } from "@/components/vendors/trust-score-widget";
+import { TrustScoreBadge } from "@/components/vendors/trust-score-badge";
 
 export default async function VendorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -56,6 +59,17 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
     expired: expiredCount,
   };
   const riskScore = computeRiskScore(vendor, docCounts, null);
+
+  // Compute Trust Score™ (refreshes on each page load if stale > 1h)
+  let trustBreakdown = null;
+  const trustIsStale =
+    !vendor.trustScoreAt || Date.now() - new Date(vendor.trustScoreAt).getTime() > 3600 * 1000;
+  if (trustIsStale) {
+    trustBreakdown = await computeAndSaveTrustScore(session.org.id, id, "page_load").catch(() => null);
+  } else {
+    // Reconstruct minimal breakdown for display — widget will recompute on demand
+    trustBreakdown = null;
+  }
 
   return (
     <div className="space-y-5">
@@ -120,6 +134,19 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
             </p>
           </div>
 
+          {/* Trust Score™ */}
+          <div className="shrink-0 text-center">
+            <div className="grid h-24 w-24 place-items-center rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+              <div>
+                <p className="font-[family-name:var(--font-display)] text-3xl font-bold leading-none">
+                  {vendor.trustScore ?? "—"}
+                </p>
+                <p className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">Trust</p>
+              </div>
+            </div>
+            <TrustScoreBadge score={vendor.trustScore ?? null} showScore={false} size="sm" />
+          </div>
+
           {/* Actions */}
           <div className="flex shrink-0 flex-col items-end gap-2 self-start">
             <div className="flex gap-2">
@@ -157,6 +184,15 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
           </p>
         )}
       </Card>
+
+      {/* Trust Score™ Widget */}
+      <TrustScoreWidget
+        vendorId={vendor.id}
+        trustScore={vendor.trustScore ?? null}
+        breakdown={trustBreakdown}
+        narrative={vendor.aiTrustNarrative ?? null}
+        aiEnabled={isGeminiConfigured()}
+      />
 
       {/* Tabbed content */}
       <VendorDetailTabs

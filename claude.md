@@ -14,7 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™
+- **Total tables:** 51 (48 previous + control_frameworks + control_vendors + control_tests; + 11 new cols on controls)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -100,7 +101,7 @@ Browser / API client
 
 ## 5. Database Schema
 
-**37 tables** across 9 migration files (0000–0008 — all applied).
+**46 tables** across 10 migration files (0000–0009 — all applied).
 
 ### Vendor Governance tables (15)
 
@@ -160,9 +161,23 @@ Browser / API client
 |---|---|
 | `audits` | Audit registry — name, type, framework_id (nullable), scope, objective, auditor_name, start/end dates, status, ai_summary, created_by |
 | `audit_programs` | Per-audit checklist items linked to controls — status: pending/reviewed/passed/failed |
-| `audit_findings` | Findings per audit — severity (critical/high/medium/low), status (open/remediating/closed/accepted), linked to control + evidence |
+| `audit_findings` | Findings per audit — finding_severity (critical/high/medium/low), finding_status (open/remediating/closed/accepted), linked to control + evidence |
 | `corrective_actions` | CAPAs per finding — owner, due_date, status (open/in_progress/completed/overdue), completion_notes, completed_at |
 | `audit_reports` | Immutable report generation log — storage_path, generated_by, generated_at |
+
+### Risk Lens™ tables (9) — migration 0009
+
+| Table | Purpose |
+|---|---|
+| `risks` | Risk registry — title, description, category (13 types), status (8 states), source (8 types), impact/likelihood/inherent_score/residual_score, treatment_strategy, owner_id, target_date, next_review_date, source_finding_id, source_gap_id |
+| `risk_reviews` | Periodic review records per risk — review_date, outcome (no_change/score_updated/status_changed/closed), notes, reviewer_id, previous/new score+status |
+| `risk_treatments` | Treatment action items per risk — action, target_date, status (open/in_progress/completed/cancelled), progress_percent, description, owner_id, completed_at |
+| `risk_vendors` | Junction: risk ↔ vendor |
+| `risk_controls` | Junction: risk ↔ compliance control |
+| `risk_findings` | Junction: risk ↔ audit finding |
+| `risk_policies` | Junction: risk ↔ compliance policy |
+| `risk_frameworks` | Junction: risk ↔ compliance framework |
+| `risk_evidence` | Junction: risk ↔ evidence item |
 
 **Membership roles (7):** `owner` · `admin` · `member` · `viewer` · `compliance_manager` · `security_manager` · `procurement_manager`
 
@@ -172,7 +187,16 @@ Browser / API client
 
 **Audit enums:** `audit_type` · `audit_status` · `audit_program_status` · `finding_severity` · `finding_status` · `corrective_action_status`
 
-**RLS:** All 37 tables enabled. Helpers: `is_org_member()`, `has_org_role()`.
+**Risk Lens enums:** `riskCategory` · `riskStatus` · `riskTreatmentStrategy` · `riskSource` · `riskTreatmentStatus`
+- `riskCategory`: operational · cyber_security · compliance · vendor · privacy · financial · legal · strategic · technology · business_continuity · third_party · regulatory · custom
+- `riskStatus`: identified · under_assessment · open · mitigating · accepted · transferred · closed · archived
+- `riskTreatmentStrategy`: mitigate · accept · transfer · avoid · monitor
+- `riskSource`: manual · vendor · audit_finding · compliance_gap · control_failure · policy_exception · ai_generated · api
+- `riskTreatmentStatus`: open · in_progress · completed · cancelled
+
+**CRITICAL — Drizzle column naming for risk tables:** Use `columnEnum("status")` pattern (same as compliance module), NOT `columnEnum("risk_treatment_status")`. The DB column name IS the first argument. Mismatch causes silent query failures.
+
+**RLS:** All 46 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`.
 
 **First-time setup on a fresh DB:**
 ```bash
@@ -184,11 +208,48 @@ node scripts/seed-billing-plans.mjs --assign-all
 node scripts/seed-demo.mjs                          # optional: 15 realistic vendors
 node scripts/seed-compliance-frameworks.mjs         # optional: 5 frameworks + 174 controls
 node scripts/seed-compliance-demo.mjs               # optional: realistic demo state
+node scripts/seed-risk-lens.mjs                     # optional: 20 risks + treatments + reviews
+node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ for all active vendors (19 vendors scored, HDFC 95 → Yotta 44)
 ```
 
 ---
 
 ## 6. Features Implemented
+
+### Trust Score™ ✅ Complete (2026-06-07)
+
+6-component governance signal scored 0–100 per vendor. Displayed on vendor detail, computed on page load, recalculable on demand.
+
+| Component | Weight | Source |
+|---|---|---|
+| **Evidence** | 25% | Doc counts, expiry, required missing |
+| **Compliance** | 20% | `vendor.complianceScore` |
+| **Risk** | 20% | Risk Lens™ linked risks (active/critical/high) |
+| **Assessment** | 15% | Latest security assessment score |
+| **Operational** | 10% | Reviews + document request turnaround |
+| **Freshness** | 10% | Days since last review + assessment age |
+
+- Pure engine: `lib/services/trust-score.ts` — `computeTrustScore(inputs)` → breakdown + level + strengths/concerns/recommendations
+- Service: `lib/services/trust-score-service.ts` — gathers inputs, computes, persists, generates AI narrative via Gemini
+- Repo: `lib/repositories/trust-score-repo.ts` — `saveTrustScore()`, `getTrustHistory()`, `getOrgTrustMetrics()`
+- History table: `vendor_trust_history` — daily snapshots with all 6 component scores + trigger_event
+- UI: `TrustScoreWidget` (full breakdown, strengths/concerns, AI narrative) + `TrustScoreBadge` (inline level chip)
+- API: `GET /api/v1/vendors/[id]/trust-score` — score, components, history, narrative
+- Seed: `node scripts/seed-trust-scores.mjs` — scores all active vendors
+- Migration: `supabase/migrations/0010_trust_score.sql`
+- Trust levels: Exceptional (95–100) · Trusted (90–94) · Strong (80–89) · Moderate (70–79) · Needs Attention (60–69) · High Concern (0–59)
+
+### Module 5 — Risk Lens™ ✅ Complete (2026-06-07)
+
+5-tab sub-nav at `/risks/*`. Full risk lifecycle: identify → assess → treat → review → AI.
+
+| Tab | Features |
+|---|---|
+| **Dashboard** | Metrics: total / open / mitigating / accepted · critical risks · overdue reviews · 5×5 heat map · category breakdown · top 5 risks by score |
+| **Risk Register** | Filterable list (status + category); create risk; detail page with treatments + reviews + AI narrative; status transitions; delete |
+| **Treatments** | Org-wide treatment tracker with due-date highlighting (overdue/due-soon); per-risk inline add; mark complete |
+| **Reports** | Risks CSV · Treatments CSV download links |
+| **AI Risk Officer** | AI Executive Report (board narrative, cached); live NL chat ("Which risks are critical?", "Summarise our risk posture") |
 
 ### Module 4 — Audit Management ✅ Complete (2026-06-06)
 
@@ -301,9 +362,22 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /reports/audits/[id]/findings/csv            Findings CSV
 /reports/audits/[id]/capas/csv               CAPAs CSV
 
+--- Risk Lens™ ---
+/risks                                       Dashboard (metrics + heat map)
+/risks/list                                  Filterable risk register
+/risks/new                                   Create risk
+/risks/[id]                                  Risk detail (treatments, reviews, AI narrative)
+/risks/[id]/edit                             Edit risk
+/risks/treatments                            Org-wide treatment tracker
+/risks/reports                               CSV export links
+/risks/ai                                    AI Risk Officer (executive report + chat)
+/reports/risks/csv                           Risks CSV export
+/reports/risks/treatments/csv               Treatments CSV export
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
+GET /api/v1/vendors/[id]/trust-score         Trust Score™: score, components, history (30 days), narrative
 GET /api/v1/compliance/frameworks            All frameworks with readiness
 GET /api/v1/compliance/gaps                  Open gaps (?severity=, ?resolved=)
 GET /api/v1/audit-logs                       Event stream (?module=, ?from=, ?to=, ?userId=)
@@ -316,6 +390,15 @@ GET /api/v1/findings                         Org-wide findings (?severity=, ?sta
 POST /api/v1/findings                        Create finding (read_write key)
 GET /api/v1/capas                            Org-wide CAPAs (?status=, ?findingId=)
 POST /api/v1/capas                           Create CAPA (read_write key)
+GET /api/v1/risks                            Paginated risk list (?status=, ?category=)
+POST /api/v1/risks                           Create risk (read_write key)
+GET /api/v1/risks/[id]                       Single risk with treatments + reviews
+PUT /api/v1/risks/[id]                       Update risk (read_write key)
+DELETE /api/v1/risks/[id]                    Delete risk (read_write key)
+GET /api/v1/risk-treatments                  Org-wide treatments (?riskId=, ?status=)
+POST /api/v1/risk-treatments                 Create treatment (read_write key)
+GET /api/v1/risk-reviews                     Org-wide reviews (?riskId=)
+POST /api/v1/risk-reviews                    Create review (read_write key)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -332,7 +415,7 @@ POST /api/v1/capas                           Create CAPA (read_write key)
 ```
 lib/
   db/
-    schema.ts                   37-table Drizzle schema — all enums + tables + inferred types
+    schema.ts                   46-table Drizzle schema — all enums + tables + inferred types (incl. Risk Lens 9 tables + 5 enums)
     index.ts                    Lazy DB Proxy — ssl:"require", pool config — CRITICAL, do not change
 
   providers/                    ← INFRASTRUCTURE ADAPTERS (only place SDKs are imported)
@@ -390,6 +473,24 @@ lib/
     ai-audit-service.ts         Gemini: audit summary (cached), finding from observation (JSON),
                                 CAPA suggestions, executive report (cached), contextual NL chat
 
+  --- Risk Lens™ services ---
+  services/trust-score.ts       Pure, client-safe: computeTrustScore(inputs) → TrustScoreBreakdown
+                                getTrustLevel(), TRUST_LEVEL_LABELS, TRUST_LEVEL_COLORS, TRUST_LEVEL_BG,
+                                TRUST_COMPONENT_WEIGHTS, TRUST_COMPONENT_LABELS
+  services/trust-score-service.ts  computeAndSaveTrustScore(orgId, vendorId, triggerEvent)
+                                   generateTrustNarrative(orgId, vendorId) — Gemini cached (<24h)
+                                   getTrustHistory(), getOrgTrustMetrics()
+  services/risk-scoring.ts      Pure, client-safe: computeRiskScore(impact, likelihood) → {score, level, color, priority}
+                                scoreToLevel(), RISK_CATEGORY_LABELS, RISK_STATUS_LABELS,
+                                RISK_SOURCE_LABELS, TREATMENT_STRATEGY_LABELS
+  services/risk/
+    risk-service.ts             Risk CRUD + updateRiskStatus() + addReview() + addTreatment() + completeTreatment()
+                                getDashboardMetrics() → {total, open, mitigating, accepted, closed, critical,
+                                overdueReviews, byCategory, topRisks, heatMapData}
+    ai-risk-service.ts          Gemini: generateRiskNarrative() (cached), generateRiskFromObservation() (JSON),
+                                generateMitigationRecommendations() (5 items), generateExecutiveSummary() (cached),
+                                chat() (multi-turn NL), getCachedNarrative(), getCachedExecutiveSummary()
+
   repositories/                 Data access only (Drizzle + optional Executor for transactions)
     --- Vendor Governance ---
     vendor-repo, document-repo, assessment-repo, review-repo, request-repo
@@ -409,6 +510,14 @@ lib/
     audit-program-repo          Program item CRUD (bulk insert from framework controls)
     audit-finding-repo          Finding CRUD + findByOrg with filters + countBySeverity
     corrective-action-repo      CAPA CRUD + findByOrg with status filter + countDueSoon
+    --- Trust Score™ ---
+    trust-score-repo            saveTrustScore(), getTrustHistory(), getOrgTrustMetrics()
+    --- Risk Lens™ ---
+    risk-repo                   Risk CRUD + findByOrg(filters) + countByStatus + countByCategory + countOverdueReviews
+                                + findActiveByVendor — LEFT JOINs profiles for owner name/email
+    risk-treatment-repo         insertTreatment, findByRisk, findByOrg, updateTreatment, deleteTreatment
+    risk-review-repo            insertReview, findByRisk, findByOrg
+    risk-relationship-repo      link/unlink for all 6 junction tables (vendors/controls/findings/policies/frameworks/evidence)
 
   --- Server actions (thin transport — auth + service call + revalidatePath) ---
   vendors/actions.ts
@@ -419,6 +528,7 @@ lib/
   settings/actions.ts           Profile, org, branding, password, API keys, integrations
   team/actions.ts               Invite, role, deactivate, reactivate, transfer ownership, resend invite
   audit/actions.ts              All audit actions: audit CRUD + status + program + findings + CAPAs + all AI
+  risk/actions.ts               All risk actions: risk CRUD + status + treatment + review + all AI
 
   storage/
     server.ts                   Bucket-aware delegator — uploadFile, downloadObject, removeObjects,
@@ -483,6 +593,18 @@ components/
     new-capa-form.tsx           Add CAPA with finding selector
     finding-actions.tsx         Close finding + Add CAPA link
     capa-actions.tsx            Mark Complete button
+  vendors/ (trust additions)
+    trust-score-badge.tsx       TrustScoreBadge — inline level chip (score + level label)
+    trust-score-widget.tsx      TrustScoreWidget — full breakdown card: bars, strengths/concerns, AI narrative
+  risk/
+    risk-status-badge.tsx       RiskStatusBadge, RiskScoreBadge, RiskLevelBadge, RiskCategoryBadge, TreatmentStatusBadge
+    risk-heat-map.tsx           Client component — 5×5 grid, impact on Y (5→1), likelihood on X (1→5),
+                                cells coloured by score range, risk counts, clickable to filter
+    risk-detail-actions.tsx     UpdateStatus dropdown, delete, GenerateNarrative, AddTreatment inline form,
+                                CompleteTreatment, AddReview inline form — all useTransition + router.refresh()
+    new-risk-form.tsx           Create risk — live impact/likelihood sliders with real-time computeRiskScore
+    edit-risk-form.tsx          Edit risk — useActionState with boundAction pattern (not bind())
+    risk-ai-chat.tsx            AI Risk Officer NL chat
 
 lib/reports/
   audit-report-pdf.tsx          Full audit report (overview, AI narrative, findings by severity, CAPAs table)
@@ -497,7 +619,12 @@ supabase/
     0007_data_governance.sql    Data Governance Phase 1 — storage_providers table, vendor_documents
                                 storage metadata columns, audit_logs.ip_address ✅ APPLIED
     0008_audit_management_apply.sql  Audit Management — 6 enums + 5 tables ✅ APPLIED
+    0009_risk_lens.sql          Risk Lens™ — 5 enums + 9 tables (risks, risk_reviews, risk_treatments,
+                                risk_vendors, risk_controls, risk_findings, risk_policies,
+                                risk_frameworks, risk_evidence) ✅ APPLIED
+    0010_trust_score.sql        Trust Score™ — 4 new columns on vendors + vendor_trust_history table ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
+  rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
 
 scripts/
@@ -510,6 +637,9 @@ scripts/
   seed-compliance-demo.mjs         Statuses, evidence, 104 mappings, 8 policies, gaps, scores
   seed-billing-plans.mjs           Starter/Growth/Enterprise plans; --assign-all flag
   seed-data-governance.mjs      Backfills doc storage metadata, org_settings, login_history, 25 audit events
+  seed-risk-lens.mjs            20 risks · 25 treatments · 8 reviews · vendor/control/framework links (idempotent)
+  seed-trust-scores.mjs         Computes and stores Trust Score™ for all active vendors (idempotent)
+  SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
 ---
@@ -552,13 +682,14 @@ vi.mock("@/lib/db", () => ({
 ### Module 3 — Settings & Organization Management ✅ Complete
 ### Phase 1 — Data Governance ✅ Complete (2026-06-05)
 ### Module 4 — Audit Management ✅ Complete (2026-06-06)
+### Module 5 — Risk Lens™ ✅ Complete (2026-06-07)
+### Trust Score™ ✅ Complete (2026-06-07)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
 
 | Next Module | Description | Status |
 |---|---|---|
-| Risk Lens™ | Risk register, heat maps, remediation tracking | Roadmap |
-| Control Center™ | Control library, health monitoring, coverage analytics | Roadmap |
+| Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
 | Policy Governance | Full policy lifecycle, versioning, owner accountability | Roadmap |
 | DPDP Privacy | India DPDP Act 2023 — data inventory, consent, retention | Roadmap |
 | Contract Governance | Contract lifecycle, expiry, obligation tracking | Future |
@@ -573,7 +704,7 @@ vi.mock("@/lib/db", () => ({
 |---|---|
 | Provider layer — auth, AI, storage, crypto, rate-limit | ✅ Done |
 | AES-256-GCM integration config encryption | ✅ Done |
-| REST API v1 — 11 endpoints (5 read-only + 6 audit CRUD with write) | ✅ Done |
+| REST API v1 — 19 endpoints (5 read-only + 14 CRUD with write across audits/findings/CAPAs/risks/treatments/reviews) | ✅ Done |
 | API key auth middleware (bcrypt Bearer validation) | ✅ Done |
 | DB connection pool config (max=10, idle/connect timeouts) | ✅ Done |
 | DB SSL — `ssl:"require"` (TLS enforced, no cert chain verification) | ✅ Done |
@@ -582,6 +713,7 @@ vi.mock("@/lib/db", () => ({
 | storage_providers registry table (future S3/Azure/SharePoint) | ✅ Done |
 | Data Governance module (/settings/data-governance) | ✅ Done |
 | Audit Management module (/audits/*) | ✅ Done |
+| Risk Lens™ module (/risks/*) | ✅ Done |
 | Redis-backed rate limiting (multi-instance) | Roadmap |
 | S3 storage provider (`lib/providers/storage/s3.ts`) | ⚠ Pending — awaiting AWS provisioning |
 | SUPABASE_SERVICE_ROLE_KEY configured | ⚠ Pending — team invite blocked |
@@ -616,6 +748,11 @@ vi.mock("@/lib/db", () => ({
 | **Scoring module** | Pure functions in `lib/services/scoring.ts` — separate from `vendor-service.ts` so client components can import without pulling in DB. |
 | **Storage bucket routing** | `lib/storage/server.ts` auto-detects bucket from path prefix: `tenant_` prefix → `compliance-documents`; plain UUID prefix → legacy `vendor-documents`. Never hardcode a bucket name in services. Use `buildVendorDocPath()` for new uploads — it generates the `tenant_` prefix automatically. |
 | **StorageProvider interface** | Methods are `uploadFile`, `downloadFile`, `deleteFile`, `generateSignedUrl`, `exists`. Old names (`download`, `delete`, `signedUrl`) no longer exist — don't use them. |
+| **Trust Score™ auto-refresh** | Page load triggers `computeAndSaveTrustScore()` only when `trust_score_at` is null or >1h stale. The service writes to both `vendor_trust_history` and `vendors.trust_score`. Never call `saveTrustScore()` without also computing via `computeTrustScore()` — the history row must match the cached column. |
+| **Trust Score `breakdown` prop** | `TrustScoreWidget` accepts a `breakdown` prop (server-computed on page load). If null, the widget shows the cached `trustScore` number but no bar breakdown — the user must click Recalculate to regenerate. |
+| **Risk Lens Drizzle column names** | `riskTreatmentStatus("status")` — the first arg is the DB column name. Compliance module uses `columnEnum("status")`; audit module uses prefixed names. Risk Lens follows compliance pattern: always `("status")`. Using `("risk_treatment_status")` references a non-existent column and causes 500s. |
+| **Risk enum values** | Actual DB enums: category=`cyber_security` (not `cyber`), source=`audit_finding`/`compliance_gap`/`vendor` (not `audit`/`gap_analysis`/`assessment`). Check `seed-risk-lens.mjs` for all valid values. |
+| **audit_findings column names** | The severity column is `finding_severity` (not `severity`) and status is `finding_status` (not `status`). Risk Lens seed uses these correct names. |
 
 ---
 

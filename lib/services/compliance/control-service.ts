@@ -130,7 +130,7 @@ export async function updateControlStatus(params: {
     );
   });
 
-  await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
+  if (control.frameworkId) await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
 }
 
 export async function updateControl(params: {
@@ -167,7 +167,7 @@ export async function updateControl(params: {
   });
 
   if (params.input.status !== undefined) {
-    await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
+    if (control.frameworkId) await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
   }
 }
 
@@ -194,7 +194,7 @@ export async function deleteControl(params: {
     );
   });
 
-  await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
+  if (control.frameworkId) await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
 }
 
 /** Per-status summary — used for the framework detail readiness breakdown. */

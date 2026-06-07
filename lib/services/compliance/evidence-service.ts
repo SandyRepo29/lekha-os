@@ -113,7 +113,7 @@ export async function updateEvidenceStatus(params: {
     const frameworkIds = new Set<string>();
     for (const m of mappings) {
       const control = await controlRepo.findById(params.orgId, m.controlId);
-      if (control) frameworkIds.add(control.frameworkId);
+      if (control?.frameworkId) frameworkIds.add(control.frameworkId);
     }
     await Promise.all(
       [...frameworkIds].map((fid) =>
@@ -136,7 +136,7 @@ export async function deleteEvidence(params: {
   const frameworkIds = new Set<string>();
   for (const m of mappings) {
     const control = await controlRepo.findById(params.orgId, m.controlId);
-    if (control) frameworkIds.add(control.frameworkId);
+    if (control?.frameworkId) frameworkIds.add(control.frameworkId);
   }
 
   await db.transaction(async (tx) => {
@@ -198,7 +198,7 @@ export async function mapEvidenceToControl(params: {
     );
   });
 
-  await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
+  if (control.frameworkId) await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
 }
 
 export async function unmapEvidenceFromControl(params: {
@@ -225,7 +225,7 @@ export async function unmapEvidenceFromControl(params: {
     );
   });
 
-  await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
+  if (control.frameworkId) await recomputeReadiness(params.orgId, control.frameworkId).catch(() => {});
 }
 
 // ---- Vendor module bridge ------------------------------------

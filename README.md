@@ -1,23 +1,28 @@
-# Lekha OS
+# AUDT
 
-**The Trust, Governance & Compliance Operating System for Indian Businesses.**
+**AI-Native Trust, Risk & Compliance Platform — Governance Built on Proof.**
 
-Live: [lekha-os.vercel.app](https://lekha-os.vercel.app) · GitHub: [SandyRepo29/lekha-os](https://github.com/SandyRepo29/lekha-os)
+Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://lekha-os.vercel.app) · GitHub: [SandyRepo29/lekha-os](https://github.com/SandyRepo29/lekha-os)
 
-> Complete developer reference: **[CLAUDE.md](./CLAUDE.md)** — stack, schema, features, caveats, architecture, test suite, dev commands.
+> Complete developer reference: **[CLAUDE.md](./CLAUDE.md)** — architecture, schema, features, caveats, dev commands, environment variables.
+> Seed data reference: **[SEED.md](./SEED.md)** · Feature inventory: **[FEATURES.md](./FEATURES.md)**
 
 ---
 
-## Modules
+## Modules Shipped
 
-| Module | Status |
-|---|---|
-| **M1 — Vendor Governance** | ✅ Complete |
-| **M2 — Compliance Management** | ✅ Complete (all 8 phases) |
-| **M3 — Settings & Organization Management** | ✅ Complete (all 8 tabs) |
-| DPDP Privacy + Audit Workspace | Roadmap |
-| Risk Management — register, heat maps, remediation | Roadmap |
-| Board Governance + Trust Center | Roadmap |
+| Module | Status | Routes |
+|---|---|---|
+| **Vendor Hub™** — Vendor Governance | ✅ Complete | `/vendors/*` |
+| **Evidence Vault™** — Compliance Management | ✅ Complete (8 phases) | `/compliance/*` |
+| **Settings & Org Management** | ✅ Complete (9 tabs) | `/settings/*` |
+| **Data Governance Phase 1** | ✅ Complete | `/settings/data-governance` |
+| **Audit Management** | ✅ Complete | `/audits/*` |
+| **Risk Lens™** | ✅ Complete | `/risks/*` |
+| **Trust Score™** | ✅ Complete | Vendor detail + API |
+| Control Center™ | Roadmap | — |
+| Policy Governance | Roadmap | — |
+| DPDP Privacy | Roadmap | — |
 
 ---
 
@@ -39,7 +44,7 @@ Browser / API client
    lib/db/ (Postgres)   Supabase / Gemini / Storage / Crypto / Rate limit
 ```
 
-**Key rule:** Infrastructure SDKs (`@supabase/supabase-js`, `@google/genai`) are imported only inside `lib/providers/`. Services import provider interfaces. Swapping any backend = one file change.
+**Key rule:** Infrastructure SDKs (`@supabase/supabase-js`, `@google/genai`) are imported only inside `lib/providers/`. Swapping any backend = one file change.
 
 ---
 
@@ -47,22 +52,28 @@ Browser / API client
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000 — boots in demo mode without Supabase
+npm run dev          # http://localhost:3000
 ```
 
-### Full Setup (Supabase Mumbai)
+### Full Setup (Supabase + all seed data)
 
 ```bash
-cp .env.example .env.local   # fill in Supabase, Gemini, Resend, ENCRYPTION_KEY
+cp .env.example .env.local   # fill in: Supabase, Gemini, Resend, ENCRYPTION_KEY
 
 npm run db:migrate
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
+node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
+node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
+
 node scripts/seed-templates.mjs                    # 7 vendor type templates
+node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
 node scripts/seed-demo.mjs                         # 15 realistic Indian vendors + docs
 node scripts/seed-compliance-frameworks.mjs        # 5 frameworks + 174 standard controls
 node scripts/seed-compliance-demo.mjs              # statuses, evidence, policies, gaps
-node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
+node scripts/seed-data-governance.mjs              # branding, login history, audit events
+node scripts/seed-risk-lens.mjs                    # 20 risks, treatments, reviews
+node scripts/seed-trust-scores.mjs                 # Trust Score™ for all vendors
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
@@ -71,22 +82,30 @@ In Supabase → Auth → Email → turn **OFF** "Confirm email".
 
 ## REST API
 
-The `/api/v1/` layer is authenticated with API keys created in **Settings → API Keys**.
+Authenticated with API keys from **Settings → API Keys**.
 
 ```
-Authorization: Bearer lk_live_<key>
+Authorization: Bearer audt_live_<key>
 ```
 
 | Endpoint | Auth | Description |
 |---|---|---|
 | `GET /api/v1/vendors` | read_only | Paginated vendor list |
 | `GET /api/v1/vendors/:id` | read_only | Single vendor |
+| `GET /api/v1/vendors/:id/trust-score` | read_only | Trust Score™: components, history, narrative |
 | `GET /api/v1/compliance/frameworks` | read_only | All frameworks with readiness scores |
 | `GET /api/v1/compliance/gaps` | read_only | Open compliance gaps |
 | `GET /api/v1/audit-logs` | read_only | Filterable audit event stream |
+| `GET/POST /api/v1/audits` | read_write | Audit list + create |
+| `GET/PUT/DELETE /api/v1/audits/:id` | read_write | Single audit CRUD |
+| `GET/POST /api/v1/findings` | read_write | Org-wide findings + create |
+| `GET/POST /api/v1/capas` | read_write | Org-wide CAPAs + create |
+| `GET/POST /api/v1/risks` | read_write | Risk list + create |
+| `GET/PUT/DELETE /api/v1/risks/:id` | read_write | Single risk CRUD |
+| `GET/POST /api/v1/risk-treatments` | read_write | Treatments list + create |
+| `GET/POST /api/v1/risk-reviews` | read_write | Reviews list + create |
 
-Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).  
-`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` headers on every response.
+Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
 ---
 
@@ -100,10 +119,10 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `npm run test:coverage` | With coverage report |
 | `npm run test:e2e` | Playwright end-to-end |
 | `npm run db:generate` | Generate Drizzle migration from schema |
-| `npm run db:migrate` | Apply all pending migrations |
+| `npm run db:migrate` | Apply all pending Drizzle migrations |
 | `npm run db:studio` | Drizzle Studio GUI |
-| `npm run db:seed-compliance` | 5 frameworks + 174 controls |
-| `npm run db:seed-compliance-demo` | Realistic demo data |
+| `node scripts/seed-trust-scores.mjs` | Compute Trust Score™ for all active vendors |
+| `node scripts/check-db.mjs` | Table row counts for all 48 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -114,10 +133,10 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 31 tables · 6 migrations applied |
-| Auth | Supabase Auth · org RBAC (owner/admin/member/viewer/compliance_manager/security_manager/procurement_manager) |
-| Storage | Supabase Storage — `vendor-documents` bucket, org-scoped RLS |
-| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer |
+| Database | Supabase Postgres · Drizzle ORM · 48 tables · 10 migrations applied |
+| Auth | Supabase Auth · org RBAC (7 roles) |
+| Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
+| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, trust narratives |
 | Email | Resend — expiry alerts + AI-written weekly digests |
 | PDF | `@react-pdf/renderer` |
 | Security | AES-256-GCM config encryption · bcryptjs API key hashing |
@@ -126,4 +145,4 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
 ---
 
-*Lekha OS — Trust. Governance. Compliance. Built for India 🇮🇳*
+*AUDT — Governance Built on Proof. 🇮🇳*

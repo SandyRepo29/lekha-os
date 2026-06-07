@@ -15,6 +15,7 @@ import {
   Users,
   Bell,
   Database,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ const items: Item[] = [
   { href: "/compliance", label: "Compliance", icon: ShieldCheck },
   { href: "/audits", label: "Audits", icon: ClipboardCheck },
   { href: "/risks", label: "Risks", icon: AlertTriangle },
+  { href: "/controls", label: "Control Center", icon: Shield },
   { href: "/privacy", label: "DPDP Privacy", icon: Lock, soon: true },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];

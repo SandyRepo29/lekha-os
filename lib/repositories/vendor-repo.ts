@@ -58,6 +58,7 @@ export async function updateVendor(
     aiRiskExplanation?: string | null; aiRiskExplainedAt?: Date | null;
     aiRecommendedActions?: unknown; aiActionsGeneratedAt?: Date | null;
     checklistScore?: number; vendorTypeId?: string | null;
+    aiTrustNarrative?: string | null; aiTrustNarrativeAt?: Date | null;
   },
   exec: Executor = db
 ): Promise<void> {
