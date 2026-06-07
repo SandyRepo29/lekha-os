@@ -1,6 +1,23 @@
-# Lekha OS — Features Implemented to Date
+# AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-06 · Build: clean · Tests: 201/201 · Live: https://lekha-os.vercel.app · Modules: 4 shipped
+> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 4 shipped
+> Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
+
+---
+
+## 🌐 Brand & Marketing
+
+| Item | Detail |
+|---|---|
+| **Brand** | AUDT — AI-Native Trust, Risk & Compliance Platform |
+| **Domain** | audt.tech (registered, DNS live on BigRock → Vercel) |
+| **Category positioning** | Governance OS — not a point solution |
+| **Tagline** | Governance Built on Proof. |
+| **Landing page** | Full redesign — Hero, Trust Intelligence™ scores, Governance Copilot™ chat UI, platform pillars, solutions grid, audience cards, architecture diagram, roadmap, final CTA, structured footer |
+| **Page title / SEO** | "AUDT | Governance Built on Proof." — updated across `app/layout.tsx` + OpenGraph |
+| **DNS** | A record → `216.198.79.1` (Vercel), CNAME `www` → `cname.vercel-dns.com` — both set at BigRock |
+| **SSL** | Pending Vercel auto-provisioning (DNS propagation in progress) |
+| **Deployment** | Vercel (Mumbai `bom1`) — auto-deploys on `git push origin main` |
 
 ---
 
@@ -15,7 +32,7 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 11 endpoints (5 original read-only + 6 new audit/findings/CAPAs with GET+POST, audits with PUT+DELETE) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
+| **REST API v1** | 11 endpoints (5 read-only + 6 audit/findings/CAPAs with GET+POST, audits with PUT+DELETE) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
 | **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 37 tables across 9 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
@@ -23,7 +40,7 @@
 
 ---
 
-## 📦 Module 1 — Vendor Governance
+## 📦 Module 1 — Vendor Hub™ (Vendor Governance)
 
 | Feature | Detail |
 |---|---|
@@ -52,7 +69,7 @@
 
 ---
 
-## ✅ Module 2 — Compliance Management
+## ✅ Module 2 — Evidence Vault™ (Compliance Management)
 
 | Feature | Detail |
 |---|---|
@@ -143,11 +160,61 @@
 
 ---
 
+## 📍 Current Status (2026-06-07)
+
+| Layer | Status |
+|---|---|
+| **Brand** | ✅ Rebranded to AUDT — landing page, page title, OpenGraph, footer, mock dashboard all updated |
+| **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress (~4–6 hrs) |
+| **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code pushed, current commit `ee734a9` |
+| **Vercel** | ✅ Auto-deployed on push — currently live at lekha-os.vercel.app and audt.tech (SSL pending) |
+| **DB** | ✅ 37 tables, 9 migrations applied, Supabase Mumbai (ap-south-1) |
+| **Module 1 — Vendor Hub™** | ✅ Complete |
+| **Module 2 — Evidence Vault™** | ✅ Complete |
+| **Module 3 — Settings & Org** | ✅ Complete |
+| **Module 4 — Audit Management** | ✅ Complete |
+| **Phase 1 — Data Governance** | ✅ Complete |
+| **Tests** | ✅ 201/201 Vitest passing |
+
+---
+
 ## ⚠️ Pending — blocked on config / provisioning, not code
 
 | Item | Blocked by |
 |---|---|
+| SSL on audt.tech | DNS propagation in progress — Vercel will auto-provision Let's Encrypt once Valid Configuration shows |
 | Team invite flow | `SUPABASE_SERVICE_ROLE_KEY` placeholder in Vercel |
 | Email alerts + weekly digest | `RESEND_API_KEY` missing in Vercel |
 | Cron endpoint security | `CRON_SECRET` missing in Vercel |
-| S3 storage provider | Awaiting AWS provisioning — `lib/providers/storage/s3.ts` just needs implementing against the existing `StorageProvider` interface |
+| S3 storage provider | Awaiting AWS provisioning — `lib/providers/storage/s3.ts` ready to implement against `StorageProvider` interface |
+
+---
+
+## 🗺️ Roadmap — What's Next
+
+| Module | Description | Status |
+|---|---|---|
+| **Risk Lens™** | Risk register, heat maps, remediation tracking | Roadmap |
+| **Control Center™** | Control library, health monitoring, coverage analytics | Roadmap |
+| **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
+| **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
+| **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
+| **AI Governance** | AI model risk, responsible AI frameworks, governance policies | Future |
+| **Continuous Monitoring** | Real-time control health signals, automated evidence collection | Future |
+| **Trust Graph™** | Cross-entity knowledge graph — vendors, controls, risks, policies | Future |
+| **Governance OS** | Full category vision — system of record for organizational trust | Vision |
+
+---
+
+## 🏷️ AUDT Product Naming
+
+| Generic Name | AUDT Brand Name |
+|---|---|
+| Vendor Management | Vendor Hub™ |
+| Evidence Repository | Evidence Vault™ |
+| Risk Engine | Risk Lens™ |
+| AI Assistant | Governance Copilot™ |
+| Controls | Control Center™ |
+| Vendor Rating | Trust Score™ |
+| Governance Graph | Trust Graph™ |
+| Intelligence Layer | Trust Intelligence™ |
