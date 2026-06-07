@@ -1,6 +1,6 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 4 shipped
+> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 5 shipped
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -132,6 +132,35 @@
 
 ---
 
+## 🔴 Module 5 — Risk Lens™
+
+> Completed 2026-06-07
+
+| Feature | Detail |
+|---|---|
+| **Risk register** | Full CRUD for risks with 13 categories (operational, cyber_security, compliance, financial, strategic, legal, technology, vendor, privacy, business_continuity, third_party, regulatory, custom), 8 statuses, 5 sources |
+| **Risk scoring** | Pure `computeRiskScore(impact, likelihood)` — score 1–25, 5 levels: Low / Moderate / High / Critical / Severe. Live matrix preview on create/edit |
+| **Risk heat map** | Interactive 5×5 grid — impact (Y) × likelihood (X), cells coloured by score range, risk counts per cell, click to filter register |
+| **Treatment tracking** | Add treatment actions per risk with target date, status (open / in_progress / completed / cancelled), progress %, and completion notes |
+| **Risk reviews** | Periodic review log per risk — review date, outcome (no_change / score_updated / status_changed / closed), notes, reviewer |
+| **Risk relationships** | Link risks to vendors, compliance controls, audit findings, policies, frameworks, evidence via 6 junction tables |
+| **Dashboard metrics** | Total / Open / Mitigating / Accepted / Closed risks · Critical risk count · Overdue reviews · Category chart · Heat map · Top 5 risks by score |
+| **Org-wide treatment tracker** | Cross-risk treatment list with due-date highlighting — overdue (red), due soon (amber), in-progress (blue) |
+| **AI Risk Narrative** | Gemini executive summary per risk; cached in `ai_compliance_insights` |
+| **AI Risk from Observation** | Paste an observation → Gemini returns structured title, category, severity, description |
+| **AI Mitigation Recommendations** | 5 AI-suggested treatment actions per risk |
+| **AI Executive Summary** | Board-level org-wide risk posture report; cached |
+| **AI Risk Officer Chat** | Live NL chat — ask anything about your risk register ("Which risks are overdue?", "Summarise critical risks") |
+| **Reports page** | Risks CSV · Treatments CSV download links |
+| **CSV exports** | `/reports/risks/csv` · `/reports/risks/treatments/csv` — full org risk data |
+| **REST API** | `GET/POST /api/v1/risks` · `GET/PUT/DELETE /api/v1/risks/[id]` · `GET/POST /api/v1/risk-treatments` · `GET/POST /api/v1/risk-reviews` — Bearer auth + rate limited |
+| **RBAC** | All mutations require owner/admin/member/compliance_manager/security_manager/procurement_manager. Viewers read-only via RLS |
+| **RLS** | 9 tables with org-scoped RLS — risks, risk_reviews, risk_treatments use `is_org_member()` / `has_org_role()`; junction tables validate via risk's org |
+| **Navigation** | 5-tab sub-nav: Dashboard · Risk Register · Treatments · Reports · AI Risk Officer |
+| **Seed data** | `seed-risk-lens.mjs` — 20 realistic risks · 25 treatment actions · 8 reviews · vendor/control/framework links |
+
+---
+
 ## 🛡️ Phase 1 — Data Governance
 
 > Completed 2026-06-05
@@ -154,7 +183,7 @@
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks *(soon)* · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -173,6 +202,7 @@
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
 | **Module 4 — Audit Management** | ✅ Complete |
+| **Module 5 — Risk Lens™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
 
@@ -194,7 +224,7 @@
 
 | Module | Description | Status |
 |---|---|---|
-| **Risk Lens™** | Risk register, heat maps, remediation tracking | Roadmap |
+| **Risk Lens™** | Risk register, heat maps, remediation tracking | ✅ Complete |
 | **Control Center™** | Control library, health monitoring, coverage analytics | Roadmap |
 | **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
 | **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
