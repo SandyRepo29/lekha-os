@@ -1,6 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 8 shipped (Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™)
+> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **9 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -32,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 23 endpoints (read-only + full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ + Control CSV exports) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
+| **REST API v1** | 26 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 51 tables across 11 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **52 tables** across 12 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -119,16 +120,16 @@
 | **Corrective Actions (CAPAs)** | Full CAPA lifecycle: Open → In Progress → Completed / Overdue. Due-date tracking with overdue (red) and due-soon (amber) highlights. Linked to findings — creating a CAPA auto-moves finding to "remediating" |
 | **AI Finding Generator** | Paste an observation → Gemini returns structured title, severity, description, recommendation |
 | **AI CAPA Suggestions** | 3 AI-suggested remediation steps per finding |
-| **AI Audit Summary** | Gemini 3–4 sentence executive summary per audit; cached in `ai_compliance_insights` |
-| **AI Executive Report** | Board-level multi-paragraph narrative per audit; cached in `ai_compliance_insights` |
+| **AI Audit Summary** | Gemini 3–4 sentence executive summary per audit; cached |
+| **AI Executive Report** | Board-level multi-paragraph narrative per audit; cached |
 | **AI Auditor Assistant** | Live NL chat — ask anything about audits, findings, CAPAs |
 | **Dashboard metrics** | Total / Planned / Active / Completed / Overdue audits · Open findings · Critical findings · CAPAs due soon |
 | **Org-wide views** | Cross-audit findings list (filter by severity + status) · CAPA tracker (filter by status, due-date highlighting) |
-| **PDF reports** | Full Audit Report (overview, AI narrative, findings by severity, CAPAs table) · Findings-only PDF · CAPA Tracker PDF |
+| **PDF reports** | Full Audit Report · Findings-only PDF · CAPA Tracker PDF |
 | **CSV exports** | Findings CSV · CAPAs CSV — per audit |
-| **REST API** | `GET/POST /api/v1/audits` · `GET/PUT/DELETE /api/v1/audits/[id]` · `GET/POST /api/v1/findings` · `GET/POST /api/v1/capas` — all Bearer auth + rate limited |
-| **RBAC** | All mutations require owner/admin/member/compliance_manager/security_manager/procurement_manager role. Viewers read-only via RLS |
-| **Audit logging** | `audit.created`, `audit.finding_created`, `audit.finding_closed`, `audit.capa_created`, `audit.capa_completed`, `audit.updated`, `audit.completed`, `audit.cancelled` |
+| **REST API** | `GET/POST /api/v1/audits` · `GET/PUT/DELETE /api/v1/audits/[id]` · `GET/POST /api/v1/findings` · `GET/POST /api/v1/capas` |
+| **RBAC** | All mutations require non-viewer role; viewers read-only via RLS |
+| **Audit logging** | `audit.created`, `audit.finding_created`, `audit.finding_closed`, `audit.capa_created`, `audit.capa_completed`, `audit.completed`, `audit.cancelled` |
 
 ---
 
@@ -138,24 +139,22 @@
 
 | Feature | Detail |
 |---|---|
-| **Risk register** | Full CRUD for risks with 13 categories (operational, cyber_security, compliance, financial, strategic, legal, technology, vendor, privacy, business_continuity, third_party, regulatory, custom), 8 statuses, 5 sources |
+| **Risk register** | Full CRUD — 13 categories, 8 statuses, 5 sources |
 | **Risk scoring** | Pure `computeRiskScore(impact, likelihood)` — score 1–25, 5 levels: Low / Moderate / High / Critical / Severe. Live matrix preview on create/edit |
-| **Risk heat map** | Interactive 5×5 grid — impact (Y) × likelihood (X), cells coloured by score range, risk counts per cell, click to filter register |
-| **Treatment tracking** | Add treatment actions per risk with target date, status (open / in_progress / completed / cancelled), progress %, and completion notes |
-| **Risk reviews** | Periodic review log per risk — review date, outcome (no_change / score_updated / status_changed / closed), notes, reviewer |
-| **Risk relationships** | Link risks to vendors, compliance controls, audit findings, policies, frameworks, evidence via 6 junction tables |
-| **Dashboard metrics** | Total / Open / Mitigating / Accepted / Closed risks · Critical risk count · Overdue reviews · Category chart · Heat map · Top 5 risks by score |
-| **Org-wide treatment tracker** | Cross-risk treatment list with due-date highlighting — overdue (red), due soon (amber), in-progress (blue) |
-| **AI Risk Narrative** | Gemini executive summary per risk; cached in `ai_compliance_insights` |
-| **AI Risk from Observation** | Paste an observation → Gemini returns structured title, category, severity, description |
+| **Risk heat map** | Interactive 5×5 grid — impact (Y) × likelihood (X), cells coloured by score range, click to filter register |
+| **Treatment tracking** | Add treatment actions per risk — status, progress %, target date, completion notes |
+| **Risk reviews** | Periodic review log per risk — outcome, notes, reviewer |
+| **Risk relationships** | Link risks to vendors, controls, findings, policies, frameworks, evidence via 6 junction tables |
+| **Dashboard metrics** | Total / Open / Mitigating / Accepted / Closed · Critical count · Overdue reviews · Category chart · Heat map · Top 5 |
+| **Org-wide treatment tracker** | Cross-risk treatment list — overdue (red), due soon (amber), in-progress (blue) |
+| **AI Risk Narrative** | Gemini executive summary per risk; cached |
+| **AI Risk from Observation** | Paste an observation → Gemini returns structured risk entry |
 | **AI Mitigation Recommendations** | 5 AI-suggested treatment actions per risk |
 | **AI Executive Summary** | Board-level org-wide risk posture report; cached |
-| **AI Risk Officer Chat** | Live NL chat — ask anything about your risk register |
-| **Reports page** | Risks CSV · Treatments CSV download links |
-| **REST API** | `GET/POST /api/v1/risks` · `GET/PUT/DELETE /api/v1/risks/[id]` · `GET/POST /api/v1/risk-treatments` · `GET/POST /api/v1/risk-reviews` — Bearer auth + rate limited |
-| **RLS** | 9 tables with org-scoped RLS — risks, risk_reviews, risk_treatments use `is_org_member()` / `has_org_role()`; junction tables validate via risk's org |
-| **Navigation** | 5-tab sub-nav: Dashboard · Risk Register · Treatments · Reports · AI Risk Officer |
-| **Seed data** | `seed-risk-lens.mjs` — 20 realistic risks · 25 treatment actions · 8 reviews · vendor/control/framework links |
+| **AI Risk Officer Chat** | Live NL chat |
+| **Reports page** | Risks CSV · Treatments CSV |
+| **REST API** | `GET/POST /api/v1/risks` · `GET/PUT/DELETE /api/v1/risks/[id]` · `GET/POST /api/v1/risk-treatments` · `GET/POST /api/v1/risk-reviews` |
+| **Seed data** | 20 risks · 25 treatments · 8 reviews · vendor/control/framework links |
 
 ---
 
@@ -169,12 +168,12 @@ Central governance layer connecting risks, audits, evidence, policies, vendors a
 
 | Component | Weight | Source |
 |---|---|---|
-| **Evidence Coverage** | 30% | Approved evidence linked to control vs total |
+| **Evidence Coverage** | 30% | Approved evidence linked to control |
 | **Testing Results** | 25% | Pass rate of tests in last 12 months |
 | **Audit Performance** | 15% | Open vs closed findings linked to this control |
 | **Policy Support** | 10% | Approved policies in the org (proxy) |
-| **Review Freshness** | 10% | Days since last review (100 if ≤30d → 10 if >365d) |
-| **Risk Reduction Impact** | 10% | Mitigating/accepted/closed risks vs total linked risks |
+| **Review Freshness** | 10% | Days since last review |
+| **Risk Reduction Impact** | 10% | Mitigating/accepted/closed linked risks ratio |
 
 ### Health Levels
 
@@ -191,24 +190,73 @@ Central governance layer connecting risks, audits, evidence, policies, vendors a
 
 | Feature | Detail |
 |---|---|
-| **Control Library** | Filterable table of all controls (search, status, category filters); columns: ID · Name · Category · Type · Status · Health™ · Evidence · Priority |
-| **Control detail** | Health™ breakdown with per-component bars, strengths/concerns list, overview panel (all fields), test history table |
-| **Create / Edit** | Full form: controlRef, name, description, objective, category (10 types), controlType (8 types), status, priority, frequency (8 options), automation level (4 options), owner, review/test dates |
+| **Control Library** | Filterable table (search, status, category); columns: ID · Name · Category · Type · Status · Health™ · Evidence · Priority |
+| **Control detail** | Health™ breakdown with per-component bars, strengths/concerns, test history |
+| **Create / Edit** | Full form: ref, name, description, objective, category, type, status, priority, frequency, automation, owner, dates |
 | **Control types** | Preventive · Detective · Corrective · Compensating · Administrative · Technical · Physical · Hybrid |
-| **Automation levels** | Manual · Semi-Automated · Automated · AI Assisted |
-| **Control testing** | Per-control test records: date, result (Passed/Failed/Partial/Exception/Not Tested), tester name, method, comments. Inline add form on detail page. Org-wide test log at `/controls/testing` |
-| **Compute Health™** | Button on detail page triggers `computeControlHealth()` → saves scores to DB → refreshes page |
-| **Dashboard** | Metrics: total controls, healthy (≥80), weak (<60), overdue tests, avg health, avg effectiveness, implementation coverage. Weakest controls list. Category breakdown chart |
+| **Control testing** | Per-control test records: date, result, tester, method, comments. Org-wide test log at `/controls/testing` |
+| **Compute Health™** | Button on detail triggers `computeControlHealth()` → saves scores → refreshes |
+| **Dashboard** | Total / healthy / weak / overdue / avg health / implementation coverage / weakest list / category chart |
 | **AI Executive Summary** | Board-level control posture narrative; Gemini cached 24h |
-| **AI Gap Detection** | Identifies top 5 gaps across weak controls with specific remediation actions |
-| **AI Control Advisor Chat** | Live NL chat — "Show weak controls", "Which controls failed testing?", "Which lack evidence?" |
-| **CSV exports** | `/api/v1/controls/export/csv` · `/api/v1/controls/tests/export/csv` |
+| **AI Gap Detection** | Top 5 gaps with specific remediation actions |
+| **AI Control Advisor Chat** | Live NL chat |
+| **CSV exports** | Control library · Tests |
 | **Navigation** | 5-tab sub-nav: Dashboard · Control Library · Testing · Reports · AI Advisor |
-| **Sidebar** | Control Center™ entry between Risks and DPDP Privacy |
-| **Schema** | `controls` table extended (frameworkId nullable + 11 new columns); new tables: `control_tests`, `control_frameworks` (m2m), `control_vendors` (m2m); new enums: `control_type`, `control_frequency`, `automation_level`, `control_test_result` |
-| **Backward compat** | Existing 348 compliance-framework-scoped controls work unchanged — frameworkId nullable, null-guards in compliance service |
-| **Audit logging** | `control_center.control_created`, `control_center.control_updated`, `control_center.control_deleted`, `control_center.control_tested` |
-| **RBAC** | RLS on all 3 new tables — org members read; compliance/security managers write; `control_vendors` also allows procurement_manager |
+| **Schema** | `controls` extended (frameworkId nullable + 11 new cols); `control_tests`, `control_frameworks`, `control_vendors` |
+
+---
+
+## 🧠 Module 7 — Trust Intelligence™
+
+> Completed 2026-06-07
+
+Executive governance command center. Aggregates signals from all modules into a single **Organizational Trust Score™** — the flagship governance metric.
+
+### Organizational Trust Score™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Vendor Trust** | 25% | Average vendor Trust Score™ across active vendors |
+| **Risk Posture** | 25% | Active/critical/high risk counts from Risk Lens™ |
+| **Control Health** | 20% | Average control health score from Control Center™ |
+| **Audit Readiness** | 15% | Audit completion ratio + open critical findings |
+| **Compliance Coverage** | 15% | Average framework readiness from Evidence Vault™ |
+
+**Formula:** `round(vendorTrust×0.25 + riskPosture×0.25 + controlHealth×0.20 + auditReadiness×0.15 + complianceCoverage×0.15)`
+
+### Trust Levels
+
+| Range | Level |
+|---|---|
+| 95–100 | Exceptional |
+| 90–94 | Trusted |
+| 80–89 | Strong |
+| 70–79 | Moderate |
+| 60–69 | Needs Attention |
+| < 60 | Critical |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Overview dashboard** | Org Trust Score™ ring (animated SVG) + 5-component bars · Metrics grid (vendors/risks/controls/findings/compliance) · Trust Drivers™ · Trust Detractors™ · Governance Timeline (last 10 events) |
+| **Vendor Trust view** | Total/scored/avg/high-concern counts · Top 10 trusted · Bottom 10 · Full ranked list with score bars and level badges |
+| **Risk Insights view** | Active/critical/high/medium counts · Top critical risks with deep-links · Category distribution chart |
+| **Control Health view** | Avg health · Healthy/Weak counts · Weakest controls ranked list · Health distribution (Healthy/Moderate/Weak) |
+| **Compliance Health view** | Per-framework readiness bars (control % + evidence %) · Avg readiness · Status verdict |
+| **Recommendations Engine™** | Prioritized governance actions (high/medium/low) — generated from live risk/control/vendor/finding data · Impact + effort scores · Deep-links to source module |
+| **Executive View** | Org Trust ring · AI Governance Summary (cached 24h) · Full component breakdown · Trust Drivers™/Detractors™ · Open high-priority actions · Governance Copilot™ chat |
+| **Governance Copilot™** | NL chat — "Why did trust decline?", "Which risks need attention?", "Summarize our posture", with suggested starter questions |
+| **AI Executive Summary** | Board-ready Gemini narrative — posture, strengths, risks, top actions; cached 24h per org |
+| **Trust Drivers™** | Positive governance contributors shown on Overview + Executive view |
+| **Trust Detractors™** | Negative contributors shown on Overview + Executive view |
+| **Governance Timeline** | Last 30 audit log events with actor, action, date |
+| **Governance Snapshots** | `governance_snapshots` table — daily org-level scores for trend tracking; upserted via `snapshotGovernance()` |
+| **Pure scoring engine** | `lib/services/org-trust-score.ts` — `computeOrgTrustScore(inputs)` → breakdown + level + drivers + detractors. Zero DB imports. |
+| **REST API** | `GET /api/v1/trust-intelligence/overview` · `GET /api/v1/trust-intelligence/org-score` · `POST /api/v1/trust-intelligence/org-score` (snapshot) · `GET /api/v1/trust-intelligence/recommendations` |
+| **Navigation** | 7-tab sub-nav: Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View |
+| **Sidebar** | Trust Intelligence™ entry with Brain icon between Control Center™ and DPDP Privacy |
+| **Audit logging** | `trust_intelligence.viewed`, `trust_intelligence.summary_generated`, `trust_intelligence.score_recalculated` |
 
 ---
 
@@ -216,44 +264,31 @@ Central governance layer connecting risks, audits, evidence, policies, vendors a
 
 > Completed 2026-06-07 · Integrated into Vendor Hub™ · API-first
 
-Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal that answers *"Can this vendor be trusted?"* across 6 weighted governance dimensions.
+Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 score across 6 governance dimensions.
 
 ### Scoring Model
 
 | Component | Weight | Source | Calculation |
 |---|---|---|---|
-| **Evidence** | 25% | Vendor documents | 100 − penalties for expired (−10ea), expiring (−5ea), missing required types (−15ea); hard cap of 25 if no docs at all |
-| **Compliance** | 20% | `vendor.complianceScore` | Direct passthrough from existing compliance scoring |
-| **Risk** | 20% | Risk Lens™ linked risks | 100 − 25 per critical open risk − 12 per high − 5 per medium; 100 if no linked risks |
-| **Assessment** | 15% | Security assessments | Latest completed assessment score; baseline 30 if never assessed |
-| **Operational** | 10% | Reviews + doc requests | Deducts for no reviews (−35), no review in 12mo (−20), open unfulfilled requests (proportional) |
-| **Freshness** | 10% | Recency of governance activity | Deducts based on days since last review (−45 if >365d) and last assessment (−25 if >365d) |
-
-**Formula:** `round(evidence×0.25 + compliance×0.20 + risk×0.20 + assessment×0.15 + operational×0.10 + freshness×0.10)`
-
-### Trust Levels
-
-| Range | Level | Colour |
-|---|---|---|
-| 95–100 | Exceptional | Emerald |
-| 90–94 | Trusted | Emerald |
-| 80–89 | Strong | Green |
-| 70–79 | Moderate | Yellow |
-| 60–69 | Needs Attention | Amber |
-| 0–59 | High Concern | Red |
+| **Evidence** | 25% | Vendor documents | 100 − penalties for expired (−10), expiring (−5), missing required types (−15); hard cap 25 if no docs |
+| **Compliance** | 20% | `vendor.complianceScore` | Direct passthrough |
+| **Risk** | 20% | Risk Lens™ linked risks | 100 − 25 per critical open risk − 12 per high − 5 per medium |
+| **Assessment** | 15% | Security assessments | Latest score; baseline 30 if never assessed |
+| **Operational** | 10% | Reviews + doc requests | Deducts for no reviews (−35), no review in 12mo (−20), open requests (proportional) |
+| **Freshness** | 10% | Recency of governance activity | Deducts based on days since last review/assessment |
 
 ### Feature Detail
 
 | Feature | Detail |
 |---|---|
 | **Auto-computation** | Score recomputes on vendor detail page load if stale (>1 hour) |
-| **Trust history** | `vendor_trust_history` table — one row per snapshot; supports trend views |
-| **Explainability widget** | `TrustScoreWidget` — live breakdown bars, strengths list, concerns list, Recalculate button |
-| **AI Trust Narrative** | Gemini-generated executive summary per vendor; cached 24 hours |
+| **Trust history** | `vendor_trust_history` — one row per snapshot; trend-ready |
+| **Explainability widget** | `TrustScoreWidget` — breakdown bars, strengths, concerns, Recalculate button |
+| **AI Trust Narrative** | Gemini executive summary per vendor; cached 24 hours |
 | **Trust Score badge** | `TrustScoreBadge` — inline level chip in vendor header and list views |
 | **REST API** | `GET /api/v1/vendors/[id]/trust-score` — score, components, 30-day history, narrative |
 | **Seed script** | `node scripts/seed-trust-scores.mjs` — scores all active vendors |
-| **Pure engine** | `lib/services/trust-score.ts` — zero DB imports; fully testable |
+| **Pure engine** | `lib/services/trust-score.ts` — zero DB imports |
 
 ---
 
@@ -264,26 +299,33 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 | Feature | Detail |
 |---|---|
 | **Data summary stats** | Documents, storage consumed, vendors, assessments, active users |
-| **Data residency display** | Mumbai (ap-south-1) for all layers — app, DB, storage, AI; DPDP 2023 localisation badge |
-| **Data retention policy** | Per-type retention periods displayed (read-only Phase 1) |
-| **AI transparency** | Three explicit statements: what AI is used for · no-training guarantee · tenant isolation |
-| **Security checklist** | 10 active controls verified; 2 roadmap items (BYOK, customer-owned storage) |
-| **Export Tenant Data** | One-click ZIP download — vendors, documents metadata, assessments, team, audit logs as CSVs |
-| **Request Data Deletion** | Confirmation modal with irreversibility warning → support ticket (Phase 2: automated) |
-| **Recent audit events** | Last 30 days of activity visible on the governance page |
+| **Data residency display** | Mumbai (ap-south-1) for all layers — DPDP 2023 localisation badge |
+| **Data retention policy** | Per-type retention periods (read-only Phase 1) |
+| **AI transparency** | What AI is used for · no-training guarantee · tenant isolation |
+| **Security checklist** | 10 active controls verified |
+| **Export Tenant Data** | One-click ZIP — vendors, documents, assessments, team, audit logs as CSVs |
+| **Request Data Deletion** | Confirmation modal → support ticket (Phase 2: automated) |
+| **Recent audit events** | Last 30 days visible on governance page |
 | **`compliance-documents` bucket** | Private Supabase Storage bucket with RLS; `tenant_{orgId}/` prefix paths |
-| **`storage_providers` table** | Registry for future S3 / Azure Blob / SharePoint / OneDrive / Google Drive providers |
-| **Storage metadata on docs** | `filename`, `content_type`, `file_size`, `storage_bucket`, `storage_provider`, `uploaded_by`, `checksum` |
+| **`storage_providers` table** | Registry for future S3 / Azure Blob / SharePoint / Google Drive providers |
 
 ---
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · **Control Center™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Trust Intelligence™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
-**Control Center sub-nav (5 tabs):** Dashboard · Control Library · Testing · Reports · AI Advisor
+**Compliance sub-nav:** Dashboard · Frameworks · Evidence · Policies · Gaps · Reports · AI Officer
+
+**Audit sub-nav:** Dashboard · Audits · Findings · CAPAs · Reports · AI Auditor
+
+**Risk sub-nav:** Dashboard · Risk Register · Treatments · Reports · AI Risk Officer
+
+**Control Center sub-nav:** Dashboard · Control Library · Testing · Reports · AI Advisor
+
+**Trust Intelligence sub-nav:** Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View
 
 ---
 
@@ -295,13 +337,14 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 51 tables, 11 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 52 tables, 12 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
 | **Module 4 — Audit Management** | ✅ Complete |
 | **Module 5 — Risk Lens™** | ✅ Complete |
 | **Module 6 — Control Center™** | ✅ Complete (2026-06-07) |
+| **Module 7 — Trust Intelligence™** | ✅ Complete (2026-06-07) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -312,11 +355,11 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Item | Blocked by |
 |---|---|
-| SSL on audt.tech | DNS propagation in progress — Vercel will auto-provision Let's Encrypt once ready |
+| SSL on audt.tech | DNS propagation in progress — Vercel auto-provisions once ready |
 | Team invite flow | `SUPABASE_SERVICE_ROLE_KEY` placeholder in Vercel |
 | Email alerts + weekly digest | `RESEND_API_KEY` missing in Vercel |
 | Cron endpoint security | `CRON_SECRET` missing in Vercel |
-| S3 storage provider | Awaiting AWS provisioning — `lib/providers/storage/s3.ts` ready to implement |
+| S3 storage provider | Awaiting AWS provisioning |
 
 ---
 
@@ -324,13 +367,14 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Module | Description | Status |
 |---|---|---|
-| **Control Center™** | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
+| **Trust Intelligence™** | Org Trust Score™, Recommendations Engine™, Governance Copilot™ | ✅ Complete (2026-06-07) |
+| **Governance Trends** | 30/90/365-day trend charts using `governance_snapshots` | Next |
 | **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
 | **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
 | **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
-| **AI Governance** | AI model risk, responsible AI frameworks, governance policies | Future |
-| **Continuous Monitoring** | Real-time control health signals, automated evidence collection | Future |
-| **Trust Graph™** | Cross-entity knowledge graph — vendors, controls, risks, policies | Future |
+| **AI Governance** | AI model risk, responsible AI frameworks | Future |
+| **Continuous Monitoring** | Real-time control health, automated evidence collection | Future |
+| **Trust Graph™** | Cross-entity knowledge graph | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
 ---
@@ -347,3 +391,4 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 | Vendor Rating | Trust Score™ |
 | Governance Graph | Trust Graph™ |
 | Intelligence Layer | Trust Intelligence™ |
+| Org Governance Score | Organizational Trust Score™ |
