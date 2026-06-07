@@ -1298,7 +1298,7 @@ export const riskTreatments = pgTable(
     description: text("description"),
     ownerId: uuid("owner_id").references(() => profiles.id),
     targetDate: date("target_date"),
-    status: riskTreatmentStatus("risk_treatment_status").notNull().default("open"),
+    status: riskTreatmentStatus("status").notNull().default("open"),
     progressPercent: integer("progress_percent").notNull().default(0),
     evidence: text("evidence"),
     completedAt: timestamp("completed_at", { withTimezone: true }),
