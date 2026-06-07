@@ -16,6 +16,7 @@ node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
 node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
 node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
+node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/seed-templates.mjs
 node scripts/seed-billing-plans.mjs --assign-all
 node scripts/seed-demo.mjs
@@ -40,6 +41,7 @@ node scripts/seed-trust-scores.mjs
 | `seed-data-governance.mjs` | Settings / Data Gov | Branding · login history · 25 rich audit events · doc storage metadata |
 | `seed-risk-lens.mjs` | Risk Lens™ | 20 risks · 25 treatments · 8 reviews · 15 vendor links · 5 control links · 14 framework links |
 | `seed-trust-scores.mjs` | Trust Score™ | Computes 6-component Trust Score™ for all 15 active vendors + seeds 1 history snapshot each |
+| *(none)* | Control Center™ | No seed script — controls are the 174 seeded via `seed-compliance-frameworks.mjs`. Health scores computed on demand via "Compute Health™" button or page load. |
 
 ---
 
@@ -212,6 +214,28 @@ Pass `<orgId>` to seed for a specific org. Pass `--list` to see available orgs.
 
 ---
 
+## Module 6 — Control Center™
+
+> No dedicated seed script. Controls are seeded via `seed-compliance-frameworks.mjs` (174 standard controls across 5 frameworks). Control Health™ scores are computed on demand.
+
+**After running `seed-compliance-frameworks.mjs`**, the Control Center Library (`/controls/library`) will show all 174 controls. To populate health scores:
+1. Navigate to any control detail page
+2. Click **Compute Health™** — this runs the 6-component engine and saves scores to DB
+3. Or wait for the dashboard to auto-trigger on first load
+
+**New tables populated by migration 0011 (all start empty):**
+
+| Table | Populated by | Expected rows after seed |
+|---|---|---|
+| `control_frameworks` | Manual link via UI or future seed | 0 — controls already linked via `controls.framework_id` |
+| `control_vendors` | Manual link via UI | 0 |
+| `control_tests` | Manual test records via UI | 0 |
+| `controls.health_score` | `computeAndSaveHealth()` on demand | 0 until computed |
+| `controls.owner_id` | Manual edit via UI | 0 |
+| `controls.control_type` | Manual edit via UI | 0 (nullable) |
+
+---
+
 ## Module 4 — Audit Management
 
 > Audit demo data is created inline via the UI (no seed script).
@@ -346,7 +370,7 @@ Or set `E2E_USER_EMAIL` and `E2E_USER_PASSWORD` in `.env.local` first.
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 48 tables |
+| `check-db.mjs` | Quick table row counts for all 51 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB (migrations, RLS, storage policies) |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -386,5 +410,9 @@ Or set `E2E_USER_EMAIL` and `E2E_USER_PASSWORD` in `.env.local` first.
 | `risk_frameworks` | 14 |
 | `storage_providers` | 1 (supabase/platform) |
 | `vendor_trust_history` | 15 (one per active vendor) |
+| `control_frameworks` | 0 (m2m junction — populated via UI) |
+| `control_vendors` | 0 (m2m junction — populated via UI) |
+| `control_tests` | 0 (populated via UI or API) |
 
 > **vendors.trust_score** is also populated for all 15 active vendors after `seed-trust-scores.mjs` runs.
+> **controls.health_score / effectiveness_score** are populated on demand when "Compute Health™" is triggered per control.

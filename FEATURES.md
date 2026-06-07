@@ -1,6 +1,6 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 7 shipped (+ Trust Score™)
+> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech · Modules: 8 shipped (Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™)
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -32,9 +32,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 21 endpoints (read-only + full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ per vendor) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
+| **REST API v1** | 23 endpoints (read-only + full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ + Control CSV exports) · Bearer token auth + bcrypt key validation + in-memory rate limiting (100/300/1000 req/60s) |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 48 tables across 10 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, 51 tables across 11 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -150,14 +150,65 @@
 | **AI Risk from Observation** | Paste an observation → Gemini returns structured title, category, severity, description |
 | **AI Mitigation Recommendations** | 5 AI-suggested treatment actions per risk |
 | **AI Executive Summary** | Board-level org-wide risk posture report; cached |
-| **AI Risk Officer Chat** | Live NL chat — ask anything about your risk register ("Which risks are overdue?", "Summarise critical risks") |
+| **AI Risk Officer Chat** | Live NL chat — ask anything about your risk register |
 | **Reports page** | Risks CSV · Treatments CSV download links |
-| **CSV exports** | `/reports/risks/csv` · `/reports/risks/treatments/csv` — full org risk data |
 | **REST API** | `GET/POST /api/v1/risks` · `GET/PUT/DELETE /api/v1/risks/[id]` · `GET/POST /api/v1/risk-treatments` · `GET/POST /api/v1/risk-reviews` — Bearer auth + rate limited |
-| **RBAC** | All mutations require owner/admin/member/compliance_manager/security_manager/procurement_manager. Viewers read-only via RLS |
 | **RLS** | 9 tables with org-scoped RLS — risks, risk_reviews, risk_treatments use `is_org_member()` / `has_org_role()`; junction tables validate via risk's org |
 | **Navigation** | 5-tab sub-nav: Dashboard · Risk Register · Treatments · Reports · AI Risk Officer |
 | **Seed data** | `seed-risk-lens.mjs` — 20 realistic risks · 25 treatment actions · 8 reviews · vendor/control/framework links |
+
+---
+
+## 🛡️ Module 6 — Control Center™
+
+> Completed 2026-06-07
+
+Central governance layer connecting risks, audits, evidence, policies, vendors and frameworks through **Control Health™** — a 6-component 0–100 scoring engine.
+
+### Control Health™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Evidence Coverage** | 30% | Approved evidence linked to control vs total |
+| **Testing Results** | 25% | Pass rate of tests in last 12 months |
+| **Audit Performance** | 15% | Open vs closed findings linked to this control |
+| **Policy Support** | 10% | Approved policies in the org (proxy) |
+| **Review Freshness** | 10% | Days since last review (100 if ≤30d → 10 if >365d) |
+| **Risk Reduction Impact** | 10% | Mitigating/accepted/closed risks vs total linked risks |
+
+### Health Levels
+
+| Range | Level |
+|---|---|
+| 95–100 | Exceptional |
+| 90–94 | Healthy |
+| 80–89 | Strong |
+| 70–79 | Moderate |
+| 60–69 | Needs Attention |
+| < 60 | Critical |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Control Library** | Filterable table of all controls (search, status, category filters); columns: ID · Name · Category · Type · Status · Health™ · Evidence · Priority |
+| **Control detail** | Health™ breakdown with per-component bars, strengths/concerns list, overview panel (all fields), test history table |
+| **Create / Edit** | Full form: controlRef, name, description, objective, category (10 types), controlType (8 types), status, priority, frequency (8 options), automation level (4 options), owner, review/test dates |
+| **Control types** | Preventive · Detective · Corrective · Compensating · Administrative · Technical · Physical · Hybrid |
+| **Automation levels** | Manual · Semi-Automated · Automated · AI Assisted |
+| **Control testing** | Per-control test records: date, result (Passed/Failed/Partial/Exception/Not Tested), tester name, method, comments. Inline add form on detail page. Org-wide test log at `/controls/testing` |
+| **Compute Health™** | Button on detail page triggers `computeControlHealth()` → saves scores to DB → refreshes page |
+| **Dashboard** | Metrics: total controls, healthy (≥80), weak (<60), overdue tests, avg health, avg effectiveness, implementation coverage. Weakest controls list. Category breakdown chart |
+| **AI Executive Summary** | Board-level control posture narrative; Gemini cached 24h |
+| **AI Gap Detection** | Identifies top 5 gaps across weak controls with specific remediation actions |
+| **AI Control Advisor Chat** | Live NL chat — "Show weak controls", "Which controls failed testing?", "Which lack evidence?" |
+| **CSV exports** | `/api/v1/controls/export/csv` · `/api/v1/controls/tests/export/csv` |
+| **Navigation** | 5-tab sub-nav: Dashboard · Control Library · Testing · Reports · AI Advisor |
+| **Sidebar** | Control Center™ entry between Risks and DPDP Privacy |
+| **Schema** | `controls` table extended (frameworkId nullable + 11 new columns); new tables: `control_tests`, `control_frameworks` (m2m), `control_vendors` (m2m); new enums: `control_type`, `control_frequency`, `automation_level`, `control_test_result` |
+| **Backward compat** | Existing 348 compliance-framework-scoped controls work unchanged — frameworkId nullable, null-guards in compliance service |
+| **Audit logging** | `control_center.control_created`, `control_center.control_updated`, `control_center.control_deleted`, `control_center.control_tested` |
+| **RBAC** | RLS on all 3 new tables — org members read; compliance/security managers write; `control_vendors` also allows procurement_manager |
 
 ---
 
@@ -173,7 +224,7 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 |---|---|---|---|
 | **Evidence** | 25% | Vendor documents | 100 − penalties for expired (−10ea), expiring (−5ea), missing required types (−15ea); hard cap of 25 if no docs at all |
 | **Compliance** | 20% | `vendor.complianceScore` | Direct passthrough from existing compliance scoring |
-| **Risk** | 20% | Risk Lens™ linked risks | 100 − 25 per critical open risk (inherentScore ≥ 20) − 12 per high − 5 per medium; 100 if no linked risks |
+| **Risk** | 20% | Risk Lens™ linked risks | 100 − 25 per critical open risk − 12 per high − 5 per medium; 100 if no linked risks |
 | **Assessment** | 15% | Security assessments | Latest completed assessment score; baseline 30 if never assessed |
 | **Operational** | 10% | Reviews + doc requests | Deducts for no reviews (−35), no review in 12mo (−20), open unfulfilled requests (proportional) |
 | **Freshness** | 10% | Recency of governance activity | Deducts based on days since last review (−45 if >365d) and last assessment (−25 if >365d) |
@@ -195,18 +246,14 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Feature | Detail |
 |---|---|
-| **Auto-computation** | Score recomputes on vendor detail page load if stale (>1 hour). Trigger events: `page_load`, `manual`, `api`, `seed`, `document_upload`, `risk_created`, `assessment_completed`, `review_completed` |
-| **Component breakdown** | All 6 component scores stored per snapshot — full traceability of what drives the overall score |
-| **Trust history** | `vendor_trust_history` table — one row per snapshot; supports 7d / 30d / 90d / 12mo trend views |
-| **Explainability widget** | `TrustScoreWidget` — live breakdown bars, strengths list (✓), concerns list (⚠), Recalculate button |
-| **Strengths & Concerns** | Auto-generated from component scores: e.g. "Current SOC 2", "No critical risks", "DPA expires in 30 days", "Annual review overdue" |
-| **Recommendations engine** | Up to 5 prioritised action items auto-derived from the scoring inputs (renew expired docs, complete assessment, schedule review, etc.) |
-| **AI Trust Narrative** | Gemini-generated 2–3 sentence executive summary per vendor; cached 24 hours; refresh button in widget |
-| **Trust Score badge** | `TrustScoreBadge` — inline level chip displayed in vendor header and list views |
-| **Vendor header** | Trust Score box shown alongside the existing Compliance Score ring on the vendor detail page |
-| **REST API** | `GET /api/v1/vendors/[id]/trust-score` — returns score, all 6 component scores, 30-day history array, AI narrative, strengths, concerns, recommendations |
-| **Seed script** | `node scripts/seed-trust-scores.mjs` — pure SQL scoring; scores all active vendors and writes 1 history row each |
-| **Pure engine** | `lib/services/trust-score.ts` — zero DB imports; fully testable; same logic used by seed script and service |
+| **Auto-computation** | Score recomputes on vendor detail page load if stale (>1 hour) |
+| **Trust history** | `vendor_trust_history` table — one row per snapshot; supports trend views |
+| **Explainability widget** | `TrustScoreWidget` — live breakdown bars, strengths list, concerns list, Recalculate button |
+| **AI Trust Narrative** | Gemini-generated executive summary per vendor; cached 24 hours |
+| **Trust Score badge** | `TrustScoreBadge` — inline level chip in vendor header and list views |
+| **REST API** | `GET /api/v1/vendors/[id]/trust-score` — score, components, 30-day history, narrative |
+| **Seed script** | `node scripts/seed-trust-scores.mjs` — scores all active vendors |
+| **Pure engine** | `lib/services/trust-score.ts` — zero DB imports; fully testable |
 
 ---
 
@@ -232,11 +279,11 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors (with Trust Score™ inline) · Compliance · Audits · Risks · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
-
-**Trust Intelligence™** (future dedicated sidebar section): Vendor Trust · Control Trust · Organization Trust · Insights · Benchmarks
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · **Control Center™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
+
+**Control Center sub-nav (5 tabs):** Dashboard · Control Library · Testing · Reports · AI Advisor
 
 ---
 
@@ -244,18 +291,18 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Layer | Status |
 |---|---|
-| **Brand** | ✅ Rebranded to AUDT — landing page, page title, OpenGraph, footer, mock dashboard all updated |
-| **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress (~4–6 hrs) |
+| **Brand** | ✅ Rebranded to AUDT — landing page, page title, OpenGraph, footer all updated |
+| **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
-| **Vercel** | ✅ Auto-deployed on push — currently live at lekha-os.vercel.app and audt.tech (SSL pending) |
-| **Trust Score™** | ✅ Complete — pure engine, service, repo, widget, badge, API, seed script |
-| **Migration 0010** | ⚠ Pending apply — `node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql` |
-| **DB** | ✅ 37 tables, 9 migrations applied, Supabase Mumbai (ap-south-1) |
+| **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
+| **DB** | ✅ 51 tables, 11 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
 | **Module 4 — Audit Management** | ✅ Complete |
 | **Module 5 — Risk Lens™** | ✅ Complete |
+| **Module 6 — Control Center™** | ✅ Complete (2026-06-07) |
+| **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
 
@@ -265,11 +312,11 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Item | Blocked by |
 |---|---|
-| SSL on audt.tech | DNS propagation in progress — Vercel will auto-provision Let's Encrypt once Valid Configuration shows |
+| SSL on audt.tech | DNS propagation in progress — Vercel will auto-provision Let's Encrypt once ready |
 | Team invite flow | `SUPABASE_SERVICE_ROLE_KEY` placeholder in Vercel |
 | Email alerts + weekly digest | `RESEND_API_KEY` missing in Vercel |
 | Cron endpoint security | `CRON_SECRET` missing in Vercel |
-| S3 storage provider | Awaiting AWS provisioning — `lib/providers/storage/s3.ts` ready to implement against `StorageProvider` interface |
+| S3 storage provider | Awaiting AWS provisioning — `lib/providers/storage/s3.ts` ready to implement |
 
 ---
 
@@ -277,8 +324,7 @@ Trust Score™ is AUDT's flagship intelligence layer — a single 0–100 signal
 
 | Module | Description | Status |
 |---|---|---|
-| **Risk Lens™** | Risk register, heat maps, remediation tracking | ✅ Complete |
-| **Control Center™** | Control library, health monitoring, coverage analytics | Roadmap |
+| **Control Center™** | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
 | **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
 | **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
 | **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |

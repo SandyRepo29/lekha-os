@@ -1561,6 +1561,43 @@ export const vendorTrustHistory = pgTable(
 );
 
 /* ============================================================
+   Trust Intelligence™ — Governance Snapshots
+   ============================================================ */
+
+/** Daily org-level governance snapshot for trend tracking. */
+export const governanceSnapshots = pgTable(
+  "governance_snapshots",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    snapshotDate: date("snapshot_date").notNull(),
+    // Organizational Trust Score™
+    orgTrustScore: integer("org_trust_score").notNull().default(0),
+    // Component scores
+    vendorTrustScore: integer("vendor_trust_score").notNull().default(0),
+    riskPostureScore: integer("risk_posture_score").notNull().default(0),
+    controlHealthScore: integer("control_health_score").notNull().default(0),
+    auditReadinessScore: integer("audit_readiness_score").notNull().default(0),
+    complianceCoverageScore: integer("compliance_coverage_score").notNull().default(0),
+    // Raw counts
+    totalVendors: integer("total_vendors").notNull().default(0),
+    scoredVendors: integer("scored_vendors").notNull().default(0),
+    activeRisks: integer("active_risks").notNull().default(0),
+    criticalRisks: integer("critical_risks").notNull().default(0),
+    openFindings: integer("open_findings").notNull().default(0),
+    avgControlHealth: integer("avg_control_health").notNull().default(0),
+    avgFrameworkReadiness: integer("avg_framework_readiness").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("gov_snapshots_org_idx").on(t.organizationId),
+    index("gov_snapshots_date_idx").on(t.snapshotDate),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -1625,3 +1662,6 @@ export type ControlTest = typeof controlTests.$inferSelect;
 
 // Trust Score™
 export type VendorTrustHistory = typeof vendorTrustHistory.$inferSelect;
+
+// Trust Intelligence™
+export type GovernanceSnapshot = typeof governanceSnapshots.$inferSelect;

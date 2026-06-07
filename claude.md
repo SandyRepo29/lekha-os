@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™
-- **Total tables:** 51 (48 previous + control_frameworks + control_vendors + control_tests; + 11 new cols on controls)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™
+- **Total tables:** 52 (51 previous + governance_snapshots)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -101,7 +101,7 @@ Browser / API client
 
 ## 5. Database Schema
 
-**46 tables** across 10 migration files (0000–0009 — all applied).
+**51 tables** across 11 migration files (0000–0011 — all applied).
 
 ### Vendor Governance tables (15)
 
@@ -194,15 +194,36 @@ Browser / API client
 - `riskSource`: manual · vendor · audit_finding · compliance_gap · control_failure · policy_exception · ai_generated · api
 - `riskTreatmentStatus`: open · in_progress · completed · cancelled
 
+### Control Center™ tables (3) — migration 0011
+
+| Table | Purpose |
+|---|---|
+| `control_tests` | Test records per control — test_date, tester, method, result (passed/failed/partially_effective/exception/not_tested), evidence_ref, comments |
+| `control_frameworks` | M2M junction: control ↔ framework (for cross-framework mapping beyond the primary frameworkId FK) |
+| `control_vendors` | M2M junction: control ↔ vendor (controls linked to applicable vendors) |
+
+**Control Center™ enums (4):** `control_type` · `control_frequency` · `automation_level` · `control_test_result`
+- `control_type`: preventive · detective · corrective · compensating · administrative · technical · physical · hybrid
+- `control_frequency`: continuous · daily · weekly · monthly · quarterly · semi_annual · annual · ad_hoc
+- `automation_level`: manual · semi_automated · automated · ai_assisted
+- `control_test_result`: passed · failed · partially_effective · exception · not_tested
+
+**Controls table extended columns (migration 0011):** `objective` · `control_type` · `owner_id` · `frequency` · `automation_level` · `health_score` · `effectiveness_score` · `last_tested` · `next_test_date` · `next_review_date`
+
+**CRITICAL — `controls.framework_id` is now nullable** (migration 0011 drops NOT NULL). Existing 174 compliance controls retain their frameworkId. New standalone controls created via Control Center™ can have `frameworkId = null`. All compliance service code that calls `recomputeReadiness()` is guarded with `if (control.frameworkId)`.
+
 **CRITICAL — Drizzle column naming for risk tables:** Use `columnEnum("status")` pattern (same as compliance module), NOT `columnEnum("risk_treatment_status")`. The DB column name IS the first argument. Mismatch causes silent query failures.
 
-**RLS:** All 46 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`.
+**RLS:** All 51 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`. Control junction tables validate org via `EXISTS (SELECT 1 FROM controls c JOIN memberships m ON m.organization_id = c.organization_id WHERE c.id = control_id AND m.user_id = auth.uid())`.
 
 **First-time setup on a fresh DB:**
 ```bash
 npm run db:migrate
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
+node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
+node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
+node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/seed-templates.mjs
 node scripts/seed-billing-plans.mjs --assign-all
 node scripts/seed-demo.mjs                          # optional: 15 realistic vendors
@@ -215,6 +236,61 @@ node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ f
 ---
 
 ## 6. Features Implemented
+
+### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
+
+7-tab sub-nav at `/trust-intelligence/*`. Executive governance command center — aggregates all modules into Organizational Trust Score™.
+
+| Tab | Features |
+|---|---|
+| **Overview** | Org Trust Score™ ring + component bars · Metrics grid · Trust Drivers™ · Trust Detractors™ · Governance Timeline |
+| **Vendor Trust** | Avg trust · Top 10 / Bottom 10 trusted vendors · Full scored list |
+| **Risk Insights** | Active/critical/high/medium counts · Top critical risks · Category distribution |
+| **Control Health** | Avg health · Healthy/Weak counts · Weakest controls list |
+| **Compliance** | Framework readiness bars · Avg readiness |
+| **Recommendations** | Prioritized actions (high/medium/low) · Impact + effort · Deep-links to source module |
+| **Executive View** | Org Trust ring · AI Governance Summary (cached 24h) · Drivers/Detractors · Open actions · Governance Copilot™ chat |
+
+**Organizational Trust Score™** — 5-component pure engine: Vendor Trust (25%) · Risk Posture (25%) · Control Health (20%) · Audit Readiness (15%) · Compliance Coverage (15%)
+
+- Pure engine: `lib/services/org-trust-score.ts`
+- Service: `lib/services/trust-intelligence/trust-intelligence-service.ts`
+- AI service: `lib/services/trust-intelligence/ai-trust-intelligence-service.ts`
+- Repo: `lib/repositories/trust-intelligence-repo.ts`
+- Actions: `lib/trust-intelligence/actions.ts`
+- Migration: `supabase/migrations/0012_trust_intelligence.sql`
+- REST API: `GET /api/v1/trust-intelligence/overview` · `GET|POST /api/v1/trust-intelligence/org-score` · `GET /api/v1/trust-intelligence/recommendations`
+
+### Module 6 — Control Center™ ✅ Complete (2026-06-07)
+
+5-tab sub-nav at `/controls/*`. Central governance layer with Control Health™ scoring.
+
+| Tab | Features |
+|---|---|
+| **Dashboard** | Metrics: total / healthy (≥80) / weak (<60) / overdue tests · avg health · implementation coverage · weakest controls list · category breakdown |
+| **Control Library** | Filterable list (search + status + category); create control; detail page with Health™ breakdown bars, strengths/concerns, test history |
+| **Testing** | Org-wide test log — all test records with pass/fail stats; per-control add test inline form |
+| **Reports** | Control library CSV · Tests CSV download links |
+| **AI Advisor** | AI Executive Summary (board narrative, cached); AI Gap Detection (top 5 gaps with actions); live NL chat |
+
+**Control Health™** — 6-component pure scoring engine:
+
+| Component | Weight | Source |
+|---|---|---|
+| **Evidence** | 30% | Approved evidence linked to control |
+| **Testing** | 25% | Pass rate of tests in last 12 months |
+| **Audit** | 15% | Open vs closed findings per control |
+| **Policy** | 10% | Approved org policies (proxy) |
+| **Freshness** | 10% | Days since last review (100 if ≤30d → 10 if >365d) |
+| **Risk Reduction** | 10% | Mitigating/accepted/closed linked risks ratio |
+
+- Pure engine: `lib/services/control-health.ts` — `computeControlHealth(inputs)` → ControlHealthBreakdown
+- Service: `lib/services/control-center/control-center-service.ts` — CRUD + computeAndSaveHealth()
+- AI service: `lib/services/control-center/ai-control-service.ts` — narrative, executive summary, gap detection, chat
+- Repo: `lib/repositories/control-center-repo.ts` — all queries, getHealthInputs(), test CRUD, junction helpers
+- Actions: `lib/control-center/actions.ts` — all server actions
+- Migration: `supabase/migrations/0011_control_center.sql`
+- Health levels: Exceptional (95–100) · Healthy (90–94) · Strong (80–89) · Moderate (70–79) · Needs Attention (60–69) · Critical (0–59)
 
 ### Trust Score™ ✅ Complete (2026-06-07)
 
@@ -374,6 +450,18 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /reports/risks/csv                           Risks CSV export
 /reports/risks/treatments/csv               Treatments CSV export
 
+--- Control Center™ ---
+/controls                                    Dashboard (metrics + weakest controls)
+/controls/library                            Filterable control library
+/controls/new                                Create control
+/controls/[id]                               Control detail (Health™ breakdown, test history)
+/controls/[id]/edit                          Edit control
+/controls/testing                            Org-wide test log + pass/fail stats
+/controls/reports                            CSV export links
+/controls/ai                                 AI Control Advisor (executive summary + gap detection + chat)
+/api/v1/controls/export/csv                  Control library CSV (session auth)
+/api/v1/controls/tests/export/csv            Tests CSV (session auth)
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
@@ -519,7 +607,26 @@ lib/
     risk-review-repo            insertReview, findByRisk, findByOrg
     risk-relationship-repo      link/unlink for all 6 junction tables (vendors/controls/findings/policies/frameworks/evidence)
 
+  --- Control Center™ services ---
+  services/control-health.ts   Pure, client-safe: computeControlHealth(inputs) → ControlHealthBreakdown
+                               getHealthLevel(), HEALTH_COMPONENT_WEIGHTS, HEALTH_COMPONENT_LABELS
+                               Health levels: exceptional/healthy/strong/moderate/needs_attention/critical
+  services/control-center/
+    control-center-service.ts  Control CRUD + computeAndSaveHealth() + addTest()
+    ai-control-service.ts      Gemini: generateControlNarrative() (cached), generateExecutiveSummary() (cached),
+                               detectControlGaps() (top 5), chat() (multi-turn NL)
+
+  --- Control Center™ repository ---
+  repositories/
+    control-center-repo.ts     findAllControls(), getHealthInputs(), getDashboardMetrics(),
+                               updateControlFull(), saveHealthScores(),
+                               insertControlTest(), findTestsByControl(), findAllTests(), deleteControlTest(),
+                               linkControlVendor/Framework(), getLinkedVendors/Frameworks()
+
   --- Server actions (thin transport — auth + service call + revalidatePath) ---
+  control-center/actions.ts    createControlAction, updateControlAction, deleteControlAction,
+                               computeHealthAction, addTestAction, deleteTestAction,
+                               generateNarrativeAction, generateExecutiveSummaryAction, chatAction
   vendors/actions.ts
   documents/actions.ts
   assessments/actions.ts
@@ -596,6 +703,15 @@ components/
   vendors/ (trust additions)
     trust-score-badge.tsx       TrustScoreBadge — inline level chip (score + level label)
     trust-score-widget.tsx      TrustScoreWidget — full breakdown card: bars, strengths/concerns, AI narrative
+  controls/
+    control-health-badge.tsx    ControlHealthBadge — coloured chip showing health score + level
+    control-status-badge.tsx    ControlStatusBadge, ControlTypeBadge, AutomationBadge, TestResultBadge
+    new-control-form.tsx        Create control form (all fields including objective, frequency, automation)
+    edit-control-form.tsx       Edit control — useActionState(updateControlAction, undefined) directly
+    control-detail-actions.tsx  DeleteControlButton (variant="danger"), ComputeHealthButton (useTransition),
+                                AddTestForm (useActionState + useEffect close-on-ok), DeleteTestButton
+    control-ai-chat.tsx         AI Control Advisor NL chat
+
   risk/
     risk-status-badge.tsx       RiskStatusBadge, RiskScoreBadge, RiskLevelBadge, RiskCategoryBadge, TreatmentStatusBadge
     risk-heat-map.tsx           Client component — 5×5 grid, impact on Y (5→1), likelihood on X (1→5),
@@ -623,6 +739,9 @@ supabase/
                                 risk_vendors, risk_controls, risk_findings, risk_policies,
                                 risk_frameworks, risk_evidence) ✅ APPLIED
     0010_trust_score.sql        Trust Score™ — 4 new columns on vendors + vendor_trust_history table ✅ APPLIED
+    0011_control_center.sql     Control Center™ — 4 new enums + frameworkId nullable + 11 new columns on controls
+                                + control_tests table + control_frameworks junction + control_vendors junction
+                                + RLS policies for all 3 new tables ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -683,6 +802,8 @@ vi.mock("@/lib/db", () => ({
 ### Phase 1 — Data Governance ✅ Complete (2026-06-05)
 ### Module 4 — Audit Management ✅ Complete (2026-06-06)
 ### Module 5 — Risk Lens™ ✅ Complete (2026-06-07)
+### Module 6 — Control Center™ ✅ Complete (2026-06-07)
+### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
 ### Trust Score™ ✅ Complete (2026-06-07)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
@@ -714,6 +835,7 @@ vi.mock("@/lib/db", () => ({
 | Data Governance module (/settings/data-governance) | ✅ Done |
 | Audit Management module (/audits/*) | ✅ Done |
 | Risk Lens™ module (/risks/*) | ✅ Done |
+| Control Center™ module (/controls/*) | ✅ Done |
 | Redis-backed rate limiting (multi-instance) | Roadmap |
 | S3 storage provider (`lib/providers/storage/s3.ts`) | ⚠ Pending — awaiting AWS provisioning |
 | SUPABASE_SERVICE_ROLE_KEY configured | ⚠ Pending — team invite blocked |
@@ -753,6 +875,9 @@ vi.mock("@/lib/db", () => ({
 | **Risk Lens Drizzle column names** | `riskTreatmentStatus("status")` — the first arg is the DB column name. Compliance module uses `columnEnum("status")`; audit module uses prefixed names. Risk Lens follows compliance pattern: always `("status")`. Using `("risk_treatment_status")` references a non-existent column and causes 500s. |
 | **Risk enum values** | Actual DB enums: category=`cyber_security` (not `cyber`), source=`audit_finding`/`compliance_gap`/`vendor` (not `audit`/`gap_analysis`/`assessment`). Check `seed-risk-lens.mjs` for all valid values. |
 | **audit_findings column names** | The severity column is `finding_severity` (not `severity`) and status is `finding_status` (not `status`). Risk Lens seed uses these correct names. |
+| **`controls.frameworkId` now nullable** | Migration 0011 dropped NOT NULL on `framework_id`. All 174 compliance controls still have a frameworkId. New Control Center™ standalone controls may have `frameworkId = null`. Everywhere `recomputeReadiness()` is called after a control mutation, guard with `if (control.frameworkId)` — missing this guard causes a crash trying to pass `null` to the framework service. |
+| **Control Health™ AI cache key** | `ai-control-service.ts` uses `aiComplianceInsights` table. The `targetId` field is NOT NULL — executive summary uses `orgId` as targetId; per-control narrative uses `control.id`. Never call `getCached()` or `saveCache()` without a valid UUID for `targetId`. |
+| **`auditFindings.status` vs `finding_status`** | In Drizzle schema, the TypeScript field is `.status` (the Drizzle field name) even though the DB column is `finding_status`. Use `auditFindings.status` in Drizzle queries — NOT `auditFindings.findingStatus` or `auditFindings.finding_status`. |
 
 ---
 

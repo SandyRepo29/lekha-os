@@ -4,7 +4,7 @@
 
 Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://lekha-os.vercel.app) · GitHub: [SandyRepo29/lekha-os](https://github.com/SandyRepo29/lekha-os)
 
-> Complete developer reference: **[CLAUDE.md](./CLAUDE.md)** — architecture, schema, features, caveats, dev commands, environment variables.
+> Complete developer reference: **[CLAUDE.md](./claude.md)** — architecture, schema, features, caveats, dev commands, environment variables.
 > Seed data reference: **[SEED.md](./SEED.md)** · Feature inventory: **[FEATURES.md](./FEATURES.md)**
 
 ---
@@ -20,7 +20,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Audit Management** | ✅ Complete | `/audits/*` |
 | **Risk Lens™** | ✅ Complete | `/risks/*` |
 | **Trust Score™** | ✅ Complete | Vendor detail + API |
-| Control Center™ | Roadmap | — |
+| **Control Center™** | ✅ Complete (2026-06-07) | `/controls/*` |
 | Policy Governance | Roadmap | — |
 | DPDP Privacy | Roadmap | — |
 
@@ -65,6 +65,7 @@ node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
 node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
 node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
+node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -104,6 +105,8 @@ Authorization: Bearer audt_live_<key>
 | `GET/PUT/DELETE /api/v1/risks/:id` | read_write | Single risk CRUD |
 | `GET/POST /api/v1/risk-treatments` | read_write | Treatments list + create |
 | `GET/POST /api/v1/risk-reviews` | read_write | Reviews list + create |
+| `GET /api/v1/controls/export/csv` | session | Control library CSV export |
+| `GET /api/v1/controls/tests/export/csv` | session | Control tests CSV export |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -122,7 +125,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `npm run db:migrate` | Apply all pending Drizzle migrations |
 | `npm run db:studio` | Drizzle Studio GUI |
 | `node scripts/seed-trust-scores.mjs` | Compute Trust Score™ for all active vendors |
-| `node scripts/check-db.mjs` | Table row counts for all 48 tables |
+| `node scripts/check-db.mjs` | Table row counts for all 51 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -133,10 +136,10 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 48 tables · 10 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · 51 tables · 11 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
-| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, trust narratives |
+| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives |
 | Email | Resend — expiry alerts + AI-written weekly digests |
 | PDF | `@react-pdf/renderer` |
 | Security | AES-256-GCM config encryption · bcryptjs API key hashing |

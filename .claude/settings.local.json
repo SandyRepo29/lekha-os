@@ -28,7 +28,12 @@
       "PowerShell(Stop-Process -Name node -Force -ErrorAction SilentlyContinue)",
       "Bash(mkdir -p \"C:/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/vendors/[id]/trust-score\")",
       "Bash(ls *.md scripts/SEED.md)",
-      "Bash(ls scripts/*.md)"
+      "Bash(ls scripts/*.md)",
+      "Bash(Get-ChildItem -Name \"*.md\" -Recurse -Exclude \"node_modules\")",
+      "Bash(dir /s /b *.md)",
+      "Bash(findstr /v node_modules)",
+      "Bash(findstr /v \".next\")",
+      "Bash(find /mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS -maxdepth 2 -name \"*.md\" ! -path \"*/node_modules/*\")"
     ]
   }
 }
