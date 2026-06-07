@@ -1,20 +1,36 @@
-# Lekha OS — Claude Code Reference
+# AUDT — Claude Code Reference
 
 > **End-to-end project brief for any AI session. Read this first.**
+> Rebranded from Lekha OS → AUDT on 2026-06-07. Domain: audt.tech.
 
 ---
 
 ## 1. Product Brief
 
-**Lekha OS** is the Trust, Governance & Compliance (GRC) Operating System for Indian businesses.
+**AUDT** is the AI-Native Trust, Risk & Compliance Platform — the Governance OS for modern organizations.
 Replaces spreadsheets and disconnected tools with a single AI-native platform for vendor governance, compliance, audits, risk and board governance.
 
+- **Brand:** AUDT
+- **Tagline:** Governance Built on Proof.
+- **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Governance · Compliance Management · Settings & Org Management · Data Governance (Phase 1) · Audit Management
-- **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services (India)
-- **Live:** https://lekha-os.vercel.app
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™
+- **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
+- **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
 - **Local:** `C:\Users\sandy\OneDrive\Desktop\LekhaOS`
+
+### Product Naming (AUDT brand)
+| Generic | AUDT Name |
+|---|---|
+| Vendor Management | Vendor Hub™ |
+| Evidence Repository | Evidence Vault™ |
+| Risk Engine | Risk Lens™ |
+| AI Assistant | Governance Copilot™ |
+| Controls | Control Center™ |
+| Vendor Rating | Trust Score™ |
+| Governance Graph | Trust Graph™ |
+| Intelligence Layer | Trust Intelligence™ |
 
 ---
 
@@ -531,17 +547,25 @@ vi.mock("@/lib/db", () => ({
 
 ## 10. Product Roadmap
 
-### Module 1 — Vendor Governance ✅ Complete
-### Module 2 — Compliance Management ✅ Complete (8 phases)
+### Module 1 — Vendor Hub™ (Vendor Governance) ✅ Complete
+### Module 2 — Evidence Vault™ (Compliance Management) ✅ Complete (8 phases)
 ### Module 3 — Settings & Organization Management ✅ Complete
 ### Phase 1 — Data Governance ✅ Complete (2026-06-05)
 ### Module 4 — Audit Management ✅ Complete (2026-06-06)
+### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
+### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
 
-| Future Module | Status |
-|---|---|
-| DPDP Privacy + Audit Workspace | Roadmap |
-| Risk Management — register, heat maps, remediation | Roadmap |
-| Board Governance + Trust Center | Roadmap |
+| Next Module | Description | Status |
+|---|---|---|
+| Risk Lens™ | Risk register, heat maps, remediation tracking | Roadmap |
+| Control Center™ | Control library, health monitoring, coverage analytics | Roadmap |
+| Policy Governance | Full policy lifecycle, versioning, owner accountability | Roadmap |
+| DPDP Privacy | India DPDP Act 2023 — data inventory, consent, retention | Roadmap |
+| Contract Governance | Contract lifecycle, expiry, obligation tracking | Future |
+| AI Governance | AI model risk, responsible AI frameworks | Future |
+| Continuous Monitoring | Real-time control health, automated evidence collection | Future |
+| Trust Graph™ | Cross-entity knowledge graph | Future |
+| Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
 

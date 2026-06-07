@@ -1153,6 +1153,257 @@ export const auditReports = pgTable(
 );
 
 /* ============================================================
+   Risk Lens™ — Enums
+   ============================================================ */
+
+export const riskCategory = pgEnum("risk_category", [
+  "operational",
+  "cyber_security",
+  "compliance",
+  "vendor",
+  "privacy",
+  "financial",
+  "legal",
+  "strategic",
+  "technology",
+  "business_continuity",
+  "third_party",
+  "regulatory",
+  "custom",
+]);
+
+export const riskStatus = pgEnum("risk_status", [
+  "identified",
+  "under_assessment",
+  "open",
+  "mitigating",
+  "accepted",
+  "transferred",
+  "closed",
+  "archived",
+]);
+
+export const riskTreatmentStrategy = pgEnum("risk_treatment_strategy", [
+  "mitigate",
+  "accept",
+  "transfer",
+  "avoid",
+  "monitor",
+]);
+
+export const riskSource = pgEnum("risk_source", [
+  "manual",
+  "vendor",
+  "audit_finding",
+  "compliance_gap",
+  "control_failure",
+  "policy_exception",
+  "ai_generated",
+  "api",
+]);
+
+export const riskTreatmentStatus = pgEnum("risk_treatment_status", [
+  "open",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+
+/* ============================================================
+   Risk Lens™ — Tables
+   ============================================================ */
+
+export const risks = pgTable(
+  "risks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    category: riskCategory("category").notNull().default("operational"),
+    status: riskStatus("status").notNull().default("identified"),
+    ownerId: uuid("owner_id").references(() => profiles.id),
+    source: riskSource("source").notNull().default("manual"),
+    /** 1-5 scale */
+    impact: integer("impact").notNull().default(3),
+    /** 1-5 scale */
+    likelihood: integer("likelihood").notNull().default(3),
+    /** impact * likelihood (1-25) */
+    inherentScore: integer("inherent_score").notNull().default(9),
+    /** post-treatment residual score (1-25) */
+    residualScore: integer("residual_score"),
+    treatmentStrategy: riskTreatmentStrategy("treatment_strategy").default("mitigate"),
+    targetDate: date("target_date"),
+    identifiedDate: date("identified_date"),
+    lastReviewedDate: date("last_reviewed_date"),
+    nextReviewDate: date("next_review_date"),
+    /** Source entity IDs for traceability */
+    sourceVendorId: uuid("source_vendor_id").references(() => vendors.id, { onDelete: "set null" }),
+    sourceFindingId: uuid("source_finding_id").references(() => auditFindings.id, { onDelete: "set null" }),
+    sourceGapId: uuid("source_gap_id").references(() => gapAnalysis.id, { onDelete: "set null" }),
+    /** AI-generated narrative */
+    aiNarrative: text("ai_narrative"),
+    aiNarrativeAt: timestamp("ai_narrative_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("risks_org_idx").on(t.organizationId),
+    index("risks_org_status_idx").on(t.organizationId, t.status),
+    index("risks_org_category_idx").on(t.organizationId, t.category),
+    index("risks_owner_idx").on(t.ownerId),
+  ]
+);
+
+export const riskReviews = pgTable(
+  "risk_reviews",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    riskId: uuid("risk_id")
+      .notNull()
+      .references(() => risks.id, { onDelete: "cascade" }),
+    reviewerId: uuid("reviewer_id").references(() => profiles.id),
+    reviewDate: date("review_date").notNull(),
+    outcome: text("outcome").notNull().default("no_change"),
+    notes: text("notes"),
+    previousStatus: riskStatus("previous_status"),
+    newStatus: riskStatus("new_status"),
+    previousScore: integer("previous_score"),
+    newScore: integer("new_score"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("risk_reviews_risk_idx").on(t.riskId),
+    index("risk_reviews_org_idx").on(t.organizationId),
+  ]
+);
+
+export const riskTreatments = pgTable(
+  "risk_treatments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    riskId: uuid("risk_id")
+      .notNull()
+      .references(() => risks.id, { onDelete: "cascade" }),
+    action: text("action").notNull(),
+    description: text("description"),
+    ownerId: uuid("owner_id").references(() => profiles.id),
+    targetDate: date("target_date"),
+    status: riskTreatmentStatus("risk_treatment_status").notNull().default("open"),
+    progressPercent: integer("progress_percent").notNull().default(0),
+    evidence: text("evidence"),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("risk_treatments_risk_idx").on(t.riskId),
+    index("risk_treatments_org_idx").on(t.organizationId),
+    index("risk_treatments_due_idx").on(t.organizationId, t.targetDate),
+  ]
+);
+
+/** Risk ↔ Vendor many-to-many */
+export const riskVendors = pgTable(
+  "risk_vendors",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    vendorId: uuid("vendor_id").notNull().references(() => vendors.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_vendors_uniq").on(t.riskId, t.vendorId),
+    index("risk_vendors_vendor_idx").on(t.vendorId),
+  ]
+);
+
+/** Risk ↔ Control many-to-many */
+export const riskControls = pgTable(
+  "risk_controls",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    controlId: uuid("control_id").notNull().references(() => controls.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_controls_uniq").on(t.riskId, t.controlId),
+    index("risk_controls_control_idx").on(t.controlId),
+  ]
+);
+
+/** Risk ↔ AuditFinding many-to-many */
+export const riskFindings = pgTable(
+  "risk_findings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    findingId: uuid("finding_id").notNull().references(() => auditFindings.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_findings_uniq").on(t.riskId, t.findingId),
+    index("risk_findings_finding_idx").on(t.findingId),
+  ]
+);
+
+/** Risk ↔ Policy many-to-many */
+export const riskPolicies = pgTable(
+  "risk_policies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    policyId: uuid("policy_id").notNull().references(() => policies.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_policies_uniq").on(t.riskId, t.policyId),
+    index("risk_policies_policy_idx").on(t.policyId),
+  ]
+);
+
+/** Risk ↔ Framework many-to-many */
+export const riskFrameworks = pgTable(
+  "risk_frameworks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id").notNull().references(() => frameworks.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_frameworks_uniq").on(t.riskId, t.frameworkId),
+    index("risk_frameworks_framework_idx").on(t.frameworkId),
+  ]
+);
+
+/** Risk ↔ Evidence many-to-many */
+export const riskEvidence = pgTable(
+  "risk_evidence",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    riskId: uuid("risk_id").notNull().references(() => risks.id, { onDelete: "cascade" }),
+    evidenceId: uuid("evidence_id").notNull().references(() => evidence.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("risk_evidence_uniq").on(t.riskId, t.evidenceId),
+    index("risk_evidence_evidence_idx").on(t.evidenceId),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -1197,4 +1448,15 @@ export type PolicyVersion = typeof policyVersions.$inferSelect;
 export type ReadinessScore = typeof readinessScores.$inferSelect;
 export type GapAnalysisRow = typeof gapAnalysis.$inferSelect;
 export type ComplianceReport = typeof complianceReports.$inferSelect;
+
+// Risk Lens™ Module
+export type Risk = typeof risks.$inferSelect;
+export type RiskReview = typeof riskReviews.$inferSelect;
+export type RiskTreatment = typeof riskTreatments.$inferSelect;
+export type RiskVendor = typeof riskVendors.$inferSelect;
+export type RiskControl = typeof riskControls.$inferSelect;
+export type RiskFinding = typeof riskFindings.$inferSelect;
+export type RiskPolicy = typeof riskPolicies.$inferSelect;
+export type RiskFramework = typeof riskFrameworks.$inferSelect;
+export type RiskEvidenceLink = typeof riskEvidence.$inferSelect;
 export type AiComplianceInsight = typeof aiComplianceInsights.$inferSelect;

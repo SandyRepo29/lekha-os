@@ -15,7 +15,15 @@
       "Bash(awk '/^- main:/,0' \"test-results/settings-Settings-settings-c179a-th-profile-and-org-sections-chromium/error-context.md\")",
       "Bash(sed -n '15,35p' \"test-results/settings-Settings-team-page-loads-with-invite-form-chromium/error-context.md\")",
       "Bash(sed -n '15,35p' \"test-results/settings-Settings-notifica-d05dc-ads-with-preference-toggles-chromium/error-context.md\")",
-      "Bash(awk '/# Page snapshot/,/^```$/{print}' \"test-results/vendor-crud-Vendor-CRUD-full-vendor-CRUD-flow-chromium/error-context.md\")"
+      "Bash(awk '/# Page snapshot/,/^```$/{print}' \"test-results/vendor-crud-Vendor-CRUD-full-vendor-CRUD-flow-chromium/error-context.md\")",
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\compliance\\\\frameworks\\\\new\" && mkdir -p \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\compliance\\\\frameworks\\\\[id]\\\\controls\\\\new\")",
+      "Bash(grep -v \"^$\")",
+      "Bash(Get-ChildItem -Force)",
+      "Bash(taskkill /F /IM node.exe)",
+      "PowerShell(Get-Process -Name \"node\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)"
     ]
   }
 }

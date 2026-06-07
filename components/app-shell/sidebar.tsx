@@ -30,7 +30,7 @@ const items: Item[] = [
   { href: "/vendors", label: "Vendors", icon: Building2 },
   { href: "/compliance", label: "Compliance", icon: ShieldCheck },
   { href: "/audits", label: "Audits", icon: ClipboardCheck },
-  { href: "/risks", label: "Risks", icon: AlertTriangle, soon: true },
+  { href: "/risks", label: "Risks", icon: AlertTriangle },
   { href: "/privacy", label: "DPDP Privacy", icon: Lock, soon: true },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
@@ -45,7 +45,7 @@ export function Sidebar() {
           <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_12px_#fff]" />
         </span>
         <span className="font-[family-name:var(--font-display)] text-base font-extrabold tracking-wide">
-          LEKHA<span className="ml-0.5 text-[var(--color-blue)]">OS</span>
+          AU<span className="text-[var(--color-blue)]">DT</span>
         </span>
       </Link>
 
@@ -130,7 +130,7 @@ export function Sidebar() {
 
       <div className="mt-3 rounded-xl border border-[var(--color-blue)]/25 bg-[var(--color-blue)]/[0.06] p-3">
         <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-blue)]">
-          <Sparkles className="h-4 w-4" /> Lekha AI
+          <Sparkles className="h-4 w-4" /> Governance Copilot™
         </div>
         <p className="mt-1 text-xs text-[var(--color-ink-dim)]">
           Ask about vendors, risks or audit readiness.
