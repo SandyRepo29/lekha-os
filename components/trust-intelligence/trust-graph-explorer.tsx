@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useTransition } from "react";
 import type { GraphNode, GraphEdge } from "@/lib/db/schema";
-import { ENTITY_COLORS, ENTITY_LABELS, RELATIONSHIP_LABELS } from "@/lib/services/trust-graph/graph-service";
+import { ENTITY_COLORS, ENTITY_LABELS, RELATIONSHIP_LABELS } from "@/lib/services/trust-graph/graph-constants";
 import { getRootCauseAction, getImpactAnalysisAction } from "@/lib/trust-graph/actions";
 import { EntityTypeBadge, ImpactSeverityBadge } from "./trust-graph-ui";
 import { cn } from "@/lib/utils";
