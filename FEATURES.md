@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-09 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **11 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™
+> Modules: **13 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Trust Intelligence™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **Trust Intelligence™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -385,7 +385,9 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 **Control Center sub-nav:** Dashboard · Control Library · Testing · Reports · AI Advisor
 
-**Trust Intelligence sub-nav:** Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View · **Trends** · **Monitoring**
+**Policy Governance sub-nav:** Overview · Library · Reviews · Attestations · AI Advisor
+
+**Trust Intelligence sub-nav:** Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View · Trends · Monitoring · Trust Graph™
 
 ---
 
@@ -406,6 +408,8 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 6 — Control Center™** | ✅ Complete (2026-06-07) |
 | **Module 7 — Trust Intelligence™** | ✅ Complete (2026-06-07) |
 | **Module 8 — Governance Trends™ + Monitoring™** | ✅ Complete (2026-06-09) |
+| **Module 9 — Trust Graph™** | ✅ Complete (2026-06-09) |
+| **Module 10 — Policy Governance™** | ✅ Complete (2026-06-09) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -430,12 +434,71 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 |---|---|---|
 | **Trust Intelligence™** | Org Trust Score™, Recommendations Engine™, Governance Copilot™ | ✅ Complete (2026-06-07) |
 | **Governance Trends™ + Continuous Monitoring™** | Trend sparklines, change tracking, monitoring engine, governance alerts | ✅ Complete (2026-06-09) |
-| **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
+| **Policy Governance™** | Full policy lifecycle, versioning, attestations, Policy Health™, AI drafting | ✅ Complete (2026-06-09) |
+| **Trust Graph™** | Cross-entity knowledge graph | ✅ Complete (2026-06-09) |
 | **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
 | **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Trust Graph™** | Cross-entity knowledge graph | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
+
+---
+
+## 📋 Module 10 — Policy Governance™
+
+> Completed 2026-06-09
+
+Elevates policies from compliance documents into **governed organizational assets** — first-class entities with lifecycle management, ownership accountability, attestations, Policy Health™ scoring, and AI-assisted drafting.
+
+### Policy Health™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Review Freshness** | 30% | Days since last review (100 if ≤30d, 0 if >365d or never) |
+| **Approval Status** | 20% | 100 if published/approved, 50 if review, 25 if draft, 0 if expired/retired |
+| **Control Coverage** | 20% | min(linked controls × 20, 100) |
+| **Attestation Completion** | 15% | % of assigned users who acknowledged |
+| **Framework Mapping** | 10% | min(linked frameworks × 33, 100) |
+| **Audit Findings** | 5% | 100 if no findings, 50 if 1–2, 0 if >2 |
+
+### Health Levels
+
+| Range | Level |
+|---|---|
+| 95–100 | Exceptional |
+| 90–94 | Healthy |
+| 80–89 | Strong |
+| 70–79 | Moderate |
+| 60–69 | Needs Attention |
+| < 60 | Critical |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Policy Library** | Filterable table — Policy Name · Type · Owner · Status · Version · Last Review · Next Review · Policy Health™ · Actions |
+| **Policy lifecycle** | Draft → Under Review → Approved → Published → Expired / Archived / Retired |
+| **Policy types** | 11 types: Information Security · Privacy · Vendor Management · Data Retention · Access Control · Acceptable Use · Business Continuity · Incident Response · HR · Finance · Custom |
+| **Version management** | Every update creates a version snapshot — version number, author, change summary, approval date, effective date |
+| **Review management** | Per-policy reviews: reviewer, date, outcome (Approved / Changes Required / Rejected / Expired), notes, next review date |
+| **Policy Health™** | 6-component 0–100 engine — `lib/services/policy-health.ts` (pure, zero DB imports) |
+| **Compute Health** | Button on detail triggers `computeAndSaveHealth()` → saves score → refreshes |
+| **Employee Attestations™** | Assign policies to audiences (Everyone / Department / Role / Custom); track who acknowledged, rejected, or is overdue |
+| **Attestation workflow** | Publish → Assign Audience → Notify → Track Acknowledgements → Escalate Overdue |
+| **Policy-Control mapping** | Link policies to controls (policy_controls junction); shown on both Control Center™ and Policy detail |
+| **Policy-Framework mapping** | Link policies to frameworks (policy_frameworks junction) |
+| **Policy-Risk mapping** | Existing `risk_policies` junction — shown on Risks tab of policy detail |
+| **Dashboard metrics** | Total · Published · Draft · Under Review · Overdue · Due Soon · Avg Health · Attestation Rate · Weak Policies |
+| **AI Policy Draft™** | Gemini generates full policy markdown from topic + optional context |
+| **AI Policy Gap Analysis™** | Identifies missing, weak, outdated, and unmapped policies org-wide |
+| **AI Executive Summary™** | Board-level policy posture summary; cached 24h |
+| **AI Policy Advisor Chat** | Live NL chat — "Which policies need review?", "What policies support ISO 27001?" |
+| **REST API** | `GET/POST /api/v1/policies` · `GET/PUT/DELETE /api/v1/policies/[id]` · `GET/POST /api/v1/policy-attestations` · `GET /api/v1/policy-health` |
+| **Continuous Monitoring integration** | 3 new rules: `policy_expired` · `policy_review_overdue` · `policy_attestation_low` |
+| **Trust Graph integration** | Policy → Control + Policy → Framework edges from junction tables |
+| **Navigation** | 5-tab sub-nav: Overview · Library · Reviews · Attestations · AI Advisor |
+| **Schema** | `policies` extended (8 new cols incl. owner_id, health_score, attestation_required, audience); 4 new tables: `policy_reviews`, `policy_attestations`, `policy_controls`, `policy_frameworks`; `policyStatus` enum + `published` + `retired` |
+| **Migration** | `supabase/migrations/0015_policy_governance.sql` ✅ Applied |
 
 ---
 

@@ -22,6 +22,7 @@ node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
 node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
+node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -59,7 +60,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts.
 
 ---
 
@@ -555,6 +556,32 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 10 — Policy Governance™
+
+> No seed script needed for initial demo — use the UI to create policies, then map controls/frameworks and run AI features.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/policy-governance` | Metrics strip: Total / Published / Due for Review / Avg Health |
+| Policy library | `/policy-governance/library` | Empty on fresh DB; create a new policy |
+| Create policy | Library → New Policy | Fill: name, type (Access Control), version 1.0, attestation required |
+| Policy detail | Click policy name | 8 tabs: Overview · Versions · Controls · Frameworks · Risks · Attestations · Reviews · Activity |
+| Add review | Policy detail → Reviews tab → Add Review | Select outcome: Approved, set next review date |
+| Compute Health™ | Policy detail → Overview → Compute Health button | Health score populates with breakdown |
+| Link control | Policy detail → Controls tab | Search and link an ISO 27001 control |
+| Link framework | Policy detail → Frameworks tab | Link to ISO 27001 |
+| Publish policy | Policy detail → Publish button | Status → Published |
+| AI Policy Draft | `/policy-governance/ai` → Draft Policy | Enter "Access Control Policy for cloud SaaS" → Gemini returns full policy markdown |
+| AI Gap Analysis | AI Advisor → Analyze Gaps | Returns missing/weak/outdated/unmapped policy lists |
+| AI Executive Summary | AI Advisor → Generate Summary | Board-level policy posture paragraph |
+| AI chat | AI Advisor → chat | Ask "Which policies need review?" |
+| Reviews page | `/policy-governance/reviews` | Shows reviews added via detail page |
+| Attestations page | `/policy-governance/attestations` | Shows attestations after assigning via detail page |
+| REST API — policies | `GET /api/v1/policies` | JSON list |
+| REST API — health | `GET /api/v1/policy-health` | Org policy health metrics |
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -609,7 +636,7 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 54 tables |
+| `check-db.mjs` | Quick table row counts for all 60 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -661,5 +688,9 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `corrective_actions` | 9 (open/in_progress/completed — all states) | seed-audits |
 | `governance_snapshots` | 14 (daily trend: 49 → 62 over 14 days) | seed-governance-snapshots |
 | `governance_alerts` | 0 (populated by Run Monitoring or daily cron) | monitoring-service |
+| `policy_reviews` | 0 (create via `/policy-governance/[id]` Reviews tab) | — |
+| `policy_attestations` | 0 (assign via policy detail → Attestations tab) | — |
+| `policy_controls` | 0 (link via policy detail → Controls tab) | — |
+| `policy_frameworks` | 0 (link via policy detail → Frameworks tab) | — |
 
 > After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.
