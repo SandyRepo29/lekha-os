@@ -77,6 +77,11 @@ node scripts/seed-compliance-demo.mjs              # statuses, evidence, policie
 node scripts/seed-data-governance.mjs              # branding, login history, audit events
 node scripts/seed-risk-lens.mjs                    # 20 risks, treatments, reviews
 node scripts/seed-trust-scores.mjs                 # Trust Score™ for all vendors
+node scripts/seed-audits.mjs                       # 5 audits, 14 findings, 9 CAPAs
+node scripts/seed-control-tests.mjs                # 40+ control tests + health scores
+node scripts/seed-governance-snapshots.mjs         # 14-day governance trend history
+node scripts/seed-vendor-extras.mjs                # assessments, reviews, doc requests
+node scripts/seed-portal-tokens.mjs                # portal tokens (prints test URLs)
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
@@ -131,7 +136,12 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `npm run db:migrate` | Apply all pending Drizzle migrations |
 | `npm run db:studio` | Drizzle Studio GUI |
 | `node scripts/seed-trust-scores.mjs` | Compute Trust Score™ for all active vendors |
-| `node scripts/check-db.mjs` | Table row counts for all 51 tables |
+| `node scripts/seed-audits.mjs` | 5 audits · 14 findings · 9 CAPAs across all lifecycle states |
+| `node scripts/seed-control-tests.mjs` | 40+ control tests with mixed results + health scores |
+| `node scripts/seed-governance-snapshots.mjs` | 14-day governance trend (49 → 62) for Trust Intelligence™ |
+| `node scripts/seed-vendor-extras.mjs` | Remaining vendor assessments, reviews, doc requests |
+| `node scripts/seed-portal-tokens.mjs` | Portal tokens for E2E testing (prints ready-to-use URLs) |
+| `node scripts/check-db.mjs` | Table row counts for all 52 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---

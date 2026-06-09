@@ -41,9 +41,24 @@ node scripts/seed-risk-lens.mjs
 
 # 8. Seed Trust Score™
 node scripts/seed-trust-scores.mjs
+
+# 9. Seed Audit Management (Module 4) — 5 audits across all states
+node scripts/seed-audits.mjs
+
+# 10. Seed Control Center™ test records + health scores (Module 6)
+node scripts/seed-control-tests.mjs
+
+# 11. Seed Trust Intelligence™ governance trend history (Module 7)
+node scripts/seed-governance-snapshots.mjs
+
+# 12. Seed Vendor extras — assessments for remaining vendors + reviews + doc requests
+node scripts/seed-vendor-extras.mjs
+
+# 13. Seed Vendor Portal tokens for E2E testing
+node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **Trust Intelligence™ (Module 7)** is immediately populated — it aggregates from the data above. Visit `/trust-intelligence` to see the live Organizational Trust Score™.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. Visit `/trust-intelligence` to see the live score.
 
 ---
 
@@ -101,24 +116,32 @@ Use this to verify every module after seeding.
 
 ### Module 4 — Audit Management
 
-> No seed script — create audits via UI to test end-to-end.
+> **`seed-audits.mjs`** seeds 5 audits across all lifecycle states with 14 findings and 9 CAPAs.
 
 | Test | Where | Expected |
 |---|---|---|
-| Create audit | `/audits/new` | Fill in name, type (Internal), scope, dates → Save |
-| View audit dashboard | `/audits` | New audit appears in metrics |
+| View audit dashboard | `/audits` | 5 audits: 2 completed, 2 in_progress, 1 planned |
+| View completed ISO audit | Audit list → "Annual ISO 27001 Internal Audit 2026" | Status: Completed, AI summary present |
+| View findings | `/audits/findings` | 14 findings — critical/high/medium/low — all severities |
+| View CAPAs | `/audits/capas` | 9 CAPAs — open/in_progress/completed — overdue highlighted |
+| Open critical finding | Findings list → "Privileged Access Management..." | Severity: Critical, status: remediating, 2 CAPAs linked |
+| View completed CAPA | CAPA list → "Conduct ransomware tabletop exercise" | Status: completed, completion notes present |
 | Add audit finding | `/audits/[id]/findings/new` | Fill in severity Critical, title, description |
 | AI Finding Generator | `/audits/[id]/findings/new` | Paste observation → AI fills fields |
 | Add CAPA | `/audits/[id]/capas` | CAPA links to finding, finding moves to "remediating" |
 | AI CAPA Suggestions | Finding detail | "Suggest CAPAs" → 3 AI options |
-| Start audit | Audit detail → Start button | Status → In Progress |
+| Start audit | Planned audit → Start button | Status → In Progress |
 | Generate AI summary | Audit detail → AI Summary panel | 3–4 sentence Gemini narrative |
 | Generate executive report | `/audits/ai` | Board-level report; AI chat |
 | Full audit PDF | `/reports/audits/[id]` | PDF with findings + CAPAs |
 | Findings CSV | `/reports/audits/[id]/findings/csv` | CSV download |
-| Complete audit | Audit detail → Complete button | Status → Completed |
 
-**Quick demo path:** Create 1 audit → Add 2 findings (1 Critical, 1 High) → Add CAPAs → Start → Generate AI summary → View PDF.
+**Seeded audit states:**
+- **Annual ISO 27001 Internal Audit 2026** — `completed` · 5 findings (1 critical, 2 high, 1 medium, 1 low) · 3 CAPAs · AI summary included
+- **Q1 Vendor Security Review — Razorpay 2026** — `completed` · 3 findings (1 high, 2 medium) · 2 CAPAs (1 completed)
+- **SOC 2 Type II Gap Assessment** — `in_progress` · 3 findings (1 critical, 2 high) · 2 CAPAs · 8 program items
+- **DPDP Act Compliance Audit 2026** — `planned` · 6 program items · no findings yet
+- **PCI DSS v4.0 Pre-Assessment** — `in_progress` · 3 findings (1 critical, 2 high) · 2 CAPAs · 8 program items
 
 ---
 
@@ -141,25 +164,36 @@ Use this to verify every module after seeding.
 
 ### Module 6 — Control Center™
 
+> **`seed-control-tests.mjs`** seeds 40+ test records across all 5 frameworks with mixed results, then sets `health_score`/`effectiveness_score`/`last_tested` directly on controls.
+
 | Test | Where | Expected |
 |---|---|---|
-| Control dashboard | `/controls` | 174 controls — metrics: total/healthy/weak/overdue |
-| Control library | `/controls/library` | 174 controls — search "access", filter by status |
-| Open control detail | Any control | Health™ breakdown (6 components), no scores yet |
-| Compute Health™ | Control detail → Compute Health™ | Scores populate, page refreshes |
-| Add test record | Control detail → Add Test | Date + result (Passed) → appears in test history |
-| Testing log | `/controls/testing` | Org-wide test log |
-| Create new control | `/controls/new` | Standalone control (no framework) |
+| Control dashboard | `/controls` | 174 controls — healthy/weak/overdue counts populated, avg health ~55 |
+| Weakest controls | Dashboard → Weakest controls | 5 controls with health 10–28 (exception/fail state) |
+| Control library | `/controls/library` | 174 controls — Health™ column shows coloured badges |
+| Open strong control | First few ISO controls | Health badge Green/Blue — 2–3 passing tests in history |
+| Open weak control | Controls in positions 70–85% | Health badge Red — recent fail or exception in history |
+| Testing log | `/controls/testing` | 40+ test records — all 4 result types: passed/partially_effective/failed/exception |
+| Test result distribution | Testing log stats | ~35% passed · ~25% partial · ~25% failed · ~15% exception |
+| Compute Health™ | Any control → Compute Health™ | Score recomputes from fresh inputs, overwrites seeded value |
+| Add test record | Control detail → Add Test | New record appears, health recomputes |
 | AI Executive Summary | `/controls/ai` → Generate Summary | Cached board-level narrative |
-| AI Gap Detection | `/controls/ai` → Detect Gaps | Top 5 gaps with actions |
-| AI chat | `/controls/ai` | Ask "Which controls lack evidence?" |
+| AI Gap Detection | `/controls/ai` → Detect Gaps | Top 5 gaps — now includes weak controls |
+| AI chat | `/controls/ai` | Ask "Which controls have recent test failures?" |
 | Controls CSV | `/api/v1/controls/export/csv` | CSV download |
 
-**Note:** Health scores start at 0 for seeded controls. Compute a few to see the scoring model in action. The "weakest controls" list on the dashboard updates as you compute more scores.
+**Seeded health score distribution (approximate):**
+- Strong (≥80): ~30% of controls — recent passing tests, low review age
+- Moderate (60–79): ~20% — 1 pass + 1 older partial
+- Needs Attention (40–59): ~20% — recent partial + historical fail
+- Weak/Critical (20–39): ~15% — recent fail
+- Very low (<20): ~15% — exception state, no recent clean test
 
 ---
 
 ### Module 7 — Trust Intelligence™
+
+> **`seed-governance-snapshots.mjs`** seeds 14 daily governance snapshots showing an upward trend from score 49 (14 days ago) to 62 (yesterday). Required for the Governance Timeline trend chart.
 
 | Test | Where | Expected |
 |---|---|---|
@@ -169,21 +203,28 @@ Use this to verify every module after seeding.
 | Governance Timeline | Overview | Last 10 audit log events with actor + date |
 | Vendor Trust view | `/trust-intelligence/vendors` | Avg trust score, top 10 / bottom 10 with bars |
 | Risk Insights view | `/trust-intelligence/risks` | Active/critical/high/medium counts + category chart |
-| Control Health view | `/trust-intelligence/controls` | Avg health, weakest controls list |
+| Control Health view | `/trust-intelligence/controls` | Avg health, weakest controls list (populated by seed-control-tests) |
 | Compliance view | `/trust-intelligence/compliance` | Per-framework readiness bars |
-| Recommendations | `/trust-intelligence/recommendations` | Prioritized actions — at least 3 high-priority after full seed |
+| Recommendations | `/trust-intelligence/recommendations` | ≥8 prioritized actions — critical risks + weak controls + low-trust vendors |
 | Executive View | `/trust-intelligence/executive` | Org Trust ring + AI summary + open actions |
+| Governance trend chart | Executive View | 14-day line chart: org_trust_score 49 → 62 (upward trend) |
 | Governance Copilot™ | Executive View → chat | Ask "Why did trust decline?" or "Which risks need attention?" |
 | AI Executive Summary | Executive View | Gemini board summary (auto-generates if not cached) |
 
-**Expected Org Trust Score after full demo seed:** ~55–70 (Moderate) — several critical risks + weak controls + low compliance readiness on PCI/HIPAA drive the score down. Apollo HealthCo (critical risk, 1 doc) and Yotta/Sify (high risk, low docs) are main vendor trust detractors.
+**Expected Org Trust Score after full demo seed (all modules):** ~62–70 (Moderate) with a clear upward trend visible in the governance snapshot chart.
 
-**Snapshot governance:** The score is computed live on page load. To persist a daily snapshot to `governance_snapshots` (for future trend charts), call:
+Component scores with full seed:
+- Vendor Trust: ~68 (avg vendor trust, dragged down by Apollo/Yotta/Sify)
+- Risk Posture: ~53 (2 critical risks + 14 open)
+- Control Health: ~55 (mixed scores from seed-control-tests)
+- Audit Readiness: ~55 (2 completed + 2 in-progress audits)
+- Compliance Coverage: ~56 (avg of 5 framework readiness scores)
+
+**Snapshot governance:** The score is computed live on page load. Historical snapshots are pre-seeded. To add today's snapshot to the trend:
 ```bash
 curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
   -H "Authorization: Bearer lk_live_<your-key>"
 ```
-Or implement a cron job calling `snapshotGovernance(orgId)`.
 
 ---
 
@@ -212,9 +253,11 @@ Or implement a cron job calling `snapshotGovernance(orgId)`.
 | `seed-data-governance.mjs` | Settings / Data Gov | Branding · login history · 25 audit events · doc storage metadata |
 | `seed-risk-lens.mjs` | Risk Lens™ | 20 risks · 25 treatments · 8 reviews · vendor/control/framework links |
 | `seed-trust-scores.mjs` | Trust Score™ | Computes 6-component Trust Score™ for all active vendors + 1 history snapshot each |
-| *(live data)* | Audit Management | Create via UI — no seed script |
-| *(live data)* | Control Center™ | Controls from `seed-compliance-frameworks.mjs`; health computed on demand |
-| *(live data)* | Trust Intelligence™ | Aggregates from all modules above — no seed needed, works immediately |
+| `seed-audits.mjs` | Audit Management | 5 audits · 14 findings · 9 CAPAs · audit program items across all lifecycle states |
+| `seed-control-tests.mjs` | Control Center™ | 40+ test records across 30 controls with mixed results · sets health_score + effectiveness_score |
+| `seed-governance-snapshots.mjs` | Trust Intelligence™ | 14 daily governance snapshots (upward trend: 49 → 62) for Governance Timeline chart |
+| `seed-vendor-extras.mjs` | Vendor Hub™ | Assessments for remaining 11 vendors · reviews for all vendors · doc requests in all 5 states |
+| `seed-portal-tokens.mjs` | Vendor Hub™ | 4 portal tokens: 3 active (Apollo/Yotta/Sify) + 1 expired (Darwinbox) with ready-to-use portal URLs |
 
 ---
 
@@ -240,7 +283,28 @@ Or implement a cron job calling `snapshotGovernance(orgId)`.
 | 14 | **Apollo HealthCo Ltd** | Healthcare | Critical | 28 | Active | Only GST on file. No DPA / security cert — critical gap. |
 | 15 | **Birlasoft Ltd** | IT Services | Medium | 74 | Active | ERP/SAP partner. 4 docs. |
 
-**Documents: ~67 total** · Assessments: 4 · Reviews: 3 · Expiring soon: 4 docs · Expired: 1 (Sify ISO 27001)
+**Documents: ~67 total** · Assessments: 15 (all vendors) · Reviews: ~15 (all vendors) · Doc requests: 5 (all states) · Portal tokens: 4 (3 active + 1 expired) · Expiring soon: 4 docs · Expired: 1 (Sify ISO 27001)
+
+### Document Requests (5 — `seed-vendor-extras.mjs`)
+
+| Vendor | Document Type | Status |
+|---|---|---|
+| Apollo HealthCo Ltd | Data Processing Agreement (DPA) | `requested` — pending vendor response |
+| Yotta Data Services | ISO/IEC 27001 Certificate | `submitted` — awaiting review |
+| Quess Corp Ltd | Professional Indemnity Insurance | `approved` — reviewed and accepted |
+| Birlasoft Ltd | SOC 2 Type II Report | `rejected` — wrong report year, resubmission needed |
+| Infosys BPM Ltd | Cyber Liability Insurance | `expired` — 30-day window elapsed |
+
+### Portal Tokens (4 — `seed-portal-tokens.mjs`)
+
+| Vendor | Expires | State | Use Case |
+|---|---|---|---|
+| Apollo HealthCo Ltd | +30 days | Active | Main E2E test target — critical vendor, minimal docs |
+| Yotta Data Services | +14 days | Active | High-risk vendor portal flow |
+| Sify Technologies Ltd | +7 days | Active (expiring soon) | Tests 7-day expiry warning |
+| Darwinbox Digital Solutions | −7 days | Expired | Tests expiry handling (portal → 404) |
+
+Run `node scripts/seed-portal-tokens.mjs` and check the output for ready-to-use portal URLs.
 
 ### Vendor Type Templates (7)
 
@@ -332,17 +396,30 @@ Or implement a cron job calling `snapshotGovernance(orgId)`.
 
 ## Module 4 — Audit Management
 
-> No seed script. Create via UI or REST API.
+### Audits (5 — seeded by `seed-audits.mjs`)
 
-**Quick E2E path:**
-1. Create audit at `/audits/new` — type: Internal, scope: "Annual security audit", status: Planned
-2. Add 2 findings (1 Critical + 1 High) via `/audits/[id]/findings/new`
-3. Use AI Finding Generator on the second finding (paste an observation)
-4. Add a CAPA to the critical finding (finding auto-moves to "remediating")
-5. Start the audit → Status = In Progress
-6. Generate AI summary on the audit detail page
-7. View Full Report PDF at `/reports/audits/[id]`
-8. Complete the audit
+| Audit | Type | Status | Findings | CAPAs |
+|---|---|---|---|---|
+| Annual ISO 27001 Internal Audit 2026 | internal | completed | 5 (1 critical, 2 high, 1 medium, 1 low) | 3 (1 completed, 2 in_progress) |
+| Q1 Vendor Security Review — Razorpay 2026 | vendor | completed | 3 (1 high, 2 medium) | 2 (1 completed, 1 in_progress) |
+| SOC 2 Type II Gap Assessment | compliance | in_progress | 3 (1 critical, 2 high) | 2 (both open) |
+| DPDP Act Compliance Audit 2026 | compliance | planned | — | — |
+| PCI DSS v4.0 Pre-Assessment | external | in_progress | 3 (1 critical, 2 high) | 2 (1 open, 1 in_progress) |
+
+### Findings (14 — all severities)
+
+Critical (4): Privileged Access Management · Encryption at Rest · PAN Data Out-of-Scope · Cardholder Data Env
+High (6): Incident Response · Supplier Assessments · API Key Rotation · Change Management · Logical Access · Network Segmentation
+Medium (3): Vulnerability Patching · DPA Sub-processors · Audit Log Retention
+Low (1): Security Awareness Training
+
+### CAPAs (9 — all statuses)
+
+| Status | Count | Example |
+|---|---|---|
+| open | 3 | Upgrade PCI databases to AES-256; Tokenize PAN data; Deploy PAM solution |
+| in_progress | 5 | HashiCorp Vault deployment; Firewall rule removal; PAM workflow; HRMS deprovisioning |
+| completed | 1 | Ransomware tabletop exercise (completed 2026-03-28 with notes) |
 
 **REST API quick create:**
 ```bash
@@ -523,44 +600,47 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 
 ## Full Data Inventory (after all seeds)
 
-| Table | Demo Rows |
-|---|---|
-| `organizations` | 1 |
-| `memberships` | 1 owner |
-| `vendors` | 15 (trust_score populated for all) |
-| `vendor_documents` | ~67 |
-| `vendor_types` | 7 (global defaults) |
-| `vendor_type_documents` | ~50 |
-| `assessments` | 4 |
-| `assessment_responses` | ~68 |
-| `frameworks` | 5 |
-| `controls` | 174 (health_score = 0 until computed) |
-| `evidence` | ~80 |
-| `control_evidence_mappings` | ~104 |
-| `policies` | 8 |
-| `policy_versions` | 5 |
-| `readiness_scores` | 5 |
-| `gap_analysis` | ~107 open gaps |
-| `billing_plans` | 3 |
-| `subscriptions` | 1 (Starter) |
-| `organization_settings` | 1 |
-| `login_history` | 20 |
-| `audit_logs` | ~30+ |
-| `risks` | 20 |
-| `risk_treatments` | 25 |
-| `risk_reviews` | 8 |
-| `risk_vendors` | 15 |
-| `risk_controls` | 5 |
-| `risk_frameworks` | 14 |
-| `storage_providers` | 1 |
-| `vendor_trust_history` | 15 (one per active vendor) |
-| `control_frameworks` | 0 (populate via UI) |
-| `control_vendors` | 0 (populate via UI) |
-| `control_tests` | 0 (populate via UI) |
-| `governance_snapshots` | 0 (populate via Trust Intelligence™ snapshot action) |
-| **audits** | 0 (create via UI or API) |
-| **audit_programs** | 0 (auto-generated when audit starts) |
-| **audit_findings** | 0 (create via UI or API) |
-| **corrective_actions** | 0 (create via UI or API) |
+| Table | Demo Rows | Script |
+|---|---|---|
+| `organizations` | 1 | seed-demo |
+| `memberships` | 1 owner | seed-demo |
+| `vendors` | 15 (trust_score + health_score populated) | seed-demo + seed-trust-scores |
+| `vendor_documents` | ~67 | seed-demo |
+| `vendor_types` | 7 (global defaults) | seed-templates |
+| `vendor_type_documents` | ~50 | seed-templates |
+| `assessments` | 15 (all vendors covered) | seed-demo (4) + seed-vendor-extras (11) |
+| `assessment_responses` | ~255 (15 × 17 questions) | seed-demo + seed-vendor-extras |
+| `vendor_reviews` | ~15 (all vendors, varied types) | seed-demo (3) + seed-vendor-extras (12) |
+| `document_requests` | 5 (all states: requested/submitted/approved/rejected/expired) | seed-vendor-extras |
+| `vendor_portal_tokens` | 4 (3 active + 1 expired) | seed-portal-tokens |
+| `vendor_trust_history` | 15 (one per active vendor) | seed-trust-scores |
+| `frameworks` | 5 | seed-compliance-frameworks |
+| `controls` | 174 (~30% with health scores from control tests) | seed-compliance-frameworks + seed-control-tests |
+| `evidence` | ~80 | seed-compliance-demo |
+| `control_evidence_mappings` | ~104 | seed-compliance-demo |
+| `policies` | 8 | seed-compliance-demo |
+| `policy_versions` | 5 | seed-compliance-demo |
+| `readiness_scores` | 5 | seed-compliance-demo |
+| `gap_analysis` | ~107 open gaps | seed-compliance-demo |
+| `control_tests` | 40+ (all 4 result types across 30 controls) | seed-control-tests |
+| `control_frameworks` | 0 (populate via UI) | — |
+| `control_vendors` | 0 (populate via UI) | — |
+| `billing_plans` | 3 | seed-billing-plans |
+| `subscriptions` | 1 (Starter) | seed-billing-plans |
+| `organization_settings` | 1 | seed-data-governance |
+| `login_history` | 20 | seed-data-governance |
+| `audit_logs` | ~30+ | seed-data-governance |
+| `risks` | 20 | seed-risk-lens |
+| `risk_treatments` | 25 | seed-risk-lens |
+| `risk_reviews` | 8 | seed-risk-lens |
+| `risk_vendors` | 15 | seed-risk-lens |
+| `risk_controls` | 5 | seed-risk-lens |
+| `risk_frameworks` | 14 | seed-risk-lens |
+| `storage_providers` | 1 | seed-data-governance |
+| `audits` | 5 (planned/in_progress/completed) | seed-audits |
+| `audit_programs` | ~40 (8–12 items per audit with framework controls) | seed-audits |
+| `audit_findings` | 14 (critical/high/medium/low — all severities) | seed-audits |
+| `corrective_actions` | 9 (open/in_progress/completed — all states) | seed-audits |
+| `governance_snapshots` | 14 (daily trend: 49 → 62 over 14 days) | seed-governance-snapshots |
 
-> After running all seeds, **`/trust-intelligence`** is immediately usable with a live Organizational Trust Score™ reflecting real governance data.
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart.
