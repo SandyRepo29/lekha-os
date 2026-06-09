@@ -742,6 +742,26 @@ export const policyStatus = pgEnum("policy_status", [
   "approved",
   "archived",
   "expired",
+  "published",
+  "retired",
+]);
+
+/* ============================================================
+   Policy Governance™ — Enums
+   ============================================================ */
+
+export const policyReviewOutcome = pgEnum("policy_review_outcome", [
+  "approved",
+  "changes_required",
+  "rejected",
+  "expired",
+]);
+
+export const attestationStatus = pgEnum("attestation_status", [
+  "pending",
+  "acknowledged",
+  "rejected",
+  "overdue",
 ]);
 
 /* ============================================================
@@ -918,14 +938,22 @@ export const policies = pgTable(
       .notNull()
       .references(() => organizations.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
+    description: text("description"),
     policyType: text("policy_type"),
     version: text("version").notNull().default("1.0"),
     owner: text("owner"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
     status: policyStatus("status").notNull().default("draft"),
     reviewDate: date("review_date"),
+    nextReviewDate: date("next_review_date"),
+    effectiveDate: date("effective_date"),
     approvalDate: date("approval_date"),
     approver: text("approver"),
     storagePath: text("storage_path"),
+    healthScore: integer("health_score").default(0),
+    attestationRequired: boolean("attestation_required").default(false),
+    audience: text("audience").default("everyone"),
+    changeSummary: text("change_summary"),
     createdBy: uuid("created_by").references(() => profiles.id),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
@@ -1464,6 +1492,87 @@ export const riskEvidence = pgTable(
 );
 
 /* ============================================================
+   Policy Governance™ — Tables
+   ============================================================ */
+
+/** Formal review record for a policy. */
+export const policyReviews = pgTable(
+  "policy_reviews",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    policyId: uuid("policy_id").notNull().references(() => policies.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    reviewerId: uuid("reviewer_id").references(() => profiles.id, { onDelete: "set null" }),
+    reviewDate: date("review_date").notNull(),
+    outcome: text("outcome").notNull().default("approved"),
+    notes: text("notes"),
+    nextReviewDate: date("next_review_date"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("policy_reviews_policy_idx").on(t.policyId),
+    index("policy_reviews_org_idx").on(t.organizationId),
+  ]
+);
+
+/** Attestation record — a user's acknowledgement (or rejection) of a policy version. */
+export const policyAttestations = pgTable(
+  "policy_attestations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    policyId: uuid("policy_id").notNull().references(() => policies.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+    policyVersion: text("policy_version"),
+    acknowledgedAt: timestamp("acknowledged_at", { withTimezone: true }),
+    rejectedAt: timestamp("rejected_at", { withTimezone: true }),
+    dueDate: date("due_date"),
+    status: text("status").notNull().default("pending"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("policy_attestations_policy_idx").on(t.policyId),
+    index("policy_attestations_org_idx").on(t.organizationId),
+    index("policy_attestations_user_idx").on(t.userId),
+  ]
+);
+
+/** Many-to-many: policy ↔ control. */
+export const policyControls = pgTable(
+  "policy_controls",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    policyId: uuid("policy_id").notNull().references(() => policies.id, { onDelete: "cascade" }),
+    controlId: uuid("control_id").notNull().references(() => controls.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("policy_controls_uniq").on(t.policyId, t.controlId),
+    index("policy_controls_policy_idx").on(t.policyId),
+    index("policy_controls_control_idx").on(t.controlId),
+  ]
+);
+
+/** Many-to-many: policy ↔ framework. */
+export const policyFrameworks = pgTable(
+  "policy_frameworks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    policyId: uuid("policy_id").notNull().references(() => policies.id, { onDelete: "cascade" }),
+    frameworkId: uuid("framework_id").notNull().references(() => frameworks.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("policy_frameworks_uniq").on(t.policyId, t.frameworkId),
+    index("policy_frameworks_policy_idx").on(t.policyId),
+    index("policy_frameworks_framework_idx").on(t.frameworkId),
+  ]
+);
+
+/* ============================================================
    Control Center™ — Tables
    ============================================================ */
 
@@ -1806,3 +1915,9 @@ export type GovernanceAlert = typeof governanceAlerts.$inferSelect;
 // Trust Graph™
 export type GraphNode = typeof graphNodes.$inferSelect;
 export type GraphEdge = typeof graphEdges.$inferSelect;
+
+// Policy Governance™
+export type PolicyReview = typeof policyReviews.$inferSelect;
+export type PolicyAttestation = typeof policyAttestations.$inferSelect;
+export type PolicyControl = typeof policyControls.$inferSelect;
+export type PolicyFrameworkLink = typeof policyFrameworks.$inferSelect;

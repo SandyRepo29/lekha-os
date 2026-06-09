@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors } from "@/lib/db/schema";
+import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations } from "@/lib/db/schema";
 import { eq, and, lt, lte, sql } from "drizzle-orm";
 import {
   insertAlert,
@@ -226,6 +226,106 @@ export async function runMonitoringRules(orgId: string): Promise<{ created: numb
         entityId: v.id,
       });
       created++;
+    }
+  }
+
+  // ── 8. Expired policies ──────────────────────────────────────────────────
+  const expiredPolicies = await db
+    .select({ id: policies.id, name: policies.name })
+    .from(policies)
+    .where(
+      and(
+        eq(policies.organizationId, orgId),
+        sql`${policies.status} = 'expired'`
+      )
+    );
+
+  for (const p of expiredPolicies) {
+    const exists = await findExistingAlert(orgId, "policy_expired", p.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "policy_expired",
+        severity: "high",
+        title: `Policy expired: ${p.name}`,
+        description: `Policy "${p.name}" has expired and may not be in compliance. Review or retire it.`,
+        entityType: "policy",
+        entityId: p.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 9. Policies with overdue reviews ─────────────────────────────────────
+  const overdueReviewPolicies = await db
+    .select({ id: policies.id, name: policies.name, nextReviewDate: policies.nextReviewDate })
+    .from(policies)
+    .where(
+      and(
+        eq(policies.organizationId, orgId),
+        sql`${policies.nextReviewDate} IS NOT NULL`,
+        sql`${policies.nextReviewDate} < ${todayStr}`,
+        sql`${policies.status} NOT IN ('retired', 'archived', 'expired')`
+      )
+    );
+
+  for (const p of overdueReviewPolicies) {
+    const exists = await findExistingAlert(orgId, "policy_review_overdue", p.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "policy_review_overdue",
+        severity: "medium",
+        title: `Policy review overdue: ${p.name}`,
+        description: `Policy "${p.name}" was due for review on ${p.nextReviewDate} but has not been reviewed.`,
+        entityType: "policy",
+        entityId: p.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 10. Low attestation rate on required policies ─────────────────────────
+  const requiredPolicies = await db
+    .select({ id: policies.id, name: policies.name })
+    .from(policies)
+    .where(
+      and(
+        eq(policies.organizationId, orgId),
+        sql`${policies.attestationRequired} = true`,
+        sql`${policies.status} IN ('published', 'approved')`
+      )
+    );
+
+  for (const p of requiredPolicies) {
+    const attestations = await db
+      .select({ status: policyAttestations.status })
+      .from(policyAttestations)
+      .where(
+        and(
+          eq(policyAttestations.policyId, p.id),
+          eq(policyAttestations.organizationId, orgId)
+        )
+      );
+
+    if (attestations.length > 0) {
+      const ackCount = attestations.filter((a) => a.status === "acknowledged").length;
+      const rate = ackCount / attestations.length;
+      if (rate < 0.5) {
+        const exists = await findExistingAlert(orgId, "policy_attestation_low", p.id);
+        if (!exists) {
+          await insertAlert({
+            organizationId: orgId,
+            type: "policy_attestation_low",
+            severity: "medium",
+            title: `Low attestation rate: ${p.name}`,
+            description: `Policy "${p.name}" requires attestation but only ${Math.round(rate * 100)}% of assigned users have acknowledged it.`,
+            entityType: "policy",
+            entityId: p.id,
+          });
+          created++;
+        }
+      }
     }
   }
 

@@ -121,6 +121,16 @@ export async function buildGraph(orgId: string): Promise<{ nodeCount: number; ed
     await addEdge("policy", rp.policyId, "risk", rp.riskId, "control_supported_by_policy", 55);
   }
 
+  // Policy → Control (via policy_controls junction)
+  for (const pc of data.policyControlRows) {
+    await addEdge("policy", pc.policyId, "control", pc.controlId, "control_supported_by_policy", 70);
+  }
+
+  // Policy → Framework (via policy_frameworks junction)
+  for (const pf of data.policyFrameworkRows) {
+    await addEdge("policy", pf.policyId, "framework", pf.frameworkId, "policy_in_framework", 75);
+  }
+
   // Audit → Finding
   for (const f of data.findingRows) {
     if (f.auditId) {

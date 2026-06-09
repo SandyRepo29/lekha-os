@@ -6,7 +6,7 @@ import {
   vendorDocuments, riskVendors, riskControls, riskFindings,
   riskPolicies, riskFrameworks, riskEvidence,
   controlFrameworks, controlVendors, controlEvidenceMappings,
-  auditPrograms,
+  auditPrograms, policyControls, policyFrameworks as policyFrameworksTable,
 } from "@/lib/db/schema";
 import { eq, and, inArray } from "drizzle-orm";
 
@@ -60,6 +60,8 @@ export async function fetchGraphSourceData(orgId: string) {
     ctrlEvidenceRows,
     vendorDocRows,
     auditProgramRows,
+    policyControlRows,
+    policyFrameworkRows,
   ] = await Promise.all([
     db.select({ id: vendors.id, name: vendors.name, trustScore: vendors.trustScore, riskLevel: vendors.riskLevel, status: vendors.status })
       .from(vendors).where(and(eq(vendors.organizationId, orgId), eq(vendors.status, "active"))),
@@ -99,6 +101,10 @@ export async function fetchGraphSourceData(orgId: string) {
       .from(vendorDocuments).where(eq(vendorDocuments.organizationId, orgId)),
     db.select({ controlId: auditPrograms.controlId, auditId: auditPrograms.auditId }).from(auditPrograms)
       .innerJoin(audits, eq(audits.id, auditPrograms.auditId)).where(and(eq(audits.organizationId, orgId), eq(auditPrograms.controlId, auditPrograms.controlId))),
+    db.select({ policyId: policyControls.policyId, controlId: policyControls.controlId }).from(policyControls)
+      .where(eq(policyControls.organizationId, orgId)),
+    db.select({ policyId: policyFrameworksTable.policyId, frameworkId: policyFrameworksTable.frameworkId }).from(policyFrameworksTable)
+      .where(eq(policyFrameworksTable.organizationId, orgId)),
   ]);
 
   return {
@@ -108,6 +114,7 @@ export async function fetchGraphSourceData(orgId: string) {
     riskPolicyRows, riskFrameworkRows, riskEvidenceRows,
     ctrlFrameworkRows, ctrlVendorRows, ctrlEvidenceRows,
     vendorDocRows, auditProgramRows,
+    policyControlRows, policyFrameworkRows,
   };
 }
 
