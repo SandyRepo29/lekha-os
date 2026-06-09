@@ -11,7 +11,9 @@ const NAV = [
   { href: "/trust-intelligence/controls",     label: "Control Health" },
   { href: "/trust-intelligence/compliance",   label: "Compliance" },
   { href: "/trust-intelligence/recommendations", label: "Recommendations" },
-  { href: "/trust-intelligence/executive",    label: "Executive View" },
+  { href: "/trust-intelligence/executive",         label: "Executive View" },
+  { href: "/trust-intelligence/trends",            label: "Trends" },
+  { href: "/trust-intelligence/monitoring",        label: "Monitoring" },
 ];
 
 export default function TrustIntelligenceLayout({ children }: { children: React.ReactNode }) {

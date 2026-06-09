@@ -1561,8 +1561,58 @@ export const vendorTrustHistory = pgTable(
 );
 
 /* ============================================================
+   Governance Trends™ + Continuous Monitoring™ — Enums
+   ============================================================ */
+
+export const alertSeverity = pgEnum("alert_severity", [
+  "info",
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+export const alertEntityType = pgEnum("alert_entity_type", [
+  "vendor",
+  "risk",
+  "control",
+  "audit",
+  "evidence",
+  "policy",
+  "framework",
+  "organization",
+]);
+
+/* ============================================================
    Trust Intelligence™ — Governance Snapshots
    ============================================================ */
+
+/** Governance monitoring alerts — created by the monitoring engine. */
+export const governanceAlerts = pgTable(
+  "governance_alerts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    type: text("type").notNull(),
+    severity: alertSeverity("severity").notNull().default("medium"),
+    title: text("title").notNull(),
+    description: text("description"),
+    entityType: alertEntityType("entity_type"),
+    entityId: uuid("entity_id"),
+    status: text("status").notNull().default("open"),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+    resolvedBy: uuid("resolved_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("gov_alerts_org_idx").on(t.organizationId),
+    index("gov_alerts_status_idx").on(t.organizationId, t.status),
+    index("gov_alerts_severity_idx").on(t.organizationId, t.severity),
+  ]
+);
 
 /** Daily org-level governance snapshot for trend tracking. */
 export const governanceSnapshots = pgTable(
@@ -1665,3 +1715,6 @@ export type VendorTrustHistory = typeof vendorTrustHistory.$inferSelect;
 
 // Trust Intelligence™
 export type GovernanceSnapshot = typeof governanceSnapshots.$inferSelect;
+
+// Governance Trends™ + Continuous Monitoring™
+export type GovernanceAlert = typeof governanceAlerts.$inferSelect;

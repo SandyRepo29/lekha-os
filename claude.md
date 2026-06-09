@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™
-- **Total tables:** 52 (51 previous + governance_snapshots)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™
+- **Total tables:** 54 (52 previous + governance_alerts + evidence_coverage_score column on governance_snapshots)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -237,6 +237,24 @@ node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ f
 ---
 
 ## 6. Features Implemented
+
+### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
+
+2 new tabs added to Trust Intelligence™ sub-nav: **Trends** + **Monitoring**.
+
+| Tab | Features |
+|---|---|
+| **Trends** | 90-day sparkline grid for 6 metrics · change % vs period start · 30-row score history table |
+| **Monitoring** | Alert counts strip (open/critical/high/resolved) · Open alert list with resolve buttons · Recently resolved alerts · Run Monitoring™ button |
+
+**Monitoring Engine™** — 7 automated rules: expired evidence · expiring evidence · critical control health · open critical risks · unresolved critical findings · overdue CAPAs · vendor trust critical
+
+- Services: `lib/services/governance-trends/` (trends-service, monitoring-service, ai-trends-service)
+- Repo: `lib/repositories/governance-alerts-repo.ts`
+- Cron: `GET /api/cron/governance-snapshot`
+- REST API: `GET /api/v1/trends/overview` · `GET /api/v1/monitoring/alerts`
+- Migration: `supabase/migrations/0013_governance_trends.sql` ✅ APPLIED
+- New tables: `governance_alerts` + `evidence_coverage_score` column on `governance_snapshots`
 
 ### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
 
@@ -471,6 +489,8 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /trust-intelligence/compliance               Compliance coverage (per-framework readiness bars)
 /trust-intelligence/recommendations          Recommendations Engine™ (prioritized actions + deep-links)
 /trust-intelligence/executive               Executive View (AI summary · Governance Copilot™ chat)
+/trust-intelligence/trends                  Governance Trends™ (sparklines · change % · score history table)
+/trust-intelligence/monitoring              Continuous Monitoring™ (alerts list · resolve · Run Monitoring button)
 
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
@@ -501,10 +521,13 @@ GET /api/v1/trust-intelligence/overview      Full dashboard data — all 5 compo
 GET /api/v1/trust-intelligence/org-score     Org Trust Score™ + component breakdown
 POST /api/v1/trust-intelligence/org-score    Snapshot current score to governance_snapshots
 GET /api/v1/trust-intelligence/recommendations  Prioritized governance action list
+GET /api/v1/trends/overview                  Governance trend history (?days=30|90|180|365)
+GET /api/v1/monitoring/alerts                Governance alerts (?status=open|resolved, ?severity=)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
+/api/cron/governance-snapshot               Daily org snapshot + monitoring rules (CRON_SECRET)
 /api/export/audit-logs                       CSV export (session auth)
 /api/export/tenant-data                      ZIP export: vendors + docs + assessments + team + audit (session auth)
 /auth/callback                               Supabase auth redirect
@@ -837,6 +860,7 @@ vi.mock("@/lib/db", () => ({
 ### Module 5 — Risk Lens™ ✅ Complete (2026-06-07)
 ### Module 6 — Control Center™ ✅ Complete (2026-06-07)
 ### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
+### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
 ### Trust Score™ ✅ Complete (2026-06-07)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
