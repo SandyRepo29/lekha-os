@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-07 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **9 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™
+> Last updated: 2026-06-09 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **11 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -260,6 +260,66 @@ Executive governance command center. Aggregates signals from all modules into a 
 
 ---
 
+## 📈 Module 8 — Governance Trends™ + Continuous Monitoring™
+
+> Completed 2026-06-09
+
+Transforms AUDT from snapshot-based governance into **continuous governance** — tracking every metric over time and alerting on governance changes automatically.
+
+Two new tabs added to Trust Intelligence™ sub-nav (9 tabs total).
+
+### Governance Trends™
+
+| Feature | Detail |
+|---|---|
+| **Trend dashboard** | SVG sparklines for 6 metrics: Org Trust · Vendor Trust · Risk Posture · Control Health · Audit Readiness · Compliance Coverage |
+| **Change indicators** | Each metric shows current score, absolute change (pts), % change, and directional arrow vs period start |
+| **Time periods** | 30 · 90 · 180 · 365-day windows |
+| **Score history table** | Last 30 snapshots in tabular form — all 6 metrics per date |
+| **Data source** | `governance_snapshots` table (extended with `evidence_coverage_score` column) |
+| **Pure sparkline** | SVG-based `<Sparkline>` component — no chart library dependency |
+| **Daily snapshots** | `ensureDailySnapshot()` — idempotent, skips if today already snapshotted |
+
+### Continuous Monitoring™
+
+| Feature | Detail |
+|---|---|
+| **Monitoring Engine™** | `runMonitoringRules()` — 7 automated governance rules |
+| **Alert: expired evidence** | `high` — evidence past `expires_on` date |
+| **Alert: expiring evidence** | `medium` — evidence expiring within 30 days |
+| **Alert: critical control** | `critical` — control health score <40 |
+| **Alert: critical risk** | `critical` — open risk with inherent_score ≥20 |
+| **Alert: critical finding** | `high` — unresolved critical-severity audit finding |
+| **Alert: overdue CAPAs** | `medium` — CAPAs past due date |
+| **Alert: vendor trust** | `high` — active vendor Trust Score™ <40 |
+| **Deduplication** | `findExistingAlert()` prevents repeated open alerts for same entity+type |
+| **Alert severities** | info · low · medium · high · critical |
+| **Resolve alerts** | One-click resolve per alert; recently resolved section |
+| **Run Monitoring** | Manual trigger button; also runs automatically via daily cron |
+| **Alert counts strip** | Open · Critical · High · Resolved metric cards |
+
+### AI Governance Monitor™
+
+| Feature | Detail |
+|---|---|
+| **Weekly Summary** | Gemini 3–4 sentence governance change summary; cached 24h |
+| **30-day Forecast** | AI prediction of where governance posture will be in 30 days |
+| **Trend Chat** | NL chat over trend data — "What declined this month?", "What should I focus on?" |
+
+### Infrastructure
+
+| Item | Detail |
+|---|---|
+| **Cron** | `GET /api/cron/governance-snapshot` — iterates all active orgs; `ensureDailySnapshot` + `runMonitoringRules` per org |
+| **REST API** | `GET /api/v1/trends/overview?days=90` · `GET /api/v1/monitoring/alerts?status=open&severity=critical` |
+| **Migration** | `0013_governance_trends.sql` — `governance_alerts` table + `alert_severity`/`alert_entity_type` enums + `evidence_coverage_score` column (applied) |
+| **New tables** | `governance_alerts` — org-scoped, RLS enabled, status: open/resolved/snoozed |
+| **Services** | `lib/services/governance-trends/` — trends-service · monitoring-service · ai-trends-service |
+| **Repo** | `lib/repositories/governance-alerts-repo.ts` |
+| **Navigation** | 9-tab sub-nav: Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View · **Trends** · **Monitoring** |
+
+---
+
 ## 🏆 Trust Score™
 
 > Completed 2026-06-07 · Integrated into Vendor Hub™ · API-first
@@ -325,11 +385,11 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 **Control Center sub-nav:** Dashboard · Control Library · Testing · Reports · AI Advisor
 
-**Trust Intelligence sub-nav:** Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View
+**Trust Intelligence sub-nav:** Overview · Vendor Trust · Risk Insights · Control Health · Compliance · Recommendations · Executive View · **Trends** · **Monitoring**
 
 ---
 
-## 📍 Current Status (2026-06-07)
+## 📍 Current Status (2026-06-09)
 
 | Layer | Status |
 |---|---|
@@ -337,7 +397,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 52 tables, 12 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 54 tables, 13 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
@@ -345,6 +405,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 5 — Risk Lens™** | ✅ Complete |
 | **Module 6 — Control Center™** | ✅ Complete (2026-06-07) |
 | **Module 7 — Trust Intelligence™** | ✅ Complete (2026-06-07) |
+| **Module 8 — Governance Trends™ + Monitoring™** | ✅ Complete (2026-06-09) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -368,12 +429,11 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | Module | Description | Status |
 |---|---|---|
 | **Trust Intelligence™** | Org Trust Score™, Recommendations Engine™, Governance Copilot™ | ✅ Complete (2026-06-07) |
-| **Governance Trends** | 30/90/365-day trend charts using `governance_snapshots` | Next |
+| **Governance Trends™ + Continuous Monitoring™** | Trend sparklines, change tracking, monitoring engine, governance alerts | ✅ Complete (2026-06-09) |
 | **Policy Governance** | Full policy lifecycle, versioning, owner accountability | Roadmap |
 | **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
 | **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
-| **Continuous Monitoring** | Real-time control health, automated evidence collection | Future |
 | **Trust Graph™** | Cross-entity knowledge graph | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 

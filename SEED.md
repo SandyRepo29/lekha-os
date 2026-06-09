@@ -6,7 +6,7 @@
 
 ---
 
-## Quick Start — Full Demo (all 9 modules)
+## Quick Start — Full Demo (all modules)
 
 Run in this exact order on a fresh DB after migrations:
 
@@ -21,6 +21,7 @@ node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
 node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
 node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
+node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -58,7 +59,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. Visit `/trust-intelligence` to see the live score.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts.
 
 ---
 
@@ -225,6 +226,23 @@ Component scores with full seed:
 curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
   -H "Authorization: Bearer lk_live_<your-key>"
 ```
+
+---
+
+### Module 8 — Governance Trends™ + Continuous Monitoring™
+
+| Test | Where | Expected |
+|---|---|---|
+| Trends tab | `/trust-intelligence/trends` | 6 sparkline cards with change % indicators; score history table |
+| Monitoring tab | `/trust-intelligence/monitoring` | Alert count strip (open/critical/high/resolved) |
+| Run Monitoring | Monitoring tab → "Run Monitoring" button | Alerts created for expired evidence, critical controls, critical risks |
+| Open alerts list | Monitoring tab | Each alert shows severity badge, type label, title, description, date |
+| Resolve alert | Monitoring tab → Resolve button | Alert moves to "Recently Resolved" section |
+| Trend sparklines | Trends tab | SVG line charts showing 14-day history (seeded by seed-governance-snapshots.mjs) |
+| Score history table | Trends tab | Table rows for each snapshot date with all 6 component scores |
+| REST API — trends | `GET /api/v1/trends/overview?days=90` | JSON with points array + metric trends with change/changePct/direction |
+| REST API — alerts | `GET /api/v1/monitoring/alerts?status=open` | JSON with alerts array + counts |
+| Change indicators | Trends tab | Each metric card shows: current score, ±pts, ±% vs period start, up/down/stable arrow |
 
 ---
 
@@ -591,7 +609,7 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 52 tables |
+| `check-db.mjs` | Quick table row counts for all 54 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -642,5 +660,6 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `audit_findings` | 14 (critical/high/medium/low — all severities) | seed-audits |
 | `corrective_actions` | 9 (open/in_progress/completed — all states) | seed-audits |
 | `governance_snapshots` | 14 (daily trend: 49 → 62 over 14 days) | seed-governance-snapshots |
+| `governance_alerts` | 0 (populated by Run Monitoring or daily cron) | monitoring-service |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart.
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.

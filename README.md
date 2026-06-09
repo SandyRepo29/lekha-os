@@ -22,6 +22,8 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Trust Score™** | ✅ Complete | Vendor detail + API |
 | **Control Center™** | ✅ Complete (2026-06-07) | `/controls/*` |
 | **Trust Intelligence™** | ✅ Complete (2026-06-07) | `/trust-intelligence/*` |
+| **Governance Trends™** | ✅ Complete (2026-06-09) | `/trust-intelligence/trends` |
+| **Continuous Monitoring™** | ✅ Complete (2026-06-09) | `/trust-intelligence/monitoring` |
 | Policy Governance | Roadmap | — |
 | DPDP Privacy | Roadmap | — |
 
@@ -68,6 +70,7 @@ node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
 node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
 node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
+node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -118,6 +121,8 @@ Authorization: Bearer audt_live_<key>
 | `GET /api/v1/trust-intelligence/org-score` | read_only | Org Trust Score™ + breakdown |
 | `POST /api/v1/trust-intelligence/org-score` | read_write | Snapshot score to governance_snapshots |
 | `GET /api/v1/trust-intelligence/recommendations` | read_only | Prioritized governance actions |
+| `GET /api/v1/trends/overview` | read_only | Governance trend history (?days=30\|90\|180\|365) |
+| `GET /api/v1/monitoring/alerts` | read_only | Governance alerts (?status=open\|resolved, ?severity=) |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -141,7 +146,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `node scripts/seed-governance-snapshots.mjs` | 14-day governance trend (49 → 62) for Trust Intelligence™ |
 | `node scripts/seed-vendor-extras.mjs` | Remaining vendor assessments, reviews, doc requests |
 | `node scripts/seed-portal-tokens.mjs` | Portal tokens for E2E testing (prints ready-to-use URLs) |
-| `node scripts/check-db.mjs` | Table row counts for all 52 tables |
+| `node scripts/check-db.mjs` | Table row counts for all 54 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -152,10 +157,10 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 52 tables · 12 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · 54 tables · 13 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
-| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives |
+| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance monitor, trend forecasting |
 | Email | Resend — expiry alerts + AI-written weekly digests |
 | PDF | `@react-pdf/renderer` |
 | Security | AES-256-GCM config encryption · bcryptjs API key hashing |
