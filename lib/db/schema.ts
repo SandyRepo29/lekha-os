@@ -1648,6 +1648,90 @@ export const governanceSnapshots = pgTable(
 );
 
 /* ============================================================
+   Trust Graph™ — Enums + Tables
+   ============================================================ */
+
+export const graphEntityType = pgEnum("graph_entity_type", [
+  "vendor",
+  "evidence",
+  "control",
+  "risk",
+  "audit",
+  "finding",
+  "policy",
+  "framework",
+  "trust_score",
+  "org_trust",
+]);
+
+export const graphRelationshipType = pgEnum("graph_relationship_type", [
+  "vendor_provides_evidence",
+  "vendor_has_risk",
+  "vendor_linked_control",
+  "vendor_has_audit",
+  "evidence_supports_control",
+  "evidence_in_framework",
+  "control_reduces_risk",
+  "control_in_audit",
+  "control_supported_by_policy",
+  "control_in_framework",
+  "audit_has_finding",
+  "finding_creates_risk",
+  "policy_in_framework",
+  "risk_affects_trust_score",
+  "trust_score_affects_org_trust",
+]);
+
+/** Knowledge graph nodes — one per governance entity per org. */
+export const graphNodes = pgTable(
+  "graph_nodes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    entityType: graphEntityType("entity_type").notNull(),
+    entityId: uuid("entity_id").notNull(),
+    name: text("name").notNull(),
+    metadata: jsonb("metadata").notNull().default({}),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("graph_nodes_org_idx").on(t.organizationId),
+    index("graph_nodes_entity_idx").on(t.organizationId, t.entityType),
+    uniqueIndex("graph_nodes_entity_uniq").on(t.organizationId, t.entityType, t.entityId),
+  ]
+);
+
+/** Knowledge graph edges — directed relationships between nodes. */
+export const graphEdges = pgTable(
+  "graph_edges",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    sourceNodeId: uuid("source_node_id")
+      .notNull()
+      .references(() => graphNodes.id, { onDelete: "cascade" }),
+    targetNodeId: uuid("target_node_id")
+      .notNull()
+      .references(() => graphNodes.id, { onDelete: "cascade" }),
+    relationshipType: graphRelationshipType("relationship_type").notNull(),
+    strength: integer("strength").notNull().default(50),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("graph_edges_org_idx").on(t.organizationId),
+    index("graph_edges_source_idx").on(t.sourceNodeId),
+    index("graph_edges_target_idx").on(t.targetNodeId),
+    uniqueIndex("graph_edges_uniq").on(t.organizationId, t.sourceNodeId, t.targetNodeId, t.relationshipType),
+  ]
+);
+
+/* ============================================================
    Inferred types
    ============================================================ */
 export type Organization = typeof organizations.$inferSelect;
@@ -1718,3 +1802,7 @@ export type GovernanceSnapshot = typeof governanceSnapshots.$inferSelect;
 
 // Governance Trends™ + Continuous Monitoring™
 export type GovernanceAlert = typeof governanceAlerts.$inferSelect;
+
+// Trust Graph™
+export type GraphNode = typeof graphNodes.$inferSelect;
+export type GraphEdge = typeof graphEdges.$inferSelect;

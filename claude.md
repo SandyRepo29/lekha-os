@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™
-- **Total tables:** 54 (52 previous + governance_alerts + evidence_coverage_score column on governance_snapshots)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™
+- **Total tables:** 56 (54 previous + graph_nodes + graph_edges)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -237,6 +237,26 @@ node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ f
 ---
 
 ## 6. Features Implemented
+
+### Module 9 — Trust Graph™ ✅ Complete (2026-06-09)
+
+Governance knowledge graph. 2 new tables: `graph_nodes` + `graph_edges`. New tab in Trust Intelligence™ sub-nav.
+
+| Feature | Detail |
+|---|---|
+| **Graph Explorer** | Force-directed SVG visualization · filter by entity type · zoom/pan · node click |
+| **Root Cause Analysis™** | Trace upstream causes for any node |
+| **Impact Analysis™** | Trace downstream effects from any node |
+| **Governance Reasoner™** | AI NL chat — graph-aware reasoning about dependencies and trust paths |
+| **REST API** | 6 endpoints: graph overview, nodes, edges, entity detail, root-cause, impact-analysis |
+
+- Services: `lib/services/trust-graph/` (graph-builder, graph-service, ai-graph-service)
+- Repo: `lib/repositories/trust-graph-repo.ts`
+- Actions: `lib/trust-graph/actions.ts`
+- Migration: `supabase/migrations/0014_trust_graph.sql`
+- Graph is built on demand via "Rebuild Graph" button (`buildGraph(orgId)`)
+- Entity types: vendor · evidence · control · risk · audit · finding · policy · framework
+- 15 relationship types tracked
 
 ### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
 
@@ -491,6 +511,7 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /trust-intelligence/executive               Executive View (AI summary · Governance Copilot™ chat)
 /trust-intelligence/trends                  Governance Trends™ (sparklines · change % · score history table)
 /trust-intelligence/monitoring              Continuous Monitoring™ (alerts list · resolve · Run Monitoring button)
+/trust-intelligence/trust-graph            Trust Graph™ (force-directed SVG graph · root cause · impact analysis · AI chat)
 
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
@@ -523,6 +544,12 @@ POST /api/v1/trust-intelligence/org-score    Snapshot current score to governanc
 GET /api/v1/trust-intelligence/recommendations  Prioritized governance action list
 GET /api/v1/trends/overview                  Governance trend history (?days=30|90|180|365)
 GET /api/v1/monitoring/alerts                Governance alerts (?status=open|resolved, ?severity=)
+GET /api/v1/trust-graph                     Full graph data + metrics (nodes, edges, most-connected, entity counts)
+GET /api/v1/trust-graph/nodes               Node list
+GET /api/v1/trust-graph/edges               Edge list
+GET /api/v1/trust-graph/entity/:id          Single node + neighbours
+GET /api/v1/trust-graph/root-cause          Upstream cause analysis (?nodeId=)
+GET /api/v1/trust-graph/impact-analysis     Downstream impact analysis (?nodeId=)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -861,6 +888,7 @@ vi.mock("@/lib/db", () => ({
 ### Module 6 — Control Center™ ✅ Complete (2026-06-07)
 ### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
 ### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
+### Module 9 — Trust Graph™ ✅ Complete (2026-06-09)
 ### Trust Score™ ✅ Complete (2026-06-07)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)

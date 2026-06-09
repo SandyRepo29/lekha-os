@@ -33,7 +33,16 @@
       "Bash(dir /s /b *.md)",
       "Bash(findstr /v node_modules)",
       "Bash(findstr /v \".next\")",
-      "Bash(find /mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS -maxdepth 2 -name \"*.md\" ! -path \"*/node_modules/*\")"
+      "Bash(find /mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS -maxdepth 2 -name \"*.md\" ! -path \"*/node_modules/*\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\trust-graph\\\\nodes\")",
+      "Bash(Out-Null)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\trust-graph\\\\edges\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\trust-graph\\\\entity\\\\[id]\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\trust-graph\\\\root-cause\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\trust-graph\\\\impact-analysis\")",
+      "Bash(mkdir -p \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/trust-graph/nodes\" \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/trust-graph/edges\" \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/trust-graph/entity/[id]\" \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/trust-graph/root-cause\" \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/trust-graph/impact-analysis\")",
+      "Bash(sed -n '1140,1170p' lib/db/schema.ts)",
+      "Bash(sed -n '912,940p' lib/db/schema.ts)"
     ]
   }
 }
