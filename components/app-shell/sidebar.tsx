@@ -37,7 +37,7 @@ const items: Item[] = [
   { href: "/controls", label: "Control Center", icon: Shield },
   { href: "/policy-governance", label: "Policy Governance", icon: FileText },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
-  { href: "/privacy", label: "DPDP Privacy", icon: Lock, soon: true },
+  { href: "/dpdp-privacy", label: "DPDP Privacy", icon: Lock },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 

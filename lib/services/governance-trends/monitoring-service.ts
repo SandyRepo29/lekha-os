@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations } from "@/lib/db/schema";
-import { eq, and, lt, lte, sql } from "drizzle-orm";
+import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations, consentRecords, privacyRequests, dataAssets, dataTransfers, privacyTrustScores } from "@/lib/db/schema";
+import { eq, and, lt, lte, sql, desc } from "drizzle-orm";
 import {
   insertAlert,
   findExistingAlert,
@@ -326,6 +326,144 @@ export async function runMonitoringRules(orgId: string): Promise<{ created: numb
           created++;
         }
       }
+    }
+  }
+
+  // ── 11. Expired consent records ──────────────────────────────────────────────
+  const expiredConsents = await db
+    .select({ id: consentRecords.id, subjectId: consentRecords.subjectId, purpose: consentRecords.purpose })
+    .from(consentRecords)
+    .where(
+      and(
+        eq(consentRecords.organizationId, orgId),
+        sql`${consentRecords.consentStatus} = 'expired'`
+      )
+    );
+
+  if (expiredConsents.length > 0) {
+    const exists = await findExistingAlert(orgId, "consent_expired_bulk");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "consent_expired_bulk",
+        severity: "medium",
+        title: `${expiredConsents.length} consent record${expiredConsents.length > 1 ? "s" : ""} expired`,
+        description: `${expiredConsents.length} data subject consent records have expired and may require renewal under DPDP Act 2023.`,
+        entityType: "organization",
+      });
+      created++;
+    }
+  }
+
+  // ── 12. Overdue DSR requests ──────────────────────────────────────────────
+  const overdueDsrs = await db
+    .select({ id: privacyRequests.id, subjectName: privacyRequests.subjectName })
+    .from(privacyRequests)
+    .where(
+      and(
+        eq(privacyRequests.organizationId, orgId),
+        sql`${privacyRequests.dueDate} IS NOT NULL`,
+        sql`${privacyRequests.dueDate} < ${todayStr}`,
+        sql`${privacyRequests.status} NOT IN ('completed', 'closed')`
+      )
+    );
+
+  for (const dsr of overdueDsrs) {
+    const exists = await findExistingAlert(orgId, "dsr_overdue", dsr.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "dsr_overdue",
+        severity: "high",
+        title: `DSR overdue: ${dsr.subjectName}`,
+        description: `Data subject request from "${dsr.subjectName}" has passed the 30-day DPDP Act 2023 SLA deadline.`,
+        entityType: "organization",
+        entityId: dsr.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 13. Sensitive assets without owner ────────────────────────────────────
+  const unownedSensitiveAssets = await db
+    .select({ id: dataAssets.id, name: dataAssets.name })
+    .from(dataAssets)
+    .where(
+      and(
+        eq(dataAssets.organizationId, orgId),
+        sql`${dataAssets.sensitivity} = 'medium'`,
+        sql`${dataAssets.ownerId} IS NULL`,
+        sql`${dataAssets.status} = 'active'`
+      )
+    );
+
+  if (unownedSensitiveAssets.length > 0) {
+    const exists = await findExistingAlert(orgId, "sensitive_asset_unclassified");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "sensitive_asset_unclassified",
+        severity: "medium",
+        title: `${unownedSensitiveAssets.length} sensitive asset${unownedSensitiveAssets.length > 1 ? "s" : ""} without owner`,
+        description: `${unownedSensitiveAssets.length} medium-sensitivity data assets have no designated owner. Assign data owners to meet DPDP accountability requirements.`,
+        entityType: "organization",
+      });
+      created++;
+    }
+  }
+
+  // ── 14. Cross-border transfers pending approval > 7 days ─────────────────
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
+
+  const stalePendingTransfers = await db
+    .select({ id: dataTransfers.id, recipientName: dataTransfers.recipientName, destinationCountry: dataTransfers.destinationCountry })
+    .from(dataTransfers)
+    .where(
+      and(
+        eq(dataTransfers.organizationId, orgId),
+        sql`${dataTransfers.status} = 'pending_approval'`,
+        sql`${dataTransfers.createdAt}::date < ${sevenDaysAgoStr}`
+      )
+    );
+
+  for (const transfer of stalePendingTransfers) {
+    const exists = await findExistingAlert(orgId, "cross_border_unapproved", transfer.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "cross_border_unapproved",
+        severity: "high",
+        title: `Cross-border transfer pending: ${transfer.recipientName} (${transfer.destinationCountry})`,
+        description: `Data transfer to "${transfer.recipientName}" in ${transfer.destinationCountry} has been awaiting approval for more than 7 days.`,
+        entityType: "organization",
+        entityId: transfer.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 15. Privacy Trust Score critical ────────────────────────────────────
+  const latestPrivacyScore = await db
+    .select({ score: privacyTrustScores.score })
+    .from(privacyTrustScores)
+    .where(eq(privacyTrustScores.organizationId, orgId))
+    .orderBy(desc(privacyTrustScores.computedAt))
+    .limit(1);
+
+  if (latestPrivacyScore.length > 0 && latestPrivacyScore[0].score < 60) {
+    const exists = await findExistingAlert(orgId, "privacy_score_critical");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "privacy_score_critical",
+        severity: "critical",
+        title: `Privacy Trust Score critical: ${latestPrivacyScore[0].score}/100`,
+        description: `Your organisation's Privacy Trust Score™ is ${latestPrivacyScore[0].score}/100 (critical). Immediate action required on consent, DSR, and retention compliance.`,
+        entityType: "organization",
+      });
+      created++;
     }
   }
 

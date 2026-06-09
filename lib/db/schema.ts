@@ -1921,3 +1921,307 @@ export type PolicyReview = typeof policyReviews.$inferSelect;
 export type PolicyAttestation = typeof policyAttestations.$inferSelect;
 export type PolicyControl = typeof policyControls.$inferSelect;
 export type PolicyFrameworkLink = typeof policyFrameworks.$inferSelect;
+
+/* ============================================================
+   DPDP Privacy™ — Enums + Tables (Module 11)
+   ============================================================ */
+
+export const dataCategory = pgEnum("data_category", [
+  "customer",
+  "employee",
+  "vendor",
+  "marketing",
+  "financial",
+  "health",
+  "biometric",
+  "custom",
+]);
+
+export const sensitivityLevel = pgEnum("sensitivity_level", [
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+export const dataAssetStatus = pgEnum("data_asset_status", [
+  "active",
+  "inactive",
+  "archived",
+  "under_review",
+]);
+
+export const consentStatus = pgEnum("consent_status", [
+  "granted",
+  "withdrawn",
+  "expired",
+  "pending",
+  "rejected",
+]);
+
+export const privacyRequestType = pgEnum("privacy_request_type", [
+  "access",
+  "correction",
+  "deletion",
+  "portability",
+  "consent_withdrawal",
+  "grievance",
+]);
+
+export const privacyRequestStatus = pgEnum("privacy_request_status", [
+  "submitted",
+  "assigned",
+  "investigating",
+  "completed",
+  "closed",
+]);
+
+export const privacyAssessmentStatus = pgEnum("privacy_assessment_status", [
+  "draft",
+  "in_progress",
+  "completed",
+  "approved",
+  "archived",
+]);
+
+export const privacyRiskLevel = pgEnum("privacy_risk_level", [
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+export const transferStatus = pgEnum("transfer_status", [
+  "active",
+  "pending_approval",
+  "approved",
+  "rejected",
+  "suspended",
+]);
+
+/** Data assets — the inventory of personal data held by the org. */
+export const dataAssets = pgTable(
+  "data_assets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    department: text("department"),
+    dataCategory: dataCategory("data_category").notNull().default("custom"),
+    sensitivity: sensitivityLevel("sensitivity").notNull().default("medium"),
+    purpose: text("purpose"),
+    storageLocation: text("storage_location"),
+    retentionPeriod: integer("retention_period"),
+    crossBorder: boolean("cross_border").notNull().default(false),
+    status: dataAssetStatus("status").notNull().default("active"),
+    healthScore: integer("health_score"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("data_assets_org_idx").on(t.organizationId),
+    index("data_assets_status_idx").on(t.organizationId, t.status),
+    index("data_assets_category_idx").on(t.organizationId, t.dataCategory),
+  ]
+);
+
+/** Consent records for data subjects. */
+export const consentRecords = pgTable(
+  "consent_records",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    subjectId: text("subject_id").notNull(),
+    subjectName: text("subject_name"),
+    subjectEmail: text("subject_email"),
+    purpose: text("purpose").notNull(),
+    consentStatus: consentStatus("consent_status").notNull().default("pending"),
+    dataAssetId: uuid("data_asset_id").references(() => dataAssets.id, { onDelete: "set null" }),
+    obtainedAt: timestamp("obtained_at", { withTimezone: true }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    withdrawnAt: timestamp("withdrawn_at", { withTimezone: true }),
+    source: text("source"),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("consent_records_org_idx").on(t.organizationId),
+    index("consent_records_status_idx").on(t.organizationId, t.consentStatus),
+    index("consent_records_subject_idx").on(t.organizationId, t.subjectId),
+  ]
+);
+
+/** Data Subject Requests (DSR) — DPDP Act obligations. */
+export const privacyRequests = pgTable(
+  "privacy_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    requestType: privacyRequestType("request_type").notNull(),
+    subjectName: text("subject_name").notNull(),
+    subjectEmail: text("subject_email").notNull(),
+    status: privacyRequestStatus("status").notNull().default("submitted"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    description: text("description"),
+    submittedAt: timestamp("submitted_at", { withTimezone: true }).defaultNow().notNull(),
+    dueDate: timestamp("due_date", { withTimezone: true }),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    resolutionNotes: text("resolution_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("privacy_requests_org_idx").on(t.organizationId),
+    index("privacy_requests_status_idx").on(t.organizationId, t.status),
+    index("privacy_requests_due_idx").on(t.organizationId, t.dueDate),
+  ]
+);
+
+/** Retention policies — rules for how long data is kept per category. */
+export const retentionPolicies = pgTable(
+  "retention_policies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description"),
+    dataCategory: dataCategory("data_category").notNull().default("custom"),
+    retentionDays: integer("retention_days").notNull(),
+    legalBasis: text("legal_basis"),
+    actionOnExpiry: text("action_on_expiry").notNull().default("delete"),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("retention_policies_org_idx").on(t.organizationId)]
+);
+
+/** Retention events — scheduled or actioned data lifecycle events. */
+export const retentionEvents = pgTable(
+  "retention_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    dataAssetId: uuid("data_asset_id")
+      .notNull()
+      .references(() => dataAssets.id, { onDelete: "cascade" }),
+    retentionPolicyId: uuid("retention_policy_id").references(() => retentionPolicies.id, {
+      onDelete: "set null",
+    }),
+    eventType: text("event_type").notNull(),
+    scheduledDate: timestamp("scheduled_date", { withTimezone: true }).notNull(),
+    actionedAt: timestamp("actioned_at", { withTimezone: true }),
+    actionedBy: uuid("actioned_by").references(() => profiles.id, { onDelete: "set null" }),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("retention_events_org_idx").on(t.organizationId),
+    index("retention_events_asset_idx").on(t.dataAssetId),
+  ]
+);
+
+/** Privacy Impact Assessments (PIA). */
+export const privacyAssessments = pgTable(
+  "privacy_assessments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    scope: text("scope"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    riskLevel: privacyRiskLevel("risk_level").notNull().default("medium"),
+    status: privacyAssessmentStatus("status").notNull().default("draft"),
+    purpose: text("purpose"),
+    dataTypes: text("data_types"),
+    risks: text("risks"),
+    mitigations: text("mitigations"),
+    controls: text("controls"),
+    residualRisk: text("residual_risk"),
+    approvedBy: uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    reviewDate: timestamp("review_date", { withTimezone: true }),
+    aiSummary: text("ai_summary"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("privacy_assessments_org_idx").on(t.organizationId),
+    index("privacy_assessments_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Cross-border data transfers — requires approval under DPDP. */
+export const dataTransfers = pgTable(
+  "data_transfers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    dataAssetId: uuid("data_asset_id").references(() => dataAssets.id, { onDelete: "set null" }),
+    destinationCountry: text("destination_country").notNull(),
+    recipientName: text("recipient_name").notNull(),
+    transferBasis: text("transfer_basis").notNull(),
+    status: transferStatus("status").notNull().default("pending_approval"),
+    riskNotes: text("risk_notes"),
+    approvedBy: uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    reviewDate: timestamp("review_date", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("data_transfers_org_idx").on(t.organizationId),
+    index("data_transfers_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Privacy Trust Score™ history — one row per computation. */
+export const privacyTrustScores = pgTable(
+  "privacy_trust_scores",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    score: integer("score").notNull().default(0),
+    inventoryScore: integer("inventory_score").notNull().default(0),
+    consentScore: integer("consent_score").notNull().default(0),
+    dsrScore: integer("dsr_score").notNull().default(0),
+    retentionScore: integer("retention_score").notNull().default(0),
+    riskScore: integer("risk_score").notNull().default(0),
+    controlsScore: integer("controls_score").notNull().default(0),
+    computedAt: timestamp("computed_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("privacy_trust_scores_org_idx").on(t.organizationId),
+    index("privacy_trust_scores_date_idx").on(t.organizationId, t.computedAt),
+  ]
+);
+
+// DPDP Privacy™
+export type DataAsset = typeof dataAssets.$inferSelect;
+export type ConsentRecord = typeof consentRecords.$inferSelect;
+export type PrivacyRequest = typeof privacyRequests.$inferSelect;
+export type RetentionPolicy = typeof retentionPolicies.$inferSelect;
+export type RetentionEvent = typeof retentionEvents.$inferSelect;
+export type PrivacyAssessment = typeof privacyAssessments.$inferSelect;
+export type DataTransfer = typeof dataTransfers.$inferSelect;
+export type PrivacyTrustScore = typeof privacyTrustScores.$inferSelect;
