@@ -101,7 +101,7 @@ Browser / API client
 
 ## 5. Database Schema
 
-**51 tables** across 11 migration files (0000–0011 — all applied).
+**52 tables** across 12 migration files (0000–0012 — all applied).
 
 ### Vendor Governance tables (15)
 
@@ -214,7 +214,7 @@ Browser / API client
 
 **CRITICAL — Drizzle column naming for risk tables:** Use `columnEnum("status")` pattern (same as compliance module), NOT `columnEnum("risk_treatment_status")`. The DB column name IS the first argument. Mismatch causes silent query failures.
 
-**RLS:** All 51 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`. Control junction tables validate org via `EXISTS (SELECT 1 FROM controls c JOIN memberships m ON m.organization_id = c.organization_id WHERE c.id = control_id AND m.user_id = auth.uid())`.
+**RLS:** All 52 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`. Control junction tables validate org via `EXISTS (SELECT 1 FROM controls c JOIN memberships m ON m.organization_id = c.organization_id WHERE c.id = control_id AND m.user_id = auth.uid())`.
 
 **First-time setup on a fresh DB:**
 ```bash
@@ -224,6 +224,7 @@ node scripts/apply-sql.mjs supabase/storage.sql
 node scripts/apply-sql.mjs supabase/rls-risk-lens.sql
 node scripts/apply-sql.mjs supabase/migrations/0010_trust_score.sql
 node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
+node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/seed-templates.mjs
 node scripts/seed-billing-plans.mjs --assign-all
 node scripts/seed-demo.mjs                          # optional: 15 realistic vendors
@@ -462,6 +463,15 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /api/v1/controls/export/csv                  Control library CSV (session auth)
 /api/v1/controls/tests/export/csv            Tests CSV (session auth)
 
+--- Trust Intelligence™ ---
+/trust-intelligence                          Overview (Org Trust Score™ ring + metrics + drivers/detractors)
+/trust-intelligence/vendors                  Vendor Trust view (avg trust · top 10 / bottom 10 · full list)
+/trust-intelligence/risks                    Risk Insights view (counts · critical list · category chart)
+/trust-intelligence/controls                 Control Health view (avg health · healthy/weak · weakest list)
+/trust-intelligence/compliance               Compliance coverage (per-framework readiness bars)
+/trust-intelligence/recommendations          Recommendations Engine™ (prioritized actions + deep-links)
+/trust-intelligence/executive               Executive View (AI summary · Governance Copilot™ chat)
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
@@ -487,6 +497,10 @@ GET /api/v1/risk-treatments                  Org-wide treatments (?riskId=, ?sta
 POST /api/v1/risk-treatments                 Create treatment (read_write key)
 GET /api/v1/risk-reviews                     Org-wide reviews (?riskId=)
 POST /api/v1/risk-reviews                    Create review (read_write key)
+GET /api/v1/trust-intelligence/overview      Full dashboard data — all 5 components + metrics
+GET /api/v1/trust-intelligence/org-score     Org Trust Score™ + component breakdown
+POST /api/v1/trust-intelligence/org-score    Snapshot current score to governance_snapshots
+GET /api/v1/trust-intelligence/recommendations  Prioritized governance action list
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -503,7 +517,7 @@ POST /api/v1/risk-reviews                    Create review (read_write key)
 ```
 lib/
   db/
-    schema.ts                   46-table Drizzle schema — all enums + tables + inferred types (incl. Risk Lens 9 tables + 5 enums)
+    schema.ts                   52-table Drizzle schema — all enums + tables + inferred types (incl. Risk Lens 9 tables + 5 enums + governance_snapshots)
     index.ts                    Lazy DB Proxy — ssl:"require", pool config — CRITICAL, do not change
 
   providers/                    ← INFRASTRUCTURE ADAPTERS (only place SDKs are imported)
@@ -623,10 +637,27 @@ lib/
                                insertControlTest(), findTestsByControl(), findAllTests(), deleteControlTest(),
                                linkControlVendor/Framework(), getLinkedVendors/Frameworks()
 
+  --- Trust Intelligence™ services ---
+  services/org-trust-score.ts  Pure, client-safe: computeOrgTrustScore(inputs) → OrgTrustBreakdown
+                               getOrgTrustLevel(), ORG_TRUST_COMPONENT_WEIGHTS
+  services/trust-intelligence/
+    trust-intelligence-service.ts  getOverviewData(), getVendorTrustData(), getRiskInsightsData(),
+                                   getControlHealthData(), getComplianceData(), getRecommendations(),
+                                   getExecutiveData(), snapshotGovernance()
+    ai-trust-intelligence-service.ts  generateGovernanceSummary() (cached 24h), chat() (NL)
+
+  --- Trust Intelligence™ repository ---
+  repositories/
+    trust-intelligence-repo.ts  getOrgTrustScore(), saveGovernanceSnapshot(), getGovernanceHistory(),
+                                getRecommendations(), getVendorTrustMetrics(), getRiskMetrics(),
+                                getControlMetrics(), getComplianceMetrics()
+
   --- Server actions (thin transport — auth + service call + revalidatePath) ---
   control-center/actions.ts    createControlAction, updateControlAction, deleteControlAction,
                                computeHealthAction, addTestAction, deleteTestAction,
                                generateNarrativeAction, generateExecutiveSummaryAction, chatAction
+  trust-intelligence/actions.ts  getOverviewAction, generateGovernanceSummaryAction, chatAction,
+                                 snapshotGovernanceAction
   vendors/actions.ts
   documents/actions.ts
   assessments/actions.ts
@@ -742,6 +773,8 @@ supabase/
     0011_control_center.sql     Control Center™ — 4 new enums + frameworkId nullable + 11 new columns on controls
                                 + control_tests table + control_frameworks junction + control_vendors junction
                                 + RLS policies for all 3 new tables ✅ APPLIED
+    0012_trust_intelligence.sql Trust Intelligence™ — governance_snapshots table (orgId, scores JSON, component breakdown)
+                                + RLS policy ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -825,7 +858,7 @@ vi.mock("@/lib/db", () => ({
 |---|---|
 | Provider layer — auth, AI, storage, crypto, rate-limit | ✅ Done |
 | AES-256-GCM integration config encryption | ✅ Done |
-| REST API v1 — 19 endpoints (5 read-only + 14 CRUD with write across audits/findings/CAPAs/risks/treatments/reviews) | ✅ Done |
+| REST API v1 — 26 endpoints (read-only + CRUD across audits/findings/CAPAs/risks/treatments/reviews + Trust Intelligence + CSV exports) | ✅ Done |
 | API key auth middleware (bcrypt Bearer validation) | ✅ Done |
 | DB connection pool config (max=10, idle/connect timeouts) | ✅ Done |
 | DB SSL — `ssl:"require"` (TLS enforced, no cert chain verification) | ✅ Done |
@@ -836,6 +869,7 @@ vi.mock("@/lib/db", () => ({
 | Audit Management module (/audits/*) | ✅ Done |
 | Risk Lens™ module (/risks/*) | ✅ Done |
 | Control Center™ module (/controls/*) | ✅ Done |
+| Trust Intelligence™ module (/trust-intelligence/*) | ✅ Done |
 | Redis-backed rate limiting (multi-instance) | Roadmap |
 | S3 storage provider (`lib/providers/storage/s3.ts`) | ⚠ Pending — awaiting AWS provisioning |
 | SUPABASE_SERVICE_ROLE_KEY configured | ⚠ Pending — team invite blocked |
@@ -899,6 +933,7 @@ npm run db:studio              # Drizzle Studio GUI
 # SQL utilities
 node scripts/apply-sql.mjs supabase/rls.sql
 node scripts/apply-sql.mjs supabase/storage.sql
+node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/seed-templates.mjs
 node scripts/seed-demo.mjs
 node scripts/seed-billing-plans.mjs --assign-all
@@ -922,7 +957,7 @@ npm run test:all               # Vitest + Playwright
 All variables below must be set in both `.env.local` (local dev) and Vercel (production).
 Adding a var to Vercel does NOT auto-redeploy — push a commit or manually redeploy.
 
-### Vercel status (as of Jun 2025)
+### Vercel status (as of Jun 2026)
 
 | Variable | Vercel | Notes |
 |---|---|---|
@@ -954,7 +989,7 @@ GEMINI_API_KEY="AQ...."         # Google AI Studio — AQ. prefix format
 
 # Email — Resend
 RESEND_API_KEY="re_..."
-RESEND_FROM="Lekha OS <notifications@lekhaos.in>"
+RESEND_FROM="AUDT <notifications@audt.tech>"
 
 # Cron security
 CRON_SECRET="..."
