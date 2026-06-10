@@ -24,6 +24,7 @@ node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
 node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
+node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -61,7 +62,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals.
 
 ---
 
@@ -583,6 +584,34 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 12 — Contract Governance™
+
+> No seed script yet — use the UI to create contracts, then add clauses, obligations, and run AI features.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/contract-governance` | Metrics strip: Active / Expiring / Expired / Renewals Due / Total Value |
+| Contract library | `/contract-governance/library` | Empty on fresh DB; create a new contract |
+| Create contract | Library → New Contract | Fill: title, type (MSA), vendor, effective/expiry dates, value |
+| Contract detail | Click contract title | 9 tabs: Overview · Clauses · Obligations · Risks · Policies · Controls · Vendor · AI Analysis · Activity |
+| Add clause | Contract detail → Clauses tab | Title, category (Security), risk level (High), content |
+| Add obligation | Contract detail → Obligations tab | Title, due date, owner, risk level |
+| Complete obligation | Obligation row → Complete | Status → completed, completed_at set |
+| Compute Trust Score™ | Contract detail → Overview → Compute Score | Score populates with component breakdown bars |
+| Link risk | Contract detail → Risks tab | Link an existing risk |
+| Link policy | Contract detail → Policies tab | Link a compliance policy |
+| AI extraction | Contract detail → AI Analysis → Extract | Paste contract text → Gemini returns clauses + obligations |
+| AI clause analysis | Clauses tab → any clause → Analyse | Purpose, risk, impact, recommendations |
+| AI risk assessment | AI Analysis → Risk Assessment | High-risk clauses, missing protections, DPDP gaps |
+| AI Executive Summary | `/contract-governance/ai` → Generate Summary | Board-level contract posture summary |
+| AI chat | AI Advisor → chat | Ask "Which contracts expire next quarter?" |
+| Obligations tracker | `/contract-governance/obligations` | All obligations across contracts |
+| Renewals page | `/contract-governance/renewals` | Contracts sorted by expiry, notice-period countdown |
+| REST API — contracts | `GET /api/v1/contracts` | JSON list |
+| REST API — obligations | `GET /api/v1/contracts/obligations` | Org-wide obligations |
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -693,5 +722,11 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `policy_attestations` | 0 (assign via policy detail → Attestations tab) | — |
 | `policy_controls` | 0 (link via policy detail → Controls tab) | — |
 | `policy_frameworks` | 0 (link via policy detail → Frameworks tab) | — |
+| `contracts` | 0 (create via `/contract-governance/new`) | — |
+| `contract_clauses` | 0 (add via contract detail → Clauses tab or AI extraction) | — |
+| `contract_obligations` | 0 (add via contract detail → Obligations tab) | — |
+| `contract_risks` | 0 (link via contract detail → Risks tab) | — |
+| `contract_controls` | 0 (link via contract detail → Controls tab) | — |
+| `contract_policies` | 0 (link via contract detail → Policies tab) | — |
 
 > After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.

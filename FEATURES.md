@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-10 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **14 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™
+> Modules: **15 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 26 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 32 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **52 tables** across 12 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **82 tables** across 17 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **Trust Intelligence™** · **DPDP Privacy™** · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -411,6 +411,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 9 — Trust Graph™** | ✅ Complete (2026-06-09) |
 | **Module 10 — Policy Governance™** | ✅ Complete (2026-06-09) |
 | **Module 11 — DPDP Privacy™** | ✅ Complete (2026-06-10) |
+| **Module 12 — Contract Governance™** | ✅ Complete (2026-06-10) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -438,7 +439,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Policy Governance™** | Full policy lifecycle, versioning, attestations, Policy Health™, AI drafting | ✅ Complete (2026-06-09) |
 | **Trust Graph™** | Cross-entity knowledge graph | ✅ Complete (2026-06-09) |
 | **DPDP Privacy™** | India DPDP Act 2023 — data inventory, consent, DSR, retention, PIA | ✅ Complete (2026-06-10) |
-| **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
+| **Contract Governance™** | Contract lifecycle, obligation tracking, AI clause intelligence, Contract Trust Score™ | ✅ Complete (2026-06-10) |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -557,6 +558,65 @@ India's Digital Personal Data Protection Act 2023 compliance module. Establishes
 | **Navigation** | 5-tab sub-nav: Overview · Library · Reviews · Attestations · AI Advisor |
 | **Schema** | `policies` extended (8 new cols incl. owner_id, health_score, attestation_required, audience); 4 new tables: `policy_reviews`, `policy_attestations`, `policy_controls`, `policy_frameworks`; `policyStatus` enum + `published` + `retired` |
 | **Migration** | `supabase/migrations/0015_policy_governance.sql` ✅ Applied |
+
+---
+
+## 📄 Module 12 — Contract Governance™
+
+> Completed 2026-06-10
+
+Elevates contracts into first-class governed assets — with a dedicated Contract Trust Score™, AI clause intelligence, obligation lifecycle tracking, renewal management, and deep integration with vendors, risks, policies, and controls.
+
+### Contract Trust Score™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Clause Coverage** | 25% | Clauses present vs 12 expected standard categories |
+| **Obligation Completion** | 20% | Completed / active (non-waived) obligations |
+| **Renewal Readiness** | 15% | Days until expiry — 100 if >90 days, decays to 0; +20 if auto-renewal |
+| **Risk Exposure** | 20% | Inverted critical-clause ratio — 100 if no critical clauses |
+| **Policy Alignment** | 10% | Linked policies count / 3, capped at 100 |
+| **Privacy Compliance** | 10% | DPA clause present or contract type is DPA → 100 |
+
+### Trust Levels
+
+| Range | Level |
+|---|---|
+| 95–100 | Exceptional |
+| 90–94 | Healthy |
+| 80–89 | Strong |
+| 70–79 | Moderate |
+| 60–69 | Needs Attention |
+| < 60 | Critical |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Contract Repository™** | Centralised library — 9 contract types (Vendor Agreement, MSA, SOW, NDA, DPA, Employment, Partner, Procurement, Custom), 9 statuses, value + currency, owner, storage path |
+| **Contract dashboard** | Metrics: Active · Expiring (≤90 days) · Expired · Renewals Due · Total Contract Value · Active Contract Value |
+| **Contract detail** | 9 tabs: Overview · Clauses · Obligations · Risks · Policies · Controls · Vendor · AI Analysis · Activity |
+| **Clause Intelligence™** | Per-contract clause registry — category (Privacy/Security/Financial/Operational/Legal/Compliance/Termination/Renewal/Custom), risk level (Low/Medium/High/Critical), AI analysis, missing-clause flag |
+| **Obligation Management™** | Per-contract obligations with owner, due date, status (Open/In Progress/Completed/Overdue/Waived), risk level, completion notes |
+| **Org-wide obligation tracker** | Cross-contract obligations at `/contract-governance/obligations` — filterable by status, due-date highlighting for overdue and due-soon |
+| **Renewals dashboard** | `/contract-governance/renewals` — contracts sorted by expiry_date with notice-period countdown badges |
+| **Contract Trust Score™** | Pure engine `lib/services/contract-score.ts` — 6 components, per-contract score 0–100, strengths/concerns/recommendations |
+| **AI Contract Extraction™** | Gemini extracts parties, dates, clauses, obligations, risks from contract text — populates library automatically |
+| **AI Clause Analysis™** | Per-clause AI breakdown: purpose, risk, impact, specific recommendations |
+| **AI Obligation Generator™** | Generates obligation suggestions automatically from linked clauses |
+| **AI Risk Assessment™** | Identifies high-risk clauses, missing protections, renewal risks, DPDP/privacy gaps |
+| **AI Executive Summary™** | Board-level contract posture summary; Gemini cached 24h |
+| **AI Contract Advisor™** | Live NL chat — "Which contracts expire next quarter?", "Show risky contracts", "Which contracts lack DPDP protections?" |
+| **Risk integration** | Link contracts to risks (`contract_risks` junction) — shown on both contract detail and risk detail |
+| **Control integration** | Link contracts to controls (`contract_controls` junction) |
+| **Policy integration** | Link contracts to policies (`contract_policies` junction) |
+| **Vendor integration** | Contracts linked to vendors via `vendor_id`; vendor card on contract detail |
+| **Monitoring rules** | 3 new rules: `contract_expiring` (30 days) · `contract_renewal_due` (30 days) · `contract_obligations_overdue` |
+| **Trust Graph integration** | Contract nodes with 4 edge types: contract→vendor · contract→risk · contract→policy · contract→control |
+| **REST API** | `GET/POST /api/v1/contracts` · `GET/PUT/DELETE /api/v1/contracts/[id]` · `GET /api/v1/contracts/obligations` |
+| **Audit logging** | `contract.created` · `contract.updated` · `contract.deleted` · `contract.clause_added` · `contract.obligation_created` · `contract.obligation_completed` · `contract.score_recalculated` |
+| **Navigation** | 7-page sub-nav: Dashboard · Library · Obligations · Renewals · AI Advisor · Reports · [id] detail |
+| **DB tables** | `contracts` · `contract_clauses` · `contract_obligations` · `contract_risks` · `contract_controls` · `contract_policies` (migration 0017 applied) |
 
 ---
 
