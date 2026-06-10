@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-10 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **16 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™
+> Modules: **17 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 35 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 40 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **88 tables** across 18 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **94 tables** across 19 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -413,6 +413,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 11 — DPDP Privacy™** | ✅ Complete (2026-06-10) |
 | **Module 12 — Contract Governance™** | ✅ Complete (2026-06-10) |
 | **Module 13 — Issue & Remediation Hub™** | ✅ Complete (2026-06-10) |
+| **Module 14 — Workflow Studio™** | ✅ Complete (2026-06-10) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -442,7 +443,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **DPDP Privacy™** | India DPDP Act 2023 — data inventory, consent, DSR, retention, PIA | ✅ Complete (2026-06-10) |
 | **Contract Governance™** | Contract lifecycle, obligation tracking, AI clause intelligence, Contract Trust Score™ | ✅ Complete (2026-06-10) |
 | **Issue & Remediation Hub™** | Centralized governance execution — issues, tasks, exceptions, SLAs, AI advisor | ✅ Complete (2026-06-10) |
-| **Workflow Studio™** | No-code workflow engine for governance automation | Future |
+| **Workflow Studio™** | Governance automation engine — workflows, approvals, AI generator, Automation Rate™ | ✅ Complete (2026-06-10) |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -669,6 +670,49 @@ The Governance Execution Layer. Transforms AUDT from a platform that *identifies
 | **Navigation** | Sidebar entry "Issue & Remediation Hub" with Target icon between Contract Governance and Trust Intelligence |
 | **6-tab sub-nav** | Dashboard · Issue Registry™ · Tasks · Exceptions™ · Reports · AI Advisor™ |
 | **DB tables** | `issues` · `issue_tasks` · `issue_comments` · `issue_exceptions` · `issue_escalations` · `issue_history` (migration 0018 applied) |
+
+---
+
+## ⚙️ Module 14 — Workflow Studio™
+
+> Completed 2026-06-10
+
+The Governance Automation Engine. Transforms AUDT from a platform that *monitors* governance into one that *orchestrates* it — configurable workflows, approval chains, SLA automation, and an AI generator that converts natural language into executable governance processes.
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Workflow Library** | Registry of all workflows — name, module, trigger type, status (draft/active/archived/deprecated), run count, active run count |
+| **Workflow Builder** | Create/edit workflows with module association, trigger type, description, and structured node definition |
+| **Workflow Nodes** | 11 node types: Start · Task · Approval · Condition · Decision · Wait · Notification · Webhook · Create Record · Update Record · End |
+| **Workflow Triggers™** | 8 trigger types: Manual · Record Created · Record Updated · Status Changed · Date Reached · Score Threshold · API Event · Scheduled |
+| **Workflow Templates™** | 17 pre-built governance templates across 7 categories: Vendor Governance · Risk Management · Policy Governance · Privacy & DPDP · Contract Governance · Issue Remediation · Audit Management |
+| **Workflow Runs™** | Full execution tracking — running/waiting/approved/rejected/failed/completed/cancelled · trigger type · started by · timestamps |
+| **Approvals™** | Inline approve/reject pending approvals; full approval history table; due date tracking |
+| **Automation Rate™** | Dashboard metric: completed runs / total runs — tracks governance automation adoption |
+| **AI Workflow Generator™** | Paste NL description → Gemini returns structured workflow definition with name, module, trigger, and ordered nodes |
+| **AI Bottleneck Analysis** | Analyzes failed runs and pending approvals to identify throughput bottlenecks |
+| **AI Executive Summary™** | Board-level automation posture summary; Gemini cached 24h |
+| **Governance Automation Copilot™** | Live NL chat — "Which workflows fail most?", "How can we improve throughput?", "What approvals are pending?" |
+| **REST API** | `GET/POST /api/v1/workflows` · `GET/PUT/DELETE /api/v1/workflows/[id]` · `GET /api/v1/workflow-runs` |
+| **Audit logging** | `workflow.created` · `workflow.updated` · `workflow.published` · `workflow.executed` · `workflow.approved` · `workflow.rejected` · `workflow.deleted` |
+| **Navigation** | Sidebar entry "Workflow Studio™" with GitBranch icon between Issue & Remediation Hub and Trust Intelligence |
+| **Sub-pages** | Dashboard · Library · New · \[id\] detail · \[id\]/edit · Runs · Approvals · Templates · AI Advisor · Reports |
+| **DB tables** | `workflows` · `workflow_nodes` · `workflow_transitions` · `workflow_runs` · `workflow_run_steps` · `workflow_approvals` (migration 0019 applied) |
+| **Supported modules** | Vendor Hub™ · Evidence Vault™ · Audit Management · Risk Lens™ · Control Center™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue Hub™ · Trust Intelligence™ · Custom |
+
+### Workflow Run Statuses
+
+| Status | Meaning |
+|---|---|
+| running | Actively executing steps |
+| waiting | Paused at an approval or condition node |
+| approved | Approval granted — continuing execution |
+| rejected | Approval rejected — workflow halted |
+| completed | All steps finished successfully |
+| failed | Execution error encountered |
+| cancelled | Manually cancelled by a user |
 
 ---
 

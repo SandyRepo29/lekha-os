@@ -26,6 +26,7 @@ node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
+node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -63,7 +64,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
 
 ---
 
@@ -643,6 +644,36 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 14 — Workflow Studio™
+
+> No seed script — use the UI, Templates, or AI Workflow Generator to populate workflows.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/workflow-studio` | Metrics strip: Workflows / Active / Runs / Approvals / Automation Rate™ bar |
+| Workflow library | `/workflow-studio/library` | Empty on fresh DB; create a new workflow |
+| Create workflow | `/workflow-studio/new` | Fill: name, module (Risk Lens™), trigger (Manual) → creates draft |
+| Browse templates | `/workflow-studio/templates` | 17 pre-built templates across 7 categories with node flow preview |
+| Use template | Templates → "Vendor Onboarding" → Use Template | Navigates to new workflow form pre-filled |
+| Workflow detail | Click workflow name | Header with Publish / Start Run buttons; step list; recent runs |
+| Publish workflow | Workflow detail → Publish | Status: draft → active |
+| Start run | Workflow detail → Start Run (active only) | Run created; appears in runs list |
+| View runs | `/workflow-studio/runs` | Filterable run log with status chips |
+| View approvals | `/workflow-studio/approvals` | Pending approvals with inline Approve/Reject |
+| Approve | Approvals → Approve button | Status → approved |
+| Reject | Approvals → Reject button | Status → rejected |
+| Edit workflow | Workflow detail → Edit | Form pre-filled; save updates name/description/trigger |
+| AI Executive Summary | `/workflow-studio/ai` | Board-level automation posture summary |
+| AI Generator | `/workflow-studio/ai` → Generate Workflow | Enter "Create a vendor onboarding workflow" → JSON with nodes returned |
+| Create from AI | AI result → Create This Workflow | Navigates to new workflow form pre-filled from AI output |
+| AI Bottleneck Analysis | AI Advisor page | Auto-appears if failed runs or pending approvals exist |
+| AI chat | AI Advisor → chat | Ask "Which workflows fail most?" or "How can we improve automation rate?" |
+| REST API — list | `GET /api/v1/workflows` | JSON with workflows array |
+| REST API — create | `POST /api/v1/workflows` | Workflow created via Bearer token |
+| REST API — runs | `GET /api/v1/workflow-runs` | JSON with runs array |
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -693,6 +724,22 @@ curl -X POST https://lekha-os.vercel.app/api/v1/issues \
   -H "Authorization: Bearer lk_live_<key>" \
   -H "Content-Type: application/json" \
   -d '{"title":"Critical vendor data exposure","severity":"critical","issueType":"vendor_issue","sourceModule":"vendor_hub"}'
+```
+
+```bash
+# Workflow list
+curl https://lekha-os.vercel.app/api/v1/workflows \
+  -H "Authorization: Bearer lk_live_<key>"
+
+# Create workflow
+curl -X POST https://lekha-os.vercel.app/api/v1/workflows \
+  -H "Authorization: Bearer lk_live_<key>" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Vendor Onboarding","module":"vendor_hub","triggerType":"manual","description":"End-to-end vendor intake workflow"}'
+
+# Workflow runs
+curl https://lekha-os.vercel.app/api/v1/workflow-runs \
+  -H "Authorization: Bearer lk_live_<key>"
 ```
 
 ## E2E / Test Data
@@ -777,5 +824,11 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `issue_exceptions` | 0 (request via issue detail → Exceptions tab) | — |
 | `issue_escalations` | 0 (escalate via issue detail → Escalations tab) | — |
 | `issue_history` | 0 (auto-populated on status/field changes) | — |
+| `workflows` | 0 (create via `/workflow-studio/new` or Templates) | — |
+| `workflow_nodes` | 0 (added via workflow builder) | — |
+| `workflow_transitions` | 0 (added via workflow builder) | — |
+| `workflow_runs` | 0 (start via workflow detail → Start Run) | — |
+| `workflow_run_steps` | 0 (auto-populated on run execution) | — |
+| `workflow_approvals` | 0 (created at approval nodes during runs) | — |
 
 > After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.

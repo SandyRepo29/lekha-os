@@ -29,6 +29,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **DPDP Privacy™** | ✅ Complete (2026-06-10) | `/dpdp-privacy/*` |
 | **Contract Governance™** | ✅ Complete (2026-06-10) | `/contract-governance/*` |
 | **Issue & Remediation Hub™** | ✅ Complete (2026-06-10) | `/issue-hub/*` |
+| **Workflow Studio™** | ✅ Complete (2026-06-10) | `/workflow-studio/*` |
 
 ---
 
@@ -78,6 +79,7 @@ node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
+node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -140,6 +142,9 @@ Authorization: Bearer audt_live_<key>
 | `GET/POST /api/v1/issues` | read_write | Issue list + create |
 | `GET/PUT/DELETE /api/v1/issues/:id` | read_write | Single issue CRUD |
 | `GET /api/v1/issues/export/csv` | session | Issues CSV export |
+| `GET/POST /api/v1/workflows` | read_write | Workflow list + create |
+| `GET/PUT/DELETE /api/v1/workflows/:id` | read_write | Single workflow CRUD |
+| `GET /api/v1/workflow-runs` | read_only | Workflow run log (?status=, ?workflowId=) |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -163,7 +168,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `node scripts/seed-governance-snapshots.mjs` | 14-day governance trend (49 → 62) for Trust Intelligence™ |
 | `node scripts/seed-vendor-extras.mjs` | Remaining vendor assessments, reviews, doc requests |
 | `node scripts/seed-portal-tokens.mjs` | Portal tokens for E2E testing (prints ready-to-use URLs) |
-| `node scripts/check-db.mjs` | Table row counts for all 88 tables |
+| `node scripts/check-db.mjs` | Table row counts for all 94 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -174,7 +179,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 88 tables · 18 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · 94 tables · 19 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
 | AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance monitor, trend forecasting |
