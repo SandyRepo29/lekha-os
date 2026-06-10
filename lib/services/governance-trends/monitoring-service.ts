@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations, consentRecords, privacyRequests, dataAssets, dataTransfers, privacyTrustScores, contracts, contractObligations } from "@/lib/db/schema";
+import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations, consentRecords, privacyRequests, dataAssets, dataTransfers, privacyTrustScores, contracts, contractObligations, issues } from "@/lib/db/schema";
 import { eq, and, lt, lte, sql, desc } from "drizzle-orm";
 import {
   insertAlert,
@@ -549,6 +549,94 @@ export async function runMonitoringRules(orgId: string): Promise<{ created: numb
         severity: overdueObligations.length >= 5 ? "high" : "medium",
         title: `${overdueObligations.length} overdue contract obligation${overdueObligations.length > 1 ? "s" : ""}`,
         description: `${overdueObligations.length} contractual obligation(s) have passed their due date without completion. Review and act to avoid breach.`,
+        entityType: "organization",
+      });
+      created++;
+    }
+  }
+
+  // ── 19. Overdue issues ────────────────────────────────────────────────────
+  const overdueIssues = await db
+    .select({ id: issues.id, title: issues.title, severity: issues.severity })
+    .from(issues)
+    .where(
+      and(
+        eq(issues.organizationId, orgId),
+        sql`${issues.dueDate} IS NOT NULL`,
+        sql`${issues.dueDate} < ${todayStr}`,
+        sql`${issues.status} NOT IN ('resolved','closed','accepted_risk','deferred')`
+      )
+    );
+
+  if (overdueIssues.length > 0) {
+    const exists = await findExistingAlert(orgId, "issue_overdue");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "issue_overdue",
+        severity: overdueIssues.some((i) => i.severity === "critical") ? "critical" : "high",
+        title: `${overdueIssues.length} overdue governance issue${overdueIssues.length > 1 ? "s" : ""}`,
+        description: `${overdueIssues.length} issue(s) have passed their SLA due date without resolution. Immediate action required.`,
+        entityType: "organization",
+      });
+      created++;
+    }
+  }
+
+  // ── 20. Critical issues open > 3 days ────────────────────────────────────
+  const threeDaysAgo = new Date(today);
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+  const threeDaysAgoStr = threeDaysAgo.toISOString().split("T")[0];
+
+  const staleCriticalIssues = await db
+    .select({ id: issues.id, title: issues.title })
+    .from(issues)
+    .where(
+      and(
+        eq(issues.organizationId, orgId),
+        eq(issues.severity, "critical"),
+        sql`${issues.status} NOT IN ('resolved','closed','accepted_risk','deferred')`,
+        sql`${issues.createdAt}::date <= ${threeDaysAgoStr}`
+      )
+    );
+
+  for (const issue of staleCriticalIssues) {
+    const exists = await findExistingAlert(orgId, "issue_critical_open", issue.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "issue_critical_open",
+        severity: "critical",
+        title: `Critical issue unresolved >3 days: ${issue.title}`,
+        description: `Critical severity issue "${issue.title}" has been open for more than 3 days without resolution.`,
+        entityType: "organization",
+        entityId: issue.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 21. SLA breached issues ───────────────────────────────────────────────
+  const slaBreachedIssues = await db
+    .select({ id: issues.id })
+    .from(issues)
+    .where(
+      and(
+        eq(issues.organizationId, orgId),
+        eq(issues.slaBreached, true),
+        sql`${issues.status} NOT IN ('resolved','closed','accepted_risk','deferred')`
+      )
+    );
+
+  if (slaBreachedIssues.length > 0) {
+    const exists = await findExistingAlert(orgId, "issue_sla_breach");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "issue_sla_breach",
+        severity: "high",
+        title: `${slaBreachedIssues.length} issue${slaBreachedIssues.length > 1 ? "s" : ""} breaching SLA`,
+        description: `${slaBreachedIssues.length} governance issue(s) have breached their SLA targets. Review and escalate as needed.`,
         entityType: "organization",
       });
       created++;

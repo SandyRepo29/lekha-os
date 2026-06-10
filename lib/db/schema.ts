@@ -2438,3 +2438,143 @@ export type Contract = typeof contracts.$inferSelect;
 export type ContractClause = typeof contractClauses.$inferSelect;
 export type ContractObligation = typeof contractObligations.$inferSelect;
 export type PrivacyTrustScore = typeof privacyTrustScores.$inferSelect;
+
+// ─── Issue & Remediation Hub™ — Module 13 ────────────────────────────────────
+
+export const issueType = pgEnum("issue_type", [
+  "risk","audit_finding","capa","control_failure","policy_gap","privacy_issue",
+  "vendor_issue","contract_obligation","compliance_gap","security_incident","custom",
+]);
+export const issueSeverity = pgEnum("issue_severity", ["critical","high","medium","low","informational"]);
+export const issuePriority = pgEnum("issue_priority", ["p1","p2","p3","p4","p5"]);
+export const issueStatus = pgEnum("issue_status", [
+  "open","assigned","in_progress","blocked","pending_review","resolved","closed","accepted_risk","deferred",
+]);
+export const issueTaskStatus = pgEnum("issue_task_status", ["open","in_progress","blocked","completed","cancelled"]);
+export const exceptionStatus = pgEnum("exception_status", ["pending","approved","rejected","expired","revoked"]);
+export const escalationLevel = pgEnum("escalation_level", ["owner","manager","department_head","executive","board"]);
+
+export const issues = pgTable(
+  "issues",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    issueType: issueType("issue_type").notNull().default("custom"),
+    sourceModule: text("source_module"),
+    sourceEntityId: uuid("source_entity_id"),
+    severity: issueSeverity("severity").notNull().default("medium"),
+    priority: issuePriority("priority").notNull().default("p3"),
+    status: issueStatus("status").notNull().default("open"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    assigneeId: uuid("assignee_id").references(() => profiles.id, { onDelete: "set null" }),
+    dueDate: date("due_date"),
+    resolvedDate: date("resolved_date"),
+    resolutionNotes: text("resolution_notes"),
+    slaDays: integer("sla_days").notNull().default(30),
+    slaBreached: boolean("sla_breached").notNull().default(false),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("issues_org_idx").on(t.organizationId),
+    index("issues_status_idx").on(t.organizationId, t.status),
+    index("issues_severity_idx").on(t.organizationId, t.severity),
+  ]
+);
+
+export const issueTasks = pgTable(
+  "issue_tasks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id").notNull().references(() => issues.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    status: issueTaskStatus("status").notNull().default("open"),
+    dueDate: date("due_date"),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    completionNotes: text("completion_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("issue_tasks_issue_idx").on(t.issueId)]
+);
+
+export const issueComments = pgTable(
+  "issue_comments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id").notNull().references(() => issues.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    authorId: uuid("author_id").references(() => profiles.id, { onDelete: "set null" }),
+    content: text("content").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("issue_comments_issue_idx").on(t.issueId)]
+);
+
+export const issueExceptions = pgTable(
+  "issue_exceptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id").notNull().references(() => issues.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    businessJustification: text("business_justification").notNull(),
+    approverId: uuid("approver_id").references(() => profiles.id, { onDelete: "set null" }),
+    approvalDate: date("approval_date"),
+    expiryDate: date("expiry_date"),
+    reviewDate: date("review_date"),
+    status: exceptionStatus("status").notNull().default("pending"),
+    rejectionReason: text("rejection_reason"),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("issue_exceptions_issue_idx").on(t.issueId),
+    index("issue_exceptions_org_idx").on(t.organizationId),
+  ]
+);
+
+export const issueEscalations = pgTable(
+  "issue_escalations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id").notNull().references(() => issues.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    escalatedTo: escalationLevel("escalated_to").notNull().default("manager"),
+    reason: text("reason").notNull(),
+    escalatedBy: uuid("escalated_by").references(() => profiles.id, { onDelete: "set null" }),
+    acknowledgedAt: timestamp("acknowledged_at", { withTimezone: true }),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("issue_escalations_issue_idx").on(t.issueId)]
+);
+
+export const issueHistory = pgTable(
+  "issue_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    issueId: uuid("issue_id").notNull().references(() => issues.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    changedBy: uuid("changed_by").references(() => profiles.id, { onDelete: "set null" }),
+    fieldChanged: text("field_changed").notNull(),
+    oldValue: text("old_value"),
+    newValue: text("new_value"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("issue_history_issue_idx").on(t.issueId)]
+);
+
+// Issue & Remediation Hub™ types
+export type Issue = typeof issues.$inferSelect;
+export type IssueTask = typeof issueTasks.$inferSelect;
+export type IssueComment = typeof issueComments.$inferSelect;
+export type IssueException = typeof issueExceptions.$inferSelect;
+export type IssueEscalation = typeof issueEscalations.$inferSelect;
