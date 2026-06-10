@@ -13,6 +13,7 @@ import {
   uniqueIndex,
   numeric,
   varchar,
+  doublePrecision,
 } from "drizzle-orm/pg-core";
 
 /* ============================================================
@@ -2578,3 +2579,141 @@ export type IssueTask = typeof issueTasks.$inferSelect;
 export type IssueComment = typeof issueComments.$inferSelect;
 export type IssueException = typeof issueExceptions.$inferSelect;
 export type IssueEscalation = typeof issueEscalations.$inferSelect;
+
+// --- Workflow Studio™ (Module 14) ---
+export const workflowStatus = pgEnum("workflow_status", ["draft","active","archived","deprecated"]);
+export const workflowNodeType = pgEnum("workflow_node_type", ["start","task","approval","condition","decision","wait","notification","webhook","create_record","update_record","end"]);
+export const workflowRunStatus = pgEnum("workflow_run_status", ["running","waiting","approved","rejected","failed","completed","cancelled"]);
+export const workflowTriggerType = pgEnum("workflow_trigger_type", ["record_created","record_updated","status_changed","date_reached","score_threshold","api_event","manual","scheduled"]);
+export const workflowApprovalStatus = pgEnum("workflow_approval_status", ["pending","approved","rejected","delegated","escalated"]);
+export const workflowModule = pgEnum("workflow_module", ["vendor_hub","evidence_vault","audit_management","risk_lens","control_center","policy_governance","dpdp_privacy","contract_governance","issue_hub","trust_intelligence","custom"]);
+
+export const workflows = pgTable(
+  "workflows",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description"),
+    module: workflowModule("module").notNull().default("custom"),
+    status: workflowStatus("status").notNull().default("draft"),
+    version: integer("version").notNull().default(1),
+    isTemplate: boolean("is_template").notNull().default(false),
+    templateCategory: text("template_category"),
+    triggerType: workflowTriggerType("trigger_type").notNull().default("manual"),
+    triggerConfig: jsonb("trigger_config"),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("workflows_org_idx").on(t.organizationId),
+    index("workflows_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+export const workflowNodes = pgTable(
+  "workflow_nodes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workflowId: uuid("workflow_id").notNull().references(() => workflows.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    nodeType: workflowNodeType("node_type").notNull(),
+    label: text("label").notNull(),
+    description: text("description"),
+    positionX: doublePrecision("position_x").notNull().default(0),
+    positionY: doublePrecision("position_y").notNull().default(0),
+    config: jsonb("config"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("workflow_nodes_workflow_idx").on(t.workflowId)]
+);
+
+export const workflowTransitions = pgTable(
+  "workflow_transitions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workflowId: uuid("workflow_id").notNull().references(() => workflows.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    fromNodeId: uuid("from_node_id").notNull().references(() => workflowNodes.id, { onDelete: "cascade" }),
+    toNodeId: uuid("to_node_id").notNull().references(() => workflowNodes.id, { onDelete: "cascade" }),
+    label: text("label"),
+    conditionExpr: text("condition_expr"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("workflow_transitions_workflow_idx").on(t.workflowId)]
+);
+
+export const workflowRuns = pgTable(
+  "workflow_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workflowId: uuid("workflow_id").notNull().references(() => workflows.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    status: workflowRunStatus("status").notNull().default("running"),
+    triggerType: workflowTriggerType("trigger_type").notNull().default("manual"),
+    triggerEntityId: uuid("trigger_entity_id"),
+    triggerEntityType: text("trigger_entity_type"),
+    currentNodeId: uuid("current_node_id").references(() => workflowNodes.id, { onDelete: "set null" }),
+    startedBy: uuid("started_by").references(() => profiles.id, { onDelete: "set null" }),
+    startedAt: timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    failedReason: text("failed_reason"),
+    contextData: jsonb("context_data"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("workflow_runs_org_idx").on(t.organizationId),
+    index("workflow_runs_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+export const workflowRunSteps = pgTable(
+  "workflow_run_steps",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    runId: uuid("run_id").notNull().references(() => workflowRuns.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    nodeId: uuid("node_id").notNull().references(() => workflowNodes.id, { onDelete: "cascade" }),
+    status: workflowRunStatus("status").notNull().default("running"),
+    startedAt: timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    outputData: jsonb("output_data"),
+    errorMessage: text("error_message"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("workflow_run_steps_run_idx").on(t.runId)]
+);
+
+export const workflowApprovals = pgTable(
+  "workflow_approvals",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    runId: uuid("run_id").notNull().references(() => workflowRuns.id, { onDelete: "cascade" }),
+    nodeId: uuid("node_id").notNull().references(() => workflowNodes.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    approverId: uuid("approver_id").references(() => profiles.id, { onDelete: "set null" }),
+    status: workflowApprovalStatus("status").notNull().default("pending"),
+    decisionNotes: text("decision_notes"),
+    delegatedTo: uuid("delegated_to").references(() => profiles.id, { onDelete: "set null" }),
+    decidedAt: timestamp("decided_at", { withTimezone: true }),
+    dueDate: date("due_date"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("workflow_approvals_org_idx").on(t.organizationId),
+    index("workflow_approvals_run_idx").on(t.runId),
+    index("workflow_approvals_approver_idx").on(t.approverId),
+  ]
+);
+
+// Workflow Studio™ types
+export type Workflow = typeof workflows.$inferSelect;
+export type WorkflowNode = typeof workflowNodes.$inferSelect;
+export type WorkflowTransition = typeof workflowTransitions.$inferSelect;
+export type WorkflowRun = typeof workflowRuns.$inferSelect;
+export type WorkflowRunStep = typeof workflowRunSteps.$inferSelect;
+export type WorkflowApproval = typeof workflowApprovals.$inferSelect;

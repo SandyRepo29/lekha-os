@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™
-- **Total tables:** 88 (82 previous + issues + issue_tasks + issue_comments + issue_exceptions + issue_escalations + issue_history)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™
+- **Total tables:** 94 (88 previous + workflows + workflow_nodes + workflow_transitions + workflow_runs + workflow_run_steps + workflow_approvals)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -959,6 +959,7 @@ Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `
 
 ### Module 12 — Contract Governance™ ✅ Complete (2026-06-10)
 ### Module 13 — Issue & Remediation Hub™ ✅ Complete (2026-06-10)
+### Module 14 — Workflow Studio™ ✅ Complete (2026-06-10)
 
 Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`, `contract_clauses`, `contract_obligations`, `contract_risks`, `contract_controls`, `contract_policies`.
 
@@ -989,7 +990,7 @@ Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`,
 | DPDP Privacy™ | India DPDP Act 2023 — data inventory, consent, retention, DSR, PIA | ✅ Complete (2026-06-09) |
 | Contract Governance™ | Contract lifecycle, expiry, obligation tracking, AI analysis | ✅ Complete (2026-06-10) |
 | Issue & Remediation Hub™ | Centralized governance execution — issues, tasks, exceptions, SLAs, AI | ✅ Complete (2026-06-10) |
-| Workflow Studio™ | No-code workflow engine for governance automation | Future |
+| Workflow Studio™ | Governance automation engine — workflows, approvals, AI generator | ✅ Complete (2026-06-10) |
 | AI Governance | AI model risk, responsible AI frameworks | Future |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 

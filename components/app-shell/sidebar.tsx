@@ -20,6 +20,7 @@ import {
   FileText,
   FileSignature,
   Target,
+  GitBranch,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +42,7 @@ const items: Item[] = [
   { href: "/dpdp-privacy", label: "DPDP Privacy", icon: Lock },
   { href: "/contract-governance", label: "Contract Governance", icon: FileSignature },
   { href: "/issue-hub", label: "Issue & Remediation Hub", icon: Target },
+  { href: "/workflow-studio", label: "Workflow Studio", icon: GitBranch },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
