@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™
-- **Total tables:** 82 (68 previous + contracts + contract_clauses + contract_obligations + contract_risks + contract_controls + contract_policies)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™
+- **Total tables:** 88 (82 previous + issues + issue_tasks + issue_comments + issue_exceptions + issue_escalations + issue_history)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -524,6 +524,16 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /contract-governance/ai                    AI Contract Advisor (executive summary + NL chat)
 /contract-governance/reports               CSV export links
 
+--- Issue & Remediation Hub™ ---
+/issue-hub                                  Dashboard (metrics strip + top open issues)
+/issue-hub/list                             Filterable issue registry + create
+/issue-hub/new                              Create issue
+/issue-hub/[id]                             Issue detail (overview, tasks, comments, exceptions, escalations, history, AI)
+/issue-hub/tasks                            Org-wide task tracker
+/issue-hub/exceptions                       Exception management (approve/reject)
+/issue-hub/reports                          CSV export links
+/issue-hub/ai                               AI Advisor™ (executive summary + issue generator + remediation planner + chat)
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
@@ -567,6 +577,12 @@ GET /api/v1/contracts/[id]                  Single contract with clauses + oblig
 PUT /api/v1/contracts/[id]                  Update contract (read_write key)
 DELETE /api/v1/contracts/[id]               Delete contract (read_write key)
 GET /api/v1/contracts/obligations           Org-wide obligations (?contractId=, ?status=)
+GET /api/v1/issues                          Paginated issue list (?status=, ?severity=, ?priority=, ?sourceModule=, ?search=)
+POST /api/v1/issues                         Create issue (read_write key)
+GET /api/v1/issues/[id]                     Single issue with tasks/comments/exceptions/escalations/history
+PUT /api/v1/issues/[id]                     Update issue (read_write key)
+DELETE /api/v1/issues/[id]                  Delete issue (read_write key)
+GET /api/v1/issues/export/csv               Issues CSV export (session auth)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -917,7 +933,32 @@ vi.mock("@/lib/db", () => ({
 
 ### Module 10 — Policy Governance™ ✅ Complete (2026-06-09)
 ### Module 11 — DPDP Privacy™ ✅ Complete (2026-06-09)
+### Module 13 — Issue & Remediation Hub™ ✅ Complete (2026-06-10)
+
+Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
+
+| Feature | Detail |
+|---|---|
+| **Issue Registry™** | Central repository for all governance issues from every module |
+| **Task Management™** | Per-issue task tracking with status, owner, due dates |
+| **Exception Management™** | Request/approve/reject governance exceptions |
+| **Escalation Engine™** | Escalate critical issues to owner/manager/exec/board |
+| **SLA Tracking™** | Auto-SLA days by severity (Critical=7d, High=14d, Medium=30d, Low=90d), breach detection |
+| **AI Issue Generator™** | Convert observations into structured issues |
+| **AI Remediation Planner™** | Generate remediation tasks with owners and timelines |
+| **AI Advisor™** | Executive summary, NL chat ("Show critical issues", "What's overdue?") |
+| **Monitoring rules** | 3 new rules: issue_overdue · issue_critical_open · issue_sla_breach |
+| **REST API** | 3 endpoints: GET/POST /api/v1/issues, GET/PUT/DELETE /api/v1/issues/[id], GET /api/v1/issues/export/csv |
+
+- Service: `lib/services/issue-hub/issue-service.ts`
+- AI service: `lib/services/issue-hub/ai-issue-service.ts`
+- Repo: `lib/repositories/issue-repo.ts`
+- Actions: `lib/issue-hub/actions.ts`
+- Migration: `supabase/migrations/0018_issue_remediation.sql`
+- Routes: `/issue-hub/*` (9 pages)
+
 ### Module 12 — Contract Governance™ ✅ Complete (2026-06-10)
+### Module 13 — Issue & Remediation Hub™ ✅ Complete (2026-06-10)
 
 Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`, `contract_clauses`, `contract_obligations`, `contract_risks`, `contract_controls`, `contract_policies`.
 
@@ -947,6 +988,8 @@ Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`,
 | Policy Governance™ | Full policy lifecycle, versioning, attestations, Policy Health™ | ✅ Complete (2026-06-09) |
 | DPDP Privacy™ | India DPDP Act 2023 — data inventory, consent, retention, DSR, PIA | ✅ Complete (2026-06-09) |
 | Contract Governance™ | Contract lifecycle, expiry, obligation tracking, AI analysis | ✅ Complete (2026-06-10) |
+| Issue & Remediation Hub™ | Centralized governance execution — issues, tasks, exceptions, SLAs, AI | ✅ Complete (2026-06-10) |
+| Workflow Studio™ | No-code workflow engine for governance automation | Future |
 | AI Governance | AI model risk, responsible AI frameworks | Future |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
