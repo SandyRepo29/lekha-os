@@ -11,6 +11,8 @@ import {
   jsonb,
   index,
   uniqueIndex,
+  numeric,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 /* ============================================================
@@ -2224,4 +2226,215 @@ export type RetentionPolicy = typeof retentionPolicies.$inferSelect;
 export type RetentionEvent = typeof retentionEvents.$inferSelect;
 export type PrivacyAssessment = typeof privacyAssessments.$inferSelect;
 export type DataTransfer = typeof dataTransfers.$inferSelect;
+
+/* ============================================================
+   Contract Governance™ — Module 12
+   ============================================================ */
+
+export const contractType = pgEnum("contract_type", [
+  "vendor_agreement",
+  "msa",
+  "sow",
+  "nda",
+  "dpa",
+  "employment",
+  "partner_agreement",
+  "procurement",
+  "custom",
+]);
+
+export const contractStatus = pgEnum("contract_status", [
+  "draft",
+  "review",
+  "negotiation",
+  "active",
+  "expiring",
+  "expired",
+  "renewed",
+  "terminated",
+  "archived",
+]);
+
+export const clauseCategory = pgEnum("clause_category", [
+  "privacy",
+  "security",
+  "financial",
+  "operational",
+  "legal",
+  "compliance",
+  "termination",
+  "renewal",
+  "custom",
+]);
+
+export const obligationStatus = pgEnum("obligation_status", [
+  "open",
+  "in_progress",
+  "completed",
+  "overdue",
+  "waived",
+]);
+
+export const clauseRiskLevel = pgEnum("clause_risk_level", [
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+/** Contract registry — core contract record. */
+export const contracts = pgTable(
+  "contracts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    vendorId: uuid("vendor_id").references(() => vendors.id, { onDelete: "set null" }),
+    title: text("title").notNull(),
+    contractType: contractType("contract_type").notNull().default("vendor_agreement"),
+    status: contractStatus("status").notNull().default("draft"),
+    effectiveDate: date("effective_date"),
+    expiryDate: date("expiry_date"),
+    renewalDate: date("renewal_date"),
+    noticePeriodDays: integer("notice_period_days").notNull().default(30),
+    autoRenewal: boolean("auto_renewal").notNull().default(false),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    value: numeric("value", { precision: 15, scale: 2 }),
+    currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+    storagePath: text("storage_path"),
+    aiSummary: text("ai_summary"),
+    trustScore: integer("trust_score"),
+    trustScoreAt: timestamp("trust_score_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("contracts_org_idx").on(t.organizationId),
+    index("contracts_status_idx").on(t.organizationId, t.status),
+    index("contracts_vendor_idx").on(t.vendorId),
+    index("contracts_expiry_idx").on(t.organizationId, t.expiryDate),
+  ]
+);
+
+/** Individual clauses extracted or added within a contract. */
+export const contractClauses = pgTable(
+  "contract_clauses",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: uuid("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    category: clauseCategory("category").notNull().default("legal"),
+    content: text("content").notNull(),
+    riskLevel: clauseRiskLevel("risk_level").notNull().default("low"),
+    aiAnalysis: text("ai_analysis"),
+    isMissing: boolean("is_missing").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("contract_clauses_contract_idx").on(t.contractId)]
+);
+
+/** Obligations arising from a contract — tracked with due dates and status. */
+export const contractObligations = pgTable(
+  "contract_obligations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: uuid("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    ownerId: uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    dueDate: date("due_date"),
+    status: obligationStatus("status").notNull().default("open"),
+    riskLevel: clauseRiskLevel("risk_level").notNull().default("low"),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("contract_obligations_contract_idx").on(t.contractId),
+    index("contract_obligations_org_idx").on(t.organizationId),
+    index("contract_obligations_status_idx").on(t.organizationId, t.status),
+    index("contract_obligations_due_idx").on(t.organizationId, t.dueDate),
+  ]
+);
+
+/** Junction: contract ↔ risk. */
+export const contractRisks = pgTable(
+  "contract_risks",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: uuid("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    riskId: uuid("risk_id")
+      .notNull()
+      .references(() => risks.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("contract_risks_contract_idx").on(t.contractId),
+    uniqueIndex("contract_risks_unique").on(t.contractId, t.riskId),
+  ]
+);
+
+/** Junction: contract ↔ control. */
+export const contractControls = pgTable(
+  "contract_controls",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: uuid("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    controlId: uuid("control_id")
+      .notNull()
+      .references(() => controls.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("contract_controls_contract_idx").on(t.contractId),
+    uniqueIndex("contract_controls_unique").on(t.contractId, t.controlId),
+  ]
+);
+
+/** Junction: contract ↔ policy. */
+export const contractPolicies = pgTable(
+  "contract_policies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    contractId: uuid("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    policyId: uuid("policy_id")
+      .notNull()
+      .references(() => policies.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("contract_policies_contract_idx").on(t.contractId),
+    uniqueIndex("contract_policies_unique").on(t.contractId, t.policyId),
+  ]
+);
+
+// Contract Governance™ types
+export type Contract = typeof contracts.$inferSelect;
+export type ContractClause = typeof contractClauses.$inferSelect;
+export type ContractObligation = typeof contractObligations.$inferSelect;
 export type PrivacyTrustScore = typeof privacyTrustScores.$inferSelect;

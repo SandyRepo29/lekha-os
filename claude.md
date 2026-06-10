@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™
-- **Total tables:** 56 (54 previous + graph_nodes + graph_edges)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™
+- **Total tables:** 82 (68 previous + contracts + contract_clauses + contract_obligations + contract_risks + contract_controls + contract_policies)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -513,6 +513,17 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /trust-intelligence/monitoring              Continuous Monitoring™ (alerts list · resolve · Run Monitoring button)
 /trust-intelligence/trust-graph            Trust Graph™ (force-directed SVG graph · root cause · impact analysis · AI chat)
 
+--- Contract Governance™ ---
+/contract-governance                        Dashboard (metrics strip + expiring + open obligations)
+/contract-governance/library               Filterable contract list + create
+/contract-governance/new                   Create contract
+/contract-governance/[id]                  Contract detail (dates, score, clauses, obligations, linked entities)
+/contract-governance/[id]/edit             Edit contract
+/contract-governance/obligations           Org-wide obligation tracker
+/contract-governance/renewals              Renewals dashboard sorted by expiry
+/contract-governance/ai                    AI Contract Advisor (executive summary + NL chat)
+/contract-governance/reports               CSV export links
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
@@ -550,6 +561,12 @@ GET /api/v1/trust-graph/edges               Edge list
 GET /api/v1/trust-graph/entity/:id          Single node + neighbours
 GET /api/v1/trust-graph/root-cause          Upstream cause analysis (?nodeId=)
 GET /api/v1/trust-graph/impact-analysis     Downstream impact analysis (?nodeId=)
+GET /api/v1/contracts                       Paginated contract list (?status=, ?contractType=, ?search=)
+POST /api/v1/contracts                      Create contract (read_write key)
+GET /api/v1/contracts/[id]                  Single contract with clauses + obligations
+PUT /api/v1/contracts/[id]                  Update contract (read_write key)
+DELETE /api/v1/contracts/[id]               Delete contract (read_write key)
+GET /api/v1/contracts/obligations           Org-wide obligations (?contractId=, ?status=)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -825,6 +842,11 @@ supabase/
                                 + RLS policies for all 3 new tables ✅ APPLIED
     0012_trust_intelligence.sql Trust Intelligence™ — governance_snapshots table (orgId, scores JSON, component breakdown)
                                 + RLS policy ✅ APPLIED
+    0013_governance_trends.sql  Governance Trends™ — governance_alerts + alert enums + evidence_coverage_score ✅ APPLIED
+    0014_trust_graph.sql        Trust Graph™ — graph_nodes + graph_edges + RLS ✅ APPLIED
+    0015_policy_governance.sql  Policy Governance™ — policy_reviews + policy_attestations + policy_controls + policy_frameworks + RLS ✅ APPLIED
+    0016_dpdp_privacy.sql       DPDP Privacy™ — data_assets + consent_records + privacy_requests + retention_policies + retention_events + privacy_assessments + data_transfers + privacy_trust_scores ✅ APPLIED
+    0017_contract_governance.sql Contract Governance™ — 5 enums + contracts + contract_clauses + contract_obligations + contract_risks + contract_controls + contract_policies ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -893,15 +915,39 @@ vi.mock("@/lib/db", () => ({
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
 
+### Module 10 — Policy Governance™ ✅ Complete (2026-06-09)
+### Module 11 — DPDP Privacy™ ✅ Complete (2026-06-09)
+### Module 12 — Contract Governance™ ✅ Complete (2026-06-10)
+
+Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`, `contract_clauses`, `contract_obligations`, `contract_risks`, `contract_controls`, `contract_policies`.
+
+| Feature | Detail |
+|---|---|
+| **Contract Library** | Registry of all contracts with status, type, value, expiry |
+| **Clause Management** | Per-contract clause tracking with category and risk level |
+| **Obligation Tracker** | Org-wide obligation tracking with due dates and status |
+| **Renewals** | Renewals dashboard sorted by expiry with action deadline calc |
+| **Contract Score™** | 6-component 0–100 engine: clauseCoverage(25%) + obligationCompletion(20%) + renewalReadiness(15%) + riskExposure(20%) + policyAlignment(10%) + privacyCompliance(10%) |
+| **AI Contract Advisor™** | Extract clauses/obligations, analyse clause risk, AI executive summary, NL chat |
+| **Trust Graph integration** | Contract nodes linked to vendor/risk/policy/control entities |
+| **Monitoring rules** | 3 new rules: contract_expiring · contract_renewal_due · contract_obligations_overdue |
+| **REST API** | 3 endpoints: GET/POST /api/v1/contracts, GET/PUT/DELETE /api/v1/contracts/[id], GET /api/v1/contracts/obligations |
+
+- Pure engine: `lib/services/contract-score.ts`
+- Service: `lib/services/contract-governance/contract-service.ts`
+- AI service: `lib/services/contract-governance/ai-contract-service.ts`
+- Repo: `lib/repositories/contract-repo.ts`
+- Actions: `lib/contract-governance/actions.ts`
+- Migration: `supabase/migrations/0017_contract_governance.sql`
+- Routes: `/contract-governance/*` (8 pages)
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
-| Policy Governance | Full policy lifecycle, versioning, owner accountability | Roadmap |
-| DPDP Privacy | India DPDP Act 2023 — data inventory, consent, retention | Roadmap |
-| Contract Governance | Contract lifecycle, expiry, obligation tracking | Future |
+| Policy Governance™ | Full policy lifecycle, versioning, attestations, Policy Health™ | ✅ Complete (2026-06-09) |
+| DPDP Privacy™ | India DPDP Act 2023 — data inventory, consent, retention, DSR, PIA | ✅ Complete (2026-06-09) |
+| Contract Governance™ | Contract lifecycle, expiry, obligation tracking, AI analysis | ✅ Complete (2026-06-10) |
 | AI Governance | AI model risk, responsible AI frameworks | Future |
-| Continuous Monitoring | Real-time control health, automated evidence collection | Future |
-| Trust Graph™ | Cross-entity knowledge graph | Future |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations, consentRecords, privacyRequests, dataAssets, dataTransfers, privacyTrustScores } from "@/lib/db/schema";
+import { evidence, controls, risks, auditFindings, correctiveActions, policies, vendors, policyAttestations, consentRecords, privacyRequests, dataAssets, dataTransfers, privacyTrustScores, contracts, contractObligations } from "@/lib/db/schema";
 import { eq, and, lt, lte, sql, desc } from "drizzle-orm";
 import {
   insertAlert,
@@ -461,6 +461,94 @@ export async function runMonitoringRules(orgId: string): Promise<{ created: numb
         severity: "critical",
         title: `Privacy Trust Score critical: ${latestPrivacyScore[0].score}/100`,
         description: `Your organisation's Privacy Trust Score™ is ${latestPrivacyScore[0].score}/100 (critical). Immediate action required on consent, DSR, and retention compliance.`,
+        entityType: "organization",
+      });
+      created++;
+    }
+  }
+
+  // ── 16. Contracts expiring within 30 days ────────────────────────────────
+  const expiringContracts = await db
+    .select({ id: contracts.id, title: contracts.title, expiryDate: contracts.expiryDate })
+    .from(contracts)
+    .where(
+      and(
+        eq(contracts.organizationId, orgId),
+        sql`${contracts.expiryDate} IS NOT NULL`,
+        sql`${contracts.expiryDate} >= ${todayStr}`,
+        sql`${contracts.expiryDate} <= ${in30Str}`,
+        sql`${contracts.status} NOT IN ('expired', 'terminated', 'archived')`
+      )
+    );
+
+  for (const c of expiringContracts) {
+    const exists = await findExistingAlert(orgId, "contract_expiring", c.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "contract_expiring",
+        severity: "high",
+        title: `Contract expiring soon: ${c.title}`,
+        description: `Contract "${c.title}" expires on ${c.expiryDate}. Review renewal or termination options before the notice period deadline.`,
+        entityType: "vendor",
+        entityId: c.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 17. Contract renewal date within 30 days ─────────────────────────────
+  const renewalDueContracts = await db
+    .select({ id: contracts.id, title: contracts.title, renewalDate: contracts.renewalDate })
+    .from(contracts)
+    .where(
+      and(
+        eq(contracts.organizationId, orgId),
+        sql`${contracts.renewalDate} IS NOT NULL`,
+        sql`${contracts.renewalDate} >= ${todayStr}`,
+        sql`${contracts.renewalDate} <= ${in30Str}`,
+        sql`${contracts.status} NOT IN ('terminated', 'archived')`
+      )
+    );
+
+  for (const c of renewalDueContracts) {
+    const exists = await findExistingAlert(orgId, "contract_renewal_due", c.id);
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "contract_renewal_due",
+        severity: "medium",
+        title: `Contract renewal due: ${c.title}`,
+        description: `Contract "${c.title}" has a renewal date of ${c.renewalDate}. Initiate renewal negotiations promptly.`,
+        entityType: "vendor",
+        entityId: c.id,
+      });
+      created++;
+    }
+  }
+
+  // ── 18. Overdue contract obligations ─────────────────────────────────────
+  const overdueObligations = await db
+    .select({ id: contractObligations.id, title: contractObligations.title })
+    .from(contractObligations)
+    .where(
+      and(
+        eq(contractObligations.organizationId, orgId),
+        sql`${contractObligations.status} IN ('open', 'in_progress')`,
+        sql`${contractObligations.dueDate} IS NOT NULL`,
+        sql`${contractObligations.dueDate} < ${todayStr}`
+      )
+    );
+
+  if (overdueObligations.length > 0) {
+    const exists = await findExistingAlert(orgId, "contract_obligations_overdue");
+    if (!exists) {
+      await insertAlert({
+        organizationId: orgId,
+        type: "contract_obligations_overdue",
+        severity: overdueObligations.length >= 5 ? "high" : "medium",
+        title: `${overdueObligations.length} overdue contract obligation${overdueObligations.length > 1 ? "s" : ""}`,
+        description: `${overdueObligations.length} contractual obligation(s) have passed their due date without completion. Review and act to avoid breach.`,
         entityType: "organization",
       });
       created++;

@@ -7,20 +7,22 @@ import {
   riskPolicies, riskFrameworks, riskEvidence,
   controlFrameworks, controlVendors, controlEvidenceMappings,
   auditPrograms, policyControls, policyFrameworks as policyFrameworksTable,
+  contracts, contractRisks, contractControls, contractPolicies,
 } from "@/lib/db/schema";
 import { eq, and, inArray } from "drizzle-orm";
 
 export type GraphEntityType =
   | "vendor" | "evidence" | "control" | "risk"
   | "audit" | "finding" | "policy" | "framework"
-  | "trust_score" | "org_trust";
+  | "trust_score" | "org_trust" | "contract";
 
 export type GraphRelationshipType =
   | "vendor_provides_evidence" | "vendor_has_risk" | "vendor_linked_control"
   | "vendor_has_audit" | "evidence_supports_control" | "evidence_in_framework"
   | "control_reduces_risk" | "control_in_audit" | "control_supported_by_policy"
   | "control_in_framework" | "audit_has_finding" | "finding_creates_risk"
-  | "policy_in_framework" | "risk_affects_trust_score" | "trust_score_affects_org_trust";
+  | "policy_in_framework" | "risk_affects_trust_score" | "trust_score_affects_org_trust"
+  | "contract_with_vendor" | "contract_linked_risk" | "contract_linked_policy" | "contract_linked_control";
 
 export interface RawNode {
   entityType: GraphEntityType;
@@ -62,6 +64,10 @@ export async function fetchGraphSourceData(orgId: string) {
     auditProgramRows,
     policyControlRows,
     policyFrameworkRows,
+    contractRowsFetched,
+    contractRiskRowsFetched,
+    contractControlRowsFetched,
+    contractPolicyRowsFetched,
   ] = await Promise.all([
     db.select({ id: vendors.id, name: vendors.name, trustScore: vendors.trustScore, riskLevel: vendors.riskLevel, status: vendors.status })
       .from(vendors).where(and(eq(vendors.organizationId, orgId), eq(vendors.status, "active"))),
@@ -105,6 +111,14 @@ export async function fetchGraphSourceData(orgId: string) {
       .where(eq(policyControls.organizationId, orgId)),
     db.select({ policyId: policyFrameworksTable.policyId, frameworkId: policyFrameworksTable.frameworkId }).from(policyFrameworksTable)
       .where(eq(policyFrameworksTable.organizationId, orgId)),
+    db.select({ id: contracts.id, title: contracts.title, status: contracts.status, contractType: contracts.contractType, vendorId: contracts.vendorId })
+      .from(contracts).where(eq(contracts.organizationId, orgId)),
+    db.select({ contractId: contractRisks.contractId, riskId: contractRisks.riskId }).from(contractRisks)
+      .innerJoin(contracts, eq(contracts.id, contractRisks.contractId)).where(eq(contracts.organizationId, orgId)),
+    db.select({ contractId: contractControls.contractId, controlId: contractControls.controlId }).from(contractControls)
+      .innerJoin(contracts, eq(contracts.id, contractControls.contractId)).where(eq(contracts.organizationId, orgId)),
+    db.select({ contractId: contractPolicies.contractId, policyId: contractPolicies.policyId }).from(contractPolicies)
+      .innerJoin(contracts, eq(contracts.id, contractPolicies.contractId)).where(eq(contracts.organizationId, orgId)),
   ]);
 
   return {
@@ -115,6 +129,10 @@ export async function fetchGraphSourceData(orgId: string) {
     ctrlFrameworkRows, ctrlVendorRows, ctrlEvidenceRows,
     vendorDocRows, auditProgramRows,
     policyControlRows, policyFrameworkRows,
+    contractRows: contractRowsFetched,
+    contractRiskRows: contractRiskRowsFetched,
+    contractControlRows: contractControlRowsFetched,
+    contractPolicyRows: contractPolicyRowsFetched,
   };
 }
 

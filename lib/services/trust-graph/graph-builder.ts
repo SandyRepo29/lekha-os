@@ -148,6 +148,33 @@ export async function buildGraph(orgId: string): Promise<{ nodeCount: number; ed
     await addEdge("risk", rfr.riskId, "framework", rfr.frameworkId, "risk_affects_trust_score", 70);
   }
 
+  // Contract nodes
+  for (const c of data.contractRows) {
+    await upsert("contract", c.id, c.title, { status: c.status, contractType: c.contractType });
+  }
+
+  // Contract → Vendor
+  for (const c of data.contractRows) {
+    if (c.vendorId) {
+      await addEdge("contract", c.id, "vendor", c.vendorId, "contract_with_vendor", 80);
+    }
+  }
+
+  // Contract → Risk
+  for (const cr of data.contractRiskRows) {
+    await addEdge("contract", cr.contractId, "risk", cr.riskId, "contract_linked_risk", 75);
+  }
+
+  // Contract → Policy
+  for (const cp of data.contractPolicyRows) {
+    await addEdge("contract", cp.contractId, "policy", cp.policyId, "contract_linked_policy", 70);
+  }
+
+  // Contract → Control
+  for (const cc of data.contractControlRows) {
+    await addEdge("contract", cc.contractId, "control", cc.controlId, "contract_linked_control", 65);
+  }
+
   return { nodeCount: nodeIdMap.size, edgeCount };
 }
 

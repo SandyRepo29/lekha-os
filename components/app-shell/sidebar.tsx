@@ -18,6 +18,7 @@ import {
   Shield,
   Brain,
   FileText,
+  FileSignature,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -36,8 +37,9 @@ const items: Item[] = [
   { href: "/risks", label: "Risks", icon: AlertTriangle },
   { href: "/controls", label: "Control Center", icon: Shield },
   { href: "/policy-governance", label: "Policy Governance", icon: FileText },
-  { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/dpdp-privacy", label: "DPDP Privacy", icon: Lock },
+  { href: "/contract-governance", label: "Contract Governance", icon: FileSignature },
+  { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 
