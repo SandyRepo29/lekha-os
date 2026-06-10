@@ -94,6 +94,11 @@ node scripts/seed-control-tests.mjs                # 40+ control tests + health 
 node scripts/seed-governance-snapshots.mjs         # 14-day governance trend history
 node scripts/seed-vendor-extras.mjs                # assessments, reviews, doc requests
 node scripts/seed-portal-tokens.mjs                # portal tokens (prints test URLs)
+node scripts/seed-policy-governance.mjs            # 32 policy reviews, 8 attestations, control/framework links
+node scripts/seed-contracts.mjs                    # 6 contracts (AWS/HDFC/TCS/Infosys/Azure/Razorpay) + clauses + obligations
+node scripts/seed-issues.mjs                       # 10 governance issues + tasks + comments + escalations
+node scripts/seed-dpdp-privacy.mjs                 # 5 data assets, 10 consents, 5 DSRs, 2 DPIAs, 3 data transfers
+node scripts/seed-workflows.mjs                    # 5 workflows + nodes + runs + pending approvals
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
