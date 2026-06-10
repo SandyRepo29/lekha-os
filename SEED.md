@@ -23,6 +23,7 @@ node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
 node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
+node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -60,7 +61,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent.
 
 ---
 

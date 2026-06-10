@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-09 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **13 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™
+> Last updated: 2026-06-10 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **14 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **Trust Intelligence™** · DPDP Privacy *(soon)* · Board Governance *(soon)* · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **Trust Intelligence™** · **DPDP Privacy™** · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -391,7 +391,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ---
 
-## 📍 Current Status (2026-06-09)
+## 📍 Current Status (2026-06-10)
 
 | Layer | Status |
 |---|---|
@@ -399,7 +399,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 54 tables, 13 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 68 tables, 16 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
@@ -410,6 +410,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 8 — Governance Trends™ + Monitoring™** | ✅ Complete (2026-06-09) |
 | **Module 9 — Trust Graph™** | ✅ Complete (2026-06-09) |
 | **Module 10 — Policy Governance™** | ✅ Complete (2026-06-09) |
+| **Module 11 — DPDP Privacy™** | ✅ Complete (2026-06-10) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -436,10 +437,9 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Governance Trends™ + Continuous Monitoring™** | Trend sparklines, change tracking, monitoring engine, governance alerts | ✅ Complete (2026-06-09) |
 | **Policy Governance™** | Full policy lifecycle, versioning, attestations, Policy Health™, AI drafting | ✅ Complete (2026-06-09) |
 | **Trust Graph™** | Cross-entity knowledge graph | ✅ Complete (2026-06-09) |
-| **DPDP Privacy Module** | India DPDP Act 2023 — data inventory, consent tracking, retention | Roadmap |
+| **DPDP Privacy™** | India DPDP Act 2023 — data inventory, consent, DSR, retention, PIA | ✅ Complete (2026-06-10) |
 | **Contract Governance** | Contract lifecycle, expiry monitoring, obligation tracking | Future |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
-| **Trust Graph™** | Cross-entity knowledge graph | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
 ---
@@ -496,6 +496,64 @@ Elevates policies from compliance documents into **governed organizational asset
 | **REST API** | `GET/POST /api/v1/policies` · `GET/PUT/DELETE /api/v1/policies/[id]` · `GET/POST /api/v1/policy-attestations` · `GET /api/v1/policy-health` |
 | **Continuous Monitoring integration** | 3 new rules: `policy_expired` · `policy_review_overdue` · `policy_attestation_low` |
 | **Trust Graph integration** | Policy → Control + Policy → Framework edges from junction tables |
+
+---
+
+## 🔐 Module 11 — DPDP Privacy™
+
+> Completed 2026-06-10
+
+India's Digital Personal Data Protection Act 2023 compliance module. Establishes AUDT as a **Privacy Governance Platform** with a dedicated Privacy Trust Score™ and AI Privacy Officer™.
+
+### Privacy Trust Score™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Data Inventory Coverage** | 25% | % of assets classified by sensitivity level |
+| **Consent Coverage** | 20% | Active consent ratio; penalises expired/withdrawn |
+| **DSR Performance** | 15% | Completion rate; 10-pt penalty per overdue request |
+| **Retention Compliance** | 15% | Assets covered by retention policies; penalises violations |
+| **Privacy Risks** | 15% | Open privacy risks (−5 each); critical (−15 each) |
+| **Privacy Controls** | 10% | Effective privacy controls ratio |
+
+### Privacy Levels
+
+| Range | Level |
+|---|---|
+| 95–100 | Exceptional |
+| 90–94 | Healthy |
+| 80–89 | Strong |
+| 70–79 | Moderate |
+| 60–69 | Needs Attention |
+| < 60 | Critical |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Data Inventory™** | Central registry of personal data assets — category (8 types), sensitivity (Low/Medium/High/Critical), department, owner, storage location, retention period, cross-border flag, status |
+| **Data asset dashboard** | Metrics: Total Assets · Sensitive Assets · Cross-Border · Unclassified · Retention Violations |
+| **Consent Management™** | Consent record lifecycle — granted/withdrawn/expired/pending/rejected. Linked to data asset + subject. Source tracking. |
+| **Consent metrics** | Active / Expired / Withdrawn / Pending counts with trend indicators |
+| **Data Subject Requests™** | Full DSR workflow: Access · Correction · Deletion · Portability · Consent Withdrawal · Grievance |
+| **DSR SLA tracking** | 30-day DPDP SLA — due_date set on assignment; overdue alerts fired automatically |
+| **DSR status workflow** | Submitted → Assigned → Investigating → Completed → Closed |
+| **DSR metrics** | Total / Open / Overdue / Avg Resolution Days |
+| **Retention Management™** | Retention policies per data category — retention days, legal basis, action on expiry (delete/archive/review). Retention events log per asset. |
+| **Privacy Impact Assessments™** | Full PIA lifecycle: Draft → In Progress → Completed → Approved → Archived. Fields: scope, purpose, data types, risks, mitigations, controls, residual risk, approval. |
+| **AI PIA Generator™** | Gemini generates full PIA structure from scope + purpose input |
+| **Cross Border Transfers™** | Transfer registry: destination country, recipient, transfer basis, status (pending/approved/rejected/suspended), approval workflow, review date |
+| **Privacy Trust Score™** | 6-component 0–100 pure engine (`lib/services/privacy-score.ts`) — score, breakdown bars, level, strengths, concerns, recommendations |
+| **PrivacyScoreWidget** | Full breakdown card with component bars, level badge, strengths/concerns |
+| **AI Privacy Officer™** | Live NL chat — "Show overdue DSRs", "Which assets are high risk?", "What privacy risks need attention?" |
+| **AI Privacy Summary™** | Board-level executive privacy posture summary; Gemini cached 24h |
+| **AI Consent Analysis™** | Detects missing/expired consent issues with severity |
+| **Privacy badges** | `SensitivityBadge` · `ConsentStatusBadge` · `PrivacyRequestStatusBadge` · `PrivacyRequestTypeBadge` · `TransferStatusBadge` · `AssessmentStatusBadge` |
+| **REST API** | `GET/POST /api/v1/privacy/assets` · `GET/POST /api/v1/privacy/consents` · `GET/POST /api/v1/privacy/requests` · `GET/POST /api/v1/privacy/assessments` · `GET /api/v1/privacy/trust-score` |
+| **Monitoring integration** | 3 new rules: `consent_expired` · `dsr_overdue` · `cross_border_unapproved` |
+| **Navigation** | Sidebar entry "DPDP Privacy™" with Shield icon; 8 sub-pages: Dashboard · Inventory · Consents · Requests · Retention · Assessments · Transfers · AI Officer |
+| **DB tables** | `data_assets` · `consent_records` · `privacy_requests` · `retention_policies` · `retention_events` · `privacy_assessments` · `data_transfers` · `privacy_trust_scores` (migration 0016 applied) |
+| **Audit logging** | `privacy.asset_created` · `privacy.request_created` · `privacy.request_completed` · `privacy.consent_updated` · `privacy.assessment_completed` · `privacy.score_recalculated` |
 | **Navigation** | 5-tab sub-nav: Overview · Library · Reviews · Attestations · AI Advisor |
 | **Schema** | `policies` extended (8 new cols incl. owner_id, health_score, attestation_required, audience); 4 new tables: `policy_reviews`, `policy_attestations`, `policy_controls`, `policy_frameworks`; `policyStatus` enum + `published` + `retired` |
 | **Migration** | `supabase/migrations/0015_policy_governance.sql` ✅ Applied |

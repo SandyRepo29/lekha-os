@@ -26,7 +26,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Continuous Monitoring™** | ✅ Complete (2026-06-09) | `/trust-intelligence/monitoring` |
 | **Trust Graph™** | ✅ Complete (2026-06-09) | `/trust-intelligence/trust-graph` |
 | **Policy Governance™** | ✅ Complete (2026-06-09) | `/policy-governance/*` |
-| DPDP Privacy | Roadmap | — |
+| **DPDP Privacy™** | ✅ Complete (2026-06-10) | `/dpdp-privacy/*` |
 
 ---
 
