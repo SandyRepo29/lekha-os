@@ -2717,3 +2717,264 @@ export type WorkflowTransition = typeof workflowTransitions.$inferSelect;
 export type WorkflowRun = typeof workflowRuns.$inferSelect;
 export type WorkflowRunStep = typeof workflowRunSteps.$inferSelect;
 export type WorkflowApproval = typeof workflowApprovals.$inferSelect;
+
+/* ============================================================
+   Third-Party Risk Exchange™ — Enums + Tables (Module 15)
+   ============================================================ */
+
+export const trustDocType = pgEnum("trust_doc_type", [
+  "soc2", "iso27001", "iso27701", "pci_dss", "hipaa", "dpdp",
+  "cyber_insurance", "pen_test", "dpa", "security_whitepaper",
+  "sig_questionnaire", "caiq", "custom",
+]);
+
+export const trustVisibility = pgEnum("trust_visibility", [
+  "private", "specific", "network", "public",
+]);
+
+export const trustVerificationLevel = pgEnum("trust_verification_level", [
+  "self_attested", "customer_verified", "auditor_verified", "audt_verified",
+]);
+
+export const trustBadgeType = pgEnum("trust_badge_type", [
+  "audt_verified", "dpdp_ready", "privacy_verified", "vendor_trusted",
+  "low_risk", "enterprise_ready", "iso_verified", "soc2_verified", "custom",
+]);
+
+export const trustRelationshipType = pgEnum("trust_relationship_type", [
+  "customer", "vendor", "partner",
+]);
+
+export const trustRelationshipStatus = pgEnum("trust_relationship_status", [
+  "pending", "active", "inactive", "revoked",
+]);
+
+export const trustActivityType = pgEnum("trust_activity_type", [
+  "profile_created", "profile_updated", "document_shared", "document_verified",
+  "badge_issued", "relationship_created", "questionnaire_answered", "verification_requested",
+]);
+
+/** Public Trust Profile — one per org. */
+export const trustProfiles = pgTable(
+  "trust_profiles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().unique().references(() => organizations.id, { onDelete: "cascade" }),
+    displayName: text("display_name").notNull(),
+    tagline: text("tagline"),
+    description: text("description"),
+    industry: text("industry"),
+    companySize: text("company_size"),
+    country: text("country"),
+    website: text("website"),
+    logoUrl: text("logo_url"),
+    isPublished: boolean("is_published").notNull().default(false),
+    visibility: trustVisibility("visibility").notNull().default("private"),
+    trustScore: integer("trust_score"),
+    privacyScore: integer("privacy_score"),
+    riskLevel: text("risk_level").default("unknown"),
+    profileCompleteness: integer("profile_completeness").notNull().default(0),
+    certifications: jsonb("certifications").notNull().default([]),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_profiles_org_idx").on(t.organizationId),
+    index("trust_profiles_published_idx").on(t.isPublished),
+  ]
+);
+
+/** Evidence documents uploaded for sharing via the Exchange. */
+export const trustDocuments = pgTable(
+  "trust_documents",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    trustProfileId: uuid("trust_profile_id").notNull().references(() => trustProfiles.id, { onDelete: "cascade" }),
+    docType: trustDocType("doc_type").notNull().default("custom"),
+    title: text("title").notNull(),
+    description: text("description"),
+    fileName: text("file_name"),
+    fileSize: bigint("file_size", { mode: "number" }),
+    storagePath: text("storage_path"),
+    storageBucket: text("storage_bucket"),
+    issuedDate: date("issued_date"),
+    expiryDate: date("expiry_date"),
+    issuer: text("issuer"),
+    visibility: trustVisibility("visibility").notNull().default("private"),
+    isVerified: boolean("is_verified").notNull().default(false),
+    verificationLevel: trustVerificationLevel("verification_level").default("self_attested"),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    verifiedBy: uuid("verified_by").references(() => profiles.id, { onDelete: "set null" }),
+    downloadCount: integer("download_count").notNull().default(0),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_docs_org_idx").on(t.organizationId),
+    index("trust_docs_profile_idx").on(t.trustProfileId),
+    index("trust_docs_type_idx").on(t.docType),
+    index("trust_docs_expiry_idx").on(t.expiryDate),
+  ]
+);
+
+/** Sharing grants for specific documents. */
+export const trustShares = pgTable(
+  "trust_shares",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    trustDocumentId: uuid("trust_document_id").notNull().references(() => trustDocuments.id, { onDelete: "cascade" }),
+    ownerOrgId: uuid("owner_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    recipientOrgId: uuid("recipient_org_id").references(() => organizations.id, { onDelete: "cascade" }),
+    shareToken: text("share_token").unique(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    accessedAt: timestamp("accessed_at", { withTimezone: true }),
+    accessCount: integer("access_count").notNull().default(0),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_shares_doc_idx").on(t.trustDocumentId),
+    index("trust_shares_owner_idx").on(t.ownerOrgId),
+    index("trust_shares_recipient_idx").on(t.recipientOrgId),
+  ]
+);
+
+/** Reusable questionnaire templates (SIG, CAIQ, custom). */
+export const trustQuestionnaires = pgTable(
+  "trust_questionnaires",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    category: text("category").notNull().default("security"),
+    isGlobal: boolean("is_global").notNull().default(false),
+    questionCount: integer("question_count").notNull().default(0),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_q_org_idx").on(t.organizationId),
+    index("trust_q_global_idx").on(t.isGlobal),
+  ]
+);
+
+/** An org's completed answers to a questionnaire. */
+export const trustAnswers = pgTable(
+  "trust_answers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    trustProfileId: uuid("trust_profile_id").notNull().references(() => trustProfiles.id, { onDelete: "cascade" }),
+    questionnaireId: uuid("questionnaire_id").notNull().references(() => trustQuestionnaires.id, { onDelete: "cascade" }),
+    answers: jsonb("answers").notNull().default({}),
+    completionPercent: integer("completion_percent").notNull().default(0),
+    visibility: trustVisibility("visibility").notNull().default("private"),
+    lastUpdatedBy: uuid("last_updated_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_answers_org_idx").on(t.organizationId),
+    uniqueIndex("trust_answers_org_q_uniq").on(t.organizationId, t.questionnaireId),
+  ]
+);
+
+/** Verification records for exchange documents. */
+export const trustVerifications = pgTable(
+  "trust_verifications",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    trustDocumentId: uuid("trust_document_id").notNull().references(() => trustDocuments.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    verificationLevel: trustVerificationLevel("verification_level").notNull().default("customer_verified"),
+    verifiedBy: uuid("verified_by").references(() => profiles.id, { onDelete: "set null" }),
+    verifierOrgId: uuid("verifier_org_id").references(() => organizations.id, { onDelete: "set null" }),
+    verificationNotes: text("verification_notes"),
+    validUntil: date("valid_until"),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_verif_doc_idx").on(t.trustDocumentId),
+    index("trust_verif_org_idx").on(t.organizationId),
+  ]
+);
+
+/** Trust Badges™ issued to orgs. */
+export const trustBadges = pgTable(
+  "trust_badges",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    trustProfileId: uuid("trust_profile_id").notNull().references(() => trustProfiles.id, { onDelete: "cascade" }),
+    badgeType: trustBadgeType("badge_type").notNull().default("audt_verified"),
+    label: text("label").notNull(),
+    description: text("description"),
+    issuedBy: uuid("issued_by").references(() => profiles.id, { onDelete: "set null" }),
+    issuedAt: timestamp("issued_at", { withTimezone: true }).defaultNow().notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    isActive: boolean("is_active").notNull().default(true),
+    metadata: jsonb("metadata").notNull().default({}),
+  },
+  (t) => [
+    index("trust_badges_org_idx").on(t.organizationId),
+    index("trust_badges_active_idx").on(t.organizationId, t.isActive),
+  ]
+);
+
+/** Customer ↔ Vendor relationship in the Exchange. */
+export const trustRelationships = pgTable(
+  "trust_relationships",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    requesterOrgId: uuid("requester_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    targetOrgId: uuid("target_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    relationshipType: trustRelationshipType("relationship_type").notNull().default("customer"),
+    status: trustRelationshipStatus("status").notNull().default("pending"),
+    initiatedBy: uuid("initiated_by").references(() => profiles.id, { onDelete: "set null" }),
+    acceptedBy: uuid("accepted_by").references(() => profiles.id, { onDelete: "set null" }),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("trust_relationships_uniq").on(t.requesterOrgId, t.targetOrgId),
+    index("trust_relationships_target_idx").on(t.targetOrgId),
+    index("trust_relationships_status_idx").on(t.status),
+  ]
+);
+
+/** Exchange activity log. */
+export const trustActivity = pgTable(
+  "trust_activity",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    actorId: uuid("actor_id").references(() => profiles.id, { onDelete: "set null" }),
+    activityType: trustActivityType("activity_type").notNull(),
+    entityId: uuid("entity_id"),
+    entityType: text("entity_type"),
+    description: text("description"),
+    metadata: jsonb("metadata").notNull().default({}),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("trust_activity_org_idx").on(t.organizationId),
+    index("trust_activity_created_idx").on(t.organizationId, t.createdAt),
+  ]
+);
+
+// Third-Party Risk Exchange™ types
+export type TrustProfile = typeof trustProfiles.$inferSelect;
+export type TrustDocument = typeof trustDocuments.$inferSelect;
+export type TrustShare = typeof trustShares.$inferSelect;
+export type TrustQuestionnaire = typeof trustQuestionnaires.$inferSelect;
+export type TrustAnswer = typeof trustAnswers.$inferSelect;
+export type TrustVerification = typeof trustVerifications.$inferSelect;
+export type TrustBadge = typeof trustBadges.$inferSelect;
+export type TrustRelationship = typeof trustRelationships.$inferSelect;
+export type TrustActivityRow = typeof trustActivity.$inferSelect;
