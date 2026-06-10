@@ -25,6 +25,7 @@ node scripts/apply-sql.mjs supabase/migrations/0013_governance_trends.sql
 node scripts/apply-sql.mjs supabase/migrations/0015_policy_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
+node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -62,7 +63,7 @@ node scripts/seed-vendor-extras.mjs
 node scripts/seed-portal-tokens.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues.
 
 ---
 
@@ -612,6 +613,36 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 13 — Issue & Remediation Hub™
+
+> No seed script — use the UI or AI Issue Generator to populate issues.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/issue-hub` | Metrics strip: Open / Critical / Overdue / SLA Compliance % |
+| Issue registry | `/issue-hub/list` | Empty on fresh DB; create a new issue |
+| Create issue | `/issue-hub/new` | Fill: title, type (Risk), severity (High), priority (P2), owner, due date |
+| Issue detail | Click issue title | 7 tabs: Overview · Tasks · Comments · Exceptions · Escalations · History · AI |
+| Add task | Issue detail → Tasks tab | New task row with status Open |
+| Complete task | Task row → Complete | Status → completed, completed_at set |
+| Add comment | Issue detail → Comments tab | Comment appears with author + timestamp |
+| Update status | Issue detail → Overview → Update Status | Status changes, history entry recorded |
+| Request exception | Issue detail → Exceptions tab → Request Exception | Exception created with status: pending |
+| Approve exception | Exception row → Approve | Status → approved, approver set |
+| Escalate issue | Issue detail → Escalations tab → Escalate | Escalation created, issue moves to in_progress |
+| AI Issue Generator | `/issue-hub/ai` → Generate Issue | Paste observation → Gemini returns structured issue JSON |
+| AI Remediation Planner | Issue detail → AI tab → Generate Plan | 3–5 tasks with owners and timelines |
+| AI Executive Summary | `/issue-hub/ai` → Generate Summary | Board-level issue posture summary |
+| AI chat | AI Advisor → chat | Ask "Show critical issues" or "What's overdue?" |
+| Task tracker | `/issue-hub/tasks` | Org-wide tasks across all issues |
+| Exceptions page | `/issue-hub/exceptions` | All exceptions with approve/reject buttons |
+| CSV export | `/issue-hub/reports` → Download | Issues CSV |
+| Run Monitoring | Trust Intelligence → Monitoring → Run Monitoring | `issue_overdue` / `issue_critical_open` / `issue_sla_breach` alerts appear |
+| REST API — issues | `GET /api/v1/issues` | JSON list |
+| REST API — create | `POST /api/v1/issues` | Issue created via Bearer token |
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -651,6 +682,18 @@ curl https://lekha-os.vercel.app/api/v1/audits \
 ```
 
 ---
+
+```bash
+# Issue list
+curl https://lekha-os.vercel.app/api/v1/issues \
+  -H "Authorization: Bearer lk_live_<key>"
+
+# Create issue
+curl -X POST https://lekha-os.vercel.app/api/v1/issues \
+  -H "Authorization: Bearer lk_live_<key>" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Critical vendor data exposure","severity":"critical","issueType":"vendor_issue","sourceModule":"vendor_hub"}'
+```
 
 ## E2E / Test Data
 
@@ -728,5 +771,11 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `contract_risks` | 0 (link via contract detail → Risks tab) | — |
 | `contract_controls` | 0 (link via contract detail → Controls tab) | — |
 | `contract_policies` | 0 (link via contract detail → Policies tab) | — |
+| `issues` | 0 (create via `/issue-hub/new` or AI Issue Generator) | — |
+| `issue_tasks` | 0 (add via issue detail → Tasks tab) | — |
+| `issue_comments` | 0 (add via issue detail → Comments tab) | — |
+| `issue_exceptions` | 0 (request via issue detail → Exceptions tab) | — |
+| `issue_escalations` | 0 (escalate via issue detail → Escalations tab) | — |
+| `issue_history` | 0 (auto-populated on status/field changes) | — |
 
 > After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.

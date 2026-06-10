@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-10 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **15 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™
+> Modules: **16 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 32 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 35 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **82 tables** across 17 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **88 tables** across 18 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -399,7 +399,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 68 tables, 16 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 88 tables, 18 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
@@ -412,6 +412,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 10 — Policy Governance™** | ✅ Complete (2026-06-09) |
 | **Module 11 — DPDP Privacy™** | ✅ Complete (2026-06-10) |
 | **Module 12 — Contract Governance™** | ✅ Complete (2026-06-10) |
+| **Module 13 — Issue & Remediation Hub™** | ✅ Complete (2026-06-10) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -440,6 +441,8 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Trust Graph™** | Cross-entity knowledge graph | ✅ Complete (2026-06-09) |
 | **DPDP Privacy™** | India DPDP Act 2023 — data inventory, consent, DSR, retention, PIA | ✅ Complete (2026-06-10) |
 | **Contract Governance™** | Contract lifecycle, obligation tracking, AI clause intelligence, Contract Trust Score™ | ✅ Complete (2026-06-10) |
+| **Issue & Remediation Hub™** | Centralized governance execution — issues, tasks, exceptions, SLAs, AI advisor | ✅ Complete (2026-06-10) |
+| **Workflow Studio™** | No-code workflow engine for governance automation | Future |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -617,6 +620,55 @@ Elevates contracts into first-class governed assets — with a dedicated Contrac
 | **Audit logging** | `contract.created` · `contract.updated` · `contract.deleted` · `contract.clause_added` · `contract.obligation_created` · `contract.obligation_completed` · `contract.score_recalculated` |
 | **Navigation** | 7-page sub-nav: Dashboard · Library · Obligations · Renewals · AI Advisor · Reports · [id] detail |
 | **DB tables** | `contracts` · `contract_clauses` · `contract_obligations` · `contract_risks` · `contract_controls` · `contract_policies` (migration 0017 applied) |
+
+---
+
+## 🎯 Module 13 — Issue & Remediation Hub™
+
+> Completed 2026-06-10
+
+The Governance Execution Layer. Transforms AUDT from a platform that *identifies* governance problems into one that *tracks, assigns, remediates, and closes* them. Every module can create issues; every issue has ownership, SLA, tasks, exceptions, and escalation paths.
+
+### Issue Lifecycle
+
+`Open → Assigned → In Progress → Blocked → Pending Review → Resolved → Closed`
+(or: `Accepted Risk` / `Deferred`)
+
+### SLA by Severity (auto-assigned)
+
+| Severity | SLA |
+|---|---|
+| Critical | 7 days |
+| High | 14 days |
+| Medium | 30 days |
+| Low / Informational | 90 days |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Issue Registry™** | Central repository for all governance issues from any module — Risk · Audit Finding · CAPA · Control Failure · Policy Gap · Privacy Issue · Vendor Issue · Contract Obligation · Compliance Gap · Security Incident · Custom |
+| **Issue dashboard** | Metrics: Open · Critical · Overdue · Blocked · Resolved This Month · Avg Resolution Days · SLA Compliance % · top open issues |
+| **Issue detail** | 7 tabs: Overview · Tasks · Comments · Exceptions · Escalations · History · AI Analysis |
+| **Task Management™** | Per-issue task tracking — title, owner, status (Open/In Progress/Blocked/Completed/Cancelled), due date, completion notes |
+| **Org-wide task tracker** | `/issue-hub/tasks` — cross-issue task list with overdue / due-soon highlighting |
+| **Exception Management™** | Request governance exceptions per issue — business justification, expiry date, review date; approve or reject with reason |
+| **Escalation Engine™** | Escalate to: Owner · Manager · Department Head · Executive · Board |
+| **SLA Tracking™** | Auto-SLA set by severity; `markSlaBreaches()` runs on dashboard load; `sla_breached` flag tracked per issue |
+| **Issue History** | Field-level change log — status, severity, priority, assignee tracked with old/new values and actor |
+| **Comments** | Threaded comments per issue with author and timestamp |
+| **AI Issue Generator™** | Paste observation → Gemini returns structured issue: title, severity, priority, type, description, recommended actions (JSON) |
+| **AI Remediation Planner™** | Per-issue → Gemini returns 3–5 remediation tasks with owner role, description, and days-to-complete |
+| **AI Issue Narrative** | Per-issue Gemini narrative: root cause hypothesis, business impact, urgency, recommended next action; cached 24h |
+| **AI Executive Summary™** | Board-level issue posture summary: governance execution health, risk areas, resolution progress, priority recommendation; cached 24h |
+| **AI Advisor Chat** | Live NL chat — "Show critical issues", "What's overdue?", "Which issues affect our Trust Score?" |
+| **Monitoring integration** | 3 new monitoring rules: `issue_overdue` · `issue_critical_open` · `issue_sla_breach` |
+| **REST API** | `GET/POST /api/v1/issues` · `GET/PUT/DELETE /api/v1/issues/[id]` · `GET /api/v1/issues/export/csv` |
+| **CSV export** | Issues export with all fields at `/issue-hub/reports` |
+| **Audit logging** | `issue.created` · `issue.updated` · `issue.closed` · `issue.escalated` · `issue.exception_created` · `issue.exception_approved` |
+| **Navigation** | Sidebar entry "Issue & Remediation Hub" with Target icon between Contract Governance and Trust Intelligence |
+| **6-tab sub-nav** | Dashboard · Issue Registry™ · Tasks · Exceptions™ · Reports · AI Advisor™ |
+| **DB tables** | `issues` · `issue_tasks` · `issue_comments` · `issue_exceptions` · `issue_escalations` · `issue_history` (migration 0018 applied) |
 
 ---
 
