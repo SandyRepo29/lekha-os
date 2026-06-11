@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-11 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **20 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
+> Modules: **21 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 43 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 46 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **103 tables** across 20 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **115 tables** across 22 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -463,6 +463,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Module 14 — Workflow Studio™** | ✅ Complete (2026-06-10) |
 | **Module 15 — Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) |
 | **Module 16 — Governance Benchmarking™** | ✅ Complete (2026-06-11) |
+| **Module 17A — Integration Hub™** | ✅ Complete (2026-06-11) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -495,6 +496,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Workflow Studio™** | Governance automation engine — workflows, approvals, AI generator, Automation Rate™ | ✅ Complete (2026-06-10) |
 | **Third-Party Risk Exchange™** | Trust Network layer — vendor trust profiles, evidence exchange, badges, questionnaire exchange, AI trust scoring | ✅ Complete (2026-06-11) |
 | **Governance Benchmarking™** | Industry peer comparison across 10 categories — percentile engine, maturity levels, AI analyst, trends | ✅ Complete (2026-06-11) |
+| **Integration Hub™** | Connector Marketplace, 35+ integrations, Sync Engine, Webhook Engine, AI Integration Advisor, governance event detection | ✅ Complete (2026-06-11) |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -820,6 +822,48 @@ Transforms AUDT from a **Governance Measurement** platform into a **Governance I
 | 4 | Measured | 75th–89th |
 | 5 | Optimized | 90th–98th |
 | 6 | Trust Leader | ≥ 99th |
+
+---
+
+## 🔌 Module 17A — Integration Hub™
+
+> Completed 2026-06-11
+
+The connectivity layer for the AUDT Governance OS — turns integrations into a continuous governance evidence stream. Connects 35+ enterprise tools across 11 categories, syncs data automatically, and surfaces governance events in real time.
+
+| Feature | Detail |
+|---|---|
+| **Connector Marketplace™** | 35+ connectors across 11 categories: Identity, Cloud, Source Control, ITSM, Project Management, Endpoint, Security, Communication, Storage, HR Systems, Custom |
+| **Phase 1 Connectors (9)** | Microsoft Entra ID · Okta · Google Workspace · AWS · GitHub · Jira · Slack · CrowdStrike · Microsoft Defender — fully functional with realistic simulated data |
+| **Integration Manager™** | Per-connection stats: records synced, evidence collected, risks generated, open events, last sync time; Disconnect; Trigger Sync |
+| **Sync Engine™** | Per-connector sync simulation with realistic data volumes; sync frequency options (real-time / 15min / hourly / daily / weekly / manual); sync history log with status chips |
+| **Webhook Engine™** | Inbound and outbound webhooks; event routing to governance modules |
+| **Governance Events™** | Integration-sourced events surfaced as governance alerts (critical/high/medium/low); resolve events inline |
+| **Auto Evidence Collection™** | Syncs automatically feed evidence into Evidence Vault™ |
+| **Auto Risk Detection™** | Integration signals generate risks in Risk Lens™ |
+| **AI Integration Advisor™** | Executive summary (cached 24h) · Connector Recommendations™ (top 3–5 unconnected high-value integrations) · Coverage Gap Analysis™ (compliance blind spots from missing categories) · NL chat |
+| **Dashboard** | Metrics: connected / error / open events / evidence / risks; Phase 1 getting-started checklist when no integrations connected |
+| **REST API** | `GET /api/v1/integrations` (connections + marketplace + dashboard views) · `GET /api/v1/integrations/health` · `GET /api/v1/integrations/syncs` |
+| **Navigation** | Sidebar "Integration Hub™" with Plug icon |
+| **Sub-pages** | Dashboard · Marketplace · Connections (Integration Manager) · Syncs · Webhooks · Events · AI Advisor |
+| **DB tables** | `integration_registry` · `integration_instances` · `integration_credentials` · `integration_syncs` · `integration_logs` · `integration_events` · `integration_mappings` · `integration_webhooks` (migration 0022 applied) |
+| **Seed** | `node scripts/seed-integration-hub.mjs` — 5 connections + 4 open governance events |
+
+### Connector Categories
+
+| Category | Example Connectors |
+|---|---|
+| Identity & Access | Microsoft Entra ID · Okta · Google Workspace · Ping Identity · OneLogin |
+| Cloud Infrastructure | AWS · Azure · Google Cloud · Terraform Cloud |
+| Source Control | GitHub · GitLab · Bitbucket · Azure DevOps |
+| Project Management | Jira · Asana · Linear · Monday.com |
+| ITSM | ServiceNow · Freshservice · Zendesk |
+| Endpoint Management | CrowdStrike · Microsoft Defender · SentinelOne · Carbon Black |
+| Security | Qualys · Tenable · Wiz · Snyk |
+| Communication | Slack · Microsoft Teams · Google Chat |
+| Storage | AWS S3 · Azure Blob · Google Drive · SharePoint |
+| HR Systems | Workday · BambooHR · Darwinbox |
+| Custom | Webhook · REST API |
 
 ---
 

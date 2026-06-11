@@ -28,6 +28,8 @@ node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
 node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
 node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
+node scripts/apply-sql.mjs supabase/migrations/0021_benchmarking.sql
+node scripts/apply-sql.mjs supabase/migrations/0022_integration_hub.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -66,9 +68,15 @@ node scripts/seed-portal-tokens.mjs
 
 # 14. Seed Third-Party Risk Exchange™ (Module 15)
 node scripts/seed-trust-exchange.mjs
+
+# 15. Seed Governance Benchmarking™ (Module 16)
+node scripts/seed-benchmarking.mjs
+
+# 16. Seed Integration Hub™ (Module 17A)
+node scripts/seed-integration-hub.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
+After this, **every module has complete demo data** and **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
 
 ---
 
@@ -286,6 +294,8 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 | `seed-vendor-extras.mjs` | Vendor Hub™ | Assessments for remaining 11 vendors · reviews for all vendors · doc requests in all 5 states |
 | `seed-portal-tokens.mjs` | Vendor Hub™ | 4 portal tokens: 3 active (Apollo/Yotta/Sify) + 1 expired (Darwinbox) with ready-to-use portal URLs |
 | `seed-trust-exchange.mjs` | Third-Party Risk Exchange™ | 1 published Trust Profile · 5 trust documents (ISO 27001, SOC 2, Cyber Insurance, Pen Test, DPDP) · 4 badges · 1 global questionnaire with 4 answered questions · activity log |
+| `seed-benchmarking.mjs` | Governance Benchmarking™ | 1 benchmark snapshot (overall 77, 72nd percentile, Defined maturity) · 10 category scores · 60 trend rows (6 months × 10 categories) |
+| `seed-integration-hub.mjs` | Integration Hub™ | 5 connected integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack) · sync history · 4 open governance events |
 
 ---
 
@@ -708,6 +718,57 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 16 — Governance Benchmarking™
+
+> **`seed-benchmarking.mjs`** seeds a complete benchmark snapshot with industry peer comparison across 10 categories.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/benchmarking` | Overall score 77 · 72nd percentile · Defined maturity level · 10 category scorecards |
+| Vendor Trust benchmark | `/benchmarking/vendors` | Vendor governance deep-dive vs industry peers |
+| Risk & Controls benchmark | `/benchmarking/risks` | Risk posture · control health · audit readiness comparison |
+| Compliance benchmark | `/benchmarking/compliance` | Coverage · privacy · contract · workflow automation scores |
+| Rankings | `/benchmarking/rankings` | Full ranking table · maturity progress bar (Reactive → Trust Leader) |
+| AI Benchmark Analyst | `/benchmarking/ai` | Executive report + industry insights + improvement planner + chat |
+| REST API | `GET /api/v1/benchmarking` | Full snapshot + all category scores + trends |
+
+**Seeded benchmark data:**
+- **Snapshot**: Overall score 77 · 72nd percentile · Defined maturity
+- **Categories (10)**: Org Trust · Vendor Trust · Risk · Controls · Audit · Compliance · Privacy · Contract · Issues · Workflow
+- **Trend history**: 6 months × 10 categories = 60 trend rows
+
+---
+
+### Module 17A — Integration Hub™
+
+> **`seed-integration-hub.mjs`** seeds 5 connected integrations and 4 open governance events.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/integration-hub` | Metrics strip: Connected / Error / Open Events / Evidence / Risks; Phase 1 getting-started checklist |
+| Connector Marketplace | `/integration-hub/marketplace` | 35+ connectors across 11 categories; Phase 1 coverage progress bar |
+| Connect integration | Marketplace → Connect button | Modal with auth fields; sync frequency selector |
+| Integration Manager | `/integration-hub/connections` | 5 connected integrations with sync stats and open events |
+| Trigger sync | Connection row → Sync button | Sync run created; stats update |
+| Disconnect | Connection row → Disconnect | Instance removed from list |
+| Sync History | `/integration-hub/syncs` | Filterable sync log with status chips |
+| Webhook Engine | `/integration-hub/webhooks` | Webhook list; create inbound/outbound webhook |
+| Events | `/integration-hub/events` | Governance events from all integrations; resolve events |
+| AI Integration Advisor | `/integration-hub/ai` | Executive summary + connector recommendations + coverage gap analysis + chat |
+| REST API — connections | `GET /api/v1/integrations` | JSON with connected integrations |
+| REST API — health | `GET /api/v1/integrations/health` | Connectivity health metrics |
+| REST API — syncs | `GET /api/v1/integrations/syncs` | Sync history log |
+
+**Seeded Integration Hub data:**
+- **Microsoft Entra ID** (Identity): connected · 240 records synced · 12 evidence · 3 risks · last synced today
+- **AWS** (Cloud): connected · 1820 records synced · 28 evidence · 7 risks
+- **GitHub** (Source Control): connected · 856 records synced · 14 evidence · 2 risks
+- **CrowdStrike** (Security): connected · 2450 records synced · 45 evidence · 12 risks
+- **Slack** (Communication): connected · 340 records synced · 8 evidence · 1 risk
+- **Governance Events (4 open)**: Privileged access without MFA (critical) · Public S3 bucket detected (critical) · Unpatched endpoint (high) · Failed login attempts spike (medium)
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -776,6 +837,20 @@ curl https://lekha-os.vercel.app/api/v1/workflow-runs \
   -H "Authorization: Bearer lk_live_<key>"
 ```
 
+```bash
+# Integration Hub — connected integrations
+curl https://lekha-os.vercel.app/api/v1/integrations \
+  -H "Authorization: Bearer lk_live_<key>"
+
+# Integration Hub — health metrics
+curl https://lekha-os.vercel.app/api/v1/integrations/health \
+  -H "Authorization: Bearer lk_live_<key>"
+
+# Integration Hub — sync history
+curl https://lekha-os.vercel.app/api/v1/integrations/syncs \
+  -H "Authorization: Bearer lk_live_<key>"
+```
+
 ## E2E / Test Data
 
 ```bash
@@ -790,7 +865,7 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 60 tables |
+| `check-db.mjs` | Quick table row counts for all 115 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -877,5 +952,13 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `benchmark_snapshots` | 1 (overall score 77 · 72nd percentile · Defined maturity) | seed-benchmarking |
 | `benchmark_scores` | 10 (one per benchmark category with percentile + ranking) | seed-benchmarking |
 | `benchmark_trends` | 60 (6 months × 10 categories with score + percentile history) | seed-benchmarking |
+| `integration_registry` | 35+ connectors seeded at migration time | migration 0022 |
+| `integration_instances` | 5 (Entra ID, AWS, GitHub, CrowdStrike, Slack — all connected) | seed-integration-hub |
+| `integration_credentials` | 5 (AES-256-GCM encrypted per instance) | seed-integration-hub |
+| `integration_syncs` | 5+ (one recent sync per instance) | seed-integration-hub |
+| `integration_logs` | 0 (append-only; populated by real sync runs) | — |
+| `integration_events` | 4 (open governance events: 2 critical, 1 high, 1 medium) | seed-integration-hub |
+| `integration_mappings` | 0 (configure via webhook setup) | — |
+| `integration_webhooks` | 0 (create via `/integration-hub/webhooks`) | — |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/benchmarking` to see industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, and `/trust-intelligence/monitoring` to run governance alerts.
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/benchmarking` to see industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.
