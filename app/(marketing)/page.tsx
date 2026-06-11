@@ -216,13 +216,15 @@ export default function LandingPage() {
                 </a>
               </div>
               <div className="hero__trust">
-                <span>Vendor Governance</span>
+                <span>Vendor Hub™</span>
                 <span className="dot">·</span>
-                <span>Compliance</span>
+                <span>Risk Lens™</span>
                 <span className="dot">·</span>
-                <span>Audit Management</span>
+                <span>Control Center™</span>
                 <span className="dot">·</span>
                 <span>Trust Intelligence™</span>
+                <span className="dot">·</span>
+                <span>Integration Hub™</span>
               </div>
             </div>
 
@@ -242,7 +244,9 @@ export default function LandingPage() {
                     <div className="mock__nav">▤ Vendors</div>
                     <div className="mock__nav">◷ Compliance</div>
                     <div className="mock__nav">◎ Audits</div>
-                    <div className="mock__nav">⚠ Risk</div>
+                    <div className="mock__nav">⚠ Risk Lens™</div>
+                    <div className="mock__nav">◻ Controls</div>
+                    <div className="mock__nav">✦ Trust Intel™</div>
                     <div className="mock__nav copilot">✦ Copilot</div>
                   </aside>
                   <div className="mock__main">
@@ -309,11 +313,11 @@ export default function LandingPage() {
                 <div className="metric__label">Pre-built Compliance Controls</div>
               </div>
               <div className="metric reveal" data-delay="80">
-                <div className="metric__num"><span className="counter" data-target="5">0</span></div>
-                <div className="metric__label">Frameworks — ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA</div>
+                <div className="metric__num"><span className="counter" data-target="115">0</span><i>+</i></div>
+                <div className="metric__label">Database Tables — Full Governance Data Model</div>
               </div>
               <div className="metric reveal" data-delay="160">
-                <div className="metric__num"><span className="counter" data-target="4">0</span></div>
+                <div className="metric__num"><span className="counter" data-target="20">0</span></div>
                 <div className="metric__label">Modules Live &amp; In Production</div>
               </div>
             </div>
@@ -359,13 +363,13 @@ export default function LandingPage() {
                   <span className="status status--live">Live</span>
                 </div>
                 <h3>Vendor Hub™</h3>
-                <p>Manage vendors, suppliers, partners, and third parties — from onboarding to risk and expiry monitoring.</p>
+                <p>Manage vendors, suppliers, and third parties — from onboarding to risk and Trust Score™ monitoring.</p>
                 <ul className="pillar__feats">
                   <li>Vendor Registry &amp; Profiles</li>
                   <li>AI Document Extraction</li>
                   <li>Expiry Alerts</li>
                   <li>Security Assessments</li>
-                  <li>Risk Scoring</li>
+                  <li>Trust Score™</li>
                   <li>Vendor Portal</li>
                 </ul>
               </article>
@@ -376,9 +380,9 @@ export default function LandingPage() {
                   <span className="status status--live">Live</span>
                 </div>
                 <h3>Evidence Vault™</h3>
-                <p>Collect, organize, and maintain proof across every framework — auto-imported from vendors and assessments.</p>
+                <p>Collect and maintain proof across every framework — auto-imported from vendors and assessments.</p>
                 <ul className="pillar__feats">
-                  <li>ISO 27001 · SOC 2 · DPDP</li>
+                  <li>ISO 27001 · SOC 2 · DPDP · PCI DSS · HIPAA</li>
                   <li>174 Standard Controls</li>
                   <li>Auto-import Pipeline</li>
                   <li>Gap Analysis</li>
@@ -404,39 +408,156 @@ export default function LandingPage() {
                 </ul>
               </article>
 
-              <article className="pillar reveal">
+              <article className="pillar pillar--live reveal">
                 <div className="pillar__top">
                   <div className="pillar__icon">⚠</div>
-                  <span className="status status--soon">Coming Next</span>
+                  <span className="status status--live">Live</span>
                 </div>
                 <h3>Risk Lens™</h3>
-                <p>Identify, assess, and mitigate risks with a unified register and visual heat maps.</p>
+                <p>Identify, assess, and treat risks with a unified register, visual heat maps, and AI risk officer.</p>
                 <ul className="pillar__feats">
-                  <li>Risk Register</li><li>Heat Maps</li><li>Remediation Tracking</li>
+                  <li>Risk Register</li>
+                  <li>5×5 Heat Map</li>
+                  <li>Treatment Tracking</li>
+                  <li>AI Risk Officer</li>
+                  <li>13 Risk Categories</li>
+                  <li>CSV Export</li>
                 </ul>
               </article>
 
-              <article className="pillar reveal" data-delay="60">
+              <article className="pillar pillar--live reveal" data-delay="60">
                 <div className="pillar__top">
                   <div className="pillar__icon">◻</div>
-                  <span className="status status--soon">Coming Next</span>
+                  <span className="status status--live">Live</span>
                 </div>
                 <h3>Control Center™</h3>
-                <p>Track and monitor every control across frameworks with live health signals.</p>
+                <p>Track every control with Control Health™ scoring, testing records, and AI gap detection.</p>
                 <ul className="pillar__feats">
-                  <li>Control Library</li><li>Status Tracking</li><li>Coverage Analytics</li>
+                  <li>Control Library</li>
+                  <li>Control Health™ Score</li>
+                  <li>Test Records</li>
+                  <li>AI Gap Detection</li>
+                  <li>Cross-framework Mapping</li>
+                  <li>AI Advisor Chat</li>
                 </ul>
               </article>
 
-              <article className="pillar reveal" data-delay="120">
+              <article className="pillar pillar--live reveal" data-delay="120">
                 <div className="pillar__top">
                   <div className="pillar__icon">📜</div>
-                  <span className="status status--future">Future</span>
+                  <span className="status status--live">Live</span>
                 </div>
-                <h3>Policy Governance</h3>
-                <p>Manage full policy lifecycle — drafting, versioning, approvals, and ownership.</p>
+                <h3>Policy Governance™</h3>
+                <p>Full policy lifecycle — drafting, versioning, attestations, reviews, and framework mapping.</p>
                 <ul className="pillar__feats">
-                  <li>Policy Lifecycle</li><li>Version History</li><li>Owner Assignments</li>
+                  <li>Policy Lifecycle</li>
+                  <li>Version History</li>
+                  <li>Attestations</li>
+                  <li>Policy Health™</li>
+                  <li>Owner Accountability</li>
+                  <li>Framework Linking</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🔒</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>DPDP Privacy™</h3>
+                <p>India DPDP Act 2023 compliance — data inventory, consent, retention, DSR workflows, and PIA.</p>
+                <ul className="pillar__feats">
+                  <li>Data Asset Inventory</li>
+                  <li>Consent Management</li>
+                  <li>Retention Policies</li>
+                  <li>DSR Workflows</li>
+                  <li>Privacy Impact Assessments</li>
+                  <li>Cross-border Transfer Tracking</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">📄</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Contract Governance™</h3>
+                <p>Contract lifecycle, obligation tracking, renewal management, and Contract Score™ engine.</p>
+                <ul className="pillar__feats">
+                  <li>Contract Library</li>
+                  <li>Clause Management</li>
+                  <li>Obligation Tracker</li>
+                  <li>Renewal Dashboard</li>
+                  <li>Contract Score™</li>
+                  <li>AI Contract Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🔧</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Issue &amp; Remediation Hub™</h3>
+                <p>Centralized governance execution — issues, tasks, exceptions, SLA tracking, and escalations.</p>
+                <ul className="pillar__feats">
+                  <li>Issue Registry™</li>
+                  <li>Task Management™</li>
+                  <li>Exception Management™</li>
+                  <li>Escalation Engine™</li>
+                  <li>SLA Tracking™</li>
+                  <li>AI Remediation Planner™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🔗</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Third-Party Risk Exchange™</h3>
+                <p>Trust Network — vendor trust profiles, evidence exchange, badges, and a searchable trust directory.</p>
+                <ul className="pillar__feats">
+                  <li>Trust Profile™</li>
+                  <li>Evidence Exchange™</li>
+                  <li>Trust Badges™</li>
+                  <li>Questionnaire Exchange™</li>
+                  <li>Vendor Trust Directory™</li>
+                  <li>AI Trust Analyst™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">📊</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Governance Benchmarking™</h3>
+                <p>Industry peer comparison across 10 governance categories with percentile rankings and maturity levels.</p>
+                <ul className="pillar__feats">
+                  <li>10 Category Scorecards</li>
+                  <li>Percentile Engine™</li>
+                  <li>Governance Rankings™</li>
+                  <li>Maturity Levels</li>
+                  <li>Benchmark Trends™</li>
+                  <li>AI Benchmark Analyst™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">⚡</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Integration Hub™</h3>
+                <p>Connected Governance Platform — 35+ connectors for Identity, Cloud, Security, ITSM, and more.</p>
+                <ul className="pillar__feats">
+                  <li>35+ Connectors</li>
+                  <li>Sync Engine™</li>
+                  <li>Evidence Collection™</li>
+                  <li>Webhook Engine™</li>
+                  <li>Connection Health™</li>
+                  <li>AI Integration Advisor™</li>
                 </ul>
               </article>
 
@@ -592,32 +713,32 @@ export default function LandingPage() {
               <div className="sol reveal">
                 <div className="sol__icon">▤</div>
                 <h3>Vendor Governance</h3>
-                <p>Third-party risk, vendor lifecycle, document management, and AI-powered assessments.</p>
+                <p>Third-party risk, vendor lifecycle, Trust Score™, document management, and AI-powered assessments.</p>
               </div>
               <div className="sol reveal" data-delay="60">
                 <div className="sol__icon">🛡</div>
-                <h3>Third-Party Risk</h3>
-                <p>Continuous vendor risk scoring, certification monitoring, and supply chain visibility.</p>
+                <h3>Risk &amp; Control Management</h3>
+                <p>Risk registers, heat maps, Control Health™ scoring, cross-framework mapping, and AI gap detection.</p>
               </div>
               <div className="sol reveal" data-delay="120">
                 <div className="sol__icon">◷</div>
                 <h3>Compliance Management</h3>
-                <p>Framework readiness, control tracking, gap analysis, and evidence collection at scale.</p>
+                <p>Framework readiness across ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA — with evidence auto-import.</p>
               </div>
               <div className="sol reveal">
                 <div className="sol__icon">◎</div>
                 <h3>Audit Readiness</h3>
-                <p>Structured audit programs, findings, CAPAs, and AI-generated executive reports.</p>
+                <p>Structured audit programs, findings, CAPAs, benchmarking, and AI-generated board reports.</p>
               </div>
               <div className="sol reveal" data-delay="60">
-                <div className="sol__icon">📜</div>
-                <h3>Policy Governance</h3>
-                <p>Policy lifecycle management, version history, owner accountability, and review workflows.</p>
+                <div className="sol__icon">🔒</div>
+                <h3>Privacy &amp; Contract</h3>
+                <p>India DPDP Act 2023 compliance, DSR workflows, contract lifecycle, obligation tracking, and renewals.</p>
               </div>
               <div className="sol reveal" data-delay="120">
-                <div className="sol__icon">✦</div>
-                <h3>AI Governance <span className="sol__badge">Coming Soon</span></h3>
-                <p>Governance frameworks for AI systems, model risk, and responsible AI practices.</p>
+                <div className="sol__icon">⚡</div>
+                <h3>Connected Governance</h3>
+                <p>35+ integrations, trust network exchange, automated evidence collection, and real-time monitoring.</p>
               </div>
             </div>
           </div>
@@ -678,11 +799,12 @@ export default function LandingPage() {
               <div className="arch__top">
                 <div className="arch__layer arch__layer--primary">Governance Copilot™</div>
                 <div className="arch__layer">Trust Intelligence™</div>
-                <div className="arch__layer">Knowledge Graph™</div>
+                <div className="arch__layer">Trust Graph™</div>
+                <div className="arch__layer">Governance Benchmarking™</div>
               </div>
               <div className="arch__divider">
                 <span className="arch__arrow">↓</span>
-                <span className="arch__core">Evidence Layer™ · Workflow Engine™</span>
+                <span className="arch__core">Evidence Layer™ · Workflow Studio™ · Integration Hub™</span>
                 <span className="arch__arrow">↓</span>
               </div>
               <div className="arch__bottom">
@@ -693,6 +815,9 @@ export default function LandingPage() {
                 <div className="arch__node">Risks</div>
                 <div className="arch__node">Contracts</div>
                 <div className="arch__node">Frameworks</div>
+                <div className="arch__node">Issues</div>
+                <div className="arch__node">Privacy</div>
+                <div className="arch__node">Trust Exchange</div>
               </div>
             </div>
           </div>
@@ -730,43 +855,49 @@ export default function LandingPage() {
         <section className="section" id="roadmap">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Roadmap</span>
-              <h2>From Compliance To Organizational Trust.</h2>
-              <p>AUDT is building the Governance OS — starting with today&apos;s use cases and expanding to the full category.</p>
+              <span className="eyebrow">What&apos;s Built</span>
+              <h2>20 Modules. One Governance OS.</h2>
+              <p>AUDT is the most complete AI-native governance platform available — every module is live and in production.</p>
             </div>
             <div className="roadmap-grid">
               <div className="rmap rmap--done reveal">
-                <div className="rmap__label">Today</div>
+                <div className="rmap__label">Governance Core</div>
                 <div className="rmap__items">
                   <div className="rmap__item rmap__item--done">✓ Vendor Hub™ — Vendor Governance</div>
-                  <div className="rmap__item rmap__item--done">✓ Evidence Vault™ — Compliance Evidence</div>
+                  <div className="rmap__item rmap__item--done">✓ Evidence Vault™ — Compliance</div>
                   <div className="rmap__item rmap__item--done">✓ Audit Management</div>
-                  <div className="rmap__item rmap__item--done">✓ Organisation &amp; API Management</div>
+                  <div className="rmap__item rmap__item--done">✓ Risk Lens™ — Risk Management</div>
+                  <div className="rmap__item rmap__item--done">✓ Control Center™</div>
+                  <div className="rmap__item rmap__item--done">✓ Policy Governance™</div>
                 </div>
               </div>
-              <div className="rmap reveal" data-delay="80">
-                <div className="rmap__label">Next</div>
+              <div className="rmap rmap--done reveal" data-delay="80">
+                <div className="rmap__label">Intelligence Layer</div>
                 <div className="rmap__items">
-                  <div className="rmap__item">◎ Risk Lens™ — Risk Management</div>
-                  <div className="rmap__item">◎ Control Center™ — Control Management</div>
-                  <div className="rmap__item">◎ Policy Governance</div>
-                  <div className="rmap__item">◎ DPDP Privacy Module</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Intelligence™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Score™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Graph™</div>
+                  <div className="rmap__item rmap__item--done">✓ Governance Trends™</div>
+                  <div className="rmap__item rmap__item--done">✓ Continuous Monitoring™</div>
+                  <div className="rmap__item rmap__item--done">✓ Governance Benchmarking™</div>
                 </div>
               </div>
-              <div className="rmap reveal" data-delay="160">
-                <div className="rmap__label">Future</div>
+              <div className="rmap rmap--done reveal" data-delay="160">
+                <div className="rmap__label">Extended Platform</div>
                 <div className="rmap__items">
-                  <div className="rmap__item rmap__item--future">◈ Contract Governance</div>
-                  <div className="rmap__item rmap__item--future">◈ AI Governance</div>
-                  <div className="rmap__item rmap__item--future">◈ Continuous Monitoring</div>
-                  <div className="rmap__item rmap__item--future">◈ Trust Graph™</div>
+                  <div className="rmap__item rmap__item--done">✓ DPDP Privacy™</div>
+                  <div className="rmap__item rmap__item--done">✓ Contract Governance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Issue &amp; Remediation Hub™</div>
+                  <div className="rmap__item rmap__item--done">✓ Workflow Studio™</div>
+                  <div className="rmap__item rmap__item--done">✓ Third-Party Risk Exchange™</div>
+                  <div className="rmap__item rmap__item--done">✓ Integration Hub™ — 35+ connectors</div>
                 </div>
               </div>
               <div className="rmap rmap--vision reveal" data-delay="240">
                 <div className="rmap__label">Vision</div>
                 <div className="rmap__vision">
                   <span className="grad-text">Governance OS</span>
-                  <p>The operating system for organizational trust.</p>
+                  <p>The operating system for organizational trust — already here.</p>
                 </div>
               </div>
             </div>
@@ -779,7 +910,7 @@ export default function LandingPage() {
             <div className="cta-final__badge">audt.tech</div>
             <h2>Stop Managing Governance In Silos.</h2>
             <p>
-              Unify trust, risk, compliance, audits, controls, and vendor governance with AUDT.
+              Unify vendors, risk, compliance, audits, controls, policies, contracts, privacy, and trust — 20 modules, one Governance OS.
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
