@@ -27,6 +27,7 @@ node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
 node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
+node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -62,9 +63,12 @@ node scripts/seed-vendor-extras.mjs
 
 # 13. Seed Vendor Portal tokens for E2E testing
 node scripts/seed-portal-tokens.mjs
+
+# 14. Seed Third-Party Risk Exchange™ (Module 15)
+node scripts/seed-trust-exchange.mjs
 ```
 
-After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
+After this, **every module has complete demo data** and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
 
 ---
 
@@ -281,6 +285,7 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 | `seed-governance-snapshots.mjs` | Trust Intelligence™ | 14 daily governance snapshots (upward trend: 49 → 62) for Governance Timeline chart |
 | `seed-vendor-extras.mjs` | Vendor Hub™ | Assessments for remaining 11 vendors · reviews for all vendors · doc requests in all 5 states |
 | `seed-portal-tokens.mjs` | Vendor Hub™ | 4 portal tokens: 3 active (Apollo/Yotta/Sify) + 1 expired (Darwinbox) with ready-to-use portal URLs |
+| `seed-trust-exchange.mjs` | Third-Party Risk Exchange™ | 1 published Trust Profile · 5 trust documents (ISO 27001, SOC 2, Cyber Insurance, Pen Test, DPDP) · 4 badges · 1 global questionnaire with 4 answered questions · activity log |
 
 ---
 
@@ -674,6 +679,35 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 15 — Third-Party Risk Exchange™
+
+> **`seed-trust-exchange.mjs`** seeds a complete trust profile with documents, badges, and questionnaire answers.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/trust-exchange` | Metrics strip: Profile Completeness · Documents · Badges · Questionnaires |
+| My Profile | `/trust-exchange/my-profile` | Trust Profile form pre-filled from org data; AI trust summary present |
+| Documents | `/trust-exchange/documents` | 5 trust documents — ISO 27001, SOC 2, Cyber Insurance, Pen Test, DPDP |
+| Add document | Documents → Add Document | Form with doc type, title, issuer, issued/expiry dates, visibility |
+| Verify document | Document row → Verify | `isVerified = true`, Verified badge appears |
+| Badges | `/trust-exchange/badges` | 4 active badges — AUDT Verified™, DPDP Ready™, ISO Verified™, SOC2 Verified™ |
+| Issue badge | Badges → Issue Badge | Select type, enter label → badge appears in grid |
+| Questionnaires | `/trust-exchange/questionnaires` | 1 global questionnaire with 4 answers · 100% completion |
+| Vendor Directory | `/trust-exchange/directory` | Published profiles; filter by industry/country |
+| AI Trust Analyst | `/trust-exchange/ai` | AI summary + document analysis + chat |
+| AI chat | AI page → chat | Ask "How complete is my trust profile?" or "Which documents are expiring?" |
+| Publish profile | My Profile → Publish to Directory | Profile `visibility = public`, appears in Directory |
+| REST API — profile | `GET /api/v1/trust-exchange` | JSON with profile, documents, badges, questionnaire count |
+| REST API — directory | `GET /api/v1/trust-exchange/directory` | Publicly listed profiles |
+
+**Seeded Trust Exchange data:**
+- **Trust Profile**: Published · Industry: IT Services · 80% completeness
+- **Documents (5)**: ISO 27001 (BSI, expires 2027) · SOC 2 Type II (AICPA, expires 2027) · Cyber Insurance (verified) · Pen Test Report · DPDP Compliance Assessment
+- **Badges (4)**: AUDT Verified™ · DPDP Ready™ · ISO Verified™ · SOC2 Verified™
+- **Questionnaire**: "Security & Privacy Questionnaire" — 4 answered questions (access control, data encryption, incident response, DPDP compliance)
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -830,5 +864,18 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `workflow_runs` | 0 (start via workflow detail → Start Run) | — |
 | `workflow_run_steps` | 0 (auto-populated on run execution) | — |
 | `workflow_approvals` | 0 (created at approval nodes during runs) | — |
+| `trust_profiles` | 1 (published, 80% completeness) | seed-trust-exchange |
+| `trust_documents` | 5 (ISO 27001, SOC 2, Cyber Insurance, Pen Test, DPDP) | seed-trust-exchange |
+| `trust_shares` | 0 (populate via sharing flow) | — |
+| `trust_questionnaires` | 1 (global "Security & Privacy Questionnaire") | seed-trust-exchange |
+| `trust_answers` | 1 (4 answered questions, 100% completion) | seed-trust-exchange |
+| `trust_verifications` | 0 (verify docs via Documents page) | — |
+| `trust_badges` | 4 (AUDT Verified, DPDP Ready, ISO Verified, SOC2 Verified) | seed-trust-exchange |
+| `trust_relationships` | 0 (connect via Directory) | — |
+| `trust_activity` | 1 (profile creation event) | seed-trust-exchange |
+| `benchmark_industries` | 60 (industry baselines — seeded at migration 0021) | migration 0021 |
+| `benchmark_snapshots` | 1 (overall score 77 · 72nd percentile · Defined maturity) | seed-benchmarking |
+| `benchmark_scores` | 10 (one per benchmark category with percentile + ranking) | seed-benchmarking |
+| `benchmark_trends` | 60 (6 months × 10 categories with score + percentile history) | seed-benchmarking |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-intelligence` to see the full Organizational Trust Score™ with a 14-day trend chart, then click **Trends** for sparklines and **Monitoring** to run governance alerts.
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/benchmarking` to see industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, and `/trust-intelligence/monitoring` to run governance alerts.

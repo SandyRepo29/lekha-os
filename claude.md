@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™
-- **Total tables:** 94 (88 previous + workflows + workflow_nodes + workflow_transitions + workflow_runs + workflow_run_steps + workflow_approvals)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
+- **Total tables:** 115 (107 previous + integration_registry + integration_instances + integration_credentials + integration_syncs + integration_logs + integration_events + integration_mappings + integration_webhooks)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -534,6 +534,40 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /issue-hub/reports                          CSV export links
 /issue-hub/ai                               AI Advisor™ (executive summary + issue generator + remediation planner + chat)
 
+--- Third-Party Risk Exchange™ ---
+/trust-exchange                             Dashboard (metrics strip + activity feed + getting-started checklist)
+/trust-exchange/my-profile                 Trust Profile™ editor (display name, industry, visibility, AI summary)
+/trust-exchange/documents                  Trust Evidence™ list (add, verify, delete documents)
+/trust-exchange/badges                     Trust Badges™ (issue, revoke badges)
+/trust-exchange/questionnaires             Questionnaire Exchange™ (answer, track completion)
+/trust-exchange/questionnaires/[id]        Single questionnaire answer form
+/trust-exchange/directory                  Vendor Trust Directory™ (browse published profiles, filter)
+/trust-exchange/ai                         AI Trust Analyst™ (trust summary + document analysis + questionnaire suggestions + chat)
+
+--- Governance Benchmarking™ ---
+/benchmarking                             Dashboard (overall score, percentile, maturity level, 10 category scorecards)
+/benchmarking/vendors                     Vendor Trust benchmark deep-dive
+/benchmarking/risks                       Risk & Controls benchmark (risk posture, control health, audit readiness, issue resolution)
+/benchmarking/compliance                  Compliance benchmark (coverage, privacy, contract, workflow automation)
+/benchmarking/rankings                    Governance Rankings™ (full ranking table + maturity progress bar)
+/benchmarking/ai                          AI Benchmark Analyst™ (executive report + industry insights + improvement planner + chat)
+GET /api/v1/benchmarking                  Full benchmark dashboard — snapshot + all category scores + trends
+GET /api/v1/benchmarking/trust            Org trust + vendor trust benchmark comparison
+GET /api/v1/benchmarking/vendors          Vendor governance benchmark breakdown
+POST /api/v1/benchmarking/vendors         Trigger a new benchmark computation (read_write)
+GET /api/v1/benchmarking/rankings         Full rankings across all categories + maturity level
+
+--- Integration Hub™ ---
+/integration-hub                          Dashboard (metrics strip + connected systems + open events)
+/integration-hub/marketplace              Connector Marketplace™ (35+ connectors grouped by category)
+/integration-hub/connections              Integration Manager™ (per-connection health, events, sync controls)
+/integration-hub/syncs                    Sync Engine™ history (all runs, records, duration, status)
+/integration-hub/webhooks                 Webhook Engine™ (inbound + outbound webhook management)
+/integration-hub/ai                       AI Integration Advisor™ (health summary + recommendations + chat)
+GET /api/v1/integrations                  Connected integrations list (?view=marketplace|dashboard)
+GET /api/v1/integrations/syncs            Sync history
+GET /api/v1/integrations/health           Connection Health™ metrics
+
 --- REST API (Bearer token) ---
 GET /api/v1/vendors                          Paginated vendor list
 GET /api/v1/vendors/[id]                     Single vendor
@@ -583,6 +617,10 @@ GET /api/v1/issues/[id]                     Single issue with tasks/comments/exc
 PUT /api/v1/issues/[id]                     Update issue (read_write key)
 DELETE /api/v1/issues/[id]                  Delete issue (read_write key)
 GET /api/v1/issues/export/csv               Issues CSV export (session auth)
+GET /api/v1/trust-exchange                  Trust profile + documents + badges + questionnaire count
+GET /api/v1/trust-exchange/documents        Trust document list (?visibility=)
+POST /api/v1/trust-exchange/documents       Add trust document (read_write key)
+GET /api/v1/trust-exchange/directory        Public vendor trust directory (?industry=, ?country=, ?minScore=, ?riskLevel=)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -863,6 +901,8 @@ supabase/
     0015_policy_governance.sql  Policy Governance™ — policy_reviews + policy_attestations + policy_controls + policy_frameworks + RLS ✅ APPLIED
     0016_dpdp_privacy.sql       DPDP Privacy™ — data_assets + consent_records + privacy_requests + retention_policies + retention_events + privacy_assessments + data_transfers + privacy_trust_scores ✅ APPLIED
     0017_contract_governance.sql Contract Governance™ — 5 enums + contracts + contract_clauses + contract_obligations + contract_risks + contract_controls + contract_policies ✅ APPLIED
+    0020_trust_exchange.sql     Third-Party Risk Exchange™ — 7 enums + trust_profiles + trust_documents + trust_shares + trust_questionnaires + trust_answers + trust_verifications + trust_badges + trust_relationships + trust_activity + RLS ✅ APPLIED
+    0021_benchmarking.sql       Governance Benchmarking™ — 3 enums + benchmark_industries + benchmark_snapshots + benchmark_scores + benchmark_trends + RLS + seeded baselines ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -879,6 +919,7 @@ scripts/
   seed-data-governance.mjs      Backfills doc storage metadata, org_settings, login_history, 25 audit events
   seed-risk-lens.mjs            20 risks · 25 treatments · 8 reviews · vendor/control/framework links (idempotent)
   seed-trust-scores.mjs         Computes and stores Trust Score™ for all active vendors (idempotent)
+  seed-trust-exchange.mjs       1 published trust profile · 5 documents · 4 badges · 1 global questionnaire with answers
   SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
@@ -983,6 +1024,76 @@ Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`,
 - Migration: `supabase/migrations/0017_contract_governance.sql`
 - Routes: `/contract-governance/*` (8 pages)
 
+### Module 15 — Third-Party Risk Exchange™ ✅ Complete (2026-06-11)
+### Module 16 — Governance Benchmarking™ ✅ Complete (2026-06-11)
+
+Industry peer comparison across 10 governance categories. 4 new tables: `benchmark_industries`, `benchmark_snapshots`, `benchmark_scores`, `benchmark_trends`.
+
+| Feature | Detail |
+|---|---|
+| **Benchmark Scorecards™** | 10 categories: Org Trust · Vendor Trust · Risk · Controls · Audit · Compliance · Privacy · Contract · Issues · Workflow |
+| **Percentile Engine™** | Normal-distribution percentile vs industry baseline (10th–99th) |
+| **Governance Rankings™** | Top 1% → At Risk labels with maturity level (Reactive → Trust Leader) |
+| **Benchmark Trends™** | 6-month monthly sparkline trend per category |
+| **AI Benchmark Analyst™** | Executive report · Industry Insights · Improvement Planner™ · NL chat |
+| **Industry Baselines™** | Seeded at migration time — Technology, Financial Services, Healthcare, Manufacturing, Professional Services, All |
+| **REST API** | 4 endpoints: GET /api/v1/benchmarking · /trust · /vendors · /rankings |
+| **Phase 1 works immediately** | Uses AUDT internal module scores; no waiting for network scale |
+
+- Pure engine: `lib/services/benchmarking-score.ts` — `computeBenchmark(orgScores, baselines)` → BenchmarkResult
+- Service: `lib/services/benchmarking/benchmarking-service.ts`
+- AI service: `lib/services/benchmarking/ai-benchmarking-service.ts`
+- Repo: `lib/repositories/benchmarking-repo.ts`
+- Actions: `lib/benchmarking/actions.ts`
+- Migration: `supabase/migrations/0021_benchmarking.sql` ✅ APPLIED
+- Routes: `/benchmarking/*` (6 pages: Dashboard · Vendor Trust · Risk & Controls · Compliance · Rankings · AI Analyst)
+- Seed: `node scripts/seed-benchmarking.mjs`
+
+### Module 17A — Integration Hub™ ✅ Complete (2026-06-11)
+
+Connected Governance Platform — connectivity layer for the entire AUDT Governance OS. 8 new tables: `integration_registry`, `integration_instances`, `integration_credentials`, `integration_syncs`, `integration_logs`, `integration_events`, `integration_mappings`, `integration_webhooks`. 35+ connectors seeded in catalog.
+
+| Feature | Detail |
+|---|---|
+| **Connector Marketplace™** | 35+ connectors across 11 categories: Identity · Cloud · Security · Source Control · Project Mgmt · ITSM · Endpoint · Communication · HR · Storage · Custom |
+| **Phase 1 Connectors** | 8 connectors covering ~80% of prospect requirements: Entra ID · Okta · Google Workspace · AWS · GitHub · Jira · Slack · CrowdStrike · Microsoft Defender |
+| **Integration Manager™** | Connect / Disconnect / Reconnect with encrypted credential storage (AES-256-GCM) |
+| **Sync Engine™** | Incremental & full syncs with simulated connector results, sync history, success metrics |
+| **Evidence Collection™** | Auto-collect governance evidence from connected systems (MFA, encryption, branch protection, etc.) |
+| **Continuous Monitoring™** | Governance events generated from syncs: risks, control failures, misconfigurations |
+| **Connection Health™** | Per-integration health dashboard — records synced, evidence collected, risks generated |
+| **Webhook Engine™** | Inbound + outbound webhooks with event type routing, active/inactive toggle |
+| **AI Integration Advisor™** | Executive health summary · Connector Recommendations™ · Coverage Gap Analysis™ · NL chat |
+| **REST API** | 3 endpoints: GET /api/v1/integrations · GET /api/v1/integrations/syncs · GET /api/v1/integrations/health |
+
+- Service: `lib/services/integration-hub/integration-service.ts`
+- AI service: `lib/services/integration-hub/ai-integration-service.ts`
+- Repo: `lib/repositories/integration-hub-repo.ts`
+- Actions: `lib/integration-hub/actions.ts`
+- Migration: `supabase/migrations/0022_integration_hub.sql` ✅ APPLIED
+- Routes: `/integration-hub/*` (6 pages: Dashboard · Marketplace · Connections · Sync History · Webhooks · AI Advisor)
+- Seed: `node scripts/seed-integration-hub.mjs`
+
+Trust Network layer. 9 new tables: `trust_profiles`, `trust_documents`, `trust_shares`, `trust_questionnaires`, `trust_answers`, `trust_verifications`, `trust_badges`, `trust_relationships`, `trust_activity`.
+
+| Feature | Detail |
+|---|---|
+| **Trust Profile™** | Public-facing trust passport — displayName, tagline, description, industry, companySize, country, website, visibility, profileCompleteness |
+| **Evidence Exchange™** | Trust documents with configurable visibility (private/specific/network/public), expiry tracking, AI risk analysis |
+| **Document Verification™** | AI or peer verification; Verified badge on confirmed documents |
+| **Trust Badges™** | 8 badge types + custom; issue and revoke |
+| **Questionnaire Exchange™** | Fill once, share many; completion % tracking; AI answer suggestions |
+| **Vendor Trust Directory™** | Searchable public directory of published profiles |
+| **AI Trust Analyst™** | Cached trust summary, per-document analysis, questionnaire suggestions, NL chat |
+| **REST API** | 3 endpoints: GET /api/v1/trust-exchange · GET/POST /api/v1/trust-exchange/documents · GET /api/v1/trust-exchange/directory |
+
+- Service: `lib/services/trust-exchange/trust-exchange-service.ts`
+- AI service: `lib/services/trust-exchange/ai-trust-exchange-service.ts`
+- Repo: `lib/repositories/trust-exchange-repo.ts`
+- Actions: `lib/trust-exchange/actions.ts`
+- Migration: `supabase/migrations/0020_trust_exchange.sql`
+- Routes: `/trust-exchange/*` (8 pages)
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -991,6 +1102,7 @@ Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`,
 | Contract Governance™ | Contract lifecycle, expiry, obligation tracking, AI analysis | ✅ Complete (2026-06-10) |
 | Issue & Remediation Hub™ | Centralized governance execution — issues, tasks, exceptions, SLAs, AI | ✅ Complete (2026-06-10) |
 | Workflow Studio™ | Governance automation engine — workflows, approvals, AI generator | ✅ Complete (2026-06-10) |
+| Third-Party Risk Exchange™ | Trust Network — vendor trust profiles, evidence exchange, badges, directory, AI trust scoring | ✅ Complete (2026-06-11) |
 | AI Governance | AI model risk, responsible AI frameworks | Future |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 

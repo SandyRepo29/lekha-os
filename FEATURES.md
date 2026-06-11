@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-10 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **17 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™
+> Last updated: 2026-06-11 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **20 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 40 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 43 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **94 tables** across 19 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **103 tables** across 20 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · **Third-Party Risk Exchange™** · **Governance Benchmarking™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -391,7 +391,54 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ---
 
-## 📍 Current Status (2026-06-10)
+## 🌐 Module 15 — Third-Party Risk Exchange™
+
+> Completed 2026-06-11
+
+The world's first AI-native Third-Party Trust Exchange. Transforms AUDT from Governance Software into a **Trust Network** — where vendors upload evidence once and share it with many customers, eliminating repetitive questionnaire cycles and creating an auditable trust marketplace.
+
+### Strategic Vision
+
+Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passport. Customers browse the **Vendor Trust Directory™** to evaluate prospective vendors, request access to trust documents, and receive AI-scored trust assessments — all without sending a single spreadsheet.
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Trust Profile™** | Public-facing governance passport per organization — display name, tagline, description, industry, company size, country, website, visibility (private/network/public), profile completeness score |
+| **Evidence Exchange™** | Upload and share trust documents (SOC 2, ISO 27001, ISO 27701, PCI DSS, HIPAA, DPDP, Cyber Insurance, Pen Test, DPA, SIG, CAIQ, custom) with configurable visibility (private/specific/network/public) and expiry tracking |
+| **Document Verification™** | Request AI or peer verification; documents carry a Verified badge once confirmed |
+| **Trust Badges™** | Issue governance achievement badges (AUDT Verified™, DPDP Ready™, Privacy Verified™, Vendor Trusted™, Low Risk™, Enterprise Ready™, ISO Verified™, SOC2 Verified™, Custom) |
+| **Questionnaire Exchange™** | Global standardized questionnaire templates; orgs fill once and share answers with visibility controls; progress tracking per questionnaire |
+| **Vendor Trust Directory™** | Searchable/filterable public directory of published profiles — filter by industry, country, trust score, risk level; AI-scored trust posture for each profile |
+| **AI Trust Analyst™** | Per-profile AI trust summary (cached 24h): strengths, concerns, risk profile, recommended due diligence steps |
+| **AI Document Analysis™** | Per-document AI breakdown: risk level (low/medium/high/critical), key findings, specific recommendation |
+| **AI Questionnaire Suggestions™** | Gemini suggests answers for each questionnaire based on your existing governance posture |
+| **AI Trust Exchange Chat™** | Multi-turn NL chat — "How complete is my trust profile?", "Which documents are expiring?", "How do I compare to industry peers?" |
+| **Trust Activity Feed** | Live feed of profile views, document shares, badge issuances, verification events |
+| **Profile Completeness** | 0–100% completeness score — computed from 6 profile fields (displayName, tagline, description, industry, website, visibility=public) |
+| **Visibility Control** | Granular visibility per document and per profile: Private · Specific Customers · Trust Network · Public |
+| **REST API** | `GET /api/v1/trust-exchange` (profile + docs + badges + questionnaires) · `GET/POST /api/v1/trust-exchange/documents` · `GET /api/v1/trust-exchange/directory` |
+| **Navigation** | Sidebar entry "Trust Exchange™" with Globe icon between Workflow Studio and Trust Intelligence |
+| **5-tab sub-nav** | Dashboard · My Profile · Documents · Badges · Questionnaires · Directory · AI Trust Analyst |
+| **DB tables** | `trust_profiles` · `trust_documents` · `trust_shares` · `trust_questionnaires` · `trust_answers` · `trust_verifications` · `trust_badges` · `trust_relationships` · `trust_activity` (migration 0020 applied) |
+| **Seed data** | 1 published profile · 5 documents · 4 badges · 1 global questionnaire with 4 answers · activity log |
+| **Audit logging** | `trust_exchange.profile_updated` · `trust_exchange.document_added` · `trust_exchange.document_verified` · `trust_exchange.badge_issued` · `trust_exchange.badge_revoked` |
+
+### Trust Profile™ Completeness Scoring
+
+| Field | Contribution |
+|---|---|
+| Display Name | 20% |
+| Tagline | 15% |
+| Description | 20% |
+| Industry | 15% |
+| Website | 15% |
+| Visibility = public | 15% |
+
+---
+
+## 📍 Current Status (2026-06-11)
 
 | Layer | Status |
 |---|---|
@@ -399,7 +446,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 88 tables, 18 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 103 tables, 20 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
@@ -414,6 +461,8 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Module 12 — Contract Governance™** | ✅ Complete (2026-06-10) |
 | **Module 13 — Issue & Remediation Hub™** | ✅ Complete (2026-06-10) |
 | **Module 14 — Workflow Studio™** | ✅ Complete (2026-06-10) |
+| **Module 15 — Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) |
+| **Module 16 — Governance Benchmarking™** | ✅ Complete (2026-06-11) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -444,6 +493,8 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 | **Contract Governance™** | Contract lifecycle, obligation tracking, AI clause intelligence, Contract Trust Score™ | ✅ Complete (2026-06-10) |
 | **Issue & Remediation Hub™** | Centralized governance execution — issues, tasks, exceptions, SLAs, AI advisor | ✅ Complete (2026-06-10) |
 | **Workflow Studio™** | Governance automation engine — workflows, approvals, AI generator, Automation Rate™ | ✅ Complete (2026-06-10) |
+| **Third-Party Risk Exchange™** | Trust Network layer — vendor trust profiles, evidence exchange, badges, questionnaire exchange, AI trust scoring | ✅ Complete (2026-06-11) |
+| **Governance Benchmarking™** | Industry peer comparison across 10 categories — percentile engine, maturity levels, AI analyst, trends | ✅ Complete (2026-06-11) |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -713,6 +764,62 @@ The Governance Automation Engine. Transforms AUDT from a platform that *monitors
 | completed | All steps finished successfully |
 | failed | Execution error encountered |
 | cancelled | Manually cancelled by a user |
+
+---
+
+## 📊 Module 16 — Governance Benchmarking™
+
+> Completed 2026-06-11
+
+Transforms AUDT from a **Governance Measurement** platform into a **Governance Intelligence Platform** by answering the question every customer asks: *"Is that good?"* — comparing governance posture against industry peers, sizing up percentile rankings, and delivering AI-generated competitive intelligence.
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Benchmark Scorecards™** | 10 categories: Org Trust · Vendor Trust · Risk Posture · Control Health · Audit Readiness · Compliance Coverage · Privacy Trust · Contract Trust · Issue Resolution · Workflow Automation |
+| **Percentile Engine™** | Normal-distribution CDF percentile vs industry baseline — 10th → 99th percentile with confidence |
+| **Industry Baselines™** | Seeded for Technology, Financial Services, Healthcare, Manufacturing, Professional Services, All — 2,000+ peer data points; works immediately without network scale |
+| **Governance Rankings™** | 8 labels: Top 1% · Top 5% · Top 10% · Top Quartile · Above Average · Average · Below Average · At Risk |
+| **Governance Maturity Model™** | 6 levels: Reactive → Managed → Defined → Measured → Optimized → Trust Leader; visual progress bar |
+| **Benchmark Trends™** | 6-month monthly sparkline trend per category with historical percentile tracking |
+| **Top Strengths™** | Categories where org outperforms industry average — ranked by delta |
+| **Improvement Opportunities™** | Categories below industry average — ranked by gap size |
+| **AI Benchmark Report™** | Board-ready 3-paragraph executive report — position, strengths, improvement areas; Gemini cached 24h |
+| **AI Industry Insights™** | Industry-specific governance trends, what top performers do, emerging risks — Gemini cached 24h |
+| **AI Improvement Planner™** | Highest-ROI improvement actions per weak category with impact/effort ratings |
+| **AI Benchmark Analyst™ Chat** | NL chat — "How do we compare?", "What should we improve first?", "How do we reach the top quartile?" |
+| **REST API** | `GET /api/v1/benchmarking` · `/trust` · `/vendors` · `POST /vendors` (trigger benchmark) · `/rankings` |
+| **Navigation** | Sidebar "Governance Benchmarking™" with BarChart3 icon between Trust Exchange™ and Trust Intelligence |
+| **Sub-pages** | Dashboard · Vendor Trust · Risk & Controls · Compliance · Rankings · AI Analyst |
+| **DB tables** | `benchmark_industries` · `benchmark_snapshots` · `benchmark_scores` · `benchmark_trends` (migration 0021 applied) |
+| **Seed** | `node scripts/seed-benchmarking.mjs` — snapshot + 10 category scores + 6-month trends |
+
+### Benchmark Categories
+
+| Category | What It Measures |
+|---|---|
+| Organizational Trust™ | Overall governance trust score vs peers |
+| Vendor Trust™ | Vendor assessment coverage, trust scores, evidence quality |
+| Risk Posture™ | Open risk profile, critical/high counts, mitigation rate |
+| Control Health™ | Average control health, testing coverage, weakness count |
+| Audit Readiness™ | Audit completion, finding closure rate, CAPA completion |
+| Compliance Coverage™ | Framework readiness, evidence coverage, gap density |
+| Privacy Trust™ | Privacy score, DSR resolution, consent coverage |
+| Contract Trust™ | Contract score, obligation completion, renewal readiness |
+| Issue Resolution™ | Issue closure rate, SLA compliance, escalation frequency |
+| Workflow Automation™ | Automation rate, workflow completion, approval cycle time |
+
+### Governance Maturity Model™
+
+| Level | Label | Percentile |
+|---|---|---|
+| 1 | Reactive | < 40th |
+| 2 | Managed | 40th–59th |
+| 3 | Defined | 60th–74th |
+| 4 | Measured | 75th–89th |
+| 5 | Optimized | 90th–98th |
+| 6 | Trust Leader | ≥ 99th |
 
 ---
 

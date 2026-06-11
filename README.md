@@ -30,6 +30,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Contract Governance™** | ✅ Complete (2026-06-10) | `/contract-governance/*` |
 | **Issue & Remediation Hub™** | ✅ Complete (2026-06-10) | `/issue-hub/*` |
 | **Workflow Studio™** | ✅ Complete (2026-06-10) | `/workflow-studio/*` |
+| **Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) | `/trust-exchange/*` |
 
 ---
 
@@ -80,6 +81,7 @@ node scripts/apply-sql.mjs supabase/migrations/0016_dpdp_privacy.sql
 node scripts/apply-sql.mjs supabase/migrations/0017_contract_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0018_issue_remediation.sql
 node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
+node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -99,6 +101,8 @@ node scripts/seed-contracts.mjs                    # 6 contracts (AWS/HDFC/TCS/I
 node scripts/seed-issues.mjs                       # 10 governance issues + tasks + comments + escalations
 node scripts/seed-dpdp-privacy.mjs                 # 5 data assets, 10 consents, 5 DSRs, 2 DPIAs, 3 data transfers
 node scripts/seed-workflows.mjs                    # 5 workflows + nodes + runs + pending approvals
+node scripts/seed-trust-exchange.mjs               # Trust Profile + 5 documents + 4 badges + questionnaire
+node scripts/seed-benchmarking.mjs                 # Benchmark snapshot + 10 category scores + 6-month trends
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
@@ -150,6 +154,14 @@ Authorization: Bearer audt_live_<key>
 | `GET/POST /api/v1/workflows` | read_write | Workflow list + create |
 | `GET/PUT/DELETE /api/v1/workflows/:id` | read_write | Single workflow CRUD |
 | `GET /api/v1/workflow-runs` | read_only | Workflow run log (?status=, ?workflowId=) |
+| `GET /api/v1/trust-exchange` | read_only | Trust profile + documents + badges + questionnaires |
+| `GET/POST /api/v1/trust-exchange/documents` | read_write | Trust document list + add |
+| `GET /api/v1/trust-exchange/directory` | read_only | Public vendor trust directory (?industry=, ?country=, ?minScore=) |
+| `GET /api/v1/benchmarking` | read_only | Full benchmark dashboard — snapshot + all category scores + trends |
+| `GET /api/v1/benchmarking/trust` | read_only | Org trust + vendor trust benchmark comparison |
+| `GET /api/v1/benchmarking/vendors` | read_only | Vendor governance benchmark breakdown |
+| `POST /api/v1/benchmarking/vendors` | read_write | Trigger a new benchmark computation |
+| `GET /api/v1/benchmarking/rankings` | read_only | Full rankings across all categories + maturity level |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -173,7 +185,9 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `node scripts/seed-governance-snapshots.mjs` | 14-day governance trend (49 → 62) for Trust Intelligence™ |
 | `node scripts/seed-vendor-extras.mjs` | Remaining vendor assessments, reviews, doc requests |
 | `node scripts/seed-portal-tokens.mjs` | Portal tokens for E2E testing (prints ready-to-use URLs) |
-| `node scripts/check-db.mjs` | Table row counts for all 94 tables |
+| `node scripts/seed-trust-exchange.mjs` | Trust Profile + 5 documents + 4 badges + 1 questionnaire with answers |
+| `node scripts/seed-benchmarking.mjs` | Benchmark snapshot · 10 category scores · 6-month trend history |
+| `node scripts/check-db.mjs` | Table row counts for all 107 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -184,7 +198,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 94 tables · 19 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · 107 tables · 21 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
 | AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance monitor, trend forecasting |

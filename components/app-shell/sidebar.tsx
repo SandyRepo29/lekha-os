@@ -23,6 +23,7 @@ import {
   GitBranch,
   Globe,
   BarChart3,
+  Plug,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +48,7 @@ const items: Item[] = [
   { href: "/workflow-studio", label: "Workflow Studio", icon: GitBranch },
   { href: "/trust-exchange", label: "Trust Exchange™", icon: Globe },
   { href: "/benchmarking", label: "Governance Benchmarking™", icon: BarChart3 },
+  { href: "/integration-hub", label: "Integration Hub™", icon: Plug },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];

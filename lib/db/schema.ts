@@ -3110,3 +3110,237 @@ export type BenchmarkIndustry = typeof benchmarkIndustries.$inferSelect;
 export type BenchmarkSnapshot = typeof benchmarkSnapshots.$inferSelect;
 export type BenchmarkScore = typeof benchmarkScores.$inferSelect;
 export type BenchmarkTrend = typeof benchmarkTrends.$inferSelect;
+
+/* ============================================================
+   Integration Hub™ — Enums + Tables (Module 17A)
+   ============================================================ */
+
+export const integrationCategory = pgEnum("integration_category", [
+  "identity", "cloud", "source_control", "project_management",
+  "itsm", "endpoint", "security", "communication", "storage",
+  "hr", "custom",
+]);
+
+export const integrationConnectorStatus = pgEnum("integration_connector_status", [
+  "available", "connected", "disconnected", "error", "deprecated", "coming_soon",
+]);
+
+export const integrationAuthType = pgEnum("integration_auth_type", [
+  "oauth2", "api_key", "pat", "basic_auth", "service_account", "webhook", "custom",
+]);
+
+export const integrationSyncStatus = pgEnum("integration_sync_status", [
+  "pending", "running", "completed", "failed", "cancelled",
+]);
+
+export const integrationSyncFrequency = pgEnum("integration_sync_frequency", [
+  "real_time", "fifteen_minutes", "hourly", "daily", "weekly", "manual",
+]);
+
+export const integrationEventType = pgEnum("integration_event_type", [
+  "user_created", "user_deleted", "control_failed", "risk_created",
+  "evidence_updated", "workflow_triggered", "contract_updated",
+  "vendor_updated", "misconfiguration_detected", "credential_expiring",
+  "sync_completed", "sync_failed",
+]);
+
+export const integrationMappingTarget = pgEnum("integration_mapping_target", [
+  "control", "risk", "evidence", "vendor", "issue", "finding",
+]);
+
+export const integrationWebhookDirection = pgEnum("integration_webhook_direction", [
+  "inbound", "outbound",
+]);
+
+/** System-wide connector catalog (not per-org). */
+export const integrationRegistry = pgTable(
+  "integration_registry",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    name:            text("name").notNull(),
+    slug:            text("slug").notNull().unique(),
+    category:        integrationCategory("category").notNull(),
+    provider:        text("provider").notNull(),
+    version:         text("version").notNull().default("1.0.0"),
+    status:          integrationConnectorStatus("status").notNull().default("available"),
+    authType:        integrationAuthType("auth_type").notNull().default("api_key"),
+    icon:            text("icon"),
+    description:     text("description"),
+    documentationUrl: text("documentation_url"),
+    features:        jsonb("features").notNull().default([]),
+    authFields:      jsonb("auth_fields").notNull().default([]),
+    isPhase1:        boolean("is_phase1").notNull().default(false),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:       timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("integration_registry_category_idx").on(t.category)]
+);
+
+/** Per-org connected integration instance. */
+export const integrationInstances = pgTable(
+  "integration_instances",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    registryId:     uuid("registry_id").notNull().references(() => integrationRegistry.id, { onDelete: "cascade" }),
+    name:           text("name").notNull(),
+    status:         integrationConnectorStatus("status").notNull().default("disconnected"),
+    syncFrequency:  integrationSyncFrequency("sync_frequency").notNull().default("daily"),
+    lastSyncAt:     timestamp("last_sync_at", { withTimezone: true }),
+    nextSyncAt:     timestamp("next_sync_at", { withTimezone: true }),
+    connectedAt:    timestamp("connected_at", { withTimezone: true }),
+    connectedBy:    uuid("connected_by").references(() => profiles.id, { onDelete: "set null" }),
+    errorMessage:   text("error_message"),
+    config:         jsonb("config").notNull().default({}),
+    totalSynced:    integer("total_synced").notNull().default(0),
+    totalEvidence:  integer("total_evidence").notNull().default(0),
+    totalRisks:     integer("total_risks").notNull().default(0),
+    totalEvents:    integer("total_events").notNull().default(0),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("integration_instances_org_idx").on(t.organizationId),
+    index("integration_instances_status_idx").on(t.organizationId, t.status),
+    uniqueIndex("integration_instances_org_registry_uniq").on(t.organizationId, t.registryId),
+  ]
+);
+
+/** Encrypted credentials per instance (one row per instance). */
+export const integrationCredentials = pgTable(
+  "integration_credentials",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    instanceId:     uuid("instance_id").notNull().references(() => integrationInstances.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    encryptedData:  text("encrypted_data").notNull(),
+    expiresAt:      timestamp("expires_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [uniqueIndex("integration_credentials_instance_uniq").on(t.instanceId)]
+);
+
+/** Record of each sync run. */
+export const integrationSyncs = pgTable(
+  "integration_syncs",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    instanceId:     uuid("instance_id").notNull().references(() => integrationInstances.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    status:         integrationSyncStatus("status").notNull().default("pending"),
+    syncType:       text("sync_type").notNull().default("incremental"),
+    startedAt:      timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    recordsFetched: integer("records_fetched").notNull().default(0),
+    recordsCreated: integer("records_created").notNull().default(0),
+    recordsUpdated: integer("records_updated").notNull().default(0),
+    recordsFailed:  integer("records_failed").notNull().default(0),
+    errorMessage:   text("error_message"),
+    summary:        jsonb("summary"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("integration_syncs_instance_idx").on(t.instanceId),
+    index("integration_syncs_org_idx").on(t.organizationId, t.startedAt),
+    index("integration_syncs_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Detailed log entries per instance. */
+export const integrationLogs = pgTable(
+  "integration_logs",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    instanceId:     uuid("instance_id").notNull().references(() => integrationInstances.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    syncId:         uuid("sync_id").references(() => integrationSyncs.id, { onDelete: "set null" }),
+    level:          text("level").notNull().default("info"),
+    message:        text("message").notNull(),
+    metadata:       jsonb("metadata"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("integration_logs_instance_idx").on(t.instanceId, t.createdAt),
+    index("integration_logs_org_idx").on(t.organizationId, t.createdAt),
+  ]
+);
+
+/** Governance events generated by integration syncs. */
+export const integrationEvents = pgTable(
+  "integration_events",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    instanceId:     uuid("instance_id").notNull().references(() => integrationInstances.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    eventType:      integrationEventType("event_type").notNull(),
+    title:          text("title").notNull(),
+    description:    text("description"),
+    severity:       text("severity").notNull().default("medium"),
+    sourceRef:      text("source_ref"),
+    resolved:       boolean("resolved").notNull().default(false),
+    resolvedAt:     timestamp("resolved_at", { withTimezone: true }),
+    entityType:     text("entity_type"),
+    entityId:       uuid("entity_id"),
+    metadata:       jsonb("metadata"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("integration_events_instance_idx").on(t.instanceId, t.createdAt),
+    index("integration_events_org_idx").on(t.organizationId, t.createdAt),
+    index("integration_events_resolved_idx").on(t.organizationId, t.resolved),
+  ]
+);
+
+/** Maps integration data fields to AUDT entities (control / risk / evidence / etc.). */
+export const integrationMappings = pgTable(
+  "integration_mappings",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    instanceId:     uuid("instance_id").notNull().references(() => integrationInstances.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    sourceField:    text("source_field").notNull(),
+    targetType:     integrationMappingTarget("target_type").notNull(),
+    targetId:       uuid("target_id"),
+    mappingRule:    jsonb("mapping_rule"),
+    isActive:       boolean("is_active").notNull().default(true),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("integration_mappings_instance_idx").on(t.instanceId),
+    index("integration_mappings_org_idx").on(t.organizationId),
+  ]
+);
+
+/** Inbound / outbound webhook configurations. */
+export const integrationWebhooks = pgTable(
+  "integration_webhooks",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    instanceId:     uuid("instance_id").references(() => integrationInstances.id, { onDelete: "set null" }),
+    name:           text("name").notNull(),
+    direction:      integrationWebhookDirection("direction").notNull().default("inbound"),
+    url:            text("url"),
+    secretHash:     text("secret_hash"),
+    eventTypes:     text("event_types").array().notNull().default([]),
+    isActive:       boolean("is_active").notNull().default(true),
+    lastTriggered:  timestamp("last_triggered", { withTimezone: true }),
+    totalCalls:     integer("total_calls").notNull().default(0),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("integration_webhooks_org_idx").on(t.organizationId)]
+);
+
+// Integration Hub™ types
+export type IntegrationRegistry = typeof integrationRegistry.$inferSelect;
+export type IntegrationInstance = typeof integrationInstances.$inferSelect;
+export type IntegrationSync = typeof integrationSyncs.$inferSelect;
+export type IntegrationLog = typeof integrationLogs.$inferSelect;
+export type IntegrationEvent = typeof integrationEvents.$inferSelect;
+export type IntegrationMapping = typeof integrationMappings.$inferSelect;
+export type IntegrationWebhook = typeof integrationWebhooks.$inferSelect;
