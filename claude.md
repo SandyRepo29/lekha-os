@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
-- **Total tables:** 115 (107 previous + integration_registry + integration_instances + integration_credentials + integration_syncs + integration_logs + integration_events + integration_mappings + integration_webhooks)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · **Trust Network™**
+- **Total tables:** 117 (115 previous + network_profile_views + network_followers)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -1093,6 +1093,32 @@ Trust Network layer. 9 new tables: `trust_profiles`, `trust_documents`, `trust_s
 - Actions: `lib/trust-exchange/actions.ts`
 - Migration: `supabase/migrations/0020_trust_exchange.sql`
 - Routes: `/trust-exchange/*` (8 pages)
+
+### Module 18 — Trust Network™ ✅ Complete (2026-06-11)
+
+Public Trust Infrastructure — platform layer aggregating Trust Exchange™, Benchmarking™, Integration Hub™, Trust Intelligence™, and Trust Graph™ into a unified external trust presence. No separate DB (reads from existing tables) + 2 new tables for network tracking.
+
+| Feature | Detail |
+|---|---|
+| **Trust Network Reputation™** | 5-component 0–100 score: profile quality (25%) + benchmark percentile (20%) + automation coverage (20%) + org trust score (20%) + network activity (15%) |
+| **Public Trust Profile 2.0** | Trust Score™ + Privacy Trust™ + Governance Maturity™ + Benchmark Position™ + Automation Transparency™ |
+| **Governance Maturity™** | 6-level ladder (Reactive → Trust Leader), powered by Benchmarking™ |
+| **Industry Ranking™** | Percentile bar + Top Quartile badge, powered by Benchmarking™ |
+| **Automation Transparency™** | Evidence automation % + monitoring coverage % + connected systems, powered by Integration Hub™ |
+| **Network Directory** | Browse all published Trust Profiles |
+| **Trust Relationships™** | Org-to-org relationship registry with type/status breakdown |
+| **Trust Activity Feed™** | Timeline of all trust network events |
+| **Network Follow Graph** | Follow/unfollow orgs; follower/following counts |
+| **Profile View Tracking** | 30-day profile view counts |
+| **AI Trust Network Advisor™** | Executive summary + Network Improvement Plan™ (4 actions) + NL chat |
+| **REST API** | `GET /api/v1/trust-network` (dashboard / directory / relationships views) |
+
+- Service: `lib/services/trust-network/trust-network-service.ts`
+- AI service: `lib/services/trust-network/ai-trust-network-service.ts`
+- Repo: `lib/repositories/trust-network-repo.ts`
+- Actions: `lib/trust-network/actions.ts`
+- Migration: `supabase/migrations/0023_trust_network.sql` ✅ APPLIED
+- Routes: `/trust-network/*` (6 pages: Dashboard · Profile · Directory · Relationships · Activity · AI Advisor)
 
 | Next Module | Description | Status |
 |---|---|---|

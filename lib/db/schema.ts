@@ -3344,3 +3344,38 @@ export type IntegrationLog = typeof integrationLogs.$inferSelect;
 export type IntegrationEvent = typeof integrationEvents.$inferSelect;
 export type IntegrationMapping = typeof integrationMappings.$inferSelect;
 export type IntegrationWebhook = typeof integrationWebhooks.$inferSelect;
+
+/* ============================================================
+   Trust Network™ — Public Trust Infrastructure Layer (Module 18)
+   ============================================================ */
+
+/** Tracks views of public trust profiles. */
+export const networkProfileViews = pgTable(
+  "network_profile_views",
+  {
+    id:           uuid("id").primaryKey().defaultRandom(),
+    viewedOrgId:  uuid("viewed_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    viewerOrgId:  uuid("viewer_org_id").references(() => organizations.id, { onDelete: "set null" }),
+    viewedAt:     timestamp("viewed_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_npv_viewed_org").on(t.viewedOrgId, t.viewedAt)]
+);
+
+/** Org-to-org follower graph in the Trust Network. */
+export const networkFollowers = pgTable(
+  "network_followers",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    followerOrgId:   uuid("follower_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    followingOrgId:  uuid("following_org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("uq_network_followers").on(t.followerOrgId, t.followingOrgId),
+    index("idx_nf_following").on(t.followingOrgId),
+  ]
+);
+
+// Trust Network™ types
+export type NetworkProfileView = typeof networkProfileViews.$inferSelect;
+export type NetworkFollower    = typeof networkFollowers.$inferSelect;
