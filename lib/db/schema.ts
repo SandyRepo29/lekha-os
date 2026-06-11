@@ -2978,3 +2978,135 @@ export type TrustVerification = typeof trustVerifications.$inferSelect;
 export type TrustBadge = typeof trustBadges.$inferSelect;
 export type TrustRelationship = typeof trustRelationships.$inferSelect;
 export type TrustActivityRow = typeof trustActivity.$inferSelect;
+
+/* ============================================================
+   Governance Benchmarking™ — Enums + Tables (Module 16)
+   ============================================================ */
+
+export const benchmarkCategory = pgEnum("benchmark_category", [
+  "organizational_trust",
+  "vendor_trust",
+  "risk_posture",
+  "control_health",
+  "audit_readiness",
+  "compliance_coverage",
+  "privacy_trust",
+  "contract_trust",
+  "issue_resolution",
+  "workflow_automation",
+]);
+
+export const benchmarkMaturityLevel = pgEnum("benchmark_maturity_level", [
+  "reactive",
+  "managed",
+  "defined",
+  "measured",
+  "optimized",
+  "trust_leader",
+]);
+
+export const benchmarkRankingLabel = pgEnum("benchmark_ranking_label", [
+  "top_1_percent",
+  "top_5_percent",
+  "top_10_percent",
+  "top_quartile",
+  "above_average",
+  "average",
+  "below_average",
+  "at_risk",
+]);
+
+/** Industry baseline statistics — system-wide, not per-org. Seeded at migration time. */
+export const benchmarkIndustries = pgTable(
+  "benchmark_industries",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    industry:       text("industry").notNull(),
+    companySize:    text("company_size").notNull().default("all"),
+    category:       benchmarkCategory("category").notNull(),
+    avgScore:       integer("avg_score").notNull().default(65),
+    medianScore:    integer("median_score").notNull().default(65),
+    topQuartile:    integer("top_quartile").notNull().default(80),
+    topDecile:      integer("top_decile").notNull().default(90),
+    bottomQuartile: integer("bottom_quartile").notNull().default(50),
+    stdDev:         integer("std_dev").notNull().default(15),
+    sampleSize:     integer("sample_size").notNull().default(100),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("benchmark_industries_cat_idx").on(t.industry, t.companySize, t.category),
+  ]
+);
+
+/** Point-in-time governance benchmark snapshot for an org. */
+export const benchmarkSnapshots = pgTable(
+  "benchmark_snapshots",
+  {
+    id:                uuid("id").primaryKey().defaultRandom(),
+    organizationId:    uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    snapshotDate:      text("snapshot_date").notNull(),
+    industry:          text("industry"),
+    companySize:       text("company_size"),
+    overallScore:      integer("overall_score"),
+    overallPercentile: integer("overall_percentile"),
+    maturityLevel:     benchmarkMaturityLevel("maturity_level").notNull().default("reactive"),
+    overallRanking:    benchmarkRankingLabel("overall_ranking").notNull().default("average"),
+    peerCount:         integer("peer_count").notNull().default(0),
+    createdAt:         timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("benchmark_snapshots_org_idx").on(t.organizationId),
+    index("benchmark_snapshots_date_idx").on(t.organizationId, t.snapshotDate),
+  ]
+);
+
+/** Per-category scores within a benchmark snapshot. */
+export const benchmarkScores = pgTable(
+  "benchmark_scores",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    snapshotId:       uuid("snapshot_id").notNull().references(() => benchmarkSnapshots.id, { onDelete: "cascade" }),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    category:         benchmarkCategory("category").notNull(),
+    orgScore:         integer("org_score"),
+    industryAvg:      integer("industry_avg"),
+    peerAvg:          integer("peer_avg"),
+    topQuartile:      integer("top_quartile"),
+    percentile:       integer("percentile"),
+    rankingLabel:     benchmarkRankingLabel("ranking_label").notNull().default("average"),
+    deltaVsIndustry:  integer("delta_vs_industry"),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("benchmark_scores_snapshot_idx").on(t.snapshotId),
+    index("benchmark_scores_org_idx").on(t.organizationId),
+    index("benchmark_scores_category_idx").on(t.organizationId, t.category),
+  ]
+);
+
+/** Monthly trend data per org per category (sparklines). */
+export const benchmarkTrends = pgTable(
+  "benchmark_trends",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    category:       benchmarkCategory("category").notNull(),
+    periodMonth:    text("period_month").notNull(),
+    score:          integer("score"),
+    percentile:     integer("percentile"),
+    rankingLabel:   benchmarkRankingLabel("ranking_label").notNull().default("average"),
+    industryAvg:    integer("industry_avg"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("benchmark_trends_org_idx").on(t.organizationId),
+    index("benchmark_trends_cat_idx").on(t.organizationId, t.category),
+    uniqueIndex("benchmark_trends_uniq").on(t.organizationId, t.category, t.periodMonth),
+  ]
+);
+
+// Governance Benchmarking™ types
+export type BenchmarkIndustry = typeof benchmarkIndustries.$inferSelect;
+export type BenchmarkSnapshot = typeof benchmarkSnapshots.$inferSelect;
+export type BenchmarkScore = typeof benchmarkScores.$inferSelect;
+export type BenchmarkTrend = typeof benchmarkTrends.$inferSelect;

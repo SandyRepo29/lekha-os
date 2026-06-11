@@ -22,6 +22,7 @@ import {
   Target,
   GitBranch,
   Globe,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +46,7 @@ const items: Item[] = [
   { href: "/issue-hub", label: "Issue & Remediation Hub", icon: Target },
   { href: "/workflow-studio", label: "Workflow Studio", icon: GitBranch },
   { href: "/trust-exchange", label: "Trust Exchange™", icon: Globe },
+  { href: "/benchmarking", label: "Governance Benchmarking™", icon: BarChart3 },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
