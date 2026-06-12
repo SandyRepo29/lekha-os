@@ -30,6 +30,7 @@ node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
 node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 node scripts/apply-sql.mjs supabase/migrations/0021_benchmarking.sql
 node scripts/apply-sql.mjs supabase/migrations/0022_integration_hub.sql
+node scripts/apply-sql.mjs supabase/migrations/0023_trust_network.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -74,9 +75,12 @@ node scripts/seed-benchmarking.mjs
 
 # 16. Seed Integration Hub™ (Module 17A)
 node scripts/seed-integration-hub.mjs
+
+# 17. Seed Trust Network™ (Module 18)
+node scripts/seed-trust-network.mjs
 ```
 
-After this, **every module has complete demo data** and **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. and **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
+After this, **every module has complete demo data**. **Trust Network™** is live at `/trust-network` with Network Reputation™ score, 47 profile views, 12 activity milestones, and an AI Network Advisor. **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
 
 ---
 
@@ -296,6 +300,7 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 | `seed-trust-exchange.mjs` | Third-Party Risk Exchange™ | 1 published Trust Profile · 5 trust documents (ISO 27001, SOC 2, Cyber Insurance, Pen Test, DPDP) · 4 badges · 1 global questionnaire with 4 answered questions · activity log |
 | `seed-benchmarking.mjs` | Governance Benchmarking™ | 1 benchmark snapshot (overall 77, 72nd percentile, Defined maturity) · 10 category scores · 60 trend rows (6 months × 10 categories) |
 | `seed-integration-hub.mjs` | Integration Hub™ | 5 connected integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack) · sync history · 4 open governance events |
+| `seed-trust-network.mjs` | Trust Network™ | 47 anonymous profile views (30-day window) · 12 activity milestones · 1 network follower · profile published (score 92) |
 
 ---
 
@@ -739,6 +744,30 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 18 — Trust Network™
+
+> **`seed-trust-network.mjs`** seeds profile views, trust activity milestones, and a network follower.
+
+| Test | Where | Expected |
+|---|---|---|
+| View dashboard | `/trust-network` | Reputation score ring, 6 metrics, 3 pillar cards, activity feed |
+| Network Reputation™ | Dashboard | Score ~85+ (Highly Trusted) — computed from 5 module signals |
+| Public Profile | `/trust-network/profile` | Profile completeness 100%, trust 92, badges shown |
+| Network Directory | `/trust-network/directory` | Published profile with completeness badge |
+| Trust Relationships | `/trust-network/relationships` | Relationships from Trust Exchange™ |
+| Activity Feed | `/trust-network/activity` | 12 milestones: verifications, badges, relationship events |
+| AI Advisor | `/trust-network/ai` | Reputation summary + 4 improvement recommendations + chat |
+| REST API | `GET /api/v1/trust-network` | Dashboard data |
+| REST API directory | `GET /api/v1/trust-network?view=directory` | Published profile list |
+
+**Seeded Trust Network data:**
+- **Profile views**: 47 anonymous views across 30-day window
+- **Activity milestones (12)**: profile_created · document_verified (3×) · badge_issued (4×) · questionnaire_answered · relationship_created · profile_updated
+- **Network follower**: 1 (if second org exists in DB)
+- **Profile**: Published · 100% completeness · trust_score 92 · privacy_score 88 · ISO 27001 + SOC 2 + DPDP Ready certifications
+
+---
+
 ### Module 17A — Integration Hub™
 
 > **`seed-integration-hub.mjs`** seeds 5 connected integrations and 4 open governance events.
@@ -865,7 +894,7 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 
 | Script | Purpose |
 |---|---|
-| `check-db.mjs` | Quick table row counts for all 115 tables |
+| `check-db.mjs` | Quick table row counts for all 117 tables |
 | `apply-sql.mjs <file>` | Apply raw SQL file to DB |
 | `verify-db.mjs` | Deeper DB state verification |
 | `verify-vendors.mjs` | Vendor data quality checks |
@@ -960,5 +989,7 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `integration_events` | 4 (open governance events: 2 critical, 1 high, 1 medium) | seed-integration-hub |
 | `integration_mappings` | 0 (configure via webhook setup) | — |
 | `integration_webhooks` | 0 (create via `/integration-hub/webhooks`) | — |
+| `network_profile_views` | 47 (anonymous views across 30-day window) | seed-trust-network |
+| `network_followers` | 0–1 (1 if 2nd org exists) | seed-trust-network |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/benchmarking` to see industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.

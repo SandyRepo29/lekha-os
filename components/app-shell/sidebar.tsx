@@ -25,6 +25,7 @@ import {
   BarChart3,
   Plug,
   Network,
+  LineChart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -52,6 +53,7 @@ const items: Item[] = [
   { href: "/benchmarking", label: "Governance Benchmarking™", icon: BarChart3 },
   { href: "/integration-hub", label: "Integration Hub™", icon: Plug },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
+  { href: "/executive-reporting", label: "Executive Reporting™", icon: LineChart },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 

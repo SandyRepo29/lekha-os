@@ -3379,3 +3379,181 @@ export const networkFollowers = pgTable(
 // Trust Network™ types
 export type NetworkProfileView = typeof networkProfileViews.$inferSelect;
 export type NetworkFollower    = typeof networkFollowers.$inferSelect;
+
+// ─────────────────────────────────────────
+// Module 19 — Executive Reporting & Analytics™
+// ─────────────────────────────────────────
+
+export const analyticsDashboards = pgTable(
+  "analytics_dashboards",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    dashboardType: text("dashboard_type").notNull(),
+    description: text("description"),
+    layoutConfig: jsonb("layout_config").default({}),
+    isDefault: boolean("is_default").default(false),
+    isShared: boolean("is_shared").default(false),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_analytics_dashboards_org").on(t.orgId)]
+);
+
+export const analyticsWidgets = pgTable(
+  "analytics_widgets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    dashboardId: uuid("dashboard_id").notNull().references(() => analyticsDashboards.id, { onDelete: "cascade" }),
+    widgetType: text("widget_type").notNull(),
+    title: text("title").notNull(),
+    config: jsonb("config").default({}),
+    positionX: integer("position_x").default(0),
+    positionY: integer("position_y").default(0),
+    width: integer("width").default(4),
+    height: integer("height").default(3),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  }
+);
+
+export const analyticsReports = pgTable(
+  "analytics_reports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    reportType: text("report_type").notNull(),
+    status: text("status").notNull().default("draft"),
+    format: text("format").notNull().default("pdf"),
+    config: jsonb("config").default({}),
+    contentSnapshot: jsonb("content_snapshot").default({}),
+    filePath: text("file_path"),
+    generatedBy: uuid("generated_by").references(() => profiles.id, { onDelete: "set null" }),
+    generatedAt: timestamp("generated_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_analytics_reports_org_type").on(t.orgId, t.reportType),
+    index("idx_analytics_reports_org_status").on(t.orgId, t.status),
+  ]
+);
+
+export const analyticsSchedules = pgTable(
+  "analytics_schedules",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    reportType: text("report_type").notNull(),
+    frequency: text("frequency").notNull(),
+    deliveryMethod: text("delivery_method").notNull().default("email"),
+    recipients: jsonb("recipients").default([]),
+    config: jsonb("config").default({}),
+    isActive: boolean("is_active").default(true),
+    lastRunAt: timestamp("last_run_at", { withTimezone: true }),
+    nextRunAt: timestamp("next_run_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_analytics_schedules_org").on(t.orgId, t.isActive)]
+);
+
+export const analyticsSnapshots = pgTable(
+  "analytics_snapshots",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    snapshotDate: date("snapshot_date").notNull(),
+    kpiData: jsonb("kpi_data").notNull().default({}),
+    trendData: jsonb("trend_data").notNull().default({}),
+    benchmarkData: jsonb("benchmark_data").notNull().default({}),
+    forecastData: jsonb("forecast_data").notNull().default({}),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("uq_analytics_snapshots_org_date").on(t.orgId, t.snapshotDate),
+    index("idx_analytics_snapshots_org_date").on(t.orgId, t.snapshotDate),
+  ]
+);
+
+export const analyticsExports = pgTable(
+  "analytics_exports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    reportId: uuid("report_id").references(() => analyticsReports.id, { onDelete: "set null" }),
+    exportType: text("export_type").notNull(),
+    format: text("format").notNull(),
+    filePath: text("file_path"),
+    fileSize: bigint("file_size", { mode: "number" }),
+    status: text("status").notNull().default("pending"),
+    exportedBy: uuid("exported_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  }
+);
+
+export const analyticsForecasts = pgTable(
+  "analytics_forecasts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    metricName: text("metric_name").notNull(),
+    horizonDays: integer("horizon_days").notNull(),
+    currentValue: numeric("current_value", { precision: 5, scale: 2 }),
+    forecastValue: numeric("forecast_value", { precision: 5, scale: 2 }),
+    confidenceScore: numeric("confidence_score", { precision: 5, scale: 2 }),
+    forecastData: jsonb("forecast_data").default([]),
+    generatedAt: timestamp("generated_at", { withTimezone: true }).defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_analytics_forecasts_org_metric").on(t.orgId, t.metricName)]
+);
+
+export const analyticsSubscriptions = pgTable(
+  "analytics_subscriptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+    scheduleId: uuid("schedule_id").references(() => analyticsSchedules.id, { onDelete: "cascade" }),
+    reportType: text("report_type").notNull(),
+    isActive: boolean("is_active").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("uq_analytics_sub_schedule_user").on(t.scheduleId, t.userId)]
+);
+
+export const analyticsKpis = pgTable(
+  "analytics_kpis",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    kpiKey: text("kpi_key").notNull(),
+    kpiName: text("kpi_name").notNull(),
+    currentValue: numeric("current_value", { precision: 10, scale: 2 }),
+    previousValue: numeric("previous_value", { precision: 10, scale: 2 }),
+    targetValue: numeric("target_value", { precision: 10, scale: 2 }),
+    unit: text("unit"),
+    trend: text("trend"),
+    period: text("period"),
+    computedAt: timestamp("computed_at", { withTimezone: true }).defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("uq_analytics_kpis_org_key").on(t.orgId, t.kpiKey),
+    index("idx_analytics_kpis_org").on(t.orgId),
+  ]
+);
+
+export type AnalyticsDashboard = typeof analyticsDashboards.$inferSelect;
+export type AnalyticsWidget = typeof analyticsWidgets.$inferSelect;
+export type AnalyticsReport = typeof analyticsReports.$inferSelect;
+export type AnalyticsSchedule = typeof analyticsSchedules.$inferSelect;
+export type AnalyticsSnapshot = typeof analyticsSnapshots.$inferSelect;
+export type AnalyticsExport = typeof analyticsExports.$inferSelect;
+export type AnalyticsForecast = typeof analyticsForecasts.$inferSelect;
+export type AnalyticsSubscription = typeof analyticsSubscriptions.$inferSelect;
+export type AnalyticsKpi = typeof analyticsKpis.$inferSelect;

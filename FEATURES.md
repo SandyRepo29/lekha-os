@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-11 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **21 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · **Integration Hub™**
+> Modules: **22 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · **Integration Hub™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -33,9 +33,9 @@
 | **Provider layer** | Auth, AI, Storage, Crypto, Rate-limit — all SDKs isolated in `lib/providers/`; services never import SDKs directly |
 | **Storage** | Two private buckets: `vendor-documents` (legacy) + `compliance-documents` (new, `tenant_` prefix paths); auto-routing by path prefix; 15-min signed URLs only — no public access |
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
-| **REST API v1** | 46 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
+| **REST API v1** | 47 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + trust-network + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **115 tables** across 22 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **117 tables** across 23 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -373,7 +373,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · **Third-Party Risk Exchange™** · **Governance Benchmarking™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · **Third-Party Risk Exchange™** · **Trust Network™** · **Governance Benchmarking™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -446,7 +446,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 103 tables, 20 migrations applied, Supabase Mumbai (ap-south-1) |
+| **DB** | ✅ 117 tables, 23 migrations applied, Supabase Mumbai (ap-south-1) |
 | **Module 1 — Vendor Hub™** | ✅ Complete |
 | **Module 2 — Evidence Vault™** | ✅ Complete |
 | **Module 3 — Settings & Org** | ✅ Complete |
@@ -464,6 +464,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Module 15 — Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) |
 | **Module 16 — Governance Benchmarking™** | ✅ Complete (2026-06-11) |
 | **Module 17A — Integration Hub™** | ✅ Complete (2026-06-11) |
+| **Module 18 — Trust Network™** | ✅ Complete (2026-06-11) |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -497,6 +498,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Third-Party Risk Exchange™** | Trust Network layer — vendor trust profiles, evidence exchange, badges, questionnaire exchange, AI trust scoring | ✅ Complete (2026-06-11) |
 | **Governance Benchmarking™** | Industry peer comparison across 10 categories — percentile engine, maturity levels, AI analyst, trends | ✅ Complete (2026-06-11) |
 | **Integration Hub™** | Connector Marketplace, 35+ integrations, Sync Engine, Webhook Engine, AI Integration Advisor, governance event detection | ✅ Complete (2026-06-11) |
+| **Trust Network™** | Public governance infrastructure — Network Reputation™ score, Governance Maturity™, profile views, network followers, AI reputation advisor | ✅ Complete (2026-06-11) |
 | **AI Governance** | AI model risk, responsible AI frameworks | Future |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
@@ -766,6 +768,68 @@ The Governance Automation Engine. Transforms AUDT from a platform that *monitors
 | completed | All steps finished successfully |
 | failed | Execution error encountered |
 | cancelled | Manually cancelled by a user |
+
+---
+
+## 🌐 Module 18 — Trust Network™
+
+> Completed 2026-06-11
+
+The Public Governance Infrastructure Layer. Aggregates signals from Vendor Hub™, Trust Exchange™, Governance Benchmarking™, Trust Intelligence™, Integration Hub™, and Trust Graph™ into a single **Network Reputation™** score. Transforms AUDT from an internal governance platform into a public trust infrastructure that organizations use to signal governance maturity to the market.
+
+### Trust Network Reputation™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Profile Quality** | 25% | Trust Exchange™ profile completeness + document count + badges |
+| **Benchmark Percentile** | 20% | Governance Benchmarking™ industry percentile |
+| **Integration Automation** | 20% | Integration Hub™ connected systems count + sync frequency |
+| **Org Trust Score** | 20% | Trust Intelligence™ Organizational Trust Score™ |
+| **Network Activity** | 15% | Profile views (30d) + followers + trust relationships |
+
+### Governance Maturity Levels™
+
+| Level | Label | Percentile |
+|---|---|---|
+| 1 | Reactive | < 40th |
+| 2 | Managed | 40th–59th |
+| 3 | Defined | 60th–74th |
+| 4 | Measured | 75th–89th |
+| 5 | Optimized | 90th–98th |
+| 6 | Trust Leader | ≥ 99th |
+
+### Reputation Levels
+
+| Range | Level |
+|---|---|
+| 90–100 | Trust Leader |
+| 80–89 | Highly Trusted |
+| 65–79 | Trusted |
+| 45–64 | Developing |
+| 25–44 | Emerging |
+| 0–24 | Getting Started |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Dashboard** | Network Reputation™ score ring · 6 metrics (profile views, followers, documents, badges, relationships, automation %) · 3 pillar cards (Governance Maturity, Industry Ranking, Automation Transparency) · Trust Network activity feed |
+| **Network Reputation™** | 5-component 0–100 pure engine (`trust-network-service.ts`) · level label · aggregated from 5 existing module data sources |
+| **Public Trust Profile 2.0** | Reputation ring + profile completeness + Vendor Trust™, Privacy Trust™, Governance Maturity™, Benchmark Position™ signal cards · Automation Transparency™ panel (integration count, synced records, evidence collected) |
+| **Network Directory** | Browse published profiles across the trust network — filter by industry, country; completeness badge for ≥80% complete profiles |
+| **Trust Relationships™** | View active trust relationships by type (customer/vendor/partner/processor/auditor/consultant) with status and date |
+| **Network Activity Feed** | Chronological timeline of trust milestones — document verifications, badge issuances, relationship events, profile updates |
+| **Profile Views™** | 30-day rolling view count tracked in `network_profile_views` table — anonymous and authenticated viewers |
+| **Trust Reach™** | Follower count + relationship count as network reach metric |
+| **Industry Rank™** | Benchmark percentile position surfaced as a dashboard metric |
+| **Automation Transparency™** | Public display of integration automation depth — systems connected, records synced, evidence auto-collected |
+| **AI Network Advisor™** | Gemini board-ready governance reputation summary (cached 24h) · 4 Network Improvement Plan™ recommendations · NL chat |
+| **AI Network Summary™** | Board-ready summary: market-facing trust posture, key strengths, improvement opportunities |
+| **REST API** | `GET /api/v1/trust-network` — dashboard (?view=directory\|relationships) |
+| **Navigation** | Sidebar "Trust Network™" with Network icon between Trust Exchange™ and Governance Benchmarking™ |
+| **Sub-pages** | Dashboard · Public Profile · Network Directory · Relationships · Activity Feed · AI Advisor |
+| **DB tables** | `network_profile_views` · `network_followers` (migration 0023 applied) |
+| **Seed data** | 47 profile views (30-day window) · 12 trust activity milestones · 1 network follower |
 
 ---
 

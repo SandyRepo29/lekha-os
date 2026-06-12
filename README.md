@@ -31,6 +31,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Issue & Remediation Hub™** | ✅ Complete (2026-06-10) | `/issue-hub/*` |
 | **Workflow Studio™** | ✅ Complete (2026-06-10) | `/workflow-studio/*` |
 | **Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) | `/trust-exchange/*` |
+| **Trust Network™** | ✅ Complete (2026-06-11) | `/trust-network/*` |
 | **Governance Benchmarking™** | ✅ Complete (2026-06-11) | `/benchmarking/*` |
 | **Integration Hub™** | ✅ Complete (2026-06-11) | `/integration-hub/*` |
 
@@ -86,6 +87,7 @@ node scripts/apply-sql.mjs supabase/migrations/0019_workflow_studio.sql
 node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 node scripts/apply-sql.mjs supabase/migrations/0021_benchmarking.sql
 node scripts/apply-sql.mjs supabase/migrations/0022_integration_hub.sql
+node scripts/apply-sql.mjs supabase/migrations/0023_trust_network.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -108,6 +110,7 @@ node scripts/seed-workflows.mjs                    # 5 workflows + nodes + runs 
 node scripts/seed-trust-exchange.mjs               # Trust Profile + 5 documents + 4 badges + questionnaire
 node scripts/seed-benchmarking.mjs                 # Benchmark snapshot + 10 category scores + 6-month trends
 node scripts/seed-integration-hub.mjs              # 5 connected integrations + 4 governance events
+node scripts/seed-trust-network.mjs               # 47 profile views + 12 activity events + follower
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
@@ -170,6 +173,7 @@ Authorization: Bearer audt_live_<key>
 | `GET /api/v1/integrations` | read_only | Connected integrations list (?view=marketplace\|dashboard) |
 | `GET /api/v1/integrations/health` | read_only | Integration Hub™ health metrics |
 | `GET /api/v1/integrations/syncs` | read_only | Sync history log |
+| `GET /api/v1/trust-network` | read_only | Network dashboard (?view=directory\|relationships) |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -196,7 +200,8 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 | `node scripts/seed-trust-exchange.mjs` | Trust Profile + 5 documents + 4 badges + 1 questionnaire with answers |
 | `node scripts/seed-benchmarking.mjs` | Benchmark snapshot · 10 category scores · 6-month trend history |
 | `node scripts/seed-integration-hub.mjs` | 5 connected integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack) + 4 governance events |
-| `node scripts/check-db.mjs` | Table row counts for all 115 tables |
+| `node scripts/seed-trust-network.mjs` | 47 profile views + 12 trust activity milestones + 1 network follower |
+| `node scripts/check-db.mjs` | Table row counts for all 117 tables |
 | `git push origin main` | Auto-deploy to Vercel |
 
 ---
@@ -207,7 +212,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · 115 tables · 22 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · 117 tables · 23 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
 | AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance monitor, trend forecasting |

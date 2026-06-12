@@ -54,7 +54,11 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-exchange\\\\\" -Force)",
       "PowerShell(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\"; $env:DATABASE_URL = \\(Get-Content .env.local | Select-String \"^DATABASE_URL=\"\\).ToString\\(\\).Replace\\(\"DATABASE_URL=\",\"\"\\); node scripts/seed-benchmarking.mjs 2>&1)",
       "Skill(run)",
-      "Skill(run:*)"
+      "Skill(run:*)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" -Recurse -Filter \"*sidebar*\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 20)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-network\" -Recurse)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-network\\\\\" -Recurse | Select-Object @{Name=\"Path\";Expression={$_.FullName.Replace\\(\"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\\", \"\"\\)}}, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"Directory\"}else{\"File\"}}}, Length | Sort-Object Path | Format-Table -AutoSize)"
     ]
   }
 }
