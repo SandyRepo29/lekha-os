@@ -78,9 +78,12 @@ node scripts/seed-integration-hub.mjs
 
 # 17. Seed Trust Network™ (Module 18)
 node scripts/seed-trust-network.mjs
+
+# 18. Seed Executive Reporting & Analytics™ (Module 19)
+node scripts/seed-executive-reporting.mjs
 ```
 
-After this, **every module has complete demo data**. **Trust Network™** is live at `/trust-network` with Network Reputation™ score, 47 profile views, 12 activity milestones, and an AI Network Advisor. **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
+After this, **every module has complete demo data**. **Executive Reporting & Analytics™** is live at `/executive-reporting` with 10 live KPIs, 5 days of snapshot history, 3 generated reports, 2 active schedules, and 9 predictive forecasts. **Trust Network™** is live at `/trust-network` with Network Reputation™ score, 47 profile views, 12 activity milestones, and an AI Network Advisor. **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
 
 ---
 
@@ -301,6 +304,7 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 | `seed-benchmarking.mjs` | Governance Benchmarking™ | 1 benchmark snapshot (overall 77, 72nd percentile, Defined maturity) · 10 category scores · 60 trend rows (6 months × 10 categories) |
 | `seed-integration-hub.mjs` | Integration Hub™ | 5 connected integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack) · sync history · 4 open governance events |
 | `seed-trust-network.mjs` | Trust Network™ | 47 anonymous profile views (30-day window) · 12 activity milestones · 1 network follower · profile published (score 92) |
+| `seed-executive-reporting.mjs` | Executive Reporting & Analytics™ | 10 KPIs (org trust 78, control health 74, open risks 8, etc.) · 5 KPI snapshots (5-day history) · 3 board reports · 2 active schedules · 9 forecasts (3 metrics × 3 horizons) |
 
 ---
 
@@ -741,6 +745,36 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 - **Snapshot**: Overall score 77 · 72nd percentile · Defined maturity
 - **Categories (10)**: Org Trust · Vendor Trust · Risk · Controls · Audit · Compliance · Privacy · Contract · Issues · Workflow
 - **Trend history**: 6 months × 10 categories = 60 trend rows
+
+---
+
+### Module 19 — Executive Reporting & Analytics™
+
+> **`seed-executive-reporting.mjs`** seeds 10 KPIs, 5 daily snapshots, 3 board reports, 2 schedules, and 9 forecasts.
+
+| Test | Where | Expected |
+|---|---|---|
+| View main hub | `/executive-reporting` | KPI strip (5 cards), 6 dashboard type cards, module nav, recent reports |
+| CEO Dashboard | `/executive-reporting/dashboard/ceo` | 5 KPIs: Org Trust 78, Active Vendors 15, Open Risks 8, Alerts 3, Issues 6 |
+| CRO Dashboard | `/executive-reporting/dashboard/cro` | 5 KPIs: Open Risks 8, Findings 14, CAPAs 9, Alerts 3, Control Health 74 |
+| Board Dashboard | `/executive-reporting/dashboard/board` | Trust Score ring, quick access to Board Reports + Trust Intelligence |
+| Analytics Hub | `/executive-reporting/analytics` | 6 category cards with progress bars, KPI summary strip |
+| Snapshot history | Analytics Hub | 5-day rolling history table |
+| Board Reports | `/executive-reporting/board-reports` | 8 report type cards + 3 generated reports listed |
+| Generate report | Board Reports → "Generate" button | New report appears in history with "ready" status |
+| Schedules | `/executive-reporting/scheduled` | 2 active schedules: Monthly Board Pack + Weekly Risk Briefing |
+| Forecasts | `/executive-reporting/forecasts` | 3 metric cards (Trust Score, Control Health, Open Risks) each with 3 horizon forecasts |
+| Scorecards | `/executive-reporting/scorecards` | 6 scorecards with On Track / Monitor / Attention status badges |
+| AI Analyst | `/executive-reporting/ai` | Executive Summary (Gemini), 3 feature cards, Copilot chat |
+| AI Chat | AI page | Ask "What should leadership focus on?" → meaningful response |
+| REST API | `GET /api/v1/analytics` | KPIs + recent reports + snapshot count |
+
+**Seeded Executive Reporting data:**
+- **KPIs (10)**: org_trust_score 78 · active_vendors 15 · open_risks 8 · control_health 74 · open_findings 14 · open_capas 9 · compliance_frameworks 5 · monitoring_alerts 3 · open_issues 6 · contracts 7
+- **Snapshots (5)**: Rolling 5-day history with gradual improvement trend
+- **Reports (3)**: Board Governance Q2 2026 · Risk Committee June 2026 · Executive Governance Report — all "ready"
+- **Schedules (2)**: Monthly Board Pack (board_governance, email) · Weekly Risk Briefing (risk_committee, email)
+- **Forecasts (9)**: 3 metrics × 3 horizons (30/90/180 days) with 65–90% confidence
 
 ---
 

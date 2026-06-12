@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · **Trust Network™**
-- **Total tables:** 117 (115 previous + network_profile_views + network_followers)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · **Executive Reporting & Analytics™**
+- **Total tables:** 126 (117 previous + 9 analytics tables from migration 0024)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -232,6 +232,7 @@ node scripts/seed-compliance-frameworks.mjs         # optional: 5 frameworks + 1
 node scripts/seed-compliance-demo.mjs               # optional: realistic demo state
 node scripts/seed-risk-lens.mjs                     # optional: 20 risks + treatments + reviews
 node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ for all active vendors (19 vendors scored, HDFC 95 → Yotta 44)
+node scripts/seed-executive-reporting.mjs           # optional: Executive Reporting™ — 10 KPIs, 5 snapshots, 3 reports, 2 schedules, 9 forecasts
 ```
 
 ---
@@ -621,6 +622,18 @@ GET /api/v1/trust-exchange                  Trust profile + documents + badges +
 GET /api/v1/trust-exchange/documents        Trust document list (?visibility=)
 POST /api/v1/trust-exchange/documents       Add trust document (read_write key)
 GET /api/v1/trust-exchange/directory        Public vendor trust directory (?industry=, ?country=, ?minScore=, ?riskLevel=)
+GET /api/v1/trust-network                   Network dashboard (?view=directory|relationships)
+
+--- Executive Reporting & Analytics™ ---
+/executive-reporting                        Hub (KPI strip + 6 dashboard cards + module nav + recent reports)
+/executive-reporting/dashboard/[type]       Role dashboard: ceo | cro | ciso | compliance | board | custom
+/executive-reporting/analytics              Analytics Hub™ (cross-module KPI grid + snapshot history)
+/executive-reporting/board-reports          Board Reports™ (8 report types + generated reports history)
+/executive-reporting/scheduled              Scheduled Reports™ (schedule list + create)
+/executive-reporting/forecasts              Predictive Analytics™ (30/90/180-day forecasts per metric)
+/executive-reporting/scorecards             Executive Scorecards™ (6 domain scorecards with status)
+/executive-reporting/ai                     AI Executive Analyst™ (summary + board report + trend analysis + chat)
+GET /api/v1/analytics                       KPIs + snapshots + forecasts + schedules (?view=kpis|snapshots|forecasts)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -788,6 +801,25 @@ lib/
   team/actions.ts               Invite, role, deactivate, reactivate, transfer ownership, resend invite
   audit/actions.ts              All audit actions: audit CRUD + status + program + findings + CAPAs + all AI
   risk/actions.ts               All risk actions: risk CRUD + status + treatment + review + all AI
+  executive-reporting/actions.ts  getDashboardDataAction, computeKpisAction, generateReportAction (void),
+                                  createScheduleAction, toggleScheduleAction (void), generateForecastsAction,
+                                  takeSnapshotAction (void), generateExecutiveSummaryAction, chatAction
+
+  --- Executive Reporting & Analytics™ services ---
+  services/executive-reporting/
+    executive-reporting-service.ts  computeKpis() (10 KPIs via parallel queries), getDashboardData(orgId, dashboardType),
+                                    generateReport(), getReports(), createSchedule(), toggleSchedule(),
+                                    generateForecasts(), takeSnapshot(), getAnalyticsOverview()
+    ai-executive-reporting-service.ts  generateExecutiveSummary() (cached 24h), generateBoardReport(),
+                                       generateTrendAnalysis(), chat() (multi-turn NL)
+
+  --- Executive Reporting™ repository ---
+  repositories/
+    executive-reporting-repo.ts  upsertKpi(), getKpis(), upsertSnapshot(), getLatestSnapshot(),
+                                 getSnapshotHistory(), createReport(), getReports(),
+                                 createSchedule(), getSchedules(), toggleSchedule(),
+                                 upsertForecast(), getForecasts()
+    NOTE: analytics tables use `org_id` column (not `organization_id` like most AUDT tables)
 
   storage/
     server.ts                   Bucket-aware delegator — uploadFile, downloadObject, removeObjects,
@@ -903,6 +935,7 @@ supabase/
     0017_contract_governance.sql Contract Governance™ — 5 enums + contracts + contract_clauses + contract_obligations + contract_risks + contract_controls + contract_policies ✅ APPLIED
     0020_trust_exchange.sql     Third-Party Risk Exchange™ — 7 enums + trust_profiles + trust_documents + trust_shares + trust_questionnaires + trust_answers + trust_verifications + trust_badges + trust_relationships + trust_activity + RLS ✅ APPLIED
     0021_benchmarking.sql       Governance Benchmarking™ — 3 enums + benchmark_industries + benchmark_snapshots + benchmark_scores + benchmark_trends + RLS + seeded baselines ✅ APPLIED
+    0024_executive_reporting.sql Executive Reporting & Analytics™ — analytics_dashboards + analytics_widgets + analytics_reports + analytics_schedules + analytics_snapshots + analytics_exports + analytics_forecasts + analytics_subscriptions + analytics_kpis + RLS ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -920,6 +953,7 @@ scripts/
   seed-risk-lens.mjs            20 risks · 25 treatments · 8 reviews · vendor/control/framework links (idempotent)
   seed-trust-scores.mjs         Computes and stores Trust Score™ for all active vendors (idempotent)
   seed-trust-exchange.mjs       1 published trust profile · 5 documents · 4 badges · 1 global questionnaire with answers
+  seed-executive-reporting.mjs  10 KPIs + 5 snapshots + 3 board reports + 2 schedules + 9 forecasts (3 metrics × 3 horizons)
   SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
@@ -974,7 +1008,14 @@ vi.mock("@/lib/db", () => ({
 
 ### Module 10 — Policy Governance™ ✅ Complete (2026-06-09)
 ### Module 11 — DPDP Privacy™ ✅ Complete (2026-06-09)
+### Module 12 — Contract Governance™ ✅ Complete (2026-06-10)
 ### Module 13 — Issue & Remediation Hub™ ✅ Complete (2026-06-10)
+### Module 14 — Workflow Studio™ ✅ Complete (2026-06-10)
+### Module 15 — Third-Party Risk Exchange™ ✅ Complete (2026-06-11)
+### Module 16 — Governance Benchmarking™ ✅ Complete (2026-06-11)
+### Module 17A — Integration Hub™ ✅ Complete (2026-06-11)
+### Module 18 — Trust Network™ ✅ Complete (2026-06-11)
+### Module 19 — Executive Reporting & Analytics™ ✅ Complete (2026-06-12)
 
 Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
 
@@ -1120,6 +1161,29 @@ Public Trust Infrastructure — platform layer aggregating Trust Exchange™, Be
 - Migration: `supabase/migrations/0023_trust_network.sql` ✅ APPLIED
 - Routes: `/trust-network/*` (6 pages: Dashboard · Profile · Directory · Relationships · Activity · AI Advisor)
 
+### Module 19 — Executive Reporting & Analytics™ ✅ Complete (2026-06-12)
+
+Executive command center with role-specific dashboards, board reporting, predictive forecasting, and governance scorecards. 9 new tables: `analytics_dashboards`, `analytics_widgets`, `analytics_reports`, `analytics_schedules`, `analytics_snapshots`, `analytics_exports`, `analytics_forecasts`, `analytics_subscriptions`, `analytics_kpis`.
+
+| Feature | Detail |
+|---|---|
+| **Executive Dashboards™** | 6 role views: CEO · CRO · CISO · Compliance · Board · Custom — each shows role-relevant KPI subset |
+| **Analytics Hub™** | Cross-module KPI analytics with 6 category group cards + 90-day snapshot history |
+| **Board Reports™** | 8 pre-built report types: Board Governance · Risk Committee · Audit Committee · Privacy · Vendor · Contract · Executive · Trust Intelligence |
+| **Scheduled Reports™** | Recurring report delivery — weekly/monthly/quarterly; per-schedule active/paused toggle |
+| **Predictive Analytics™** | AI-powered forecasting at 30/90/180-day horizons for org trust, control health, open risks |
+| **Executive Scorecards™** | 6 domain scorecards with On Track / Monitor / Attention status |
+| **AI Executive Analyst™** | Executive summary (cached 24h) · Board report generator · Trend Analyst™ · Governance Copilot™ NL chat |
+| **KPI Engine™** | 10 live KPIs computed via parallel queries: org trust, vendors, risks, control health, findings, CAPAs, frameworks, alerts, issues, contracts |
+
+- Pure KPI engine: `lib/services/executive-reporting/executive-reporting-service.ts` — `computeKpis()`, `getDashboardData()`, `generateReport()`, `generateForecasts()`, `takeSnapshot()`
+- AI service: `lib/services/executive-reporting/ai-executive-reporting-service.ts` — `generateExecutiveSummary()` (cached 24h), `generateBoardReport()`, `generateTrendAnalysis()`, `chat()`
+- Repo: `lib/repositories/executive-reporting-repo.ts` — KPI upsert, snapshot history, reports, schedules, forecasts
+- Actions: `lib/executive-reporting/actions.ts` — all server actions
+- Migration: `supabase/migrations/0024_executive_reporting.sql` ✅ APPLIED
+- Routes: `/executive-reporting/*` (7 pages: Hub · Dashboard/[type] · Analytics · Board Reports · Scheduled · Forecasts · Scorecards · AI)
+- Seed: `node scripts/seed-executive-reporting.mjs`
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1129,6 +1193,7 @@ Public Trust Infrastructure — platform layer aggregating Trust Exchange™, Be
 | Issue & Remediation Hub™ | Centralized governance execution — issues, tasks, exceptions, SLAs, AI | ✅ Complete (2026-06-10) |
 | Workflow Studio™ | Governance automation engine — workflows, approvals, AI generator | ✅ Complete (2026-06-10) |
 | Third-Party Risk Exchange™ | Trust Network — vendor trust profiles, evidence exchange, badges, directory, AI trust scoring | ✅ Complete (2026-06-11) |
+| Executive Reporting & Analytics™ | Role dashboards, board reports, forecasting, scorecards, AI executive analyst | ✅ Complete (2026-06-12) |
 | AI Governance | AI model risk, responsible AI frameworks | Future |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
@@ -1192,6 +1257,7 @@ Public Trust Infrastructure — platform layer aggregating Trust Exchange™, Be
 | **`controls.frameworkId` now nullable** | Migration 0011 dropped NOT NULL on `framework_id`. All 174 compliance controls still have a frameworkId. New Control Center™ standalone controls may have `frameworkId = null`. Everywhere `recomputeReadiness()` is called after a control mutation, guard with `if (control.frameworkId)` — missing this guard causes a crash trying to pass `null` to the framework service. |
 | **Control Health™ AI cache key** | `ai-control-service.ts` uses `aiComplianceInsights` table. The `targetId` field is NOT NULL — executive summary uses `orgId` as targetId; per-control narrative uses `control.id`. Never call `getCached()` or `saveCache()` without a valid UUID for `targetId`. |
 | **`auditFindings.status` vs `finding_status`** | In Drizzle schema, the TypeScript field is `.status` (the Drizzle field name) even though the DB column is `finding_status`. Use `auditFindings.status` in Drizzle queries — NOT `auditFindings.findingStatus` or `auditFindings.finding_status`. |
+| **Analytics tables use `org_id` not `organization_id`** | All 9 analytics tables (`analytics_kpis`, `analytics_snapshots`, `analytics_reports`, `analytics_schedules`, `analytics_forecasts`, etc.) use `org_id` as the FK column name — unlike most other AUDT tables which use `organization_id`. Seed scripts and raw SQL queries must use `org_id`. ON CONFLICT clauses use `(org_id, kpi_key)` and `(org_id, snapshot_date)`. |
 
 ---
 
@@ -1221,6 +1287,7 @@ node scripts/seed-compliance-frameworks.mjs [orgId] [--list]
 node scripts/seed-compliance-demo.mjs
 node scripts/seed-e2e.mjs
 node scripts/check-db.mjs
+node scripts/seed-executive-reporting.mjs           # Executive Reporting™ KPIs, snapshots, reports, schedules, forecasts
 
 # Tests
 npm run test                   # 201 Vitest tests

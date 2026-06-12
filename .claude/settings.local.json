@@ -58,7 +58,26 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" -Recurse -Filter \"*sidebar*\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object -First 20)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-network\" -Recurse)",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-network\\\\\" -Recurse | Select-Object @{Name=\"Path\";Expression={$_.FullName.Replace\\(\"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\\", \"\"\\)}}, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"Directory\"}else{\"File\"}}}, Length | Sort-Object Path | Format-Table -AutoSize)"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\trust-network\\\\\" -Recurse | Select-Object @{Name=\"Path\";Expression={$_.FullName.Replace\\(\"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\\", \"\"\\)}}, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"Directory\"}else{\"File\"}}}, Length | Sort-Object Path | Format-Table -AutoSize)",
+      "Bash(DATABASE_URL=\"postgresql://postgres.gacmazsbzxtwhwsgkuco:%40%26uR%3F9u%2Buz5h%23sZ@aws-1-ap-south-1.pooler.supabase.com:6543/postgres\" node scripts/seed-executive-reporting.mjs)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\lib\\\\ai-governance\")",
+      "Read(//mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/\\(app\\)/**)",
+      "Read(//mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/components/**)",
+      "Read(//mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/lib/**)",
+      "Read(//mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/**)",
+      "Bash(mkdir -p \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/lib/repositories\" && ls \"/mnt/c/Users/sandy/OneDrive/Desktop/LekhaOS/lib/repositories/\" | head -5)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\lib\\\\services\\\\ai-governance\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\inventory\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\risks\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\controls\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\vendors\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\compliance\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\incidents\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\\\(app\\)\\\\ai-governance\\\\ai\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\components\\\\ai-governance\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\systems\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\risks\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\compliance\")"
     ]
   }
 }

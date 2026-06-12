@@ -3557,3 +3557,313 @@ export type AnalyticsExport = typeof analyticsExports.$inferSelect;
 export type AnalyticsForecast = typeof analyticsForecasts.$inferSelect;
 export type AnalyticsSubscription = typeof analyticsSubscriptions.$inferSelect;
 export type AnalyticsKpi = typeof analyticsKpis.$inferSelect;
+
+/* ============================================================
+   AI Governance™ — Enums + Tables (Module 20)
+   ============================================================ */
+
+export const aiSystemType = pgEnum("ai_system_type", [
+  "commercial", "open_source", "internal", "agent", "rag", "llm_app", "workflow",
+]);
+
+export const aiRiskClassification = pgEnum("ai_risk_classification", [
+  "low", "moderate", "high", "critical", "prohibited",
+]);
+
+export const aiApprovalStatus = pgEnum("ai_approval_status", [
+  "pending", "under_review", "approved", "rejected", "decommissioned",
+]);
+
+export const aiRiskCategory = pgEnum("ai_risk_category", [
+  "hallucination", "bias", "privacy_leakage", "copyright_risk", "prompt_injection",
+  "data_poisoning", "model_drift", "regulatory_risk", "security_risk",
+  "vendor_dependency", "explainability_risk", "autonomous_decision_risk", "other",
+]);
+
+export const aiControlCategory = pgEnum("ai_control_category", [
+  "human_oversight", "output_review", "prompt_logging", "model_approval",
+  "data_classification", "access_control", "vendor_review", "model_monitoring",
+  "content_filtering", "red_team_testing", "other",
+]);
+
+export const aiTrustLevel = pgEnum("ai_trust_level", [
+  "trusted", "managed", "monitored", "needs_attention", "high_risk", "restricted",
+]);
+
+export const aiComplianceFramework = pgEnum("ai_compliance_framework", [
+  "iso_42001", "nist_ai_rmf", "eu_ai_act", "oecd_ai_principles", "dpdp_ai", "internal",
+]);
+
+export const aiIncidentType = pgEnum("ai_incident_type", [
+  "hallucination", "bias_event", "data_exposure", "unauthorized_usage",
+  "model_failure", "prompt_injection", "compliance_violation", "other",
+]);
+
+/** Central registry of all AI systems in use. */
+export const aiSystems = pgTable(
+  "ai_systems",
+  {
+    id:                    uuid("id").primaryKey().defaultRandom(),
+    organizationId:        uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:                  text("name").notNull(),
+    description:           text("description"),
+    systemType:            aiSystemType("system_type").notNull(),
+    vendorName:            text("vendor_name"),
+    modelName:             text("model_name"),
+    version:               text("version"),
+    ownerId:               uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    businessUnit:          text("business_unit"),
+    purpose:               text("purpose"),
+    useCase:               text("use_case"),
+    riskClassification:    aiRiskClassification("risk_classification").notNull().default("moderate"),
+    dataClassification:    text("data_classification"),
+    approvalStatus:        aiApprovalStatus("approval_status").notNull().default("pending"),
+    aiTrustScore:          numeric("ai_trust_score", { precision: 5, scale: 2 }),
+    reviewDate:            date("review_date"),
+    lastAssessedAt:        timestamp("last_assessed_at", { withTimezone: true }),
+    deploymentEnvironment: text("deployment_environment"),
+    isActive:              boolean("is_active").notNull().default(true),
+    metadata:              jsonb("metadata").notNull().default({}),
+    createdBy:             uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:             timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:             timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_ai_systems_org").on(t.organizationId),
+    index("idx_ai_systems_status").on(t.organizationId, t.approvalStatus),
+    index("idx_ai_systems_risk").on(t.organizationId, t.riskClassification),
+  ]
+);
+
+/** AI vendor registry — govern AI vendors like third parties. */
+export const aiVendors = pgTable(
+  "ai_vendors",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:             text("name").notNull(),
+    website:          text("website"),
+    description:      text("description"),
+    vendorType:       text("vendor_type").notNull().default("commercial"),
+    riskRating:       text("risk_rating").notNull().default("moderate"),
+    privacyPosture:   text("privacy_posture"),
+    securityPosture:  text("security_posture"),
+    contractStatus:   text("contract_status"),
+    assessmentStatus: text("assessment_status"),
+    lastAssessedAt:   timestamp("last_assessed_at", { withTimezone: true }),
+    trustScore:       numeric("trust_score", { precision: 5, scale: 2 }),
+    notes:            text("notes"),
+    createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_ai_vendors_org").on(t.organizationId)]
+);
+
+/** AI-specific risk registry. */
+export const aiRisks = pgTable(
+  "ai_risks",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    aiSystemId:     uuid("ai_system_id").references(() => aiSystems.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    description:    text("description"),
+    riskCategory:   aiRiskCategory("risk_category").notNull(),
+    likelihood:     integer("likelihood").notNull().default(3),
+    impact:         integer("impact").notNull().default(3),
+    riskLevel:      aiRiskClassification("risk_level").notNull().default("moderate"),
+    status:         text("status").notNull().default("open"),
+    treatment:      text("treatment"),
+    ownerId:        uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    targetDate:     date("target_date"),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_ai_risks_org").on(t.organizationId),
+    index("idx_ai_risks_system").on(t.aiSystemId),
+    index("idx_ai_risks_status").on(t.organizationId, t.status),
+  ]
+);
+
+/** AI-specific controls. */
+export const aiControls = pgTable(
+  "ai_controls",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:             text("name").notNull(),
+    description:      text("description"),
+    controlCategory:  aiControlCategory("control_category").notNull(),
+    status:           text("status").notNull().default("planned"),
+    effectiveness:    text("effectiveness"),
+    ownerId:          uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    lastTestedAt:     date("last_tested_at"),
+    nextReviewDate:   date("next_review_date"),
+    notes:            text("notes"),
+    createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_ai_controls_org").on(t.organizationId)]
+);
+
+/** AI governance policies. */
+export const aiPolicies = pgTable(
+  "ai_policies",
+  {
+    id:           uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:         text("name").notNull(),
+    policyType:   text("policy_type").notNull(),
+    description:  text("description"),
+    status:       text("status").notNull().default("draft"),
+    version:      text("version").notNull().default("1.0"),
+    content:      text("content"),
+    ownerId:      uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    approvedBy:   uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt:   timestamp("approved_at", { withTimezone: true }),
+    reviewDate:   date("review_date"),
+    createdBy:    uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:    timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:    timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_ai_policies_org").on(t.organizationId)]
+);
+
+/** AI impact / risk / compliance assessments. */
+export const aiAssessments = pgTable(
+  "ai_assessments",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    aiSystemId:     uuid("ai_system_id").references(() => aiSystems.id, { onDelete: "cascade" }),
+    assessmentType: text("assessment_type").notNull(),
+    title:          text("title").notNull(),
+    status:         text("status").notNull().default("draft"),
+    score:          numeric("score", { precision: 5, scale: 2 }),
+    findings:       jsonb("findings").notNull().default([]),
+    recommendations: jsonb("recommendations").notNull().default([]),
+    assessorId:     uuid("assessor_id").references(() => profiles.id, { onDelete: "set null" }),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    approvedBy:     uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt:     timestamp("approved_at", { withTimezone: true }),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_ai_assessments_org").on(t.organizationId),
+    index("idx_ai_assessments_system").on(t.aiSystemId),
+  ]
+);
+
+/** AI governance incidents — hallucinations, bias events, data exposure, etc. */
+export const aiIncidents = pgTable(
+  "ai_incidents",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    aiSystemId:     uuid("ai_system_id").references(() => aiSystems.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    description:    text("description").notNull(),
+    incidentType:   aiIncidentType("incident_type").notNull(),
+    severity:       text("severity").notNull().default("medium"),
+    status:         text("status").notNull().default("open"),
+    rootCause:      text("root_cause"),
+    remediation:    text("remediation"),
+    reporterId:     uuid("reporter_id").references(() => profiles.id, { onDelete: "set null" }),
+    assignedTo:     uuid("assigned_to").references(() => profiles.id, { onDelete: "set null" }),
+    detectedAt:     timestamp("detected_at", { withTimezone: true }).notNull().defaultNow(),
+    resolvedAt:     timestamp("resolved_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_ai_incidents_org").on(t.organizationId),
+    index("idx_ai_incidents_status").on(t.organizationId, t.status),
+  ]
+);
+
+/** Per-org per-framework AI compliance tracking. */
+export const aiComplianceRecords = pgTable(
+  "ai_compliance",
+  {
+    id:                  uuid("id").primaryKey().defaultRandom(),
+    organizationId:      uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    framework:           aiComplianceFramework("framework").notNull(),
+    status:              text("status").notNull().default("not_started"),
+    readinessScore:      numeric("readiness_score", { precision: 5, scale: 2 }).default("0"),
+    totalControls:       integer("total_controls").notNull().default(0),
+    implementedControls: integer("implemented_controls").notNull().default(0),
+    openGaps:            integer("open_gaps").notNull().default(0),
+    lastAssessedAt:      timestamp("last_assessed_at", { withTimezone: true }),
+    notes:               text("notes"),
+    createdAt:           timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:           timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("uq_ai_compliance_org_framework").on(t.organizationId, t.framework),
+    index("idx_ai_compliance_org").on(t.organizationId),
+  ]
+);
+
+/** AI Trust Score™ history per system. */
+export const aiTrustScores = pgTable(
+  "ai_trust_scores",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    aiSystemId:      uuid("ai_system_id").notNull().references(() => aiSystems.id, { onDelete: "cascade" }),
+    overallScore:    numeric("overall_score", { precision: 5, scale: 2 }).notNull().default("0"),
+    riskScore:       numeric("risk_score", { precision: 5, scale: 2 }).default("0"),
+    controlsScore:   numeric("controls_score", { precision: 5, scale: 2 }).default("0"),
+    complianceScore: numeric("compliance_score", { precision: 5, scale: 2 }).default("0"),
+    monitoringScore: numeric("monitoring_score", { precision: 5, scale: 2 }).default("0"),
+    vendorScore:     numeric("vendor_score", { precision: 5, scale: 2 }).default("0"),
+    incidentScore:   numeric("incident_score", { precision: 5, scale: 2 }).default("0"),
+    trustLevel:      aiTrustLevel("trust_level").notNull().default("monitored"),
+    breakdown:       jsonb("breakdown").notNull().default({}),
+    computedAt:      timestamp("computed_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt:       timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_ai_trust_scores_system").on(t.aiSystemId),
+    index("idx_ai_trust_scores_org").on(t.organizationId),
+  ]
+);
+
+/** Junction: AI system ↔ AI control. */
+export const aiSystemControls = pgTable(
+  "ai_system_controls",
+  {
+    id:          uuid("id").primaryKey().defaultRandom(),
+    aiSystemId:  uuid("ai_system_id").notNull().references(() => aiSystems.id, { onDelete: "cascade" }),
+    controlId:   uuid("control_id").notNull().references(() => aiControls.id, { onDelete: "cascade" }),
+  },
+  (t) => [uniqueIndex("uq_ai_system_controls").on(t.aiSystemId, t.controlId)]
+);
+
+/** Junction: AI system ↔ AI risk. */
+export const aiSystemRisks = pgTable(
+  "ai_system_risks",
+  {
+    id:          uuid("id").primaryKey().defaultRandom(),
+    aiSystemId:  uuid("ai_system_id").notNull().references(() => aiSystems.id, { onDelete: "cascade" }),
+    riskId:      uuid("risk_id").notNull().references(() => aiRisks.id, { onDelete: "cascade" }),
+  },
+  (t) => [uniqueIndex("uq_ai_system_risks").on(t.aiSystemId, t.riskId)]
+);
+
+// AI Governance™ types
+export type AiSystem           = typeof aiSystems.$inferSelect;
+export type AiVendor           = typeof aiVendors.$inferSelect;
+export type AiRisk             = typeof aiRisks.$inferSelect;
+export type AiControl          = typeof aiControls.$inferSelect;
+export type AiPolicy           = typeof aiPolicies.$inferSelect;
+export type AiAssessment       = typeof aiAssessments.$inferSelect;
+export type AiIncident         = typeof aiIncidents.$inferSelect;
+export type AiComplianceRecord = typeof aiComplianceRecords.$inferSelect;
+export type AiTrustScore       = typeof aiTrustScores.$inferSelect;

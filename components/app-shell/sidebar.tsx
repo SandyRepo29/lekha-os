@@ -26,6 +26,7 @@ import {
   Plug,
   Network,
   LineChart,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -54,6 +55,7 @@ const items: Item[] = [
   { href: "/integration-hub", label: "Integration Hub™", icon: Plug },
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/executive-reporting", label: "Executive Reporting™", icon: LineChart },
+  { href: "/ai-governance", label: "AI Governance™", icon: Bot },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 

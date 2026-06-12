@@ -1,0 +1,98 @@
+﻿export const dynamic = "force-dynamic";
+
+import { requireUser } from "@/lib/auth/session";
+import { findAllRisks } from "@/lib/repositories/ai-governance-repo";
+import Link from "next/link";
+import { AlertTriangle, Plus } from "lucide-react";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  hallucination: "Hallucination", bias: "Bias", privacy_leakage: "Privacy Leakage",
+  copyright_risk: "Copyright Risk", prompt_injection: "Prompt Injection",
+  data_poisoning: "Data Poisoning", model_drift: "Model Drift",
+  regulatory_risk: "Regulatory Risk", security_risk: "Security Risk",
+  vendor_dependency: "Vendor Dependency", explainability_risk: "Explainability",
+  autonomous_decision_risk: "Autonomous Decision", other: "Other",
+};
+const LEVEL_COLORS: Record<string, string> = {
+  low: "bg-emerald-500/10 text-emerald-400", moderate: "bg-yellow-500/10 text-yellow-400",
+  high: "bg-orange-500/10 text-orange-400", critical: "bg-red-500/10 text-red-400",
+};
+const STATUS_COLORS: Record<string, string> = {
+  open: "bg-red-500/10 text-red-400", mitigating: "bg-blue-500/10 text-blue-400",
+  accepted: "bg-yellow-500/10 text-yellow-400", closed: "bg-emerald-500/10 text-emerald-400",
+};
+
+export default async function AiRisksPage() {
+  const session = await requireUser();
+  const orgId = session.org?.id ?? "";
+  const risks = await findAllRisks(orgId).catch(() => []);
+
+  const open = risks.filter(r => r.status === "open").length;
+  const critical = risks.filter(r => r.riskLevel === "critical").length;
+  const high = risks.filter(r => r.riskLevel === "high").length;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <AlertTriangle className="h-6 w-6 text-orange-400" /> AI Risk Register™
+          </h1>
+          <p className="mt-1 text-sm text-[var(--color-ink-dim)]">AI-specific risks across hallucination, bias, privacy, security, and regulatory domains.</p>
+        </div>
+        <Link href="/ai-governance/risks/new"
+          className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
+          <Plus className="h-4 w-4" /> Add Risk
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: "Open Risks", value: open, color: "text-red-400" },
+          { label: "Critical", value: critical, color: "text-red-400" },
+          { label: "High", value: high, color: "text-orange-400" },
+        ].map(({ label, value, color }) => (
+          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
+            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
+            <div className={`mt-1 text-2xl font-bold ${color}`}>{value}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-[var(--color-line)] text-[var(--color-ink-dim)] text-xs">
+              <th className="px-4 py-3 text-left font-medium">Risk</th>
+              <th className="px-4 py-3 text-left font-medium">Category</th>
+              <th className="px-4 py-3 text-left font-medium">Level</th>
+              <th className="px-4 py-3 text-left font-medium">Score</th>
+              <th className="px-4 py-3 text-left font-medium">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[var(--color-line)]">
+            {risks.map((r) => (
+              <tr key={r.id} className="hover:bg-white/[0.02]">
+                <td className="px-4 py-3">
+                  <div className="font-medium">{r.title}</div>
+                  {r.description && <div className="text-xs text-[var(--color-ink-dim)]">{r.description.slice(0, 60)}</div>}
+                </td>
+                <td className="px-4 py-3 text-[var(--color-ink-dim)]">{CATEGORY_LABELS[r.riskCategory] ?? r.riskCategory}</td>
+                <td className="px-4 py-3">
+                  <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${LEVEL_COLORS[r.riskLevel] ?? ""}`}>{r.riskLevel}</span>
+                </td>
+                <td className="px-4 py-3 font-mono">{r.likelihood * r.impact}</td>
+                <td className="px-4 py-3">
+                  <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[r.status] ?? ""}`}>{r.status}</span>
+                </td>
+              </tr>
+            ))}
+            {risks.length === 0 && (
+              <tr><td colSpan={5} className="px-4 py-12 text-center text-[var(--color-ink-dim)]">No AI risks registered yet.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
