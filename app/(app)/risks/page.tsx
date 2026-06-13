@@ -1,9 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import {
-  AlertTriangle, Plus, ShieldAlert, TrendingUp, CheckCircle2, Clock,
-} from "lucide-react";
+import { AlertTriangle, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -53,47 +51,32 @@ export default async function RisksDashboardPage() {
 
       {/* Metrics grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-[var(--color-blue)]" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Total Risks</span>
-          </div>
-          <p className="font-[family-name:var(--font-display)] text-2xl font-bold">{metrics.total}</p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
-            {metrics.open} open · {metrics.identified} identified
-          </p>
-        </Card>
-
-        <Card className={`p-5 ${metrics.critical > 0 ? "border-red-500/25" : ""}`}>
-          <div className="mb-2 flex items-center gap-2">
-            <ShieldAlert className={`h-5 w-5 ${metrics.critical > 0 ? "text-red-400" : "text-[var(--color-ink-dim)]"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">Critical / Severe</span>
-          </div>
-          <p className={`font-[family-name:var(--font-display)] text-2xl font-bold ${metrics.critical > 0 ? "text-red-400" : ""}`}>
-            {metrics.critical}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">Score ≥ 16 / 25</p>
-        </Card>
-
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-amber-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Mitigating</span>
-          </div>
-          <p className="font-[family-name:var(--font-display)] text-2xl font-bold">{metrics.mitigating}</p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{metrics.accepted} accepted</p>
-        </Card>
-
-        <Card className={`p-5 ${metrics.overdueReviews > 0 ? "border-amber-500/25" : ""}`}>
-          <div className="mb-2 flex items-center gap-2">
-            <Clock className={`h-5 w-5 ${metrics.overdueReviews > 0 ? "text-amber-400" : "text-[var(--color-ink-dim)]"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">Overdue Reviews</span>
-          </div>
-          <p className={`font-[family-name:var(--font-display)] text-2xl font-bold ${metrics.overdueReviews > 0 ? "text-amber-400" : ""}`}>
-            {metrics.overdueReviews}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{metrics.closed} closed</p>
-        </Card>
+        <RiskStat
+          label="Total Risks"
+          value={metrics.total}
+          sub={`${metrics.open} open · ${metrics.identified} identified`}
+          href="/risks/list"
+        />
+        <RiskStat
+          label="Critical / Severe"
+          value={metrics.critical}
+          accent={metrics.critical > 0 ? "danger" : "neutral"}
+          sub="Score ≥ 16 / 25"
+          href="/risks/list?status=open"
+        />
+        <RiskStat
+          label="Mitigating"
+          value={metrics.mitigating}
+          accent="warn"
+          sub={`${metrics.accepted} accepted`}
+          href="/risks/list?status=mitigating"
+        />
+        <RiskStat
+          label="Overdue Reviews"
+          value={metrics.overdueReviews}
+          accent={metrics.overdueReviews > 0 ? "warn" : "neutral"}
+          sub={`${metrics.closed} closed`}
+        />
       </div>
 
       {/* Status strip */}

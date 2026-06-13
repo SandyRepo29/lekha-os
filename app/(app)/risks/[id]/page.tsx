@@ -67,6 +67,25 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
         </div>
       </div>
 
+      {/* AI Narrative — full-width panel, most valuable insight first */}
+      <Card className="p-5">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-[var(--color-blue)]" />
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">AI Risk Narrative</h2>
+          </div>
+          <RiskNarrativeAction riskId={id} />
+        </div>
+        {aiNarrative ? (
+          <div>
+            <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{aiNarrative.content}</p>
+            <p className="mt-2 text-xs text-[var(--color-ink-faint)]">Generated {formatDate(aiNarrative.generatedAt.toISOString())}</p>
+          </div>
+        ) : (
+          <p className="text-sm text-[var(--color-ink-faint)] italic">Click "Generate" to create an AI narrative for this risk.</p>
+        )}
+      </Card>
+
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left 2/3 */}
         <div className="space-y-5 lg:col-span-2">
@@ -99,25 +118,6 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
                 <p className="text-xs capitalize" style={{ color: inherent.color }}>{inherent.level}</p>
               </div>
             </div>
-          </Card>
-
-          {/* AI Narrative */}
-          <Card className="p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[var(--color-blue)]" />
-                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">AI Risk Narrative</h2>
-              </div>
-              <RiskNarrativeAction riskId={id} />
-            </div>
-            {aiNarrative ? (
-              <div>
-                <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{aiNarrative.content}</p>
-                <p className="mt-2 text-xs text-[var(--color-ink-faint)]">Generated {formatDate(aiNarrative.generatedAt.toISOString())}</p>
-              </div>
-            ) : (
-              <p className="text-sm text-[var(--color-ink-faint)] italic">Click "Generate" to create an AI narrative for this risk.</p>
-            )}
           </Card>
 
           {/* Treatment Plan */}
