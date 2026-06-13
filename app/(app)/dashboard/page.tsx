@@ -13,10 +13,8 @@ import {
   BarChart3,
   Scale,
   ClipboardList,
-  Workflow,
   Lock,
   FileSignature,
-  Layers,
   Bot,
   Users,
   Globe,
@@ -44,6 +42,9 @@ import { demoMetrics, demoVendors } from "@/lib/demo-data";
 import { riskTone } from "@/lib/ui-maps";
 import { scoreBarGradient, scoreLabelColor, scoreLabel } from "@/lib/ui/colors";
 import { getOrgTrustLevel, ORG_TRUST_COMPONENT_LABELS } from "@/lib/services/org-trust-score";
+
+const COMPONENT_KEYS = ["vendorTrust", "riskPosture", "controlHealth", "auditReadiness", "complianceCoverage"] as const;
+const COMPONENT_WEIGHTS: Record<string, number> = { vendorTrust: 25, riskPosture: 25, controlHealth: 20, auditReadiness: 15, complianceCoverage: 15 };
 
 export default async function DashboardPage() {
   const session = await requireUser();
@@ -93,13 +94,14 @@ export default async function DashboardPage() {
     : orgScore >= 60 ? "text-amber-400"
     : "text-red-400";
 
-  const components = trustOverview ? [
-    { key: "vendorTrust", label: "Vendor Trust", value: trustOverview.orgTrustScore.vendorTrust, weight: 25 },
-    { key: "riskPosture", label: "Risk Posture", value: trustOverview.orgTrustScore.riskPosture, weight: 25 },
-    { key: "controlHealth", label: "Control Health", value: trustOverview.orgTrustScore.controlHealth, weight: 20 },
-    { key: "auditReadiness", label: "Audit Readiness", value: trustOverview.orgTrustScore.auditReadiness, weight: 15 },
-    { key: "complianceCoverage", label: "Compliance", value: trustOverview.orgTrustScore.complianceCoverage, weight: 15 },
-  ] : [];
+  const components = trustOverview
+    ? COMPONENT_KEYS.map((key) => ({
+        key,
+        label: ORG_TRUST_COMPONENT_LABELS[key],
+        value: trustOverview.orgTrustScore[key],
+        weight: COMPONENT_WEIGHTS[key],
+      }))
+    : [];
 
   return (
     <div className="space-y-6">
@@ -445,7 +447,7 @@ function ModuleTile({ href, icon: Icon, label, color }: {
     <Link href={href}
       className="group flex flex-col items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-center transition-all hover:bg-white/[0.05] hover:border-white/10">
       <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${cls}`}>
-        <Icon className="h-4.5 w-4.5 h-[18px] w-[18px]" />
+        <Icon className="h-[18px] w-[18px]" />
       </div>
       <span className="text-xs font-medium leading-tight text-[var(--color-ink-dim)] group-hover:text-[var(--color-ink)]">
         {label}
