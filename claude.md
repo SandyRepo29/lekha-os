@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · **Auditor Collaboration™**
-- **Total tables:** 149 (137 previous + 12 Auditor Collaboration tables from migration 0026)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · **Trust API Platform™**
+- **Total tables:** 158 (149 previous + 9 Trust API Platform tables from migration 0027)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -671,6 +671,24 @@ POST /api/v1/external-findings              Create finding (read_write key)
 GET /api/v1/external-users                  External user list (?status=)
 POST /api/v1/external-users                 Invite external user (read_write key)
 
+--- Trust API Platform™ ---
+/trust-api                                  Hub (KPI strip + module nav + recent clients + webhook events)
+/trust-api/catalog                          API Catalog™ (8 products + plan comparison)
+/trust-api/portal                           Developer Portal™ (quickstart, cURL + SDK samples, partner integrations)
+/trust-api/keys                             API Key Manager™ (clients + keys + reveal-once)
+/trust-api/webhooks                         Webhook Engine™ (create, pause, delete, event picker)
+/trust-api/usage                            API Analytics™ (daily bar chart, top endpoints, health)
+/trust-api/ai                               AI API Builder™ + Integration Advisor™ + NL chat
+GET /api/v1/public/trust-score              Real-time org trust score + component breakdown (Bearer auth)
+GET /api/v1/public/vendor-trust             Per-vendor trust scores (?minScore=) (Bearer auth)
+GET /api/v1/public/verification             Proof-of-governance bundle — profile, verified docs, badges (Bearer auth)
+GET /api/v1/public/benchmarking             Industry benchmark snapshot + category scores (Bearer auth)
+GET /api/v1/public/ai-trust                 AI system count + avg trust score + system breakdown (Bearer auth)
+GET /api/v1/public/trust-network            Trust profile + documents + badges (Bearer auth)
+POST /api/v1/webhooks                       Trigger a trust event → deliver to matching active webhooks
+GET /api/v1/webhooks                        List org webhooks
+GET /api/v1/developer/usage                 Usage analytics (?days=30, max 365)
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -856,6 +874,26 @@ lib/
                                  createSchedule(), getSchedules(), toggleSchedule(),
                                  upsertForecast(), getForecasts()
     NOTE: analytics tables use `org_id` column (not `organization_id` like most AUDT tables)
+
+  --- Trust API Platform™ services ---
+  services/trust-api/
+    trust-api-service.ts     issueApiKey(), revokeApiKey(), createClient(), deleteClient(), createWebhook(),
+                             deleteWebhook(), pauseWebhook(), resumeWebhook(), triggerWebhookEvent(),
+                             getTrustScoreData(), getVerificationData(), getUsageAnalytics(),
+                             getDashboardMetrics(), getApiProducts(), getApiClients(), getApiKeys(), getWebhooks()
+    ai-trust-api-service.ts  generateApiPlatformSummary() (cached 24h), generateApiDocs(productSlug),
+                             chat() (multi-turn NL)
+
+  --- Trust API Platform™ repository ---
+  repositories/
+    trust-api-repo.ts  getDashboardMetrics(), findAllProducts(), findAllClients(), findAllApiKeys(),
+                       insertClient(), insertApiKey(), updateKeyLastUsed(), updateKeyStatus(),
+                       insertWebhook(), updateWebhookStatus(), findActiveWebhooks(), recordWebhookDelivery(),
+                       recordUsage(), getUsageSummary() (includes dailyCounts by day_trunc)
+
+  trust-api/actions.ts  createClientAction, deleteClientAction, issueApiKeyAction, revokeApiKeyAction,
+                        createWebhookAction, deleteWebhookAction, pauseWebhookAction, resumeWebhookAction,
+                        generatePlatformSummaryAction, generateApiDocsAction, chatAction
 
   storage/
     server.ts                   Bucket-aware delegator — uploadFile, downloadObject, removeObjects,
@@ -1281,6 +1319,35 @@ External auditor engagement platform — secure audit rooms, evidence exchange, 
 
 **12 DB tables (migration 0026):** `auditor_organizations` · `external_users` · `audit_rooms` · `audit_room_documents` · `audit_room_activities` · `evidence_requests` · `evidence_responses` · `audit_reviews` · `external_comments` · `external_findings` · `external_assessments` · `external_permissions`
 
+### Module 22 — Trust API Platform™ ✅ Complete (2026-06-13)
+
+Transforms AUDT from a Governance OS into Trust Infrastructure — 8 API products, webhooks, developer portal, AI API builder, and usage analytics.
+
+| Feature | Detail |
+|---|---|
+| **API Client Registry™** | Register application/partner/internal clients with plan and contact email |
+| **API Key Manager™** | Issue `tap_`-prefixed keys (bcrypt); reveal-once; per-key plan + permissions; usage counter |
+| **API Product Catalog™** | 8 products: trust-score · vendor-trust · ai-trust · benchmarking · verification · trust-network · governance-insights · compliance-readiness |
+| **Webhook Engine™** | Subscribe to 9 trust events; live HTTP delivery with 10s timeout; delivery log |
+| **API Analytics™** | 30-day daily call volume, top endpoints, success rate |
+| **AI API Builder™** | Gemini generates per-product docs, code samples, integration guides |
+| **AI Integration Advisor™** | Platform health summary (cached 24h), top opportunities, 4 recommendations |
+| **Public APIs** | 6 Bearer-authenticated public endpoints for external system consumption |
+
+- Service: `lib/services/trust-api/trust-api-service.ts`
+- AI service: `lib/services/trust-api/ai-trust-api-service.ts`
+- Repo: `lib/repositories/trust-api-repo.ts`
+- Actions: `lib/trust-api/actions.ts`
+- Migration: `supabase/migrations/0027_trust_api_platform.sql` ✅ APPLIED
+- Routes: `/trust-api/*` (7 pages: Hub · Catalog · Portal · Keys · Webhooks · Usage · AI)
+- Seed: `node scripts/seed-trust-api-platform.mjs`
+
+**API Plans:** Free (100/day) · Growth (10k/month) · Business (100k/month) · Enterprise (unlimited)
+
+**9 DB tables (migration 0027, `tap_` prefix):** `tap_products` · `tap_clients` · `tap_api_keys` · `tap_subscriptions` · `tap_usage` · `tap_webhooks` · `tap_webhook_deliveries` · `tap_rate_limits` · `tap_audit_events`
+
+**Key naming convention:** Raw keys use `tap_` prefix (e.g. `tap_0919bb5c…`), bcrypt-hashed for storage. `tap_products` is a global catalog (no RLS, no `organization_id`) — seeded by migration.
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1293,6 +1360,7 @@ External auditor engagement platform — secure audit rooms, evidence exchange, 
 | Executive Reporting & Analytics™ | Role dashboards, board reports, forecasting, scorecards, AI executive analyst | ✅ Complete (2026-06-12) |
 | AI Governance™ | AI model risk, responsible AI frameworks, EU AI Act | ✅ Complete (2026-06-13) |
 | Auditor Collaboration™ | External auditor rooms, evidence exchange, findings, AI readiness advisor | ✅ Complete (2026-06-13) |
+| Trust API Platform™ | Trust-as-infrastructure — API products, webhooks, developer portal, AI API builder | ✅ Complete (2026-06-13) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)

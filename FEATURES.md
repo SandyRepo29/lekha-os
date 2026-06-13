@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **24 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · **AI Governance™**
+> Modules: **26 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · **Trust API Platform™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -35,7 +35,7 @@
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
 | **REST API v1** | 47 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + trust-network + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **117 tables** across 23 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **167 tables** across 28 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -1033,6 +1033,104 @@ The connectivity layer for the AUDT Governance OS — turns integrations into a 
 ## Module 20 — AI Governance™ ✅ Complete (2026-06-12)
 
 Central AI governance platform — AI inventory, risk register, controls, vendor governance, compliance frameworks, incidents, trust scores, and AI copilot.
+
+---
+
+## Module 21 — Auditor Collaboration™ ✅ Complete (2026-06-13)
+
+External auditor engagement platform — secure audit rooms, evidence exchange, external findings, assessment projects, and AI audit readiness analysis. 12 new DB tables.
+
+| Feature | Detail |
+|---|---|
+| **Audit Room™** | Scoped workspace per engagement — ISO 27001, SOC 2, DPDP, AI Governance, custom |
+| **Evidence Exchange™** | Auditors request evidence; internal team submits, accepts, or rejects with notes |
+| **External Findings™** | Non-conformances, recommendations, opportunities — tracked through remediation |
+| **Assessment Projects™** | Milestones, completion %, open findings, pending evidence per engagement |
+| **Auditor User Management™** | Invite external auditors, assessors, legal counsel, customer reviewers with room-level RBAC |
+| **Auditor Organisations™** | Registry of audit firms, law firms, consulting partners |
+| **Room Documents™** | Share AUDT-generated exports directly into audit rooms |
+| **AI Audit Advisor™** | Readiness summary (cached 24h) · evidence gap analysis (top 5) · AI finding drafter · NL chat |
+| **REST API** | `GET/POST /api/v1/audit-rooms` · `evidence-requests` · `external-findings` · `external-users` |
+| **Sub-pages** | Hub · Rooms · Room Detail · Evidence · Findings · Users · Assessments · AI Advisor |
+
+---
+
+## 🔌 Module 22 — Trust API Platform™ ✅ Complete (2026-06-13)
+
+> Transforms AUDT from a Governance OS into **Trust Infrastructure** — a programmatic layer that lets procurement systems, ERPs, auditors, and partner ecosystems consume governance trust data via APIs and webhooks.
+
+### Strategic Vision
+
+Every piece of trust data inside AUDT becomes API-accessible — from vendor trust scores to AI governance assessments. External systems can query real-time trust posture, subscribe to trust events via webhooks, and verify vendor credentials programmatically without manual exports or spreadsheets.
+
+### API Product Catalog™ (8 Products)
+
+| Product | Slug | Description |
+|---|---|---|
+| **Trust Score API™** | `trust-score` | Real-time org trust posture — 5 components, trends, benchmarks |
+| **Vendor Trust API™** | `vendor-trust` | Per-vendor trust scores, risk levels, evidence summary |
+| **AI Trust API™** | `ai-trust` | AI system risk classification, trust scores, governance maturity |
+| **Benchmarking API™** | `benchmarking` | Industry peer comparison percentiles, maturity levels |
+| **Verification API™** | `verification` | Proof-of-governance — published profile, verified documents, badges |
+| **Trust Network API™** | `trust-network` | Public trust profile, document visibility, badge status |
+| **Governance Insights API™** | `governance-insights` | Board-level governance KPIs, recommendations, posture summary |
+| **Compliance Readiness API™** | `compliance-readiness` | Framework readiness, gap density, control coverage |
+
+### API Plans
+
+| Plan | Limit | Pricing |
+|---|---|---|
+| **Free** | 100 calls/day | $0 |
+| **Growth** | 10,000 calls/month | $199/month |
+| **Business** | 100,000 calls/month | $499/month |
+| **Enterprise** | Unlimited | Custom |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **API Client Registry™** | Register application/partner/internal clients with contact email, plan, and description |
+| **API Key Manager™** | Issue `tap_`-prefixed keys (bcrypt-hashed); reveal-once pattern; per-key plan + permissions; usage counter |
+| **Webhook Engine™** | Subscribe to 9 trust events: `trust.score.updated` · `vendor.verified` · `badge.issued` · `risk.created` · `risk.closed` · `audit.completed` · `assessment.completed` · `ai.trust.updated` · `benchmark.updated` |
+| **Webhook Delivery™** | Live HTTP delivery with 10s timeout; delivery log with success/failure status; retry tracking |
+| **API Analytics™** | 30-day usage dashboard — daily call volume bar chart, top endpoints, success rate, error tracking |
+| **Subscription Management™** | Link clients to API products; per-product access control |
+| **TAP Audit Trail™** | Every key create/revoke, client add/delete, webhook create/delete recorded to `tap_audit_events` |
+| **AI API Builder™** | Select a product → Gemini generates per-product API documentation, integration guides, code samples |
+| **AI Integration Advisor™** | Platform health summary (cached 24h) — integration adoption, top opportunities, 4 recommendations |
+| **AI Trust Insights API™** | NL chat — "Which products should I subscribe to?", "How do I integrate with SAP Ariba?", "What webhooks are most useful?" |
+| **Public Trust Score API** | `GET /api/v1/public/trust-score` — live governance snapshot: org trust score, component breakdown |
+| **Public Vendor Trust API** | `GET /api/v1/public/vendor-trust` — per-vendor trust scores with `?minScore=` filter |
+| **Public Verification API** | `GET /api/v1/public/verification` — proof bundle: profile completeness, verified document count, active badge count |
+| **Public Benchmarking API** | `GET /api/v1/public/benchmarking` — industry benchmark snapshot + category scores |
+| **Public AI Trust API** | `GET /api/v1/public/ai-trust` — AI system count, average AI trust score, system-level breakdown |
+| **Public Trust Network API** | `GET /api/v1/public/trust-network` — trust profile, documents, badges |
+| **Webhook Trigger API** | `POST /api/v1/webhooks` — fire a trust event and deliver to all matching active webhooks |
+| **Usage Analytics API** | `GET /api/v1/developer/usage` — call volume, success rate, top endpoints for `?days=N` |
+| **SDK Roadmap** | Phase 1: TypeScript + Python · Phase 2: Java, Go, C# |
+| **Partner Integrations** | SAP Ariba · Coupa · Oracle Fusion · Workday · ServiceNow · Salesforce · Microsoft Teams · Slack |
+| **Navigation** | Sidebar "Trust API Platform™" with Zap icon, after Auditor Collaboration™ |
+| **Sub-pages** | Hub · Catalog · API Portal · Keys · Webhooks · Analytics · AI Advisor |
+| **DB tables** | `tap_products` · `tap_clients` · `tap_api_keys` · `tap_subscriptions` · `tap_usage` · `tap_webhooks` · `tap_webhook_deliveries` · `tap_rate_limits` · `tap_audit_events` (migration 0027 applied) · 9 new tables |
+| **Seed** | `node scripts/seed-trust-api-platform.mjs` — 3 clients · 3 API keys · subscriptions · 3 webhooks · ~700 usage records (30-day) · 5 audit events |
+
+### Webhook Events Reference
+
+| Event | Trigger |
+|---|---|
+| `trust.score.updated` | Org Trust Score™ recomputed |
+| `vendor.verified` | Vendor passes Trust Score™ threshold |
+| `badge.issued` | Trust badge issued in Trust Exchange™ |
+| `risk.created` | New risk added to Risk Lens™ |
+| `risk.closed` | Risk closed or archived |
+| `audit.completed` | Audit status changes to completed |
+| `assessment.completed` | Security assessment completed for a vendor |
+| `ai.trust.updated` | AI Trust Score™ recomputed for an AI system |
+| `benchmark.updated` | Governance Benchmarking™ snapshot updated |
+
+### Authentication
+
+All public API endpoints use Bearer token auth via AUDT's existing `validateApiKey()` middleware — same bcrypt validation as the REST API v1. Keys are namespaced with `tap_` prefix to distinguish platform keys from internal API keys.
 
 ---
 

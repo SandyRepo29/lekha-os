@@ -68,7 +68,11 @@ node scripts/seed-executive-reporting.mjs   # 10 KPIs, 5 snapshots, 3 reports, 2
 node scripts/seed-ai-governance.mjs         # 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 incidents
 node scripts/seed-auditor-collaboration.mjs # 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
 
-# 11. Optional: E2E test user
+# 11. Trust API Platform™
+node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
+node scripts/seed-trust-api-platform.mjs    # 3 API clients, 3 tap_ API keys (bcrypt), subscriptions, 3 webhooks, 30-day usage
+
+# 12. Optional: E2E test user
 node scripts/seed-e2e.mjs               # E2E test user + workspace
 ```
 
@@ -205,6 +209,12 @@ node scripts/seed-e2e.mjs               # E2E test user + workspace
 | Script | What it seeds | Idempotent |
 |---|---|---|
 | `seed-auditor-collaboration.mjs` | 3 auditor organisations (Deloitte, KPMG, Nishith Desai) · 8 external users (ISO, SOC 2, DPDP, AI Governance auditors) · 4 audit rooms (ISO 27001, SOC 2 Type II, DPDP, AI Governance) · 12 evidence requests · 8 external findings · 4 assessment projects · 5 audit reviews · 7 room documents · 20 room activities | ✅ |
+
+### Trust API Platform™ (Module 22)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-trust-api-platform.mjs` | 3 API clients (Procurement Portal, SAP Ariba Integration, Vendor Risk Dashboard) · 3 `tap_` API keys (bcrypt-hashed, plan-specific) · subscriptions to first 3 API products · 3 webhooks (Procurement Sync, Risk Alerts, Compliance Monitor) · ~700 usage records (30-day spread across 5 endpoints) · 5 tap_audit_events | ✅ |
 
 ### Testing
 

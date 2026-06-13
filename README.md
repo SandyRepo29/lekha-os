@@ -36,6 +36,8 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Integration Hub™** | ✅ Complete (2026-06-11) | `/integration-hub/*` |
 | **Executive Reporting & Analytics™** | ✅ Complete (2026-06-12) | `/executive-reporting/*` |
 | **AI Governance™** | ✅ Complete (2026-06-13) | `/ai-governance/*` |
+| **Auditor Collaboration™** | ✅ Complete (2026-06-13) | `/auditor-collaboration/*` |
+| **Trust API Platform™** | ✅ Complete (2026-06-13) | `/trust-api/*` |
 
 ---
 
