@@ -3,11 +3,17 @@ export const dynamic = "force-dynamic";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
-import {
-  BENCHMARK_RANKING_LABELS,
-  BENCHMARK_RANKING_COLORS,
-} from "@/lib/services/benchmarking-score";
-import { Building2, ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
+import { BENCHMARK_RANKING_LABELS } from "@/lib/services/benchmarking-score";
+import { ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
+import { BenchmarkStat, PercentileBadge, RankingBadge, PercentileBar } from "@/components/benchmarking/benchmark-ui";
+
+function accentForPercentile(pct: number | null): "good" | "warn" | "danger" | "neutral" {
+  if (pct === null) return "neutral";
+  if (pct >= 75) return "good";
+  if (pct >= 50) return "neutral";
+  if (pct >= 25) return "warn";
+  return "danger";
+}
 
 export default async function VendorBenchmarkPage() {
   const session = await requireUser();
@@ -15,15 +21,13 @@ export default async function VendorBenchmarkPage() {
   const { snapshot, scores } = await getDashboardData(session.org.id);
 
   const vendorScore = scores.find((s) => s.category === "vendor_trust");
-  const rankLabel = vendorScore ? BENCHMARK_RANKING_LABELS[vendorScore.rankingLabel] : null;
-  const rankColor = vendorScore ? BENCHMARK_RANKING_COLORS[vendorScore.rankingLabel] : "text-[var(--color-ink-dim)]";
 
   const metrics = [
     { label: "Average Vendor Trust Score",   key: "vendor_trust" },
     { label: "Risk Posture vs Peers",         key: "risk_posture" },
     { label: "Compliance Coverage",           key: "compliance_coverage" },
     { label: "Control Health™",               key: "control_health" },
-  ];
+  ] as const;
 
   return (
     <div className="space-y-6">
@@ -47,7 +51,10 @@ export default async function VendorBenchmarkPage() {
                 <div>
                   <p className="text-xs text-[var(--color-ink-dim)] mb-1">Vendor Trust Score™</p>
                   <p className="text-5xl font-bold">{vendorScore.orgScore ?? "—"}</p>
-                  <p className={`text-sm font-semibold mt-1 ${rankColor}`}>{rankLabel}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <RankingBadge ranking={vendorScore.rankingLabel} label={BENCHMARK_RANKING_LABELS[vendorScore.rankingLabel]} />
+                    <PercentileBadge percentile={vendorScore.percentile} />
+                  </div>
                 </div>
                 <div className="grid grid-cols-3 gap-6 text-center">
                   <div>
@@ -59,13 +66,18 @@ export default async function VendorBenchmarkPage() {
                     <p className="text-xs text-[var(--color-ink-faint)]">Top Quartile</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">{vendorScore.percentile ?? "—"}<span className="text-sm font-normal">th</span></p>
+                    <p className="text-2xl font-bold">
+                      {vendorScore.percentile ?? "—"}<span className="text-sm font-normal">th</span>
+                    </p>
                     <p className="text-xs text-[var(--color-ink-faint)]">Your Percentile</p>
                   </div>
                 </div>
               </div>
+              <div className="mt-4">
+                <PercentileBar percentile={vendorScore.percentile} />
+              </div>
               {vendorScore.deltaVsIndustry !== null && (
-                <div className={`mt-4 inline-flex items-center gap-1 text-sm font-semibold ${vendorScore.deltaVsIndustry >= 0 ? "text-green-400" : "text-red-400"}`}>
+                <div className={`mt-3 inline-flex items-center gap-1 text-sm font-semibold ${vendorScore.deltaVsIndustry >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                   {vendorScore.deltaVsIndustry >= 0 ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                   {vendorScore.deltaVsIndustry >= 0 ? "+" : ""}{vendorScore.deltaVsIndustry} points vs industry average
                 </div>
@@ -74,31 +86,18 @@ export default async function VendorBenchmarkPage() {
           )}
 
           {/* Related metrics */}
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-3">
             {metrics.map(({ label, key }) => {
               const s = scores.find((sc) => sc.category === key);
               if (!s) return null;
               return (
-                <Card key={key} className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                      <Building2 className="h-4 w-4 text-blue-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-[var(--color-ink-dim)] mb-0.5">{label}</p>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-xl font-bold">{s.orgScore ?? "—"}</span>
-                        <span className="text-xs text-[var(--color-ink-dim)]">/ avg {s.industryAvg ?? "—"}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className={`text-xs font-semibold ${BENCHMARK_RANKING_COLORS[s.rankingLabel]}`}>
-                        {BENCHMARK_RANKING_LABELS[s.rankingLabel]}
-                      </p>
-                      <p className="text-xs text-[var(--color-ink-dim)]">{s.percentile ?? "—"}th pct</p>
-                    </div>
-                  </div>
-                </Card>
+                <BenchmarkStat
+                  key={key}
+                  label={label}
+                  value={s.orgScore ?? "—"}
+                  accent={accentForPercentile(s.percentile)}
+                  sub={`Avg ${s.industryAvg ?? "—"} · ${s.percentile ?? "—"}th pct`}
+                />
               );
             })}
           </div>

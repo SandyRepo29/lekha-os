@@ -22,7 +22,7 @@ export default function TrustIntelligenceLayout({ children }: { children: React.
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 border-b border-b-[var(--color-line)]">
         {NAV.map(({ href, label }) => {
           const exact = href === "/trust-intelligence";
           const isCurrent = exact

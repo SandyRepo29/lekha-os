@@ -1,11 +1,10 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getComplianceMetrics } from "@/lib/repositories/trust-intelligence-repo";
-import { TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 
 export default async function ComplianceHealthPage() {
   const session = await requireUser();
@@ -21,15 +20,13 @@ export default async function ComplianceHealthPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-4"><TIStat label="Frameworks" value={metrics.frameworkCount} accent="blue" /></Card>
-        <Card className="p-4"><TIStat label="Avg Readiness" value={`${metrics.avgReadiness}%`} accent={metrics.avgReadiness >= 75 ? "green" : "amber"} /></Card>
-        <Card className="p-4">
-          <TIStat
-            label="Overall Status"
-            value={metrics.avgReadiness >= 75 ? "On Track" : metrics.avgReadiness >= 50 ? "Moderate" : "Needs Work"}
-            accent={metrics.avgReadiness >= 75 ? "green" : metrics.avgReadiness >= 50 ? "amber" : "red"}
-          />
-        </Card>
+        <TrustStat label="Frameworks" value={metrics.frameworkCount} accent="neutral" />
+        <TrustStat label="Avg Readiness" value={`${metrics.avgReadiness}%`} accent={metrics.avgReadiness >= 75 ? "good" : "warn"} />
+        <TrustStat
+          label="Overall Status"
+          value={metrics.avgReadiness >= 75 ? "On Track" : metrics.avgReadiness >= 50 ? "Moderate" : "Needs Work"}
+          accent={metrics.avgReadiness >= 75 ? "good" : metrics.avgReadiness >= 50 ? "warn" : "danger"}
+        />
       </div>
 
       <Card className="p-5">

@@ -1,14 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Sparkles, TrendingUp, AlertTriangle, Shield, ClipboardCheck, ShieldCheck, RefreshCw } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { getTrustIntelligenceOverview, getGovernanceTimeline } from "@/lib/services/trust-intelligence/trust-intelligence-service";
 import { OrgTrustScoreRing, OrgTrustBadge } from "@/components/trust-intelligence/org-trust-badge";
-import { ComponentBar, TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { ComponentBar, TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { ORG_TRUST_COMPONENT_LABELS, ORG_TRUST_COMPONENT_WEIGHTS } from "@/lib/services/org-trust-score";
 
 export default async function TrustIntelligencePage() {
@@ -86,41 +86,36 @@ export default async function TrustIntelligencePage() {
 
       {/* Metrics row */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Shield className="h-4 w-4 text-purple-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Vendors</span>
-          </div>
-          <TIStat label="" value={overview.vendors.total} sub={`${overview.vendors.scoredCount} scored · avg ${overview.vendors.avgScore}`} accent="purple" />
-        </Card>
-        <Card className={`p-4 ${overview.risks.criticalCount > 0 ? "border-red-500/25" : ""}`}>
-          <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className={`h-4 w-4 ${overview.risks.criticalCount > 0 ? "text-red-400" : "text-amber-400"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">Active Risks</span>
-          </div>
-          <TIStat label="" value={overview.risks.activeCount} sub={`${overview.risks.criticalCount} critical`} accent={overview.risks.criticalCount > 0 ? "red" : "amber"} />
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Shield className="h-4 w-4 text-blue-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Controls</span>
-          </div>
-          <TIStat label="" value={overview.controls.totalCount} sub={`${overview.controls.weakCount} weak · avg ${overview.controls.avgHealth}`} accent="blue" />
-        </Card>
-        <Card className={`p-4 ${overview.audits.openCriticalFindings > 0 ? "border-amber-500/25" : ""}`}>
-          <div className="flex items-center gap-2 mb-2">
-            <ClipboardCheck className="h-4 w-4 text-amber-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Open Findings</span>
-          </div>
-          <TIStat label="" value={overview.audits.totalOpenFindings} sub={`${overview.audits.openCriticalFindings} critical`} accent={overview.audits.openCriticalFindings > 0 ? "red" : "amber"} />
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck className="h-4 w-4 text-green-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Compliance</span>
-          </div>
-          <TIStat label="" value={`${overview.compliance.avgReadiness}%`} sub={`${overview.compliance.frameworkCount} framework${overview.compliance.frameworkCount !== 1 ? "s" : ""}`} accent="green" />
-        </Card>
+        <TrustStat
+          label="Vendors"
+          value={overview.vendors.total}
+          sub={`${overview.vendors.scoredCount} scored · avg ${overview.vendors.avgScore}`}
+          accent="neutral"
+        />
+        <TrustStat
+          label="Active Risks"
+          value={overview.risks.activeCount}
+          sub={`${overview.risks.criticalCount} critical`}
+          accent={overview.risks.criticalCount > 0 ? "danger" : "warn"}
+        />
+        <TrustStat
+          label="Controls"
+          value={overview.controls.totalCount}
+          sub={`${overview.controls.weakCount} weak · avg ${overview.controls.avgHealth}`}
+          accent="neutral"
+        />
+        <TrustStat
+          label="Open Findings"
+          value={overview.audits.totalOpenFindings}
+          sub={`${overview.audits.openCriticalFindings} critical`}
+          accent={overview.audits.openCriticalFindings > 0 ? "danger" : "warn"}
+        />
+        <TrustStat
+          label="Compliance"
+          value={`${overview.compliance.avgReadiness}%`}
+          sub={`${overview.compliance.frameworkCount} framework${overview.compliance.frameworkCount !== 1 ? "s" : ""}`}
+          accent={overview.compliance.avgReadiness >= 75 ? "good" : overview.compliance.avgReadiness >= 50 ? "warn" : "danger"}
+        />
       </div>
 
       {/* Drivers & Detractors */}

@@ -3,21 +3,22 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { getSchedules } from "@/lib/services/executive-reporting/executive-reporting-service";
 import Link from "next/link";
-import { ArrowLeft, Clock, Mail, CheckCircle, XCircle, Plus } from "lucide-react";
+import { ArrowLeft, Clock, Mail, CheckCircle, XCircle } from "lucide-react";
 import { CreateScheduleButton } from "./create-schedule-button";
+import { ExecStat } from "@/components/executive-reporting/executive-ui";
 
 const FREQUENCY_LABELS: Record<string, string> = {
-  daily: "Daily",
-  weekly: "Weekly",
-  monthly: "Monthly",
+  daily:     "Daily",
+  weekly:    "Weekly",
+  monthly:   "Monthly",
   quarterly: "Quarterly",
-  annually: "Annually",
+  annually:  "Annually",
 };
 
 const DELIVERY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   email: Mail,
-  pdf: Clock,
-  link: Clock,
+  pdf:   Clock,
+  link:  Clock,
 };
 
 export default async function ScheduledPage() {
@@ -25,6 +26,8 @@ export default async function ScheduledPage() {
   const orgId = session.org?.id ?? "";
 
   const schedules = await getSchedules(orgId).catch(() => []);
+  const active = schedules.filter((s) => s.isActive).length;
+  const paused = schedules.filter((s) => !s.isActive).length;
 
   return (
     <div className="space-y-8">
@@ -42,27 +45,17 @@ export default async function ScheduledPage() {
         <CreateScheduleButton />
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-          <div className="text-2xl font-bold">{schedules.length}</div>
-          <div className="text-xs text-[var(--color-ink-dim)] mt-1">Total Schedules</div>
-        </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-          <div className="text-2xl font-bold text-emerald-400">{schedules.filter((s) => s.isActive).length}</div>
-          <div className="text-xs text-[var(--color-ink-dim)] mt-1">Active</div>
-        </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-          <div className="text-2xl font-bold text-[var(--color-ink-dim)]">{schedules.filter((s) => !s.isActive).length}</div>
-          <div className="text-xs text-[var(--color-ink-dim)] mt-1">Paused</div>
-        </div>
+      {/* Stat strip */}
+      <div className="grid grid-cols-3 gap-3">
+        <ExecStat label="Total Schedules" value={schedules.length} accent="neutral" />
+        <ExecStat label="Active"          value={active}           accent={active > 0 ? "good" : "neutral"} />
+        <ExecStat label="Paused"          value={paused}           accent={paused > 0 ? "warn" : "neutral"} />
       </div>
 
       {/* Schedules list */}
       {schedules.length > 0 ? (
         <div className="space-y-3">
           {schedules.map((s) => {
-            const DeliveryIcon = DELIVERY_ICONS[s.deliveryMethod] ?? Mail;
             const recipients = Array.isArray(s.recipients) ? s.recipients : [];
             return (
               <div
@@ -82,12 +75,12 @@ export default async function ScheduledPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   {s.isActive ? (
-                    <span className="flex items-center gap-1 text-xs text-emerald-400">
-                      <CheckCircle className="h-3.5 w-3.5" /> Active
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-400">
+                      <CheckCircle className="h-3 w-3" /> Active
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 text-xs text-[var(--color-ink-dim)]">
-                      <XCircle className="h-3.5 w-3.5" /> Paused
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-line)] px-2 py-0.5 text-xs font-medium text-[var(--color-ink-dim)]">
+                      <XCircle className="h-3 w-3" /> Paused
                     </span>
                   )}
                 </div>

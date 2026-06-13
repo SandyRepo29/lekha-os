@@ -3,16 +3,20 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { generateForecasts } from "@/lib/services/executive-reporting/executive-reporting-service";
 import Link from "next/link";
-import { ArrowLeft, TrendingUp, TrendingDown, Minus, RefreshCw } from "lucide-react";
+import { ArrowLeft, TrendingUp } from "lucide-react";
 import { GenerateForecastsButton } from "./generate-forecasts-button";
+import { ForecastBadge, ExecStat } from "@/components/executive-reporting/executive-ui";
 
 const HORIZON_LABELS: Record<number, string> = { 30: "30 Days", 90: "90 Days", 180: "6 Months" };
 
 const METRIC_LABELS: Record<string, string> = {
   org_trust_score: "Org Trust Score™",
-  control_health: "Control Health™",
-  open_risks: "Open Risks",
+  control_health:  "Control Health™",
+  open_risks:      "Open Risks",
 };
+
+/** Open risks is inverse (higher = worse) */
+const INVERSE_METRICS = new Set(["open_risks"]);
 
 export default async function ForecastsPage() {
   const session = await requireUser();
@@ -43,6 +47,31 @@ export default async function ForecastsPage() {
         <GenerateForecastsButton />
       </div>
 
+      {/* Summary strip */}
+      {Object.keys(byMetric).length > 0 && (
+        <div className="grid grid-cols-3 gap-3">
+          {Object.entries(byMetric).map(([metricName, metricForecasts]) => {
+            const sorted = [...metricForecasts].sort((a, b) => (Number(a.horizonDays) ?? 0) - (Number(b.horizonDays) ?? 0));
+            const current = Number(sorted[0]?.currentValue ?? 0);
+            const longest = sorted[sorted.length - 1];
+            const fVal = Number(longest?.forecastValue ?? 0);
+            const delta = fVal - current;
+            const isInverse = INVERSE_METRICS.has(metricName);
+            const isImproving = isInverse ? delta < -1 : delta > 1;
+            const acc = isImproving ? "good" : delta < -1 && !isInverse ? "danger" : "neutral";
+            return (
+              <ExecStat
+                key={metricName}
+                label={METRIC_LABELS[metricName] ?? metricName}
+                value={current.toFixed(0)}
+                accent={acc}
+                sub={`${delta > 0 ? "+" : ""}${delta.toFixed(1)} by 6mo`}
+              />
+            );
+          })}
+        </div>
+      )}
+
       {/* Forecast cards by metric */}
       {Object.entries(byMetric).map(([metricName, metricForecasts]) => {
         const sorted = [...metricForecasts].sort((a, b) => (Number(a.horizonDays) ?? 0) - (Number(b.horizonDays) ?? 0));
@@ -50,19 +79,19 @@ export default async function ForecastsPage() {
         const longestForecast = sorted[sorted.length - 1];
         const forecastVal = Number(longestForecast?.forecastValue ?? 0);
         const delta = forecastVal - current;
-        const TrendIcon = delta > 1 ? TrendingUp : delta < -1 ? TrendingDown : Minus;
-        const trendColor = delta > 1 ? "text-emerald-400" : delta < -1 ? "text-red-400" : "text-[var(--color-ink-dim)]";
+        const isInverse = INVERSE_METRICS.has(metricName);
+        const forecastTrend = delta > 1 ? "improving" : delta < -1 ? (isInverse ? "improving" : "declining") : "stable";
 
         return (
           <div key={metricName} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-6">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h2 className="font-semibold">{METRIC_LABELS[metricName] ?? metricName}</h2>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-3 mt-1">
                   <span className="text-2xl font-bold">{current.toFixed(0)}</span>
                   <span className="text-xs text-[var(--color-ink-dim)]">current</span>
-                  <TrendIcon className={`h-4 w-4 ml-2 ${trendColor}`} />
-                  <span className={`text-sm font-medium ${trendColor}`}>
+                  <ForecastBadge trend={forecastTrend} />
+                  <span className="text-sm text-[var(--color-ink-dim)]">
                     {delta > 0 ? "+" : ""}{delta.toFixed(1)} over {HORIZON_LABELS[longestForecast?.horizonDays ?? 180]}
                   </span>
                 </div>
@@ -74,17 +103,23 @@ export default async function ForecastsPage() {
                 const fVal = Number(f.forecastValue ?? 0);
                 const conf = Number(f.confidenceScore ?? 0);
                 const d = fVal - current;
-                const FIcon = d > 1 ? TrendingUp : d < -1 ? TrendingDown : Minus;
-                const fc = d > 1 ? "text-emerald-400" : d < -1 ? "text-red-400" : "text-[var(--color-ink-dim)]";
+                const horizon = f.horizonDays ?? 30;
+                const chip =
+                  d > 1
+                    ? "bg-emerald-500/10 text-emerald-400"
+                    : d < -1
+                    ? "bg-red-500/10 text-red-400"
+                    : "bg-[var(--color-line)] text-[var(--color-ink-dim)]";
                 return (
                   <div key={f.id} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)] p-4">
-                    <div className="text-xs text-[var(--color-ink-dim)] mb-2">{HORIZON_LABELS[f.horizonDays ?? 30]}</div>
+                    <span className="inline-block rounded-full bg-[var(--color-blue)]/10 px-2 py-0.5 text-xs font-medium text-[var(--color-blue)] mb-2">
+                      {HORIZON_LABELS[horizon] ?? `${horizon}d`}
+                    </span>
                     <div className="flex items-end gap-2">
                       <span className="text-xl font-bold">{fVal.toFixed(0)}</span>
-                      <div className={`flex items-center gap-0.5 text-xs pb-0.5 ${fc}`}>
-                        <FIcon className="h-3 w-3" />
+                      <span className={`rounded-full px-1.5 py-0.5 text-xs font-medium mb-0.5 ${chip}`}>
                         {d > 0 ? "+" : ""}{d.toFixed(1)}
-                      </div>
+                      </span>
                     </div>
                     <div className="mt-2 text-xs text-[var(--color-ink-dim)]">
                       {(conf * 100).toFixed(0)}% confidence

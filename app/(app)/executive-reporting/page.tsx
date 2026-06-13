@@ -5,40 +5,45 @@ import { getDashboardData, computeKpis } from "@/lib/services/executive-reportin
 import Link from "next/link";
 import {
   BarChart3, TrendingUp, FileText, Clock, Brain, Building2,
-  AlertTriangle, Shield, ShieldCheck, Gavel, ArrowUpRight, ArrowDownRight, Minus,
+  AlertTriangle, Shield, ShieldCheck, Gavel, ArrowUpRight,
   LayoutDashboard, Users, Target, RefreshCw,
 } from "lucide-react";
+import { ExecStat, KpiBadge, ReportStatusBadge } from "@/components/executive-reporting/executive-ui";
 
 const DASHBOARD_TYPES = [
-  { key: "ceo", label: "CEO Dashboard™", icon: Building2, desc: "Org trust, risk exposure, vendor health, benchmark position", color: "var(--color-blue)" },
-  { key: "cro", label: "CRO Dashboard™", icon: AlertTriangle, desc: "Risk heatmap, velocity, reduction trends, forecast", color: "#f59e0b" },
-  { key: "ciso", label: "CISO Dashboard™", icon: Shield, desc: "Control health, vendor security risk, policy compliance", color: "#10b981" },
-  { key: "compliance", label: "Compliance Dashboard™", icon: ShieldCheck, desc: "Framework readiness, coverage, gaps, attestations", color: "#8b5cf6" },
-  { key: "board", label: "Board Dashboard™", icon: Gavel, desc: "Trust score, risk posture, maturity, strategic recommendations", color: "#ef4444" },
-  { key: "custom", label: "Custom Dashboard™", icon: LayoutDashboard, desc: "Build your own dashboard with the widget library", color: "var(--color-ink-dim)" },
+  { key: "ceo",        label: "CEO Dashboard™",        icon: Building2,     desc: "Org trust, risk exposure, vendor health, benchmark position", color: "var(--color-blue)" },
+  { key: "cro",        label: "CRO Dashboard™",        icon: AlertTriangle, desc: "Risk heatmap, velocity, reduction trends, forecast",          color: "#f59e0b" },
+  { key: "ciso",       label: "CISO Dashboard™",       icon: Shield,        desc: "Control health, vendor security risk, policy compliance",     color: "#10b981" },
+  { key: "compliance", label: "Compliance Dashboard™", icon: ShieldCheck,   desc: "Framework readiness, coverage, gaps, attestations",           color: "#8b5cf6" },
+  { key: "board",      label: "Board Dashboard™",      icon: Gavel,         desc: "Trust score, risk posture, maturity, strategic recommendations", color: "#ef4444" },
+  { key: "custom",     label: "Custom Dashboard™",     icon: LayoutDashboard, desc: "Build your own dashboard with the widget library",          color: "var(--color-ink-dim)" },
 ];
 
 const NAV_LINKS = [
-  { href: "/executive-reporting/analytics", icon: BarChart3, label: "Analytics Hub™" },
-  { href: "/executive-reporting/board-reports", icon: FileText, label: "Board Reporting™" },
-  { href: "/executive-reporting/scheduled", icon: Clock, label: "Scheduled Reports™" },
-  { href: "/executive-reporting/forecasts", icon: TrendingUp, label: "Predictive Analytics™" },
-  { href: "/executive-reporting/scorecards", icon: Target, label: "Executive Scorecards™" },
-  { href: "/executive-reporting/ai", icon: Brain, label: "AI Executive Analyst™" },
+  { href: "/executive-reporting/analytics",   icon: BarChart3,   label: "Analytics Hub™" },
+  { href: "/executive-reporting/board-reports", icon: FileText,  label: "Board Reporting™" },
+  { href: "/executive-reporting/scheduled",   icon: Clock,       label: "Scheduled Reports™" },
+  { href: "/executive-reporting/forecasts",   icon: TrendingUp,  label: "Predictive Analytics™" },
+  { href: "/executive-reporting/scorecards",  icon: Target,      label: "Executive Scorecards™" },
+  { href: "/executive-reporting/ai",          icon: Brain,       label: "AI Executive Analyst™" },
 ];
 
-const KPI_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  org_trust_score: Shield,
-  active_vendors: Building2,
-  open_risks: AlertTriangle,
-  control_health: ShieldCheck,
-  open_findings: Target,
-  open_capas: RefreshCw,
-  compliance_frameworks: ShieldCheck,
-  monitoring_alerts: AlertTriangle,
-  open_issues: Target,
-  contracts: FileText,
-};
+/** KPIs where a higher value is a concern (danger/warn) rather than good */
+const INVERSE_KPIS = new Set(["open_risks", "open_findings", "open_capas", "monitoring_alerts", "open_issues"]);
+
+function kpiAccent(key: string, value: number): "danger" | "warn" | "good" | "neutral" {
+  if (INVERSE_KPIS.has(key)) {
+    if (value === 0) return "good";
+    if (value <= 3) return "warn";
+    return "danger";
+  }
+  if (key === "org_trust_score" || key === "control_health") {
+    if (value >= 80) return "good";
+    if (value >= 60) return "warn";
+    return "danger";
+  }
+  return "neutral";
+}
 
 export default async function ExecutiveReportingPage() {
   const session = await requireUser();
@@ -49,7 +54,7 @@ export default async function ExecutiveReportingPage() {
     computeKpis(orgId).catch(() => []),
   ]);
 
-  const displayKpis = ceoData?.kpis ?? kpis.slice(0, 5);
+  const displayKpis = (ceoData?.kpis ?? kpis).slice(0, 5);
 
   return (
     <div className="space-y-8">
@@ -72,20 +77,24 @@ export default async function ExecutiveReportingPage() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {displayKpis.slice(0, 5).map((kpi) => {
-          const Icon = KPI_ICONS[kpi.kpiKey] ?? BarChart3;
-          const trend = kpi.trend;
-          const TrendIcon = trend === "up" ? ArrowUpRight : trend === "down" ? ArrowDownRight : Minus;
-          const trendColor = trend === "up" ? "text-emerald-400" : trend === "down" ? "text-red-400" : "text-[var(--color-ink-dim)]";
+        {displayKpis.map((kpi) => {
+          const val = Number(kpi.currentValue ?? 0);
+          const accent = kpiAccent(kpi.kpiKey, val);
+          const trend = (kpi.trend ?? "stable") as "up" | "down" | "stable";
           return (
-            <div key={kpi.kpiKey} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-              <div className="flex items-center justify-between">
-                <Icon className="h-4 w-4 text-[var(--color-ink-dim)]" />
-                <TrendIcon className={`h-3.5 w-3.5 ${trendColor}`} />
-              </div>
-              <div className="mt-2 text-2xl font-bold">{Number(kpi.currentValue ?? 0).toFixed(0)}</div>
-              <div className="mt-0.5 text-xs text-[var(--color-ink-dim)] truncate">{kpi.kpiName}</div>
-            </div>
+            <ExecStat
+              key={kpi.kpiKey}
+              label={kpi.kpiName}
+              value={val.toFixed(0)}
+              accent={accent}
+              sub={
+                trend !== "stable"
+                  ? trend === "up"
+                    ? "↑ trending up"
+                    : "↓ trending down"
+                  : undefined
+              }
+            />
           );
         })}
       </div>
@@ -155,9 +164,7 @@ export default async function ExecutiveReportingPage() {
                     </div>
                   </div>
                 </div>
-                <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-medium text-emerald-400">
-                  {r.status}
-                </span>
+                <ReportStatusBadge status={r.status} />
               </div>
             ))}
           </div>

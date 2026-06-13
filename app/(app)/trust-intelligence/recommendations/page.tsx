@@ -5,7 +5,7 @@ import { Zap, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { generateRecommendations } from "@/lib/services/trust-intelligence/trust-intelligence-service";
-import { PriorityChip, CategoryChip, TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { PriorityChip, CategoryChip, TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 
 export default async function RecommendationsPage() {
   const session = await requireUser();
@@ -30,15 +30,9 @@ export default async function RecommendationsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className={`p-4 ${highCount > 0 ? "border-red-500/25" : ""}`}>
-          <TIStat label="High Priority" value={highCount} sub="Immediate action" accent="red" />
-        </Card>
-        <Card className="p-4">
-          <TIStat label="Medium Priority" value={mediumCount} sub="Plan this week" accent="amber" />
-        </Card>
-        <Card className="p-4">
-          <TIStat label="Low Priority" value={lowCount} sub="When capacity allows" accent="blue" />
-        </Card>
+        <TrustStat label="High Priority" value={highCount} sub="Immediate action" accent={highCount > 0 ? "danger" : "neutral"} />
+        <TrustStat label="Medium Priority" value={mediumCount} sub="Plan this week" accent={mediumCount > 0 ? "warn" : "neutral"} />
+        <TrustStat label="Low Priority" value={lowCount} sub="When capacity allows" accent="neutral" />
       </div>
 
       {recs.length === 0 ? (

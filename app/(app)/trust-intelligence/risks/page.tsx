@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getRiskMetrics } from "@/lib/repositories/trust-intelligence-repo";
-import { TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { RiskScoreBadge, RiskCategoryBadge } from "@/components/risk/risk-status-badge";
 import { RISK_CATEGORY_LABELS } from "@/lib/services/risk-scoring";
 
@@ -25,12 +25,10 @@ export default async function RiskInsightsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-4"><TIStat label="Total Risks" value={metrics.total} sub={`${metrics.activeCount} active`} accent="blue" /></Card>
-        <Card className={`p-4 ${metrics.criticalCount > 0 ? "border-red-500/25" : ""}`}>
-          <TIStat label="Critical Risks" value={metrics.criticalCount} sub="Score ≥ 20/25" accent="red" />
-        </Card>
-        <Card className="p-4"><TIStat label="High Risks" value={metrics.highCount} sub="Score 12–19" accent="amber" /></Card>
-        <Card className="p-4"><TIStat label="Medium Risks" value={metrics.mediumCount} sub="Score < 12" accent="blue" /></Card>
+        <TrustStat label="Total Risks" value={metrics.total} sub={`${metrics.activeCount} active`} accent="neutral" />
+        <TrustStat label="Critical Risks" value={metrics.criticalCount} sub="Score ≥ 20/25" accent={metrics.criticalCount > 0 ? "danger" : "neutral"} />
+        <TrustStat label="High Risks" value={metrics.highCount} sub="Score 12–19" accent={metrics.highCount > 0 ? "warn" : "neutral"} />
+        <TrustStat label="Medium Risks" value={metrics.mediumCount} sub="Score < 12" accent="neutral" />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">

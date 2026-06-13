@@ -1,11 +1,10 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Shield } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getControlMetrics } from "@/lib/repositories/trust-intelligence-repo";
-import { TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 
 export default async function ControlHealthPage() {
@@ -22,12 +21,10 @@ export default async function ControlHealthPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-4"><TIStat label="Total Controls" value={metrics.totalCount} accent="blue" /></Card>
-        <Card className="p-4"><TIStat label="Avg Health Score" value={metrics.avgHealth} sub="0–100 scale" accent={metrics.avgHealth >= 80 ? "green" : "amber"} /></Card>
-        <Card className="p-4"><TIStat label="Healthy Controls" value={metrics.healthyCount} sub="Health ≥ 80" accent="green" /></Card>
-        <Card className={`p-4 ${metrics.weakCount > 0 ? "border-red-500/25" : ""}`}>
-          <TIStat label="Weak Controls" value={metrics.weakCount} sub="Health < 60" accent="red" />
-        </Card>
+        <TrustStat label="Total Controls" value={metrics.totalCount} accent="neutral" />
+        <TrustStat label="Avg Health Score" value={metrics.avgHealth} sub="0–100 scale" accent={metrics.avgHealth >= 80 ? "good" : "warn"} />
+        <TrustStat label="Healthy Controls" value={metrics.healthyCount} sub="Health ≥ 80" accent="good" />
+        <TrustStat label="Weak Controls" value={metrics.weakCount} sub="Health < 60" accent={metrics.weakCount > 0 ? "danger" : "neutral"} />
       </div>
 
       <Card className="p-5">
@@ -60,9 +57,6 @@ export default async function ControlHealthPage() {
       <Card className="p-5">
         <p className="text-sm font-semibold mb-4">Health Distribution</p>
         <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            { label: "Exceptional (≥90)", count: metrics.weakControls.length === 0 ? 0 : 0, color: "bg-emerald-500" },
-          ].map(() => null)}
           <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 text-center">
             <p className="text-lg font-bold text-emerald-400">{metrics.healthyCount}</p>
             <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Healthy (≥80)</p>

@@ -1,11 +1,12 @@
 export const dynamic = "force-dynamic";
 
-import { Bell, CheckCircle, AlertTriangle, Zap, ShieldAlert, RefreshCw } from "lucide-react";
+import { Bell, CheckCircle, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { EmptyState } from "@/components/ui/empty-state";
 import { findAlerts, countAlerts } from "@/lib/repositories/governance-alerts-repo";
 import { GovernanceAlertBadge, AlertTypeLabel } from "@/components/trust-intelligence/governance-alert-badge";
+import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { MonitoringActions } from "@/components/trust-intelligence/monitoring-actions";
 
 export default async function MonitoringPage() {
@@ -47,34 +48,10 @@ export default async function MonitoringPage() {
 
       {/* Metrics strip */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className={`p-4 ${counts.open > 0 ? "border-amber-500/20" : ""}`}>
-          <div className="flex items-center gap-2 mb-1">
-            <Bell className="h-4 w-4 text-amber-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Open Alerts</span>
-          </div>
-          <p className="text-2xl font-bold text-[var(--color-ink)]">{counts.open}</p>
-        </Card>
-        <Card className={`p-4 ${counts.critical > 0 ? "border-red-500/20" : ""}`}>
-          <div className="flex items-center gap-2 mb-1">
-            <Zap className="h-4 w-4 text-red-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Critical</span>
-          </div>
-          <p className="text-2xl font-bold text-[var(--color-ink)]">{counts.critical}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <ShieldAlert className="h-4 w-4 text-orange-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">High</span>
-          </div>
-          <p className="text-2xl font-bold text-[var(--color-ink)]">{counts.high}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <CheckCircle className="h-4 w-4 text-emerald-400" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Resolved</span>
-          </div>
-          <p className="text-2xl font-bold text-[var(--color-ink)]">{counts.resolved}</p>
-        </Card>
+        <TrustStat label="Open Alerts" value={counts.open} accent={counts.open > 0 ? "warn" : "neutral"} />
+        <TrustStat label="Critical" value={counts.critical} accent={counts.critical > 0 ? "danger" : "neutral"} />
+        <TrustStat label="High" value={counts.high} accent={counts.high > 0 ? "warn" : "neutral"} />
+        <TrustStat label="Resolved" value={counts.resolved} accent="good" />
       </div>
 
       {/* Open alerts */}

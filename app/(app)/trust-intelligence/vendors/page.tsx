@@ -1,14 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getVendorTrustMetrics } from "@/lib/repositories/trust-intelligence-repo";
 import { OrgTrustBadge } from "@/components/trust-intelligence/org-trust-badge";
-import { TIStat } from "@/components/trust-intelligence/trust-intelligence-ui";
-import { TRUST_LEVEL_LABELS } from "@/lib/services/trust-score";
-import { getTrustLevel } from "@/lib/services/trust-score";
+import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
+import { TRUST_LEVEL_LABELS, getTrustLevel } from "@/lib/services/trust-score";
 
 export default async function VendorTrustPage() {
   const session = await requireUser();
@@ -25,18 +23,20 @@ export default async function VendorTrustPage() {
 
       {/* Summary cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-4">
-          <TIStat label="Total Active Vendors" value={metrics.total} accent="blue" />
-        </Card>
-        <Card className="p-4">
-          <TIStat label="Scored Vendors" value={metrics.scoredCount} sub={`${metrics.total - metrics.scoredCount} unscored`} accent="purple" />
-        </Card>
-        <Card className="p-4">
-          <TIStat label="Avg Trust Score" value={metrics.avgScore} sub={metrics.avgScore > 0 ? TRUST_LEVEL_LABELS[getTrustLevel(metrics.avgScore)] : "N/A"} accent={metrics.avgScore >= 80 ? "green" : metrics.avgScore >= 60 ? "amber" : "red"} />
-        </Card>
-        <Card className="p-4">
-          <TIStat label="High Concern Vendors" value={metrics.allScored.filter((v) => v.trustScore < 60).length} sub="Trust Score < 60" accent="red" />
-        </Card>
+        <TrustStat label="Total Active Vendors" value={metrics.total} accent="neutral" />
+        <TrustStat label="Scored Vendors" value={metrics.scoredCount} sub={`${metrics.total - metrics.scoredCount} unscored`} accent="neutral" />
+        <TrustStat
+          label="Avg Trust Score"
+          value={metrics.avgScore}
+          sub={metrics.avgScore > 0 ? TRUST_LEVEL_LABELS[getTrustLevel(metrics.avgScore)] : "N/A"}
+          accent={metrics.avgScore >= 80 ? "good" : metrics.avgScore >= 60 ? "warn" : "danger"}
+        />
+        <TrustStat
+          label="High Concern Vendors"
+          value={metrics.allScored.filter((v) => v.trustScore < 60).length}
+          sub="Trust Score < 60"
+          accent="danger"
+        />
       </div>
 
       {/* Top & Bottom vendors */}

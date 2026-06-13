@@ -3,40 +3,34 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { getAnalyticsOverview, computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
 import Link from "next/link";
-import { ArrowLeft, BarChart3, TrendingUp, TrendingDown, Minus, Shield, AlertTriangle, ShieldCheck, Building2, Target, FileText } from "lucide-react";
+import { ArrowLeft, BarChart3 } from "lucide-react";
+import { ExecStat, KpiBadge } from "@/components/executive-reporting/executive-ui";
 
 const CATEGORY_GROUPS = [
-  {
-    label: "Trust Analytics™",
-    color: "var(--color-blue)",
-    keys: ["org_trust_score"],
-  },
-  {
-    label: "Risk Analytics™",
-    color: "#f59e0b",
-    keys: ["open_risks", "open_findings", "open_capas"],
-  },
-  {
-    label: "Vendor Analytics™",
-    color: "#10b981",
-    keys: ["active_vendors"],
-  },
-  {
-    label: "Control Analytics™",
-    color: "#8b5cf6",
-    keys: ["control_health", "compliance_frameworks"],
-  },
-  {
-    label: "Issue Analytics™",
-    color: "#ef4444",
-    keys: ["open_issues", "monitoring_alerts"],
-  },
-  {
-    label: "Contract Analytics™",
-    color: "#6366f1",
-    keys: ["contracts"],
-  },
+  { label: "Trust Analytics™",    color: "var(--color-blue)", keys: ["org_trust_score"] },
+  { label: "Risk Analytics™",     color: "#f59e0b",           keys: ["open_risks", "open_findings", "open_capas"] },
+  { label: "Vendor Analytics™",   color: "#10b981",           keys: ["active_vendors"] },
+  { label: "Control Analytics™",  color: "#8b5cf6",           keys: ["control_health", "compliance_frameworks"] },
+  { label: "Issue Analytics™",    color: "#ef4444",           keys: ["open_issues", "monitoring_alerts"] },
+  { label: "Contract Analytics™", color: "#6366f1",           keys: ["contracts"] },
 ];
+
+/** KPIs where higher = worse */
+const INVERSE_KPIS = new Set(["open_risks", "open_findings", "open_capas", "monitoring_alerts", "open_issues"]);
+
+function kpiAccent(key: string, value: number): "danger" | "warn" | "good" | "neutral" {
+  if (INVERSE_KPIS.has(key)) {
+    if (value === 0) return "good";
+    if (value <= 3) return "warn";
+    return "danger";
+  }
+  if (key === "org_trust_score" || key === "control_health") {
+    if (value >= 80) return "good";
+    if (value >= 60) return "warn";
+    return "danger";
+  }
+  return "neutral";
+}
 
 export default async function AnalyticsPage() {
   const session = await requireUser();
@@ -66,18 +60,16 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
         {kpis.slice(0, 10).map((kpi) => {
           const val = Number(kpi.currentValue ?? 0);
-          const trend = kpi.trend;
-          const TrendIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
-          const trendColor = trend === "up" ? "text-emerald-400" : trend === "down" ? "text-red-400" : "text-[var(--color-ink-dim)]";
+          const accent = kpiAccent(kpi.kpiKey, val);
+          const trend = (kpi.trend ?? "stable") as "up" | "down" | "stable";
           return (
-            <div key={kpi.kpiKey} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-              <div className="flex items-center justify-between mb-2">
-                <BarChart3 className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />
-                <TrendIcon className={`h-3.5 w-3.5 ${trendColor}`} />
-              </div>
-              <div className="text-2xl font-bold">{val.toFixed(0)}</div>
-              <div className="text-xs text-[var(--color-ink-dim)] truncate mt-0.5">{kpi.kpiName}</div>
-            </div>
+            <ExecStat
+              key={kpi.kpiKey}
+              label={kpi.kpiName}
+              value={val.toFixed(0)}
+              accent={accent}
+              sub={trend !== "stable" ? (trend === "up" ? "↑ up" : "↓ down") : undefined}
+            />
           );
         })}
       </div>
