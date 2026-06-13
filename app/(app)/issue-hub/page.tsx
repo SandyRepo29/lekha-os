@@ -17,55 +17,16 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardMetrics } from "@/lib/services/issue-hub/issue-service";
-
-function Stat({
-  label,
-  value,
-  icon: Icon,
-  color,
-}: {
-  label: string;
-  value: string | number;
-  icon: React.ElementType;
-  color: string;
-}) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
+import {
+  IssueStat,
+  IssueSeverityBadge,
+  IssueStatusBadge,
+} from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
-
-const SEVERITY_COLORS: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-400",
-  high: "bg-orange-500/20 text-orange-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  low: "bg-blue-500/20 text-blue-400",
-  informational: "bg-slate-500/20 text-slate-400",
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  assigned: "bg-blue-500/20 text-blue-400",
-  in_progress: "bg-indigo-500/20 text-indigo-400",
-  blocked: "bg-red-500/20 text-red-400",
-  pending_review: "bg-purple-500/20 text-purple-400",
-  resolved: "bg-green-500/20 text-green-400",
-  closed: "bg-gray-500/20 text-gray-400",
-  accepted_risk: "bg-orange-500/20 text-orange-400",
-  deferred: "bg-slate-500/20 text-slate-400",
-};
 
 export default async function IssueHubDashboardPage() {
   const session = await requireUser();
@@ -102,35 +63,29 @@ export default async function IssueHubDashboardPage() {
       </div>
 
       {/* Metrics strip */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        <Stat label="Total Issues" value={metrics.total} icon={BarChart3} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Open" value={metrics.open} icon={AlertCircle} color="bg-yellow-500/20 text-yellow-400" />
-        <Stat label="Critical" value={metrics.critical} icon={AlertTriangle} color="bg-red-500/20 text-red-400" />
-        <Stat label="Overdue" value={metrics.overdue} icon={Clock} color="bg-orange-500/20 text-orange-400" />
-        <Stat label="Blocked" value={metrics.blocked} icon={XCircle} color="bg-rose-500/20 text-rose-400" />
-        <Stat label="Resolved (mtd)" value={metrics.resolvedThisMonth} icon={CheckCircle2} color="bg-green-500/20 text-green-400" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <IssueStat label="Total Issues" value={metrics.total} accent="neutral" href="/issue-hub/list" />
+        <IssueStat label="Open" value={metrics.open} accent="warn" href="/issue-hub/list?status=open" />
+        <IssueStat label="Critical" value={metrics.critical} accent={metrics.critical > 0 ? "danger" : "neutral"} href="/issue-hub/list?severity=critical" />
+        <IssueStat label="Overdue" value={metrics.overdue} accent={metrics.overdue > 0 ? "danger" : "neutral"} />
+        <IssueStat label="Blocked" value={metrics.blocked} accent={metrics.blocked > 0 ? "danger" : "neutral"} href="/issue-hub/list?status=blocked" />
+        <IssueStat label="Resolved (mtd)" value={metrics.resolvedThisMonth} accent={metrics.resolvedThisMonth > 0 ? "good" : "neutral"} />
       </div>
 
       {/* SLA + Avg resolution */}
-      <div className="grid grid-cols-2 gap-4">
-        <Card className="p-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-500/20 text-blue-400">
-            <Shield className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{metrics.slaCompliance}%</p>
-            <p className="text-xs text-[var(--color-ink-dim)]">SLA Compliance</p>
-          </div>
-        </Card>
-        <Card className="p-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400">
-            <TrendingDown className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{metrics.avgResolutionDays}d</p>
-            <p className="text-xs text-[var(--color-ink-dim)]">Avg Resolution Time</p>
-          </div>
-        </Card>
+      <div className="grid grid-cols-2 gap-3">
+        <IssueStat
+          label="SLA Compliance"
+          value={`${metrics.slaCompliance}%`}
+          accent={metrics.slaCompliance >= 90 ? "good" : metrics.slaCompliance >= 70 ? "warn" : "danger"}
+          sub="target ≥ 90%"
+        />
+        <IssueStat
+          label="Avg Resolution Time"
+          value={`${metrics.avgResolutionDays}d`}
+          accent="neutral"
+          sub="calendar days"
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -141,7 +96,7 @@ export default async function IssueHubDashboardPage() {
             Top Open Issues
           </h2>
           {metrics.topOpenIssues.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-green-400">
+            <div className="flex items-center gap-2 text-sm text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
               No open issues. Great governance posture!
             </div>
@@ -159,15 +114,13 @@ export default async function IssueHubDashboardPage() {
                       {issue.assigneeName ?? issue.ownerName ?? "Unassigned"} · Due {formatDate(issue.dueDate)}
                     </p>
                   </div>
-                  <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${SEVERITY_COLORS[issue.severity] ?? ""}`}>
-                    {issue.severity}
-                  </span>
+                  <IssueSeverityBadge severity={issue.severity} />
                 </Link>
               ))}
             </div>
           )}
           <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
-            <Link href="/issue-hub/list" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+            <Link href="/issue-hub/list" className="text-xs text-[var(--color-blue)] hover:opacity-80 transition-opacity">
               View all issues →
             </Link>
           </div>
@@ -180,9 +133,7 @@ export default async function IssueHubDashboardPage() {
             <div className="space-y-2">
               {Object.entries(metrics.bySeverity).map(([sev, cnt]) => (
                 <div key={sev} className="flex items-center justify-between">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${SEVERITY_COLORS[sev] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {sev}
-                  </span>
+                  <IssueSeverityBadge severity={sev} />
                   <span className="text-sm font-semibold">{cnt}</span>
                 </div>
               ))}
@@ -197,9 +148,7 @@ export default async function IssueHubDashboardPage() {
             <div className="space-y-2">
               {Object.entries(metrics.byStatus).map(([st, cnt]) => (
                 <div key={st} className="flex items-center justify-between">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${STATUS_COLORS[st] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {st.replace(/_/g, " ")}
-                  </span>
+                  <IssueStatusBadge status={st} />
                   <span className="text-sm font-semibold">{cnt}</span>
                 </div>
               ))}

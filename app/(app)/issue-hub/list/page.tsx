@@ -6,34 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { listIssues } from "@/lib/services/issue-hub/issue-service";
-
-const SEVERITY_COLORS: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-400",
-  high: "bg-orange-500/20 text-orange-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  low: "bg-blue-500/20 text-blue-400",
-  informational: "bg-slate-500/20 text-slate-400",
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  assigned: "bg-blue-500/20 text-blue-400",
-  in_progress: "bg-indigo-500/20 text-indigo-400",
-  blocked: "bg-red-500/20 text-red-400",
-  pending_review: "bg-purple-500/20 text-purple-400",
-  resolved: "bg-green-500/20 text-green-400",
-  closed: "bg-gray-500/20 text-gray-400",
-  accepted_risk: "bg-orange-500/20 text-orange-400",
-  deferred: "bg-slate-500/20 text-slate-400",
-};
-
-const PRIORITY_LABELS: Record<string, string> = {
-  p1: "P1 — Critical",
-  p2: "P2 — High",
-  p3: "P3 — Medium",
-  p4: "P4 — Low",
-  p5: "P5 — Informational",
-};
+import {
+  IssueStatusBadge,
+  IssueSeverityBadge,
+  IssuePriorityBadge,
+  IssueFilterChip,
+} from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -92,34 +70,25 @@ export default async function IssueListPage({
         </Link>
       </div>
 
-      {/* Status filters */}
+      {/* Filters */}
       <Card className="p-4 flex flex-wrap gap-2">
-        {["", "open", "in_progress", "blocked", "resolved", "closed"].map((s) => (
-          <Link
+        <IssueFilterChip label="All" active={(sp.status ?? "") === ""} href="/issue-hub/list" />
+        {["open", "in_progress", "blocked", "resolved", "closed"].map((s) => (
+          <IssueFilterChip
             key={s}
-            href={`/issue-hub/list${s ? `?status=${s}` : ""}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              (sp.status ?? "") === s
-                ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"
-            }`}
-          >
-            {s === "" ? "All" : s.replace(/_/g, " ")}
-          </Link>
+            label={s.replace(/_/g, " ")}
+            active={sp.status === s}
+            href={`/issue-hub/list?status=${s}`}
+          />
         ))}
-        <span className="text-[var(--color-line)]">|</span>
+        <span className="text-[var(--color-line)] self-center">|</span>
         {["critical", "high", "medium", "low"].map((sev) => (
-          <Link
+          <IssueFilterChip
             key={sev}
+            label={sev}
+            active={sp.severity === sev}
             href={`/issue-hub/list?severity=${sev}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              sp.severity === sev
-                ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"
-            }`}
-          >
-            {sev}
-          </Link>
+          />
         ))}
       </Card>
 
@@ -156,12 +125,16 @@ export default async function IssueListPage({
               <tbody className="divide-y divide-[var(--color-line)]">
                 {issues.map((issue) => {
                   const overdue = isOverdue(issue.dueDate, issue.status);
+                  const slaBreach = issue.slaBreached;
                   return (
-                    <tr key={issue.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr
+                      key={issue.id}
+                      className={`hover:bg-white/[0.02] transition-colors ${slaBreach ? "bg-red-500/[0.025]" : ""}`}
+                    >
                       <td className="px-4 py-3 max-w-xs">
                         <Link
                           href={`/issue-hub/${issue.id}`}
-                          className="font-medium hover:text-indigo-400 transition-colors block truncate"
+                          className="font-medium hover:text-[var(--color-blue)] transition-colors block truncate"
                         >
                           {issue.title}
                         </Link>
@@ -172,20 +145,18 @@ export default async function IssueListPage({
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${SEVERITY_COLORS[issue.severity] ?? ""}`}>
-                          {issue.severity}
-                        </span>
-                        {issue.slaBreached && (
-                          <span className="ml-1 text-xs text-red-400 font-medium">SLA!</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                        {PRIORITY_LABELS[issue.priority] ?? issue.priority}
+                        <div className="flex items-center gap-1.5">
+                          <IssueSeverityBadge severity={issue.severity} />
+                          {slaBreach && (
+                            <span className="text-xs font-semibold text-red-400">SLA!</span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[issue.status] ?? ""}`}>
-                          {issue.status.replace(/_/g, " ")}
-                        </span>
+                        <IssuePriorityBadge priority={issue.priority} />
+                      </td>
+                      <td className="px-4 py-3">
+                        <IssueStatusBadge status={issue.status} />
                       </td>
                       <td className="px-4 py-3">
                         {issue.assigneeName ? (

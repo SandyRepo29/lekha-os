@@ -3,16 +3,15 @@ export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
-  AlertCircle,
   CheckCircle2,
-  Clock,
-  User,
   MessageSquare,
   Shield,
   ArrowUpCircle,
   History,
   Sparkles,
   Trash2,
+  AlertTriangle,
+  AlertCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,26 +27,13 @@ import {
   escalateIssueAction,
 } from "@/lib/issue-hub/actions";
 import { redirect } from "next/navigation";
-
-const SEVERITY_COLORS: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-400",
-  high: "bg-orange-500/20 text-orange-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  low: "bg-blue-500/20 text-blue-400",
-  informational: "bg-slate-500/20 text-slate-400",
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  assigned: "bg-blue-500/20 text-blue-400",
-  in_progress: "bg-indigo-500/20 text-indigo-400",
-  blocked: "bg-red-500/20 text-red-400",
-  pending_review: "bg-purple-500/20 text-purple-400",
-  resolved: "bg-green-500/20 text-green-400",
-  closed: "bg-gray-500/20 text-gray-400",
-  accepted_risk: "bg-orange-500/20 text-orange-400",
-  deferred: "bg-slate-500/20 text-slate-400",
-};
+import {
+  IssueStatusBadge,
+  IssueSeverityBadge,
+  IssuePriorityBadge,
+  TaskStatusBadge,
+  ExceptionStatusBadge,
+} from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | Date | null | undefined) {
   if (!d) return "—";
@@ -104,25 +90,23 @@ export default async function IssueDetailPage({
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      {/* SLA breach banner */}
+      {issue.slaBreached && (
+        <div className="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
+          <AlertTriangle className="h-5 w-5 text-red-400 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-red-400">SLA Breached</p>
+            <p className="text-xs text-red-400/70">This issue has exceeded its SLA target of {issue.slaDays} days. Immediate action required.</p>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className={`px-2 py-0.5 rounded-full text-xs font-medium ${SEVERITY_COLORS[issue.severity] ?? ""}`}
-            >
-              {issue.severity}
-            </span>
-            <span
-              className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[issue.status] ?? ""}`}
-            >
-              {issue.status.replace(/_/g, " ")}
-            </span>
-            {issue.slaBreached && (
-              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-700/20 text-red-400">
-                SLA Breached
-              </span>
-            )}
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <IssueSeverityBadge severity={issue.severity} />
+            <IssueStatusBadge status={issue.status} />
           </div>
           <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">{issue.title}</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
@@ -132,7 +116,7 @@ export default async function IssueDetailPage({
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href={`/issue-hub/list`}>
+          <Link href="/issue-hub/list">
             <Button variant="outline" size="sm">Back</Button>
           </Link>
           <form action={handleDelete}>
@@ -142,6 +126,17 @@ export default async function IssueDetailPage({
           </form>
         </div>
       </div>
+
+      {/* AI Narrative — surface above tabs */}
+      {narrative && (
+        <Card className="p-5 border-indigo-500/20 bg-indigo-500/[0.03]">
+          <h2 className="font-semibold mb-2 text-sm flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-indigo-400" />
+            AI Analysis
+          </h2>
+          <p className="text-sm text-[var(--color-ink-dim)]">{narrative}</p>
+        </Card>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
@@ -153,39 +148,31 @@ export default async function IssueDetailPage({
             </Card>
           )}
 
-          {/* AI Narrative */}
-          {narrative && (
-            <Card className="p-5 border-indigo-500/20">
-              <h2 className="font-semibold mb-2 text-sm flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-indigo-400" />
-                AI Analysis
-              </h2>
-              <p className="text-sm text-[var(--color-ink-dim)]">{narrative}</p>
-            </Card>
-          )}
-
           {/* Tasks */}
           <Card className="p-5">
             <h2 className="font-semibold mb-3 text-sm flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-400" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
               Tasks ({issue.tasks.length})
             </h2>
             <div className="space-y-2 mb-4">
               {issue.tasks.map((task) => (
                 <div key={task.id} className="flex items-center justify-between gap-3 rounded-xl p-2 bg-white/[0.02]">
-                  <div className="min-w-0">
-                    <p className={`text-sm font-medium ${task.status === "completed" ? "line-through text-[var(--color-ink-dim)]" : ""}`}>
-                      {task.title}
-                    </p>
-                    {task.ownerName && (
-                      <p className="text-xs text-[var(--color-ink-dim)]">{task.ownerName}</p>
-                    )}
+                  <div className="min-w-0 flex items-center gap-2">
+                    <TaskStatusBadge status={task.status} />
+                    <div className="min-w-0">
+                      <p className={`text-sm font-medium truncate ${task.status === "completed" ? "line-through text-[var(--color-ink-dim)]" : ""}`}>
+                        {task.title}
+                      </p>
+                      {task.ownerName && (
+                        <p className="text-xs text-[var(--color-ink-dim)]">{task.ownerName}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     <span className="text-xs text-[var(--color-ink-dim)]">{formatDate(task.dueDate)}</span>
                     {task.status !== "completed" && (
                       <form action={async () => { "use server"; await completeTaskAction(task.id, id); }}>
-                        <button type="submit" className="text-xs text-green-400 hover:text-green-300 transition-colors">
+                        <button type="submit" className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
                           Complete
                         </button>
                       </form>
@@ -210,7 +197,7 @@ export default async function IssueDetailPage({
           {/* Comments */}
           <Card className="p-5">
             <h2 className="font-semibold mb-3 text-sm flex items-center gap-2">
-              <MessageSquare className="h-4 w-4 text-blue-400" />
+              <MessageSquare className="h-4 w-4 text-[var(--color-blue)]" />
               Comments ({issue.comments.length})
             </h2>
             <div className="space-y-3 mb-4">
@@ -237,6 +224,49 @@ export default async function IssueDetailPage({
             </form>
           </Card>
 
+          {/* Exceptions */}
+          {issue.exceptions.length > 0 && (
+            <Card className="p-5">
+              <h2 className="font-semibold mb-3 text-sm flex items-center gap-2">
+                <Shield className="h-4 w-4 text-purple-400" />
+                Exception Requests
+              </h2>
+              <div className="space-y-2">
+                {issue.exceptions.map((exc) => (
+                  <div key={exc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
+                    <div className="flex items-center gap-2 mb-1">
+                      <ExceptionStatusBadge status={exc.status} />
+                      {exc.approverName && <span>Approver: {exc.approverName}</span>}
+                    </div>
+                    <p className="line-clamp-2">{exc.businessJustification}</p>
+                  </div>
+                ))}
+              </div>
+              <Link href="/issue-hub/exceptions" className="block mt-2 text-xs text-[var(--color-blue)] hover:opacity-80 transition-opacity">
+                Manage exceptions →
+              </Link>
+            </Card>
+          )}
+
+          {/* Escalations */}
+          {issue.escalations.length > 0 && (
+            <Card className="p-5">
+              <h2 className="font-semibold mb-3 text-sm flex items-center gap-2">
+                <ArrowUpCircle className="h-4 w-4 text-orange-400" />
+                Escalations
+              </h2>
+              <div className="space-y-2">
+                {issue.escalations.map((esc) => (
+                  <div key={esc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
+                    <p className="font-medium text-orange-400">→ {esc.escalatedTo.replace(/_/g, " ")}</p>
+                    <p className="mt-0.5">{esc.reason}</p>
+                    <p className="mt-1">{formatDate(esc.createdAt)}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+
           {/* History */}
           {issue.history.length > 0 && (
             <Card className="p-5">
@@ -251,7 +281,7 @@ export default async function IssueDetailPage({
                     <span>changed</span>
                     <span className="font-medium">{h.fieldChanged}</span>
                     {h.oldValue && <span>from <em>{h.oldValue}</em></span>}
-                    {h.newValue && <span>to <em className="text-indigo-300">{h.newValue}</em></span>}
+                    {h.newValue && <span>to <em className="text-[var(--color-blue)]">{h.newValue}</em></span>}
                     <span className="ml-auto">{formatDate(h.createdAt)}</span>
                   </div>
                 ))}
@@ -266,9 +296,9 @@ export default async function IssueDetailPage({
           <Card className="p-5">
             <h2 className="font-semibold mb-3 text-sm">Details</h2>
             <dl className="space-y-2.5 text-sm">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <dt className="text-[var(--color-ink-dim)]">Priority</dt>
-                <dd className="font-medium">{issue.priority.toUpperCase()}</dd>
+                <dd><IssuePriorityBadge priority={issue.priority} /></dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-[var(--color-ink-dim)]">Owner</dt>
@@ -278,9 +308,11 @@ export default async function IssueDetailPage({
                 <dt className="text-[var(--color-ink-dim)]">Assignee</dt>
                 <dd className="font-medium">{issue.assigneeName ?? "Unassigned"}</dd>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <dt className="text-[var(--color-ink-dim)]">Due Date</dt>
-                <dd className="font-medium">{formatDate(issue.dueDate)}</dd>
+                <dd className={`font-medium text-sm ${issue.slaBreached ? "text-red-400" : ""}`}>
+                  {formatDate(issue.dueDate)}
+                </dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-[var(--color-ink-dim)]">SLA Days</dt>
@@ -347,44 +379,6 @@ export default async function IssueDetailPage({
               </Button>
             </form>
           </Card>
-
-          {/* Escalations */}
-          {issue.escalations.length > 0 && (
-            <Card className="p-5">
-              <h2 className="font-semibold mb-3 text-sm">Escalations</h2>
-              <div className="space-y-2">
-                {issue.escalations.map((esc) => (
-                  <div key={esc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
-                    <p className="font-medium text-orange-400">→ {esc.escalatedTo.replace(/_/g, " ")}</p>
-                    <p className="mt-0.5">{esc.reason}</p>
-                    <p className="mt-1">{formatDate(esc.createdAt)}</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          )}
-
-          {/* Exceptions */}
-          {issue.exceptions.length > 0 && (
-            <Card className="p-5">
-              <h2 className="font-semibold mb-3 text-sm flex items-center gap-2">
-                <Shield className="h-4 w-4 text-purple-400" />
-                Exception Requests
-              </h2>
-              <div className="space-y-2">
-                {issue.exceptions.map((exc) => (
-                  <div key={exc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
-                    <p className="font-medium capitalize">{exc.status}</p>
-                    <p className="mt-0.5 line-clamp-2">{exc.businessJustification}</p>
-                    {exc.approverName && <p className="mt-1">Approver: {exc.approverName}</p>}
-                  </div>
-                ))}
-              </div>
-              <Link href="/issue-hub/exceptions" className="block mt-2 text-xs text-indigo-400 hover:text-indigo-300">
-                Manage exceptions →
-              </Link>
-            </Card>
-          )}
         </div>
       </div>
     </div>

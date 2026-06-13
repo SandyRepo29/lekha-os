@@ -5,14 +5,7 @@ import { CheckCircle2, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { listTasksByOrg } from "@/lib/services/issue-hub/issue-service";
-
-const TASK_STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  in_progress: "bg-indigo-500/20 text-indigo-400",
-  blocked: "bg-red-500/20 text-red-400",
-  completed: "bg-green-500/20 text-green-400",
-  cancelled: "bg-gray-500/20 text-gray-400",
-};
+import { IssueStat, TaskStatusBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -51,19 +44,10 @@ export default async function TasksPage() {
       </div>
 
       {/* Stats strip */}
-      <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{open.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Open Tasks</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-red-400">{overdue.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Overdue</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-green-400">{completed.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Completed</p>
-        </Card>
+      <div className="grid grid-cols-3 gap-3">
+        <IssueStat label="Open Tasks" value={open.length} accent={open.length > 0 ? "warn" : "neutral"} />
+        <IssueStat label="Overdue" value={overdue.length} accent={overdue.length > 0 ? "danger" : "neutral"} />
+        <IssueStat label="Completed" value={completed.length} accent={completed.length > 0 ? "good" : "neutral"} />
       </div>
 
       {tasks.length === 0 ? (
@@ -89,7 +73,10 @@ export default async function TasksPage() {
                 {tasks.map((task) => {
                   const overdueTsk = isOverdue(task.dueDate, task.status);
                   return (
-                    <tr key={task.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr
+                      key={task.id}
+                      className={`hover:bg-white/[0.02] transition-colors ${overdueTsk ? "bg-red-500/[0.025]" : ""}`}
+                    >
                       <td className="px-4 py-3">
                         <p className={`font-medium ${task.status === "completed" ? "line-through text-[var(--color-ink-dim)]" : ""}`}>
                           {task.title}
@@ -101,15 +88,13 @@ export default async function TasksPage() {
                       <td className="px-4 py-3">
                         <Link
                           href={`/issue-hub/${task.issueId}`}
-                          className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors truncate block max-w-[200px]"
+                          className="text-xs text-[var(--color-blue)] hover:opacity-80 transition-opacity truncate block max-w-[200px]"
                         >
                           {(task as typeof task & { issueTitle: string }).issueTitle}
                         </Link>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${TASK_STATUS_COLORS[task.status] ?? ""}`}>
-                          {task.status.replace(/_/g, " ")}
-                        </span>
+                        <TaskStatusBadge status={task.status} />
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1.5 text-xs text-[var(--color-ink-dim)]">

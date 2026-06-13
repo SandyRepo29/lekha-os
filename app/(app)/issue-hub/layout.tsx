@@ -18,7 +18,7 @@ export default function IssueHubLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 border-b-[var(--color-line)]">
         {NAV.map(({ href, label }) => {
           const exact = href === "/issue-hub";
           const isCurrent = exact

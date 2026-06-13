@@ -1,20 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Shield, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { Shield, CheckCircle2, XCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { listExceptions, approveException } from "@/lib/services/issue-hub/issue-service";
+import { listExceptions } from "@/lib/services/issue-hub/issue-service";
 import { approveExceptionAction } from "@/lib/issue-hub/actions";
-
-const EXCEPTION_STATUS_COLORS: Record<string, string> = {
-  pending: "bg-yellow-500/20 text-yellow-400",
-  approved: "bg-green-500/20 text-green-400",
-  rejected: "bg-red-500/20 text-red-400",
-  expired: "bg-gray-500/20 text-gray-400",
-  revoked: "bg-slate-500/20 text-slate-400",
-};
+import { IssueStat, ExceptionStatusBadge, IssueSeverityBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -47,19 +39,10 @@ export default async function ExceptionsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-yellow-400">{pending.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Pending</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-green-400">{approved.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Approved</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{exceptions.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Total</p>
-        </Card>
+      <div className="grid grid-cols-3 gap-3">
+        <IssueStat label="Pending" value={pending.length} accent={pending.length > 0 ? "warn" : "neutral"} />
+        <IssueStat label="Approved" value={approved.length} accent={approved.length > 0 ? "good" : "neutral"} />
+        <IssueStat label="Total" value={exceptions.length} accent="neutral" />
       </div>
 
       {exceptions.length === 0 ? (
@@ -94,19 +77,11 @@ export default async function ExceptionsPage() {
                       <td className="px-4 py-3">
                         <Link
                           href={`/issue-hub/${e.issue_id as string}`}
-                          className="font-medium hover:text-indigo-400 transition-colors block max-w-[180px] truncate"
+                          className="font-medium hover:text-[var(--color-blue)] transition-colors block max-w-[180px] truncate"
                         >
                           {e.issue_title as string}
                         </Link>
-                        <span
-                          className={`text-xs px-1.5 py-0.5 rounded-full ${
-                            (e.issue_severity as string) === "critical"
-                              ? "bg-red-500/20 text-red-400"
-                              : "bg-orange-500/20 text-orange-400"
-                          }`}
-                        >
-                          {e.issue_severity as string}
-                        </span>
+                        <IssueSeverityBadge severity={e.issue_severity as string} />
                       </td>
                       <td className="px-4 py-3 max-w-xs">
                         <p className="text-sm text-[var(--color-ink-dim)] line-clamp-2">
@@ -114,11 +89,7 @@ export default async function ExceptionsPage() {
                         </p>
                       </td>
                       <td className="px-4 py-3">
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-xs font-medium ${EXCEPTION_STATUS_COLORS[status] ?? ""}`}
-                        >
-                          {status}
-                        </span>
+                        <ExceptionStatusBadge status={status} />
                       </td>
                       <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
                         {formatDate(e.expiry_date as string)}
@@ -137,7 +108,7 @@ export default async function ExceptionsPage() {
                             >
                               <button
                                 type="submit"
-                                className="flex items-center gap-1 text-xs text-green-400 hover:text-green-300 transition-colors"
+                                className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
                               >
                                 <CheckCircle2 className="h-3.5 w-3.5" /> Approve
                               </button>
