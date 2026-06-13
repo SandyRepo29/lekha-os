@@ -35,7 +35,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Governance Benchmarking™** | ✅ Complete (2026-06-11) | `/benchmarking/*` |
 | **Integration Hub™** | ✅ Complete (2026-06-11) | `/integration-hub/*` |
 | **Executive Reporting & Analytics™** | ✅ Complete (2026-06-12) | `/executive-reporting/*` |
-| **AI Governance™** | ✅ Complete (2026-06-12) | `/ai-governance/*` |
+| **AI Governance™** | ✅ Complete (2026-06-13) | `/ai-governance/*` |
 
 ---
 
@@ -90,6 +90,7 @@ node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 node scripts/apply-sql.mjs supabase/migrations/0021_benchmarking.sql
 node scripts/apply-sql.mjs supabase/migrations/0022_integration_hub.sql
 node scripts/apply-sql.mjs supabase/migrations/0023_trust_network.sql
+node scripts/apply-sql.mjs supabase/migrations/0025_ai_governance.sql
 
 node scripts/seed-templates.mjs                    # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all   # Starter / Growth / Enterprise plans
@@ -113,6 +114,8 @@ node scripts/seed-trust-exchange.mjs               # Trust Profile + 5 documents
 node scripts/seed-benchmarking.mjs                 # Benchmark snapshot + 10 category scores + 6-month trends
 node scripts/seed-integration-hub.mjs              # 5 connected integrations + 4 governance events
 node scripts/seed-trust-network.mjs               # 47 profile views + 12 activity events + follower
+node scripts/seed-executive-reporting.mjs          # 10 KPIs + 5 snapshots + 3 reports + 2 schedules + 9 forecasts
+node scripts/seed-ai-governance.mjs               # 8 AI systems + 5 vendors + 10 risks + 6 controls + 4 incidents
 ```
 
 In Supabase → Auth → Email → turn **OFF** "Confirm email".
@@ -176,6 +179,10 @@ Authorization: Bearer audt_live_<key>
 | `GET /api/v1/integrations/health` | read_only | Integration Hub™ health metrics |
 | `GET /api/v1/integrations/syncs` | read_only | Sync history log |
 | `GET /api/v1/trust-network` | read_only | Network dashboard (?view=directory\|relationships) |
+| `GET /api/v1/analytics` | read_only | Executive KPIs + snapshots + forecasts (?view=kpis\|snapshots\|forecasts) |
+| `GET/POST /api/v1/ai/systems` | read_write | AI system list + create |
+| `GET/POST /api/v1/ai/risks` | read_write | AI risk list + create |
+| `GET /api/v1/ai/compliance` | read_only | AI compliance records (?framework=) |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 

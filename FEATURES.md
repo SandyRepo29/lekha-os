@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-12 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **23 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · **Executive Reporting & Analytics™**
+> Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **24 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · **AI Governance™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
