@@ -96,7 +96,11 @@
       "Skill(code-review)",
       "Skill(code-review:*)",
       "mcp__Claude_in_Chrome__navigate",
-      "mcp__Claude_in_Chrome__tabs_context_mcp"
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(xargs grep -l -i \"issue\")",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(xargs grep -l -i \"workflow\")"
     ]
   }
 }

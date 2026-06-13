@@ -27,6 +27,7 @@ import {
   BadgeCheck,
   Brain,
   ChevronRight,
+  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -86,7 +87,8 @@ const groups: NavGroup[] = [
       { href: "/ai-governance",           label: "AI Governance™",           icon: Bot },
       { href: "/auditor-collaboration",   label: "Auditor Collab™",          icon: Users2 },
       { href: "/trust-api",               label: "Trust API Platform™",      icon: Zap },
-      { href: "/trust-verification",      label: "Trust Verification™",      icon: BadgeCheck },
+      { href: "/trust-verification",         label: "Trust Verification™",      icon: BadgeCheck },
+      { href: "/continuous-compliance",      label: "Continuous Compliance™",    icon: Cpu },
     ],
   },
 ];

@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · **Trust Verification Authority™**
-- **Total tables:** 170 (158 previous + 12 Trust Verification Authority tables from migration 0028)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · **Continuous Compliance™**
+- **Total tables:** 187 (170 previous + 17 Continuous Compliance™ tables from migration 0029)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -250,6 +250,7 @@ node scripts/seed-ai-governance.mjs                 # 8 AI systems · 5 vendors 
 node scripts/seed-auditor-collaboration.mjs         # 3 auditor orgs · 8 external users · 4 audit rooms · 12 evidence requests
 node scripts/seed-trust-api-platform.mjs            # 3 clients · 3 API keys · 3 webhooks · 30-day usage data
 node scripts/seed-trust-verification.mjs            # AUDT Verified™ (cert+badge) · Privacy Ready™ · Enterprise Ready™ (pending)
+node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 5 readiness snapshots · 3 automation rules
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -1422,6 +1423,38 @@ Transforms AUDT from a Governance OS into Trust Infrastructure — 8 API product
 
 **Key naming convention:** Raw keys use `tap_` prefix (e.g. `tap_0919bb5c…`), bcrypt-hashed for storage. `tap_products` is a global catalog (no RLS, no `organization_id`) — seeded by migration.
 
+### Module 28 — Continuous Compliance™ ✅ Complete (2026-06-13)
+
+Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Secureframe. 17 new tables, 21 prebuilt automated checks across AWS, Azure, GCP, GitHub, M365, Google Workspace, and Okta.
+
+| Feature | Detail |
+|---|---|
+| **Compliance Checks Library™** | 21 prebuilt checks + custom; categories: aws · azure · gcp · github · m365 · google_workspace · okta · network · endpoint · custom |
+| **Evidence Automation™** | Check runs generate evidence automatically and link to compliance controls |
+| **Control Validation Engine™** | Continuous validation of control effectiveness from check results |
+| **Framework Mapping Engine™** | Map checks → controls → frameworks; continuous readiness score per framework |
+| **Access Review Manager™** | Quarterly and privileged access certifications with per-user approve/revoke decisions |
+| **Compliance Attestations™** | Policy attestations + sign-offs with completion % tracking |
+| **Training Compliance™** | Security awareness and privacy training campaigns with assignment tracking |
+| **Workforce Compliance™** | Onboarding, offboarding, and lifecycle events |
+| **Compliance Signals™** | Auto-generated signals from all modules; severity-based prioritization |
+| **Compliance Health™** | 5-component 0–100 score: checkSuccess(30%) + signalReduction(25%) + evidence(20%) + training(15%) + accessReviews(10%) |
+| **Automation Rules™** | If-this-then-that governance automation triggers |
+| **Continuous Readiness™** | Per-framework readiness snapshots updated on every check run |
+| **AI Compliance Officer™** | Executive summary (cached 24h), per-check remediation guides, multi-turn NL chat |
+
+- Service: `lib/services/continuous-compliance/continuous-compliance-service.ts`
+- AI service: `lib/services/continuous-compliance/ai-continuous-compliance-service.ts`
+- Repo: `lib/repositories/continuous-compliance-repo.ts`
+- Actions: `lib/continuous-compliance/actions.ts`
+- Migration: `supabase/migrations/0029_continuous_compliance.sql`
+- Routes: `/continuous-compliance/*` (12 pages: Hub · Checks · Health · Readiness · Access Reviews · Attestations · Training · Workforce · Signals · Automation · AI Officer)
+- Seed: `node scripts/seed-continuous-compliance.mjs`
+
+**17 DB tables (migration 0029):** `compliance_checks` · `compliance_check_runs` · `compliance_evidence` · `control_validations` · `framework_mappings` · `access_reviews` · `access_review_users` · `attestations` · `attestation_responses` · `training_campaigns` · `training_assignments` · `workforce_events` · `compliance_signals` · `compliance_health_scores` · `compliance_exceptions` · `automation_rules` · `continuous_readiness`
+
+**Built-in checks (21, `organization_id = NULL`):** aws-root-mfa · aws-no-root-keys · aws-s3-public · aws-cloudtrail · aws-iam-review · azure-mfa · azure-defender · azure-policy · gcp-org-policy · gcp-audit-logs · github-secret-scan · github-branch-protection · github-mfa · m365-mfa · m365-dlp · m365-audit · google-workspace-mfa · google-workspace-drive · okta-mfa · okta-inactive · okta-sso. All returned to every org via `OR organization_id IS NULL` repo query.
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1435,6 +1468,7 @@ Transforms AUDT from a Governance OS into Trust Infrastructure — 8 API product
 | AI Governance™ | AI model risk, responsible AI frameworks, EU AI Act | ✅ Complete (2026-06-13) |
 | Auditor Collaboration™ | External auditor rooms, evidence exchange, findings, AI readiness advisor | ✅ Complete (2026-06-13) |
 | Trust API Platform™ | Trust-as-infrastructure — API products, webhooks, developer portal, AI API builder | ✅ Complete (2026-06-13) |
+| Continuous Compliance™ | Always-on compliance — 21 automated checks, evidence automation, access reviews, attestations, training, AI Officer™ | ✅ Complete (2026-06-13) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)

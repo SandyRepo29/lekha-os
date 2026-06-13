@@ -4496,3 +4496,444 @@ export type VerificationRenewal     = typeof verificationRenewals.$inferSelect;
 export type VerificationAssessment  = typeof verificationAssessments.$inferSelect;
 export type VerificationDecision    = typeof verificationDecisions.$inferSelect;
 export type VerificationAuditor     = typeof verificationAuditors.$inferSelect;
+
+/* ============================================================
+   Continuous Compliance™ — Module 28
+   ============================================================ */
+
+/** Prebuilt and custom automated compliance checks. */
+export const complianceChecks = pgTable(
+  "compliance_checks",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    name:             text("name").notNull(),
+    slug:             text("slug").notNull(),
+    description:      text("description"),
+    category:         text("category").notNull().default("custom"),
+    checkType:        text("check_type").notNull().default("manual"),
+    severity:         text("severity").notNull().default("medium"),
+    schedule:         text("schedule").notNull().default("daily"),
+    status:           text("status").notNull().default("active"),
+    isBuiltin:        boolean("is_builtin").notNull().default(false),
+    checkLogic:       jsonb("check_logic").notNull().default({}),
+    remediationGuide: text("remediation_guide"),
+    frameworks:       jsonb("frameworks").$type<string[]>().notNull().default([]),
+    createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cc_org_idx").on(t.organizationId),
+    index("cc_category_idx").on(t.category),
+    index("cc_status_idx").on(t.status),
+  ]
+);
+
+/** Execution log per check run. */
+export const complianceCheckRuns = pgTable(
+  "compliance_check_runs",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    checkId:        uuid("check_id").notNull().references(() => complianceChecks.id, { onDelete: "cascade" }),
+    result:         text("result").notNull().default("unknown"),
+    score:          integer("score"),
+    details:        jsonb("details").notNull().default({}),
+    rawData:        jsonb("raw_data").notNull().default({}),
+    errorMessage:   text("error_message"),
+    triggeredBy:    text("triggered_by").notNull().default("schedule"),
+    runBy:          uuid("run_by").references(() => profiles.id, { onDelete: "set null" }),
+    startedAt:      timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("ccr_org_idx").on(t.organizationId),
+    index("ccr_check_idx").on(t.checkId),
+    index("ccr_result_idx").on(t.organizationId, t.result),
+  ]
+);
+
+/** Auto-generated evidence from check runs. */
+export const ccEvidence = pgTable(
+  "compliance_evidence",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    checkRunId:     uuid("check_run_id").references(() => complianceCheckRuns.id, { onDelete: "set null" }),
+    name:           text("name").notNull(),
+    description:    text("description"),
+    source:         text("source").notNull().default("system_generated"),
+    content:        jsonb("content").notNull().default({}),
+    hash:           text("hash"),
+    status:         text("status").notNull().default("valid"),
+    expiresAt:      timestamp("expires_at", { withTimezone: true }),
+    collectedAt:    timestamp("collected_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cce_org_idx").on(t.organizationId),
+    index("cce_run_idx").on(t.checkRunId),
+    index("cce_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Check results mapped to controls. */
+export const controlValidations = pgTable(
+  "control_validations",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    checkId:        uuid("check_id").notNull().references(() => complianceChecks.id, { onDelete: "cascade" }),
+    checkRunId:     uuid("check_run_id").references(() => complianceCheckRuns.id, { onDelete: "set null" }),
+    controlId:      uuid("control_id").references(() => controls.id, { onDelete: "cascade" }),
+    state:          text("state").notNull().default("unknown"),
+    notes:          text("notes"),
+    validatedAt:    timestamp("validated_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cv_org_idx").on(t.organizationId),
+    index("cv_control_idx").on(t.controlId),
+  ]
+);
+
+/** Checks mapped to compliance frameworks. */
+export const frameworkMappings = pgTable(
+  "framework_mappings",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    checkId:        uuid("check_id").notNull().references(() => complianceChecks.id, { onDelete: "cascade" }),
+    frameworkId:    uuid("framework_id").references(() => frameworks.id, { onDelete: "cascade" }),
+    frameworkName:  text("framework_name").notNull(),
+    controlRef:     text("control_ref"),
+    requirement:    text("requirement"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("fm_org_idx").on(t.organizationId),
+    index("fm_framework_idx").on(t.frameworkId),
+  ]
+);
+
+/** Access review campaigns. */
+export const accessReviews = pgTable(
+  "access_reviews",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:            text("name").notNull(),
+    description:     text("description"),
+    campaignType:    text("campaign_type").notNull().default("quarterly"),
+    status:          text("status").notNull().default("draft"),
+    scope:           text("scope"),
+    riskLevel:       text("risk_level").notNull().default("medium"),
+    dueDate:         date("due_date"),
+    startedAt:       timestamp("started_at", { withTimezone: true }),
+    completedAt:     timestamp("completed_at", { withTimezone: true }),
+    completionRate:  integer("completion_rate").notNull().default(0),
+    totalUsers:      integer("total_users").notNull().default(0),
+    reviewedUsers:   integer("reviewed_users").notNull().default(0),
+    approvedCount:   integer("approved_count").notNull().default(0),
+    revokedCount:    integer("revoked_count").notNull().default(0),
+    createdBy:       uuid("created_by").notNull().references(() => profiles.id, { onDelete: "restrict" }),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:       timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("ar_org_idx").on(t.organizationId),
+    index("ar_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Per-user review items in an access review campaign. */
+export const accessReviewUsers = pgTable(
+  "access_review_users",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    reviewId:       uuid("review_id").notNull().references(() => accessReviews.id, { onDelete: "cascade" }),
+    userId:         uuid("user_id").references(() => profiles.id, { onDelete: "set null" }),
+    userName:       text("user_name").notNull(),
+    userEmail:      text("user_email").notNull(),
+    role:           text("role"),
+    department:     text("department"),
+    riskLevel:      text("risk_level").notNull().default("medium"),
+    decision:       text("decision"),
+    reviewerId:     uuid("reviewer_id").references(() => profiles.id, { onDelete: "set null" }),
+    reviewedAt:     timestamp("reviewed_at", { withTimezone: true }),
+    notes:          text("notes"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("aru_org_idx").on(t.organizationId),
+    index("aru_review_idx").on(t.reviewId),
+  ]
+);
+
+/** Policy attestation campaigns. */
+export const attestations = pgTable(
+  "attestations",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    title:           text("title").notNull(),
+    description:     text("description"),
+    policyType:      text("policy_type").notNull().default("security_policy"),
+    status:          text("status").notNull().default("active"),
+    content:         text("content"),
+    version:         text("version").notNull().default("1.0"),
+    dueDate:         date("due_date"),
+    expiresAt:       timestamp("expires_at", { withTimezone: true }),
+    totalAssigned:   integer("total_assigned").notNull().default(0),
+    totalCompleted:  integer("total_completed").notNull().default(0),
+    completionRate:  integer("completion_rate").notNull().default(0),
+    createdBy:       uuid("created_by").notNull().references(() => profiles.id, { onDelete: "restrict" }),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:       timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("att_org_idx").on(t.organizationId),
+    index("att_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Per-user responses to attestations. */
+export const attestationResponses = pgTable(
+  "attestation_responses",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    attestationId:  uuid("attestation_id").notNull().references(() => attestations.id, { onDelete: "cascade" }),
+    userId:         uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+    status:         text("status").notNull().default("assigned"),
+    respondedAt:    timestamp("responded_at", { withTimezone: true }),
+    notes:          text("notes"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("ar2_org_idx").on(t.organizationId),
+    index("ar2_att_idx").on(t.attestationId),
+  ]
+);
+
+/** Training campaigns. */
+export const trainingCampaigns = pgTable(
+  "training_campaigns",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    title:           text("title").notNull(),
+    description:     text("description"),
+    trainingType:    text("training_type").notNull().default("security_awareness"),
+    status:          text("status").notNull().default("draft"),
+    dueDate:         date("due_date"),
+    totalAssigned:   integer("total_assigned").notNull().default(0),
+    totalCompleted:  integer("total_completed").notNull().default(0),
+    completionRate:  integer("completion_rate").notNull().default(0),
+    passingScore:    integer("passing_score").notNull().default(80),
+    createdBy:       uuid("created_by").notNull().references(() => profiles.id, { onDelete: "restrict" }),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:       timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("tc_org_idx").on(t.organizationId),
+    index("tc_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Per-user training assignments. */
+export const trainingAssignments = pgTable(
+  "training_assignments",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    campaignId:     uuid("campaign_id").notNull().references(() => trainingCampaigns.id, { onDelete: "cascade" }),
+    userId:         uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+    status:         text("status").notNull().default("assigned"),
+    score:          integer("score"),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    dueDate:        date("due_date"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("ta_org_idx").on(t.organizationId),
+    index("ta_campaign_idx").on(t.campaignId),
+    index("ta_user_idx").on(t.userId),
+  ]
+);
+
+/** Workforce onboarding/offboarding events. */
+export const workforceEvents = pgTable(
+  "workforce_events",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    eventType:      text("event_type").notNull(),
+    status:         text("status").notNull().default("pending"),
+    userId:         uuid("user_id").references(() => profiles.id, { onDelete: "set null" }),
+    userName:       text("user_name"),
+    userEmail:      text("user_email"),
+    department:     text("department"),
+    checklist:      jsonb("checklist").$type<Array<{ id: string; label: string; done: boolean }>>().notNull().default([]),
+    completedSteps: integer("completed_steps").notNull().default(0),
+    totalSteps:     integer("total_steps").notNull().default(0),
+    notes:          text("notes"),
+    dueDate:        date("due_date"),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("we_org_idx").on(t.organizationId),
+    index("we_status_idx").on(t.organizationId, t.status),
+    index("we_type_idx").on(t.organizationId, t.eventType),
+  ]
+);
+
+/** Compliance signals generated from integrations and events. */
+export const complianceSignals = pgTable(
+  "compliance_signals",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    signalType:     text("signal_type").notNull(),
+    severity:       text("severity").notNull().default("medium"),
+    status:         text("status").notNull().default("open"),
+    title:          text("title").notNull(),
+    description:    text("description"),
+    sourceModule:   text("source_module"),
+    sourceId:       uuid("source_id"),
+    metadata:       jsonb("metadata").notNull().default({}),
+    resolvedAt:     timestamp("resolved_at", { withTimezone: true }),
+    resolvedBy:     uuid("resolved_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cs_org_idx").on(t.organizationId),
+    index("cs_status_idx").on(t.organizationId, t.status),
+    index("cs_severity_idx").on(t.organizationId, t.severity),
+    index("cs_created_idx").on(t.organizationId, t.createdAt),
+  ]
+);
+
+/** Org-wide compliance health score history. */
+export const complianceHealthScores = pgTable(
+  "compliance_health_scores",
+  {
+    id:                 uuid("id").primaryKey().defaultRandom(),
+    organizationId:     uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    score:              integer("score").notNull(),
+    level:              text("level").notNull().default("needs_attention"),
+    controlHealth:      integer("control_health"),
+    evidenceFreshness:  integer("evidence_freshness"),
+    checkSuccessRate:   integer("check_success_rate"),
+    openFindings:       integer("open_findings"),
+    openRisks:          integer("open_risks"),
+    trainingCompletion: integer("training_completion"),
+    accessReviewRate:   integer("access_review_rate"),
+    trustScore:         integer("trust_score"),
+    metadata:           jsonb("metadata").notNull().default({}),
+    snapshotAt:         timestamp("snapshot_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt:          timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("chs_org_idx").on(t.organizationId),
+  ]
+);
+
+/** Exception approvals for failed checks. */
+export const complianceExceptions = pgTable(
+  "compliance_exceptions",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    checkId:        uuid("check_id").references(() => complianceChecks.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    reason:         text("reason").notNull(),
+    riskAcceptance: text("risk_acceptance"),
+    status:         text("status").notNull().default("pending"),
+    approvedBy:     uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt:     timestamp("approved_at", { withTimezone: true }),
+    expiresAt:      timestamp("expires_at", { withTimezone: true }),
+    requestedBy:    uuid("requested_by").notNull().references(() => profiles.id, { onDelete: "restrict" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cex_org_idx").on(t.organizationId),
+    index("cex_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** If-this-then-that compliance automation rules. */
+export const automationRules = pgTable(
+  "automation_rules",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:           text("name").notNull(),
+    description:    text("description"),
+    status:         text("status").notNull().default("active"),
+    triggerType:    text("trigger_type").notNull().default("check_failed"),
+    triggerConfig:  jsonb("trigger_config").notNull().default({}),
+    actions:        jsonb("actions").$type<Array<{ type: string; config: Record<string, unknown> }>>().notNull().default([]),
+    runCount:       integer("run_count").notNull().default(0),
+    lastRunAt:      timestamp("last_run_at", { withTimezone: true }),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("rul_org_idx").on(t.organizationId),
+    index("rul_status_idx").on(t.organizationId, t.status),
+  ]
+);
+
+/** Per-framework continuous readiness snapshots. */
+export const continuousReadiness = pgTable(
+  "continuous_readiness",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    frameworkId:      uuid("framework_id").references(() => frameworks.id, { onDelete: "cascade" }),
+    frameworkName:    text("framework_name").notNull(),
+    readinessScore:   integer("readiness_score").notNull().default(0),
+    passingChecks:    integer("passing_checks").notNull().default(0),
+    totalChecks:      integer("total_checks").notNull().default(0),
+    passingControls:  integer("passing_controls").notNull().default(0),
+    totalControls:    integer("total_controls").notNull().default(0),
+    evidenceCoverage: integer("evidence_coverage").notNull().default(0),
+    trend:            text("trend").notNull().default("stable"),
+    snapshotAt:       timestamp("snapshot_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("cr_org_idx").on(t.organizationId),
+    index("cr_framework_idx").on(t.frameworkId),
+  ]
+);
+
+// Continuous Compliance™ types
+export type ComplianceCheck        = typeof complianceChecks.$inferSelect;
+export type ComplianceCheckRun     = typeof complianceCheckRuns.$inferSelect;
+export type CcEvidence             = typeof ccEvidence.$inferSelect;
+export type ControlValidation      = typeof controlValidations.$inferSelect;
+export type FrameworkMapping       = typeof frameworkMappings.$inferSelect;
+export type AccessReview           = typeof accessReviews.$inferSelect;
+export type AccessReviewUser       = typeof accessReviewUsers.$inferSelect;
+export type Attestation            = typeof attestations.$inferSelect;
+export type AttestationResponse    = typeof attestationResponses.$inferSelect;
+export type TrainingCampaign       = typeof trainingCampaigns.$inferSelect;
+export type TrainingAssignment     = typeof trainingAssignments.$inferSelect;
+export type WorkforceEvent         = typeof workforceEvents.$inferSelect;
+export type ComplianceSignal       = typeof complianceSignals.$inferSelect;
+export type ComplianceHealthScore  = typeof complianceHealthScores.$inferSelect;
+export type ComplianceException    = typeof complianceExceptions.$inferSelect;
+export type AutomationRule         = typeof automationRules.$inferSelect;
+export type ContinuousReadiness    = typeof continuousReadiness.$inferSelect;
