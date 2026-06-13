@@ -49,7 +49,7 @@ export default async function ComplianceDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            Compliance
+            Evidence Vault™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {frameworks.length} framework{frameworks.length !== 1 ? "s" : ""} ·{" "}
@@ -93,7 +93,7 @@ export default async function ComplianceDashboardPage() {
               </div>
             </Card>
 
-            <Card className="p-5">
+            <Card className="border-l-2 border-l-[var(--color-blue)]/60 p-5">
               <div className="mb-2 flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-[var(--color-blue)]" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Frameworks</span>
@@ -106,7 +106,7 @@ export default async function ComplianceDashboardPage() {
               </p>
             </Card>
 
-            <Card className="p-5">
+            <Card className="border-l-2 border-l-emerald-500/60 p-5">
               <div className="mb-2 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Controls</span>
@@ -118,12 +118,12 @@ export default async function ComplianceDashboardPage() {
             </Card>
 
             <Card
-              className={`p-5 ${
+              className={`border-l-2 p-5 ${
                 gapSummary.critical > 0
-                  ? "border-red-500/25"
+                  ? "border-red-500/25 border-l-red-500/60"
                   : gapSummary.total > 0
-                  ? "border-amber-500/25"
-                  : "border-emerald-500/25"
+                  ? "border-amber-500/25 border-l-amber-500/60"
+                  : "border-emerald-500/25 border-l-emerald-500/60"
               }`}
             >
               <div className="mb-2 flex items-center gap-2">

@@ -20,7 +20,7 @@ export default function ComplianceLayout({ children }: { children: React.ReactNo
   return (
     <div className="space-y-6">
       {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] border-b-[var(--color-line-strong)] bg-white/[0.02] p-1">
         {NAV.map(({ href, label, active }) => {
           const exact = href === "/compliance";
           const isCurrent = exact

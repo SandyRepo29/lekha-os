@@ -49,7 +49,7 @@ export default async function ComplianceReportsPage() {
           {frameworks.map((fw) => (
             <ReportCard
               key={fw.id}
-              icon={<FileText className="h-5 w-5 text-indigo-400" />}
+              icon={<FileText className="h-5 w-5 text-[var(--color-blue)]" />}
               title={`${fw.name} — Framework Report`}
               description={`Controls table, readiness breakdown, open gaps${fw.readiness ? `, ${fw.readiness.overallScore}% readiness` : ""}.`}
               href={`/reports/compliance/framework/${fw.id}`}

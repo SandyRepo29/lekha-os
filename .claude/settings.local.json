@@ -94,7 +94,9 @@
       "Bash(python3 -)",
       "Bash(ping -n 2 aws-1-ap-south-1.pooler.supabase.com)",
       "Skill(code-review)",
-      "Skill(code-review:*)"
+      "Skill(code-review:*)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
     ]
   }
 }

@@ -22,11 +22,24 @@ const ACCENT_BORDER: Record<StatAccent, string> = {
   good:   "border-emerald-500/25",
 };
 
+const ACCENT_LEFT_BAR: Record<StatAccent, string> = {
+  danger: "border-l-red-500/60",
+  warn:   "border-l-amber-500/60",
+  good:   "border-l-emerald-500/60",
+};
+
+const ACCENT_BG: Record<StatAccent, string> = {
+  danger: "bg-red-500/[0.04]",
+  warn:   "bg-amber-500/[0.04]",
+  good:   "bg-emerald-500/[0.04]",
+};
+
 /**
  * Compact metric card used in stat strips across all compliance pages.
+ * Renders with a left accent bar matching the dashboard KpiCard style.
  *
  * @param size  "lg" = text-2xl (default), "sm" = text-xl
- * @param accent  Coloured border for warning/danger states
+ * @param accent  Coloured left-bar + border for warning/danger/good states
  */
 export function ComplianceStat({
   label,
@@ -41,10 +54,12 @@ export function ComplianceStat({
   accent?: StatAccent;
   size?: "lg" | "sm";
 }) {
-  const border = accent ? ACCENT_BORDER[accent] : "border-[var(--color-line)]";
+  const border    = accent ? ACCENT_BORDER[accent]   : "border-[var(--color-line)]";
+  const leftBar   = accent ? ACCENT_LEFT_BAR[accent] : "border-l-[var(--color-line-strong)]";
+  const bg        = accent ? ACCENT_BG[accent]       : "";
   const valueSize = size === "sm" ? "text-xl" : "text-2xl";
   return (
-    <Card className={`px-4 py-3 ${border}`}>
+    <Card className={`border-l-2 px-4 py-3 ${border} ${leftBar} ${bg}`}>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
       <p
         className={`mt-1 font-[family-name:var(--font-display)] ${valueSize} font-bold ${

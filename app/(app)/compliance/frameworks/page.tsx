@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listFrameworks } from "@/lib/services/compliance/framework-service";
 import { FrameworkStatusBadge } from "@/components/compliance/compliance-badges";
+import { ComplianceStat } from "@/components/compliance/compliance-ui";
 import { scoreTextColor } from "@/lib/ui/colors";
 
 export default async function FrameworksPage() {
@@ -27,6 +28,15 @@ export default async function FrameworksPage() {
 
   const frameworks = await listFrameworks(session.org.id);
 
+  const certified = frameworks.filter((f) => f.status === "certified").length;
+  const inProgress = frameworks.filter((f) => f.status === "in_progress").length;
+  const totalGaps = frameworks.reduce((n, f) => n + f.openGapCount, 0);
+  const avgReadiness = frameworks.length
+    ? Math.round(
+        frameworks.reduce((n, f) => n + (f.readiness?.overallScore ?? 0), 0) / frameworks.length
+      )
+    : 0;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -43,6 +53,16 @@ export default async function FrameworksPage() {
           </Button>
         </Link>
       </div>
+
+      {/* Stat strip */}
+      {frameworks.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <ComplianceStat label="Total"       value={frameworks.length} />
+          <ComplianceStat label="Certified"   value={certified}   accent={certified > 0 ? "good" : undefined} color={certified > 0 ? "text-emerald-400" : undefined} />
+          <ComplianceStat label="In Progress" value={inProgress}  color="text-[var(--color-blue)]" />
+          <ComplianceStat label="Avg Readiness" value={`${avgReadiness}%`} accent={totalGaps > 0 ? "warn" : "good"} />
+        </div>
+      )}
 
       {frameworks.length === 0 ? (
         <Card>
