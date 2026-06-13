@@ -4,7 +4,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getPendingActionsAction } from "@/lib/agents/actions";
 import { Zap, Clock, CheckCircle } from "lucide-react";
-import { AgentStat, ActionStatusBadge, fmtDate } from "@/components/agents/agent-ui";
+import { AgentStat, ActionStatusBadge } from "@/components/agents/agent-ui";
 import { AgentActionButtons } from "@/components/agents/agent-action-buttons";
 
 const SUB_NAV = [
@@ -19,6 +19,19 @@ const SUB_NAV = [
   { href: "/agents/analytics", label: "Analytics" },
   { href: "/agents/copilot", label: "Copilotâ„¢" },
 ];
+
+// Inline helpers — cannot call "use client" exports as plain functions from server components
+function fmtDate(val?: string | Date | null): string {
+  if (!val) return "—";
+  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
+  catch { return "—"; }
+}
+function fmtDuration(ms?: number): string {
+  if (!ms) return "—";
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${Math.round(ms / 60000)}m`;
+}
 
 export default async function AgentActionsPage() {
   await requireUser();

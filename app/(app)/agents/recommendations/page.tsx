@@ -5,7 +5,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getRecommendationsAction } from "@/lib/agents/actions";
 import { Lightbulb, CheckCircle, ChevronRight } from "lucide-react";
 import {
-  AgentStat, PriorityBadge, ConfidenceRing, fmtDate,
+  AgentStat, PriorityBadge, ConfidenceRing,
 } from "@/components/agents/agent-ui";
 import { RecommendationActions } from "@/components/agents/recommendation-actions";
 
@@ -34,6 +34,19 @@ const EFFORT_STYLES: Record<string, string> = {
   Medium: "text-amber-400",
   High:   "text-red-400",
 };
+
+// Inline helpers — cannot call "use client" exports as plain functions from server components
+function fmtDate(val?: string | Date | null): string {
+  if (!val) return "—";
+  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
+  catch { return "—"; }
+}
+function fmtDuration(ms?: number): string {
+  if (!ms) return "—";
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${Math.round(ms / 60000)}m`;
+}
 
 export default async function RecommendationsPage() {
   await requireUser();

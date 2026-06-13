@@ -8,7 +8,7 @@ import {
   Cpu, Play, ArrowRight, CheckCircle, AlertTriangle, Clock,
   Activity, Settings,
 } from "lucide-react";
-import { AgentStat, AgentStatusBadge, RunStatusBadge, SeverityBadge, fmtDate, fmtDuration } from "@/components/agents/agent-ui";
+import { AgentStat, AgentStatusBadge, RunStatusBadge, SeverityBadge } from "@/components/agents/agent-ui";
 
 const NAV = [
   { href: "/agents/registry",        icon: Shield,      label: "Agent Registryâ„¢",        description: "All agents â€” status, runs, execution mode" },
@@ -21,6 +21,19 @@ const NAV = [
   { href: "/agents/analytics",       icon: BarChart3,   label: "Analyticsâ„¢",              description: "Agent performance and automation metrics" },
   { href: "/agents/copilot",         icon: Bot,         label: "Governance Copilotâ„¢",     description: "NL chat â€” ask anything about your governance posture" },
 ];
+
+// Inline helpers (can't call "use client" functions from server component)
+function fmtDate(val?: string | Date | null): string {
+  if (!val) return "—";
+  try { return new Date(val).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
+  catch { return "—"; }
+}
+function fmtDuration(ms?: number): string {
+  if (!ms) return "—";
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${Math.round(ms / 60000)}m`;
+}
 
 export default async function AgentsPage() {
   await requireUser();
