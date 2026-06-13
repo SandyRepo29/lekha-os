@@ -16,7 +16,7 @@ export default async function PolicyGovernanceLayout({ children }: { children: R
   return (
     <div className="space-y-6">
       {/* Sub-nav */}
-      <nav className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0">
+      <nav className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)]">
         {tabs.map((tab) => {
           const active =
             tab.href === "/policy-governance"

@@ -71,6 +71,14 @@ export default async function PolicyDetailPage({
         <PolicyDetailActions policyId={id} status={policy.status} />
       </div>
 
+      {/* AI Summary panel — always visible above tabs */}
+      {policy.description && (
+        <Card className="p-5 border-l-2 border-l-indigo-500/40 bg-indigo-500/[0.03]">
+          <h3 className="font-semibold text-sm text-indigo-300 mb-1">Policy Summary</h3>
+          <p className="text-sm text-[var(--color-ink-dim)] whitespace-pre-wrap">{policy.description}</p>
+        </Card>
+      )}
+
       {/* Tabs */}
       <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)]">
         {tabs.map((tab) => (
@@ -92,6 +100,29 @@ export default async function PolicyDetailPage({
       {/* Tab content */}
       {activeTab === "overview" && (
         <div className="grid gap-6 sm:grid-cols-2">
+          {/* Coverage numbers */}
+          <Card className="p-5 sm:col-span-2">
+            <h3 className="font-semibold mb-3">Coverage</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-indigo-400">{policy.controlCount}</p>
+                <p className="text-xs text-[var(--color-ink-dim)]">Controls Linked</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-purple-400">{policy.frameworkCount}</p>
+                <p className="text-xs text-[var(--color-ink-dim)]">Frameworks</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-blue-400">{policy.linkedRisks.length}</p>
+                <p className="text-xs text-[var(--color-ink-dim)]">Linked Risks</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-emerald-400">{policy.attestations.length}</p>
+                <p className="text-xs text-[var(--color-ink-dim)]">Attestations</p>
+              </div>
+            </div>
+          </Card>
+
           <Card className="p-5 space-y-3">
             <h3 className="font-semibold">Policy Details</h3>
             <dl className="space-y-2 text-sm">
@@ -155,35 +186,6 @@ export default async function PolicyDetailPage({
               )}
             </div>
           </Card>
-
-          {policy.description && (
-            <Card className="p-5 sm:col-span-2">
-              <h3 className="font-semibold mb-2">Description</h3>
-              <p className="text-sm text-[var(--color-ink-dim)] whitespace-pre-wrap">{policy.description}</p>
-            </Card>
-          )}
-
-          <Card className="p-5 sm:col-span-2">
-            <h3 className="font-semibold mb-3">Coverage</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-indigo-400">{policy.controlCount}</p>
-                <p className="text-xs text-[var(--color-ink-dim)]">Controls Linked</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-purple-400">{policy.frameworkCount}</p>
-                <p className="text-xs text-[var(--color-ink-dim)]">Frameworks</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-blue-400">{policy.linkedRisks.length}</p>
-                <p className="text-xs text-[var(--color-ink-dim)]">Linked Risks</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-green-400">{policy.attestations.length}</p>
-                <p className="text-xs text-[var(--color-ink-dim)]">Attestations</p>
-              </div>
-            </div>
-          </Card>
         </div>
       )}
 
@@ -204,7 +206,7 @@ export default async function PolicyDetailPage({
                     </p>
                   </div>
                   {v.approvedAt && (
-                    <span className="text-xs text-green-400">Approved {new Date(v.approvedAt).toLocaleDateString()}</span>
+                    <span className="text-xs text-emerald-400">Approved {new Date(v.approvedAt).toLocaleDateString()}</span>
                   )}
                 </div>
               ))}

@@ -8,6 +8,34 @@ import { requireUser } from "@/lib/auth/session";
 import { db } from "@/lib/db";
 import { policyReviews, policies, profiles } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { cn } from "@/lib/utils";
+
+const OUTCOME_STYLES: Record<string, string> = {
+  approved: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  changes_required: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+  rejected: "text-red-400 bg-red-500/10 border-red-500/20",
+  expired: "text-orange-400 bg-orange-500/10 border-orange-500/20",
+};
+
+const OUTCOME_LABELS: Record<string, string> = {
+  approved: "Approved",
+  changes_required: "Changes Required",
+  rejected: "Rejected",
+  expired: "Expired",
+};
+
+function isOverdue(dateStr: string | null | undefined): boolean {
+  if (!dateStr) return false;
+  return new Date(dateStr) < new Date();
+}
+
+function isDueSoon(dateStr: string | null | undefined): boolean {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = (d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+  return diff >= 0 && diff <= 30;
+}
 
 export default async function PolicyReviewsPage() {
   const session = await requireUser();
@@ -32,13 +60,6 @@ export default async function PolicyReviewsPage() {
     .leftJoin(profiles, eq(policyReviews.reviewerId, profiles.id))
     .where(eq(policyReviews.organizationId, session.org.id))
     .orderBy(desc(policyReviews.createdAt));
-
-  const OUTCOME_STYLES: Record<string, string> = {
-    approved: "text-green-400 bg-green-500/10 border-green-500/20",
-    changes_required: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
-    rejected: "text-red-400 bg-red-500/10 border-red-500/20",
-    expired: "text-orange-400 bg-orange-500/10 border-orange-500/20",
-  };
 
   return (
     <div className="space-y-6">
@@ -66,24 +87,38 @@ export default async function PolicyReviewsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
-                {reviews.map(({ review, policyName, policyId, reviewerName }) => (
-                  <tr key={review.id} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="px-4 py-3">
-                      <Link href={`/policy-governance/${policyId}?tab=reviews`} className="font-medium hover:text-indigo-400 transition-colors">
-                        {policyName ?? "—"}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-[var(--color-ink-dim)]">{reviewerName ?? "—"}</td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize ${OUTCOME_STYLES[review.outcome] ?? "text-[var(--color-ink-dim)]"}`}>
-                        {review.outcome.replace("_", " ")}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-[var(--color-ink-dim)]">{review.reviewDate}</td>
-                    <td className="px-4 py-3 text-[var(--color-ink-dim)]">{review.nextReviewDate ?? "—"}</td>
-                    <td className="px-4 py-3 text-[var(--color-ink-dim)] max-w-xs truncate">{review.notes ?? "—"}</td>
-                  </tr>
-                ))}
+                {reviews.map(({ review, policyName, policyId, reviewerName }) => {
+                  const overdue = isOverdue(review.nextReviewDate);
+                  const dueSoon = !overdue && isDueSoon(review.nextReviewDate);
+                  return (
+                    <tr key={review.id} className="hover:bg-white/[0.02] transition-colors">
+                      <td className="px-4 py-3">
+                        <Link href={`/policy-governance/${policyId}?tab=reviews`} className="font-medium hover:text-indigo-400 transition-colors">
+                          {policyName ?? "—"}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-[var(--color-ink-dim)]">{reviewerName ?? "—"}</td>
+                      <td className="px-4 py-3">
+                        <span className={cn(
+                          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
+                          OUTCOME_STYLES[review.outcome] ?? "text-[var(--color-ink-dim)] bg-white/5 border-white/10"
+                        )}>
+                          {OUTCOME_LABELS[review.outcome] ?? review.outcome.replace("_", " ")}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-[var(--color-ink-dim)]">{review.reviewDate}</td>
+                      <td className={cn(
+                        "px-4 py-3 text-sm font-medium",
+                        overdue ? "text-red-400" : dueSoon ? "text-amber-400" : "text-[var(--color-ink-dim)]"
+                      )}>
+                        {review.nextReviewDate ?? "—"}
+                        {overdue && <span className="ml-1.5 text-xs font-semibold">(Overdue)</span>}
+                        {dueSoon && <span className="ml-1.5 text-xs font-semibold">(Due Soon)</span>}
+                      </td>
+                      <td className="px-4 py-3 text-[var(--color-ink-dim)] max-w-xs truncate">{review.notes ?? "—"}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
