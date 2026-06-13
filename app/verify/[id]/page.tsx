@@ -2,15 +2,17 @@
 import { lookupCertificate } from "@/lib/services/trust-verification/trust-verification-service";
 import { ShieldCheck, Award, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return {
-    title: `Verify ${params.id} — AUDT Trust Registry`,
+    title: `Verify ${id} — AUDT Trust Registry`,
     description: "Real-time verification of an AUDT Trust Certificate.",
   };
 }
 
-export default async function PublicVerifyPage({ params }: { params: { id: string } }) {
-  const result = await lookupCertificate(params.id).catch(() => null);
+export default async function PublicVerifyPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const result = await lookupCertificate(id).catch(() => null);
   const cert = result?.cert;
   const program = result?.program;
 
@@ -83,7 +85,7 @@ export default async function PublicVerifyPage({ params }: { params: { id: strin
           <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.05] p-8 text-center">
             <XCircle className="mx-auto mb-4 h-12 w-12 text-red-400" />
             <div className="text-lg font-bold text-red-400 mb-2">Certificate Not Found</div>
-            <p className="text-sm text-white/50">No certificate found for ID: <code className="font-mono">{params.id}</code></p>
+            <p className="text-sm text-white/50">No certificate found for ID: <code className="font-mono">{id}</code></p>
             <p className="mt-2 text-xs text-white/30">This certificate may be invalid, expired, or the ID may be incorrect.</p>
           </div>
         )}

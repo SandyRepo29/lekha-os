@@ -20,10 +20,11 @@ function StatusBadge({ status }: { status: string }) {
   return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${map[status] ?? "bg-white/5 text-[var(--color-ink-faint)]"}`}>{status.replace(/_/g," ")}</span>;
 }
 
-export default async function VerificationDetailPage({ params }: { params: { id: string } }) {
+export default async function VerificationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await requireUser();
   const orgId = session.org?.id ?? "";
-  const data = await getVerificationById(orgId, params.id);
+  const { id } = await params;
+  const data = await getVerificationById(orgId, id);
   if (!data) notFound();
 
   const { verification: v, reviews, evidence, assessment, decisions } = data;
