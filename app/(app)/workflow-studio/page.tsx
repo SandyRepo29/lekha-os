@@ -9,32 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardMetrics } from "@/lib/services/workflow-studio/workflow-service";
-
-function Stat({ label, value, icon: Icon, color }: {
-  label: string; value: string | number; icon: React.ElementType; color: string;
-}) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
-
-const RUN_STATUS_COLORS: Record<string, string> = {
-  running: "bg-blue-500/20 text-blue-400",
-  waiting: "bg-yellow-500/20 text-yellow-400",
-  approved: "bg-green-500/20 text-green-400",
-  rejected: "bg-red-500/20 text-red-400",
-  failed: "bg-red-500/20 text-red-400",
-  completed: "bg-green-500/20 text-green-400",
-  cancelled: "bg-slate-500/20 text-slate-400",
-};
+import { WorkflowStat, WorkflowRunStatusBadge } from "@/components/workflow-studio/workflow-ui";
 
 function formatDate(d: Date | string | null | undefined) {
   if (!d) return "—";
@@ -74,14 +49,14 @@ export default async function WorkflowStudioDashboardPage() {
 
       {/* Metrics strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
-        <Stat label="Workflows" value={metrics.total} icon={GitBranch} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Active" value={metrics.active} icon={Zap} color="bg-green-500/20 text-green-400" />
-        <Stat label="Draft" value={metrics.draft} icon={BarChart3} color="bg-yellow-500/20 text-yellow-400" />
-        <Stat label="Total Runs" value={metrics.totalRuns} icon={Play} color="bg-blue-500/20 text-blue-400" />
-        <Stat label="Active Runs" value={metrics.activeRuns} icon={Clock} color="bg-orange-500/20 text-orange-400" />
-        <Stat label="Completed" value={metrics.completedRuns} icon={CheckCircle2} color="bg-teal-500/20 text-teal-400" />
-        <Stat label="Failed" value={metrics.failedRuns} icon={XCircle} color="bg-red-500/20 text-red-400" />
-        <Stat label="Approvals" value={metrics.pendingApprovals} icon={ThumbsUp} color="bg-purple-500/20 text-purple-400" />
+        <WorkflowStat label="Workflows"  value={metrics.total}             accent="neutral" href="/workflow-studio/library" />
+        <WorkflowStat label="Active"     value={metrics.active}            accent="good"    href="/workflow-studio/library?status=active" />
+        <WorkflowStat label="Draft"      value={metrics.draft}             accent="warn"    href="/workflow-studio/library?status=draft" />
+        <WorkflowStat label="Total Runs" value={metrics.totalRuns}         accent="neutral" href="/workflow-studio/runs" />
+        <WorkflowStat label="Active Runs" value={metrics.activeRuns}       accent="neutral" href="/workflow-studio/runs?status=running" />
+        <WorkflowStat label="Completed"  value={metrics.completedRuns}     accent="good"    href="/workflow-studio/runs?status=completed" />
+        <WorkflowStat label="Failed"     value={metrics.failedRuns}        accent="danger"  href="/workflow-studio/runs?status=failed" />
+        <WorkflowStat label="Approvals"  value={metrics.pendingApprovals}  accent={metrics.pendingApprovals > 0 ? "warn" : "neutral"} href="/workflow-studio/approvals" />
       </div>
 
       {/* Automation rate */}
@@ -106,7 +81,7 @@ export default async function WorkflowStudioDashboardPage() {
       {/* Recent runs */}
       <Card className="p-5">
         <h2 className="font-semibold mb-4 flex items-center gap-2">
-          <Play className="h-4 w-4 text-blue-400" /> Recent Workflow Runs
+          <Play className="h-4 w-4 text-[var(--color-blue)]" /> Recent Workflow Runs
         </h2>
         {metrics.recentRuns.length === 0 ? (
           <div className="flex items-center gap-2 text-sm text-[var(--color-ink-dim)]">
@@ -116,22 +91,23 @@ export default async function WorkflowStudioDashboardPage() {
         ) : (
           <div className="space-y-2">
             {metrics.recentRuns.map((run) => (
-              <div key={run.id} className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03]">
+              <div
+                key={run.id}
+                className={`flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
+              >
                 <div className="min-w-0">
                   <p className="text-sm font-medium truncate">{run.workflowName}</p>
                   <p className="text-xs text-[var(--color-ink-dim)]">
                     {run.startedByName ?? "Automated"} · {formatDate(run.startedAt)}
                   </p>
                 </div>
-                <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${RUN_STATUS_COLORS[run.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                  {run.status}
-                </span>
+                <WorkflowRunStatusBadge status={run.status} />
               </div>
             ))}
           </div>
         )}
         <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
-          <Link href="/workflow-studio/runs" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+          <Link href="/workflow-studio/runs" className="text-xs text-[var(--color-blue)] hover:opacity-80 transition-opacity">
             View all runs →
           </Link>
         </div>
@@ -145,7 +121,7 @@ export default async function WorkflowStudioDashboardPage() {
           <Link href="/workflow-studio/templates"><Button variant="outline" size="sm"><BarChart3 className="h-4 w-4" /> Templates</Button></Link>
           <Link href="/workflow-studio/runs"><Button variant="outline" size="sm"><Play className="h-4 w-4" /> All Runs</Button></Link>
           <Link href="/workflow-studio/approvals"><Button variant="outline" size="sm"><ThumbsUp className="h-4 w-4" /> Approvals {metrics.pendingApprovals > 0 && `(${metrics.pendingApprovals})`}</Button></Link>
-          <Link href="/workflow-studio/ai"><Button variant="outline" size="sm"><Sparkles className="h-4 w-4" /> AI Advisor</Button></Link>
+          <Link href="/workflow-studio/ai"><Button variant="outline" size="sm"><Sparkles className="h-4 w-4" /> AI Studio</Button></Link>
         </div>
       </Card>
     </div>

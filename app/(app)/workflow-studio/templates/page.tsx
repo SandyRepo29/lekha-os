@@ -4,11 +4,12 @@ import Link from "next/link";
 import { GitBranch, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { WorkflowTriggerBadge } from "@/components/workflow-studio/workflow-ui";
 
 const TEMPLATES = [
   {
     category: "Vendor Governance",
-    color: "bg-blue-500/20 text-blue-400",
+    color: "bg-[var(--color-blue)]/20 text-[var(--color-blue)]",
     items: [
       { name: "Vendor Onboarding", description: "End-to-end vendor intake, document collection, risk assessment and approval", trigger: "manual", nodes: ["Start", "Document Collection", "Risk Assessment", "Security Review", "Approval", "Activate Vendor", "End"] },
       { name: "Vendor Reassessment", description: "Periodic security assessment and compliance review for existing vendors", trigger: "scheduled", nodes: ["Start", "Notify Vendor", "Assessment", "Score Review", "Approval", "Update Records", "End"] },
@@ -26,7 +27,7 @@ const TEMPLATES = [
   },
   {
     category: "Policy Governance",
-    color: "bg-purple-500/20 text-purple-400",
+    color: "bg-violet-500/20 text-violet-400",
     items: [
       { name: "Policy Creation", description: "Draft, review, approve and publish new governance policies", trigger: "manual", nodes: ["Start", "Draft Policy", "Legal Review", "CISO Review", "Board Approval", "Publish", "End"] },
       { name: "Policy Attestation", description: "Collect employee acknowledgement of policy acceptance", trigger: "scheduled", nodes: ["Start", "Notify Employees", "Collect Attestations", "Chase Non-Compliant", "Report Results", "Close", "End"] },
@@ -51,7 +52,7 @@ const TEMPLATES = [
   },
   {
     category: "Issue Remediation",
-    color: "bg-yellow-500/20 text-yellow-400",
+    color: "bg-amber-500/20 text-amber-400",
     items: [
       { name: "Issue Assignment", description: "Automatically assign and track governance issues to owners", trigger: "record_created", nodes: ["Start", "Classify Issue", "Assign Owner", "Create Tasks", "Notify Owner", "Track Progress", "End"] },
       { name: "Critical Escalation", description: "Escalate critical issues to executive leadership within 24 hours", trigger: "score_threshold", nodes: ["Start", "Notify Owner", "24h Check", "Executive Alert", "Board Notification", "Remediation Plan", "End"] },
@@ -95,6 +96,9 @@ export default async function WorkflowTemplatesPage() {
                     <p className="text-sm font-semibold">{tpl.name}</p>
                     <p className="text-xs text-[var(--color-ink-dim)] mt-0.5 line-clamp-2">{tpl.description}</p>
                   </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <WorkflowTriggerBadge trigger={tpl.trigger} />
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {tpl.nodes.map((node, i) => (

@@ -6,26 +6,24 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { listWorkflows } from "@/lib/services/workflow-studio/workflow-service";
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-yellow-500/20 text-yellow-400",
-  active: "bg-green-500/20 text-green-400",
-  archived: "bg-slate-500/20 text-slate-400",
-  deprecated: "bg-red-500/20 text-red-400",
-};
+import {
+  WorkflowStatusBadge,
+  WorkflowTriggerBadge,
+  WorkflowFilterChip,
+} from "@/components/workflow-studio/workflow-ui";
 
 const MODULE_LABELS: Record<string, string> = {
-  vendor_hub: "Vendor Hub™",
-  evidence_vault: "Evidence Vault™",
-  audit_management: "Audit Management",
-  risk_lens: "Risk Lens™",
-  control_center: "Control Center™",
-  policy_governance: "Policy Governance™",
-  dpdp_privacy: "DPDP Privacy™",
-  contract_governance: "Contract Governance™",
-  issue_hub: "Issue Hub™",
+  vendor_hub:         "Vendor Hub™",
+  evidence_vault:     "Evidence Vault™",
+  audit_management:   "Audit Management",
+  risk_lens:          "Risk Lens™",
+  control_center:     "Control Center™",
+  policy_governance:  "Policy Governance™",
+  dpdp_privacy:       "DPDP Privacy™",
+  contract_governance:"Contract Governance™",
+  issue_hub:          "Issue Hub™",
   trust_intelligence: "Trust Intelligence™",
-  custom: "Custom",
+  custom:             "Custom",
 };
 
 export default async function WorkflowLibraryPage({
@@ -66,17 +64,14 @@ export default async function WorkflowLibraryPage({
 
       {/* Status filters */}
       <div className="flex flex-wrap gap-2">
-        <Link href="/workflow-studio/library">
-          <span className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${!sp.status ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:border-indigo-500/30"}`}>
-            All
-          </span>
-        </Link>
+        <WorkflowFilterChip label="All" active={!sp.status} href="/workflow-studio/library" />
         {statuses.map((s) => (
-          <Link key={s} href={`/workflow-studio/library?status=${s}`}>
-            <span className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${sp.status === s ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:border-indigo-500/30"}`}>
-              {s.charAt(0).toUpperCase() + s.slice(1)}
-            </span>
-          </Link>
+          <WorkflowFilterChip
+            key={s}
+            label={s.charAt(0).toUpperCase() + s.slice(1)}
+            active={sp.status === s}
+            href={`/workflow-studio/library?status=${s}`}
+          />
         ))}
       </div>
 
@@ -99,9 +94,7 @@ export default async function WorkflowLibraryPage({
                   <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
                     <GitBranch className="h-4 w-4" />
                   </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_COLORS[wf.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {wf.status}
-                  </span>
+                  <WorkflowStatusBadge status={wf.status} />
                 </div>
                 <div>
                   <p className="font-semibold text-sm">{wf.name}</p>
@@ -111,7 +104,7 @@ export default async function WorkflowLibraryPage({
                   <span className="px-2 py-0.5 rounded-full bg-white/5">{MODULE_LABELS[wf.module] ?? wf.module}</span>
                   <div className="flex items-center gap-3">
                     <span className="flex items-center gap-1"><Play className="h-3 w-3" /> {wf.runCount}</span>
-                    {wf.activeRunCount > 0 && <span className="flex items-center gap-1 text-blue-400"><Zap className="h-3 w-3" /> {wf.activeRunCount}</span>}
+                    {wf.activeRunCount > 0 && <span className="flex items-center gap-1 text-[var(--color-blue)]"><Zap className="h-3 w-3" /> {wf.activeRunCount}</span>}
                   </div>
                 </div>
               </Card>

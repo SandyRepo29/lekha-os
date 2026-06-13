@@ -32,7 +32,7 @@ export default async function WorkflowReportsPage() {
           <Card key={report.title} className="p-5 flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <BarChart3 className="h-4 w-4 text-indigo-400" />
+                <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
                 <p className="text-sm font-semibold">{report.title}</p>
               </div>
               <p className="text-xs text-[var(--color-ink-dim)]">{report.description}</p>

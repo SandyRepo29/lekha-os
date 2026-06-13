@@ -8,34 +8,24 @@ import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getWorkflowDetail, listRuns } from "@/lib/services/workflow-studio/workflow-service";
 import { publishWorkflowAction, startWorkflowAction } from "@/lib/workflow-studio/actions";
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-yellow-500/20 text-yellow-400",
-  active: "bg-green-500/20 text-green-400",
-  archived: "bg-slate-500/20 text-slate-400",
-  deprecated: "bg-red-500/20 text-red-400",
-};
+import {
+  WorkflowStatusBadge,
+  WorkflowRunStatusBadge,
+  WorkflowTriggerBadge,
+} from "@/components/workflow-studio/workflow-ui";
 
 const NODE_TYPE_COLORS: Record<string, string> = {
-  start: "bg-green-500/20 text-green-400",
-  end: "bg-red-500/20 text-red-400",
-  task: "bg-blue-500/20 text-blue-400",
-  approval: "bg-purple-500/20 text-purple-400",
-  condition: "bg-yellow-500/20 text-yellow-400",
-  decision: "bg-orange-500/20 text-orange-400",
-  wait: "bg-slate-500/20 text-slate-400",
-  notification: "bg-indigo-500/20 text-indigo-400",
-  webhook: "bg-teal-500/20 text-teal-400",
+  start:         "bg-emerald-500/20 text-emerald-400",
+  end:           "bg-red-500/20 text-red-400",
+  task:          "bg-[var(--color-blue)]/20 text-[var(--color-blue)]",
+  approval:      "bg-violet-500/20 text-violet-400",
+  condition:     "bg-amber-500/20 text-amber-400",
+  decision:      "bg-orange-500/20 text-orange-400",
+  wait:          "bg-white/[0.06] text-[var(--color-ink-dim)]",
+  notification:  "bg-indigo-500/20 text-indigo-400",
+  webhook:       "bg-teal-500/20 text-teal-400",
   create_record: "bg-cyan-500/20 text-cyan-400",
-  update_record: "bg-violet-500/20 text-violet-400",
-};
-
-const RUN_STATUS_COLORS: Record<string, string> = {
-  running: "bg-blue-500/20 text-blue-400",
-  waiting: "bg-yellow-500/20 text-yellow-400",
-  completed: "bg-green-500/20 text-green-400",
-  failed: "bg-red-500/20 text-red-400",
-  cancelled: "bg-slate-500/20 text-slate-400",
+  update_record: "bg-purple-500/20 text-purple-400",
 };
 
 function formatDate(d: Date | string | null | undefined) {
@@ -63,6 +53,10 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
 
   if (!wf) notFound();
 
+  const completed = runs.filter((r) => r.status === "completed").length;
+  const failed    = runs.filter((r) => r.status === "failed").length;
+  const running   = runs.filter((r) => r.status === "running" || r.status === "waiting").length;
+
   async function handlePublish() {
     "use server";
     await publishWorkflowAction(id);
@@ -82,11 +76,10 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
             <GitBranch className="h-5 w-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">{wf.name}</h1>
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_COLORS[wf.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                {wf.status}
-              </span>
+              <WorkflowStatusBadge status={wf.status} />
+              <WorkflowTriggerBadge trigger={wf.triggerType} />
             </div>
             {wf.description && <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">{wf.description}</p>}
           </div>
@@ -108,23 +101,46 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
         </div>
       </div>
 
-      {/* Info grid */}
+      {/* Run summary strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { label: "Module", value: wf.module.replace(/_/g, " ") },
-          { label: "Trigger", value: wf.triggerType.replace(/_/g, " ") },
-          { label: "Version", value: `v${wf.version}` },
-          { label: "Published", value: wf.publishedAt ? formatDate(wf.publishedAt) : "Not published" },
-        ].map(({ label, value }) => (
-          <Card key={label} className="p-4">
-            <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-            <p className="text-sm font-semibold mt-1 capitalize">{value}</p>
-          </Card>
-        ))}
+        <Card className="p-4">
+          <p className="text-xs text-[var(--color-ink-faint)]">Module</p>
+          <p className="text-sm font-semibold mt-1 capitalize">{wf.module.replace(/_/g, " ")}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-xs text-[var(--color-ink-faint)]">Version</p>
+          <p className="text-sm font-semibold mt-1">v{wf.version}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-xs text-[var(--color-ink-faint)]">Published</p>
+          <p className="text-sm font-semibold mt-1">{wf.publishedAt ? formatDate(wf.publishedAt) : "Not published"}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-xs text-[var(--color-ink-faint)]">Total Runs</p>
+          <p className="text-sm font-semibold mt-1">{runs.length}</p>
+        </Card>
       </div>
 
+      {/* Recent runs summary */}
+      {runs.length > 0 && (
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="p-4 border-l-2 border-l-emerald-500/60 border-emerald-500/25 bg-emerald-500/[0.04]">
+            <p className="text-xs text-[var(--color-ink-faint)]">Completed</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{completed}</p>
+          </Card>
+          <Card className="p-4 border-l-2 border-l-red-500/60 border-red-500/25 bg-red-500/[0.04]">
+            <p className="text-xs text-[var(--color-ink-faint)]">Failed</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{failed}</p>
+          </Card>
+          <Card className="p-4 border-l-2 border-l-[var(--color-line-strong)] border-[var(--color-line)]">
+            <p className="text-xs text-[var(--color-ink-faint)]">In Progress</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{running}</p>
+          </Card>
+        </div>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Workflow nodes */}
+        {/* Workflow steps */}
         <Card className="p-5">
           <h2 className="font-semibold mb-4 flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-indigo-400" /> Workflow Steps ({wf.nodes.length})
@@ -136,7 +152,7 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
               {wf.nodes.map((node, i) => (
                 <div key={node.id} className="flex items-center gap-3">
                   <span className="text-xs text-[var(--color-ink-faint)] w-5 text-right">{i + 1}</span>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${NODE_TYPE_COLORS[node.nodeType] ?? "bg-slate-500/20 text-slate-400"}`}>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${NODE_TYPE_COLORS[node.nodeType] ?? "bg-white/[0.06] text-[var(--color-ink-dim)]"}`}>
                     {node.nodeType.replace(/_/g, " ")}
                   </span>
                   <span className="text-sm">{node.label}</span>
@@ -150,23 +166,33 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
         {/* Recent runs */}
         <Card className="p-5">
           <h2 className="font-semibold mb-4 flex items-center gap-2">
-            <Play className="h-4 w-4 text-blue-400" /> Recent Runs ({runs.length})
+            <Play className="h-4 w-4 text-[var(--color-blue)]" /> Recent Runs ({runs.length})
           </h2>
           {runs.length === 0 ? (
             <p className="text-sm text-[var(--color-ink-dim)]">No runs yet.</p>
           ) : (
             <div className="space-y-2">
               {runs.slice(0, 8).map((run) => (
-                <div key={run.id} className="flex items-center justify-between gap-3 text-sm">
+                <div
+                  key={run.id}
+                  className={`flex items-center justify-between gap-3 text-sm rounded-lg px-2 py-1 ${run.status === "failed" ? "bg-red-500/[0.04]" : ""}`}
+                >
                   <div className="flex items-center gap-2">
-                    {run.status === "completed" ? <CheckCircle2 className="h-3.5 w-3.5 text-green-400" /> : <Clock className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />}
+                    {run.status === "completed"
+                      ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                      : <Clock className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />}
                     <span className="text-[var(--color-ink-dim)]">{formatDate(run.startedAt)}</span>
                   </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${RUN_STATUS_COLORS[run.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {run.status}
-                  </span>
+                  <WorkflowRunStatusBadge status={run.status} />
                 </div>
               ))}
+            </div>
+          )}
+          {runs.length > 8 && (
+            <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
+              <Link href={`/workflow-studio/runs?workflowId=${id}`} className="text-xs text-[var(--color-blue)] hover:opacity-80 transition-opacity">
+                View all {runs.length} runs →
+              </Link>
             </div>
           )}
         </Card>

@@ -1,20 +1,11 @@
 export const dynamic = "force-dynamic";
 
-import { AlertCircle, Play, CheckCircle2, Clock } from "lucide-react";
+import { AlertCircle, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { listRuns } from "@/lib/services/workflow-studio/workflow-service";
 import Link from "next/link";
-
-const RUN_STATUS_COLORS: Record<string, string> = {
-  running: "bg-blue-500/20 text-blue-400",
-  waiting: "bg-yellow-500/20 text-yellow-400",
-  approved: "bg-green-500/20 text-green-400",
-  rejected: "bg-red-500/20 text-red-400",
-  failed: "bg-red-500/20 text-red-400",
-  completed: "bg-green-500/20 text-green-400",
-  cancelled: "bg-slate-500/20 text-slate-400",
-};
+import { WorkflowRunStatusBadge, WorkflowFilterChip } from "@/components/workflow-studio/workflow-ui";
 
 function formatDateTime(d: Date | string | null | undefined) {
   if (!d) return "—";
@@ -54,17 +45,14 @@ export default async function WorkflowRunsPage({
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        <Link href="/workflow-studio/runs">
-          <span className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${!sp.status ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:border-indigo-500/30"}`}>
-            All
-          </span>
-        </Link>
+        <WorkflowFilterChip label="All" active={!sp.status} href="/workflow-studio/runs" />
         {statuses.map((s) => (
-          <Link key={s} href={`/workflow-studio/runs?status=${s}`}>
-            <span className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${sp.status === s ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:border-indigo-500/30"}`}>
-              {s.charAt(0).toUpperCase() + s.slice(1)}
-            </span>
-          </Link>
+          <WorkflowFilterChip
+            key={s}
+            label={s.charAt(0).toUpperCase() + s.slice(1)}
+            active={sp.status === s}
+            href={`/workflow-studio/runs?status=${s}`}
+          />
         ))}
       </div>
 
@@ -89,16 +77,21 @@ export default async function WorkflowRunsPage({
             </thead>
             <tbody>
               {runs.map((run) => (
-                <tr key={run.id} className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02]">
-                  <td className="px-5 py-3 font-medium">{run.workflowName}</td>
+                <tr
+                  key={run.id}
+                  className={`border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
+                >
+                  <td className="px-5 py-3 font-medium">
+                    <Link href={`/workflow-studio/${run.workflowId}`} className="hover:text-[var(--color-blue)] transition-colors">
+                      {run.workflowName}
+                    </Link>
+                  </td>
                   <td className="px-5 py-3 text-[var(--color-ink-dim)] capitalize">{run.triggerType.replace(/_/g, " ")}</td>
                   <td className="px-5 py-3 text-[var(--color-ink-dim)]">{run.startedByName ?? "Automated"}</td>
                   <td className="px-5 py-3 text-[var(--color-ink-dim)]">{formatDateTime(run.startedAt)}</td>
                   <td className="px-5 py-3 text-[var(--color-ink-dim)]">{run.completedAt ? formatDateTime(run.completedAt) : "—"}</td>
                   <td className="px-5 py-3">
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${RUN_STATUS_COLORS[run.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                      {run.status}
-                    </span>
+                    <WorkflowRunStatusBadge status={run.status} />
                   </td>
                 </tr>
               ))}
