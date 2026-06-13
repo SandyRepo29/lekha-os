@@ -5,8 +5,9 @@ import { getDashboardData } from "@/lib/services/auditor-collaboration/auditor-c
 import Link from "next/link";
 import {
   Users, DoorOpen, FileCheck, AlertTriangle, Brain,
-  ClipboardList, Shield, ArrowUpRight, Building2, CheckCircle2,
+  ClipboardList, Shield, ArrowUpRight, CheckCircle2,
 } from "lucide-react";
+import { AuditorStat, AuditRoomStatusBadge, ExternalFindingStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const NAV = [
   { href: "/auditor-collaboration/rooms",       icon: DoorOpen,       label: "Audit Rooms™",         desc: "Dedicated workspaces per engagement" },
@@ -17,13 +18,8 @@ const NAV = [
   { href: "/auditor-collaboration/ai",          icon: Brain,          label: "AI Audit Assistant™",  desc: "Readiness scores & AI insights" },
 ];
 
-const STATUS_COLORS: Record<string, string> = {
-  planning: "text-slate-400", active: "text-emerald-400", under_review: "text-yellow-400",
-  completed: "text-blue-400", archived: "text-slate-500", cancelled: "text-red-400",
-};
-
 const SEVERITY_COLORS: Record<string, string> = {
-  low: "text-emerald-400", medium: "text-yellow-400", high: "text-orange-400", critical: "text-red-400",
+  low: "text-emerald-400", medium: "text-amber-400", high: "text-orange-400", critical: "text-red-400",
 };
 
 export default async function AuditorCollaborationPage() {
@@ -52,21 +48,12 @@ export default async function AuditorCollaborationPage() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {[
-          { label: "Audit Rooms",       value: m?.totalRooms ?? 0,            icon: DoorOpen,      color: "text-[var(--color-blue)]" },
-          { label: "Active Rooms",      value: m?.activeRooms ?? 0,           icon: CheckCircle2,  color: "text-emerald-400" },
-          { label: "Pending Evidence",  value: m?.openEvidenceRequests ?? 0,  icon: FileCheck,     color: "text-yellow-400" },
-          { label: "Open Findings",     value: m?.openFindings ?? 0,          icon: AlertTriangle, color: "text-orange-400" },
-          { label: "External Users",    value: m?.totalUsers ?? 0,            icon: Users,         color: "text-purple-400" },
-          { label: "Assessments",       value: m?.totalAssessments ?? 0,      icon: ClipboardList, color: "text-sky-400" },
-        ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--color-ink-dim)]">
-              <Icon className={`h-4 w-4 ${color}`} /> {label}
-            </div>
-            <div className="mt-2 text-2xl font-bold">{value}</div>
-          </div>
-        ))}
+        <AuditorStat label="Audit Rooms"      value={m?.totalRooms ?? 0}           accent="neutral" href="/auditor-collaboration/rooms" />
+        <AuditorStat label="Active Rooms"     value={m?.activeRooms ?? 0}          accent="good"    href="/auditor-collaboration/rooms?status=active" />
+        <AuditorStat label="Pending Evidence" value={m?.openEvidenceRequests ?? 0} accent="warn"    href="/auditor-collaboration/evidence?status=pending" />
+        <AuditorStat label="Open Findings"    value={m?.openFindings ?? 0}         accent={(m?.openFindings ?? 0) > 0 ? "danger" : "neutral"} href="/auditor-collaboration/findings" />
+        <AuditorStat label="External Users"   value={m?.totalUsers ?? 0}           accent="neutral" href="/auditor-collaboration/users" />
+        <AuditorStat label="Assessments"      value={m?.totalAssessments ?? 0}     accent="neutral" href="/auditor-collaboration/assessments" />
       </div>
 
       {/* Module Nav */}
@@ -105,9 +92,7 @@ export default async function AuditorCollaborationPage() {
                   className="block rounded-lg border border-[var(--color-line)] p-3 hover:border-[var(--color-blue)]/30 transition-colors">
                   <div className="flex items-start justify-between gap-2">
                     <div className="font-medium text-sm truncate">{room.name}</div>
-                    <span className={`text-xs font-medium shrink-0 ${STATUS_COLORS[room.status] ?? "text-slate-400"}`}>
-                      {room.status.replace("_", " ")}
-                    </span>
+                    <AuditRoomStatusBadge status={room.status} />
                   </div>
                   <div className="mt-1 text-xs text-[var(--color-ink-dim)]">
                     {room.framework ?? room.roomType} · {room.completionPct}% complete
@@ -138,8 +123,9 @@ export default async function AuditorCollaborationPage() {
                       {f.severity}
                     </span>
                   </div>
-                  <div className="mt-1 text-xs text-[var(--color-ink-dim)]">
-                    {f.framework ?? f.findingType?.replace("_", " ")} · {f.status.replace("_", " ")}
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="text-xs text-[var(--color-ink-dim)]">{f.framework ?? f.findingType?.replace("_", " ")}</span>
+                    <ExternalFindingStatusBadge status={f.status} />
                   </div>
                 </div>
               ))}

@@ -5,25 +5,24 @@ import { findAllExternalUsers } from "@/lib/repositories/auditor-collaboration-r
 import { inviteExternalUserAction, revokeExternalUserAction } from "@/lib/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { Users, UserPlus, ShieldOff } from "lucide-react";
+import { AuditorStat, ExternalUserTypeBadge } from "@/components/auditor-collaboration/auditor-ui";
+
+const USER_TYPE_LABELS: Record<string, string> = {
+  iso_auditor:           "ISO Auditor",
+  soc_auditor:           "SOC Auditor",
+  dpdp_assessor:         "DPDP Assessor",
+  security_assessor:     "Security Assessor",
+  privacy_consultant:    "Privacy Consultant",
+  ai_governance_reviewer:"AI Governance Reviewer",
+  customer_reviewer:     "Customer Reviewer",
+  third_party_reviewer:  "Third-Party Reviewer",
+};
 
 const STATUS_BADGE: Record<string, string> = {
-  invited:   "bg-yellow-500/20 text-yellow-400",
+  invited:   "bg-amber-500/20 text-amber-400",
   active:    "bg-emerald-500/20 text-emerald-400",
   suspended: "bg-orange-500/20 text-orange-400",
   revoked:   "bg-red-500/20 text-red-400",
-};
-
-const USER_TYPE_LABELS: Record<string, string> = {
-  auditor:             "Auditor",
-  iso_auditor:         "ISO Auditor",
-  soc_auditor:         "SOC Auditor",
-  dpdp_assessor:       "DPDP Assessor",
-  privacy_consultant:  "Privacy Consultant",
-  law_firm:            "Law Firm",
-  security_assessor:   "Security Assessor",
-  ai_governance_reviewer: "AI Governance Reviewer",
-  customer_reviewer:   "Customer Reviewer",
-  vendor_reviewer:     "Vendor Reviewer",
 };
 
 export default async function ExternalUsersPage() {
@@ -61,16 +60,9 @@ export default async function ExternalUsersPage() {
 
       {/* KPI */}
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { label: "Total", value: users.length, color: "text-[var(--color-blue)]" },
-          { label: "Active", value: activeCount, color: "text-emerald-400" },
-          { label: "Invited", value: invitedCount, color: "text-yellow-400" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-            <div className={`text-2xl font-bold ${color}`}>{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)] mt-1">{label}</div>
-          </div>
-        ))}
+        <AuditorStat label="Total"   value={users.length} accent="neutral" />
+        <AuditorStat label="Active"  value={activeCount}  accent="good" />
+        <AuditorStat label="Invited" value={invitedCount} accent="warn" />
       </div>
 
       {/* Invite Form */}
@@ -135,7 +127,7 @@ export default async function ExternalUsersPage() {
                     <div className="font-medium">{u.fullName}</div>
                     <div className="text-xs text-[var(--color-ink-dim)]">{u.email}</div>
                   </td>
-                  <td className="px-4 py-3 text-xs">{USER_TYPE_LABELS[u.userType] ?? u.userType}</td>
+                  <td className="px-4 py-3 text-xs"><ExternalUserTypeBadge userType={u.userType} /></td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">{u.company ?? "—"}</td>
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE[u.status] ?? ""}`}>{u.status}</span>

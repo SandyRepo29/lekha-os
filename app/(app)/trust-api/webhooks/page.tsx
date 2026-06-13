@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
 import { Webhook, Plus, Pause, Play, Trash2, X, Zap } from "lucide-react";
 import { getWebhooksAction, createWebhookAction, toggleWebhookAction, deleteWebhookAction } from "@/lib/trust-api/actions";
+import { WebhookStatusBadge } from "@/components/trust-api/trust-api-ui";
 
 const ALL_EVENTS = [
   "trust.score.updated", "vendor.verified", "badge.issued", "risk.created",
@@ -105,11 +106,7 @@ export default function WebhooksPage() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-sm">{w.name}</span>
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                        w.status === "active" ? "bg-emerald-500/10 text-emerald-400" :
-                        w.status === "paused" ? "bg-amber-500/10 text-amber-400" :
-                        "bg-red-500/10 text-red-400"
-                      }`}>{w.status}</span>
+                      <WebhookStatusBadge status={w.status} />
                       {w.failureCount > 0 && (
                         <span className="rounded-full bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-400">{w.failureCount} failures</span>
                       )}

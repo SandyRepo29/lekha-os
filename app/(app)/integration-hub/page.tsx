@@ -1,13 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, FileCheck, Zap, Activity } from "lucide-react";
+import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, Zap, Activity } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/integration-hub/integration-service";
 import { ConnectorStatusBadge } from "@/components/integration-hub/connector-status-badge";
 import { TriggerSyncButton } from "@/components/integration-hub/trigger-sync-button";
 import { ResolveEventButton } from "@/components/integration-hub/resolve-event-button";
+import { IntegrationStat, SyncStatusBadge } from "@/components/integration-hub/integration-ui";
 
 const CATEGORY_LABELS: Record<string, string> = {
   identity: "Identity & Access",
@@ -21,13 +22,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   storage: "Storage",
   hr: "HR",
   custom: "Custom",
-};
-
-const SEVERITY_COLORS: Record<string, string> = {
-  critical: "text-red-400",
-  high: "text-orange-400",
-  medium: "text-yellow-400",
-  low: "text-green-400",
 };
 
 export default async function IntegrationHubDashboard() {
@@ -58,26 +52,31 @@ export default async function IntegrationHubDashboard() {
 
       {/* Metrics strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-5">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Connected Systems</p>
-          <p className="text-3xl font-bold">{metrics.connected}</p>
-          <p className="text-xs text-[var(--color-ink-faint)] mt-1">of {metrics.total} configured</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Evidence Collected</p>
-          <p className="text-3xl font-bold">{metrics.totalEvidence}</p>
-          <p className="text-xs text-[var(--color-ink-faint)] mt-1">automated evidence items</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Risks Generated</p>
-          <p className="text-3xl font-bold">{metrics.totalRisks}</p>
-          <p className="text-xs text-[var(--color-ink-faint)] mt-1">from integration signals</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Open Events</p>
-          <p className={`text-3xl font-bold ${metrics.criticalEvents > 0 ? "text-red-400" : ""}`}>{metrics.openEvents}</p>
-          <p className="text-xs text-[var(--color-ink-faint)] mt-1">{metrics.criticalEvents} critical</p>
-        </Card>
+        <IntegrationStat
+          label="Connected Systems"
+          value={metrics.connected}
+          accent={metrics.connected > 0 ? "good" : "neutral"}
+          sub={`of ${metrics.total} configured`}
+          href="/integration-hub/connections"
+        />
+        <IntegrationStat
+          label="Evidence Collected"
+          value={metrics.totalEvidence}
+          accent="neutral"
+          sub="automated evidence items"
+        />
+        <IntegrationStat
+          label="Risks Generated"
+          value={metrics.totalRisks}
+          accent={metrics.totalRisks > 0 ? "warn" : "neutral"}
+          sub="from integration signals"
+        />
+        <IntegrationStat
+          label="Open Events"
+          value={metrics.openEvents}
+          accent={metrics.criticalEvents > 0 ? "danger" : metrics.openEvents > 0 ? "warn" : "neutral"}
+          sub={`${metrics.criticalEvents} critical`}
+        />
       </div>
 
       {/* Getting Started / Phase 1 */}
@@ -159,7 +158,12 @@ export default async function IntegrationHubDashboard() {
                 <Card key={event.id} className="p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className={`text-xs font-semibold mb-0.5 ${SEVERITY_COLORS[event.severity] ?? "text-[var(--color-ink-dim)]"}`}>
+                      <p className={`text-xs font-semibold mb-0.5 ${
+                        event.severity === "critical" ? "text-red-400"
+                        : event.severity === "high" ? "text-orange-400"
+                        : event.severity === "medium" ? "text-yellow-400"
+                        : "text-emerald-400"
+                      }`}>
                         {event.severity.toUpperCase()} · {connectorName}
                       </p>
                       <p className="text-sm font-medium leading-snug">{event.title}</p>
@@ -199,9 +203,7 @@ export default async function IntegrationHubDashboard() {
                 </div>
                 <div className="flex items-center gap-4 shrink-0 text-xs">
                   <span className="text-[var(--color-ink-dim)]">{sync.recordsFetched} records</span>
-                  <span className={sync.status === "completed" ? "text-green-400 font-semibold" : sync.status === "failed" ? "text-red-400 font-semibold" : "text-[var(--color-ink-dim)]"}>
-                    {sync.status}
-                  </span>
+                  <SyncStatusBadge status={sync.status} />
                 </div>
               </div>
             ))}

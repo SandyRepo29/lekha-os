@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth/session";
 import { findAllControls } from "@/lib/repositories/ai-governance-repo";
 import Link from "next/link";
 import { Shield, Plus } from "lucide-react";
+import { AIGovStat } from "@/components/ai-governance/ai-governance-ui";
 
 const CAT_LABELS: Record<string, string> = {
   human_oversight: "Human Oversight", output_review: "Output Review",
@@ -48,17 +49,10 @@ export default async function AiControlsPage() {
       </div>
 
       <div className="grid grid-cols-4 gap-3">
-        {[
-          { label: "Total", value: controls.length },
-          { label: "Implemented", value: implemented },
-          { label: "Partial", value: partial },
-          { label: "Planned", value: planned },
-        ].map(({ label, value }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-            <div className="mt-1 text-2xl font-bold">{value}</div>
-          </div>
-        ))}
+        <AIGovStat label="Total" value={controls.length} accent="neutral" />
+        <AIGovStat label="Implemented" value={implemented} accent={implemented > 0 ? "good" : "neutral"} />
+        <AIGovStat label="Partial" value={partial} accent={partial > 0 ? "warn" : "neutral"} />
+        <AIGovStat label="Planned" value={planned} accent="neutral" />
       </div>
 
       <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] overflow-hidden">

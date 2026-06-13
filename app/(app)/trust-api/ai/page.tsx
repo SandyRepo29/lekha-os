@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Bot, Send, Sparkles, Code2, BookOpen, Zap, RefreshCw } from "lucide-react";
 import { generatePlatformSummaryAction, generateApiDocsAction, chatAction } from "@/lib/trust-api/actions";
+import type { ApiPlatformSummary, ApiDocs } from "@/lib/services/trust-api/ai-trust-api-service";
 
 const PRODUCTS = [
   { slug: "trust-score",       name: "Trust Score API™" },
@@ -18,8 +19,8 @@ type Message = { role: "user" | "assistant"; content: string };
 
 export default function TrustApiAiPage() {
   const [isPending, startTransition] = useTransition();
-  const [summary, setSummary] = useState<any>(null);
-  const [docs, setDocs] = useState<any>(null);
+  const [summary, setSummary] = useState<ApiPlatformSummary | null>(null);
+  const [docs, setDocs] = useState<ApiDocs | null>(null);
   const [selectedProduct, setSelectedProduct] = useState("trust-score");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -46,7 +47,7 @@ export default function TrustApiAiPage() {
     setInput("");
     startTransition(async () => {
       const res = await chatAction(nextMessages);
-      if (res.data) setMessages([...nextMessages, { role: "assistant", content: (res.data as any).content }]);
+      if (res.data) setMessages([...nextMessages, { role: "assistant", content: (res.data as { content: string }).content }]);
     });
   }
 

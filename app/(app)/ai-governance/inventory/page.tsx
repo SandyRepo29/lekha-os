@@ -4,20 +4,12 @@ import { requireUser } from "@/lib/auth/session";
 import { findAllSystems } from "@/lib/repositories/ai-governance-repo";
 import Link from "next/link";
 import { Layers, Plus, Bot } from "lucide-react";
+import { AISystemTypeBadge, AIRiskLevelBadge, AIComplianceBadge } from "@/components/ai-governance/ai-governance-ui";
+import { AiApprovalStatusBadge } from "@/components/ai-governance/ai-status-badges";
 
 const TYPE_LABELS: Record<string, string> = {
   commercial: "Commercial", open_source: "Open Source", internal: "Internal",
   agent: "Agent", rag: "RAG System", llm_app: "LLM App", workflow: "Workflow",
-};
-const RISK_COLORS: Record<string, string> = {
-  low: "bg-emerald-500/10 text-emerald-400", moderate: "bg-yellow-500/10 text-yellow-400",
-  high: "bg-orange-500/10 text-orange-400", critical: "bg-red-500/10 text-red-400",
-  prohibited: "bg-purple-500/10 text-purple-400",
-};
-const STATUS_COLORS: Record<string, string> = {
-  approved: "bg-emerald-500/10 text-emerald-400", pending: "bg-yellow-500/10 text-yellow-400",
-  under_review: "bg-blue-500/10 text-blue-400", rejected: "bg-red-500/10 text-red-400",
-  decommissioned: "bg-gray-500/10 text-gray-400",
 };
 
 export default async function AiInventoryPage() {
@@ -66,18 +58,10 @@ export default async function AiInventoryPage() {
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-[var(--color-ink-dim)]">{TYPE_LABELS[s.systemType] ?? s.systemType}</td>
+                <td className="px-4 py-3"><AISystemTypeBadge type={s.systemType} /></td>
                 <td className="px-4 py-3 text-[var(--color-ink-dim)]">{s.vendorName ?? "—"}</td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${RISK_COLORS[s.riskClassification] ?? ""}`}>
-                    {s.riskClassification}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[s.approvalStatus] ?? ""}`}>
-                    {s.approvalStatus?.replace(/_/g, " ")}
-                  </span>
-                </td>
+                <td className="px-4 py-3"><AIRiskLevelBadge level={s.riskClassification} /></td>
+                <td className="px-4 py-3"><AiApprovalStatusBadge status={s.approvalStatus ?? ""} /></td>
                 <td className="px-4 py-3 font-mono text-sm">
                   {s.aiTrustScore ? `${Number(s.aiTrustScore).toFixed(0)}/100` : "—"}
                 </td>

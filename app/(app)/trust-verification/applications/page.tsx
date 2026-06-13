@@ -3,27 +3,16 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getVerifications } from "@/lib/services/trust-verification/trust-verification-service";
-import { FileText, Plus, CheckCircle, Clock, XCircle, AlertTriangle, Eye, ShieldCheck } from "lucide-react";
-
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; cls: string }> = {
-    pending:                { label: "Pending",               cls: "bg-amber-500/10 text-amber-400" },
-    in_review:              { label: "In Review",             cls: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]" },
-    approved:               { label: "Approved",              cls: "bg-emerald-500/10 text-emerald-400" },
-    conditionally_approved: { label: "Conditional",           cls: "bg-teal-500/10 text-teal-400" },
-    rejected:               { label: "Rejected",              cls: "bg-red-500/10 text-red-400" },
-    suspended:              { label: "Suspended",             cls: "bg-orange-500/10 text-orange-400" },
-    revoked:                { label: "Revoked",               cls: "bg-red-700/10 text-red-600" },
-    expired:                { label: "Expired",               cls: "bg-white/5 text-[var(--color-ink-faint)]" },
-    renewal_required:       { label: "Renewal Required",      cls: "bg-amber-500/10 text-amber-400" },
-  };
-  const s = map[status] ?? { label: status, cls: "bg-white/5 text-[var(--color-ink-faint)]" };
-  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${s.cls}`}>{s.label}</span>;
-}
+import { FileText, Plus, Eye, ShieldCheck } from "lucide-react";
+import { VerificationStat, VerificationStatusBadge } from "@/components/trust-verification/verification-ui";
 
 export default async function ApplicationsPage() {
   const session = await requireUser();
   const verifications = await getVerifications(session.org?.id ?? "").catch(() => []);
+
+  const totalApproved = verifications.filter((v: { status: string }) => v.status === "approved").length;
+  const totalPending  = verifications.filter((v: { status: string }) => ["pending","in_review"].includes(v.status)).length;
+  const totalRejected = verifications.filter((v: { status: string }) => v.status === "rejected").length;
 
   return (
     <div className="space-y-6 p-6">
@@ -40,17 +29,10 @@ export default async function ApplicationsPage() {
 
       {/* Summary strip */}
       <div className="grid grid-cols-4 gap-3">
-        {[
-          { label: "Total",    value: verifications.length,                                           cls: "text-[var(--color-blue)]" },
-          { label: "Approved", value: verifications.filter((v: any) => v.status === "approved").length, cls: "text-emerald-400" },
-          { label: "Pending",  value: verifications.filter((v: any) => ["pending","in_review"].includes(v.status)).length, cls: "text-amber-400" },
-          { label: "Rejected", value: verifications.filter((v: any) => v.status === "rejected").length, cls: "text-red-400" },
-        ].map(({ label, value, cls }) => (
-          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4 text-center">
-            <div className={`text-2xl font-bold ${cls}`}>{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-          </div>
-        ))}
+        <VerificationStat label="Total"    value={verifications.length} accent="neutral" />
+        <VerificationStat label="Approved" value={totalApproved}        accent="good" />
+        <VerificationStat label="Pending"  value={totalPending}         accent="warn" />
+        <VerificationStat label="Rejected" value={totalRejected}        accent={totalRejected > 0 ? "danger" : "neutral"} />
       </div>
 
       {/* Table */}
@@ -69,7 +51,15 @@ export default async function ApplicationsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]/50">
-              {verifications.map((v: any) => (
+              {verifications.map((v: {
+                id: string;
+                status: string;
+                programName?: string | null;
+                readinessScore?: number | null;
+                verificationLevel: string;
+                appliedAt: string | Date;
+                expiresAt?: string | Date | null;
+              }) => (
                 <tr key={v.id} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <div className="font-medium">{v.programName ?? "Unknown Program"}</div>
@@ -92,7 +82,7 @@ export default async function ApplicationsPage() {
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
                     {v.expiresAt ? new Date(v.expiresAt).toLocaleDateString() : "—"}
                   </td>
-                  <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
+                  <td className="px-4 py-3"><VerificationStatusBadge status={v.status} /></td>
                   <td className="px-4 py-3">
                     <Link href={`/trust-verification/applications/${v.id}`}
                       className="flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1 text-xs font-medium hover:bg-white/[0.07]">

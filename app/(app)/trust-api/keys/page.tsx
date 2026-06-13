@@ -6,10 +6,11 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Key, Plus, Copy, Check, Trash2, Eye, EyeOff, Shield, X,
+  Key, Plus, Copy, Check, Trash2, Shield, X,
 } from "lucide-react";
 import { getClientsAction, getApiKeysAction, createClientAction, issueApiKeyAction, revokeApiKeyAction, deleteClientAction } from "@/lib/trust-api/actions";
 import { useEffect } from "react";
+import { ApiKeyStatusBadge, ApiPlanBadge } from "@/components/trust-api/trust-api-ui";
 
 type Client = { id: string; name: string; plan: string; status: string; clientType: string; contactEmail?: string | null; createdAt: Date };
 type ApiKey  = { id: string; name: string; keyPrefix: string; plan: string; status: string; permissions: string[] | null; usageCount: number; lastUsedAt?: Date | null; createdAt: Date; clientId?: string | null };
@@ -45,7 +46,7 @@ export default function ApiKeysPage() {
 
   async function handleIssueKey(fd: FormData) {
     const res = await issueApiKeyAction(fd);
-    if (res.data) { setNewKey((res.data as any).key); setShowKeyForm(false); load(); }
+    if (res.data) { setNewKey((res.data as { key: string }).key); setShowKeyForm(false); load(); }
   }
 
   async function handleRevokeKey(id: string) {
@@ -122,7 +123,7 @@ export default function ApiKeysPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${k.status === "active" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>{k.status}</span>
+                  <ApiKeyStatusBadge status={k.status} />
                   {k.status === "active" && (
                     <button onClick={() => handleRevokeKey(k.id)} disabled={isPending} className="rounded-lg border border-[var(--color-line)] px-2 py-1 text-[11px] text-[var(--color-ink-dim)] hover:text-red-400 hover:border-red-500/30 transition-colors">Revoke</button>
                   )}
@@ -149,7 +150,7 @@ export default function ApiKeysPage() {
                   <div className="mt-0.5 text-[11px] text-[var(--color-ink-faint)]">{c.clientType} · {c.plan} plan{c.contactEmail ? ` · ${c.contactEmail}` : ""}</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${c.status === "active" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>{c.status}</span>
+                  <ApiKeyStatusBadge status={c.status} />
                   <button onClick={() => handleDeleteClient(c.id)} disabled={isPending} className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:text-red-400 transition-colors">
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>

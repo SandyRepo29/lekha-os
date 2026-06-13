@@ -1,12 +1,13 @@
 export const dynamic = "force-dynamic";
 
-import { Webhook, ArrowDownToLine, ArrowUpFromLine, PlusCircle } from "lucide-react";
+import { Webhook, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getWebhooks } from "@/lib/services/integration-hub/integration-service";
 import { CreateWebhookButton } from "@/components/integration-hub/create-webhook-button";
 import { DeleteWebhookButton } from "@/components/integration-hub/delete-webhook-button";
 import { ToggleWebhookButton } from "@/components/integration-hub/toggle-webhook-button";
+import { IntegrationStat, WebhookStatusBadge } from "@/components/integration-hub/integration-ui";
 
 const EVENT_LABELS: Record<string, string> = {
   user_created: "User Created",
@@ -45,18 +46,9 @@ export default async function WebhooksPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{webhooks.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Total Webhooks</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{inbound.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Inbound</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{outbound.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Outbound</p>
-        </Card>
+        <IntegrationStat label="Total Webhooks" value={webhooks.length} accent="neutral" />
+        <IntegrationStat label="Inbound" value={inbound.length} accent={inbound.length > 0 ? "good" : "neutral"} />
+        <IntegrationStat label="Outbound" value={outbound.length} accent={outbound.length > 0 ? "good" : "neutral"} />
       </div>
 
       {webhooks.length === 0 ? (
@@ -84,9 +76,7 @@ export default async function WebhooksPage() {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               <p className="text-sm font-medium">{wh.name}</p>
-                              <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${wh.isActive ? "bg-green-500/10 text-green-400" : "bg-white/5 text-[var(--color-ink-faint)]"}`}>
-                                {wh.isActive ? "Active" : "Inactive"}
-                              </span>
+                              <WebhookStatusBadge isActive={wh.isActive} />
                             </div>
                             {wh.url && <p className="text-xs text-[var(--color-ink-faint)] font-mono truncate mb-2">{wh.url}</p>}
                             <div className="flex flex-wrap gap-1">

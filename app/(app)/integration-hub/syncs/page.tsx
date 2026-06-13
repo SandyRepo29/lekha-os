@@ -1,25 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import { RefreshCw, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getSyncs } from "@/lib/services/integration-hub/integration-service";
-
-const STATUS_ICONS = {
-  completed: CheckCircle2,
-  failed: XCircle,
-  running: RefreshCw,
-  pending: Clock,
-  cancelled: Clock,
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  completed: "text-green-400",
-  failed: "text-red-400",
-  running: "text-blue-400",
-  pending: "text-[var(--color-ink-dim)]",
-  cancelled: "text-[var(--color-ink-dim)]",
-};
+import { IntegrationStat, SyncStatusBadge } from "@/components/integration-hub/integration-ui";
 
 function duration(start: Date, end: Date | null) {
   if (!end) return "—";
@@ -37,7 +22,6 @@ export default async function SyncsPage() {
 
   const totalCompleted = syncs.filter((s) => s.sync.status === "completed").length;
   const totalFailed = syncs.filter((s) => s.sync.status === "failed").length;
-  const totalRecords = syncs.reduce((n, s) => n + s.sync.recordsFetched, 0);
 
   return (
     <div className="space-y-6">
@@ -48,18 +32,9 @@ export default async function SyncsPage() {
 
       {/* Summary */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{syncs.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Total Runs</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-green-400">{totalCompleted}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Completed</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className={`text-2xl font-bold ${totalFailed > 0 ? "text-red-400" : ""}`}>{totalFailed}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Failed</p>
-        </Card>
+        <IntegrationStat label="Total Runs" value={syncs.length} accent="neutral" />
+        <IntegrationStat label="Completed" value={totalCompleted} accent={totalCompleted > 0 ? "good" : "neutral"} />
+        <IntegrationStat label="Failed" value={totalFailed} accent={totalFailed > 0 ? "danger" : "neutral"} />
       </div>
 
       {syncs.length === 0 ? (
@@ -87,17 +62,12 @@ export default async function SyncsPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {syncs.map(({ sync, connectorName }) => {
-                  const StatusIcon = STATUS_ICONS[sync.status] ?? Clock;
-                  const color = STATUS_COLORS[sync.status] ?? "";
                   return (
                     <tr key={sync.id} className="hover:bg-white/[0.02] transition-colors">
                       <td className="px-4 py-3 font-medium">{connectorName}</td>
                       <td className="px-4 py-3 text-[var(--color-ink-dim)]">{sync.syncType}</td>
                       <td className="px-4 py-3">
-                        <span className={`flex items-center gap-1.5 text-xs font-semibold ${color}`}>
-                          <StatusIcon className="h-3.5 w-3.5" />
-                          {sync.status}
-                        </span>
+                        <SyncStatusBadge status={sync.status} />
                       </td>
                       <td className="px-4 py-3 text-right text-[var(--color-ink-dim)]">{sync.recordsFetched}</td>
                       <td className="px-4 py-3 text-right text-green-400">{sync.recordsCreated}</td>

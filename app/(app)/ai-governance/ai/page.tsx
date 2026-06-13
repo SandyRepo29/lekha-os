@@ -3,8 +3,9 @@
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/ai-governance/ai-governance-service";
 import { generateAiGovernanceSummary } from "@/lib/services/ai-governance/ai-copilot-service";
-import { Brain, Shield, AlertTriangle, ShieldCheck, Bot } from "lucide-react";
+import { Brain, AlertTriangle, ShieldCheck, Bot } from "lucide-react";
 import { AiGovernanceChat } from "@/components/ai-governance/ai-governance-chat";
+import { AIGovStat } from "@/components/ai-governance/ai-governance-ui";
 
 export default async function AiCopilotPage() {
   const session = await requireUser();
@@ -66,17 +67,10 @@ export default async function AiCopilotPage() {
       {/* Metrics context */}
       {m && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            { label: "AI Systems", value: m.totalSystems, icon: Bot },
-            { label: "Approved", value: m.approvedSystems, icon: Shield },
-            { label: "High Risk", value: m.highRiskSystems, icon: AlertTriangle },
-            { label: "Pending Review", value: m.pendingReview, icon: AlertTriangle },
-          ].map(({ label, value, icon: Icon }) => (
-            <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-              <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-              <div className="mt-1 text-xl font-bold">{value}</div>
-            </div>
-          ))}
+          <AIGovStat label="AI Systems" value={m.totalSystems} accent="neutral" />
+          <AIGovStat label="Approved" value={m.approvedSystems} accent="good" />
+          <AIGovStat label="High Risk" value={m.highRiskSystems} accent={m.highRiskSystems > 0 ? "warn" : "neutral"} />
+          <AIGovStat label="Pending Review" value={m.pendingReview} accent={m.pendingReview > 0 ? "warn" : "neutral"} />
         </div>
       )}
 

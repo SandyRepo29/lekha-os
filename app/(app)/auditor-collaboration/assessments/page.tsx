@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { findAllAssessments } from "@/lib/repositories/auditor-collaboration-repo";
 import { ClipboardList } from "lucide-react";
+import { AuditorStat } from "@/components/auditor-collaboration/auditor-ui";
 
 const STATUS_BADGE: Record<string, string> = {
   planning:    "bg-slate-500/20 text-slate-400",
@@ -44,16 +45,9 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
 
       {/* KPI */}
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { label: "In Progress", value: inProgress, color: "text-blue-400" },
-          { label: "Completed", value: completed, color: "text-emerald-400" },
-          { label: "Avg Completion", value: `${avgCompletion}%`, color: "text-sky-400" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-            <div className={`text-2xl font-bold ${color}`}>{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)] mt-1">{label}</div>
-          </div>
-        ))}
+        <AuditorStat label="In Progress"     value={inProgress}          accent="neutral" />
+        <AuditorStat label="Completed"       value={completed}           accent="good" />
+        <AuditorStat label="Avg Completion"  value={`${avgCompletion}%`} accent="neutral" />
       </div>
 
       {/* Filter */}

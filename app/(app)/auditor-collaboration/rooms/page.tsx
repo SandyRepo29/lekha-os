@@ -4,15 +4,7 @@ import { requireUser } from "@/lib/auth/session";
 import { findAllRooms } from "@/lib/repositories/auditor-collaboration-repo";
 import Link from "next/link";
 import { DoorOpen, Plus, ArrowRight } from "lucide-react";
-
-const STATUS_BADGE: Record<string, string> = {
-  planning:     "bg-slate-500/20 text-slate-400",
-  active:       "bg-emerald-500/20 text-emerald-400",
-  under_review: "bg-yellow-500/20 text-yellow-400",
-  completed:    "bg-blue-500/20 text-blue-400",
-  archived:     "bg-slate-600/20 text-slate-500",
-  cancelled:    "bg-red-500/20 text-red-400",
-};
+import { AuditRoomStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const TYPE_LABEL: Record<string, string> = {
   audit: "Audit", assessment: "Assessment", due_diligence: "Due Diligence",
@@ -73,9 +65,7 @@ export default async function AuditRoomsPage({ searchParams }: { searchParams: P
               className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 transition-colors hover:border-[var(--color-blue)]/40">
               <div className="flex items-start justify-between gap-2">
                 <div className="font-semibold text-sm truncate flex-1">{room.name}</div>
-                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE[room.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                  {room.status.replace("_", " ")}
-                </span>
+                <AuditRoomStatusBadge status={room.status} />
               </div>
 
               {room.description && (

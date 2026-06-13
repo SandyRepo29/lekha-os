@@ -4,6 +4,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getCertificates } from "@/lib/services/trust-verification/trust-verification-service";
 import { Award, CheckCircle, ExternalLink, QrCode, ShieldCheck } from "lucide-react";
+import { CertificateStatusBadge } from "@/components/trust-verification/verification-ui";
 
 export default async function CertificatesPage() {
   const session = await requireUser();
@@ -39,11 +40,7 @@ export default async function CertificatesPage() {
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-blue)]/10">
                     <Award className="h-6 w-6 text-[var(--color-blue)]" />
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    isActive ? "bg-emerald-500/10 text-emerald-400" :
-                    isExpired ? "bg-white/5 text-[var(--color-ink-faint)]" :
-                    "bg-red-500/10 text-red-400"
-                  }`}>{cert.status}</span>
+                  <CertificateStatusBadge status={cert.status} />
                 </div>
 
                 <div className="mb-3">

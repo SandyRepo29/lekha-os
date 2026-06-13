@@ -5,8 +5,9 @@ import { getDashboardData } from "@/lib/services/ai-governance/ai-governance-ser
 import Link from "next/link";
 import {
   Bot, Shield, AlertTriangle, Bug, Building2, ShieldCheck,
-  Brain, ClipboardList, FileText, Activity, Layers, ArrowUpRight,
+  Brain, Layers, ArrowUpRight,
 } from "lucide-react";
+import { AIGovStat } from "@/components/ai-governance/ai-governance-ui";
 
 const NAV = [
   { href: "/ai-governance/inventory", icon: Layers, label: "AI Inventory™", desc: "All AI systems in use" },
@@ -47,20 +48,11 @@ export default async function AiGovernancePage() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {[
-          { label: "AI Systems", value: m?.totalSystems ?? 0, icon: Layers, color: "text-[var(--color-blue)]" },
-          { label: "Approved", value: m?.approvedSystems ?? 0, icon: Shield, color: "text-emerald-400" },
-          { label: "High Risk", value: m?.highRiskSystems ?? 0, icon: AlertTriangle, color: "text-orange-400" },
-          { label: "Pending Review", value: m?.pendingReview ?? 0, icon: Bug, color: "text-red-400" },
-          { label: "Avg Trust Score", value: m?.avgTrustScore ? m.avgTrustScore.toFixed(0) : "—", icon: Brain, color: "text-[var(--color-blue)]" },
-        ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--color-ink-dim)]">
-              <Icon className={`h-4 w-4 ${color}`} /> {label}
-            </div>
-            <div className="mt-2 text-2xl font-bold">{value}</div>
-          </div>
-        ))}
+        <AIGovStat label="AI Systems" value={m?.totalSystems ?? 0} accent="neutral" href="/ai-governance/inventory" />
+        <AIGovStat label="Approved" value={m?.approvedSystems ?? 0} accent="good" />
+        <AIGovStat label="High Risk" value={m?.highRiskSystems ?? 0} accent={(m?.highRiskSystems ?? 0) > 0 ? "warn" : "neutral"} href="/ai-governance/risks" />
+        <AIGovStat label="Pending Review" value={m?.pendingReview ?? 0} accent={(m?.pendingReview ?? 0) > 0 ? "warn" : "neutral"} />
+        <AIGovStat label="Avg Trust Score" value={m?.avgTrustScore ? m.avgTrustScore.toFixed(0) : "—"} accent="neutral" />
       </div>
 
       {/* Module Nav */}
@@ -90,7 +82,7 @@ export default async function AiGovernancePage() {
             <Link href="/ai-governance/inventory" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
           </div>
           <div className="space-y-3">
-            {(dash?.systems ?? []).slice(0, 5).map((s: any) => (
+            {(dash?.systems ?? []).slice(0, 5).map((s) => (
               <div key={s.id} className="flex items-center justify-between text-sm">
                 <div>
                   <div className="font-medium">{s.name}</div>
@@ -114,7 +106,7 @@ export default async function AiGovernancePage() {
             <Link href="/ai-governance/incidents" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
           </div>
           <div className="space-y-3">
-            {(dash?.incidents ?? []).slice(0, 5).map((i: any) => (
+            {(dash?.incidents ?? []).slice(0, 5).map((i) => (
               <div key={i.id} className="flex items-center justify-between text-sm">
                 <div>
                   <div className="font-medium">{i.title}</div>

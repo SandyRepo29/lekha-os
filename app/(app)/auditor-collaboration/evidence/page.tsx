@@ -5,18 +5,10 @@ import { findAllEvidenceRequests } from "@/lib/repositories/auditor-collaboratio
 import { reviewEvidenceAction } from "@/lib/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { FileCheck, CheckCircle, XCircle } from "lucide-react";
-
-const STATUS_BADGE: Record<string, string> = {
-  pending:      "bg-yellow-500/20 text-yellow-400",
-  submitted:    "bg-blue-500/20 text-blue-400",
-  under_review: "bg-purple-500/20 text-purple-400",
-  accepted:     "bg-emerald-500/20 text-emerald-400",
-  rejected:     "bg-red-500/20 text-red-400",
-  expired:      "bg-slate-500/20 text-slate-400",
-};
+import { AuditorStat, EvidenceRequestStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const PRIORITY_BADGE: Record<string, string> = {
-  low: "bg-slate-500/20 text-slate-400", medium: "bg-yellow-500/20 text-yellow-400",
+  low: "bg-slate-500/20 text-slate-400", medium: "bg-amber-500/20 text-amber-400",
   high: "bg-orange-500/20 text-orange-400", critical: "bg-red-500/20 text-red-400",
 };
 
@@ -40,9 +32,9 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
     revalidatePath("/auditor-collaboration/evidence");
   }
 
-  const pending = requests.filter(r => r.status === "pending").length;
+  const pending   = requests.filter(r => r.status === "pending").length;
   const submitted = requests.filter(r => r.status === "submitted").length;
-  const accepted = requests.filter(r => r.status === "accepted").length;
+  const accepted  = requests.filter(r => r.status === "accepted").length;
 
   return (
     <div className="space-y-6">
@@ -57,16 +49,9 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
 
       {/* KPI Strip */}
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { label: "Pending", value: pending, color: "text-yellow-400" },
-          { label: "Submitted", value: submitted, color: "text-blue-400" },
-          { label: "Accepted", value: accepted, color: "text-emerald-400" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-            <div className={`text-2xl font-bold ${color}`}>{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)] mt-1">{label}</div>
-          </div>
-        ))}
+        <AuditorStat label="Pending"   value={pending}   accent="warn"    />
+        <AuditorStat label="Submitted" value={submitted} accent="neutral" />
+        <AuditorStat label="Accepted"  value={accepted}  accent="good"    />
       </div>
 
       {/* Filter */}
@@ -97,7 +82,7 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-sm">{r.title}</h3>
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE[r.status] ?? ""}`}>{r.status}</span>
+                    <EvidenceRequestStatusBadge status={r.status} />
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${PRIORITY_BADGE[r.priority] ?? ""}`}>{r.priority}</span>
                   </div>
                   {r.description && <p className="mt-1 text-xs text-[var(--color-ink-dim)]">{r.description}</p>}

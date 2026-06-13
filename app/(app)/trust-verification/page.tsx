@@ -5,9 +5,10 @@ import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
 import {
   ShieldCheck, Award, CheckCircle, Clock, XCircle, AlertTriangle,
-  RefreshCw, Globe, Bot, FileText, BarChart3, Users, ArrowRight,
-  Badge, Star, Lock, Activity,
+  RefreshCw, Globe, Bot, FileText, ArrowRight,
+  Star, Lock, Activity,
 } from "lucide-react";
+import { VerificationStat, VerificationStatusBadge } from "@/components/trust-verification/verification-ui";
 
 const NAV = [
   { href: "/trust-verification/programs",    icon: Star,        label: "Verification Programs™",  description: "Browse & create verification programs" },
@@ -62,23 +63,15 @@ export default async function TrustVerificationPage() {
       </div>
 
       {/* KPI Strip */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
-        {[
-          { label: "Applications",  value: m?.total ?? 0,         icon: FileText,    color: "text-[var(--color-blue)]" },
-          { label: "Approved",      value: m?.approved ?? 0,      icon: CheckCircle, color: "text-emerald-400" },
-          { label: "Pending",       value: m?.pending ?? 0,       icon: Clock,       color: "text-amber-400" },
-          { label: "Rejected",      value: m?.rejected ?? 0,      icon: XCircle,     color: "text-red-400" },
-          { label: "Suspended",     value: m?.suspended ?? 0,     icon: AlertTriangle, color: "text-orange-400" },
-          { label: "Active Certs",  value: activeCerts,           icon: Award,       color: "text-violet-400" },
-          { label: "Active Badges", value: activeBadges,          icon: ShieldCheck, color: "text-pink-400" },
-          { label: "Trust Leaders", value: m?.trustLeaders ?? 0,  icon: Star,        color: "text-yellow-400" },
-        ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4">
-            <Icon className={`mb-2 h-4 w-4 ${color}`} />
-            <div className="text-xl font-bold">{value}</div>
-            <div className="text-[11px] text-[var(--color-ink-dim)]">{label}</div>
-          </div>
-        ))}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+        <VerificationStat label="Applications"  value={m?.total ?? 0}        accent="neutral"  href="/trust-verification/applications" />
+        <VerificationStat label="Approved"      value={m?.approved ?? 0}     accent="good"     href="/trust-verification/applications" />
+        <VerificationStat label="Pending"       value={m?.pending ?? 0}      accent="warn"     href="/trust-verification/applications" />
+        <VerificationStat label="Rejected"      value={m?.rejected ?? 0}     accent={(m?.rejected ?? 0) > 0 ? "danger" : "neutral"} />
+        <VerificationStat label="Suspended"     value={m?.suspended ?? 0}    accent={(m?.suspended ?? 0) > 0 ? "warn" : "neutral"} />
+        <VerificationStat label="Active Certs"  value={activeCerts}          accent="good"     href="/trust-verification/certificates" />
+        <VerificationStat label="Active Badges" value={activeBadges}         accent="good"     href="/trust-verification/badges" />
+        <VerificationStat label="Trust Leaders" value={m?.trustLeaders ?? 0} accent="neutral"  />
       </div>
 
       {/* Strategic Callout */}
@@ -142,13 +135,7 @@ export default async function TrustVerificationPage() {
                     <div className="text-sm font-medium">{(v as any).programName ?? "Verification"}</div>
                     <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Applied {new Date(v.appliedAt).toLocaleDateString()}</div>
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    v.status === "approved" ? "bg-emerald-500/10 text-emerald-400" :
-                    v.status === "pending"  ? "bg-amber-500/10 text-amber-400" :
-                    v.status === "in_review"? "bg-[var(--color-blue)]/10 text-[var(--color-blue)]" :
-                    v.status === "rejected" ? "bg-red-500/10 text-red-400" :
-                    "bg-white/5 text-[var(--color-ink-faint)]"
-                  }`}>{v.status.replace("_"," ")}</span>
+                  <VerificationStatusBadge status={v.status} />
                 </Link>
               ))}
             </div>

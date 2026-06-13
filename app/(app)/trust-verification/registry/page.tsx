@@ -4,9 +4,10 @@ import { requireUser } from "@/lib/auth/session";
 import { getPublicRegistry } from "@/lib/services/trust-verification/trust-verification-service";
 import { Globe, ExternalLink, ShieldCheck, Search } from "lucide-react";
 
-export default async function RegistryPage({ searchParams }: { searchParams: { minScore?: string } }) {
+export default async function RegistryPage({ searchParams }: { searchParams: Promise<{ minScore?: string }> }) {
   await requireUser();
-  const minScore = searchParams.minScore ? Number(searchParams.minScore) : undefined;
+  const params = await searchParams;
+  const minScore = params.minScore ? Number(params.minScore) : undefined;
   const registry = await getPublicRegistry({ minScore }).catch(() => []);
 
   return (
@@ -30,8 +31,8 @@ export default async function RegistryPage({ searchParams }: { searchParams: { m
             className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
         </div>
         <form>
-          <select name="minScore" defaultValue={minScore ?? ""}
-            onChange={(e: any) => e.target.form?.submit()}
+          <select name="minScore" defaultValue={params.minScore ?? ""}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => e.target.form?.submit()}
             className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2.5 text-sm focus:outline-none">
             <option value="">All scores</option>
             <option value="80">Score ≥ 80</option>
@@ -56,7 +57,7 @@ export default async function RegistryPage({ searchParams }: { searchParams: { m
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]/50">
-              {registry.map((r: any) => (
+              {registry.map((r: { id: string; displayName: string; industry?: string | null; programName: string; verificationLevel: string; trustScore?: number | null; publishedAt: string | Date; expiresAt?: string | Date | null; certificateId: string }) => (
                 <tr key={r.id} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">

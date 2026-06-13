@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth/session";
 import { findAllRisks } from "@/lib/repositories/ai-governance-repo";
 import Link from "next/link";
 import { AlertTriangle, Plus } from "lucide-react";
+import { AIGovStat, AIRiskLevelBadge } from "@/components/ai-governance/ai-governance-ui";
 
 const CATEGORY_LABELS: Record<string, string> = {
   hallucination: "Hallucination", bias: "Bias", privacy_leakage: "Privacy Leakage",
@@ -13,12 +14,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   vendor_dependency: "Vendor Dependency", explainability_risk: "Explainability",
   autonomous_decision_risk: "Autonomous Decision", other: "Other",
 };
-const LEVEL_COLORS: Record<string, string> = {
-  low: "bg-emerald-500/10 text-emerald-400", moderate: "bg-yellow-500/10 text-yellow-400",
-  high: "bg-orange-500/10 text-orange-400", critical: "bg-red-500/10 text-red-400",
-};
 const STATUS_COLORS: Record<string, string> = {
-  open: "bg-red-500/10 text-red-400", mitigating: "bg-blue-500/10 text-blue-400",
+  open: "bg-red-500/10 text-red-400", mitigating: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
   accepted: "bg-yellow-500/10 text-yellow-400", closed: "bg-emerald-500/10 text-emerald-400",
 };
 
@@ -47,16 +44,9 @@ export default async function AiRisksPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { label: "Open Risks", value: open, color: "text-red-400" },
-          { label: "Critical", value: critical, color: "text-red-400" },
-          { label: "High", value: high, color: "text-orange-400" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4">
-            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-            <div className={`mt-1 text-2xl font-bold ${color}`}>{value}</div>
-          </div>
-        ))}
+        <AIGovStat label="Open Risks" value={open} accent={open > 0 ? "danger" : "neutral"} />
+        <AIGovStat label="Critical" value={critical} accent={critical > 0 ? "danger" : "neutral"} />
+        <AIGovStat label="High" value={high} accent={high > 0 ? "warn" : "neutral"} />
       </div>
 
       <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] overflow-hidden">
@@ -79,7 +69,7 @@ export default async function AiRisksPage() {
                 </td>
                 <td className="px-4 py-3 text-[var(--color-ink-dim)]">{CATEGORY_LABELS[r.riskCategory] ?? r.riskCategory}</td>
                 <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${LEVEL_COLORS[r.riskLevel] ?? ""}`}>{r.riskLevel}</span>
+                  <AIRiskLevelBadge level={r.riskLevel} />
                 </td>
                 <td className="px-4 py-3 font-mono">{r.likelihood * r.impact}</td>
                 <td className="px-4 py-3">

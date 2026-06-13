@@ -5,19 +5,11 @@ import { findAllExternalFindings } from "@/lib/repositories/auditor-collaboratio
 import { updateFindingStatusAction } from "@/lib/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { AlertTriangle } from "lucide-react";
+import { AuditorStat, ExternalFindingStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const SEV_BADGE: Record<string, string> = {
-  low: "bg-emerald-500/20 text-emerald-400", medium: "bg-yellow-500/20 text-yellow-400",
+  low: "bg-emerald-500/20 text-emerald-400", medium: "bg-amber-500/20 text-amber-400",
   high: "bg-orange-500/20 text-orange-400", critical: "bg-red-500/20 text-red-400",
-};
-
-const STATUS_BADGE: Record<string, string> = {
-  open:             "bg-red-500/20 text-red-400",
-  in_remediation:   "bg-yellow-500/20 text-yellow-400",
-  ready_for_review: "bg-blue-500/20 text-blue-400",
-  verified:         "bg-emerald-500/20 text-emerald-400",
-  closed:           "bg-slate-500/20 text-slate-400",
-  accepted:         "bg-purple-500/20 text-purple-400",
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -31,9 +23,9 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
   const oid = session.org?.id ?? "";
   const findings = await findAllExternalFindings(oid, { status: params.status, severity: params.severity }).catch(() => []);
 
-  const open = findings.filter(f => f.status === "open").length;
-  const critical = findings.filter(f => f.severity === "critical").length;
-  const high = findings.filter(f => f.severity === "high").length;
+  const open       = findings.filter(f => f.status === "open").length;
+  const critical   = findings.filter(f => f.severity === "critical").length;
+  const high       = findings.filter(f => f.severity === "high").length;
   const remediated = findings.filter(f => ["verified", "closed"].includes(f.status)).length;
 
   async function updateStatus(fd: FormData) {
@@ -53,17 +45,10 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
 
       {/* KPI Strip */}
       <div className="grid grid-cols-4 gap-3">
-        {[
-          { label: "Open", value: open, color: "text-red-400" },
-          { label: "Critical", value: critical, color: "text-red-500" },
-          { label: "High", value: high, color: "text-orange-400" },
-          { label: "Resolved", value: remediated, color: "text-emerald-400" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-            <div className={`text-2xl font-bold ${color}`}>{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)] mt-1">{label}</div>
-          </div>
-        ))}
+        <AuditorStat label="Open"     value={open}       accent={open > 0 ? "danger" : "neutral"} />
+        <AuditorStat label="Critical" value={critical}   accent={critical > 0 ? "danger" : "neutral"} />
+        <AuditorStat label="High"     value={high}       accent={high > 0 ? "warn" : "neutral"} />
+        <AuditorStat label="Resolved" value={remediated} accent="good" />
       </div>
 
       {/* Filters */}
@@ -99,7 +84,7 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-sm">{f.title}</h3>
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${SEV_BADGE[f.severity] ?? ""}`}>{f.severity}</span>
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE[f.status] ?? ""}`}>{f.status.replace(/_/g, " ")}</span>
+                    <ExternalFindingStatusBadge status={f.status} />
                     {f.findingType && <span className="rounded-full px-2 py-0.5 text-[10px] bg-white/5 text-[var(--color-ink-dim)]">{TYPE_LABEL[f.findingType] ?? f.findingType}</span>}
                   </div>
                   {f.description && <p className="mt-1 text-xs text-[var(--color-ink-dim)] line-clamp-2">{f.description}</p>}

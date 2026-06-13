@@ -5,8 +5,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/trust-api/trust-api-service";
 import {
   Zap, Key, Webhook, BarChart3, Code2, BookOpen, Bot, ArrowRight,
-  Globe, Shield, Brain, TrendingUp, CheckCircle, Activity,
+  Globe, TrendingUp, Activity,
 } from "lucide-react";
+import { TrustAPIStat, ApiKeyStatusBadge, ApiPlanBadge } from "@/components/trust-api/trust-api-ui";
 
 const NAV = [
   { href: "/trust-api/catalog",  icon: Globe,     label: "API Catalog",       description: "Browse 8 Trust API products" },
@@ -62,19 +63,10 @@ export default async function TrustApiPage() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {[
-          { label: "API Clients",       value: metrics?.totalClients ?? 0,      sub: `${metrics?.activeClients ?? 0} active`,      icon: Code2,     color: "text-[var(--color-blue)]" },
-          { label: "Active Keys",       value: metrics?.activeKeys ?? 0,         sub: `${metrics?.totalKeys ?? 0} total`,            icon: Key,       color: "text-emerald-400" },
-          { label: "Calls (30d)",       value: (metrics?.totalCalls30d ?? 0).toLocaleString(), sub: `${successRate}% success rate`, icon: Activity,  color: "text-violet-400" },
-          { label: "Webhooks",          value: metrics?.activeWebhooks ?? 0,     sub: `${metrics?.totalWebhooks ?? 0} registered`,   icon: Webhook,   color: "text-amber-400" },
-        ].map(({ label, value, sub, icon: Icon, color }) => (
-          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
-            <Icon className={`mb-3 h-5 w-5 ${color}`} />
-            <div className="text-2xl font-bold">{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-            <div className="mt-0.5 text-[11px] text-[var(--color-ink-faint)]">{sub}</div>
-          </div>
-        ))}
+        <TrustAPIStat label="API Clients"  value={metrics?.totalClients ?? 0}                         sub={`${metrics?.activeClients ?? 0} active`}          accent="neutral" href="/trust-api/keys" />
+        <TrustAPIStat label="Active Keys"  value={metrics?.activeKeys ?? 0}                            sub={`${metrics?.totalKeys ?? 0} total`}               accent="good"    href="/trust-api/keys" />
+        <TrustAPIStat label="Calls (30d)"  value={(metrics?.totalCalls30d ?? 0).toLocaleString()}      sub={`${successRate}% success rate`}                   accent="neutral" href="/trust-api/usage" />
+        <TrustAPIStat label="Webhooks"     value={metrics?.activeWebhooks ?? 0}                        sub={`${metrics?.totalWebhooks ?? 0} registered`}      accent="warn"    href="/trust-api/webhooks" />
       </div>
 
       {/* Module Nav */}
@@ -166,15 +158,13 @@ export default async function TrustApiPage() {
             <Link href="/trust-api/keys" className="text-xs text-[var(--color-blue)] hover:underline">Manage →</Link>
           </div>
           <div className="divide-y divide-[var(--color-line)]/50">
-            {metrics!.recentClients.map((c: any) => (
+            {metrics!.recentClients.map((c: { id: string; name: string; clientType: string; plan: string; status: string }) => (
               <div key={c.id} className="flex items-center justify-between py-2.5">
                 <div>
                   <div className="text-sm font-medium">{c.name}</div>
-                  <div className="text-xs text-[var(--color-ink-faint)]">{c.clientType} · {c.plan} plan</div>
+                  <div className="text-xs text-[var(--color-ink-faint)]">{c.clientType} · <ApiPlanBadge plan={c.plan} /></div>
                 </div>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                  c.status === "active" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
-                }`}>{c.status}</span>
+                <ApiKeyStatusBadge status={c.status} />
               </div>
             ))}
           </div>

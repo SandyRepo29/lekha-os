@@ -4,17 +4,19 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
 import { ShieldCheck } from "lucide-react";
+import { CertificateStatusBadge } from "@/components/trust-verification/verification-ui";
 
-const BADGE_COLORS: Record<string, string> = {
-  audt_verified:     "#6366f1",
-  trusted_vendor:    "#10b981",
-  privacy_ready:     "#0ea5e9",
-  ai_governed:       "#a855f7",
-  enterprise_ready:  "#ec4899",
-  risk_managed:      "#f59e0b",
-  compliance_ready:  "#f97316",
-  trust_leader:      "#eab308",
-  custom:            "#6b7280",
+// CSS var-friendly Tailwind class mappings (no hardcoded hex)
+const BADGE_TYPE_CLASSES: Record<string, { bg: string; text: string }> = {
+  audt_verified:    { bg: "bg-indigo-500/20",  text: "text-indigo-400" },
+  trusted_vendor:   { bg: "bg-emerald-500/20", text: "text-emerald-400" },
+  privacy_ready:    { bg: "bg-sky-500/20",      text: "text-sky-400" },
+  ai_governed:      { bg: "bg-purple-500/20",   text: "text-purple-400" },
+  enterprise_ready: { bg: "bg-pink-500/20",     text: "text-pink-400" },
+  risk_managed:     { bg: "bg-amber-500/20",    text: "text-amber-400" },
+  compliance_ready: { bg: "bg-orange-500/20",   text: "text-orange-400" },
+  trust_leader:     { bg: "bg-yellow-500/20",   text: "text-yellow-400" },
+  custom:           { bg: "bg-slate-500/20",    text: "text-slate-400" },
 };
 
 export default async function BadgesPage() {
@@ -56,25 +58,19 @@ export default async function BadgesPage() {
 
       {badges.length > 0 ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {badges.map((badge: any) => {
-            const color = BADGE_COLORS[badge.badgeType] ?? "#6366f1";
-            const isActive = badge.status === "active";
+          {badges.map((badge: { id: string; name: string; badgeType: string; status: string; issuedAt: string | Date; expiresAt?: string | Date | null }) => {
+            const cls = BADGE_TYPE_CLASSES[badge.badgeType] ?? BADGE_TYPE_CLASSES.custom;
             return (
               <div key={badge.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
                 <div className="flex items-start gap-3 mb-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ backgroundColor: `${color}20` }}>
-                    <ShieldCheck className="h-5 w-5" style={{ color }} />
+                  <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${cls.bg}`}>
+                    <ShieldCheck className={`h-5 w-5 ${cls.text}`} />
                   </span>
                   <div>
                     <div className="font-semibold text-sm">{badge.name}</div>
                     <div className="text-[11px] text-[var(--color-ink-faint)] mt-0.5 capitalize">{badge.badgeType.replace(/_/g," ")}</div>
                   </div>
-                  <span className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    isActive ? "bg-emerald-500/10 text-emerald-400" :
-                    badge.status === "suspended" ? "bg-orange-500/10 text-orange-400" :
-                    badge.status === "revoked"   ? "bg-red-500/10 text-red-400" :
-                    "bg-white/5 text-[var(--color-ink-faint)]"
-                  }`}>{badge.status}</span>
+                  <span className="ml-auto"><CertificateStatusBadge status={badge.status} /></span>
                 </div>
                 <div className="space-y-1 text-xs text-[var(--color-ink-dim)]">
                   <div>Issued: {new Date(badge.issuedAt).toLocaleDateString()}</div>

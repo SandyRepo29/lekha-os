@@ -2,7 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMonitoringData } from "@/lib/services/trust-verification/trust-verification-service";
-import { Activity, CheckCircle, AlertTriangle, Clock, ShieldCheck } from "lucide-react";
+import { Activity, AlertTriangle, ShieldCheck } from "lucide-react";
+import { VerificationStat } from "@/components/trust-verification/verification-ui";
 
 const EVENT_COLORS: Record<string, string> = {
   "verification.created":       "text-[var(--color-blue)]",
@@ -40,18 +41,10 @@ export default async function MonitoringPage() {
 
       {/* Health strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {[
-          { label: "Active Certs",     value: activeCerts.length,   icon: CheckCircle,    color: "text-emerald-400" },
-          { label: "Active Badges",    value: activeBadges.length,  icon: ShieldCheck,    color: "text-violet-400" },
-          { label: "Expiring Soon",    value: expiringSoon.length,  icon: AlertTriangle,  color: "text-amber-400" },
-          { label: "Events (24h)",     value: events.length,        icon: Activity,       color: "text-[var(--color-blue)]" },
-        ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
-            <Icon className={`mb-3 h-5 w-5 ${color}`} />
-            <div className="text-2xl font-bold">{value}</div>
-            <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
-          </div>
-        ))}
+        <VerificationStat label="Active Certs"  value={activeCerts.length}   accent="good"    href="/trust-verification/certificates" />
+        <VerificationStat label="Active Badges" value={activeBadges.length}  accent="good"    href="/trust-verification/badges" />
+        <VerificationStat label="Expiring Soon" value={expiringSoon.length}  accent={expiringSoon.length > 0 ? "warn" : "neutral"} href="/trust-verification/renewals" />
+        <VerificationStat label="Events (24h)"  value={events.length}        accent="neutral" />
       </div>
 
       {/* Expiring Soon */}
