@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Shield, Plus, Activity, CheckCircle2, AlertTriangle, Clock, TrendingUp, Beaker } from "lucide-react";
+import { Shield, Plus, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -10,20 +10,7 @@ import { getDashboardMetrics } from "@/lib/services/control-center/control-cente
 import { findAllControls } from "@/lib/repositories/control-center-repo";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 import { ControlStatusBadge } from "@/components/controls/control-status-badge";
-
-function Stat({ label, value, icon: Icon, color }: { label: string; value: string | number; icon: React.ElementType; color: string }) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
+import { ControlStat } from "@/components/controls/control-ui";
 
 export default async function ControlsDashboardPage() {
   const session = await requireUser();
@@ -69,17 +56,17 @@ export default async function ControlsDashboardPage() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Stat label="Total Controls" value={metrics.total} icon={Shield} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Healthy (≥80)" value={metrics.healthy} icon={CheckCircle2} color="bg-green-500/20 text-green-400" />
-        <Stat label="Weak (<60)" value={metrics.weak} icon={AlertTriangle} color="bg-red-500/20 text-red-400" />
-        <Stat label="Overdue Tests" value={metrics.overdueTests} icon={Beaker} color="bg-orange-500/20 text-orange-400" />
+        <ControlStat label="Total Controls" value={metrics.total} accent="neutral" href="/controls/library" />
+        <ControlStat label="Healthy (≥80)" value={metrics.healthy} accent="good" />
+        <ControlStat label="Weak (<60)" value={metrics.weak} accent={metrics.weak > 0 ? "danger" : "neutral"} />
+        <ControlStat label="Overdue Tests" value={metrics.overdueTests} accent={metrics.overdueTests > 0 ? "warn" : "neutral"} />
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Stat label="Avg Health Score" value={`${metrics.avgHealth}/100`} icon={Activity} color="bg-blue-500/20 text-blue-400" />
-        <Stat label="Implemented" value={metrics.implemented} icon={CheckCircle2} color="bg-emerald-500/20 text-emerald-400" />
-        <Stat label="Coverage" value={`${metrics.coverage}%`} icon={TrendingUp} color="bg-cyan-500/20 text-cyan-400" />
-        <Stat label="Avg Effectiveness" value={`${metrics.avgEffectiveness}/100`} icon={Activity} color="bg-violet-500/20 text-violet-400" />
+        <ControlStat label="Avg Health Score" value={`${metrics.avgHealth}/100`} accent={metrics.avgHealth >= 80 ? "good" : metrics.avgHealth >= 60 ? "warn" : "danger"} />
+        <ControlStat label="Implemented" value={metrics.implemented} accent="good" />
+        <ControlStat label="Coverage" value={`${metrics.coverage}%`} accent={metrics.coverage >= 80 ? "good" : metrics.coverage >= 50 ? "warn" : "danger"} />
+        <ControlStat label="Avg Effectiveness" value={`${metrics.avgEffectiveness}/100`} accent="neutral" />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

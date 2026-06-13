@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { findAllTests } from "@/lib/repositories/control-center-repo";
 import { TestResultBadge } from "@/components/controls/control-status-badge";
+import { ControlStat } from "@/components/controls/control-ui";
 
 export default async function TestingPage() {
   const session = await requireUser();
@@ -40,18 +41,9 @@ export default async function TestingPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{tests.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Total Tests</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-green-400">{passCount}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Passed</p>
-        </Card>
-        <Card className="p-4 text-center">
-          <p className={`text-2xl font-bold ${failCount > 0 ? "text-red-400" : "text-white/30"}`}>{failCount}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Failed</p>
-        </Card>
+        <ControlStat label="Total Tests" value={tests.length} accent="neutral" />
+        <ControlStat label="Passed" value={passCount} accent="good" sub={`${passRate}% pass rate`} />
+        <ControlStat label="Failed" value={failCount} accent={failCount > 0 ? "danger" : "neutral"} />
       </div>
 
       {tests.length === 0 ? (

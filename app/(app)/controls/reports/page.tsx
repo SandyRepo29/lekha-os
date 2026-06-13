@@ -19,8 +19,8 @@ export default async function ControlReportsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Card className="p-5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-indigo-400" />
+            <div className="w-10 h-10 rounded-xl bg-[var(--color-blue)]/15 flex items-center justify-center">
+              <FileText className="h-5 w-5 text-[var(--color-blue)]" />
             </div>
             <div>
               <p className="text-sm font-semibold">Control Library</p>
@@ -36,8 +36,8 @@ export default async function ControlReportsPage() {
 
         <Card className="p-5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-blue-400" />
+            <div className="w-10 h-10 rounded-xl bg-[var(--color-purple)]/15 flex items-center justify-center">
+              <FileText className="h-5 w-5 text-[var(--color-purple)]" />
             </div>
             <div>
               <p className="text-sm font-semibold">Testing Report</p>

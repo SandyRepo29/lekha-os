@@ -2,12 +2,13 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Edit2, Shield, Beaker, FileText, AlertTriangle, Link2 } from "lucide-react";
+import { ArrowLeft, Edit2, Shield, Beaker, Bot } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { findControlById, findTestsByControl, getHealthInputs } from "@/lib/repositories/control-center-repo";
-import { computeControlHealth, HEALTH_COMPONENT_LABELS, HEALTH_LEVEL_LABELS } from "@/lib/services/control-health";
+import { computeControlHealth, HEALTH_COMPONENT_LABELS } from "@/lib/services/control-health";
+import { generateControlNarrative } from "@/lib/services/control-center/ai-control-service";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 import { ControlStatusBadge, ControlTypeBadge, AutomationBadge, TestResultBadge } from "@/components/controls/control-status-badge";
 import { DeleteControlButton, ComputeHealthButton, AddTestForm, DeleteTestButton } from "@/components/controls/control-detail-actions";
@@ -48,6 +49,7 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
   if (!control) notFound();
 
   const health = computeControlHealth(inputs);
+  const aiNarrative = await generateControlNarrative(session.org.id, control, health).catch(() => null);
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -135,6 +137,19 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
       </Card>
+
+      {/* AI Narrative */}
+      {aiNarrative && (
+        <Card className="p-5">
+          <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+            <Bot className="h-4 w-4 text-[var(--color-blue)]" />
+            AI Control Analysis
+          </h2>
+          <div className="text-sm text-[var(--color-ink)] leading-relaxed whitespace-pre-wrap">
+            {aiNarrative}
+          </div>
+        </Card>
+      )}
 
       {/* Details */}
       <Section title="Overview" icon={Shield}>
