@@ -36,6 +36,7 @@ node scripts/apply-sql.mjs supabase/migrations/0025_ai_governance.sql
 node scripts/apply-sql.mjs supabase/migrations/0026_auditor_collaboration.sql
 node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
 node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority.sql
+node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -99,11 +100,14 @@ node scripts/seed-trust-api-platform.mjs
 # 22. Seed Trust Verification Authority™ (Module 23)
 node scripts/seed-trust-verification.mjs
 
-# 23. Verify all module counts
+# 23. Seed Continuous Compliance™ (Module 28)
+node scripts/seed-continuous-compliance.mjs
+
+# 24. Verify all module counts
 node scripts/check-all-modules.mjs
 ```
 
-After this, **every module has complete demo data** across all 27 shipped modules.
+After this, **every module has complete demo data** across all 28 shipped modules.
 
 Key entry points after seeding:
 - `/vendors` — 19 vendors, 67 docs, assessments, reviews, trust scores
@@ -129,6 +133,7 @@ Key entry points after seeding:
 - `/trust-api` — 3 API clients, 3 keys, 3 webhooks, 30-day usage data
 - `/trust-verification` — 2 active certs (AUDT Verified™, Privacy Ready™), 1 pending
 - `/verify/AUDT-2026-862EA7` — public certificate verification page
+- `/continuous-compliance` — 3 access reviews, 3 attestations, 3 training campaigns, 5 signals, health score 74
 
 ---
 
@@ -1081,5 +1086,23 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `verification_events` | 4 (applied, reviewed, approved, certificate_issued) | seed-trust-verification |
 | `verification_renewals` | 2 (scheduled at cert expiry − 30 days) | seed-trust-verification |
 | `verification_decisions` | 2 (approved with rationale) | seed-trust-verification |
+
+| `compliance_signals` | 5 (open: MFA, secret scanning, privileged access, stale accounts) | seed-continuous-compliance |
+| `compliance_health_scores` | 1 (score 74, level needs_attention) | seed-continuous-compliance |
+| `continuous_readiness` | 5 (SOC 2, ISO 27001, DPDP, PCI DSS, HIPAA readiness snapshots) | seed-continuous-compliance |
+| `access_reviews` | 3 (quarterly employee, privileged access, SOC 2 prep) | seed-continuous-compliance |
+| `attestations` | 3 (Acceptable Use, Remote Work Security, DPDP Privacy) | seed-continuous-compliance |
+| `training_campaigns` | 3 (Security Awareness, DPDP Privacy, Phishing Simulation) | seed-continuous-compliance |
+| `automation_rules` | 3 (failed check signal, critical signal escalation, unreviewed access) | seed-continuous-compliance |
+| `compliance_checks` | 21 (built-in, `organization_id = NULL`) + 0 custom | migration 0029 |
+| `compliance_check_runs` | 0 (populated by running checks from the UI) | — |
+| `compliance_evidence` | 0 (auto-populated when checks pass) | — |
+| `access_review_users` | 0 (assign via access review detail) | — |
+| `attestation_responses` | 0 (employees respond via attestation pages) | — |
+| `training_assignments` | 0 (assign via training campaign detail) | — |
+| `workforce_events` | 0 (record via `/continuous-compliance/workforce`) | — |
+| `compliance_exceptions` | 0 (request via check detail) | — |
+| `control_validations` | 0 (populated by check runs) | — |
+| `framework_mappings` | 0 (configure via checks library) | — |
 
 > After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-verification` for the Trust Verification Authority™ hub, `/verify/AUDT-2026-A1B2C3` for the public certificate verify page, `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.

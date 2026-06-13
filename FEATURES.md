@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **27 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · **Trust Verification Authority™**
+> Modules: **28 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · **Continuous Compliance™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -35,7 +35,7 @@
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
 | **REST API v1** | 47 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + trust-network + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **167 tables** across 28 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **187 tables** across 30 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -441,7 +441,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 
 ---
 
-## 📍 Current Status (2026-06-11)
+## 📍 Current Status (2026-06-13)
 
 | Layer | Status |
 |---|---|
@@ -449,25 +449,8 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 117 tables, 23 migrations applied, Supabase Mumbai (ap-south-1) |
-| **Module 1 — Vendor Hub™** | ✅ Complete |
-| **Module 2 — Evidence Vault™** | ✅ Complete |
-| **Module 3 — Settings & Org** | ✅ Complete |
-| **Module 4 — Audit Management** | ✅ Complete |
-| **Module 5 — Risk Lens™** | ✅ Complete |
-| **Module 6 — Control Center™** | ✅ Complete (2026-06-07) |
-| **Module 7 — Trust Intelligence™** | ✅ Complete (2026-06-07) |
-| **Module 8 — Governance Trends™ + Monitoring™** | ✅ Complete (2026-06-09) |
-| **Module 9 — Trust Graph™** | ✅ Complete (2026-06-09) |
-| **Module 10 — Policy Governance™** | ✅ Complete (2026-06-09) |
-| **Module 11 — DPDP Privacy™** | ✅ Complete (2026-06-10) |
-| **Module 12 — Contract Governance™** | ✅ Complete (2026-06-10) |
-| **Module 13 — Issue & Remediation Hub™** | ✅ Complete (2026-06-10) |
-| **Module 14 — Workflow Studio™** | ✅ Complete (2026-06-10) |
-| **Module 15 — Third-Party Risk Exchange™** | ✅ Complete (2026-06-11) |
-| **Module 16 — Governance Benchmarking™** | ✅ Complete (2026-06-11) |
-| **Module 17A — Integration Hub™** | ✅ Complete (2026-06-11) |
-| **Module 18 — Trust Network™** | ✅ Complete (2026-06-11) |
+| **DB** | ✅ 187 tables, 30 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 28 modules** | ✅ Complete as of 2026-06-13 |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -503,7 +486,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Integration Hub™** | Connector Marketplace, 35+ integrations, Sync Engine, Webhook Engine, AI Integration Advisor, governance event detection | ✅ Complete (2026-06-11) |
 | **Trust Network™** | Public governance infrastructure — Network Reputation™ score, Governance Maturity™, profile views, network followers, AI reputation advisor | ✅ Complete (2026-06-11) |
 | **Executive Reporting & Analytics™** | Board-ready governance intelligence — 6 role dashboards, Analytics Hub, Board Reporting, Predictive Analytics, AI Executive Analyst | ✅ Complete (2026-06-12) |
-| **AI Governance** | AI model risk, responsible AI frameworks | Future |
+| **Continuous Compliance™** | Always-on compliance automation — 21 automated checks, evidence automation, access reviews, attestations, training, AI Officer™ | ✅ Complete (2026-06-13) |
 | **Governance OS** | Full category vision — system of record for organizational trust | Vision |
 
 ---
@@ -1165,6 +1148,45 @@ Transforms AUDT from Governance OS + Trust Platform into a **Trust Authority** �
 | **Sub-pages** | Hub · Programs · Applications · Applications/New · Application Detail · Certificates · Badges · Registry · Passports · Monitoring · Renewals · AI Advisor |
 | **DB tables** | 12 new tables (migration 0028): `verification_programs` · `tva_verifications` · `verification_reviews` · `verification_evidence` · `verification_badges` · `verification_certificates` · `verification_registry` · `verification_events` · `verification_renewals` · `verification_assessments` · `verification_decisions` · `verification_auditors` |
 | **Seed** | `node scripts/seed-trust-verification.mjs` — AUDT Verified™ (approved+cert+badge) · Privacy Ready™ (approved+cert) · Enterprise Ready™ (pending+evidence) |
+
+---
+
+---
+
+## ✅ Module 28 — Continuous Compliance™
+
+> Completed 2026-06-13
+
+Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Secureframe. 17 new tables, 21 prebuilt automated checks across AWS, Azure, GCP, GitHub, M365, Google Workspace, and Okta.
+
+| Feature | Detail |
+|---|---|
+| **Compliance Checks Library™** | 21 prebuilt checks + custom; categories: aws · azure · gcp · github · m365 · google_workspace · okta · network · endpoint · custom |
+| **Evidence Automation™** | Check runs generate evidence automatically and link to compliance controls |
+| **Control Validation Engine™** | Continuous validation of control effectiveness from check results |
+| **Framework Mapping Engine™** | Map checks → controls → frameworks; continuous readiness score per framework |
+| **Access Review Manager™** | Quarterly and privileged access certifications with per-user approve/revoke decisions |
+| **Compliance Attestations™** | Policy attestations + sign-offs with completion % tracking |
+| **Training Compliance™** | Security awareness and privacy training campaigns with assignment tracking |
+| **Workforce Compliance™** | Onboarding, offboarding, and lifecycle events |
+| **Compliance Signals™** | Auto-generated signals from all modules; severity-based prioritization |
+| **Compliance Health™** | 5-component 0–100 score: checkSuccess(30%) + signalReduction(25%) + evidence(20%) + training(15%) + accessReviews(10%) |
+| **Automation Rules™** | If-this-then-that governance automation triggers |
+| **Continuous Readiness™** | Per-framework readiness snapshots updated on every check run |
+| **AI Compliance Officer™** | Executive summary (cached 24h), per-check remediation guides, multi-turn NL chat |
+| **Navigation** | Sidebar "Continuous Compliance™" with Shield icon; 12 sub-pages |
+| **DB tables** | `compliance_checks` · `compliance_check_runs` · `compliance_evidence` · `control_validations` · `framework_mappings` · `access_reviews` · `access_review_users` · `attestations` · `attestation_responses` · `training_campaigns` · `training_assignments` · `workforce_events` · `compliance_signals` · `compliance_health_scores` · `compliance_exceptions` · `automation_rules` · `continuous_readiness` (migration 0029 applied) |
+| **Built-in checks (21)** | aws-root-mfa · aws-no-root-keys · aws-s3-public · aws-cloudtrail · aws-iam-review · azure-mfa · azure-defender · azure-policy · gcp-org-policy · gcp-audit-logs · github-secret-scan · github-branch-protection · github-mfa · m365-mfa · m365-dlp · m365-audit · google-workspace-mfa · google-workspace-drive · okta-mfa · okta-inactive · okta-sso |
+| **Seed** | `node scripts/seed-continuous-compliance.mjs` — 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score (74) · 5 readiness snapshots · 3 automation rules |
+
+### Current Status
+
+| Layer | Status |
+|---|---|
+| **DB** | ✅ 187 tables, 30 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 28 Modules** | ✅ Complete as of 2026-06-13 |
+| **Tests** | ✅ 201/201 Vitest passing |
+| **Deployed** | ✅ lekha-os.vercel.app + audt.tech |
 
 ---
 

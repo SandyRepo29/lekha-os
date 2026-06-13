@@ -72,7 +72,15 @@ node scripts/seed-auditor-collaboration.mjs # 3 auditor orgs, 8 external users, 
 node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
 node scripts/seed-trust-api-platform.mjs    # 3 API clients, 3 tap_ API keys (bcrypt), subscriptions, 3 webhooks, 30-day usage
 
-# 12. Optional: E2E test user
+# 12. Trust Verification Authority™
+node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority.sql
+node scripts/seed-trust-verification.mjs    # AUDT Verified™ cert + Privacy Ready™ cert + Enterprise Ready™ pending
+
+# 13. Continuous Compliance™
+node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
+node scripts/seed-continuous-compliance.mjs # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 3 automation rules
+
+# 14. Optional: E2E test user
 node scripts/seed-e2e.mjs               # E2E test user + workspace
 ```
 
@@ -216,6 +224,18 @@ node scripts/seed-e2e.mjs               # E2E test user + workspace
 |---|---|---|
 | `seed-trust-api-platform.mjs` | 3 API clients (Procurement Portal, SAP Ariba Integration, Vendor Risk Dashboard) · 3 `tap_` API keys (bcrypt-hashed, plan-specific) · subscriptions to first 3 API products · 3 webhooks (Procurement Sync, Risk Alerts, Compliance Monitor) · ~700 usage records (30-day spread across 5 endpoints) · 5 tap_audit_events | ✅ |
 
+### Trust Verification Authority™ (Module 23)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-trust-verification.mjs` | 3 verification applications (AUDT Verified™ approved+cert+badge, Privacy Ready™ approved+cert, Enterprise Ready™ pending+evidence) · 2 certificates · 2 active badges · 2 registry entries · 2 scheduled renewals | ✅ |
+
+### Continuous Compliance™ (Module 28)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-continuous-compliance.mjs` | 3 access reviews (quarterly employee, privileged access, SOC 2 prep) · 3 attestations (Acceptable Use, Remote Work Security, DPDP Privacy) · 3 training campaigns (Security Awareness, DPDP Privacy, Phishing Simulation) · 5 open compliance signals (MFA, secret scanning, privileged access, stale accounts) · 1 health score (74, needs_attention) · 5 readiness snapshots (SOC 2, ISO 27001, DPDP 2023, PCI DSS, HIPAA) · 3 automation rules | ✅ |
+
 ### Testing
 
 | Script | What it seeds | Idempotent |
@@ -269,3 +289,9 @@ node scripts/seed-trust-network.mjs
 | Evidence requests | 12 |
 | External findings | 8 |
 | Assessment projects | 4 |
+| Verification certificates | 2 |
+| Compliance signals | 5 |
+| Access reviews | 3 |
+| Attestations | 3 |
+| Training campaigns | 3 |
+| Automation rules | 3 |
