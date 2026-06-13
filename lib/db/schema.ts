@@ -4098,4 +4098,159 @@ export type ExternalComment     = typeof externalComments.$inferSelect;
 export type ExternalFinding     = typeof externalFindings.$inferSelect;
 export type ExternalAssessment  = typeof externalAssessments.$inferSelect;
 export type ExternalPermission  = typeof externalPermissions.$inferSelect;
+
+/* ============================================================
+   Trust API Platform™ — Module 22
+   ============================================================ */
+
+export const tapProducts = pgTable("tap_products", {
+  id:                 uuid("id").primaryKey().defaultRandom(),
+  name:               text("name").notNull(),
+  slug:               text("slug").notNull(),
+  description:        text("description"),
+  category:           text("category").notNull().default("trust"),
+  tier:               text("tier").notNull().default("free"),
+  status:             text("status").notNull().default("active"),
+  endpoints:          jsonb("endpoints").$type<string[]>().notNull().default([]),
+  rateLimitPerDay:    integer("rate_limit_per_day").notNull().default(100),
+  rateLimitPerMonth:  integer("rate_limit_per_month").notNull().default(1000),
+  documentation:      text("documentation"),
+  version:            text("version").notNull().default("v1"),
+  isPublic:           boolean("is_public").notNull().default(true),
+  createdAt:          timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:          timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapClients = pgTable("tap_clients", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  name:           text("name").notNull(),
+  description:    text("description"),
+  clientType:     text("client_type").notNull().default("application"),
+  plan:           text("plan").notNull().default("free"),
+  status:         text("status").notNull().default("active"),
+  website:        text("website"),
+  contactEmail:   text("contact_email"),
+  allowedIps:     jsonb("allowed_ips").$type<string[]>().notNull().default([]),
+  metadata:       jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+  createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapApiKeys = pgTable("tap_api_keys", {
+  id:                 uuid("id").primaryKey().defaultRandom(),
+  organizationId:     uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  clientId:           uuid("client_id").references(() => tapClients.id, { onDelete: "cascade" }),
+  name:               text("name").notNull(),
+  keyPrefix:          text("key_prefix").notNull(),
+  keyHash:            text("key_hash").notNull(),
+  plan:               text("plan").notNull().default("free"),
+  status:             text("status").notNull().default("active"),
+  permissions:        jsonb("permissions").$type<string[]>().notNull().default(["read"]),
+  expiresAt:          timestamp("expires_at", { withTimezone: true }),
+  lastUsedAt:         timestamp("last_used_at", { withTimezone: true }),
+  usageCount:         integer("usage_count").notNull().default(0),
+  rateLimitOverride:  integer("rate_limit_override"),
+  createdBy:          uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:          timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:          timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapSubscriptions = pgTable("tap_subscriptions", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  clientId:       uuid("client_id").notNull().references(() => tapClients.id, { onDelete: "cascade" }),
+  productId:      uuid("product_id").notNull().references(() => tapProducts.id, { onDelete: "cascade" }),
+  status:         text("status").notNull().default("active"),
+  subscribedAt:   timestamp("subscribed_at", { withTimezone: true }).notNull().defaultNow(),
+  expiresAt:      timestamp("expires_at", { withTimezone: true }),
+  createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapUsage = pgTable("tap_usage", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  clientId:       uuid("client_id").references(() => tapClients.id, { onDelete: "set null" }),
+  keyId:          uuid("key_id").references(() => tapApiKeys.id, { onDelete: "set null" }),
+  productId:      uuid("product_id").references(() => tapProducts.id, { onDelete: "set null" }),
+  endpoint:       text("endpoint").notNull(),
+  method:         text("method").notNull().default("GET"),
+  statusCode:     integer("status_code"),
+  latencyMs:      integer("latency_ms"),
+  requestSize:    integer("request_size"),
+  responseSize:   integer("response_size"),
+  ipAddress:      text("ip_address"),
+  userAgent:      text("user_agent"),
+  errorMessage:   text("error_message"),
+  calledAt:       timestamp("called_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapWebhooks = pgTable("tap_webhooks", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  clientId:         uuid("client_id").references(() => tapClients.id, { onDelete: "cascade" }),
+  name:             text("name").notNull(),
+  url:              text("url").notNull(),
+  secret:           text("secret"),
+  events:           jsonb("events").$type<string[]>().notNull().default([]),
+  status:           text("status").notNull().default("active"),
+  failureCount:     integer("failure_count").notNull().default(0),
+  lastTriggeredAt:  timestamp("last_triggered_at", { withTimezone: true }),
+  lastStatusCode:   integer("last_status_code"),
+  createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapWebhookDeliveries = pgTable("tap_webhook_deliveries", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  webhookId:      uuid("webhook_id").notNull().references(() => tapWebhooks.id, { onDelete: "cascade" }),
+  eventType:      text("event_type").notNull(),
+  payload:        jsonb("payload").$type<Record<string, unknown>>().notNull().default({}),
+  statusCode:     integer("status_code"),
+  responseBody:   text("response_body"),
+  attemptCount:   integer("attempt_count").notNull().default(1),
+  deliveredAt:    timestamp("delivered_at", { withTimezone: true }),
+  failedAt:       timestamp("failed_at", { withTimezone: true }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapRateLimits = pgTable("tap_rate_limits", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  clientId:       uuid("client_id").references(() => tapClients.id, { onDelete: "cascade" }),
+  keyId:          uuid("key_id").references(() => tapApiKeys.id, { onDelete: "cascade" }),
+  limitType:      text("limit_type").notNull().default("per_day"),
+  limitValue:     integer("limit_value").notNull().default(100),
+  currentCount:   integer("current_count").notNull().default(0),
+  windowStart:    timestamp("window_start", { withTimezone: true }).notNull().defaultNow(),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tapAuditEvents = pgTable("tap_audit_events", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  actorId:        uuid("actor_id").references(() => profiles.id, { onDelete: "set null" }),
+  eventType:      text("event_type").notNull(),
+  resourceType:   text("resource_type"),
+  resourceId:     text("resource_id"),
+  details:        jsonb("details").$type<Record<string, unknown>>().notNull().default({}),
+  ipAddress:      text("ip_address"),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Trust API Platform™ types
+export type TapProduct          = typeof tapProducts.$inferSelect;
+export type TapClient           = typeof tapClients.$inferSelect;
+export type TapApiKey           = typeof tapApiKeys.$inferSelect;
+export type TapSubscription     = typeof tapSubscriptions.$inferSelect;
+export type TapUsage            = typeof tapUsage.$inferSelect;
+export type TapWebhook          = typeof tapWebhooks.$inferSelect;
+export type TapWebhookDelivery  = typeof tapWebhookDeliveries.$inferSelect;
+export type TapRateLimit        = typeof tapRateLimits.$inferSelect;
+export type TapAuditEvent       = typeof tapAuditEvents.$inferSelect;
 export type AiTrustScore       = typeof aiTrustScores.$inferSelect;
