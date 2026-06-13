@@ -3866,4 +3866,236 @@ export type AiPolicy           = typeof aiPolicies.$inferSelect;
 export type AiAssessment       = typeof aiAssessments.$inferSelect;
 export type AiIncident         = typeof aiIncidents.$inferSelect;
 export type AiComplianceRecord = typeof aiComplianceRecords.$inferSelect;
+
+/* ============================================================
+   Auditor Collaboration™ — Module 21
+   ============================================================ */
+
+export const auditorOrganizations = pgTable("auditor_organizations", {
+  id:                 uuid("id").primaryKey().defaultRandom(),
+  organizationId:     uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  name:               text("name").notNull(),
+  firmType:           text("firm_type").notNull().default("audit_firm"),
+  website:            text("website"),
+  country:            text("country"),
+  specializations:    jsonb("specializations").notNull().default([]),
+  contactEmail:       text("contact_email"),
+  contactName:        text("contact_name"),
+  verificationStatus: text("verification_status").notNull().default("unverified"),
+  notes:              text("notes"),
+  isActive:           boolean("is_active").notNull().default(true),
+  createdBy:          uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:          timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:          timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalUsers = pgTable("external_users", {
+  id:              uuid("id").primaryKey().defaultRandom(),
+  organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  auditorOrgId:    uuid("auditor_org_id").references(() => auditorOrganizations.id, { onDelete: "set null" }),
+  email:           text("email").notNull(),
+  fullName:        text("full_name").notNull(),
+  userType:        text("user_type").notNull().default("auditor"),
+  title:           text("title"),
+  company:         text("company"),
+  phone:           text("phone"),
+  status:          text("status").notNull().default("invited"),
+  accessExpiresAt: timestamp("access_expires_at", { withTimezone: true }),
+  lastAccessedAt:  timestamp("last_accessed_at", { withTimezone: true }),
+  inviteToken:     text("invite_token").unique(),
+  inviteSentAt:    timestamp("invite_sent_at", { withTimezone: true }),
+  createdBy:       uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:       timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:       timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const auditRooms = pgTable("audit_rooms", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  name:           text("name").notNull(),
+  description:    text("description"),
+  roomType:       text("room_type").notNull().default("audit"),
+  framework:      text("framework"),
+  scope:          text("scope"),
+  objective:      text("objective"),
+  status:         text("status").notNull().default("planning"),
+  startDate:      date("start_date"),
+  endDate:        date("end_date"),
+  completionPct:  integer("completion_pct").notNull().default(0),
+  auditorOrgId:   uuid("auditor_org_id").references(() => auditorOrganizations.id, { onDelete: "set null" }),
+  leadAuditorId:  uuid("lead_auditor_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  ownerId:        uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+  metadata:       jsonb("metadata").notNull().default({}),
+  createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const auditRoomDocuments = pgTable("audit_room_documents", {
+  id:           uuid("id").primaryKey().defaultRandom(),
+  roomId:       uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  documentName: text("document_name").notNull(),
+  documentType: text("document_type").notNull().default("evidence"),
+  storagePath:  text("storage_path"),
+  fileSize:     bigint("file_size", { mode: "number" }),
+  contentType:  text("content_type"),
+  sourceModule: text("source_module"),
+  sourceId:     text("source_id"),
+  uploadedBy:   uuid("uploaded_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:    timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const auditRoomActivities = pgTable("audit_room_activities", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  roomId:         uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  activityType:   text("activity_type").notNull(),
+  description:    text("description").notNull(),
+  actorId:        uuid("actor_id").references(() => profiles.id, { onDelete: "set null" }),
+  externalUserId: uuid("external_user_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  metadata:       jsonb("metadata").notNull().default({}),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const evidenceRequests = pgTable("evidence_requests", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  roomId:           uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  title:            text("title").notNull(),
+  description:      text("description"),
+  evidenceType:     text("evidence_type").notNull().default("custom"),
+  status:           text("status").notNull().default("pending"),
+  priority:         text("priority").notNull().default("medium"),
+  dueDate:          date("due_date"),
+  requestedById:    uuid("requested_by_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  assignedOwnerId:  uuid("assigned_owner_id").references(() => profiles.id, { onDelete: "set null" }),
+  reviewerNotes:    text("reviewer_notes"),
+  rejectionReason:  text("rejection_reason"),
+  submittedAt:      timestamp("submitted_at", { withTimezone: true }),
+  reviewedAt:       timestamp("reviewed_at", { withTimezone: true }),
+  createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const evidenceResponses = pgTable("evidence_responses", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  requestId:      uuid("request_id").notNull().references(() => evidenceRequests.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  documentName:   text("document_name").notNull(),
+  storagePath:    text("storage_path"),
+  fileSize:       bigint("file_size", { mode: "number" }),
+  contentType:    text("content_type"),
+  description:    text("description"),
+  sourceModule:   text("source_module"),
+  sourceId:       text("source_id"),
+  uploadedBy:     uuid("uploaded_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const auditReviews = pgTable("audit_reviews", {
+  id:             uuid("id").primaryKey().defaultRandom(),
+  roomId:         uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  reviewerId:     uuid("reviewer_id").notNull().references(() => externalUsers.id, { onDelete: "cascade" }),
+  reviewArea:     text("review_area").notNull().default("general"),
+  status:         text("status").notNull().default("assigned"),
+  notes:          text("notes"),
+  completedAt:    timestamp("completed_at", { withTimezone: true }),
+  createdAt:      timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:      timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalComments = pgTable("external_comments", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  roomId:           uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  entityType:       text("entity_type").notNull(),
+  entityId:         text("entity_id").notNull(),
+  parentId:         uuid("parent_id"),
+  content:          text("content").notNull(),
+  commentType:      text("comment_type").notNull().default("external"),
+  isResolved:       boolean("is_resolved").notNull().default(false),
+  resolvedBy:       uuid("resolved_by").references(() => profiles.id, { onDelete: "set null" }),
+  resolvedAt:       timestamp("resolved_at", { withTimezone: true }),
+  authorId:         uuid("author_id").references(() => profiles.id, { onDelete: "set null" }),
+  externalAuthorId: uuid("external_author_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalFindings = pgTable("external_findings", {
+  id:            uuid("id").primaryKey().defaultRandom(),
+  roomId:        uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  title:         text("title").notNull(),
+  description:   text("description"),
+  severity:      text("severity").notNull().default("medium"),
+  findingType:   text("finding_type").notNull().default("observation"),
+  status:        text("status").notNull().default("open"),
+  framework:     text("framework"),
+  controlRef:    text("control_ref"),
+  recommendation: text("recommendation"),
+  dueDate:       date("due_date"),
+  evidenceRef:   text("evidence_ref"),
+  raisedById:    uuid("raised_by_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  ownerId:       uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+  issueId:       uuid("issue_id"),
+  verifiedById:  uuid("verified_by_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  verifiedAt:    timestamp("verified_at", { withTimezone: true }),
+  closedAt:      timestamp("closed_at", { withTimezone: true }),
+  createdBy:     uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:     timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:     timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalAssessments = pgTable("external_assessments", {
+  id:                  uuid("id").primaryKey().defaultRandom(),
+  roomId:              uuid("room_id").notNull().references(() => auditRooms.id, { onDelete: "cascade" }),
+  organizationId:      uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  name:                text("name").notNull(),
+  description:         text("description"),
+  assessmentType:      text("assessment_type").notNull().default("custom"),
+  status:              text("status").notNull().default("planning"),
+  completionPct:       integer("completion_pct").notNull().default(0),
+  startDate:           date("start_date"),
+  endDate:             date("end_date"),
+  leadAssessorId:      uuid("lead_assessor_id").references(() => externalUsers.id, { onDelete: "set null" }),
+  openFindings:        integer("open_findings").notNull().default(0),
+  pendingEvidence:     integer("pending_evidence").notNull().default(0),
+  totalMilestones:     integer("total_milestones").notNull().default(0),
+  completedMilestones: integer("completed_milestones").notNull().default(0),
+  aiReadinessScore:    numeric("ai_readiness_score", { precision: 5, scale: 2 }),
+  notes:               text("notes"),
+  createdBy:           uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:           timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:           timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalPermissions = pgTable("external_permissions", {
+  id:              uuid("id").primaryKey().defaultRandom(),
+  organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  externalUserId:  uuid("external_user_id").notNull().references(() => externalUsers.id, { onDelete: "cascade" }),
+  resourceType:    text("resource_type").notNull(),
+  resourceId:      text("resource_id").notNull(),
+  permissionLevel: text("permission_level").notNull().default("read"),
+  grantedBy:       uuid("granted_by").references(() => profiles.id, { onDelete: "set null" }),
+  expiresAt:       timestamp("expires_at", { withTimezone: true }),
+  createdAt:       timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Auditor Collaboration™ types
+export type AuditorOrganization = typeof auditorOrganizations.$inferSelect;
+export type ExternalUser        = typeof externalUsers.$inferSelect;
+export type AuditRoom           = typeof auditRooms.$inferSelect;
+export type AuditRoomDocument   = typeof auditRoomDocuments.$inferSelect;
+export type AuditRoomActivity   = typeof auditRoomActivities.$inferSelect;
+export type EvidenceRequest     = typeof evidenceRequests.$inferSelect;
+export type EvidenceResponse    = typeof evidenceResponses.$inferSelect;
+export type AuditReview         = typeof auditReviews.$inferSelect;
+export type ExternalComment     = typeof externalComments.$inferSelect;
+export type ExternalFinding     = typeof externalFindings.$inferSelect;
+export type ExternalAssessment  = typeof externalAssessments.$inferSelect;
+export type ExternalPermission  = typeof externalPermissions.$inferSelect;
 export type AiTrustScore       = typeof aiTrustScores.$inferSelect;

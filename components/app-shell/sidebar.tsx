@@ -27,6 +27,7 @@ import {
   Network,
   LineChart,
   Bot,
+  Users2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -56,6 +57,7 @@ const items: Item[] = [
   { href: "/trust-intelligence", label: "Trust Intelligence", icon: Brain },
   { href: "/executive-reporting", label: "Executive Reporting™", icon: LineChart },
   { href: "/ai-governance", label: "AI Governance™", icon: Bot },
+  { href: "/auditor-collaboration", label: "Auditor Collaboration™", icon: Users2 },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 
