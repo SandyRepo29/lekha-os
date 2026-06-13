@@ -9,7 +9,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 
 ---
 
-## Modules Shipped — 28 Complete
+## Modules Shipped — 29 Complete
 
 | Module | Status | Routes |
 |---|---|---|
@@ -40,8 +40,9 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Trust API Platform™** | ✅ Complete (2026-06-13) | `/trust-api/*` |
 | **Trust Verification Authority™** | ✅ Complete (2026-06-13) | `/trust-verification/*` + `/verify/:id` |
 | **Continuous Compliance™** | ✅ Complete (2026-06-13) | `/continuous-compliance/*` |
+| **Governance Agent Framework™** | ✅ Complete (2026-06-13) | `/agents/*` |
 
-**Total: 187 DB tables · 30 migrations applied · 28 modules shipped**
+**Total: 204 DB tables · 31 migrations applied · 29 modules shipped**
 
 ---
 
@@ -102,6 +103,7 @@ node scripts/apply-sql.mjs supabase/migrations/0026_auditor_collaboration.sql
 node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
 node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority.sql
 node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
+node scripts/apply-sql.mjs supabase/migrations/0030_governance_agents.sql
 
 node scripts/seed-templates.mjs                     # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all    # Starter / Growth / Enterprise plans
@@ -130,7 +132,8 @@ node scripts/seed-ai-governance.mjs                 # 8 AI systems + risks + con
 node scripts/seed-auditor-collaboration.mjs         # 3 auditor orgs + 4 rooms + evidence requests
 node scripts/seed-trust-api-platform.mjs            # 3 clients + 3 keys + 3 webhooks + usage
 node scripts/seed-trust-verification.mjs            # AUDT Verified™ cert + Privacy Ready™ cert
-node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 3 automation rules
+node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 3 automation rules
+node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -182,6 +185,13 @@ Authorization: Bearer audt_live_<key>
 | `GET/POST /api/v1/audit-rooms` | read_write | Audit room list + create |
 | `GET/POST /api/v1/evidence-requests` | read_write | Evidence requests + create |
 | `GET/POST /api/v1/external-findings` | read_write | External findings + create |
+| `GET /api/v1/agents` | read_only | Agent list |
+| `POST /api/v1/agents` | read_write | Create agent |
+| `GET/PUT/DELETE /api/v1/agents/:id` | read_write | Single agent CRUD |
+| `GET /api/v1/agent-runs` | read_only | Agent run history |
+| `GET /api/v1/agent-observations` | read_only | Agent observations |
+| `GET /api/v1/agent-actions` | read_only | Agent action queue |
+| `POST /api/v1/agent-actions/:id/approve` | read_write | Approve agent action |
 | `GET /api/v1/public/trust-score` | Bearer (tap_) | Public: live org trust score |
 | `GET /api/v1/public/vendor-trust` | Bearer (tap_) | Public: per-vendor trust scores |
 | `GET /api/v1/public/verification` | Bearer (tap_) | Public: proof-of-governance bundle |
@@ -220,10 +230,10 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · **187 tables** · 30 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · **204 tables** · 31 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
-| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance copilot, AI API builder |
+| AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance copilot, AI API builder, governance agents |
 | Email | Resend — expiry alerts + AI-written weekly digests |
 | PDF | `@react-pdf/renderer` |
 | Security | AES-256-GCM config encryption · bcryptjs API key hashing · SHA-256 certificate integrity |
@@ -232,4 +242,4 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
 ---
 
-*AUDT — Governance Built on Proof. 🇮🇳*
+*AUDT — Governance Built on Proof.*

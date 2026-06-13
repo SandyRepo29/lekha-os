@@ -37,6 +37,7 @@ node scripts/apply-sql.mjs supabase/migrations/0026_auditor_collaboration.sql
 node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
 node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority.sql
 node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
+node scripts/apply-sql.mjs supabase/migrations/0030_governance_agents.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -103,11 +104,14 @@ node scripts/seed-trust-verification.mjs
 # 23. Seed Continuous Compliance™ (Module 28)
 node scripts/seed-continuous-compliance.mjs
 
-# 24. Verify all module counts
+# 24. Seed Governance Agent Framework™ (Module 29)
+node scripts/seed-governance-agents.mjs
+
+# 25. Verify all module counts
 node scripts/check-all-modules.mjs
 ```
 
-After this, **every module has complete demo data** across all 28 shipped modules.
+After this, **every module has complete demo data** across all 29 shipped modules.
 
 Key entry points after seeding:
 - `/vendors` — 19 vendors, 67 docs, assessments, reviews, trust scores
@@ -134,6 +138,7 @@ Key entry points after seeding:
 - `/trust-verification` — 2 active certs (AUDT Verified™, Privacy Ready™), 1 pending
 - `/verify/AUDT-2026-862EA7` — public certificate verification page
 - `/continuous-compliance` — 3 access reviews, 3 attestations, 3 training campaigns, 5 signals, health score 74
+- `/agents` — 5 agents, runs, observations, recommendations, pending actions
 
 ---
 
@@ -882,6 +887,41 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ---
 
+### Module 29 — Governance Agent Framework™
+
+> **`seed-governance-agents.mjs`** seeds 5 agents, runs, observations, recommendations, and pending actions.
+
+| Test | Where | Expected |
+|---|---|---|
+| View Hub | `/agents` | KPI strip: total agents, active, runs, pending approvals, observations, success rate |
+| Recent runs | Hub page | Last 6 runs table with agent name, status, obs count, duration |
+| Recent observations | Hub page | Latest 5 observations feed with severity badges |
+| Pending approvals callout | Hub (if actions exist) | Amber callout with count + "Review Actions" link |
+| Agent Registry | `/agents/registry` | 5 agents with type badges, execution mode, status, last run |
+| Agent Studio | `/agents/studio` | Create agent form with module scope, rules, schedule |
+| Agent Runs | `/agents/runs` | Full run history table with status, duration, observation counts |
+| Observations | `/agents/observations` | Governance signals with severity + module + agent attribution |
+| Recommendations | `/agents/recommendations` | Priority cards with confidence rings, rationale, suggested actions, Accept/Dismiss |
+| Actions | `/agents/actions` | Pending approval queue + all actions history table |
+| Approve action | Actions page → Approve | Action moves from pending to approved |
+| Reject action | Actions page → Reject | Action moves from pending to rejected |
+| Orchestration | `/agents/orchestration` | Multi-agent pipeline view |
+| Analytics | `/agents/analytics` | Success rate, MTTR, automation coverage, observations per run |
+| Governance Copilot | `/agents/copilot` | NL chat — "What did agents find this week?" |
+| REST API — agents | `GET /api/v1/agents` | JSON list of agents |
+| REST API — runs | `GET /api/v1/agent-runs` | Run history |
+| REST API — observations | `GET /api/v1/agent-observations` | Observations list |
+
+**Seeded Agent Framework data:**
+- **Risk Monitor** (risk_monitor · scheduled every 6h): 4 runs · 3 critical observations from Risk Lens™
+- **Vendor Watch** (vendor_watch · scheduled daily): 2 runs · 2 high severity vendor trust observations
+- **Compliance Guardian** (compliance_guardian · realtime): 2 runs · 2 high observations from Evidence Vault™
+- **Policy Enforcer** (policy_enforcer · scheduled weekly): 1 run · 1 medium observation
+- **Audit Prep** (audit_prep · manual): 1 run · 0 observations (clean audit posture)
+- **Pending actions**: 2 awaiting approval (close critical risk, escalate vendor review) + 1 approved
+
+---
+
 ## REST API — Quick Test Commands
 
 Replace `<key>` with an API key from `/settings/api-keys`.
@@ -1105,4 +1145,12 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `control_validations` | 0 (populated by check runs) | — |
 | `framework_mappings` | 0 (configure via checks library) | — |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-verification` for the Trust Verification Authority™ hub, `/verify/AUDT-2026-A1B2C3` for the public certificate verify page, `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.
+| `governance_agents` | 5 (Risk Monitor, Vendor Watch, Compliance Guardian, Policy Enforcer, Audit Prep) | seed-governance-agents |
+| `agent_runs` | 10+ (recent runs per agent with status, duration, observation counts) | seed-governance-agents |
+| `agent_observations` | 8 (critical/high severity across Risk Lens™, Vendor Hub™, Evidence Vault™, Audit Management™) | seed-governance-agents |
+| `agent_recommendations` | 5 (prioritized with confidence scores, suggested actions) | seed-governance-agents |
+| `agent_actions` | 3 (2 pending_approval, 1 approved) | seed-governance-agents |
+| `agent_orchestrations` | 1 (Risk + Compliance sequential pipeline) | seed-governance-agents |
+| `agent_metrics` | 5 (one per agent — runs, observations, recommendations, success rate) | seed-governance-agents |
+
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/agents` for the Governance Agent Framework™ hub, `/agents/observations` for governance signals, `/agents/actions` to approve pending agent actions, `/trust-verification` for the Trust Verification Authority™ hub, `/verify/AUDT-2026-A1B2C3` for the public certificate verify page, `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.

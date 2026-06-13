@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **28 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · **Continuous Compliance™**
+> Modules: **29 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · **Governance Agent Framework™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -1179,12 +1179,38 @@ Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Sec
 | **Built-in checks (21)** | aws-root-mfa · aws-no-root-keys · aws-s3-public · aws-cloudtrail · aws-iam-review · azure-mfa · azure-defender · azure-policy · gcp-org-policy · gcp-audit-logs · github-secret-scan · github-branch-protection · github-mfa · m365-mfa · m365-dlp · m365-audit · google-workspace-mfa · google-workspace-drive · okta-mfa · okta-inactive · okta-sso |
 | **Seed** | `node scripts/seed-continuous-compliance.mjs` — 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score (74) · 5 readiness snapshots · 3 automation rules |
 
+---
+
+## 🤖 Module 29 — Governance Agent Framework™
+
+> Completed 2026-06-13
+
+AI agents that continuously monitor, reason, and act across the entire AUDT governance posture. The missing autonomy layer — transforms AUDT from a record-keeping system into a proactive governance intelligence platform.
+
+| Feature | Detail |
+|---|---|
+| **Agent Registry™** | Registry of all governance agents — type (risk_monitor · vendor_watch · compliance_guardian · policy_enforcer · audit_prep · custom), execution mode (scheduled · realtime · manual), status, last run, success rate |
+| **Agent Studio™** | Create and configure custom governance agents — module scope, scan rules, thresholds, action config, execution schedule |
+| **Agent Runs™** | Full execution history — start/end time, duration, observations generated, recommendations created, actions taken, error log |
+| **Observations™** | Governance signals detected by agents: title, detail, severity (critical/high/medium/low/info), status (new/reviewed/resolved/dismissed), source module, linked entity |
+| **Recommendations™** | Prioritized AI governance actions: title, rationale, suggested action steps, priority (urgent/high/medium/low), confidence 0–100, impact label, effort label, status (open/accepted/dismissed/completed) |
+| **Agent Actions™** | Proposed governance actions requiring approval — full approval queue with Approve/Reject controls; action history table; agent actions executed after approval |
+| **Orchestration™** | Multi-agent governance pipelines — sequence agents, pass observations between agents, orchestration run log |
+| **Analytics™** | Agent performance metrics — run success rate, observations per run, recommendations acceptance rate, MTTR improvement, automation coverage % |
+| **Governance Copilot™** | NL multi-turn chat — ask anything about governance posture ("Which vendors have critical observations?", "What did agents find this week?", "Summarize my risk posture") |
+| **Hub page** | KPI strip (total agents, active, runs, pending approvals, observations, success rate); recent runs table; recent observations feed; pending approvals callout; 9-card module nav |
+| **Human-in-the-loop** | All agent actions require explicit Approve/Reject before execution — no autonomous mutations |
+| **DB tables (migration 0030)** | `governance_agents` · `agent_runs` · `agent_observations` · `agent_recommendations` · `agent_actions` · `agent_orchestrations` · `agent_metrics` (17 total tables) |
+| **REST API** | `GET/POST /api/v1/agents` · `GET/PUT/DELETE /api/v1/agents/:id` · `GET /api/v1/agent-runs` · `GET /api/v1/agent-observations` · `GET /api/v1/agent-actions` · `POST /api/v1/agent-actions/:id/approve` |
+| **Navigation** | Sidebar "Governance Agents™" with Bot icon; sub-nav with 10 tabs: Hub · Registry · Studio · Runs · Observations · Recommendations · Actions · Orchestration · Analytics · Copilot™ |
+| **Seed** | `node scripts/seed-governance-agents.mjs` — 5 agents · runs · observations · recommendations · actions · metrics |
+
 ### Current Status
 
 | Layer | Status |
 |---|---|
-| **DB** | ✅ 187 tables, 30 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 28 Modules** | ✅ Complete as of 2026-06-13 |
+| **DB** | ✅ 204 tables, 31 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 29 Modules** | ✅ Complete as of 2026-06-13 |
 | **Tests** | ✅ 201/201 Vitest passing |
 | **Deployed** | ✅ lekha-os.vercel.app + audt.tech |
 

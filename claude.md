@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · **Continuous Compliance™**
-- **Total tables:** 187 (170 previous + 17 Continuous Compliance™ tables from migration 0029)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · **Governance Agent Framework™**
+- **Total tables:** 204 (187 previous + 17 Governance Agent Framework™ tables from migration 0030)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -251,6 +251,7 @@ node scripts/seed-auditor-collaboration.mjs         # 3 auditor orgs · 8 extern
 node scripts/seed-trust-api-platform.mjs            # 3 clients · 3 API keys · 3 webhooks · 30-day usage data
 node scripts/seed-trust-verification.mjs            # AUDT Verified™ (cert+badge) · Privacy Ready™ · Enterprise Ready™ (pending)
 node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 5 readiness snapshots · 3 automation rules
+node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -734,6 +735,29 @@ POST /api/v1/webhooks                       Trigger a trust event → deliver to
 GET /api/v1/webhooks                        List org webhooks
 GET /api/v1/developer/usage                 Usage analytics (?days=30, max 365)
 
+--- Governance Agent Framework™ ---
+/agents                                      Hub (KPI strip + recent runs + recent observations + module nav)
+/agents/registry                             Agent Registry™ (all agents with type, mode, status, metrics)
+/agents/studio                               Agent Studio™ (create/configure custom agents)
+/agents/runs                                 Agent Runs™ (full execution history with duration, obs counts)
+/agents/observations                         Observations™ (governance signals with severity + module attribution)
+/agents/recommendations                      Recommendations™ (prioritized actions with confidence rings)
+/agents/actions                              Agent Actions™ (approval queue + all actions history)
+/agents/orchestration                        Orchestration™ (multi-agent governance pipelines)
+/agents/analytics                            Analytics™ (agent performance + automation coverage metrics)
+/agents/copilot                              Governance Copilot™ (NL multi-turn chat)
+GET /api/v1/agents                           Agent list
+POST /api/v1/agents                          Create agent (read_write key)
+GET /api/v1/agents/[id]                      Single agent detail
+PUT /api/v1/agents/[id]                      Update agent (read_write key)
+DELETE /api/v1/agents/[id]                   Delete agent (read_write key)
+GET /api/v1/agent-runs                       Agent run history (?agentId=, ?status=)
+GET /api/v1/agent-observations               Observations (?agentId=, ?severity=, ?status=)
+GET /api/v1/agent-recommendations            Recommendations (?priority=, ?status=)
+GET /api/v1/agent-actions                    Agent action queue (?status=)
+POST /api/v1/agent-actions/[id]/approve      Approve agent action (read_write key)
+POST /api/v1/agent-actions/[id]/reject       Reject agent action (read_write key)
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -1136,6 +1160,12 @@ vi.mock("@/lib/db", () => ({
 ### Module 17A — Integration Hub™ ✅ Complete (2026-06-11)
 ### Module 18 — Trust Network™ ✅ Complete (2026-06-11)
 ### Module 19 — Executive Reporting & Analytics™ ✅ Complete (2026-06-12)
+### Module 20 — AI Governance™ ✅ Complete (2026-06-13)
+### Module 21 — Auditor Collaboration™ ✅ Complete (2026-06-13)
+### Module 22 — Trust API Platform™ ✅ Complete (2026-06-13)
+### Module 23 — Trust Verification Authority™ ✅ Complete (2026-06-13)
+### Module 28 — Continuous Compliance™ ✅ Complete (2026-06-13)
+### Module 29 — Governance Agent Framework™ ✅ Complete (2026-06-13)
 
 Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
 
@@ -1455,6 +1485,33 @@ Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Sec
 
 **Built-in checks (21, `organization_id = NULL`):** aws-root-mfa · aws-no-root-keys · aws-s3-public · aws-cloudtrail · aws-iam-review · azure-mfa · azure-defender · azure-policy · gcp-org-policy · gcp-audit-logs · github-secret-scan · github-branch-protection · github-mfa · m365-mfa · m365-dlp · m365-audit · google-workspace-mfa · google-workspace-drive · okta-mfa · okta-inactive · okta-sso. All returned to every org via `OR organization_id IS NULL` repo query.
 
+### Module 29 — Governance Agent Framework™ ✅ Complete (2026-06-13)
+
+AI agents that continuously monitor, reason, and act across the entire AUDT governance posture. Transforms AUDT from a record-keeping system into a proactive governance intelligence platform.
+
+| Feature | Detail |
+|---|---|
+| **Agent Registry™** | 6 agent types: risk_monitor · vendor_watch · compliance_guardian · policy_enforcer · audit_prep · custom. Execution modes: scheduled · realtime · manual |
+| **Agent Studio™** | Create/configure custom governance agents — module scope, rules, thresholds, schedule |
+| **Agent Runs™** | Full execution history — duration, observations generated, recommendations created, actions taken |
+| **Observations™** | Governance signals with severity (critical/high/medium/low/info), status, source module, linked entity |
+| **Recommendations™** | Prioritized AI actions: priority, confidence 0–100, impact/effort labels, suggested action steps, Accept/Dismiss |
+| **Agent Actions™** | Proposed actions requiring human approval — Approve/Reject queue. No autonomous mutations |
+| **Orchestration™** | Multi-agent governance pipelines — sequence agents, pass observations, orchestration run log |
+| **Analytics™** | Success rate, MTTR improvement, automation coverage %, observations per run, acceptance rate |
+| **Governance Copilot™** | Multi-turn NL chat — ask anything about governance posture |
+| **Hub page** | KPI strip + recent runs + recent observations + pending approvals callout + 9-card module nav |
+
+- Service: `lib/services/governance-agents/agent-service.ts`
+- AI service: `lib/services/governance-agents/ai-agent-service.ts`
+- Repo: `lib/repositories/governance-agents-repo.ts`
+- Actions: `lib/agents/actions.ts`
+- Migration: `supabase/migrations/0030_governance_agents.sql`
+- Routes: `/agents/*` (10 pages: Hub · Registry · Studio · Runs · Observations · Recommendations · Actions · Orchestration · Analytics · Copilot™)
+- Seed: `node scripts/seed-governance-agents.mjs`
+
+**17 DB tables (migration 0030):** `governance_agents` · `agent_runs` · `agent_observations` · `agent_recommendations` · `agent_actions` · `agent_orchestrations` · `agent_metrics` · `agent_schedules` · `agent_triggers` · `agent_run_steps` · `agent_events` · `agent_knowledge` · `agent_policies` · `agent_permissions` · `agent_audit_log` · `agent_integrations` · `agent_templates`
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1469,6 +1526,7 @@ Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Sec
 | Auditor Collaboration™ | External auditor rooms, evidence exchange, findings, AI readiness advisor | ✅ Complete (2026-06-13) |
 | Trust API Platform™ | Trust-as-infrastructure — API products, webhooks, developer portal, AI API builder | ✅ Complete (2026-06-13) |
 | Continuous Compliance™ | Always-on compliance — 21 automated checks, evidence automation, access reviews, attestations, training, AI Officer™ | ✅ Complete (2026-06-13) |
+| Governance Agent Framework™ | AI agents that continuously monitor, reason, and act — observations, recommendations, human-approved actions | ✅ Complete (2026-06-13) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
