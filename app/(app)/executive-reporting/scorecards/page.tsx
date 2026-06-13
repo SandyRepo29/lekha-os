@@ -3,7 +3,8 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
 import Link from "next/link";
-import { ArrowLeft, Shield, AlertTriangle, ShieldCheck, Building2, FileText, Target, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { ArrowLeft, Shield, AlertTriangle, ShieldCheck, Building2, FileText, Target } from "lucide-react";
+import { ExecStat, ScorecardStatusBadge } from "@/components/executive-reporting/executive-ui";
 
 const SCORECARDS = [
   {
@@ -13,8 +14,8 @@ const SCORECARDS = [
     color: "var(--color-blue)",
     metrics: [
       { kpiKey: "org_trust_score", label: "Org Trust Score™", target: 80 },
-      { kpiKey: "active_vendors", label: "Active Vendors", target: null },
-      { kpiKey: "monitoring_alerts", label: "Open Alerts", target: 0, inverse: true },
+      { kpiKey: "active_vendors",  label: "Active Vendors",   target: null },
+      { kpiKey: "monitoring_alerts", label: "Open Alerts",    target: 0, inverse: true },
     ],
   },
   {
@@ -23,9 +24,9 @@ const SCORECARDS = [
     icon: AlertTriangle,
     color: "#f59e0b",
     metrics: [
-      { kpiKey: "open_risks", label: "Open Risks", target: 5, inverse: true },
-      { kpiKey: "open_findings", label: "Open Findings", target: 3, inverse: true },
-      { kpiKey: "open_capas", label: "Open CAPAs", target: 5, inverse: true },
+      { kpiKey: "open_risks",    label: "Open Risks",    target: 5,  inverse: true },
+      { kpiKey: "open_findings", label: "Open Findings", target: 3,  inverse: true },
+      { kpiKey: "open_capas",    label: "Open CAPAs",    target: 5,  inverse: true },
     ],
   },
   {
@@ -34,7 +35,7 @@ const SCORECARDS = [
     icon: ShieldCheck,
     color: "#10b981",
     metrics: [
-      { kpiKey: "control_health", label: "Control Health™", target: 80 },
+      { kpiKey: "control_health",        label: "Control Health™",   target: 80 },
       { kpiKey: "compliance_frameworks", label: "Active Frameworks", target: null },
     ],
   },
@@ -62,30 +63,25 @@ const SCORECARDS = [
     icon: Target,
     color: "#ef4444",
     metrics: [
-      { kpiKey: "open_issues", label: "Open Issues", target: 5, inverse: true },
+      { kpiKey: "open_issues",          label: "Open Issues", target: 5, inverse: true },
       { kpiKey: "compliance_frameworks", label: "Frameworks", target: 3 },
     ],
   },
 ];
 
-function scoreStatus(current: number, target: number | null, inverse = false) {
+type ScoreStatus = "green" | "amber" | "red" | "info";
+
+function scoreStatus(current: number, target: number | null, inverse = false): ScoreStatus {
   if (target === null) return "info";
   if (inverse) return current <= target ? "green" : current <= target * 2 ? "amber" : "red";
   return current >= target ? "green" : current >= target * 0.7 ? "amber" : "red";
 }
 
-const STATUS_COLORS: Record<string, string> = {
+const STATUS_COLORS: Record<ScoreStatus, string> = {
   green: "text-emerald-400",
   amber: "text-amber-400",
-  red: "text-red-400",
-  info: "text-[var(--color-blue)]",
-};
-
-const STATUS_BG: Record<string, string> = {
-  green: "bg-emerald-500/10",
-  amber: "bg-amber-500/10",
-  red: "bg-red-500/10",
-  info: "bg-[var(--color-blue)]/10",
+  red:   "text-red-400",
+  info:  "text-[var(--color-blue)]",
 };
 
 export default async function ScorecardsPage() {
@@ -94,6 +90,16 @@ export default async function ScorecardsPage() {
 
   const kpis = await computeKpis(orgId).catch(() => []);
   const kpiMap = Object.fromEntries(kpis.map((k) => [k.kpiKey, Number(k.currentValue ?? 0)]));
+
+  const onTrack  = SCORECARDS.filter(({ metrics }) => {
+    const rows = metrics.map((m) => scoreStatus(kpiMap[m.kpiKey] ?? 0, m.target ?? null, m.inverse));
+    return rows.every((s) => s === "green" || s === "info");
+  }).length;
+  const atRisk = SCORECARDS.filter(({ metrics }) => {
+    const rows = metrics.map((m) => scoreStatus(kpiMap[m.kpiKey] ?? 0, m.target ?? null, m.inverse));
+    return rows.some((s) => s === "red");
+  }).length;
+  const monitor = SCORECARDS.length - onTrack - atRisk;
 
   return (
     <div className="space-y-8">
@@ -108,16 +114,23 @@ export default async function ScorecardsPage() {
         </p>
       </div>
 
+      {/* Stat strip */}
+      <div className="grid grid-cols-3 gap-3">
+        <ExecStat label="On Track"  value={onTrack}              accent={onTrack > 0 ? "good" : "neutral"} />
+        <ExecStat label="Monitor"   value={monitor}              accent={monitor > 0 ? "warn" : "neutral"} />
+        <ExecStat label="Attention" value={atRisk}               accent={atRisk > 0 ? "danger" : "neutral"} />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {SCORECARDS.map(({ key, label, icon: Icon, color, metrics }) => {
           const metricRows = metrics.map((m) => {
-            const val = kpiMap[m.kpiKey] ?? 0;
-            const status = scoreStatus(val, m.target, m.inverse);
+            const val    = kpiMap[m.kpiKey] ?? 0;
+            const status = scoreStatus(val, m.target ?? null, m.inverse);
             return { ...m, val, status };
           });
 
-          const allGreen = metricRows.every((m) => m.status === "green" || m.status === "info");
-          const anyRed = metricRows.some((m) => m.status === "red");
+          const allGreen     = metricRows.every((m) => m.status === "green" || m.status === "info");
+          const anyRed       = metricRows.some((m) => m.status === "red");
           const overallStatus = allGreen ? "green" : anyRed ? "red" : "amber";
 
           return (
@@ -129,9 +142,7 @@ export default async function ScorecardsPage() {
                   </div>
                   <span className="font-semibold text-sm">{label}</span>
                 </div>
-                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_BG[overallStatus]} ${STATUS_COLORS[overallStatus]}`}>
-                  {overallStatus === "green" ? "On Track" : overallStatus === "amber" ? "Monitor" : "Attention"}
-                </span>
+                <ScorecardStatusBadge status={overallStatus} />
               </div>
 
               <div className="space-y-3">
@@ -139,8 +150,8 @@ export default async function ScorecardsPage() {
                   <div key={m.kpiKey} className="flex items-center justify-between">
                     <span className="text-xs text-[var(--color-ink-dim)]">{m.label}</span>
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${STATUS_COLORS[m.status]}`}>{m.val.toFixed(0)}</span>
-                      {m.target !== null && (
+                      <span className={`text-sm font-bold ${STATUS_COLORS[m.status as ScoreStatus]}`}>{m.val.toFixed(0)}</span>
+                      {m.target !== null && m.target !== undefined && (
                         <span className="text-xs text-[var(--color-ink-dim)]">/ {m.target} target</span>
                       )}
                     </div>

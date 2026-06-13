@@ -6,6 +6,7 @@ import { generateExecutiveSummary } from "@/lib/services/executive-reporting/ai-
 import Link from "next/link";
 import { ArrowLeft, Brain, Sparkles, TrendingUp, FileText } from "lucide-react";
 import { ExecutiveReportingAiChat } from "@/components/executive-reporting/executive-reporting-ai-chat";
+import { ExecStat } from "@/components/executive-reporting/executive-ui";
 
 export default async function AiPage() {
   const session = await requireUser();
@@ -19,7 +20,7 @@ export default async function AiPage() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <Link href="/executive-reporting" className="mb-4 inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">
           <ArrowLeft className="h-3.5 w-3.5" />
@@ -48,10 +49,12 @@ export default async function AiPage() {
       {/* Quick KPI snapshot */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {kpis.slice(0, 5).map((kpi) => (
-          <div key={kpi.kpiKey} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 text-center">
-            <div className="text-2xl font-bold">{Number(kpi.currentValue ?? 0).toFixed(0)}</div>
-            <div className="text-xs text-[var(--color-ink-dim)] mt-1 truncate">{kpi.kpiName}</div>
-          </div>
+          <ExecStat
+            key={kpi.kpiKey}
+            label={kpi.kpiName}
+            value={Number(kpi.currentValue ?? 0).toFixed(0)}
+            accent="neutral"
+          />
         ))}
       </div>
 
@@ -76,7 +79,7 @@ export default async function AiPage() {
 
       {/* Live chat */}
       <div>
-        <h2 className="mb-4 text-base font-semibold">Governance Copilot™ Chat</h2>
+        <h2 className="mb-3 text-base font-semibold">Governance Copilot™ Chat</h2>
         <ExecutiveReportingAiChat />
       </div>
     </div>

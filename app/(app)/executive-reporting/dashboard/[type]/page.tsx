@@ -9,6 +9,7 @@ import {
   LayoutDashboard, TrendingUp, TrendingDown, Minus, BarChart3, Target,
   RefreshCw, FileText, Clock,
 } from "lucide-react";
+import { ExecStat } from "@/components/executive-reporting/executive-ui";
 
 const DASHBOARD_CONFIG: Record<string, {
   label: string;
