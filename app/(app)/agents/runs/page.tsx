@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getRunsAction } from "@/lib/agents/actions";
-import { Activity, CheckCircle } from "lucide-react";
+import { Activity } from "lucide-react";
 import { AgentStat, RunStatusBadge } from "@/components/agents/agent-ui";
 
 const SUB_NAV = [
@@ -19,14 +19,14 @@ const SUB_NAV = [
   { href: "/agents/copilot", label: "Copilotâ„¢" },
 ];
 
-// Inline helpers — cannot call "use client" exports as plain functions from server components
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "—";
+  if (!val) return "-";
   try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "—"; }
+  catch { return "-"; }
 }
+
 function fmtDuration(ms?: number): string {
-  if (!ms) return "—";
+  if (!ms) return "-";
   if (ms < 1000) return `${ms}ms`;
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
   return `${Math.round(ms / 60000)}m`;
@@ -105,7 +105,7 @@ export default async function AgentRunsPage() {
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.observationCount}</td>
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.recommendationCount}</td>
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.actionCount}</td>
-                    <td className="px-4 py-3 text-red-400 max-w-[160px] truncate">{r.errorMessage ?? "â€”"}</td>
+                    <td className="px-4 py-3 text-red-400 max-w-[160px] truncate">{r.errorMessage ?? "-"}</td>
                   </tr>
                 ))}
               </tbody>

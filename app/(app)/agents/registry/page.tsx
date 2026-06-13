@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getAgentsAction } from "@/lib/agents/actions";
-import { Bot, Plus, ArrowRight, Play, Pause, Settings, Activity } from "lucide-react";
+import { Bot, Plus } from "lucide-react";
 import {
   AgentStat, AgentStatusBadge, AgentTypeBadge, ExecModeBadge,
 } from "@/components/agents/agent-ui";
@@ -22,17 +22,10 @@ const SUB_NAV = [
   { href: "/agents/copilot",      label: "Copilotâ„¢" },
 ];
 
-// Inline helpers — cannot call "use client" exports as plain functions from server components
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "—";
+  if (!val) return "-";
   try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "—"; }
-}
-function fmtDuration(ms?: number): string {
-  if (!ms) return "—";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
+  catch { return "-"; }
 }
 
 export default async function AgentRegistryPage() {
