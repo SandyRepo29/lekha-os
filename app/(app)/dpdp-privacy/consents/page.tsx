@@ -8,11 +8,22 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listConsents, getConsentMetrics } from "@/lib/services/privacy/privacy-service";
 import { ConsentStatusBadge } from "@/components/privacy/privacy-badges";
+import { PrivacyStat } from "@/components/privacy/privacy-ui";
 import type { ConsentRecord } from "@/lib/db/schema";
 
 function formatDate(d: Date | null | undefined) {
   if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  return new Date(d).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function isExpiringSoon(d: Date | null | undefined) {
+  if (!d) return false;
+  const diff = new Date(d).getTime() - Date.now();
+  return diff > 0 && diff < 30 * 24 * 60 * 60 * 1000;
 }
 
 export default async function ConsentsPage({
@@ -22,7 +33,13 @@ export default async function ConsentsPage({
 }) {
   const session = await requireUser();
   if (session.demo || !session.org) {
-    return <EmptyState icon={UserCheck} title="Consent Management™" description="Connect Supabase to view consent records." />;
+    return (
+      <EmptyState
+        icon={UserCheck}
+        title="Consent Management™"
+        description="Connect Supabase to view consent records."
+      />
+    );
   }
 
   const params = await searchParams;
@@ -50,18 +67,31 @@ export default async function ConsentsPage({
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {[
-          { label: "Active (Granted)", value: metrics.active, color: "text-green-400" },
-          { label: "Expired", value: metrics.expired, color: "text-orange-400" },
-          { label: "Withdrawn", value: metrics.withdrawn, color: "text-red-400" },
-          { label: "Pending", value: metrics.pending, color: "text-yellow-400" },
-        ].map((m) => (
-          <Card key={m.label} className="p-4 text-center">
-            <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
-            <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">{m.label}</p>
-          </Card>
-        ))}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <PrivacyStat
+          label="Active (Granted)"
+          value={metrics.active}
+          accent={metrics.active > 0 ? "good" : "neutral"}
+          href="/dpdp-privacy/consents?status=granted"
+        />
+        <PrivacyStat
+          label="Expired"
+          value={metrics.expired}
+          accent={metrics.expired > 0 ? "warn" : "neutral"}
+          href="/dpdp-privacy/consents?status=expired"
+        />
+        <PrivacyStat
+          label="Withdrawn"
+          value={metrics.withdrawn}
+          accent={metrics.withdrawn > 0 ? "danger" : "neutral"}
+          href="/dpdp-privacy/consents?status=withdrawn"
+        />
+        <PrivacyStat
+          label="Pending"
+          value={metrics.pending}
+          accent={metrics.pending > 0 ? "warn" : "neutral"}
+          href="/dpdp-privacy/consents?status=pending"
+        />
       </div>
 
       {/* Filters */}
@@ -69,7 +99,11 @@ export default async function ConsentsPage({
         {["all", "granted", "expired", "withdrawn", "pending", "rejected"].map((s) => (
           <Link
             key={s}
-            href={s === "all" ? "/dpdp-privacy/consents" : `/dpdp-privacy/consents?status=${s}`}
+            href={
+              s === "all"
+                ? "/dpdp-privacy/consents"
+                : `/dpdp-privacy/consents?status=${s}`
+            }
             className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1 text-xs capitalize hover:bg-white/[0.07] transition-colors"
           >
             {s === "all" ? "All" : s}
@@ -98,34 +132,50 @@ export default async function ConsentsPage({
                 </tr>
               </thead>
               <tbody>
-                {consents.map((c: ConsentRecord) => (
-                  <tr
-                    key={c.id}
-                    className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
-                  >
-                    <td className="px-4 py-3">
-                      <p className="font-medium">{c.subjectName ?? c.subjectId}</p>
-                      {c.subjectEmail && (
-                        <p className="text-xs text-[var(--color-ink-dim)]">{c.subjectEmail}</p>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 max-w-[200px]">
-                      <p className="text-xs text-[var(--color-ink-dim)] truncate">{c.purpose}</p>
-                    </td>
-                    <td className="px-4 py-3">
-                      <ConsentStatusBadge status={c.consentStatus} />
-                    </td>
-                    <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                      {formatDate(c.obtainedAt)}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                      {formatDate(c.expiresAt)}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                      {c.source ?? "—"}
-                    </td>
-                  </tr>
-                ))}
+                {consents.map((c: ConsentRecord) => {
+                  const expiringSoon = isExpiringSoon(c.expiresAt);
+                  return (
+                    <tr
+                      key={c.id}
+                      className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
+                    >
+                      <td className="px-4 py-3">
+                        <p className="font-medium">{c.subjectName ?? c.subjectId}</p>
+                        {c.subjectEmail && (
+                          <p className="text-xs text-[var(--color-ink-dim)]">
+                            {c.subjectEmail}
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 max-w-[200px]">
+                        <p className="text-xs text-[var(--color-ink-dim)] truncate">
+                          {c.purpose}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <ConsentStatusBadge status={c.consentStatus} />
+                      </td>
+                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
+                        {formatDate(c.obtainedAt)}
+                      </td>
+                      <td className="px-4 py-3 text-xs">
+                        <span
+                          className={
+                            expiringSoon
+                              ? "text-amber-400 font-semibold"
+                              : "text-[var(--color-ink-dim)]"
+                          }
+                        >
+                          {formatDate(c.expiresAt)}
+                          {expiringSoon && " ⚠"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
+                        {c.source ?? "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

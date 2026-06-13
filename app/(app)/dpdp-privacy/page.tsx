@@ -5,48 +5,25 @@ import {
   Database,
   UserCheck,
   FileSearch,
-  Clock,
   AlertTriangle,
   Globe,
   Plus,
   Shield,
   CheckCircle2,
   ArrowRight,
+  Clock,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/privacy/privacy-service";
-import { PrivacyRequestStatusBadge, PrivacyRequestTypeBadge } from "@/components/privacy/privacy-badges";
+import {
+  PrivacyRequestStatusBadge,
+  PrivacyRequestTypeBadge,
+} from "@/components/privacy/privacy-badges";
 import { PrivacyScoreWidget } from "@/components/privacy/privacy-score-widget";
-
-function Stat({
-  label,
-  value,
-  icon: Icon,
-  color,
-  href,
-}: {
-  label: string;
-  value: string | number;
-  icon: React.ElementType;
-  color: string;
-  href?: string;
-}) {
-  const content = (
-    <Card className="p-5 flex items-center gap-4 hover:bg-white/[0.04] transition-colors">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-  return href ? <Link href={href}>{content}</Link> : content;
-}
+import { PrivacyStat } from "@/components/privacy/privacy-ui";
 
 export default async function DpdpPrivacyDashboardPage() {
   const session = await requireUser();
@@ -84,56 +61,46 @@ export default async function DpdpPrivacyDashboardPage() {
         </Link>
       </div>
 
-      {/* Metrics strip */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        <Stat
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <PrivacyStat
           label="Total Assets"
           value={data.assetMetrics.total}
-          icon={Database}
-          color="bg-indigo-500/20 text-indigo-400"
+          accent="neutral"
           href="/dpdp-privacy/inventory"
         />
-        <Stat
+        <PrivacyStat
           label="Sensitive Assets"
           value={data.assetMetrics.sensitive}
-          icon={Shield}
-          color="bg-orange-500/20 text-orange-400"
+          accent={data.assetMetrics.sensitive > 0 ? "warn" : "good"}
           href="/dpdp-privacy/inventory"
         />
-        <Stat
+        <PrivacyStat
           label="Cross-Border"
           value={data.assetMetrics.crossBorder}
-          icon={Globe}
-          color="bg-purple-500/20 text-purple-400"
+          accent={data.assetMetrics.crossBorder > 0 ? "warn" : "neutral"}
           href="/dpdp-privacy/transfers"
         />
-        <Stat
+        <PrivacyStat
           label="Open DSRs"
           value={data.dsrMetrics.open}
-          icon={FileSearch}
-          color="bg-blue-500/20 text-blue-400"
+          accent={data.dsrMetrics.open > 0 ? "warn" : "good"}
           href="/dpdp-privacy/requests"
         />
-        <Stat
+        <PrivacyStat
           label="Overdue DSRs"
           value={data.dsrMetrics.overdue}
-          icon={AlertTriangle}
-          color={
-            data.dsrMetrics.overdue > 0
-              ? "bg-red-500/20 text-red-400"
-              : "bg-green-500/20 text-green-400"
-          }
+          accent={data.dsrMetrics.overdue > 0 ? "danger" : "good"}
+          sub={data.dsrMetrics.overdue > 0 ? "SLA breach" : "All on time"}
           href="/dpdp-privacy/requests"
         />
       </div>
 
-      {/* Body grid */}
+      {/* Body grid: score + consent + recent DSRs */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Privacy Trust Score */}
         <div className="lg:col-span-1">
-          <PrivacyScoreWidget
-            initialScore={data.latestScore?.score}
-          />
+          <PrivacyScoreWidget initialScore={data.latestScore?.score} />
         </div>
 
         {/* Consent Summary + Recent DSRs */}
@@ -152,16 +119,37 @@ export default async function DpdpPrivacyDashboardPage() {
                 View all <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                { label: "Active", value: data.consentMetrics.active, color: "text-green-400" },
-                { label: "Expired", value: data.consentMetrics.expired, color: "text-orange-400" },
-                { label: "Withdrawn", value: data.consentMetrics.withdrawn, color: "text-red-400" },
-                { label: "Pending", value: data.consentMetrics.pending, color: "text-yellow-400" },
+                {
+                  label: "Active",
+                  value: data.consentMetrics.active,
+                  color: "text-emerald-400",
+                  sub: "Granted",
+                },
+                {
+                  label: "Expired",
+                  value: data.consentMetrics.expired,
+                  color: "text-amber-400",
+                  sub: "Need renewal",
+                },
+                {
+                  label: "Withdrawn",
+                  value: data.consentMetrics.withdrawn,
+                  color: "text-red-400",
+                  sub: "Revoked",
+                },
+                {
+                  label: "Pending",
+                  value: data.consentMetrics.pending,
+                  color: "text-yellow-400",
+                  sub: "Awaiting",
+                },
               ].map((item) => (
                 <div key={item.label} className="text-center">
                   <p className={`text-2xl font-bold ${item.color}`}>{item.value}</p>
                   <p className="text-xs text-[var(--color-ink-dim)]">{item.label}</p>
+                  <p className="text-[10px] text-[var(--color-ink-faint)]">{item.sub}</p>
                 </div>
               ))}
             </div>
@@ -182,7 +170,7 @@ export default async function DpdpPrivacyDashboardPage() {
               </Link>
             </div>
             {data.recentRequests.length === 0 ? (
-              <div className="flex items-center gap-2 text-sm text-green-400">
+              <div className="flex items-center gap-2 text-sm text-emerald-400">
                 <CheckCircle2 className="h-4 w-4" />
                 No open requests.
               </div>
@@ -229,6 +217,11 @@ export default async function DpdpPrivacyDashboardPage() {
           <Link href="/dpdp-privacy/assessments/new">
             <Button variant="outline" size="sm">
               <Shield className="h-4 w-4" /> New PIA
+            </Button>
+          </Link>
+          <Link href="/dpdp-privacy/transfers">
+            <Button variant="outline" size="sm">
+              <Globe className="h-4 w-4" /> Cross-Border Transfers
             </Button>
           </Link>
           <Link href="/dpdp-privacy/ai">

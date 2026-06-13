@@ -9,14 +9,8 @@ import { requireUser } from "@/lib/auth/session";
 import { listAssets } from "@/lib/services/privacy/privacy-service";
 import {
   SensitivityBadge,
+  AssetStatusBadge,
 } from "@/components/privacy/privacy-badges";
-
-const STATUS_STYLES: Record<string, string> = {
-  active: "bg-green-500/20 text-green-300 border-green-500/30",
-  inactive: "bg-slate-500/20 text-slate-300 border-slate-500/30",
-  archived: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-  under_review: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-};
 
 export default async function DataInventoryPage({
   searchParams,
@@ -25,7 +19,13 @@ export default async function DataInventoryPage({
 }) {
   const session = await requireUser();
   if (session.demo || !session.org) {
-    return <EmptyState icon={Database} title="Data Inventory™" description="Connect Supabase to view your data assets." />;
+    return (
+      <EmptyState
+        icon={Database}
+        title="Data Inventory™"
+        description="Connect Supabase to view your data assets."
+      />
+    );
   }
 
   const params = await searchParams;
@@ -35,8 +35,16 @@ export default async function DataInventoryPage({
     sensitivity: params.sensitivity,
   });
 
-  const categories = ["customer", "employee", "vendor", "marketing", "financial", "health", "biometric", "custom"];
-  const sensitivities = ["low", "medium", "high", "critical"];
+  const categories = [
+    "customer",
+    "employee",
+    "vendor",
+    "marketing",
+    "financial",
+    "health",
+    "biometric",
+    "custom",
+  ];
 
   return (
     <div className="space-y-6">
@@ -51,7 +59,7 @@ export default async function DataInventoryPage({
         </div>
         <Link href="/dpdp-privacy/inventory/new">
           <Button>
-            <Plus className="h-4 w-4" /> Add Asset
+            <Plus className="h-4 w-4" /> New Asset
           </Button>
         </Link>
       </div>
@@ -71,7 +79,9 @@ export default async function DataInventoryPage({
             {f.label}
           </Link>
         ))}
-        <span className="text-xs text-[var(--color-ink-dim)] self-center ml-2">Category:</span>
+        <span className="text-xs text-[var(--color-ink-dim)] self-center ml-2">
+          Category:
+        </span>
         {categories.map((cat) => (
           <Link
             key={cat}
@@ -144,17 +154,13 @@ export default async function DataInventoryPage({
                     </td>
                     <td className="px-4 py-3">
                       {asset.crossBorder ? (
-                        <span className="text-orange-400 font-medium text-xs">Yes</span>
+                        <span className="text-amber-400 font-medium text-xs">Yes</span>
                       ) : (
                         <span className="text-[var(--color-ink-dim)] text-xs">No</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize ${STATUS_STYLES[asset.status] ?? ""}`}
-                      >
-                        {asset.status.replace("_", " ")}
-                      </span>
+                      <AssetStatusBadge status={asset.status} />
                     </td>
                   </tr>
                 ))}

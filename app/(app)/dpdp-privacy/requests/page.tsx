@@ -11,11 +11,16 @@ import {
   PrivacyRequestStatusBadge,
   PrivacyRequestTypeBadge,
 } from "@/components/privacy/privacy-badges";
+import { PrivacyStat } from "@/components/privacy/privacy-ui";
 import type { PrivacyRequest } from "@/lib/db/schema";
 
 function formatDate(d: Date | null | undefined) {
   if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  return new Date(d).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function isOverdue(dueDate: Date | null | undefined, status: string) {
@@ -30,7 +35,13 @@ export default async function RequestsPage({
 }) {
   const session = await requireUser();
   if (session.demo || !session.org) {
-    return <EmptyState icon={FileSearch} title="Data Subject Requests™" description="Connect Supabase to manage DSR requests." />;
+    return (
+      <EmptyState
+        icon={FileSearch}
+        title="Data Subject Requests™"
+        description="Connect Supabase to manage DSR requests."
+      />
+    );
   }
 
   const params = await searchParams;
@@ -58,33 +69,39 @@ export default async function RequestsPage({
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {[
-          { label: "Total", value: metrics.total, color: "text-[var(--color-ink)]" },
-          { label: "Open", value: metrics.open, color: "text-blue-400" },
-          {
-            label: "Overdue",
-            value: metrics.overdue,
-            color: metrics.overdue > 0 ? "text-red-400" : "text-green-400",
-          },
-          {
-            label: "Avg Resolution",
-            value: `${metrics.avgResolutionDays}d`,
-            color: "text-purple-400",
-          },
-        ].map((m) => (
-          <Card key={m.label} className="p-4 text-center">
-            <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
-            <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">{m.label}</p>
-          </Card>
-        ))}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <PrivacyStat
+          label="Total Requests"
+          value={metrics.total}
+          accent="neutral"
+        />
+        <PrivacyStat
+          label="Open"
+          value={metrics.open}
+          accent={metrics.open > 0 ? "warn" : "good"}
+          href="/dpdp-privacy/requests?status=submitted"
+        />
+        <PrivacyStat
+          label="Overdue"
+          value={metrics.overdue}
+          accent={metrics.overdue > 0 ? "danger" : "good"}
+          sub={metrics.overdue > 0 ? "SLA breach" : "All on time"}
+        />
+        <PrivacyStat
+          label="Avg Resolution"
+          value={`${metrics.avgResolutionDays}d`}
+          accent="neutral"
+        />
       </div>
 
       {metrics.overdue > 0 && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 flex items-center gap-3 px-4 py-3">
           <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0" />
           <p className="text-sm text-red-300">
-            <strong>{metrics.overdue} DSR{metrics.overdue > 1 ? "s" : ""}</strong> have passed their 30-day DPDP SLA deadline. Immediate action required.
+            <strong>
+              {metrics.overdue} DSR{metrics.overdue > 1 ? "s" : ""}
+            </strong>{" "}
+            have passed their 30-day DPDP SLA deadline. Immediate action required.
           </p>
         </div>
       )}
@@ -143,7 +160,9 @@ export default async function RequestsPage({
                     >
                       <td className="px-4 py-3">
                         <p className="font-medium">{req.subjectName}</p>
-                        <p className="text-xs text-[var(--color-ink-dim)]">{req.subjectEmail}</p>
+                        <p className="text-xs text-[var(--color-ink-dim)]">
+                          {req.subjectEmail}
+                        </p>
                       </td>
                       <td className="px-4 py-3">
                         <PrivacyRequestTypeBadge type={req.requestType} />
@@ -156,11 +175,19 @@ export default async function RequestsPage({
                       </td>
                       <td className="px-4 py-3 text-xs">
                         {req.dueDate ? (
-                          <span className={overdue ? "text-red-400 font-semibold" : "text-[var(--color-ink-dim)]"}>
+                          <span
+                            className={
+                              overdue
+                                ? "text-red-400 font-semibold"
+                                : "text-[var(--color-ink-dim)]"
+                            }
+                          >
                             {formatDate(req.dueDate)}
                             {overdue && " ⚠ Overdue"}
                           </span>
-                        ) : "—"}
+                        ) : (
+                          "—"
+                        )}
                       </td>
                     </tr>
                   );

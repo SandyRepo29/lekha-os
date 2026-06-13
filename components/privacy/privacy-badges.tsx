@@ -226,6 +226,43 @@ export function PrivacyRiskLevelBadge({
   );
 }
 
+// ─── Data Asset Status Badge ──────────────────────────────────────────────────
+
+const ASSET_STATUS_STYLES: Record<string, string> = {
+  active: "bg-green-500/20 text-green-300 border-green-500/30",
+  inactive: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  archived: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  under_review: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+};
+
+const ASSET_STATUS_LABELS: Record<string, string> = {
+  active: "Active",
+  inactive: "Inactive",
+  archived: "Archived",
+  under_review: "Under Review",
+};
+
+export function AssetStatusBadge({
+  status,
+  className,
+}: {
+  status: string;
+  className?: string;
+}) {
+  const styles = ASSET_STATUS_STYLES[status] ?? ASSET_STATUS_STYLES.inactive;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium",
+        styles,
+        className
+      )}
+    >
+      {ASSET_STATUS_LABELS[status] ?? status.replace("_", " ")}
+    </span>
+  );
+}
+
 // ─── Assessment Status Badge ──────────────────────────────────────────────────
 
 const ASSESSMENT_STATUS_STYLES: Record<string, string> = {
