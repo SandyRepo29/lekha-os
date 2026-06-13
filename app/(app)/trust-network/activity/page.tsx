@@ -7,6 +7,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getNetworkActivity } from "@/lib/services/trust-network/trust-network-service";
+import { TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const ACTIVITY_CONFIG: Record<string, { icon: React.ElementType; color: string; label: string }> = {
   profile_created:       { icon: Globe,        color: "text-blue-400",   label: "Profile Created" },
@@ -54,26 +55,10 @@ export default async function TrustActivityPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-[var(--color-blue)]">{activity.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Total Events</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-green-400">
-            {activity.filter((a) => a.activityType.includes("verified") || a.activityType.includes("badge")).length}
-          </p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Trust Milestones</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-purple-400">
-            {activity.filter((a) => a.activityType.includes("relationship")).length}
-          </p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Network Events</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-yellow-400">{Object.keys(byCat).length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Event Types</p>
-        </Card>
+        <TrustNetworkStat label="Total Events"    value={activity.length} accent="neutral" />
+        <TrustNetworkStat label="Trust Milestones" value={activity.filter((a) => a.activityType.includes("verified") || a.activityType.includes("badge")).length} accent="good" />
+        <TrustNetworkStat label="Network Events"  value={activity.filter((a) => a.activityType.includes("relationship")).length} accent="neutral" />
+        <TrustNetworkStat label="Event Types"     value={Object.keys(byCat).length} accent="neutral" />
       </div>
 
       {/* Activity feed */}

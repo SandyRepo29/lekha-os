@@ -3,30 +3,12 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import {
   Globe, ShieldCheck, FileText, Star, Users, MessageSquare,
-  TrendingUp, Plus, ArrowRight, CheckCircle2, AlertCircle, Zap,
+  ArrowRight, CheckCircle2, AlertCircle, Zap,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardMetrics, getOrCreateProfile, listActivity } from "@/lib/services/trust-exchange/trust-exchange-service";
-
-function Stat({
-  label, value, icon: Icon, color,
-}: {
-  label: string; value: string | number; icon: React.ElementType; color: string;
-}) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
+import { TrustExchangeStat } from "@/components/trust-exchange/trust-exchange-ui";
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
   profile_created: Globe,
@@ -116,12 +98,12 @@ export default async function TrustExchangeDashboard() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
-        <Stat label="Total Documents" value={metrics.totalDocuments} icon={FileText} color="bg-blue-500/20 text-blue-400" />
-        <Stat label="Verified Docs" value={metrics.verifiedDocuments} icon={ShieldCheck} color="bg-green-500/20 text-green-400" />
-        <Stat label="Public Docs" value={metrics.publicDocuments} icon={Globe} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Trust Badges" value={metrics.activeBadges} icon={Star} color="bg-yellow-500/20 text-yellow-400" />
-        <Stat label="Relationships" value={metrics.activeRelationships} icon={Users} color="bg-purple-500/20 text-purple-400" />
-        <Stat label="Questionnaires" value={metrics.completedQuestionnaires} icon={MessageSquare} color="bg-pink-500/20 text-pink-400" />
+        <TrustExchangeStat label="Total Documents"  value={metrics.totalDocuments}          accent="neutral" href="/trust-exchange/documents" />
+        <TrustExchangeStat label="Verified Docs"    value={metrics.verifiedDocuments}       accent={metrics.verifiedDocuments > 0 ? "good" : "warn"} href="/trust-exchange/documents" />
+        <TrustExchangeStat label="Public Docs"      value={metrics.publicDocuments}         accent="neutral" />
+        <TrustExchangeStat label="Trust Badges"     value={metrics.activeBadges}            accent={metrics.activeBadges > 0 ? "good" : "neutral"} href="/trust-exchange/badges" />
+        <TrustExchangeStat label="Relationships"    value={metrics.activeRelationships}     accent="neutral" />
+        <TrustExchangeStat label="Questionnaires"   value={metrics.completedQuestionnaires} accent="neutral" href="/trust-exchange/questionnaires" />
       </div>
 
       {/* Quick actions */}

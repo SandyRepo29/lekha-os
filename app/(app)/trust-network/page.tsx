@@ -2,27 +2,13 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
-  Network, Globe, Star, Users, Eye, TrendingUp, Zap, Shield, BarChart3,
-  ArrowRight, CheckCircle2, AlertCircle, Cpu, Award, Activity,
+  Network, Globe, Star, Users, TrendingUp, Zap, Shield, BarChart3,
+  ArrowRight, CheckCircle2, AlertCircle, Cpu, Activity,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getNetworkDashboard } from "@/lib/services/trust-network/trust-network-service";
-import { getNetworkActivity } from "@/lib/services/trust-network/trust-network-service";
-
-function Stat({ label, value, icon: Icon, color }: { label: string; value: string | number; icon: React.ElementType; color: string }) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
+import { getNetworkDashboard, getNetworkActivity } from "@/lib/services/trust-network/trust-network-service";
+import { TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
   profile_created: Globe, profile_updated: Globe, document_shared: Shield,
@@ -108,12 +94,12 @@ export default async function TrustNetworkDashboard() {
 
       {/* Key metrics */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
-        <Stat label="Profile Views" value={metrics.profileViews30d} icon={Eye} color="bg-blue-500/20 text-blue-400" />
-        <Stat label="Followers" value={metrics.followerCount} icon={Users} color="bg-purple-500/20 text-purple-400" />
-        <Stat label="Trust Badges" value={metrics.activeBadges} icon={Award} color="bg-yellow-500/20 text-yellow-400" />
-        <Stat label="Relationships" value={metrics.activeRelationships} icon={Network} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Industry Rank" value={benchmarking.percentile > 0 ? `${benchmarking.percentile}th %` : "—"} icon={BarChart3} color="bg-green-500/20 text-green-400" />
-        <Stat label="Automation" value={`${automation.automationPct}%`} icon={Cpu} color="bg-pink-500/20 text-pink-400" />
+        <TrustNetworkStat label="Profile Views (30d)"  value={metrics.profileViews30d}    accent="neutral" sub="Last 30 days" />
+        <TrustNetworkStat label="Network Followers"    value={metrics.followerCount}       accent="neutral" />
+        <TrustNetworkStat label="Trust Badges"         value={metrics.activeBadges}        accent={metrics.activeBadges > 0 ? "good" : "neutral"} href="/trust-exchange/badges" />
+        <TrustNetworkStat label="Relationships"        value={metrics.activeRelationships} accent="neutral" href="/trust-network/relationships" />
+        <TrustNetworkStat label="Industry Rank"        value={benchmarking.percentile > 0 ? `${benchmarking.percentile}th` : "—"} accent={benchmarking.percentile >= 75 ? "good" : benchmarking.percentile >= 50 ? "neutral" : "warn"} sub="Percentile" />
+        <TrustNetworkStat label="Automation Coverage"  value={`${automation.automationPct}%`} accent={automation.automationPct >= 60 ? "good" : automation.automationPct >= 30 ? "warn" : "danger"} />
       </div>
 
       {/* Three pillars */}

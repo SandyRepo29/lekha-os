@@ -5,20 +5,12 @@ import { Users, Network, ArrowRight, CheckCircle2, Clock, XCircle } from "lucide
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getTrustRelationships } from "@/lib/services/trust-network/trust-network-service";
+import { RelationshipTypeBadge, NetworkStatusBadge, TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
-const STATUS_STYLES: Record<string, { label: string; icon: React.ElementType; color: string }> = {
-  active: { label: "Active", icon: CheckCircle2, color: "text-green-400" },
-  pending: { label: "Pending", icon: Clock, color: "text-yellow-400" },
-  terminated: { label: "Terminated", icon: XCircle, color: "text-red-400" },
-};
-
-const TYPE_COLORS: Record<string, string> = {
-  customer: "bg-blue-500/10 text-blue-400",
-  vendor: "bg-purple-500/10 text-purple-400",
-  partner: "bg-emerald-500/10 text-emerald-400",
-  processor: "bg-orange-500/10 text-orange-400",
-  auditor: "bg-yellow-500/10 text-yellow-400",
-  consultant: "bg-pink-500/10 text-pink-400",
+const STATUS_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
+  active:     { icon: CheckCircle2, color: "text-emerald-400" },
+  pending:    { icon: Clock,        color: "text-amber-400"   },
+  terminated: { icon: XCircle,      color: "text-red-400"     },
 };
 
 export default async function TrustRelationshipsPage() {
@@ -53,22 +45,10 @@ export default async function TrustRelationshipsPage() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-[var(--color-blue)]">{relationships.length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Total Relationships</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-green-400">{active}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Active</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-yellow-400">{pending}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Pending</p>
-        </Card>
-        <Card className="p-5 text-center">
-          <p className="text-3xl font-black text-purple-400">{Object.keys(byType).length}</p>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-1">Relationship Types</p>
-        </Card>
+        <TrustNetworkStat label="Total Relationships" value={relationships.length}          accent="neutral" />
+        <TrustNetworkStat label="Active"              value={active}                        accent={active > 0 ? "good" : "neutral"} />
+        <TrustNetworkStat label="Pending"             value={pending}                       accent={pending > 0 ? "warn" : "neutral"} />
+        <TrustNetworkStat label="Relationship Types"  value={Object.keys(byType).length}    accent="neutral" />
       </div>
 
       {/* By type breakdown */}
@@ -79,9 +59,9 @@ export default async function TrustRelationshipsPage() {
             {Object.entries(byType).map(([type, cnt]) => (
               <Card key={type} className="p-4 text-center">
                 <p className="text-2xl font-bold">{cnt}</p>
-                <span className={`inline-block mt-1.5 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${TYPE_COLORS[type] ?? "bg-white/5 text-[var(--color-ink-dim)]"}`}>
-                  {type}
-                </span>
+                <div className="mt-1.5 flex justify-center">
+                  <RelationshipTypeBadge type={type} />
+                </div>
               </Card>
             ))}
           </div>
@@ -103,8 +83,8 @@ export default async function TrustRelationshipsPage() {
         ) : (
           <Card className="divide-y divide-[var(--color-line)]">
             {relationships.map((r) => {
-              const s = STATUS_STYLES[r.status] ?? STATUS_STYLES.pending;
-              const SIcon = s.icon;
+              const si = STATUS_ICONS[r.status] ?? STATUS_ICONS.pending;
+              const SIcon = si.icon;
               return (
                 <div key={r.id} className="flex items-center gap-4 px-4 py-3">
                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
@@ -112,13 +92,13 @@ export default async function TrustRelationshipsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{r.targetOrgId}</p>
-                    <span className={`inline-block mt-0.5 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${TYPE_COLORS[r.relationshipType] ?? "bg-white/5 text-[var(--color-ink-dim)]"}`}>
-                      {r.relationshipType}
-                    </span>
+                    <div className="mt-0.5">
+                      <RelationshipTypeBadge type={r.relationshipType} />
+                    </div>
                   </div>
-                  <div className={`flex items-center gap-1.5 text-sm font-medium ${s.color}`}>
+                  <div className={`flex items-center gap-1.5 text-sm font-medium ${si.color}`}>
                     <SIcon className="h-4 w-4" />
-                    {s.label}
+                    <NetworkStatusBadge status={r.status} />
                   </div>
                   <p className="text-xs text-[var(--color-ink-faint)] flex-shrink-0">
                     {new Date(r.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
