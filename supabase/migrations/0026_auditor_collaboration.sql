@@ -330,38 +330,41 @@ ALTER TABLE external_findings       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE external_assessments    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE external_permissions    ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS auditor_organizations_org_policy
-  ON auditor_organizations USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS external_users_org_policy
-  ON external_users USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS audit_rooms_org_policy
-  ON audit_rooms USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS audit_room_documents_org_policy
-  ON audit_room_documents USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS audit_room_activities_org_policy
-  ON audit_room_activities USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS evidence_requests_org_policy
-  ON evidence_requests USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS evidence_responses_org_policy
-  ON evidence_responses USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS audit_reviews_org_policy
-  ON audit_reviews USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS external_comments_org_policy
-  ON external_comments USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS external_findings_org_policy
-  ON external_findings USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS external_assessments_org_policy
-  ON external_assessments USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
-
-CREATE POLICY IF NOT EXISTS external_permissions_org_policy
-  ON external_permissions USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='auditor_organizations' AND policyname='auditor_organizations_org_policy') THEN
+    CREATE POLICY auditor_organizations_org_policy ON auditor_organizations USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='external_users' AND policyname='external_users_org_policy') THEN
+    CREATE POLICY external_users_org_policy ON external_users USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='audit_rooms' AND policyname='audit_rooms_org_policy') THEN
+    CREATE POLICY audit_rooms_org_policy ON audit_rooms USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='audit_room_documents' AND policyname='audit_room_documents_org_policy') THEN
+    CREATE POLICY audit_room_documents_org_policy ON audit_room_documents USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='audit_room_activities' AND policyname='audit_room_activities_org_policy') THEN
+    CREATE POLICY audit_room_activities_org_policy ON audit_room_activities USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='evidence_requests' AND policyname='evidence_requests_org_policy') THEN
+    CREATE POLICY evidence_requests_org_policy ON evidence_requests USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='evidence_responses' AND policyname='evidence_responses_org_policy') THEN
+    CREATE POLICY evidence_responses_org_policy ON evidence_responses USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='audit_reviews' AND policyname='audit_reviews_org_policy') THEN
+    CREATE POLICY audit_reviews_org_policy ON audit_reviews USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='external_comments' AND policyname='external_comments_org_policy') THEN
+    CREATE POLICY external_comments_org_policy ON external_comments USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='external_findings' AND policyname='external_findings_org_policy') THEN
+    CREATE POLICY external_findings_org_policy ON external_findings USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='external_assessments' AND policyname='external_assessments_org_policy') THEN
+    CREATE POLICY external_assessments_org_policy ON external_assessments USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename='external_permissions' AND policyname='external_permissions_org_policy') THEN
+    CREATE POLICY external_permissions_org_policy ON external_permissions USING (is_org_member(organization_id)) WITH CHECK (is_org_member(organization_id));
+  END IF;
+END $$;
