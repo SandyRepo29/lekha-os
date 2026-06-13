@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getObservationsAction } from "@/lib/agents/actions";
-import { Eye, AlertTriangle, CheckCircle, Filter } from "lucide-react";
+import { Eye, AlertTriangle, CheckCircle } from "lucide-react";
 import { AgentStat, SeverityBadge, ObsStatusBadge } from "@/components/agents/agent-ui";
 
 const SUB_NAV = [
@@ -28,17 +28,10 @@ const MODULE_COLORS: Record<string, string> = {
   "Policy Governanceâ„¢":"bg-indigo-500/10 text-indigo-400",
 };
 
-// Inline helpers — cannot call "use client" exports as plain functions from server components
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "—";
+  if (!val) return "-";
   try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "—"; }
-}
-function fmtDuration(ms?: number): string {
-  if (!ms) return "—";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
+  catch { return "-"; }
 }
 
 export default async function ObservationsPage() {
@@ -78,10 +71,10 @@ export default async function ObservationsPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <AgentStat label="Total"      value={obs.length}        accent="neutral" />
-        <AgentStat label="New"        value={newObs.length}     accent={newObs.length > 0 ? "warn" : "good"} />
+        <AgentStat label="Total"      value={obs.length}         accent="neutral" />
+        <AgentStat label="New"        value={newObs.length}      accent={newObs.length > 0 ? "warn" : "good"} />
         <AgentStat label="Critical"   value={criticalObs.length} accent={criticalObs.length > 0 ? "danger" : "neutral"} />
-        <AgentStat label="High"       value={highObs.length}    accent={highObs.length > 0 ? "warn" : "neutral"} />
+        <AgentStat label="High"       value={highObs.length}     accent={highObs.length > 0 ? "warn" : "neutral"} />
       </div>
 
       {/* Observation list */}
@@ -113,10 +106,10 @@ export default async function ObservationsPage() {
                       {o.sourceModule}
                     </span>
                     {o.sourceEntityName && (
-                      <span className="text-[11px] text-[var(--color-ink-faint)]">Â· {o.sourceEntityName}</span>
+                      <span className="text-[11px] text-[var(--color-ink-faint)]">- {o.sourceEntityName}</span>
                     )}
                     <span className="ml-auto text-[11px] text-[var(--color-ink-faint)]">
-                      by {o.agentName} Â· {fmtDate(o.observedAt)}
+                      by {o.agentName} - {fmtDate(o.observedAt)}
                     </span>
                   </div>
                 </div>

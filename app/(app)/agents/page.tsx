@@ -11,7 +11,7 @@ import {
 import { AgentStat, AgentStatusBadge, RunStatusBadge, SeverityBadge } from "@/components/agents/agent-ui";
 
 const NAV = [
-  { href: "/agents/registry",        icon: Shield,      label: "Agent Registry™",        description: "All agents — status, runs, execution mode" },
+  { href: "/agents/registry",        icon: Shield,      label: "Agent Registry™",        description: "All agents - status, runs, execution mode" },
   { href: "/agents/studio",          icon: Settings,    label: "Agent Studio™",           description: "Create and configure custom governance agents" },
   { href: "/agents/runs",            icon: Activity,    label: "Agent Runs™",             description: "Full execution history across all agents" },
   { href: "/agents/observations",    icon: Eye,         label: "Observations™",           description: "Governance signals detected by agents" },
@@ -19,17 +19,16 @@ const NAV = [
   { href: "/agents/actions",         icon: Zap,         label: "Agent Actions™",          description: "Approval queue and executed governance actions" },
   { href: "/agents/orchestration",   icon: GitBranch,   label: "Orchestration™",          description: "Multi-agent governance pipelines" },
   { href: "/agents/analytics",       icon: BarChart3,   label: "Analytics™",              description: "Agent performance and automation metrics" },
-  { href: "/agents/copilot",         icon: Bot,         label: "Governance Copilot™",     description: "NL chat — ask anything about your governance posture" },
+  { href: "/agents/copilot",         icon: Bot,         label: "Governance Copilot™",     description: "NL chat - ask anything about your governance posture" },
 ];
 
-// Inline helpers (can't call "use client" functions from server component)
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "�";
-  try { return new Date(val).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "�"; }
+  if (!val) return "-";
+  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
+  catch { return "-"; }
 }
 function fmtDuration(ms?: number): string {
-  if (!ms) return "�";
+  if (!ms) return "-";
   if (ms < 1000) return `${ms}ms`;
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
   return `${Math.round(ms / 60000)}m`;
@@ -97,11 +96,11 @@ export default async function AgentsPage() {
         <div className="flex items-start gap-4">
           <Cpu className="mt-0.5 h-8 w-8 shrink-0 text-[var(--color-blue)]" />
           <div>
-            <div className="font-semibold text-sm text-[var(--color-blue)]">Governance Built on Agents — Not Alerts</div>
+            <div className="font-semibold text-sm text-[var(--color-blue)]">Governance Built on Agents - Not Alerts</div>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
-              AUDT agents don't just detect issues — they reason about root causes, generate prioritized recommendations,
+              AUDT agents don&apos;t just detect issues - they reason about root causes, generate prioritized recommendations,
               and execute approved governance actions. From vendor trust deterioration to overdue CAPAs,
-              agents work 24/7 so your team doesn't have to.
+              agents work 24/7 so your team doesn&apos;t have to.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {["Risk Monitor", "Vendor Watch", "Compliance Guardian", "Policy Enforcer", "Audit Prep", "Custom"].map(t => (
@@ -118,7 +117,7 @@ export default async function AgentsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Recent Agent Runs</h3>
-            <Link href="/agents/runs" className="text-xs text-[var(--color-blue)] hover:underline">All runs →</Link>
+            <Link href="/agents/runs" className="text-xs text-[var(--color-blue)] hover:underline">All runs</Link>
           </div>
           {runs.length > 0 ? (
             <div className="overflow-x-auto">
@@ -149,7 +148,7 @@ export default async function AgentsPage() {
             <div className="flex flex-col items-center py-8 gap-3">
               <Play className="h-8 w-8 text-[var(--color-blue)] opacity-40" />
               <p className="text-xs text-[var(--color-ink-faint)]">No runs yet.</p>
-              <Link href="/agents/registry" className="text-xs text-[var(--color-blue)] hover:underline">Activate an agent →</Link>
+              <Link href="/agents/registry" className="text-xs text-[var(--color-blue)] hover:underline">Activate an agent</Link>
             </div>
           )}
         </div>
@@ -158,7 +157,7 @@ export default async function AgentsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Recent Observations</h3>
-            <Link href="/agents/observations" className="text-xs text-[var(--color-blue)] hover:underline">All →</Link>
+            <Link href="/agents/observations" className="text-xs text-[var(--color-blue)] hover:underline">All</Link>
           </div>
           {obs.length > 0 ? (
             <div className="space-y-2">
@@ -199,7 +198,7 @@ export default async function AgentsPage() {
             </div>
           </div>
           <Link href="/agents/actions" className="shrink-0 rounded-xl bg-amber-500/20 border border-amber-500/30 px-4 py-2 text-sm font-medium text-amber-300 hover:bg-amber-500/30 transition-colors">
-            Review Actions →
+            Review Actions
           </Link>
         </div>
       )}

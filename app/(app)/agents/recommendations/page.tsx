@@ -35,17 +35,10 @@ const EFFORT_STYLES: Record<string, string> = {
   High:   "text-red-400",
 };
 
-// Inline helpers — cannot call "use client" exports as plain functions from server components
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "—";
+  if (!val) return "-";
   try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "—"; }
-}
-function fmtDuration(ms?: number): string {
-  if (!ms) return "—";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
+  catch { return "-"; }
 }
 
 export default async function RecommendationsPage() {
@@ -109,7 +102,6 @@ export default async function RecommendationsPage() {
                   </div>
                   <p className="mt-1.5 text-xs text-[var(--color-ink-dim)] leading-relaxed">{rec.rationale}</p>
 
-                  {/* Suggested actions */}
                   <div className="mt-3 space-y-1.5">
                     {rec.suggestedActions.map((action, i) => (
                       <div key={i} className="flex items-start gap-2">

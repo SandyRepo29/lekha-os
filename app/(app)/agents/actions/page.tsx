@@ -20,17 +20,10 @@ const SUB_NAV = [
   { href: "/agents/copilot", label: "Copilotâ„¢" },
 ];
 
-// Inline helpers — cannot call "use client" exports as plain functions from server components
 function fmtDate(val?: string | Date | null): string {
-  if (!val) return "—";
+  if (!val) return "-";
   try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "—"; }
-}
-function fmtDuration(ms?: number): string {
-  if (!ms) return "—";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
+  catch { return "-"; }
 }
 
 export default async function AgentActionsPage() {
@@ -92,9 +85,9 @@ export default async function AgentActionsPage() {
                     <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">{a.description}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-[var(--color-ink-faint)]">
                       <span className="rounded-full bg-white/5 border border-[var(--color-line)] px-2 py-0.5">{a.targetModule}</span>
-                      {a.targetEntityId && <span>Â· {a.targetEntityId}</span>}
-                      <span>Â· by {a.agentName}</span>
-                      <span>Â· {fmtDate(a.requestedAt)}</span>
+                      {a.targetEntityId && <span>- {a.targetEntityId}</span>}
+                      <span>- by {a.agentName}</span>
+                      <span>- {fmtDate(a.requestedAt)}</span>
                     </div>
                   </div>
                   <AgentActionButtons actionId={a.id} />
@@ -130,7 +123,7 @@ export default async function AgentActionsPage() {
                       <td className="px-4 py-3 text-[var(--color-ink-faint)]">{a.targetModule}</td>
                       <td className="px-4 py-3"><ActionStatusBadge status={a.status} /></td>
                       <td className="px-4 py-3 text-[var(--color-ink-faint)]">{fmtDate(a.requestedAt)}</td>
-                      <td className="px-4 py-3 text-[var(--color-ink-faint)]">{a.decidedBy ?? "â€”"}</td>
+                      <td className="px-4 py-3 text-[var(--color-ink-faint)]">{a.decidedBy ?? "-"}</td>
                     </tr>
                   ))}
                 </tbody>
