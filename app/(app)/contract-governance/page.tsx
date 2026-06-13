@@ -9,38 +9,13 @@ import {
   Clock,
   RefreshCw,
   DollarSign,
-  ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardMetrics } from "@/lib/services/contract-governance/contract-service";
-
-function Stat({
-  label,
-  value,
-  icon: Icon,
-  color,
-}: {
-  label: string;
-  value: string | number;
-  icon: React.ElementType;
-  color: string;
-}) {
-  return (
-    <Card className="p-5 flex items-center gap-4">
-      <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
-      </div>
-    </Card>
-  );
-}
+import { ContractStat } from "@/components/contract-governance/contract-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -88,19 +63,44 @@ export default async function ContractGovernanceDashboardPage() {
         </Link>
       </div>
 
-      {/* Metrics */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        <Stat label="Total Contracts" value={metrics.total} icon={FileSignature} color="bg-indigo-500/20 text-indigo-400" />
-        <Stat label="Active" value={metrics.active} icon={CheckCircle2} color="bg-green-500/20 text-green-400" />
-        <Stat label="Expiring (90d)" value={metrics.expiring} icon={Clock} color="bg-yellow-500/20 text-yellow-400" />
-        <Stat label="Expired" value={metrics.expired} icon={AlertTriangle} color="bg-red-500/20 text-red-400" />
-        <Stat label="Renewals Due" value={metrics.renewalsDue} icon={RefreshCw} color="bg-orange-500/20 text-orange-400" />
+      {/* Metrics strip */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <ContractStat
+          label="Total Contracts"
+          value={metrics.total}
+          accent="neutral"
+          href="/contract-governance/library"
+        />
+        <ContractStat
+          label="Active"
+          value={metrics.active}
+          accent="good"
+          href="/contract-governance/library?status=active"
+        />
+        <ContractStat
+          label="Expiring (90d)"
+          value={metrics.expiring}
+          accent={metrics.expiring > 0 ? "warn" : "neutral"}
+          href="/contract-governance/renewals"
+        />
+        <ContractStat
+          label="Expired"
+          value={metrics.expired}
+          accent={metrics.expired > 0 ? "danger" : "neutral"}
+          href="/contract-governance/library?status=expired"
+        />
+        <ContractStat
+          label="Renewals Due"
+          value={metrics.renewalsDue}
+          accent={metrics.renewalsDue > 0 ? "warn" : "neutral"}
+          href="/contract-governance/renewals"
+        />
       </div>
 
       {/* Value strip */}
       <div className="grid grid-cols-2 gap-4">
         <Card className="p-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-500/20 text-blue-400">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--color-blue)]/20 text-[var(--color-blue)] flex-shrink-0">
             <DollarSign className="h-5 w-5" />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default async function ContractGovernanceDashboardPage() {
           </div>
         </Card>
         <Card className="p-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400 flex-shrink-0">
             <DollarSign className="h-5 w-5" />
           </div>
           <div>
@@ -127,11 +127,11 @@ export default async function ContractGovernanceDashboardPage() {
         {/* Expiring contracts */}
         <Card className="p-5">
           <h2 className="font-semibold mb-4 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-yellow-400" />
+            <Clock className="h-4 w-4 text-amber-400" />
             Expiring Contracts
           </h2>
           {metrics.expiringContracts.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-green-400">
+            <div className="flex items-center gap-2 text-sm text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
               No contracts expiring within 90 days.
             </div>
@@ -155,7 +155,7 @@ export default async function ContractGovernanceDashboardPage() {
                       className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                         days !== null && days <= 30
                           ? "bg-red-500/20 text-red-400"
-                          : "bg-yellow-500/20 text-yellow-400"
+                          : "bg-amber-500/20 text-amber-400"
                       }`}
                     >
                       {days !== null ? `${days}d` : "—"}
@@ -174,7 +174,7 @@ export default async function ContractGovernanceDashboardPage() {
             Open Obligations
           </h2>
           {metrics.recentObligations.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-green-400">
+            <div className="flex items-center gap-2 text-sm text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
               No open obligations.
             </div>
@@ -183,6 +183,7 @@ export default async function ContractGovernanceDashboardPage() {
               {metrics.recentObligations.slice(0, 6).map((o) => {
                 const days = daysUntil(o.dueDate);
                 const isOverdue = days !== null && days < 0;
+                const isDueSoon = !isOverdue && days !== null && days <= 7;
                 return (
                   <div key={o.id} className="flex items-center justify-between gap-3 rounded-xl p-2">
                     <div className="min-w-0">
@@ -193,9 +194,9 @@ export default async function ContractGovernanceDashboardPage() {
                       className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
                         isOverdue
                           ? "bg-red-500/20 text-red-400"
-                          : o.status === "open"
-                          ? "bg-yellow-500/20 text-yellow-400"
-                          : "bg-blue-500/20 text-blue-400"
+                          : isDueSoon
+                          ? "bg-amber-500/20 text-amber-400"
+                          : "bg-[var(--color-blue)]/20 text-[var(--color-blue)]"
                       }`}
                     >
                       {o.dueDate ? formatDate(o.dueDate) : "No due date"}
@@ -225,16 +226,6 @@ export default async function ContractGovernanceDashboardPage() {
           <Link href="/contract-governance/renewals">
             <Button variant="outline" size="sm">
               <RefreshCw className="h-4 w-4" /> Renewals
-            </Button>
-          </Link>
-          <Link href="/contract-governance/ai">
-            <Button variant="outline" size="sm">
-              <Sparkles className="h-4 w-4" /> AI Advisor
-            </Button>
-          </Link>
-          <Link href="/contract-governance/reports">
-            <Button variant="outline" size="sm">
-              <ArrowRight className="h-4 w-4" /> Reports
             </Button>
           </Link>
         </div>

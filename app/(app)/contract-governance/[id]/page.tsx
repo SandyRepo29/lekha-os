@@ -20,33 +20,13 @@ import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getContractDetail, computeAndSaveScore } from "@/lib/services/contract-governance/contract-service";
 import { getLinkedRisks, getLinkedControls, getLinkedPolicies } from "@/lib/repositories/contract-repo";
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-slate-500/20 text-slate-400",
-  review: "bg-yellow-500/20 text-yellow-400",
-  negotiation: "bg-orange-500/20 text-orange-400",
-  active: "bg-green-500/20 text-green-400",
-  expiring: "bg-amber-500/20 text-amber-400",
-  expired: "bg-red-500/20 text-red-400",
-  renewed: "bg-blue-500/20 text-blue-400",
-  terminated: "bg-red-700/20 text-red-600",
-  archived: "bg-gray-500/20 text-gray-400",
-};
-
-const RISK_COLORS: Record<string, string> = {
-  low: "bg-green-500/20 text-green-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  high: "bg-orange-500/20 text-orange-400",
-  critical: "bg-red-500/20 text-red-400",
-};
-
-const OBLIGATION_STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  in_progress: "bg-blue-500/20 text-blue-400",
-  completed: "bg-green-500/20 text-green-400",
-  overdue: "bg-red-500/20 text-red-400",
-  waived: "bg-gray-500/20 text-gray-400",
-};
+import { generateExecutiveSummary } from "@/lib/services/contract-governance/ai-contract-service";
+import {
+  ContractStatusBadge,
+  ObligationStatusBadge,
+  ClauseRiskBadge,
+} from "@/components/contract-governance/contract-ui";
+import { scoreTextColor, scoreBarGradient } from "@/lib/ui/colors";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -79,10 +59,11 @@ export default async function ContractDetailPage({
     computeAndSaveScore(session.org.id, id).catch(() => {});
   }
 
-  const [linkedRisks, linkedControls, linkedPolicies] = await Promise.all([
+  const [linkedRisks, linkedControls, linkedPolicies, aiSummary] = await Promise.all([
     getLinkedRisks(id),
     getLinkedControls(id),
     getLinkedPolicies(id),
+    generateExecutiveSummary(session.org.id).catch(() => null),
   ]);
 
   const daysExp = daysUntil(contract.expiryDate);
@@ -101,9 +82,7 @@ export default async function ContractDetailPage({
           </div>
           <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">{contract.title}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[contract.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-              {contract.status}
-            </span>
+            <ContractStatusBadge status={contract.status} />
             <span className="text-xs text-[var(--color-ink-dim)]">{contract.contractType.replace(/_/g, " ")}</span>
             {contract.vendorName && (
               <span className="text-xs text-[var(--color-ink-dim)] flex items-center gap-1">
@@ -119,7 +98,7 @@ export default async function ContractDetailPage({
         </div>
       </div>
 
-      {/* Overview grid */}
+      {/* Key dates + value grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="p-4">
           <p className="text-xs text-[var(--color-ink-dim)] mb-1 flex items-center gap-1">
@@ -134,7 +113,7 @@ export default async function ContractDetailPage({
           <p className={`font-semibold ${daysExp !== null && daysExp <= 30 && daysExp >= 0 ? "text-red-400" : ""}`}>
             {formatDate(contract.expiryDate)}
             {daysExp !== null && daysExp >= 0 && daysExp <= 90 && (
-              <span className="ml-1 text-xs text-yellow-400">({daysExp}d)</span>
+              <span className="ml-1 text-xs text-amber-400">({daysExp}d)</span>
             )}
           </p>
         </Card>
@@ -144,7 +123,7 @@ export default async function ContractDetailPage({
           </p>
           <p className="font-semibold">{formatDate(contract.renewalDate)}</p>
           {contract.autoRenewal && (
-            <span className="text-xs text-blue-400">Auto-renews</span>
+            <span className="text-xs text-[var(--color-blue)]">Auto-renews</span>
           )}
         </Card>
         <Card className="p-4">
@@ -159,38 +138,38 @@ export default async function ContractDetailPage({
         </Card>
       </div>
 
-      {/* Score */}
+      {/* Contract Score™ */}
       {contract.trustScore !== null && contract.trustScore !== undefined && (
         <Card className="p-5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-semibold flex items-center gap-2">
-              <Activity className="h-4 w-4 text-indigo-400" />
+              <Activity className="h-4 w-4 text-[var(--color-blue)]" />
               Contract Score™
             </h2>
-            <span
-              className={`text-2xl font-bold ${
-                contract.trustScore >= 80
-                  ? "text-green-400"
-                  : contract.trustScore >= 60
-                  ? "text-yellow-400"
-                  : "text-red-400"
-              }`}
-            >
+            <span className={`text-2xl font-bold ${scoreTextColor(contract.trustScore)}`}>
               {contract.trustScore}/100
             </span>
           </div>
           <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
             <div
-              className={`h-2 rounded-full ${
-                contract.trustScore >= 80
-                  ? "bg-green-500"
-                  : contract.trustScore >= 60
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
-              }`}
-              style={{ width: `${contract.trustScore}%` }}
+              className="h-2 rounded-full"
+              style={{
+                width: `${contract.trustScore}%`,
+                background: scoreBarGradient(contract.trustScore),
+              }}
             />
           </div>
+        </Card>
+      )}
+
+      {/* AI Summary — surfaced above clauses */}
+      {aiSummary && (
+        <Card className="p-5">
+          <h2 className="font-semibold mb-3 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-purple-400" />
+            AI Contract Summary
+          </h2>
+          <p className="text-sm text-[var(--color-ink)] leading-relaxed whitespace-pre-wrap">{aiSummary}</p>
         </Card>
       )}
 
@@ -199,12 +178,9 @@ export default async function ContractDetailPage({
         <Card className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-400" />
+              <FileText className="h-4 w-4 text-[var(--color-blue)]" />
               Clauses ({contract.clauses.length})
             </h2>
-            <Link href={`/contract-governance/${id}#clauses`}>
-              <Button variant="outline" size="sm">Manage</Button>
-            </Link>
           </div>
           {contract.clauses.length === 0 ? (
             <p className="text-sm text-[var(--color-ink-dim)]">No clauses added yet.</p>
@@ -213,9 +189,7 @@ export default async function ContractDetailPage({
               {contract.clauses.slice(0, 5).map((cl) => (
                 <div key={cl.id} className="flex items-center justify-between gap-3">
                   <p className="text-sm truncate">{cl.title}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${RISK_COLORS[cl.riskLevel] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {cl.riskLevel}
-                  </span>
+                  <ClauseRiskBadge level={cl.riskLevel} />
                 </div>
               ))}
               {contract.clauses.length > 5 && (
@@ -229,7 +203,7 @@ export default async function ContractDetailPage({
         <Card className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-400" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
               Obligations ({contract.obligations.length})
             </h2>
           </div>
@@ -237,19 +211,27 @@ export default async function ContractDetailPage({
             <p className="text-sm text-[var(--color-ink-dim)]">No obligations tracked.</p>
           ) : (
             <div className="space-y-2">
-              {contract.obligations.slice(0, 5).map((o) => (
-                <div key={o.id} className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm truncate">{o.title}</p>
-                    {o.dueDate && (
-                      <p className="text-xs text-[var(--color-ink-dim)]">Due {formatDate(o.dueDate)}</p>
-                    )}
+              {contract.obligations.slice(0, 5).map((o) => {
+                const days = daysUntil(o.dueDate);
+                const isOverdue = days !== null && days < 0 && !["completed", "waived"].includes(o.status);
+                return (
+                  <div key={o.id} className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className={`text-sm truncate ${isOverdue ? "text-red-400" : ""}`}>{o.title}</p>
+                      {o.dueDate && (
+                        <p className={`text-xs ${isOverdue ? "text-red-400/70" : "text-[var(--color-ink-dim)]"}`}>
+                          Due {formatDate(o.dueDate)}
+                          {isOverdue && days !== null && ` (${Math.abs(days)}d overdue)`}
+                        </p>
+                      )}
+                    </div>
+                    <ObligationStatusBadge status={o.status} />
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${OBLIGATION_STATUS_COLORS[o.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                    {o.status.replace("_", " ")}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
+              {contract.obligations.length > 5 && (
+                <p className="text-xs text-[var(--color-ink-dim)]">+{contract.obligations.length - 5} more</p>
+              )}
             </div>
           )}
         </Card>
@@ -267,7 +249,7 @@ export default async function ContractDetailPage({
           ) : (
             <div className="space-y-1">
               {linkedRisks.map((r) => (
-                <Link key={r.id} href={`/risks/${r.id}`} className="block text-sm hover:text-indigo-400 truncate">
+                <Link key={r.id} href={`/risks/${r.id}`} className="block text-sm hover:text-[var(--color-blue)] truncate">
                   {r.title}
                 </Link>
               ))}
@@ -277,7 +259,7 @@ export default async function ContractDetailPage({
 
         <Card className="p-5">
           <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <Shield className="h-4 w-4 text-blue-400" />
+            <Shield className="h-4 w-4 text-[var(--color-blue)]" />
             Linked Controls ({linkedControls.length})
           </h2>
           {linkedControls.length === 0 ? (
@@ -285,7 +267,7 @@ export default async function ContractDetailPage({
           ) : (
             <div className="space-y-1">
               {linkedControls.map((c) => (
-                <Link key={c.id} href={`/controls/${c.id}`} className="block text-sm hover:text-indigo-400 truncate">
+                <Link key={c.id} href={`/controls/${c.id}`} className="block text-sm hover:text-[var(--color-blue)] truncate">
                   {c.name}
                 </Link>
               ))}
@@ -303,7 +285,7 @@ export default async function ContractDetailPage({
           ) : (
             <div className="space-y-1">
               {linkedPolicies.map((p) => (
-                <Link key={p.id} href={`/policy-governance/${p.id}`} className="block text-sm hover:text-indigo-400 truncate">
+                <Link key={p.id} href={`/policy-governance/${p.id}`} className="block text-sm hover:text-[var(--color-blue)] truncate">
                   {p.name}
                 </Link>
               ))}
@@ -312,13 +294,13 @@ export default async function ContractDetailPage({
         </Card>
       </div>
 
-      {/* AI analysis link */}
+      {/* AI Advisor link */}
       <Card className="p-5 flex items-center gap-4">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400 flex-shrink-0">
           <Sparkles className="h-5 w-5" />
         </div>
         <div className="flex-1">
-          <p className="font-semibold">AI Contract Analysis</p>
+          <p className="font-semibold">AI Contract Advisor™</p>
           <p className="text-sm text-[var(--color-ink-dim)]">Extract clauses, analyse risk, and get AI recommendations</p>
         </div>
         <Link href="/contract-governance/ai">

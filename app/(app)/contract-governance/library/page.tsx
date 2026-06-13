@@ -7,18 +7,11 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listContracts } from "@/lib/services/contract-governance/contract-service";
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-slate-500/20 text-slate-400",
-  review: "bg-yellow-500/20 text-yellow-400",
-  negotiation: "bg-orange-500/20 text-orange-400",
-  active: "bg-green-500/20 text-green-400",
-  expiring: "bg-amber-500/20 text-amber-400",
-  expired: "bg-red-500/20 text-red-400",
-  renewed: "bg-blue-500/20 text-blue-400",
-  terminated: "bg-red-700/20 text-red-600",
-  archived: "bg-gray-500/20 text-gray-400",
-};
+import {
+  ContractFilterChip,
+  ContractStatusBadge,
+} from "@/components/contract-governance/contract-ui";
+import { scoreTextColor } from "@/lib/ui/colors";
 
 const TYPE_LABELS: Record<string, string> = {
   vendor_agreement: "Vendor Agreement",
@@ -41,6 +34,8 @@ function daysUntil(d: string | null | undefined) {
   if (!d) return null;
   return Math.floor((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 }
+
+const FILTER_STATUSES = ["", "active", "expiring", "expired", "draft", "review"];
 
 export default async function ContractLibraryPage({
   searchParams,
@@ -69,7 +64,9 @@ export default async function ContractLibraryPage({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Contract Library</h1>
-          <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">{contracts.length} contract{contracts.length !== 1 ? "s" : ""}</p>
+          <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
+            {contracts.length} contract{contracts.length !== 1 ? "s" : ""}
+          </p>
         </div>
         <Link href="/contract-governance/new">
           <Button><Plus className="h-4 w-4" /> New Contract</Button>
@@ -77,19 +74,14 @@ export default async function ContractLibraryPage({
       </div>
 
       {/* Filters */}
-      <Card className="p-4 flex flex-wrap gap-3">
-        {["", "active", "expiring", "expired", "draft", "review"].map((s) => (
-          <Link
+      <Card className="p-4 flex flex-wrap gap-2">
+        {FILTER_STATUSES.map((s) => (
+          <ContractFilterChip
             key={s}
+            label={s === "" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
+            active={(sp.status ?? "") === s}
             href={`/contract-governance/library${s ? `?status=${s}` : ""}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              (sp.status ?? "") === s
-                ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"
-            }`}
-          >
-            {s === "" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
-          </Link>
+          />
         ))}
       </Card>
 
@@ -121,7 +113,7 @@ export default async function ContractLibraryPage({
                   return (
                     <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
                       <td className="px-4 py-3">
-                        <Link href={`/contract-governance/${c.id}`} className="font-medium hover:text-indigo-400 transition-colors">
+                        <Link href={`/contract-governance/${c.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                           {c.title}
                         </Link>
                         {c.ownerName && (
@@ -138,9 +130,7 @@ export default async function ContractLibraryPage({
                         {TYPE_LABELS[c.contractType] ?? c.contractType}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[c.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                          {c.status}
-                        </span>
+                        <ContractStatusBadge status={c.status} />
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1.5">
@@ -149,21 +139,13 @@ export default async function ContractLibraryPage({
                             {formatDate(c.expiryDate)}
                           </span>
                           {days !== null && days >= 0 && days <= 90 && (
-                            <span className="text-xs text-yellow-400">({days}d)</span>
+                            <span className="text-xs text-amber-400">({days}d)</span>
                           )}
                         </div>
                       </td>
                       <td className="px-4 py-3">
                         {c.trustScore !== null && c.trustScore !== undefined ? (
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                              c.trustScore >= 80
-                                ? "bg-green-500/20 text-green-400"
-                                : c.trustScore >= 60
-                                ? "bg-yellow-500/20 text-yellow-400"
-                                : "bg-red-500/20 text-red-400"
-                            }`}
-                          >
+                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full bg-white/[0.06] ${scoreTextColor(c.trustScore)}`}>
                             {c.trustScore}/100
                           </span>
                         ) : (

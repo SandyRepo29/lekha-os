@@ -6,21 +6,12 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { getObligations } from "@/lib/repositories/contract-repo";
-
-const STATUS_COLORS: Record<string, string> = {
-  open: "bg-yellow-500/20 text-yellow-400",
-  in_progress: "bg-blue-500/20 text-blue-400",
-  completed: "bg-green-500/20 text-green-400",
-  overdue: "bg-red-500/20 text-red-400",
-  waived: "bg-gray-500/20 text-gray-400",
-};
-
-const RISK_COLORS: Record<string, string> = {
-  low: "bg-green-500/20 text-green-400",
-  medium: "bg-yellow-500/20 text-yellow-400",
-  high: "bg-orange-500/20 text-orange-400",
-  critical: "bg-red-500/20 text-red-400",
-};
+import {
+  ContractStat,
+  ContractFilterChip,
+  ObligationStatusBadge,
+  ClauseRiskBadge,
+} from "@/components/contract-governance/contract-ui";
 
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
@@ -31,6 +22,8 @@ function daysUntil(d: string | null | undefined) {
   if (!d) return null;
   return Math.floor((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 }
+
+const FILTER_STATUSES = ["", "open", "in_progress", "overdue", "completed", "waived"];
 
 export default async function ObligationsPage({
   searchParams,
@@ -58,6 +51,11 @@ export default async function ObligationsPage({
     return d !== null && d < 0 && o.status !== "completed" && o.status !== "waived";
   }).length;
 
+  const dueSoon = allObligations.filter((o) => {
+    const d = daysUntil(o.dueDate);
+    return d !== null && d >= 0 && d <= 7 && !["completed", "waived"].includes(o.status);
+  }).length;
+
   const open = allObligations.filter((o) => o.status === "open").length;
   const completed = allObligations.filter((o) => o.status === "completed").length;
 
@@ -69,44 +67,22 @@ export default async function ObligationsPage({
       </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4 flex items-center gap-3">
-          <AlertTriangle className="h-5 w-5 text-red-400" />
-          <div>
-            <p className="text-xl font-bold text-red-400">{overdue}</p>
-            <p className="text-xs text-[var(--color-ink-dim)]">Overdue</p>
-          </div>
-        </Card>
-        <Card className="p-4 flex items-center gap-3">
-          <Clock className="h-5 w-5 text-yellow-400" />
-          <div>
-            <p className="text-xl font-bold">{open}</p>
-            <p className="text-xs text-[var(--color-ink-dim)]">Open</p>
-          </div>
-        </Card>
-        <Card className="p-4 flex items-center gap-3">
-          <CheckCircle2 className="h-5 w-5 text-green-400" />
-          <div>
-            <p className="text-xl font-bold text-green-400">{completed}</p>
-            <p className="text-xs text-[var(--color-ink-dim)]">Completed</p>
-          </div>
-        </Card>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <ContractStat label="Overdue" value={overdue} accent={overdue > 0 ? "danger" : "neutral"} />
+        <ContractStat label="Due This Week" value={dueSoon} accent={dueSoon > 0 ? "warn" : "neutral"} />
+        <ContractStat label="Open" value={open} accent="neutral" />
+        <ContractStat label="Completed" value={completed} accent={completed > 0 ? "good" : "neutral"} />
       </div>
 
       {/* Filters */}
-      <Card className="p-4 flex flex-wrap gap-3">
-        {["", "open", "in_progress", "overdue", "completed", "waived"].map((s) => (
-          <Link
+      <Card className="p-4 flex flex-wrap gap-2">
+        {FILTER_STATUSES.map((s) => (
+          <ContractFilterChip
             key={s}
+            label={s === "" ? "All" : s.replace("_", " ")}
+            active={(sp.status ?? "") === s}
             href={`/contract-governance/obligations${s ? `?status=${s}` : ""}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              (sp.status ?? "") === s
-                ? "bg-indigo-500/30 text-indigo-300 border border-indigo-500/40"
-                : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"
-            }`}
-          >
-            {s === "" ? "All" : s.replace("_", " ")}
-          </Link>
+          />
         ))}
       </Card>
 
@@ -131,36 +107,39 @@ export default async function ObligationsPage({
                 {obligations.map((o) => {
                   const days = daysUntil(o.dueDate);
                   const isOverdue = days !== null && days < 0 && !["completed", "waived"].includes(o.status);
+                  const isDueSoon = !isOverdue && days !== null && days <= 7 && !["completed", "waived"].includes(o.status);
                   return (
-                    <tr key={o.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr
+                      key={o.id}
+                      className={`hover:bg-white/[0.02] transition-colors ${isOverdue ? "bg-red-500/[0.03]" : isDueSoon ? "bg-amber-500/[0.03]" : ""}`}
+                    >
                       <td className="px-4 py-3">
-                        <p className="font-medium">{o.title}</p>
+                        <p className={`font-medium ${isOverdue ? "text-red-400" : ""}`}>{o.title}</p>
                         {o.description && (
                           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5 line-clamp-1">{o.description}</p>
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <Link href={`/contract-governance/${o.contractId}`} className="text-indigo-400 hover:text-indigo-300 text-sm">
+                        <Link href={`/contract-governance/${o.contractId}`} className="text-[var(--color-blue)] hover:underline text-sm">
                           {o.contractTitle}
                         </Link>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={isOverdue ? "text-red-400" : ""}>
+                        <span className={isOverdue ? "text-red-400 font-medium" : isDueSoon ? "text-amber-400 font-medium" : ""}>
                           {formatDate(o.dueDate)}
                         </span>
                         {isOverdue && days !== null && (
                           <span className="ml-1 text-xs text-red-400">({Math.abs(days)}d overdue)</span>
                         )}
+                        {isDueSoon && days !== null && (
+                          <span className="ml-1 text-xs text-amber-400">({days}d)</span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${RISK_COLORS[o.riskLevel] ?? "bg-slate-500/20 text-slate-400"}`}>
-                          {o.riskLevel}
-                        </span>
+                        <ClauseRiskBadge level={o.riskLevel} />
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[o.status] ?? "bg-slate-500/20 text-slate-400"}`}>
-                          {o.status.replace("_", " ")}
-                        </span>
+                        <ObligationStatusBadge status={o.status} />
                       </td>
                     </tr>
                   );
