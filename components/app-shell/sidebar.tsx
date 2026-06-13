@@ -89,6 +89,7 @@ const groups: NavGroup[] = [
       { href: "/trust-api",               label: "Trust API Platform™",      icon: Zap },
       { href: "/trust-verification",         label: "Trust Verification™",      icon: BadgeCheck },
       { href: "/continuous-compliance",      label: "Continuous Compliance™",    icon: Cpu },
+      { href: "/agents",                      label: "Governance Agents™",        icon: Brain },
     ],
   },
 ];

@@ -4937,3 +4937,365 @@ export type ComplianceHealthScore  = typeof complianceHealthScores.$inferSelect;
 export type ComplianceException    = typeof complianceExceptions.$inferSelect;
 export type AutomationRule         = typeof automationRules.$inferSelect;
 export type ContinuousReadiness    = typeof continuousReadiness.$inferSelect;
+
+/* ============================================================
+   Module 29 — Governance Agent Framework™
+   ============================================================ */
+
+// Enums
+export const agentType = pgEnum("agent_type", [
+  "compliance", "risk", "vendor", "audit", "privacy",
+  "contract", "trust", "ai_governance", "custom",
+]);
+
+export const agentStatus = pgEnum("agent_status", [
+  "draft", "testing", "active", "paused", "disabled", "archived",
+]);
+
+export const agentExecutionMode = pgEnum("agent_execution_mode", [
+  "advisory", "approval_required", "autonomous",
+]);
+
+export const agentTriggerType = pgEnum("agent_trigger_type", [
+  "schedule", "event", "threshold", "workflow", "manual", "api",
+]);
+
+export const agentApprovalMode = pgEnum("agent_approval_mode", [
+  "manual", "manager", "role_based", "multi_level", "automatic",
+]);
+
+export const agentMemoryType = pgEnum("agent_memory_type", [
+  "observation", "recommendation", "action", "approval",
+  "conversation", "outcome", "learning",
+]);
+
+export const agentObservationType = pgEnum("agent_observation_type", [
+  "control_failure", "vendor_risk", "trust_decline", "policy_expiry",
+  "overdue_obligation", "privacy_risk", "audit_gap", "ai_risk",
+  "contract_risk", "compliance_signal", "custom",
+]);
+
+export const agentSeverity = pgEnum("agent_severity", [
+  "info", "low", "medium", "high", "critical",
+]);
+
+export const agentActionType = pgEnum("agent_action_type", [
+  "create_issue", "create_risk", "create_task", "create_treatment",
+  "launch_workflow", "assign_owner", "request_evidence", "generate_report",
+  "notify_stakeholder", "create_review", "schedule_audit",
+  "open_verification_review", "custom",
+]);
+
+export const agentRunStatus = pgEnum("agent_run_status", [
+  "running", "completed", "failed", "cancelled", "pending_approval",
+]);
+
+// Tables
+
+export const agents = pgTable(
+  "agents",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    name:           text("name").notNull(),
+    slug:           text("slug").notNull(),
+    description:    text("description"),
+    agentType:      agentType("agent_type").notNull().default("custom"),
+    status:         agentStatus("status").notNull().default("draft"),
+    executionMode:  agentExecutionMode("execution_mode").notNull().default("advisory"),
+    triggerType:    agentTriggerType("trigger_type").notNull().default("manual"),
+    triggerConfig:  jsonb("trigger_config").$type<Record<string, unknown>>().notNull().default({}),
+    prompt:         text("prompt"),
+    tools:          jsonb("tools").$type<string[]>().notNull().default([]),
+    approvalMode:   agentApprovalMode("approval_mode").notNull().default("manual"),
+    schedule:       text("schedule"),
+    successRate:    integer("success_rate").notNull().default(0),
+    totalRuns:      integer("total_runs").notNull().default(0),
+    lastRunAt:      timestamp("last_run_at", { withTimezone: true }),
+    version:        integer("version").notNull().default(1),
+    isBuiltin:      boolean("is_builtin").notNull().default(false),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agents_org").on(t.organizationId),
+    index("idx_agents_type").on(t.agentType),
+    index("idx_agents_status").on(t.status),
+  ]
+);
+
+export const agentRuns = pgTable(
+  "agent_runs",
+  {
+    id:                   uuid("id").primaryKey().defaultRandom(),
+    organizationId:       uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:              uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    status:               agentRunStatus("status").notNull().default("running"),
+    triggerType:          agentTriggerType("trigger_type"),
+    triggeredBy:          uuid("triggered_by").references(() => profiles.id, { onDelete: "set null" }),
+    context:              jsonb("context").$type<Record<string, unknown>>().notNull().default({}),
+    observationsCount:    integer("observations_count").notNull().default(0),
+    recommendationsCount: integer("recommendations_count").notNull().default(0),
+    actionsCount:         integer("actions_count").notNull().default(0),
+    errorMessage:         text("error_message"),
+    startedAt:            timestamp("started_at", { withTimezone: true }).defaultNow().notNull(),
+    completedAt:          timestamp("completed_at", { withTimezone: true }),
+    createdAt:            timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_runs_org").on(t.organizationId),
+    index("idx_agent_runs_agent").on(t.agentId),
+    index("idx_agent_runs_status").on(t.organizationId, t.status),
+    index("idx_agent_runs_started").on(t.organizationId, t.startedAt),
+  ]
+);
+
+export const agentMemory = pgTable(
+  "agent_memory",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:        uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    memoryType:     agentMemoryType("memory_type").notNull().default("observation"),
+    key:            text("key").notNull(),
+    value:          jsonb("value").$type<Record<string, unknown>>().notNull().default({}),
+    runId:          uuid("run_id").references(() => agentRuns.id, { onDelete: "set null" }),
+    expiresAt:      timestamp("expires_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_memory_org").on(t.organizationId),
+    index("idx_agent_memory_agent").on(t.agentId),
+    uniqueIndex("idx_agent_memory_key").on(t.agentId, t.key),
+  ]
+);
+
+export const agentObservations = pgTable(
+  "agent_observations",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:          uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    runId:            uuid("run_id").references(() => agentRuns.id, { onDelete: "set null" }),
+    title:            text("title").notNull(),
+    description:      text("description"),
+    observationType:  agentObservationType("observation_type").notNull().default("custom"),
+    severity:         agentSeverity("severity").notNull().default("medium"),
+    sourceModule:     text("source_module"),
+    sourceEntityId:   uuid("source_entity_id"),
+    sourceEntityType: text("source_entity_type"),
+    metadata:         jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    status:           text("status").notNull().default("new"),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_obs_org").on(t.organizationId),
+    index("idx_agent_obs_agent").on(t.agentId),
+    index("idx_agent_obs_severity").on(t.organizationId, t.severity),
+    index("idx_agent_obs_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const agentRecommendations = pgTable(
+  "agent_recommendations",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:          uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    runId:            uuid("run_id").references(() => agentRuns.id, { onDelete: "set null" }),
+    observationId:    uuid("observation_id").references(() => agentObservations.id, { onDelete: "set null" }),
+    title:            text("title").notNull(),
+    description:      text("description"),
+    reasoning:        text("reasoning"),
+    impact:           text("impact").notNull().default("medium"),
+    effort:           text("effort").notNull().default("medium"),
+    priority:         text("priority").notNull().default("medium"),
+    confidenceScore:  integer("confidence_score").notNull().default(75),
+    suggestedActions: jsonb("suggested_actions").$type<string[]>().notNull().default([]),
+    status:           text("status").notNull().default("pending"),
+    actionedBy:       uuid("actioned_by").references(() => profiles.id, { onDelete: "set null" }),
+    actionedAt:       timestamp("actioned_at", { withTimezone: true }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_recs_org").on(t.organizationId),
+    index("idx_agent_recs_agent").on(t.agentId),
+    index("idx_agent_recs_priority").on(t.organizationId, t.priority),
+    index("idx_agent_recs_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const agentActions = pgTable(
+  "agent_actions",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:          uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    runId:            uuid("run_id").references(() => agentRuns.id, { onDelete: "set null" }),
+    recommendationId: uuid("recommendation_id").references(() => agentRecommendations.id, { onDelete: "set null" }),
+    actionType:       agentActionType("action_type").notNull().default("custom"),
+    title:            text("title").notNull(),
+    description:      text("description"),
+    parameters:       jsonb("parameters").$type<Record<string, unknown>>().notNull().default({}),
+    status:           text("status").notNull().default("pending_approval"),
+    result:           jsonb("result").$type<Record<string, unknown>>().notNull().default({}),
+    errorMessage:     text("error_message"),
+    approvedBy:       uuid("approved_by").references(() => profiles.id, { onDelete: "set null" }),
+    approvedAt:       timestamp("approved_at", { withTimezone: true }),
+    executedAt:       timestamp("executed_at", { withTimezone: true }),
+    completedAt:      timestamp("completed_at", { withTimezone: true }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_actions_org").on(t.organizationId),
+    index("idx_agent_actions_agent").on(t.agentId),
+    index("idx_agent_actions_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const agentApprovals = pgTable(
+  "agent_approvals",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    actionId:       uuid("action_id").notNull().references(() => agentActions.id, { onDelete: "cascade" }),
+    approverId:     uuid("approver_id").references(() => profiles.id, { onDelete: "set null" }),
+    approvalLevel:  integer("approval_level").notNull().default(1),
+    status:         text("status").notNull().default("pending"),
+    notes:          text("notes"),
+    decidedAt:      timestamp("decided_at", { withTimezone: true }),
+    expiresAt:      timestamp("expires_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_approvals_org").on(t.organizationId),
+    index("idx_agent_approvals_action").on(t.actionId),
+    index("idx_agent_approvals_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const agentSchedules = pgTable(
+  "agent_schedules",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:        uuid("agent_id").notNull().references(() => agents.id, { onDelete: "cascade" }),
+    cronExpression: text("cron_expression"),
+    isActive:       boolean("is_active").notNull().default(true),
+    lastRunAt:      timestamp("last_run_at", { withTimezone: true }),
+    nextRunAt:      timestamp("next_run_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_schedules_org").on(t.organizationId),
+    index("idx_agent_schedules_agent").on(t.agentId),
+  ]
+);
+
+export const agentMetrics = pgTable(
+  "agent_metrics",
+  {
+    id:                    uuid("id").primaryKey().defaultRandom(),
+    organizationId:        uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    agentId:               uuid("agent_id").references(() => agents.id, { onDelete: "set null" }),
+    metricDate:            date("metric_date").notNull(),
+    totalRuns:             integer("total_runs").notNull().default(0),
+    successfulRuns:        integer("successful_runs").notNull().default(0),
+    failedRuns:            integer("failed_runs").notNull().default(0),
+    totalObservations:     integer("total_observations").notNull().default(0),
+    totalRecommendations:  integer("total_recommendations").notNull().default(0),
+    totalActions:          integer("total_actions").notNull().default(0),
+    approvedActions:       integer("approved_actions").notNull().default(0),
+    rejectedActions:       integer("rejected_actions").notNull().default(0),
+    timeSavedMinutes:      integer("time_saved_minutes").notNull().default(0),
+    createdAt:             timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_metrics_org").on(t.organizationId),
+    index("idx_agent_metrics_agent").on(t.agentId),
+    uniqueIndex("idx_agent_metrics_uniq").on(t.organizationId, t.agentId, t.metricDate),
+  ]
+);
+
+export const agentConversations = pgTable(
+  "agent_conversations",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    userId:         uuid("user_id").references(() => profiles.id, { onDelete: "set null" }),
+    agentId:        uuid("agent_id").references(() => agents.id, { onDelete: "set null" }),
+    role:           text("role").notNull().default("user"),
+    content:        text("content").notNull(),
+    metadata:       jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_conv_org").on(t.organizationId),
+    index("idx_agent_conv_user").on(t.userId),
+    index("idx_agent_conv_agent").on(t.agentId),
+    index("idx_agent_conv_time").on(t.organizationId, t.createdAt),
+  ]
+);
+
+export const agentEvents = pgTable(
+  "agent_events",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    eventType:      text("event_type").notNull(),
+    sourceModule:   text("source_module"),
+    payload:        jsonb("payload").$type<Record<string, unknown>>().notNull().default({}),
+    processed:      boolean("processed").notNull().default(false),
+    agentId:        uuid("agent_id").references(() => agents.id, { onDelete: "set null" }),
+    processedAt:    timestamp("processed_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_events_org").on(t.organizationId),
+    index("idx_agent_events_type").on(t.organizationId, t.eventType),
+    index("idx_agent_events_processed").on(t.organizationId, t.processed),
+  ]
+);
+
+export const agentOrchestrations = pgTable(
+  "agent_orchestrations",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:           text("name").notNull(),
+    description:    text("description"),
+    agentSequence:  jsonb("agent_sequence").$type<string[]>().notNull().default([]),
+    status:         text("status").notNull().default("idle"),
+    currentStep:    integer("current_step").notNull().default(0),
+    context:        jsonb("context").$type<Record<string, unknown>>().notNull().default({}),
+    startedAt:      timestamp("started_at", { withTimezone: true }),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_agent_orch_org").on(t.organizationId),
+    index("idx_agent_orch_status").on(t.organizationId, t.status),
+  ]
+);
+
+// Governance Agent Framework™ — inferred types
+export type Agent               = typeof agents.$inferSelect;
+export type AgentRun            = typeof agentRuns.$inferSelect;
+export type AgentMemoryRow      = typeof agentMemory.$inferSelect;
+export type AgentObservation    = typeof agentObservations.$inferSelect;
+export type AgentRecommendation = typeof agentRecommendations.$inferSelect;
+export type AgentAction         = typeof agentActions.$inferSelect;
+export type AgentApproval       = typeof agentApprovals.$inferSelect;
+export type AgentSchedule       = typeof agentSchedules.$inferSelect;
+export type AgentMetricsRow     = typeof agentMetrics.$inferSelect;
+export type AgentConversation   = typeof agentConversations.$inferSelect;
+export type AgentEvent          = typeof agentEvents.$inferSelect;
+export type AgentOrchestration  = typeof agentOrchestrations.$inferSelect;
+
