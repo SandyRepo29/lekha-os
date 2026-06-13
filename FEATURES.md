@@ -45,6 +45,7 @@
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-13)** | Page heading "Vendor Hub™"; export buttons in compact pill strip; MiniStat cards with border-l-2 accent bar; TrustScoreBadge inline in header badges row (redundant score box removed); TrustScoreWidget moved into Compliance tab; vendor-filters.tsx uses shared `lib/ui/colors` + `lib/ui-maps` (4 duplicate local helpers removed); emoji toggles replaced with icons |
 | **Vendor registry** | Create / edit / deactivate vendors; 25 fields including owner, contact, category, risk level |
 | **Vendor types / templates** | 7 built-in templates (Cloud, SaaS, IT Services, Finance, Staffing, Legal, General) with required + optional doc checklists |
 | **Document management** | Upload to private storage, type classification, issue/expiry dates, status tracking (valid / expiring / expired / missing) |
@@ -74,6 +75,7 @@
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-13)** | Dashboard heading "Evidence Vault™"; ComplianceStat upgraded with border-l-2 left accent bar + tinted background (danger/warn/good tones); Frameworks page: new 4-card stat strip (Total / Certified / In Progress / Avg Readiness); layout sub-nav border-b separator added; Reports page hardcoded colour replaced with CSS variable |
 | **Frameworks** | Create and manage compliance frameworks (ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA, custom) |
 | **Seeded controls** | 174 standard controls: ISO 27001 (93) · SOC 2 (33) · DPDP (18) · PCI DSS (12) · HIPAA (18) |
 | **Control management** | Per-control status (Implemented / Partial / Not Implemented / N/A), priority, owner, review date |
@@ -108,12 +110,13 @@
 
 ---
 
-## 🔍 Module 4 — Audit Management
+## 🔍 Module 4 — Audit Management™
 
 > Completed 2026-06-06
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-13)** | Dashboard heading "Audit Management™"; AuditStat upgraded with border-l-2 accent bar + tinted background; dashboard metric strip rebuilt using AuditStat components; AI Summary surfaced above program checklist on audit detail page; 4 dead icon imports removed |
 | **Audit lifecycle** | Plan → In Progress → Completed / Cancelled. Full CRUD with type (Internal / External / Vendor / Security / Compliance / Regulatory), scope, objective, auditor name, date range |
 | **Audit program** | Auto-generate checklist from linked compliance framework controls. Status per item: Pending / Reviewed / Passed / Failed |
 | **Findings** | Record audit findings with severity (Critical / High / Medium / Low) and status (Open / Remediating / Closed / Accepted). Linked to controls and evidence. Org-wide filterable list |

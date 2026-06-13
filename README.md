@@ -17,7 +17,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Evidence Vault™** — Compliance Management | ✅ Complete (8 phases) | `/compliance/*` |
 | **Settings & Org Management** | ✅ Complete (9 tabs) | `/settings/*` |
 | **Data Governance Phase 1** | ✅ Complete | `/settings/data-governance` |
-| **Audit Management** | ✅ Complete | `/audits/*` |
+| **Audit Management™** | ✅ Complete | `/audits/*` |
 | **Risk Lens™** | ✅ Complete | `/risks/*` |
 | **Trust Score™** | ✅ Complete | Vendor detail + API |
 | **Control Center™** | ✅ Complete (2026-06-07) | `/controls/*` |

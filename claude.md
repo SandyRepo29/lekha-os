@@ -367,7 +367,7 @@ Governance knowledge graph. 2 new tables: `graph_nodes` + `graph_edges`. New tab
 - Service: `lib/services/trust-score-service.ts` — gathers inputs, computes, persists, generates AI narrative via Gemini
 - Repo: `lib/repositories/trust-score-repo.ts` — `saveTrustScore()`, `getTrustHistory()`, `getOrgTrustMetrics()`
 - History table: `vendor_trust_history` — daily snapshots with all 6 component scores + trigger_event
-- UI: `TrustScoreWidget` (full breakdown, strengths/concerns, AI narrative) + `TrustScoreBadge` (inline level chip)
+- UI: `TrustScoreWidget` (full breakdown, strengths/concerns, AI narrative) — rendered inside the **Compliance tab** on vendor detail (not above the tabs); `TrustScoreBadge` (inline level chip in header badges row)
 - API: `GET /api/v1/vendors/[id]/trust-score` — score, components, history, narrative
 - Seed: `node scripts/seed-trust-scores.mjs` — scores all active vendors
 - Migration: `supabase/migrations/0010_trust_score.sql`
@@ -398,6 +398,8 @@ Governance knowledge graph. 2 new tables: `graph_nodes` + `graph_edges`. New tab
 | **Reports** | Per-audit: Full Report PDF · Findings PDF · CAPAs PDF · Findings CSV · CAPAs CSV |
 | **AI Auditor** | AI Executive Report (board narrative, cached); live NL chat ("Which CAPAs are overdue?", "Summarize my audit posture") |
 
+**UI polish (2026-06-13):** Dashboard heading "Audit Management™"; AuditStat upgraded with border-l-2 accent bar + tinted background; dashboard metric strip rebuilt using AuditStat components (was raw Card blocks); AI Summary panel surfaced above program checklist on audit detail page; 4 dead icon imports removed.
+
 ### Module 3 — Settings & Organization Management ✅ Complete
 
 8-tab settings layout at `/settings/*` mirroring the compliance sub-nav pattern.
@@ -426,9 +428,13 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 - **174 standard controls:** ISO 27001 (93) · SOC 2 (33) · DPDP (18) · PCI DSS (12) · HIPAA (18)
 - **Demo data:** 107 open gaps · 104 evidence mappings · 8 policies · realistic readiness scores
 
+**UI polish (2026-06-13):** Dashboard heading "Evidence Vault™"; ComplianceStat upgraded with border-l-2 left accent bar + tinted background (danger/warn/good); Frameworks page: new 4-card stat strip (Total / Certified / In Progress / Avg Readiness); layout sub-nav border-b separator added; Reports page hardcoded `text-indigo-400` replaced with `var(--color-blue)`.
+
 ### Module 1 — Vendor Governance ✅ Complete (Launch-Ready)
 
 25 features including: vendor registry, document management (AI extraction v2 — 10 fields), risk engine, security assessments, NL search (Gemini), executive PDFs, vendor portal (magic link), team RBAC, email cron jobs (expiry alerts + AI weekly digest).
+
+**UI polish (2026-06-13):** Page heading "Vendor Hub™"; export buttons grouped in compact pill strip; MiniStat cards with border-l-2 accent bar; TrustScoreBadge inline in header badges row (redundant standalone score box removed); TrustScoreWidget moved into Compliance tab on vendor detail (was between header and tabs); vendor-filters.tsx now uses shared `lib/ui/colors` + `lib/ui-maps` (4 duplicate local helper functions removed); emoji toggle buttons replaced with icon components.
 
 ---
 
@@ -983,11 +989,11 @@ components/
                                 AuditLogTable, ApiKeyManager, IntegrationGrid
   compliance/
     compliance-badges.tsx       All compliance status badges
-    compliance-ui.tsx           Shared helpers: ComplianceStat, FilterChip, CoverageBar
+    compliance-ui.tsx           Shared helpers: ComplianceStat (border-l-2 accent bar + tinted bg, danger/warn/good tones), FilterChip, CoverageBar
     [all other compliance components]
   audit/
     audit-status-badge.tsx      AuditStatusBadge, SeverityBadge, FindingStatusBadge, CapaStatusBadge, AuditTypeBadge
-    audit-ui.tsx                AuditStat, AuditFilterChip, formatDate, isDueSoon, isOverdue
+    audit-ui.tsx                AuditStat (border-l-2 accent bar + tinted bg), AuditFilterChip, formatDate, isDueSoon, isOverdue
     audit-ai-chat.tsx           AI Auditor NL chat (mirrors AiComplianceChat pattern)
     audit-detail-actions.tsx    Start/Complete/Cancel audit status buttons
     new-audit-form.tsx          Create audit form (useActionState)
