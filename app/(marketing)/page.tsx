@@ -225,6 +225,10 @@ export default function LandingPage() {
                 <span>Trust Intelligence™</span>
                 <span className="dot">·</span>
                 <span>Integration Hub™</span>
+                <span className="dot">·</span>
+                <span>AI Governance™</span>
+                <span className="dot">·</span>
+                <span>Trust Verification Authority™</span>
               </div>
             </div>
 
@@ -313,11 +317,11 @@ export default function LandingPage() {
                 <div className="metric__label">Pre-built Compliance Controls</div>
               </div>
               <div className="metric reveal" data-delay="80">
-                <div className="metric__num"><span className="counter" data-target="115">0</span><i>+</i></div>
+                <div className="metric__num"><span className="counter" data-target="170">0</span><i>+</i></div>
                 <div className="metric__label">Database Tables — Full Governance Data Model</div>
               </div>
               <div className="metric reveal" data-delay="160">
-                <div className="metric__num"><span className="counter" data-target="20">0</span></div>
+                <div className="metric__num"><span className="counter" data-target="27">0</span></div>
                 <div className="metric__label">Modules Live &amp; In Production</div>
               </div>
             </div>
@@ -558,6 +562,125 @@ export default function LandingPage() {
                   <li>Webhook Engine™</li>
                   <li>Connection Health™</li>
                   <li>AI Integration Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">⚙</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Workflow Studio™</h3>
+                <p>Governance automation engine — build approval workflows, automate evidence collection, and enforce policy gates.</p>
+                <ul className="pillar__feats">
+                  <li>Workflow Builder</li>
+                  <li>Approval Chains</li>
+                  <li>AI Workflow Generator™</li>
+                  <li>Trigger-based Automation</li>
+                  <li>Run History</li>
+                  <li>Cross-module Triggers</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🌐</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Trust Network™</h3>
+                <p>Public trust infrastructure — aggregate your governance posture into a live, shareable trust profile.</p>
+                <ul className="pillar__feats">
+                  <li>Trust Network Reputation™</li>
+                  <li>Public Trust Profile 2.0</li>
+                  <li>Governance Maturity™</li>
+                  <li>Industry Ranking™</li>
+                  <li>Trust Relationships™</li>
+                  <li>AI Trust Network Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">📈</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Executive Reporting &amp; Analytics™</h3>
+                <p>Role-specific dashboards, board reports, predictive forecasting, and executive scorecards.</p>
+                <ul className="pillar__feats">
+                  <li>6 Role Dashboards (CEO/CRO/CISO/Board)</li>
+                  <li>Board Reports™</li>
+                  <li>Predictive Analytics™</li>
+                  <li>KPI Engine™ — 10 live KPIs</li>
+                  <li>Executive Scorecards™</li>
+                  <li>AI Executive Analyst™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🤖</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>AI Governance™</h3>
+                <p>Responsible AI governance — inventory, risk, controls, compliance, and incident tracking for AI systems.</p>
+                <ul className="pillar__feats">
+                  <li>AI System Inventory™</li>
+                  <li>AI Trust Score™</li>
+                  <li>AI Risk Register™</li>
+                  <li>EU AI Act · ISO 42001 · NIST AI RMF</li>
+                  <li>AI Incident Tracker™</li>
+                  <li>AI Governance Copilot™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🤝</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Auditor Collaboration™</h3>
+                <p>Secure audit rooms for external auditors — evidence exchange, findings, assessments, and AI readiness analysis.</p>
+                <ul className="pillar__feats">
+                  <li>Audit Room™</li>
+                  <li>Evidence Exchange™</li>
+                  <li>External Findings™</li>
+                  <li>Assessment Projects™</li>
+                  <li>Auditor User Management™</li>
+                  <li>AI Audit Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🔌</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Trust API Platform™</h3>
+                <p>Turn AUDT into trust infrastructure — 8 API products, webhooks, developer portal, and usage analytics.</p>
+                <ul className="pillar__feats">
+                  <li>8 API Products</li>
+                  <li>API Key Manager™</li>
+                  <li>Webhook Engine™</li>
+                  <li>Developer Portal™</li>
+                  <li>API Analytics™</li>
+                  <li>AI API Builder™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">✅</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Trust Verification Authority™</h3>
+                <p>Issue, revoke, and publicly verify trust certificates — transforming AUDT into a Trust Authority.</p>
+                <ul className="pillar__feats">
+                  <li>10 Verification Programs™</li>
+                  <li>Trust Certificates™</li>
+                  <li>Public Verify Page</li>
+                  <li>Verification Registry™</li>
+                  <li>Trust Passport™</li>
+                  <li>AI Verification Advisor™</li>
                 </ul>
               </article>
 
@@ -818,6 +941,8 @@ export default function LandingPage() {
                 <div className="arch__node">Issues</div>
                 <div className="arch__node">Privacy</div>
                 <div className="arch__node">Trust Exchange</div>
+                <div className="arch__node">AI Systems</div>
+                <div className="arch__node">Certificates</div>
               </div>
             </div>
           </div>
@@ -856,7 +981,7 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">What&apos;s Built</span>
-              <h2>20 Modules. One Governance OS.</h2>
+              <h2>27 Modules. One Governance OS.</h2>
               <p>AUDT is the most complete AI-native governance platform available — every module is live and in production.</p>
             </div>
             <div className="roadmap-grid">
@@ -893,7 +1018,18 @@ export default function LandingPage() {
                   <div className="rmap__item rmap__item--done">✓ Integration Hub™ — 35+ connectors</div>
                 </div>
               </div>
-              <div className="rmap rmap--vision reveal" data-delay="240">
+              <div className="rmap rmap--done reveal" data-delay="240">
+                <div className="rmap__label">Trust Infrastructure</div>
+                <div className="rmap__items">
+                  <div className="rmap__item rmap__item--done">✓ Trust Network™</div>
+                  <div className="rmap__item rmap__item--done">✓ Executive Reporting &amp; Analytics™</div>
+                  <div className="rmap__item rmap__item--done">✓ AI Governance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Auditor Collaboration™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust API Platform™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Verification Authority™</div>
+                </div>
+              </div>
+              <div className="rmap rmap--vision reveal" data-delay="320">
                 <div className="rmap__label">Vision</div>
                 <div className="rmap__vision">
                   <span className="grad-text">Governance OS</span>
@@ -910,7 +1046,7 @@ export default function LandingPage() {
             <div className="cta-final__badge">audt.tech</div>
             <h2>Stop Managing Governance In Silos.</h2>
             <p>
-              Unify vendors, risk, compliance, audits, controls, policies, contracts, privacy, and trust — 20 modules, one Governance OS.
+              Unify vendors, risk, compliance, audits, controls, policies, contracts, privacy, AI governance, and trust — 27 modules, one Governance OS.
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
