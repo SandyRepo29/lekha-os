@@ -1,5 +1,3 @@
-"use server";
-
 import { getAI, AI_MODEL, isAIConfigured } from "@/lib/providers/ai";
 import { db } from "@/lib/db";
 import { aiComplianceInsights } from "@/lib/db/schema";
