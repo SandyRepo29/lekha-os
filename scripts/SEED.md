@@ -61,9 +61,14 @@ node scripts/seed-vendor-extras.mjs      # vendor portal tokens, extra metadata
 node scripts/seed-trust-exchange.mjs     # trust profile, docs, badges, questionnaire
 node scripts/seed-benchmarking.mjs       # governance benchmark snapshot + scores
 node scripts/seed-integration-hub.mjs    # 5 connected integrations + sync history
-node scripts/seed-trust-network.mjs      # profile views, network activity, followers ← NEW
+node scripts/seed-trust-network.mjs      # profile views, network activity, followers
 
-# 10. Optional: E2E test user
+# 10. Advanced Modules
+node scripts/seed-executive-reporting.mjs   # 10 KPIs, 5 snapshots, 3 reports, 2 schedules, 9 forecasts
+node scripts/seed-ai-governance.mjs         # 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 incidents
+node scripts/seed-auditor-collaboration.mjs # 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
+
+# 11. Optional: E2E test user
 node scripts/seed-e2e.mjs               # E2E test user + workspace
 ```
 
@@ -177,11 +182,29 @@ node scripts/seed-e2e.mjs               # E2E test user + workspace
 |---|---|---|
 | `seed-integration-hub.mjs` | 5 connected integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack) · sync history · governance events · webhooks | ✅ |
 
-### Trust Network™ (Module 18) ← NEW
+### Trust Network™ (Module 18)
 
 | Script | What it seeds | Idempotent |
 |---|---|---|
 | `seed-trust-network.mjs` | 47 anonymous profile views (30-day window) · 12 Trust Network™ activity milestones · 1 network follower (if 2nd org exists) · ensures profile is published with score 92 | ✅ |
+
+### Executive Reporting & Analytics™ (Module 19)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-executive-reporting.mjs` | 10 KPIs + 5 governance snapshots + 3 board reports + 2 schedules + 9 forecasts (3 metrics × 3 horizons) | ✅ |
+
+### AI Governance™ (Module 20)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-ai-governance.mjs` | 8 AI systems · 5 AI vendors · 10 AI risks · 6 controls · 4 policies · 4 incidents · 6 compliance records | ✅ |
+
+### Auditor Collaboration™ (Module 21)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-auditor-collaboration.mjs` | 3 auditor organisations (Deloitte, KPMG, Nishith Desai) · 8 external users (ISO, SOC 2, DPDP, AI Governance auditors) · 4 audit rooms (ISO 27001, SOC 2 Type II, DPDP, AI Governance) · 12 evidence requests · 8 external findings · 4 assessment projects · 5 audit reviews · 7 room documents · 20 room activities | ✅ |
 
 ### Testing
 
@@ -227,3 +250,12 @@ node scripts/seed-trust-network.mjs
 | Benchmark snapshots | 1 (+ 6-month trends) |
 | Connected integrations | 5 |
 | Governance snapshots | 90 |
+| AI systems | 8 |
+| AI risks | 10 |
+| AI incidents | 4 |
+| Auditor organisations | 3 |
+| External users | 8 |
+| Audit rooms | 4 |
+| Evidence requests | 12 |
+| External findings | 8 |
+| Assessment projects | 4 |

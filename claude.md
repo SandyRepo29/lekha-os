@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · **Executive Reporting & Analytics™**
-- **Total tables:** 126 (117 previous + 9 analytics tables from migration 0024)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · **Auditor Collaboration™**
+- **Total tables:** 149 (137 previous + 12 Auditor Collaboration tables from migration 0026)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -233,6 +233,8 @@ node scripts/seed-compliance-demo.mjs               # optional: realistic demo s
 node scripts/seed-risk-lens.mjs                     # optional: 20 risks + treatments + reviews
 node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ for all active vendors (19 vendors scored, HDFC 95 → Yotta 44)
 node scripts/seed-executive-reporting.mjs           # optional: Executive Reporting™ — 10 KPIs, 5 snapshots, 3 reports, 2 schedules, 9 forecasts
+node scripts/seed-ai-governance.mjs                # optional: AI Governance™ — 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 policies, 4 incidents, 6 compliance records
+node scripts/seed-auditor-collaboration.mjs        # optional: Auditor Collaboration™ — 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
 ```
 
 ---
@@ -635,6 +637,40 @@ GET /api/v1/trust-network                   Network dashboard (?view=directory|r
 /executive-reporting/ai                     AI Executive Analyst™ (summary + board report + trend analysis + chat)
 GET /api/v1/analytics                       KPIs + snapshots + forecasts + schedules (?view=kpis|snapshots|forecasts)
 
+--- AI Governance™ ---
+/ai-governance                              Hub (KPI strip + module nav grid + recent systems + incidents)
+/ai-governance/inventory                    AI System Inventory™ (filterable registry with type/risk/status/trust badges)
+/ai-governance/risks                        AI Risk Register™ (risk list with category labels and level badges)
+/ai-governance/controls                     AI Controls™ (controls table with category and effectiveness)
+/ai-governance/vendors                      AI Vendor Cards™ (vendor cards with privacy/security posture)
+/ai-governance/compliance                   AI Compliance™ (framework cards with readiness progress bars)
+/ai-governance/incidents                    AI Incidents™ (incident list with severity/status badges)
+/ai-governance/ai                           AI Governance Copilot™ (summary + risk advisory + compliance readiness + NL chat)
+GET /api/v1/ai/systems                      AI system list (?status=, ?riskLevel=, ?systemType=)
+POST /api/v1/ai/systems                     Create AI system (read_write key)
+GET /api/v1/ai/risks                        AI risk list (?status=, ?riskLevel=, ?systemId=)
+POST /api/v1/ai/risks                       Create AI risk (read_write key)
+GET /api/v1/ai/compliance                   AI compliance records (?framework=)
+
+--- Auditor Collaboration™ ---
+/auditor-collaboration                      Hub (KPI strip + module nav + recent rooms + findings)
+/auditor-collaboration/rooms                Audit Room list (filter by status, type, framework)
+/auditor-collaboration/rooms/new            Create audit room
+/auditor-collaboration/rooms/[id]           Room detail (evidence requests, findings, assessments, activity, documents)
+/auditor-collaboration/evidence             Org-wide evidence requests (Accept/Reject actions)
+/auditor-collaboration/findings             Org-wide external findings (status update inline)
+/auditor-collaboration/users                External user registry (invite, revoke)
+/auditor-collaboration/assessments          Assessment project progress cards
+/auditor-collaboration/ai                   AI Audit Advisor™ (readiness summary + evidence gap analysis + NL chat)
+GET /api/v1/audit-rooms                     Audit room list (?status=, ?framework=, ?type=)
+POST /api/v1/audit-rooms                    Create audit room (read_write key)
+GET /api/v1/evidence-requests               Evidence requests (?status=, ?roomId=)
+POST /api/v1/evidence-requests              Create evidence request (read_write key)
+GET /api/v1/external-findings               External findings (?status=, ?severity=, ?roomId=)
+POST /api/v1/external-findings              Create finding (read_write key)
+GET /api/v1/external-users                  External user list (?status=)
+POST /api/v1/external-users                 Invite external user (read_write key)
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -936,6 +972,7 @@ supabase/
     0020_trust_exchange.sql     Third-Party Risk Exchange™ — 7 enums + trust_profiles + trust_documents + trust_shares + trust_questionnaires + trust_answers + trust_verifications + trust_badges + trust_relationships + trust_activity + RLS ✅ APPLIED
     0021_benchmarking.sql       Governance Benchmarking™ — 3 enums + benchmark_industries + benchmark_snapshots + benchmark_scores + benchmark_trends + RLS + seeded baselines ✅ APPLIED
     0024_executive_reporting.sql Executive Reporting & Analytics™ — analytics_dashboards + analytics_widgets + analytics_reports + analytics_schedules + analytics_snapshots + analytics_exports + analytics_forecasts + analytics_subscriptions + analytics_kpis + RLS ✅ APPLIED
+    0025_ai_governance.sql      AI Governance™ — 8 enums + ai_systems + ai_vendors + ai_risks + ai_controls + ai_policies + ai_assessments + ai_incidents + ai_compliance + ai_trust_scores + ai_system_controls + ai_system_risks + RLS ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -1184,6 +1221,66 @@ Executive command center with role-specific dashboards, board reporting, predict
 - Routes: `/executive-reporting/*` (7 pages: Hub · Dashboard/[type] · Analytics · Board Reports · Scheduled · Forecasts · Scorecards · AI)
 - Seed: `node scripts/seed-executive-reporting.mjs`
 
+### Module 20 — AI Governance™ ✅ Complete (2026-06-13)
+
+Responsible AI governance platform for managing AI systems, risks, controls, vendors, compliance frameworks, and incidents. 11 new tables: `ai_systems`, `ai_vendors`, `ai_risks`, `ai_controls`, `ai_policies`, `ai_assessments`, `ai_incidents`, `ai_compliance`, `ai_trust_scores`, `ai_system_controls`, `ai_system_risks`.
+
+| Feature | Detail |
+|---|---|
+| **AI System Inventory™** | Registry of all AI systems — type, vendor, risk classification, deployment env, approval status, AI Trust Score™ |
+| **AI Trust Score™** | 6-component 0–100 engine: Risk(25%) + Controls(25%) + Compliance(20%) + Monitoring(15%) + Vendor(10%) + Incidents(5%); trust levels Trusted→Restricted |
+| **AI Risk Register™** | 13 risk categories: hallucination, bias, privacy leakage, copyright risk, prompt injection, data poisoning, model drift, regulatory risk, security risk, vendor dependency, explainability risk, autonomous decision risk, other |
+| **AI Controls™** | 11 control categories: human oversight, output review, prompt logging, model approval, data classification, access control, vendor review, model monitoring, content filtering, red team testing, other |
+| **AI Vendor Cards™** | AI vendor registry with privacy/security posture indicators and contract status |
+| **AI Compliance™** | 6 frameworks: ISO 42001, NIST AI RMF, EU AI Act, OECD AI Principles, DPDP AI, Internal — readiness scores + progress bars |
+| **AI Incident Tracker™** | Full incident lifecycle: open → investigating → contained → resolved — severity badges, root cause, remediation |
+| **AI Governance Copilot™** | Governance summary (cached 24h), AI Risk Advisory™ (5 recommendations), Compliance Readiness™ analysis, multi-turn NL chat |
+| **REST API** | 3 endpoints: GET/POST /api/v1/ai/systems, risks, compliance |
+
+- Service: `lib/services/ai-governance/ai-governance-service.ts`
+- AI service: `lib/services/ai-governance/ai-copilot-service.ts`
+- Repo: `lib/repositories/ai-governance-repo.ts`
+- Actions: `lib/ai-governance/actions.ts`
+- Migration: `supabase/migrations/0025_ai_governance.sql` ✅ APPLIED
+- Routes: `/ai-governance/*` (8 pages: Hub · Inventory · Risks · Controls · Vendors · Compliance · Incidents · AI Copilot)
+- Seed: `node scripts/seed-ai-governance.mjs`
+
+### Module 21 — Auditor Collaboration™ ✅ Complete (2026-06-13)
+
+External auditor engagement platform — secure audit rooms, evidence exchange, external findings, assessment projects, and AI audit readiness analysis.
+
+| Feature | Detail |
+|---|---|
+| **Audit Room™** | Scoped workspace per audit engagement — ISO 27001, SOC 2, DPDP, AI Governance, custom |
+| **Evidence Exchange™** | Auditors request evidence; internal team submits, accepts, or rejects with notes |
+| **External Findings™** | Auditors raise non-conformances, recommendations, and opportunities; internal team tracks remediation |
+| **Assessment Projects™** | Track assessment progress: milestones, completion %, open findings, pending evidence per engagement |
+| **Auditor User Management™** | Invite external auditors, assessors, legal counsel, and customer reviewers with room-level RBAC |
+| **Auditor Organisations™** | Registry of audit firms, law firms, and consulting partners with specializations |
+| **Room Documents™** | Share AUDT-generated documents (exports, PDFs, CSVs) directly into audit rooms |
+| **Room Activity™** | Timestamped audit trail of all evidence requests, findings, submissions, and status changes |
+| **Audit Reviews™** | Per-reviewer review assignments across controls, documents, AI systems, and policies |
+| **AI Audit Advisor™** | AI-powered audit readiness summary (cached 24h), evidence gap analysis (top 5 gaps), AI finding drafter, multi-turn NL chat |
+| **REST API** | 4 endpoints: GET/POST /api/v1/audit-rooms, evidence-requests, external-findings, external-users |
+
+- Service: `lib/services/auditor-collaboration/auditor-collaboration-service.ts`
+- AI service: `lib/services/auditor-collaboration/ai-auditor-service.ts`
+- Repo: `lib/repositories/auditor-collaboration-repo.ts`
+- Actions: `lib/auditor-collaboration/actions.ts`
+- Migration: `supabase/migrations/0026_auditor_collaboration.sql` ✅ APPLIED
+- Routes: `/auditor-collaboration/*` (9 pages: Hub · Rooms · Room Detail · Evidence · Findings · Users · Assessments · AI Advisor)
+- Seed: `node scripts/seed-auditor-collaboration.mjs`
+
+**Evidence request types:** `policy` · `control_test` · `audit_log` · `risk_register` · `vendor_assessment` · `privacy_record` · `contract` · `ai_assessment` · `custom`
+
+**Finding types:** `non_conformance` · `minor_nc` · `major_nc` · `observation` · `recommendation` · `opportunity`
+
+**Finding statuses:** `open` · `in_remediation` · `verified` · `closed` · `accepted`
+
+**User types:** `iso_auditor` · `soc_auditor` · `dpdp_assessor` · `security_assessor` · `privacy_consultant` · `ai_governance_reviewer` · `customer_reviewer` · `third_party_reviewer`
+
+**12 DB tables (migration 0026):** `auditor_organizations` · `external_users` · `audit_rooms` · `audit_room_documents` · `audit_room_activities` · `evidence_requests` · `evidence_responses` · `audit_reviews` · `external_comments` · `external_findings` · `external_assessments` · `external_permissions`
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1194,7 +1291,8 @@ Executive command center with role-specific dashboards, board reporting, predict
 | Workflow Studio™ | Governance automation engine — workflows, approvals, AI generator | ✅ Complete (2026-06-10) |
 | Third-Party Risk Exchange™ | Trust Network — vendor trust profiles, evidence exchange, badges, directory, AI trust scoring | ✅ Complete (2026-06-11) |
 | Executive Reporting & Analytics™ | Role dashboards, board reports, forecasting, scorecards, AI executive analyst | ✅ Complete (2026-06-12) |
-| AI Governance | AI model risk, responsible AI frameworks | Future |
+| AI Governance™ | AI model risk, responsible AI frameworks, EU AI Act | ✅ Complete (2026-06-13) |
+| Auditor Collaboration™ | External auditor rooms, evidence exchange, findings, AI readiness advisor | ✅ Complete (2026-06-13) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
@@ -1288,6 +1386,8 @@ node scripts/seed-compliance-demo.mjs
 node scripts/seed-e2e.mjs
 node scripts/check-db.mjs
 node scripts/seed-executive-reporting.mjs           # Executive Reporting™ KPIs, snapshots, reports, schedules, forecasts
+node scripts/seed-ai-governance.mjs                # AI Governance™ — 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 policies, 4 incidents, 6 compliance records
+node scripts/seed-auditor-collaboration.mjs        # Auditor Collaboration™ — 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
 
 # Tests
 npm run test                   # 201 Vitest tests
