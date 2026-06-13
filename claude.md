@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · **Trust API Platform™**
-- **Total tables:** 158 (149 previous + 9 Trust API Platform tables from migration 0027)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · **Trust Verification Authority™**
+- **Total tables:** 170 (158 previous + 12 Trust Verification Authority tables from migration 0028)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -235,6 +235,7 @@ node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ f
 node scripts/seed-executive-reporting.mjs           # optional: Executive Reporting™ — 10 KPIs, 5 snapshots, 3 reports, 2 schedules, 9 forecasts
 node scripts/seed-ai-governance.mjs                # optional: AI Governance™ — 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 policies, 4 incidents, 6 compliance records
 node scripts/seed-auditor-collaboration.mjs        # optional: Auditor Collaboration™ — 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
+node scripts/seed-trust-verification.mjs           # optional: Trust Verification Authority™ — AUDT Verified™ (cert+badge), Privacy Ready™ (cert), Enterprise Ready™ (pending)
 ```
 
 ---
@@ -670,6 +671,28 @@ GET /api/v1/external-findings               External findings (?status=, ?severi
 POST /api/v1/external-findings              Create finding (read_write key)
 GET /api/v1/external-users                  External user list (?status=)
 POST /api/v1/external-users                 Invite external user (read_write key)
+
+--- Trust Verification Authority™ ---
+/trust-verification                         Hub (KPI strip + module nav + recent applications + event feed)
+/trust-verification/programs               Verification Programs™ (10 built-in + custom)
+/trust-verification/applications           Applications list (status, readiness progress)
+/trust-verification/applications/new       Apply for verification (program selector + workflow explainer)
+/trust-verification/applications/[id]      Application detail (readiness, evidence, reviews, decision)
+/trust-verification/certificates           Trust Certificates™ (cert number, hash, verify link)
+/trust-verification/badges                 Trust Badges™ (badge grid + lifecycle legend)
+/trust-verification/registry               Verification Registry™ (public, searchable)
+/trust-verification/passports              Trust Passport™ (aggregated certs + badges)
+/trust-verification/monitoring             Monitoring (health, suspension rules, event feed)
+/trust-verification/renewals               Renewal Management™ (due dates, Start Renewal)
+/trust-verification/ai                     AI Verification Advisor™ (summary + eligibility + chat)
+/verify/[id]                               Public certificate verify page (no auth) — Valid/Revoked/Expired
+GET /api/v1/verifications                  Verification list (?status=)
+POST /api/v1/verifications                 Apply for verification (read_write key)
+GET /api/v1/verifications/[id]             Single verification detail
+GET /api/v1/certificates                   Certificate list
+GET /api/v1/registry                       Public registry (no auth)
+GET /api/v1/trust-passports                Org trust passport
+GET /api/v1/verification-programs         All verification programs (no auth)
 
 --- Trust API Platform™ ---
 /trust-api                                  Hub (KPI strip + module nav + recent clients + webhook events)
@@ -1318,6 +1341,36 @@ External auditor engagement platform — secure audit rooms, evidence exchange, 
 **User types:** `iso_auditor` · `soc_auditor` · `dpdp_assessor` · `security_assessor` · `privacy_consultant` · `ai_governance_reviewer` · `customer_reviewer` · `third_party_reviewer`
 
 **12 DB tables (migration 0026):** `auditor_organizations` · `external_users` · `audit_rooms` · `audit_room_documents` · `audit_room_activities` · `evidence_requests` · `evidence_responses` · `audit_reviews` · `external_comments` · `external_findings` · `external_assessments` · `external_permissions`
+
+### Module 23 — Trust Verification Authority™ ✅ Complete (2026-06-13)
+
+Transforms AUDT into a Trust Authority — verify, certify, publish, revoke, and validate trust. 12 new DB tables, 10 built-in programs, public `/verify/[id]` page.
+
+| Feature | Detail |
+|---|---|
+| **Verification Programs™** | 10 built-in (AUDT Verified™, Trusted Vendor™, Privacy Ready™, AI Governed™, Risk Managed™, Enterprise Ready™, Audit Ready™, Compliance Ready™, DPDP Ready™, ISO Ready™) + custom |
+| **9-step Workflow** | Application → Eligibility → Evidence Review → Control Validation → Risk Review → Assessment → Decision → Certificate Issued → Registry Published |
+| **Verification Levels** | Level 1 (Verified) · Level 2 (Trusted) · Level 3 (Advanced) · Level 4 (Trust Leader) |
+| **Trust Certificates™** | Auto-issued on approval; cert number `AUDT-YYYY-XXXXXX`; SHA-256 hash; public verify URL |
+| **Public Verify Page** | `/verify/[id]` — no auth; shows Valid (green) or Revoked/Expired (red) with cert details |
+| **Readiness Score™** | 7-component pure engine: trustScore(25%) + controlHealth(20%) + complianceCoverage(15%) + riskPosture(15%) + privacyTrust(10%) + aiGovernance(10%) + monitoringHealth(5%) |
+| **Continuous Monitoring** | 7 auto-suspension rules; event feed; expiring certs alert |
+| **Renewal Management™** | Auto-scheduled; due-soon alerts; Start Renewal workflow |
+| **AI Verification Advisor™** | Platform summary (cached 24h) · eligibility analysis · NL chat |
+| **REST API** | 7 endpoints — verifications, certificates, registry (public), trust-passports, verification-programs (public) |
+
+- Pure engine: `lib/services/verification-readiness.ts`
+- Service: `lib/services/trust-verification/trust-verification-service.ts`
+- AI service: `lib/services/trust-verification/ai-trust-verification-service.ts`
+- Repo: `lib/repositories/trust-verification-repo.ts`
+- Actions: `lib/trust-verification/actions.ts`
+- Migration: `supabase/migrations/0028_trust_verification_authority.sql`
+- Routes: `/trust-verification/*` (12 pages) + `/verify/[id]` (public)
+- Seed: `node scripts/seed-trust-verification.mjs`
+
+**12 DB tables (migration 0028):** `verification_programs` · `tva_verifications` · `verification_reviews` · `verification_evidence` · `verification_badges` · `verification_certificates` · `verification_registry` · `verification_events` · `verification_renewals` · `verification_assessments` · `verification_decisions` · `verification_auditors`
+
+**CRITICAL — `tva_verifications` naming:** The Trust Exchange module (migration 0020) already has a `trust_verifications` table (Drizzle export: `trustVerifications`). TVA uses `tva_verifications` (Drizzle export: `tvaVerifications`) to avoid the collision. Never rename this back.
 
 ### Module 22 — Trust API Platform™ ✅ Complete (2026-06-13)
 

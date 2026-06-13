@@ -1029,4 +1029,15 @@ Then set `E2E_USER_EMAIL` + `E2E_USER_PASSWORD` in `.env.local` and run `npm run
 | `network_profile_views` | 47 (anonymous views across 30-day window) | seed-trust-network |
 | `network_followers` | 0–1 (1 if 2nd org exists) | seed-trust-network |
 
-> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.
+| `verification_programs` | 10 built-in (AUDT Verified™, Trusted Vendor™, Privacy Ready™, AI Governed™, Risk Managed™, Enterprise Ready™, Audit Ready™, Compliance Ready™, DPDP Ready™, ISO Ready™) | seed-trust-verification |
+| `tva_verifications` | 3 (AUDT Verified™ approved, Privacy Ready™ approved, Enterprise Ready™ pending) | seed-trust-verification |
+| `verification_reviews` | 2 (eligibility + full review per approved application) | seed-trust-verification |
+| `verification_evidence` | 1 (Enterprise Ready™ — control test submitted) | seed-trust-verification |
+| `verification_certificates` | 2 (AUDT-2026-A1B2C3, AUDT-2026-D4E5F6 — active) | seed-trust-verification |
+| `verification_badges` | 2 (AUDT Verified™ + Privacy Ready™ — active) | seed-trust-verification |
+| `verification_registry` | 2 (public registry entries) | seed-trust-verification |
+| `verification_events` | 4 (applied, reviewed, approved, certificate_issued) | seed-trust-verification |
+| `verification_renewals` | 2 (scheduled at cert expiry − 30 days) | seed-trust-verification |
+| `verification_decisions` | 2 (approved with rationale) | seed-trust-verification |
+
+> After running all seeds, **every module has complete, realistic demo data** — no modules require manual setup. Visit `/trust-verification` for the Trust Verification Authority™ hub, `/verify/AUDT-2026-A1B2C3` for the public certificate verify page, `/trust-network` for the Network Reputation™ dashboard, `/benchmarking` for industry peer comparison, `/trust-intelligence` for Org Trust Score™ with 14-day trends, `/trust-intelligence/monitoring` to run governance alerts, and `/integration-hub` to see the Connector Marketplace with 5 live integrations and open governance events.

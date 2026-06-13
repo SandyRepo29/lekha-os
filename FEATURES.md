@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **26 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · **Trust API Platform™**
+> Modules: **27 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · **Trust Verification Authority™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -1131,6 +1131,37 @@ Every piece of trust data inside AUDT becomes API-accessible — from vendor tru
 ### Authentication
 
 All public API endpoints use Bearer token auth via AUDT's existing `validateApiKey()` middleware — same bcrypt validation as the REST API v1. Keys are namespaced with `tap_` prefix to distinguish platform keys from internal API keys.
+
+---
+
+## 🔏 Module 23 — Trust Verification Authority™ (TVA™)
+
+> Completed 2026-06-13
+
+Transforms AUDT from Governance OS + Trust Platform into a **Trust Authority** — verify, certify, publish, revoke, and validate trust for organizations, vendors, AI systems, and governance programs.
+
+| Feature | Detail |
+|---|---|
+| **Verification Programs™** | 10 built-in programs: AUDT Verified™ · Trusted Vendor™ · Privacy Ready™ · AI Governed™ · Risk Managed™ · Enterprise Ready™ · Audit Ready™ · Compliance Ready™ · DPDP Ready™ · ISO Ready™ · Custom programs |
+| **9-step Verification Workflow** | Application → Eligibility Check → Evidence Review → Control Validation → Risk Review → Assessment → Decision → Certificate Issued → Registry Published |
+| **Verification Levels** | Level 1 (Verified) · Level 2 (Trusted) · Level 3 (Advanced) · Level 4 (Trust Leader) |
+| **Trust Certificates™** | Auto-issued on approval — cert number `AUDT-YYYY-XXXXXX`, SHA-256 integrity hash, public URL |
+| **Public Verification URL** | `https://audt.tech/verify/AUDT-2026-000001` — unauthenticated verify page with Valid/Revoked status |
+| **Verification Readiness Score™** | 7-component pure engine: trustScore(25%) + controlHealth(20%) + complianceCoverage(15%) + riskPosture(15%) + privacyTrust(10%) + aiGovernance(10%) + monitoringHealth(5%) |
+| **Certificate Lifecycle** | issued → active → renewal_due → expired OR suspended → revoked |
+| **Trust Badges™** | Auto-issued badges per program; badge lifecycle (active/suspended/revoked/expired) |
+| **Trust Passport™** | Aggregated view of all active certs + badges per org |
+| **Verification Registry™** | Public trust registry — searchable, filterable, with verify links |
+| **Continuous Monitoring** | 7 automated suspension rules: trust score drop, control failures, evidence expiry, critical findings, open risks, non-disclosure, overdue reviews |
+| **Renewal Management™** | Auto-scheduled renewals at cert expiry; due-soon alerts; Start Renewal workflow |
+| **Evidence Exchange** | Submit evidence per application; Accept/Reject/Requires Update per review |
+| **Decision Engine** | Approve/Conditionally Approve/Reject/Suspend decisions with rationale + history |
+| **AI Verification Advisor™** | Platform summary (cached 24h), eligibility analysis, NL chat |
+| **REST API** | GET/POST `/api/v1/verifications` · GET `/api/v1/verifications/[id]` · GET `/api/v1/certificates` · GET `/api/v1/registry` · GET `/api/v1/trust-passports` · GET `/api/v1/verification-programs` |
+| **Navigation** | Sidebar "Trust Verification Authority™" with BadgeCheck icon, between Trust API Platform™ and Trust Network™ |
+| **Sub-pages** | Hub · Programs · Applications · Applications/New · Application Detail · Certificates · Badges · Registry · Passports · Monitoring · Renewals · AI Advisor |
+| **DB tables** | 12 new tables (migration 0028): `verification_programs` · `tva_verifications` · `verification_reviews` · `verification_evidence` · `verification_badges` · `verification_certificates` · `verification_registry` · `verification_events` · `verification_renewals` · `verification_assessments` · `verification_decisions` · `verification_auditors` |
+| **Seed** | `node scripts/seed-trust-verification.mjs` — AUDT Verified™ (approved+cert+badge) · Privacy Ready™ (approved+cert) · Enterprise Ready™ (pending+evidence) |
 
 ---
 

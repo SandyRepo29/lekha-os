@@ -4254,3 +4254,245 @@ export type TapWebhookDelivery  = typeof tapWebhookDeliveries.$inferSelect;
 export type TapRateLimit        = typeof tapRateLimits.$inferSelect;
 export type TapAuditEvent       = typeof tapAuditEvents.$inferSelect;
 export type AiTrustScore       = typeof aiTrustScores.$inferSelect;
+
+/* ============================================================
+   Trust Verification Authority™ (TVA™) — Module 23
+   ============================================================ */
+
+export const verificationPrograms = pgTable("verification_programs", {
+  id:                   uuid("id").primaryKey().defaultRandom(),
+  organizationId:       uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+  name:                 text("name").notNull(),
+  slug:                 text("slug").notNull(),
+  description:          text("description"),
+  programType:          text("program_type").notNull().default("custom"),
+  status:               text("status").notNull().default("active"),
+  minTrustScore:        integer("min_trust_score").notNull().default(85),
+  minControlHealth:     integer("min_control_health").notNull().default(80),
+  minEvidenceCoverage:  integer("min_evidence_coverage").notNull().default(80),
+  requiredControls:     jsonb("required_controls").$type<string[]>().notNull().default([]),
+  requiredEvidence:     jsonb("required_evidence").$type<string[]>().notNull().default([]),
+  requiredAssessments:  jsonb("required_assessments").$type<string[]>().notNull().default([]),
+  requirements:         jsonb("requirements").$type<Array<{ id: string; label: string }>>().notNull().default([]),
+  reviewFrequency:      text("review_frequency").notNull().default("annual"),
+  validityMonths:       integer("validity_months").notNull().default(12),
+  badgeColor:           text("badge_color").notNull().default("#6366f1"),
+  badgeIcon:            text("badge_icon"),
+  isPublic:             boolean("is_public").notNull().default(true),
+  createdBy:            uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:            timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:            timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const tvaVerifications = pgTable("tva_verifications", {
+  id:                   uuid("id").primaryKey().defaultRandom(),
+  organizationId:       uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  programId:            uuid("program_id").notNull().references(() => verificationPrograms.id, { onDelete: "restrict" }),
+  certificateId:        uuid("certificate_id"),
+  status:               text("status").notNull().default("pending"),
+  verificationLevel:    text("verification_level").notNull().default("level_1"),
+  readinessScore:       integer("readiness_score"),
+  trustScoreAtApply:    integer("trust_score_at_apply"),
+  appliedAt:            timestamp("applied_at", { withTimezone: true }).notNull().defaultNow(),
+  reviewStartedAt:      timestamp("review_started_at", { withTimezone: true }),
+  decidedAt:            timestamp("decided_at", { withTimezone: true }),
+  expiresAt:            timestamp("expires_at", { withTimezone: true }),
+  lastMonitoredAt:      timestamp("last_monitored_at", { withTimezone: true }),
+  applicantId:          uuid("applicant_id").notNull().references(() => profiles.id, { onDelete: "restrict" }),
+  assignedReviewerId:   uuid("assigned_reviewer_id").references(() => profiles.id, { onDelete: "set null" }),
+  decisionNotes:        text("decision_notes"),
+  conditions:           jsonb("conditions").$type<string[]>().notNull().default([]),
+  suspensionReason:     text("suspension_reason"),
+  revocationReason:     text("revocation_reason"),
+  metadata:             jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+  createdAt:            timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:            timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationReviews = pgTable("verification_reviews", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:   uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  reviewType:       text("review_type").notNull().default("initial"),
+  status:           text("status").notNull().default("pending"),
+  reviewerId:       uuid("reviewer_id").references(() => profiles.id, { onDelete: "set null" }),
+  reviewerNotes:    text("reviewer_notes"),
+  checklist:        jsonb("checklist").$type<Record<string, boolean>>().notNull().default({}),
+  score:            integer("score"),
+  recommendation:   text("recommendation"),
+  startedAt:        timestamp("started_at", { withTimezone: true }),
+  completedAt:      timestamp("completed_at", { withTimezone: true }),
+  dueDate:          date("due_date"),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationEvidence = pgTable("verification_evidence", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:   uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  evidenceType:     text("evidence_type").notNull().default("policy"),
+  title:            text("title").notNull(),
+  description:      text("description"),
+  sourceId:         uuid("source_id"),
+  sourceTable:      text("source_table"),
+  fileUrl:          text("file_url"),
+  status:           text("status").notNull().default("pending"),
+  reviewerNotes:    text("reviewer_notes"),
+  freshnessDays:    integer("freshness_days"),
+  submittedBy:      uuid("submitted_by").references(() => profiles.id, { onDelete: "set null" }),
+  reviewedBy:       uuid("reviewed_by").references(() => profiles.id, { onDelete: "set null" }),
+  submittedAt:      timestamp("submitted_at", { withTimezone: true }).notNull().defaultNow(),
+  reviewedAt:       timestamp("reviewed_at", { withTimezone: true }),
+  expiresAt:        timestamp("expires_at", { withTimezone: true }),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationBadges = pgTable("verification_badges", {
+  id:                uuid("id").primaryKey().defaultRandom(),
+  organizationId:    uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:    uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  programId:         uuid("program_id").notNull().references(() => verificationPrograms.id, { onDelete: "restrict" }),
+  badgeType:         text("badge_type").notNull().default("audt_verified"),
+  name:              text("name").notNull(),
+  description:       text("description"),
+  status:            text("status").notNull().default("active"),
+  issuedAt:          timestamp("issued_at", { withTimezone: true }).notNull().defaultNow(),
+  expiresAt:         timestamp("expires_at", { withTimezone: true }),
+  revokedAt:         timestamp("revoked_at", { withTimezone: true }),
+  revocationReason:  text("revocation_reason"),
+  badgeData:         jsonb("badge_data").$type<Record<string, unknown>>().notNull().default({}),
+  issuedBy:          uuid("issued_by").references(() => profiles.id, { onDelete: "set null" }),
+  createdAt:         timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:         timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationCertificates = pgTable("verification_certificates", {
+  id:                  uuid("id").primaryKey().defaultRandom(),
+  organizationId:      uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:      uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  programId:           uuid("program_id").notNull().references(() => verificationPrograms.id, { onDelete: "restrict" }),
+  certificateNumber:   text("certificate_number").notNull().unique(),
+  verificationLevel:   text("verification_level").notNull().default("level_1"),
+  status:              text("status").notNull().default("active"),
+  issuedAt:            timestamp("issued_at", { withTimezone: true }).notNull().defaultNow(),
+  expiresAt:           timestamp("expires_at", { withTimezone: true }).notNull(),
+  revokedAt:           timestamp("revoked_at", { withTimezone: true }),
+  revocationReason:    text("revocation_reason"),
+  verificationHash:    text("verification_hash").notNull(),
+  publicUrl:           text("public_url").notNull(),
+  qrData:              text("qr_data"),
+  issuedBy:            uuid("issued_by").references(() => profiles.id, { onDelete: "set null" }),
+  certificateData:     jsonb("certificate_data").$type<Record<string, unknown>>().notNull().default({}),
+  createdAt:           timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:           timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationRegistry = pgTable("verification_registry", {
+  id:                 uuid("id").primaryKey().defaultRandom(),
+  organizationId:     uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  certificateId:      uuid("certificate_id").notNull().references(() => verificationCertificates.id, { onDelete: "cascade" }),
+  displayName:        text("display_name").notNull(),
+  industry:           text("industry"),
+  country:            text("country"),
+  trustScore:         integer("trust_score"),
+  verificationLevel:  text("verification_level").notNull().default("level_1"),
+  programName:        text("program_name").notNull(),
+  badgeTypes:         jsonb("badge_types").$type<string[]>().notNull().default([]),
+  isPublic:           boolean("is_public").notNull().default(true),
+  publishedAt:        timestamp("published_at", { withTimezone: true }).notNull().defaultNow(),
+  expiresAt:          timestamp("expires_at", { withTimezone: true }),
+  createdAt:          timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:          timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationEvents = pgTable("verification_events", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:   uuid("verification_id").references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  eventType:        text("event_type").notNull(),
+  actorId:          uuid("actor_id").references(() => profiles.id, { onDelete: "set null" }),
+  details:          jsonb("details").$type<Record<string, unknown>>().notNull().default({}),
+  ipAddress:        text("ip_address"),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationRenewals = pgTable("verification_renewals", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:   uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  certificateId:    uuid("certificate_id").references(() => verificationCertificates.id, { onDelete: "set null" }),
+  status:           text("status").notNull().default("upcoming"),
+  renewalDueDate:   date("renewal_due_date").notNull(),
+  startedAt:        timestamp("started_at", { withTimezone: true }),
+  completedAt:      timestamp("completed_at", { withTimezone: true }),
+  previousCertId:   uuid("previous_cert_id").references(() => verificationCertificates.id, { onDelete: "set null" }),
+  initiatedBy:      uuid("initiated_by").references(() => profiles.id, { onDelete: "set null" }),
+  notes:            text("notes"),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationAssessments = pgTable("verification_assessments", {
+  id:                  uuid("id").primaryKey().defaultRandom(),
+  organizationId:      uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:      uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  assessorId:          uuid("assessor_id").references(() => profiles.id, { onDelete: "set null" }),
+  governanceScore:     integer("governance_score"),
+  riskScore:           integer("risk_score"),
+  controlScore:        integer("control_score"),
+  complianceScore:     integer("compliance_score"),
+  privacyScore:        integer("privacy_score"),
+  contractScore:       integer("contract_score"),
+  vendorScore:         integer("vendor_score"),
+  aiGovernanceScore:   integer("ai_governance_score"),
+  overallScore:        integer("overall_score"),
+  findings:            jsonb("findings").$type<Array<{ area: string; note: string; severity: string }>>().notNull().default([]),
+  recommendations:     jsonb("recommendations").$type<string[]>().notNull().default([]),
+  aiSummary:           text("ai_summary"),
+  status:              text("status").notNull().default("pending"),
+  assessedAt:          timestamp("assessed_at", { withTimezone: true }),
+  createdAt:           timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:           timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationDecisions = pgTable("verification_decisions", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  verificationId:   uuid("verification_id").notNull().references(() => tvaVerifications.id, { onDelete: "cascade" }),
+  decision:         text("decision").notNull(),
+  decidedBy:        uuid("decided_by").references(() => profiles.id, { onDelete: "set null" }),
+  rationale:        text("rationale"),
+  conditions:       jsonb("conditions").$type<string[]>().notNull().default([]),
+  effectiveDate:    date("effective_date"),
+  reviewDate:       date("review_date"),
+  appealDeadline:   date("appeal_deadline"),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verificationAuditors = pgTable("verification_auditors", {
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+  profileId:        uuid("profile_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
+  role:             text("role").notNull().default("trust_reviewer"),
+  status:           text("status").notNull().default("active"),
+  specializations:  jsonb("specializations").$type<string[]>().notNull().default([]),
+  assignedAt:       timestamp("assigned_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Trust Verification Authority™ types
+export type VerificationProgram     = typeof verificationPrograms.$inferSelect;
+export type TvaVerification         = typeof tvaVerifications.$inferSelect;
+export type VerificationReview      = typeof verificationReviews.$inferSelect;
+export type VerificationEvidence    = typeof verificationEvidence.$inferSelect;
+export type VerificationBadge       = typeof verificationBadges.$inferSelect;
+export type VerificationCertificate = typeof verificationCertificates.$inferSelect;
+export type VerificationRegistry    = typeof verificationRegistry.$inferSelect;
+export type VerificationEvent       = typeof verificationEvents.$inferSelect;
+export type VerificationRenewal     = typeof verificationRenewals.$inferSelect;
+export type VerificationAssessment  = typeof verificationAssessments.$inferSelect;
+export type VerificationDecision    = typeof verificationDecisions.$inferSelect;
+export type VerificationAuditor     = typeof verificationAuditors.$inferSelect;

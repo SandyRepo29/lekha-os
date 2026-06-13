@@ -21,8 +21,8 @@ async function main() {
   if (!orgs.length) { console.error("No organization found. Run seed-demo.mjs first."); process.exit(1); }
   const orgId = orgs[0].id;
 
-  const profiles = await sql`SELECT id FROM profiles WHERE organization_id = ${orgId} LIMIT 1`;
-  const createdBy = profiles[0]?.id ?? null;
+  const profiles = await sql`SELECT user_id FROM memberships WHERE organization_id = ${orgId} LIMIT 1`;
+  const createdBy = profiles[0]?.user_id ?? null;
 
   console.log(`  → Org: ${orgId}`);
 

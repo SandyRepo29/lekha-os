@@ -29,6 +29,7 @@ import {
   Bot,
   Users2,
   Zap,
+  BadgeCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -60,6 +61,7 @@ const items: Item[] = [
   { href: "/ai-governance", label: "AI Governance™", icon: Bot },
   { href: "/auditor-collaboration", label: "Auditor Collaboration™", icon: Users2 },
   { href: "/trust-api", label: "Trust API Platform™", icon: Zap },
+  { href: "/trust-verification", label: "Trust Verification Authority™", icon: BadgeCheck },
   { href: "/governance", label: "Board Governance", icon: Gavel, soon: true },
 ];
 

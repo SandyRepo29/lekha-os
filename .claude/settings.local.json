@@ -77,7 +77,21 @@
       "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\components\\\\ai-governance\")",
       "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\systems\")",
       "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\risks\")",
-      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\compliance\")"
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\\\\ai\\\\compliance\")",
+      "Bash(head -40 \"C:/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/audit-rooms/../../../risks/route.ts\" 2>/dev/null || head -40 \"C:/Users/sandy/OneDrive/Desktop/LekhaOS/app/api/v1/risks/route.ts\")",
+      "Bash(nslookup aws-1-ap-south-1.pooler.supabase.com)",
+      "Bash(Test-NetConnection -ComputerName aws-1-ap-south-1.pooler.supabase.com -Port 6543)",
+      "Bash(Select-Object -First 10)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-Content \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\lib\\\\db\\\\schema.ts\")",
+      "Bash(Measure-Object -Line)",
+      "Bash(Get-Content \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\supabase\\\\migrations\\\\0026_auditor_collaboration.sql\")",
+      "Bash(Select-Object -First 120)",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\lib\\\\db\\\\schema.ts\"\\).Count)",
+      "PowerShell(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\"; Select-String -Path \"lib\\\\auth\\\\session.ts\" -Pattern \".\" | Select-Object -First 30 | ForEach-Object { $_.Line })",
+      "PowerShell(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\"; $env:DATABASE_URL = \"postgresql://postgres.gacmazsbzxtwhwsgkuco:%40%26uR%3F9u%2Buz5h%23sZ@aws-1-ap-south-1.pooler.supabase.com:6543/postgres\"; node scripts/seed-trust-api-platform.mjs 2>&1)",
+      "Bash(python3 -)"
     ]
   }
 }
