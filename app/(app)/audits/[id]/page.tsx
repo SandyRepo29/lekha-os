@@ -18,7 +18,7 @@ import {
   FindingStatusBadge,
   CapaStatusBadge,
 } from "@/components/audit/audit-status-badge";
-import { formatDate } from "@/components/audit/audit-ui";
+import { AuditStat, formatDate } from "@/components/audit/audit-ui";
 import { AuditDetailActions } from "@/components/audit/audit-detail-actions";
 
 export default async function AuditDetailPage({
@@ -84,26 +84,55 @@ export default async function AuditDetailPage({
 
       {/* Metrics strip */}
       <div className="grid gap-3 sm:grid-cols-4">
-        {[
-          { label: "Findings", value: findings.length, sub: `${openFindings.length} open` },
-          { label: "Critical", value: criticalFindings.length, color: criticalFindings.length > 0 ? "text-red-400" : "" },
-          { label: "Checks", value: programs.length, sub: `${passedPrograms} passed · ${failedPrograms} failed` },
-          { label: "CAPAs", value: auditCapas.length, sub: `${auditCapas.filter((c) => c.status !== "completed").length} open` },
-        ].map(({ label, value, sub, color }) => (
-          <Card key={label} className="px-4 py-3">
-            <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
-            <p className={`mt-1 font-[family-name:var(--font-display)] text-2xl font-bold ${color ?? ""}`}>
-              {value}
-            </p>
-            {sub && <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{sub}</p>}
-          </Card>
-        ))}
+        <AuditStat
+          label="Findings"
+          value={findings.length}
+          accent={openFindings.length > 0 ? "warn" : undefined}
+          href={`/audits/${id}/findings`}
+        />
+        <AuditStat
+          label="Critical"
+          value={criticalFindings.length}
+          accent={criticalFindings.length > 0 ? "danger" : undefined}
+        />
+        <AuditStat
+          label="Checks"
+          value={programs.length}
+          accent={failedPrograms > 0 ? "warn" : programs.length > 0 ? "good" : undefined}
+        />
+        <AuditStat
+          label="CAPAs"
+          value={auditCapas.length}
+          accent={auditCapas.filter((c) => c.status !== "completed").length > 0 ? "warn" : undefined}
+          href={`/audits/${id}/capas`}
+        />
       </div>
 
+      {/* AI Summary — prominent at top, above the detail grid */}
+      <Card className="p-5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-[var(--color-blue)]" />
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">
+              AI Summary
+            </h2>
+          </div>
+          <AuditGenerateSummaryButton auditId={id} />
+        </div>
+        {aiSummary ? (
+          <p className="mt-3 text-sm text-[var(--color-ink-dim)] leading-relaxed">
+            {aiSummary.content}
+          </p>
+        ) : (
+          <p className="mt-3 text-xs text-[var(--color-ink-faint)]">
+            No AI summary yet. Click Generate to create one.
+          </p>
+        )}
+      </Card>
+
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left: audit info + AI summary */}
+        {/* Left: audit details */}
         <div className="space-y-4 lg:col-span-1">
-          {/* Details */}
           <Card className="p-5">
             <h2 className="mb-3 font-[family-name:var(--font-display)] text-sm font-semibold">
               Audit Details
@@ -122,28 +151,6 @@ export default async function AuditDetailPage({
                 </>
               )}
             </dl>
-          </Card>
-
-          {/* AI Summary */}
-          <Card className="p-5">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[var(--color-blue)]" />
-                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">
-                  AI Summary
-                </h2>
-              </div>
-              <AuditGenerateSummaryButton auditId={id} />
-            </div>
-            {aiSummary ? (
-              <p className="mt-3 text-sm text-[var(--color-ink-dim)] leading-relaxed">
-                {aiSummary.content}
-              </p>
-            ) : (
-              <p className="mt-3 text-xs text-[var(--color-ink-faint)]">
-                No AI summary yet. Click generate to create one.
-              </p>
-            )}
           </Card>
         </div>
 

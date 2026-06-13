@@ -1,20 +1,13 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import {
-  ClipboardCheck,
-  Plus,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  ShieldAlert,
-} from "lucide-react";
+import { ClipboardCheck, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardMetrics, listAudits } from "@/lib/services/audit/audit-service";
-import { AuditStatusBadge, AuditTypeBadge, SeverityBadge } from "@/components/audit/audit-status-badge";
+import { AuditStatusBadge, AuditTypeBadge } from "@/components/audit/audit-status-badge";
 import { AuditStat, formatDate } from "@/components/audit/audit-ui";
 
 export default async function AuditsDashboardPage() {
@@ -45,7 +38,7 @@ export default async function AuditsDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            Audit Management
+            Audit Management™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {metrics.total} audit{metrics.total !== 1 ? "s" : ""} ·{" "}
@@ -59,57 +52,31 @@ export default async function AuditsDashboardPage() {
         </Link>
       </div>
 
-      {/* Metrics grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2">
-            <ClipboardCheck className="h-5 w-5 text-[var(--color-blue)]" />
-            <span className="text-xs text-[var(--color-ink-faint)]">Total Audits</span>
-          </div>
-          <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            {metrics.total}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
-            {metrics.planned} planned · {metrics.inProgress} active
-          </p>
-        </Card>
-
-        <Card className={`p-5 ${metrics.overdue > 0 ? "border-red-500/25" : ""}`}>
-          <div className="mb-2 flex items-center gap-2">
-            <Clock className={`h-5 w-5 ${metrics.overdue > 0 ? "text-red-400" : "text-[var(--color-ink-dim)]"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">Overdue</span>
-          </div>
-          <p className={`font-[family-name:var(--font-display)] text-2xl font-bold ${metrics.overdue > 0 ? "text-red-400" : ""}`}>
-            {metrics.overdue}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
-            {metrics.completed} completed
-          </p>
-        </Card>
-
-        <Card className={`p-5 ${metrics.criticalFindings > 0 ? "border-red-500/25" : metrics.openFindings > 0 ? "border-amber-500/25" : "border-emerald-500/25"}`}>
-          <div className="mb-2 flex items-center gap-2">
-            <AlertTriangle className={`h-5 w-5 ${metrics.criticalFindings > 0 ? "text-red-400" : "text-amber-400"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">Open Findings</span>
-          </div>
-          <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            {metrics.openFindings}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
-            {metrics.criticalFindings} critical · {metrics.highFindings} high
-          </p>
-        </Card>
-
-        <Card className={`p-5 ${metrics.capasDueSoon > 0 ? "border-amber-500/25" : ""}`}>
-          <div className="mb-2 flex items-center gap-2">
-            <ShieldAlert className={`h-5 w-5 ${metrics.capasDueSoon > 0 ? "text-amber-400" : "text-[var(--color-ink-dim)]"}`} />
-            <span className="text-xs text-[var(--color-ink-faint)]">CAPAs Due Soon</span>
-          </div>
-          <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            {metrics.capasDueSoon}
-          </p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">within 30 days</p>
-        </Card>
+      {/* Metrics strip */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <AuditStat
+          label="Total Audits"
+          value={metrics.total}
+          href="/audits/list"
+        />
+        <AuditStat
+          label="Overdue"
+          value={metrics.overdue}
+          accent={metrics.overdue > 0 ? "danger" : undefined}
+          href="/audits/list?status=in_progress"
+        />
+        <AuditStat
+          label="Open Findings"
+          value={metrics.openFindings}
+          accent={metrics.criticalFindings > 0 ? "danger" : metrics.openFindings > 0 ? "warn" : "good"}
+          href="/audits/findings"
+        />
+        <AuditStat
+          label="CAPAs Due Soon"
+          value={metrics.capasDueSoon}
+          accent={metrics.capasDueSoon > 0 ? "warn" : undefined}
+          href="/audits/capas"
+        />
       </div>
 
       {/* Status strip */}
