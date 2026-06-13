@@ -227,15 +227,30 @@ node scripts/apply-sql.mjs supabase/migrations/0011_control_center.sql
 node scripts/apply-sql.mjs supabase/migrations/0012_trust_intelligence.sql
 node scripts/seed-templates.mjs
 node scripts/seed-billing-plans.mjs --assign-all
-node scripts/seed-demo.mjs                          # optional: 15 realistic vendors
-node scripts/seed-compliance-frameworks.mjs         # optional: 5 frameworks + 174 controls
-node scripts/seed-compliance-demo.mjs               # optional: realistic demo state
-node scripts/seed-risk-lens.mjs                     # optional: 20 risks + treatments + reviews
-node scripts/seed-trust-scores.mjs                  # optional: Trust Score™ for all active vendors (19 vendors scored, HDFC 95 → Yotta 44)
-node scripts/seed-executive-reporting.mjs           # optional: Executive Reporting™ — 10 KPIs, 5 snapshots, 3 reports, 2 schedules, 9 forecasts
-node scripts/seed-ai-governance.mjs                # optional: AI Governance™ — 8 AI systems, 5 vendors, 10 risks, 6 controls, 4 policies, 4 incidents, 6 compliance records
-node scripts/seed-auditor-collaboration.mjs        # optional: Auditor Collaboration™ — 3 auditor orgs, 8 external users, 4 audit rooms, 12 evidence requests, 8 findings
-node scripts/seed-trust-verification.mjs           # optional: Trust Verification Authority™ — AUDT Verified™ (cert+badge), Privacy Ready™ (cert), Enterprise Ready™ (pending)
+node scripts/seed-demo.mjs                          # 19 realistic vendors + 67 docs
+node scripts/seed-compliance-frameworks.mjs         # 5 frameworks + 174 controls
+node scripts/seed-compliance-demo.mjs               # evidence, policies, gaps, readiness scores
+node scripts/seed-risk-lens.mjs                     # 20 risks + 25 treatments + 8 reviews
+node scripts/seed-trust-scores.mjs                  # Trust Score™ for all active vendors
+node scripts/seed-audits.mjs                        # 5 audits · 15 findings · 9 CAPAs
+node scripts/seed-control-tests.mjs                 # 54 test records · health scores for 30 controls
+node scripts/seed-governance-snapshots.mjs          # 14-day Org Trust Score history (upward trend)
+node scripts/seed-policy-governance.mjs             # policy reviews · attestations · control links
+node scripts/seed-dpdp-privacy.mjs                  # data assets · consent records · privacy requests
+node scripts/seed-contracts.mjs                     # contracts · clauses · obligations
+node scripts/seed-issues.mjs                        # issues · tasks · escalations · SLAs
+node scripts/seed-workflows.mjs                     # workflow definitions + runs
+node scripts/seed-vendor-extras.mjs                 # extra assessments · reviews · doc requests
+node scripts/seed-trust-exchange.mjs                # trust profile · documents · badges · questionnaires
+node scripts/seed-trust-network.mjs                 # network profile views · followers · activity feed
+node scripts/seed-benchmarking.mjs                  # benchmark snapshot · 10 category scores · 6-month trends
+node scripts/seed-integration-hub.mjs               # 5 connected integrations · sync history · events
+node scripts/seed-executive-reporting.mjs           # 10 KPIs · 5 snapshots · 3 reports · 2 schedules · 9 forecasts
+node scripts/seed-ai-governance.mjs                 # 8 AI systems · 5 vendors · 10 risks · 6 controls · 4 incidents
+node scripts/seed-auditor-collaboration.mjs         # 3 auditor orgs · 8 external users · 4 audit rooms · 12 evidence requests
+node scripts/seed-trust-api-platform.mjs            # 3 clients · 3 API keys · 3 webhooks · 30-day usage data
+node scripts/seed-trust-verification.mjs            # AUDT Verified™ (cert+badge) · Privacy Ready™ · Enterprise Ready™ (pending)
+node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
 ---

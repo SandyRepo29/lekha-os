@@ -94,6 +94,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
               </h1>
               <VendorStatus vendorId={vendor.id} current={vendor.status} />
               <StatusBadge value={vendor.riskLevel} type="risk" />
+              <TrustScoreBadge score={vendor.trustScore ?? null} showScore size="sm" />
               {expiredCount > 0 && <StatusBadge value="expired" />}
               {expiringCount > 0 && (
                 <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-400">
@@ -134,19 +135,6 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
             </p>
           </div>
 
-          {/* Trust Score™ */}
-          <div className="shrink-0 text-center">
-            <div className="grid h-24 w-24 place-items-center rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
-              <div>
-                <p className="font-[family-name:var(--font-display)] text-3xl font-bold leading-none">
-                  {vendor.trustScore ?? "—"}
-                </p>
-                <p className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">Trust</p>
-              </div>
-            </div>
-            <TrustScoreBadge score={vendor.trustScore ?? null} showScore={false} size="sm" />
-          </div>
-
           {/* Actions */}
           <div className="flex shrink-0 flex-col items-end gap-2 self-start">
             <div className="flex gap-2">
@@ -185,15 +173,6 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
         )}
       </Card>
 
-      {/* Trust Score™ Widget */}
-      <TrustScoreWidget
-        vendorId={vendor.id}
-        trustScore={vendor.trustScore ?? null}
-        breakdown={trustBreakdown}
-        narrative={vendor.aiTrustNarrative ?? null}
-        aiEnabled={isGeminiConfigured()}
-      />
-
       {/* Tabbed content */}
       <VendorDetailTabs
         vendor={vendor as any}
@@ -210,6 +189,9 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
         expiredCount={expiredCount}
         aiEnabled={isGeminiConfigured()}
         orgId={session.org.id}
+        trustScore={vendor.trustScore ?? null}
+        trustBreakdown={trustBreakdown}
+        trustNarrative={vendor.aiTrustNarrative ?? null}
       />
     </div>
   );

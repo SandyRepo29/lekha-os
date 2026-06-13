@@ -91,7 +91,10 @@
       "PowerShell(\\(Get-Content \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\lib\\\\db\\\\schema.ts\"\\).Count)",
       "PowerShell(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\"; Select-String -Path \"lib\\\\auth\\\\session.ts\" -Pattern \".\" | Select-Object -First 30 | ForEach-Object { $_.Line })",
       "PowerShell(cd \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\"; $env:DATABASE_URL = \"postgresql://postgres.gacmazsbzxtwhwsgkuco:%40%26uR%3F9u%2Buz5h%23sZ@aws-1-ap-south-1.pooler.supabase.com:6543/postgres\"; node scripts/seed-trust-api-platform.mjs 2>&1)",
-      "Bash(python3 -)"
+      "Bash(python3 -)",
+      "Bash(ping -n 2 aws-1-ap-south-1.pooler.supabase.com)",
+      "Skill(code-review)",
+      "Skill(code-review:*)"
     ]
   }
 }

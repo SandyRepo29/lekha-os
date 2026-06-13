@@ -61,36 +61,41 @@ export default async function VendorsPage({
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Vendors</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Vendor Hub™</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">{total} vendors · {totalDocs} documents tracked</p>
         </div>
         <div className="flex items-center gap-2">
           {!session.demo && session.org && (
-            <>
+            <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-1">
               <a
                 href="/reports/compliance"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-1.5 text-xs")}
+                title="Compliance PDF Report"
               >
-                <FileText className="h-4 w-4" /> PDF Report
+                <FileText className="h-3.5 w-3.5" /> PDF
               </a>
+              <span className="h-4 w-px bg-[var(--color-line)]" />
               <a
                 href="/reports/expiry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-1.5 text-xs")}
+                title="Expiry PDF Report"
               >
-                <FileText className="h-4 w-4" /> Expiry PDF
+                <FileText className="h-3.5 w-3.5" /> Expiry
               </a>
+              <span className="h-4 w-px bg-[var(--color-line)]" />
               <a
                 href="/vendors/export"
                 download="vendors.csv"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-1.5 text-xs")}
+                title="Export CSV"
               >
-                <Download className="h-4 w-4" /> CSV
+                <Download className="h-3.5 w-3.5" /> CSV
               </a>
-            </>
+            </div>
           )}
           <Link href="/vendors/new">
             <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add vendor</Button>
@@ -146,8 +151,9 @@ function MiniStat({ label, value, accent, suffix }: { label: string; value: stri
   const border = accent === "danger" ? "border-red-500/25" : accent === "warn" ? "border-amber-500/25" : accent === "good" ? "border-emerald-500/25" : "border-[var(--color-line)]";
   const bg = accent === "danger" ? "bg-red-500/[0.05]" : accent === "warn" ? "bg-amber-500/[0.05]" : accent === "good" ? "bg-emerald-500/[0.05]" : "";
   const valColor = accent === "danger" ? "text-red-400" : accent === "warn" ? "text-amber-400" : accent === "good" ? "text-emerald-400" : "text-[var(--color-ink)]";
+  const accentBar = accent === "danger" ? "border-l-red-500/60" : accent === "warn" ? "border-l-amber-500/60" : accent === "good" ? "border-l-emerald-500/60" : "border-l-[var(--color-line-strong)]";
   return (
-    <div className={`rounded-xl border px-4 py-3 ${border} ${bg}`}>
+    <div className={`rounded-xl border border-l-2 px-4 py-3 ${border} ${accentBar} ${bg}`}>
       <div className="text-xs text-[var(--color-ink-faint)]">{label}</div>
       <div className={`mt-1 font-[family-name:var(--font-display)] text-xl font-bold ${valColor}`}>
         {value}{suffix && <span className="ml-1 text-sm font-normal text-[var(--color-ink-faint)]">{suffix}</span>}

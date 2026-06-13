@@ -8,6 +8,7 @@ import type { VendorRow } from "@/lib/services/vendor-service";
 import type { NLSearchFilters } from "@/lib/services/nl-search-service";
 import { Badge } from "@/components/ui/badge";
 import { riskTone, statusTone } from "@/lib/ui-maps";
+import { scoreBarGradient, scoreTextColor } from "@/lib/ui/colors";
 
 const ALL = "all";
 
@@ -109,16 +110,16 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
 
         <button
           onClick={() => setExpiringOnly(!expiringOnly)}
-          className={`h-[38px] rounded-xl border px-3 text-sm transition-colors ${expiringOnly ? "border-amber-500/60 bg-amber-500/10 text-amber-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
+          className={`flex h-[38px] items-center gap-1.5 rounded-xl border px-3 text-sm transition-colors ${expiringOnly ? "border-amber-500/60 bg-amber-500/10 text-amber-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
         >
-          ⏰ Expiring
+          <CalendarClock className="h-3.5 w-3.5" /> Expiring
         </button>
 
         <button
           onClick={() => setExpiredOnly(!expiredOnly)}
-          className={`h-[38px] rounded-xl border px-3 text-sm transition-colors ${expiredOnly ? "border-red-500/60 bg-red-500/10 text-red-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
+          className={`flex h-[38px] items-center gap-1.5 rounded-xl border px-3 text-sm transition-colors ${expiredOnly ? "border-red-500/60 bg-red-500/10 text-red-400" : "border-[var(--color-line-strong)] bg-[#0d0f1a] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"}`}
         >
-          ⛔ Expired
+          <ShieldAlert className="h-3.5 w-3.5" /> Expired
         </button>
 
         {active && (
@@ -162,8 +163,8 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
                     </div>
                   </div>
                 </div>
-                <div><span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusToneStyles(v.status)}`}>{v.status}</span></div>
-                <div><span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${riskToneStyles(v.risk)}`}>{v.risk}</span></div>
+                <div><Badge tone={statusTone(v.status)}>{v.status}</Badge></div>
+                <div><Badge tone={riskTone(v.risk)}>{v.risk}</Badge></div>
                 <div className="flex items-center gap-3 text-sm text-[var(--color-ink-dim)]">
                   <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" />{v.docs}</span>
                   {v.expiring > 0 && <span className="flex items-center gap-1 text-amber-400"><CalendarClock className="h-3.5 w-3.5" />{v.expiring}</span>}
@@ -172,7 +173,7 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
                 <div className="flex items-center justify-end gap-3">
                   <div className="hidden flex-1 md:block">
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full" style={{ width: `${v.score}%`, background: scoreBarColor(v.score) }} />
+                      <div className="h-full rounded-full" style={{ width: `${v.score}%`, background: scoreBarGradient(v.score) }} />
                     </div>
                   </div>
                   <span className={`w-8 shrink-0 text-right font-[family-name:var(--font-display)] text-sm font-bold ${scoreTextColor(v.score)}`}>{v.score}</span>
@@ -203,23 +204,3 @@ function FilterChip({ label, value, options, labels, onChange }: {
   );
 }
 
-function scoreBarColor(s: number) {
-  if (s >= 80) return "linear-gradient(90deg,#10b981,#34d058)";
-  if (s >= 60) return "linear-gradient(90deg,#6366f1,#8b5cf6)";
-  if (s >= 40) return "linear-gradient(90deg,#f59e0b,#fbbf24)";
-  return "linear-gradient(90deg,#ef4444,#f87171)";
-}
-function scoreTextColor(s: number) {
-  if (s >= 80) return "text-emerald-400";
-  if (s >= 60) return "text-[var(--color-blue)]";
-  if (s >= 40) return "text-amber-400";
-  return "text-red-400";
-}
-function statusToneStyles(s: string) {
-  const m: Record<string,string> = { active: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", pending: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10", inactive: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]" };
-  return m[s] ?? m.inactive;
-}
-function riskToneStyles(r: string) {
-  const m: Record<string,string> = { low: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", medium: "text-amber-400 border-amber-500/30 bg-amber-500/10", high: "text-red-400 border-red-500/30 bg-red-500/10", critical: "text-red-300 border-red-500/40 bg-red-500/15" };
-  return m[r] ?? m.low;
-}

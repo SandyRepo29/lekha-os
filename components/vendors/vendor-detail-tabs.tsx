@@ -34,6 +34,7 @@ import type { ActivityItem } from "@/lib/repositories/activity-repo";
 import type { DocCounts } from "@/lib/services/vendor-service";
 import { docStatusTone } from "@/lib/ui-maps";
 import { Badge } from "@/components/ui/badge";
+import { TrustScoreWidget } from "./trust-score-widget";
 
 type Props = {
   vendor: Omit<Vendor, "aiRecommendedActions"> & {
@@ -57,11 +58,15 @@ type Props = {
   expiredCount: number;
   aiEnabled: boolean;
   orgId: string;
+  trustScore: number | null;
+  trustBreakdown: any;
+  trustNarrative: string | null;
 };
 
 export function VendorDetailTabs({
   vendor, docs, urls, checklist, requests, assessments, reviews,
   vendorActivity, riskScore, docCounts, openRequests, expiredCount, aiEnabled, orgId,
+  trustScore, trustBreakdown, trustNarrative,
 }: Props) {
 
   const tabs = [
@@ -179,6 +184,14 @@ export function VendorDetailTabs({
           {activeTab === "compliance" && (
             <div className="grid gap-5 lg:grid-cols-2">
               <div className="space-y-5">
+                {/* Trust Score™ Widget */}
+                <TrustScoreWidget
+                  vendorId={vendor.id}
+                  trustScore={trustScore}
+                  breakdown={trustBreakdown}
+                  narrative={trustNarrative}
+                  aiEnabled={aiEnabled}
+                />
                 {/* AI Vendor Summary */}
                 <Card className="p-5">
                   <AiSummary
