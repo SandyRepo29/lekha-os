@@ -1,5 +1,3 @@
-"use server";
-
 import * as repo from "@/lib/repositories/agents-repo";
 import { runAgent } from "./agent-engine";
 import { generateAgentInsight } from "./ai-agent-service";
