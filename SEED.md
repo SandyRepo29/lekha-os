@@ -31,6 +31,11 @@ node scripts/apply-sql.mjs supabase/migrations/0020_trust_exchange.sql
 node scripts/apply-sql.mjs supabase/migrations/0021_benchmarking.sql
 node scripts/apply-sql.mjs supabase/migrations/0022_integration_hub.sql
 node scripts/apply-sql.mjs supabase/migrations/0023_trust_network.sql
+node scripts/apply-sql.mjs supabase/migrations/0024_executive_reporting.sql
+node scripts/apply-sql.mjs supabase/migrations/0025_ai_governance.sql
+node scripts/apply-sql.mjs supabase/migrations/0026_auditor_collaboration.sql
+node scripts/apply-sql.mjs supabase/migrations/0027_trust_api_platform.sql
+node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority.sql
 
 # 3. Seed platform defaults
 node scripts/seed-templates.mjs
@@ -84,9 +89,46 @@ node scripts/seed-executive-reporting.mjs
 
 # 19. Seed AI Governance™ (Module 20)
 node scripts/seed-ai-governance.mjs
+
+# 20. Seed Auditor Collaboration™ (Module 21)
+node scripts/seed-auditor-collaboration.mjs
+
+# 21. Seed Trust API Platform™ (Module 22)
+node scripts/seed-trust-api-platform.mjs
+
+# 22. Seed Trust Verification Authority™ (Module 23)
+node scripts/seed-trust-verification.mjs
+
+# 23. Verify all module counts
+node scripts/check-all-modules.mjs
 ```
 
-After this, **every module has complete demo data**. **AI Governance™** is live at `/ai-governance` with 8 AI systems (ChatGPT, Copilot, AWS Bedrock RAG, Internal Risk Analyzer, Cursor, Internal Support Bot, Vendor Screener Agent), 5 AI vendors, 10 risks, 6 controls, 4 policies, 2 assessments, 4 incidents, and 6 compliance records across ISO 42001, NIST AI RMF, EU AI Act, OECD AI Principles, DPDP AI, and Internal frameworks. **Executive Reporting & Analytics™** is live at `/executive-reporting` with 10 live KPIs, 5 days of snapshot history, 3 generated reports, 2 active schedules, and 9 predictive forecasts. **Trust Network™** is live at `/trust-network` with Network Reputation™ score, 47 profile views, 12 activity milestones, and an AI Network Advisor. **Integration Hub™** is live at `/integration-hub` with 5 connected integrations (Microsoft Entra ID, AWS, GitHub, CrowdStrike, Slack) and 4 open governance events. **Governance Benchmarking™** is live at `/benchmarking` with industry peer comparison across 10 categories. **Trust Intelligence™** shows a meaningful Organizational Trust Score™ with 14-day trend history. **Third-Party Risk Exchange™** is live at `/trust-exchange` — view the Trust Profile, explore documents and badges, and browse the Vendor Trust Directory. **Policy Governance™** is available at `/policy-governance` — use the Library to create policies and the AI Advisor to draft new ones. The **Monitoring™** tab will populate with alerts once `runMonitoringRules` runs (click "Run Monitoring" in the UI or wait for the daily cron). Visit `/trust-intelligence` to see the live score, `/trust-intelligence/trends` for the trend chart, and `/trust-intelligence/monitoring` for alerts. **DPDP Privacy™** is live at `/dpdp-privacy` — use the Data Inventory to register personal data assets, manage DSRs, and track consent. **Contract Governance™** is live at `/contract-governance` — use the Library to add contracts, extract clauses via AI, track obligations, and monitor renewals. **Issue & Remediation Hub™** is live at `/issue-hub` — create governance issues from any source module, assign tasks, track SLAs, manage exceptions, and use the AI Issue Generator to convert observations into structured issues. **Workflow Studio™** is live at `/workflow-studio` — create governance automation workflows, use the 17 pre-built templates, start workflow runs, manage approvals, and use the AI Workflow Generator to build workflows from natural language.
+After this, **every module has complete demo data** across all 27 shipped modules.
+
+Key entry points after seeding:
+- `/vendors` — 19 vendors, 67 docs, assessments, reviews, trust scores
+- `/compliance` — 5 frameworks, 174 controls, 92 evidence items, 107 gaps, 8 policies
+- `/risks` — 20 risks, 25 treatments, 8 reviews, 5×5 heat map
+- `/audits` — 5 audits across all states, 15 findings, 9 CAPAs
+- `/controls` — 30 controls with health scores, 54 test records
+- `/trust-intelligence` — Org Trust Score™ with 14-day history
+- `/trust-intelligence/monitoring` — run governance alerts (click "Run Monitoring")
+- `/trust-intelligence/trust-graph` — click "Rebuild Graph" to populate
+- `/policy-governance` — 8 policies with reviews and attestations
+- `/dpdp-privacy` — data assets, consent records, privacy requests, retention policies
+- `/contract-governance` — contracts with clauses and obligations
+- `/issue-hub` — issues with tasks, escalations, and SLA tracking
+- `/workflow-studio` — workflow definitions and runs
+- `/trust-exchange` — published trust profile, 5 documents, 4 badges, questionnaire
+- `/benchmarking` — industry peer comparison across 10 categories
+- `/integration-hub` — 5 live integrations (Entra ID, AWS, GitHub, CrowdStrike, Slack)
+- `/trust-network` — Network Reputation™, ~90+ profile views, followers
+- `/executive-reporting` — 10 KPIs, snapshots, board reports, forecasts
+- `/ai-governance` — 8 AI systems, 10 risks, 6 controls, 4 incidents
+- `/auditor-collaboration` — 3 auditor orgs, 4 audit rooms, 12 evidence requests
+- `/trust-api` — 3 API clients, 3 keys, 3 webhooks, 30-day usage data
+- `/trust-verification` — 2 active certs (AUDT Verified™, Privacy Ready™), 1 pending
+- `/verify/AUDT-2026-862EA7` — public certificate verification page
 
 ---
 
@@ -615,7 +657,7 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ### Module 12 — Contract Governance™
 
-> No seed script yet — use the UI to create contracts, then add clauses, obligations, and run AI features.
+> Seed script: `node scripts/seed-contracts.mjs` — realistic contracts with clauses and obligations.
 
 | Test | Where | Expected |
 |---|---|---|
@@ -643,7 +685,7 @@ curl -X POST https://lekha-os.vercel.app/api/v1/trust-intelligence/org-score \
 
 ### Module 13 — Issue & Remediation Hub™
 
-> No seed script — use the UI or AI Issue Generator to populate issues.
+> Seed script: `node scripts/seed-issues.mjs` — realistic issues with tasks, escalations, and SLA data.
 
 | Test | Where | Expected |
 |---|---|---|

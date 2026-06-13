@@ -11,6 +11,8 @@
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { randomUUID } from "crypto";
 
 // ── Load .env.local ───────────────────────────────────────────────────────────

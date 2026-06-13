@@ -7,38 +7,11 @@
  *        node scripts/seed-ai-governance.mjs --list
  */
 
-import { readFileSync, existsSync } from "fs";
-import { resolve } from "path";
 import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 
-// ── Load .env.local ───────────────────────────────────────────────────────────
-
-const envPath = resolve(process.cwd(), ".env.local");
-if (existsSync(envPath)) {
-  const lines = readFileSync(envPath, "utf8").split("\n");
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const eqIdx = trimmed.indexOf("=");
-    if (eqIdx === -1) continue;
-    const key = trimmed.slice(0, eqIdx).trim();
-    let value = trimmed.slice(eqIdx + 1).trim();
-    // Strip surrounding quotes if present
-    if ((value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    if (!process.env[key]) process.env[key] = value;
-  }
-}
-
-const DATABASE_URL = process.env.DATABASE_URL;
-if (!DATABASE_URL) {
-  console.error("DATABASE_URL not set. Ensure .env.local exists or DATABASE_URL is exported.");
-  process.exit(1);
-}
-
-const sql = postgres(DATABASE_URL, { ssl: "require", max: 1 });
+const sql = postgres(process.env.DATABASE_URL, { prepare: false, onnotice: () => {} });
 
 import { randomUUID } from "crypto";
 

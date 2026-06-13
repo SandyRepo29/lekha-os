@@ -5,6 +5,8 @@
  */
 
 import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { randomBytes } from "crypto";
 import bcrypt from "bcryptjs";
 

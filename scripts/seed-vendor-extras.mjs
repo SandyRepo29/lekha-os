@@ -127,11 +127,11 @@ for (const vendor of vendors) {
 
   const [assessment] = await sql`
     insert into assessments (
-      id, organization_id, vendor_id, assessor_id,
-      assessment_date, score, status, created_at, updated_at
+      id, organization_id, vendor_id, conducted_by,
+      title, score, status, created_at, updated_at
     ) values (
       ${randomUUID()}, ${orgId}, ${vendor.id}, ${ownerId},
-      ${assessmentDate}, ${score}, 'completed', now(), now()
+      ${'Security Assessment — ' + vendor.name}, ${score}, 'completed', now(), now()
     ) returning id`;
 
   // Insert all 17 responses
@@ -139,9 +139,9 @@ for (const vendor of vendors) {
   for (const r of responses) {
     await sql`
       insert into assessment_responses (
-        id, assessment_id, question_id, response, created_at
+        id, assessment_id, question_key, answer
       ) values (
-        ${randomUUID()}, ${assessment.id}, ${r.questionId}, ${r.response}, now()
+        ${randomUUID()}, ${assessment.id}, ${r.questionId}, ${r.response}
       ) on conflict do nothing`;
   }
 
@@ -183,11 +183,11 @@ for (let i = 0; i < vendors.length; i++) {
 
   await sql`
     insert into vendor_reviews (
-      id, organization_id, vendor_id, reviewer_id,
-      review_date, review_type, notes, created_at, updated_at
+      id, organization_id, vendor_id, reviewed_by,
+      review_type, summary, created_at, updated_at
     ) values (
       ${randomUUID()}, ${orgId}, ${vendor.id}, ${ownerId},
-      ${reviewDate}, ${reviewType}, ${notes}, now(), now()
+      ${reviewType}, ${notes}, now(), now()
     )`;
 
   log(`review added: ${vendor.name} — ${reviewType} (${reviewDate})`);
@@ -292,16 +292,14 @@ for (const def of docRequestDefs) {
   await sql`
     insert into document_requests (
       id, organization_id, vendor_id, document_type,
-      requested_by, requested_at, due_date, status, notes,
-      submitted_at, reviewed_by, reviewed_at, expires_at,
+      requested_by, due_date, message,
       created_at, updated_at
     ) values (
       ${randomUUID()}, ${orgId}, ${matchedVendor.id}, ${def.docType},
-      ${ownerId}, ${requestedAt.toISOString()}, ${dueDate.toISOString().slice(0, 10)},
-      ${def.status}, ${def.notes},
-      ${submittedAt}, ${reviewedBy}, ${reviewedAt}, ${expiresAt},
+      ${ownerId}, ${dueDate.toISOString().slice(0, 10)},
+      ${def.notes},
       now(), now()
-    )`;
+    ) on conflict do nothing`;
 
   log(`request added: ${matchedVendor.name} — ${def.docType} [${def.status}]`);
   requestsAdded++;

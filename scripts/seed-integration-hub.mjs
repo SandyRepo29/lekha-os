@@ -6,6 +6,8 @@
  */
 
 import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) { console.error("DATABASE_URL not set"); process.exit(1); }

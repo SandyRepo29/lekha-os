@@ -7,6 +7,8 @@
  */
 
 import postgres from "postgres";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { randomUUID } from "crypto";
 
 const DATABASE_URL = process.env.DATABASE_URL;
