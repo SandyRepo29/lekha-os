@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
 > Last updated: 2026-06-14 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **29 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · **Governance Agent Framework™**
+> Modules: **30 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · **Regulatory Intelligence™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -35,7 +35,7 @@
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
 | **REST API v1** | 47 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + trust-network + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **204 tables** across 31 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **218 tables** across 32 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -441,6 +441,35 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 
 ---
 
+## 📡 Module 30 — Regulatory Intelligence™
+
+> Completed 2026-06-14
+
+Always-current regulatory tracking for India (DPDP, RBI, SEBI, IRDAI) and global (GDPR, HIPAA, PCI DSS, ISO 27001, EU AI Act, NIST, DORA, NIS2, SOX) frameworks. 14 new tables, 18 built-in regulations seeded at migration time.
+
+| Feature | Detail |
+|---|---|
+| **Regulation Library™** | 18 built-in global regulations + org-specific; categories: data_privacy · financial · healthcare · cybersecurity · ai_governance · sector_specific; jurisdiction field; effective/deadline dates |
+| **Change Monitor™** | Track regulatory amendments with severity (critical/high/medium/low) and status workflow (new→under_review→assessed→actioned→closed) |
+| **Obligations™** | Extract and track compliance obligations per regulation — priority, implementation status (not_started→in_progress→implemented→validated), owner, due date |
+| **Impact Assessments™** | Per-change impact assessments with impact level and summary; linked to change + regulation |
+| **Watchlists™** | Monitor specific regulations with suggested watchlists (India Regulatory Bundle, EU AI Compliance, Data Privacy Pack, Financial Sector, AI Governance Stack) |
+| **Compliance Horizon™** | AI-powered 4-panel forecast: emerging regulatory risks · upcoming deadlines · global trends · recommended actions — cached 24h |
+| **Regulatory Readiness Score™** | (implemented + validated obligations) / total obligations × 100 — live on hub dashboard |
+| **AI Regulatory Advisor™** | Cached 24h advisory summary, per-change AI analysis (keyChanges + requiredActions + impactAreas), obligation extraction, control mapping suggestions, NL chat |
+| **Global built-ins** | 18 regulations seeded with `organization_id = NULL` — returned to all orgs via `OR organization_id IS NULL` repo query |
+| **REST API** | `GET /api/v1/regulations` · `GET/POST /api/v1/obligations` · `GET /api/v1/regulatory-changes` · `GET/POST /api/v1/regulatory-assessments` · `GET /api/v1/regulatory-readiness` |
+| **Navigation** | Sidebar "Regulatory Intelligence™" with BookOpen icon; 8-item RegSubNav pill nav |
+| **Sub-pages** | Hub · Library · Change Monitor · Obligations · Assessments · Watchlists · Horizon · AI Advisor |
+| **DB tables** | `regulations` · `regulation_versions` · `regulatory_changes` · `obligations` · `obligation_mappings` · `regulatory_assessments` · `regulatory_impacts` · `regulatory_reviews` · `regulatory_alerts` · `regulatory_watchlists` · `regulatory_sources` · `regulatory_agents` · `regulatory_tasks` · `regulatory_updates` (migration 0031 applied) |
+| **Seed** | `node scripts/seed-regulatory-intelligence.mjs` — 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates |
+
+### Built-in Regulations (18)
+
+DPDP Act 2023 · GDPR · CCPA · HIPAA · ISO 27001 · ISO 27701 · ISO 42001 · NIST CSF · NIST AI RMF · PCI DSS · DORA · NIS2 · SOX · RBI CSF · SEBI CSCRF · IRDAI ICS · EU AI Act · SOC 2 Type II
+
+---
+
 ## 📍 Current Status (2026-06-14)
 
 | Layer | Status |
@@ -449,8 +478,8 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 204 tables, 31 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 29 modules** | ✅ Complete as of 2026-06-14 |
+| **DB** | ✅ 218 tables, 32 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 30 modules** | ✅ Complete as of 2026-06-14 |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -1211,9 +1240,9 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 
 | Layer | Status |
 |---|---|
-| **DB** | ✅ 204 tables, 31 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 29 Modules** | ✅ Complete as of 2026-06-14 |
-| **UI Consistency** | ✅ Full sweep 2026-06-14 — all 29 modules on standard pill nav, `text-xl` headings, `space-y-6` spacing |
+| **DB** | ✅ 218 tables, 32 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 30 Modules** | ✅ Complete as of 2026-06-14 |
+| **UI Consistency** | ✅ Full sweep 2026-06-14 — all 30 modules on standard pill nav, `text-xl` headings, `space-y-6` spacing |
 | **Tests** | ✅ 201/201 Vitest passing |
 | **Deployed** | ✅ lekha-os.vercel.app + audt.tech |
 
