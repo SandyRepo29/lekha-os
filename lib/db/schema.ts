@@ -5299,3 +5299,344 @@ export type AgentConversation   = typeof agentConversations.$inferSelect;
 export type AgentEvent          = typeof agentEvents.$inferSelect;
 export type AgentOrchestration  = typeof agentOrchestrations.$inferSelect;
 
+/* ============================================================
+   Regulatory Intelligence™ — Tables (Module 30)
+   ============================================================ */
+
+export const regulations = pgTable(
+  "regulations",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    name:           text("name").notNull(),
+    shortName:      text("short_name"),
+    authority:      text("authority"),
+    country:        text("country"),
+    region:         text("region"),
+    industry:       text("industry"),
+    category:       text("category").notNull().default("security"),
+    status:         text("status").notNull().default("active"),
+    version:        text("version"),
+    effectiveDate:  date("effective_date"),
+    reviewDate:     date("review_date"),
+    sourceUrl:      text("source_url"),
+    description:    text("description"),
+    isBuiltin:      boolean("is_builtin").notNull().default(false),
+    isApplicable:   boolean("is_applicable").notNull().default(true),
+    obligationCount: integer("obligation_count").notNull().default(0),
+    complianceScore: integer("compliance_score"),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_regulations_org").on(t.organizationId),
+    index("idx_regulations_category").on(t.organizationId, t.category),
+  ]
+);
+
+export const regulationVersions = pgTable(
+  "regulation_versions",
+  {
+    id:            uuid("id").primaryKey().defaultRandom(),
+    regulationId:  uuid("regulation_id").notNull().references(() => regulations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    version:       text("version").notNull(),
+    summary:       text("summary"),
+    changes:       jsonb("changes").$type<string[]>().notNull().default([]),
+    effectiveDate: date("effective_date"),
+    publishedAt:   timestamp("published_at", { withTimezone: true }),
+    createdAt:     timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_reg_versions_reg").on(t.regulationId)]
+);
+
+export const regulatoryChanges = pgTable(
+  "regulatory_changes",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    regulationId:    uuid("regulation_id").references(() => regulations.id, { onDelete: "cascade" }),
+    title:           text("title").notNull(),
+    description:     text("description"),
+    changeType:      text("change_type").notNull().default("amendment"),
+    severity:        text("severity").notNull().default("medium"),
+    status:          text("status").notNull().default("new"),
+    source:          text("source"),
+    sourceUrl:       text("source_url"),
+    publishedDate:   date("published_date"),
+    effectiveDate:   date("effective_date"),
+    impactScore:     integer("impact_score"),
+    affectedControls: integer("affected_controls").notNull().default(0),
+    affectedPolicies: integer("affected_policies").notNull().default(0),
+    aiSummary:       text("ai_summary"),
+    createdBy:       uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:       timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_changes_org").on(t.organizationId),
+    index("idx_reg_changes_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const obligations = pgTable(
+  "obligations",
+  {
+    id:                   uuid("id").primaryKey().defaultRandom(),
+    organizationId:       uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    regulationId:         uuid("regulation_id").references(() => regulations.id, { onDelete: "cascade" }),
+    title:                text("title").notNull(),
+    description:          text("description"),
+    requirement:          text("requirement"),
+    obligationRef:        text("obligation_ref"),
+    category:             text("category"),
+    priority:             text("priority").notNull().default("medium"),
+    status:               text("status").notNull().default("not_started"),
+    ownerId:              uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    businessUnit:         text("business_unit"),
+    reviewDate:           date("review_date"),
+    dueDate:              date("due_date"),
+    evidenceRequirements: text("evidence_requirements"),
+    notes:                text("notes"),
+    createdBy:            uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:            timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:            timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_obligations_org").on(t.organizationId),
+    index("idx_obligations_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const obligationMappings = pgTable(
+  "obligation_mappings",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    obligationId:   uuid("obligation_id").notNull().references(() => obligations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    entityType:     text("entity_type").notNull(),
+    entityId:       uuid("entity_id").notNull(),
+    relationship:   text("relationship").notNull().default("satisfies"),
+    notes:          text("notes"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_obligation_mappings_org").on(t.organizationId)]
+);
+
+export const regulatoryAssessments = pgTable(
+  "regulatory_assessments",
+  {
+    id:                uuid("id").primaryKey().defaultRandom(),
+    organizationId:    uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    changeId:          uuid("change_id").references(() => regulatoryChanges.id, { onDelete: "set null" }),
+    regulationId:      uuid("regulation_id").references(() => regulations.id, { onDelete: "set null" }),
+    title:             text("title").notNull(),
+    status:            text("status").notNull().default("draft"),
+    impactLevel:       text("impact_level").notNull().default("medium"),
+    summary:           text("summary"),
+    aiAnalysis:        text("ai_analysis"),
+    affectedControls:  integer("affected_controls").notNull().default(0),
+    affectedPolicies:  integer("affected_policies").notNull().default(0),
+    affectedRisks:     integer("affected_risks").notNull().default(0),
+    affectedVendors:   integer("affected_vendors").notNull().default(0),
+    affectedContracts: integer("affected_contracts").notNull().default(0),
+    remediationEffort: text("remediation_effort"),
+    estimatedDays:     integer("estimated_days"),
+    ownerId:           uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    dueDate:           date("due_date"),
+    completedAt:       timestamp("completed_at", { withTimezone: true }),
+    createdBy:         uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:         timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:         timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_assessments_org").on(t.organizationId),
+    index("idx_reg_assessments_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const regulatoryImpacts = pgTable(
+  "regulatory_impacts",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    assessmentId:   uuid("assessment_id").notNull().references(() => regulatoryAssessments.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    entityType:     text("entity_type").notNull(),
+    entityId:       uuid("entity_id"),
+    entityName:     text("entity_name").notNull(),
+    impactType:     text("impact_type").notNull().default("update_required"),
+    impactLevel:    text("impact_level").notNull().default("medium"),
+    description:    text("description"),
+    actionRequired: text("action_required"),
+    status:         text("status").notNull().default("open"),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_impacts_assessment").on(t.assessmentId),
+    index("idx_reg_impacts_org").on(t.organizationId),
+  ]
+);
+
+export const regulatoryReviews = pgTable(
+  "regulatory_reviews",
+  {
+    id:              uuid("id").primaryKey().defaultRandom(),
+    regulationId:    uuid("regulation_id").notNull().references(() => regulations.id, { onDelete: "cascade" }),
+    organizationId:  uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    reviewerId:      uuid("reviewer_id").references(() => profiles.id, { onDelete: "set null" }),
+    status:          text("status").notNull().default("scheduled"),
+    outcome:         text("outcome"),
+    notes:           text("notes"),
+    reviewedAt:      timestamp("reviewed_at", { withTimezone: true }),
+    nextReviewDate:  date("next_review_date"),
+    createdAt:       timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_reg_reviews_org").on(t.organizationId)]
+);
+
+export const regulatoryAlerts = pgTable(
+  "regulatory_alerts",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    regulationId:   uuid("regulation_id").references(() => regulations.id, { onDelete: "cascade" }),
+    changeId:       uuid("change_id").references(() => regulatoryChanges.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    description:    text("description"),
+    alertType:      text("alert_type").notNull().default("change_detected"),
+    severity:       text("severity").notNull().default("medium"),
+    status:         text("status").notNull().default("open"),
+    dueDate:        date("due_date"),
+    resolvedAt:     timestamp("resolved_at", { withTimezone: true }),
+    resolvedBy:     uuid("resolved_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_alerts_org").on(t.organizationId),
+    index("idx_reg_alerts_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const regulatoryWatchlists = pgTable(
+  "regulatory_watchlists",
+  {
+    id:            uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:          text("name").notNull(),
+    description:   text("description"),
+    watchType:     text("watch_type").notNull().default("regulation"),
+    criteria:      jsonb("criteria").$type<Record<string, unknown>>().notNull().default({}),
+    isActive:      boolean("is_active").notNull().default(true),
+    alertOnChange: boolean("alert_on_change").notNull().default(true),
+    createdBy:     uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:     timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:     timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_reg_watchlists_org").on(t.organizationId)]
+);
+
+export const regulatorySources = pgTable(
+  "regulatory_sources",
+  {
+    id:            uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    name:          text("name").notNull(),
+    sourceType:    text("source_type").notNull().default("manual"),
+    url:           text("url"),
+    country:       text("country"),
+    authority:     text("authority"),
+    isActive:      boolean("is_active").notNull().default(true),
+    lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
+    isBuiltin:     boolean("is_builtin").notNull().default(false),
+    createdAt:     timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_reg_sources_org").on(t.organizationId)]
+);
+
+export const regulatoryAgentConfig = pgTable(
+  "regulatory_agents",
+  {
+    id:               uuid("id").primaryKey().defaultRandom(),
+    organizationId:   uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    name:             text("name").notNull(),
+    description:      text("description"),
+    isActive:         boolean("is_active").notNull().default(true),
+    schedule:         text("schedule").default("daily"),
+    lastRunAt:        timestamp("last_run_at", { withTimezone: true }),
+    totalRuns:        integer("total_runs").notNull().default(0),
+    changesDetected:  integer("changes_detected").notNull().default(0),
+    watchlistIds:     jsonb("watchlist_ids").$type<string[]>().notNull().default([]),
+    sourceIds:        jsonb("source_ids").$type<string[]>().notNull().default([]),
+    createdBy:        uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:        timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:        timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("idx_reg_agents_org").on(t.organizationId)]
+);
+
+export const regulatoryTasks = pgTable(
+  "regulatory_tasks",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    changeId:       uuid("change_id").references(() => regulatoryChanges.id, { onDelete: "set null" }),
+    assessmentId:   uuid("assessment_id").references(() => regulatoryAssessments.id, { onDelete: "set null" }),
+    obligationId:   uuid("obligation_id").references(() => obligations.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    description:    text("description"),
+    taskType:       text("task_type").notNull().default("review"),
+    priority:       text("priority").notNull().default("medium"),
+    status:         text("status").notNull().default("open"),
+    ownerId:        uuid("owner_id").references(() => profiles.id, { onDelete: "set null" }),
+    dueDate:        date("due_date"),
+    completedAt:    timestamp("completed_at", { withTimezone: true }),
+    createdBy:      uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt:      timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_tasks_org").on(t.organizationId),
+    index("idx_reg_tasks_status").on(t.organizationId, t.status),
+  ]
+);
+
+export const regulatoryUpdates = pgTable(
+  "regulatory_updates",
+  {
+    id:             uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id").references(() => organizations.id, { onDelete: "cascade" }),
+    regulationId:   uuid("regulation_id").references(() => regulations.id, { onDelete: "set null" }),
+    sourceId:       uuid("source_id").references(() => regulatorySources.id, { onDelete: "set null" }),
+    title:          text("title").notNull(),
+    summary:        text("summary"),
+    content:        text("content"),
+    updateDate:     date("update_date"),
+    publishedAt:    timestamp("published_at", { withTimezone: true }),
+    sourceUrl:      text("source_url"),
+    isRead:         boolean("is_read").notNull().default(false),
+    isBuiltin:      boolean("is_builtin").notNull().default(false),
+    createdAt:      timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("idx_reg_updates_org").on(t.organizationId),
+    index("idx_reg_updates_regulation").on(t.regulationId),
+  ]
+);
+
+// Regulatory Intelligence™ — inferred types
+export type Regulation           = typeof regulations.$inferSelect;
+export type RegulationVersion    = typeof regulationVersions.$inferSelect;
+export type RegulatoryChange     = typeof regulatoryChanges.$inferSelect;
+export type Obligation           = typeof obligations.$inferSelect;
+export type ObligationMapping    = typeof obligationMappings.$inferSelect;
+export type RegulatoryAssessment = typeof regulatoryAssessments.$inferSelect;
+export type RegulatoryImpact     = typeof regulatoryImpacts.$inferSelect;
+export type RegulatoryReview     = typeof regulatoryReviews.$inferSelect;
+export type RegulatoryAlert      = typeof regulatoryAlerts.$inferSelect;
+export type RegulatoryWatchlist  = typeof regulatoryWatchlists.$inferSelect;
+export type RegulatorySource     = typeof regulatorySources.$inferSelect;
+export type RegulatoryAgentConfig = typeof regulatoryAgentConfig.$inferSelect;
+export type RegulatoryTask       = typeof regulatoryTasks.$inferSelect;
+export type RegulatoryUpdate     = typeof regulatoryUpdates.$inferSelect;
+
