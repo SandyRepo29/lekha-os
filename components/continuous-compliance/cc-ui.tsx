@@ -20,22 +20,25 @@ const SUB_NAV = [
 export function CcSubNav() {
   const path = usePathname();
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
-      {SUB_NAV.map(n => {
-        const active = n.href === "/continuous-compliance"
-          ? path === n.href
-          : path === n.href || path.startsWith(n.href + "/");
-        return (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              active
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        );
-      })}
+    <div className="border-b border-[var(--color-line)] pb-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+        {SUB_NAV.map(n => {
+          const active = n.href === "/continuous-compliance"
+            ? path === n.href
+            : path === n.href || path.startsWith(n.href + "/");
+          return (
+            <Link key={n.href} href={n.href}
+              className={cn(
+                "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
+                active
+                  ? "bg-white/[0.08] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+              )}>
+              {n.label}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

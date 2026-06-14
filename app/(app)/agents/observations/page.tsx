@@ -35,7 +35,7 @@ export default async function ObservationsPage() {
 
       {/* Header */}
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Observations™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Observations™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Governance signals detected by your agents across all modules.</p>
       </div>
 

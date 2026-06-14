@@ -45,7 +45,7 @@ export default async function AgentStudioPage() {
 
       {/* Header */}
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Studio™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Studio™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Design, configure, and deploy custom governance agents.</p>
       </div>
 

@@ -26,7 +26,7 @@ export default async function AgentActionsPage() {
 
       {/* Header */}
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Actions™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Actions™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Review and approve proposed governance actions from your agents.</p>
       </div>
 

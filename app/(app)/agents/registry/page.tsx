@@ -29,7 +29,7 @@ export default async function AgentRegistryPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 pt-2">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Registry™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Registry™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">All governance agents — configure, activate, pause, and monitor execution.</p>
         </div>
         <Link

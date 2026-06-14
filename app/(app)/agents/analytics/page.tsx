@@ -55,7 +55,7 @@ export default async function AgentAnalyticsPage() {
 
       {/* Header */}
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Analytics™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Analytics™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Performance metrics, automation coverage, and governance impact.</p>
       </div>
 

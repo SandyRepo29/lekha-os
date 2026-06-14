@@ -26,14 +26,14 @@ export default async function ContinuousCompliancePage() {
   const checkMap = new Map(checks.map(c => [c.id, c.name]));
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6 p-6">
       {/* Sub-nav */}
       <CcSubNav />
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 pt-2">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
             Continuous Compliance™
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">

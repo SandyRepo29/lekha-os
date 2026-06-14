@@ -28,7 +28,7 @@ export default async function AgentRunsPage() {
 
       {/* Header */}
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Agent Runs™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Agent Runs™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Full execution history across all governance agents.</p>
       </div>
 
