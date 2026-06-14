@@ -5640,3 +5640,265 @@ export type RegulatoryAgentConfig = typeof regulatoryAgentConfig.$inferSelect;
 export type RegulatoryTask       = typeof regulatoryTasks.$inferSelect;
 export type RegulatoryUpdate     = typeof regulatoryUpdates.$inferSelect;
 
+// ─── Asset Intelligence™ (migration 0032) ────────────────────────────────────
+
+export const assetTypeEnumPg       = pgEnum("asset_type_enum",       ["application","database","api","server","cloud_resource","data_asset","business_process","ai_system","vendor_service","network_asset","endpoint","custom"]);
+export const assetStatusEnumPg     = pgEnum("asset_status_enum",     ["active","inactive","retired","planned","deprecated","under_review"]);
+export const assetEnvEnumPg        = pgEnum("asset_env_enum",        ["production","staging","development","testing","dr","sandbox"]);
+export const assetCritEnumPg       = pgEnum("asset_criticality_enum",["low","medium","high","critical","mission_critical"]);
+export const assetDataClassEnumPg  = pgEnum("asset_data_class_enum", ["public","internal","confidential","restricted","critical"]);
+export const assetRelTypeEnumPg    = pgEnum("asset_relationship_type_enum",["depends_on","uses","stores","processes","connects_to","owned_by","provided_by","supports","protected_by","governed_by","impacted_by","monitored_by"]);
+export const assetAlertTypeEnumPg  = pgEnum("asset_alert_type_enum", ["unreviewed","missing_owner","missing_controls","missing_risk_assessment","missing_classification","critical_change","score_drop","custom"]);
+
+export const assetTypes = pgTable("asset_types",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").references(()=>organizations.id,{onDelete:"cascade"}),
+  name:           text("name").notNull(),
+  description:    text("description"),
+  icon:           text("icon"),
+  isBuiltin:      boolean("is_builtin").notNull().default(false),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_asset_types_org").on(t.organizationId)]);
+
+export const assets = pgTable("assets",{
+  id:                uuid("id").primaryKey().defaultRandom(),
+  organizationId:    uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  name:              text("name").notNull(),
+  description:       text("description"),
+  assetType:         assetTypeEnumPg("asset_type").notNull().default("application"),
+  category:          text("category"),
+  status:            assetStatusEnumPg("status").notNull().default("active"),
+  environment:       assetEnvEnumPg("environment").notNull().default("production"),
+  criticality:       assetCritEnumPg("criticality").notNull().default("medium"),
+  dataClass:         assetDataClassEnumPg("data_class"),
+  ownerId:           uuid("owner_id").references(()=>profiles.id,{onDelete:"set null"}),
+  businessUnit:      text("business_unit"),
+  location:          text("location"),
+  cloudProvider:     text("cloud_provider"),
+  technologyStack:   text("technology_stack"),
+  complianceScope:   text("compliance_scope").array(),
+  containsPii:       boolean("contains_pii").notNull().default(false),
+  containsSensitive: boolean("contains_sensitive").notNull().default(false),
+  isCrossB:          boolean("is_cross_border").notNull().default(false),
+  encryptionStatus:  text("encryption_status"),
+  recoveryTimeObjective:  text("recovery_time_objective"),
+  recoveryPointObjective: text("recovery_point_objective"),
+  vendorId:          uuid("vendor_id").references(()=>vendors.id,{onDelete:"set null"}),
+  trustScore:        integer("trust_score"),
+  trustScoreAt:      timestamp("trust_score_at",{withTimezone:true}),
+  lastReviewAt:      timestamp("last_review_at",{withTimezone:true}),
+  nextReviewAt:      timestamp("next_review_at",{withTimezone:true}),
+  notes:             text("notes"),
+  externalId:        text("external_id"),
+  metadata:          jsonb("metadata").default({}),
+  createdBy:         uuid("created_by").references(()=>profiles.id,{onDelete:"set null"}),
+  createdAt:         timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+  updatedAt:         timestamp("updated_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_assets_org").on(t.organizationId),index("idx_assets_type").on(t.organizationId,t.assetType)]);
+
+export const assetOwners = pgTable("asset_owners",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  profileId:      uuid("profile_id").notNull().references(()=>profiles.id,{onDelete:"cascade"}),
+  ownerType:      text("owner_type").notNull().default("business"),
+  isPrimary:      boolean("is_primary").notNull().default(false),
+  assignedAt:     timestamp("assigned_at",{withTimezone:true}).defaultNow().notNull(),
+  assignedBy:     uuid("assigned_by").references(()=>profiles.id,{onDelete:"set null"}),
+});
+
+export const assetTags = pgTable("asset_tags",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  tag:            text("tag").notNull(),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetRelationships = pgTable("asset_relationships",{
+  id:               uuid("id").primaryKey().defaultRandom(),
+  organizationId:   uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  sourceAssetId:    uuid("source_asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  targetAssetId:    uuid("target_asset_id").references(()=>assets.id,{onDelete:"set null"}),
+  targetEntityType: text("target_entity_type"),
+  targetEntityId:   uuid("target_entity_id"),
+  relationshipType: assetRelTypeEnumPg("relationship_type").notNull(),
+  description:      text("description"),
+  isCritical:       boolean("is_critical").notNull().default(false),
+  createdBy:        uuid("created_by").references(()=>profiles.id,{onDelete:"set null"}),
+  createdAt:        timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_asset_rel_org").on(t.organizationId)]);
+
+export const assetDependencies = pgTable("asset_dependencies",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  dependsOnId:    uuid("depends_on_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  dependencyType: text("dependency_type").notNull().default("runtime"),
+  isCritical:     boolean("is_critical").notNull().default(false),
+  notes:          text("notes"),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetReviews = pgTable("asset_reviews",{
+  id:              uuid("id").primaryKey().defaultRandom(),
+  organizationId:  uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:         uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  reviewerId:      uuid("reviewer_id").references(()=>profiles.id,{onDelete:"set null"}),
+  reviewType:      text("review_type").notNull().default("periodic"),
+  outcome:         text("outcome").notNull().default("no_change"),
+  findings:        text("findings"),
+  recommendations: text("recommendations"),
+  nextReviewAt:    date("next_review_at"),
+  reviewedAt:      timestamp("reviewed_at",{withTimezone:true}).defaultNow().notNull(),
+  createdAt:       timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_asset_reviews_org").on(t.organizationId)]);
+
+export const assetScores = pgTable("asset_scores",{
+  id:                  uuid("id").primaryKey().defaultRandom(),
+  organizationId:      uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:             uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  trustScore:          integer("trust_score").notNull().default(0),
+  securityControls:    integer("security_controls").notNull().default(0),
+  complianceCoverage:  integer("compliance_coverage").notNull().default(0),
+  riskPosture:         integer("risk_posture").notNull().default(0),
+  dataProtection:      integer("data_protection").notNull().default(0),
+  operationalHealth:   integer("operational_health").notNull().default(0),
+  monitoringCoverage:  integer("monitoring_coverage").notNull().default(0),
+  triggerEvent:        text("trigger_event").notNull().default("computed"),
+  computedAt:          timestamp("computed_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_asset_scores_org").on(t.organizationId)]);
+
+export const assetAlerts = pgTable("asset_alerts",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").references(()=>assets.id,{onDelete:"cascade"}),
+  alertType:      assetAlertTypeEnumPg("alert_type").notNull().default("custom"),
+  severity:       text("severity").notNull().default("medium"),
+  title:          text("title").notNull(),
+  description:    text("description"),
+  status:         text("status").notNull().default("open"),
+  dueDate:        date("due_date"),
+  resolvedAt:     timestamp("resolved_at",{withTimezone:true}),
+  resolvedBy:     uuid("resolved_by").references(()=>profiles.id,{onDelete:"set null"}),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+},(t)=>[index("idx_asset_alerts_org").on(t.organizationId)]);
+
+export const assetDataFlows = pgTable("asset_data_flows",{
+  id:                   uuid("id").primaryKey().defaultRandom(),
+  organizationId:       uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  sourceAssetId:        uuid("source_asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  targetAssetId:        uuid("target_asset_id").references(()=>assets.id,{onDelete:"set null"}),
+  targetName:           text("target_name"),
+  dataTypes:            text("data_types").array(),
+  flowPurpose:          text("flow_purpose"),
+  isCrossB:             boolean("is_cross_border").notNull().default(false),
+  destinationCountry:   text("destination_country"),
+  encryptionInTransit:  boolean("encryption_in_transit").notNull().default(false),
+  dataVolume:           text("data_volume"),
+  frequency:            text("frequency").notNull().default("continuous"),
+  legalBasis:           text("legal_basis"),
+  createdAt:            timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetIncidents = pgTable("asset_incidents",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  title:          text("title").notNull(),
+  description:    text("description"),
+  severity:       text("severity").notNull().default("medium"),
+  status:         text("status").notNull().default("open"),
+  rootCause:      text("root_cause"),
+  remediation:    text("remediation"),
+  occurredAt:     timestamp("occurred_at",{withTimezone:true}),
+  resolvedAt:     timestamp("resolved_at",{withTimezone:true}),
+  reportedBy:     uuid("reported_by").references(()=>profiles.id,{onDelete:"set null"}),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+  updatedAt:      timestamp("updated_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetSnapshots = pgTable("asset_snapshots",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  totalAssets:    integer("total_assets").notNull().default(0),
+  activeAssets:   integer("active_assets").notNull().default(0),
+  criticalAssets: integer("critical_assets").notNull().default(0),
+  assetsByType:   jsonb("assets_by_type").default({}),
+  assetsByEnv:    jsonb("assets_by_env").default({}),
+  avgTrustScore:  integer("avg_trust_score"),
+  openAlerts:     integer("open_alerts").notNull().default(0),
+  snapshottedAt:  timestamp("snapshotted_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetCriticalityLog = pgTable("asset_criticality_log",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  previousLevel:  assetCritEnumPg("previous_level"),
+  newLevel:       assetCritEnumPg("new_level").notNull(),
+  reason:         text("reason"),
+  changedBy:      uuid("changed_by").references(()=>profiles.id,{onDelete:"set null"}),
+  changedAt:      timestamp("changed_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetRisks = pgTable("asset_risks",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  riskId:         uuid("risk_id").notNull().references(()=>risks.id,{onDelete:"cascade"}),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetControls = pgTable("asset_controls",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  controlId:      uuid("control_id").notNull().references(()=>controls.id,{onDelete:"cascade"}),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetVendors = pgTable("asset_vendors",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  vendorId:       uuid("vendor_id").notNull().references(()=>vendors.id,{onDelete:"cascade"}),
+  accessType:     text("access_type").notNull().default("provides"),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetContracts = pgTable("asset_contracts",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  contractId:     uuid("contract_id").notNull(),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetRegulations = pgTable("asset_regulations",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  regulationId:   uuid("regulation_id").notNull().references(()=>regulations.id,{onDelete:"cascade"}),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+export const assetAiSystems = pgTable("asset_ai_systems",{
+  id:             uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id").notNull().references(()=>organizations.id,{onDelete:"cascade"}),
+  assetId:        uuid("asset_id").notNull().references(()=>assets.id,{onDelete:"cascade"}),
+  aiSystemId:     uuid("ai_system_id").notNull(),
+  createdAt:      timestamp("created_at",{withTimezone:true}).defaultNow().notNull(),
+});
+
+// Asset Intelligence™ — inferred types
+export type Asset             = typeof assets.$inferSelect;
+export type AssetType         = typeof assetTypes.$inferSelect;
+export type AssetRelationship = typeof assetRelationships.$inferSelect;
+export type AssetDependency   = typeof assetDependencies.$inferSelect;
+export type AssetReview       = typeof assetReviews.$inferSelect;
+export type AssetScore        = typeof assetScores.$inferSelect;
+export type AssetAlert        = typeof assetAlerts.$inferSelect;
+export type AssetDataFlow     = typeof assetDataFlows.$inferSelect;
+export type AssetIncident     = typeof assetIncidents.$inferSelect;
+export type AssetSnapshot     = typeof assetSnapshots.$inferSelect;

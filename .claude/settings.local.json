@@ -136,7 +136,10 @@
       "Bash(ls -t ~/.claude/projects/ | head -20)",
       "Bash(awk '{print $2}')",
       "Bash(xargs -I{} sh -c 'cat \"{}\" 2>/dev/null')",
-      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\" -Directory)"
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\" -Directory)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" -Filter \"*.md\" -Depth 1)",
+      "Bash(Select-Object Name, FullName)",
+      "Bash(Test-Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\SEED.md\")"
     ]
   }
 }

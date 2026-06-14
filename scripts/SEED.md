@@ -80,7 +80,11 @@ node scripts/seed-trust-verification.mjs    # AUDT Verified™ cert + Privacy Re
 node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
 node scripts/seed-continuous-compliance.mjs # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 3 automation rules
 
-# 14. Optional: E2E test user
+# 14. Regulatory Intelligence™
+node scripts/apply-sql.mjs supabase/migrations/0031_regulatory_intelligence.sql
+node scripts/seed-regulatory-intelligence.mjs # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
+
+# 15. Optional: E2E test user
 node scripts/seed-e2e.mjs               # E2E test user + workspace
 ```
 
@@ -236,6 +240,12 @@ node scripts/seed-e2e.mjs               # E2E test user + workspace
 |---|---|---|
 | `seed-continuous-compliance.mjs` | 3 access reviews (quarterly employee, privileged access, SOC 2 prep) · 3 attestations (Acceptable Use, Remote Work Security, DPDP Privacy) · 3 training campaigns (Security Awareness, DPDP Privacy, Phishing Simulation) · 5 open compliance signals (MFA, secret scanning, privileged access, stale accounts) · 1 health score (74, needs_attention) · 5 readiness snapshots (SOC 2, ISO 27001, DPDP 2023, PCI DSS, HIPAA) · 3 automation rules | ✅ |
 
+### Regulatory Intelligence™ (Module 30)
+
+| Script | What it seeds | Idempotent |
+|---|---|---|
+| `seed-regulatory-intelligence.mjs` | 8 regulatory changes (DPDP, GDPR, RBI CSF, EU AI Act amendments — mixed severities) · 12 obligations (DPDP Data Localisation, GDPR DPO, RBI encryption, etc.) · 3 impact assessments · 5 open alerts (critical/high/medium) · 5 watchlists (India Regulatory Bundle, EU AI Compliance, Data Privacy Pack, Financial Sector, AI Governance Stack) · 8 tasks · 4 regulatory updates. Requires migration 0031 (18 built-in regulations seeded at migration time). | ✅ |
+
 ### Testing
 
 | Script | What it seeds | Idempotent |
@@ -295,3 +305,8 @@ node scripts/seed-trust-network.mjs
 | Attestations | 3 |
 | Training campaigns | 3 |
 | Automation rules | 3 |
+| Regulatory changes | 8 |
+| Regulatory obligations | 12 |
+| Regulatory alerts | 5 |
+| Regulatory watchlists | 5 |
+| Regulatory tasks | 8 |

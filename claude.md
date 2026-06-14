@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · **Governance Agent Framework™**
-- **Total tables:** 204 (187 previous + 17 Governance Agent Framework™ tables from migration 0030)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · **Regulatory Intelligence™**
+- **Total tables:** 218 (204 previous + 14 Regulatory Intelligence™ tables from migration 0031)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -101,7 +101,7 @@ Browser / API client
 
 ## 5. Database Schema
 
-**52 tables** across 12 migration files (0000–0012 — all applied).
+**218 tables** across 32 migration files (0000–0031 — all applied).
 
 ### Vendor Governance tables (15)
 
@@ -214,7 +214,26 @@ Browser / API client
 
 **CRITICAL — Drizzle column naming for risk tables:** Use `columnEnum("status")` pattern (same as compliance module), NOT `columnEnum("risk_treatment_status")`. The DB column name IS the first argument. Mismatch causes silent query failures.
 
-**RLS:** All 52 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`. Control junction tables validate org via `EXISTS (SELECT 1 FROM controls c JOIN memberships m ON m.organization_id = c.organization_id WHERE c.id = control_id AND m.user_id = auth.uid())`.
+### Regulatory Intelligence™ tables (14) — migration 0031
+
+| Table | Purpose |
+|---|---|
+| `regulations` | Regulation registry — name, jurisdiction, category, status, effectiveDate, deadlineDate. `organization_id = NULL` for 18 built-in global regulations (returned to all orgs) |
+| `regulation_versions` | Version history per regulation — versionNumber, summary, changedAt |
+| `regulatory_changes` | Amendments to regulations — title, description, severity (critical/high/medium/low), status workflow (new→under_review→assessed→actioned→closed), impactedAreas |
+| `obligations` | Compliance obligations extracted from regulations — priority (critical/high/medium/low), status (not_started→in_progress→implemented→validated), owner, dueDate, implementationNotes |
+| `obligation_mappings` | Junction: obligation ↔ control (maps obligations to AUDT controls) |
+| `regulatory_assessments` | Per-change impact assessments — title, impactLevel, summary, assessedBy, assessedAt |
+| `regulatory_impacts` | Detailed impact records per assessment — category, description, affectedAreas |
+| `regulatory_reviews` | Periodic regulation review log — reviewer, outcome, notes, nextReviewDate |
+| `regulatory_alerts` | Auto-generated alerts for high/critical changes — severity, status (open/acknowledged/resolved), dueDate |
+| `regulatory_watchlists` | Org-specific regulation watchlists — name, description, linked regulations |
+| `regulatory_sources` | Registry of regulatory bodies — name, type (regulator/standards_body/government/international), region, url. 6 built-in sources seeded |
+| `regulatory_agents` | Agent configuration per regulation (Drizzle export: `regulatoryAgentConfig`) — enabled, schedule, rules JSON |
+| `regulatory_tasks` | Action tasks arising from regulatory obligations — title, priority, status, assignedTo, dueDate |
+| `regulatory_updates` | Feed of regulatory news/updates — title, summary, source, publishedAt, regulationId |
+
+**RLS:** All 218 tables enabled. Helpers: `is_org_member()`, `has_org_role()`. Risk junction tables validate org via `EXISTS (SELECT 1 FROM risks WHERE id = risk_id AND is_org_member(organization_id))`. Control junction tables validate org via `EXISTS (SELECT 1 FROM controls c JOIN memberships m ON m.organization_id = c.organization_id WHERE c.id = control_id AND m.user_id = auth.uid())`.
 
 **First-time setup on a fresh DB:**
 ```bash
@@ -252,6 +271,7 @@ node scripts/seed-trust-api-platform.mjs            # 3 clients · 3 API keys ·
 node scripts/seed-trust-verification.mjs            # AUDT Verified™ (cert+badge) · Privacy Ready™ · Enterprise Ready™ (pending)
 node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 5 readiness snapshots · 3 automation rules
 node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
+node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -758,6 +778,23 @@ GET /api/v1/agent-actions                    Agent action queue (?status=)
 POST /api/v1/agent-actions/[id]/approve      Approve agent action (read_write key)
 POST /api/v1/agent-actions/[id]/reject       Reject agent action (read_write key)
 
+--- Regulatory Intelligence™ ---
+/regulatory-intelligence                     Hub (KPI strip + recent changes + open alerts + compliance horizon + module nav)
+/regulatory-intelligence/library            Regulation Library™ (filterable list of 18 built-in + org regulations)
+/regulatory-intelligence/changes            Change Monitor™ (filterable changes list + status advancement)
+/regulatory-intelligence/obligations        Obligations™ (obligation registry + status tracker + obligation actions)
+/regulatory-intelligence/assessments        Impact Assessments™ (assessment list + create)
+/regulatory-intelligence/watchlists         Watchlists™ (create watchlists for regulations + suggested starters)
+/regulatory-intelligence/horizon            Compliance Horizon™ (4-panel AI forecast: emerging risks · deadlines · trends · recommendations)
+/regulatory-intelligence/ai                 AI Regulatory Advisor™ (cached summary + suggested questions + NL chat)
+GET /api/v1/regulations                     Paginated regulation list (?category=, ?page=, ?pageSize=)
+GET /api/v1/obligations                     Obligation list (?status=, ?regulationId=, ?priority=, ?page=)
+POST /api/v1/obligations                    Create obligation (read_write key)
+GET /api/v1/regulatory-changes              Regulatory change list (?status=, ?severity=)
+GET /api/v1/regulatory-assessments          Assessment list (?status=, ?page=)
+POST /api/v1/regulatory-assessments         Create assessment (read_write key)
+GET /api/v1/regulatory-readiness            Readiness score + metrics
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -964,6 +1001,36 @@ lib/
                         createWebhookAction, deleteWebhookAction, pauseWebhookAction, resumeWebhookAction,
                         generatePlatformSummaryAction, generateApiDocsAction, chatAction
 
+  --- Regulatory Intelligence™ services ---
+  services/regulatory-intelligence/
+    regulatory-service.ts   getDashboardData(), getRegulations(), getChanges(), getObligations(), getAssessments(),
+                            getAlerts(), getWatchlists(), getTasks(), getUpdates(), getReadiness(),
+                            createChange() (auto-inserts alert for high/critical), createObligation(), createAssessment()
+    ai-regulatory-service.ts  generateRegulatoryAdvisorySummary() (cached 24h), analyzeRegulatoryChange() (cached per change),
+                              extractObligations(), suggestControlMappings(), generateComplianceHorizon() (cached 24h), chat()
+
+  --- Regulatory Intelligence™ repository ---
+  repositories/
+    regulatory-intelligence-repo.ts  findAllRegulations(), findAllChanges(), findAllObligations(), findAllAssessments(),
+                                     findAllAlerts(), findAllWatchlists(), findAllTasks(), findAllUpdates(),
+                                     getDashboardMetrics() (8 parallel counts), getReadinessData()
+                                     Uses or(isNull(org_id), eq(org_id, orgId)) for built-in global rows
+
+  regulatory-intelligence/actions.ts  All server actions: createChangeAction, updateChangeStatusAction,
+                                       createObligationAction, updateObligationStatusAction,
+                                       createAssessmentAction, deleteWatchlistAction,
+                                       generateAdvisorySummaryAction, analyzeChangeAction,
+                                       generateHorizonAction, chatAction
+
+  components/regulatory-intelligence/
+    reg-ui.tsx              RegSubNav (8-item pill nav) · RegStat (border-l-2 accent card, 5 accent types)
+                            SeverityBadge · ChangeStatusBadge · ObligationStatusBadge · PriorityBadge
+                            CategoryBadge · AlertIcon · ReadinessBar · ReadinessLabel
+    change-actions.tsx      UpdateChangeStatusButton (new→under_review→assessed→actioned→closed)
+    obligation-actions.tsx  UpdateObligationStatusButton (not_started→in_progress→implemented→validated)
+    watchlist-actions.tsx   DeleteWatchlistButton (confirm dialog + delete)
+    reg-ai-chat.tsx         NL chat with suggested question click handler ([data-question] attribute delegation)
+
   agents/
     utils.ts            Plain TS (no "use client") — fmtDate(), fmtDuration() used by agents server pages.
                         Extracted from agent-ui.tsx to avoid Next.js server/client boundary error.
@@ -1084,6 +1151,7 @@ supabase/
     0021_benchmarking.sql       Governance Benchmarking™ — 3 enums + benchmark_industries + benchmark_snapshots + benchmark_scores + benchmark_trends + RLS + seeded baselines ✅ APPLIED
     0024_executive_reporting.sql Executive Reporting & Analytics™ — analytics_dashboards + analytics_widgets + analytics_reports + analytics_schedules + analytics_snapshots + analytics_exports + analytics_forecasts + analytics_subscriptions + analytics_kpis + RLS ✅ APPLIED
     0025_ai_governance.sql      AI Governance™ — 8 enums + ai_systems + ai_vendors + ai_risks + ai_controls + ai_policies + ai_assessments + ai_incidents + ai_compliance + ai_trust_scores + ai_system_controls + ai_system_risks + RLS ✅ APPLIED
+    0031_regulatory_intelligence.sql  Regulatory Intelligence™ — 14 tables: regulations + regulation_versions + regulatory_changes + obligations + obligation_mappings + regulatory_assessments + regulatory_impacts + regulatory_reviews + regulatory_alerts + regulatory_watchlists + regulatory_sources + regulatory_agents + regulatory_tasks + regulatory_updates + RLS. Seeds 18 built-in regulations + 6 regulatory sources ✅ APPLIED
   rls.sql                       RLS policies + auth trigger (apply once) — includes audit table policies
   rls-risk-lens.sql             Risk Lens™ RLS policies (apply once after migration 0009)
   storage.sql                   vendor-documents + compliance-documents buckets + RLS policies (apply once)
@@ -1102,6 +1170,7 @@ scripts/
   seed-trust-scores.mjs         Computes and stores Trust Score™ for all active vendors (idempotent)
   seed-trust-exchange.mjs       1 published trust profile · 5 documents · 4 badges · 1 global questionnaire with answers
   seed-executive-reporting.mjs  10 KPIs + 5 snapshots + 3 board reports + 2 schedules + 9 forecasts (3 metrics × 3 horizons)
+  seed-regulatory-intelligence.mjs  8 regulatory changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates (idempotent)
   SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
@@ -1170,6 +1239,7 @@ vi.mock("@/lib/db", () => ({
 ### Module 23 — Trust Verification Authority™ ✅ Complete (2026-06-13)
 ### Module 28 — Continuous Compliance™ ✅ Complete (2026-06-13)
 ### Module 29 — Governance Agent Framework™ ✅ Complete (2026-06-13)
+### Module 30 — Regulatory Intelligence™ ✅ Complete (2026-06-14)
 
 Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
 
@@ -1518,6 +1588,37 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 
 **17 DB tables (migration 0030):** `governance_agents` · `agent_runs` · `agent_observations` · `agent_recommendations` · `agent_actions` · `agent_orchestrations` · `agent_metrics` · `agent_schedules` · `agent_triggers` · `agent_run_steps` · `agent_events` · `agent_knowledge` · `agent_policies` · `agent_permissions` · `agent_audit_log` · `agent_integrations` · `agent_templates`
 
+### Module 30 — Regulatory Intelligence™ ✅ Complete (2026-06-14)
+
+Always-current regulatory tracking for India (DPDP, RBI, SEBI, IRDAI) and global (GDPR, HIPAA, PCI DSS, ISO 27001, EU AI Act, NIST, DORA, NIS2, SOX) frameworks. 14 new tables, 18 built-in regulations seeded at migration time.
+
+| Feature | Detail |
+|---|---|
+| **Regulation Library™** | 18 built-in global regulations + org-specific; categories: data_privacy · financial · healthcare · cybersecurity · ai_governance · sector_specific; jurisdiction field; effective/deadline dates |
+| **Change Monitor™** | Track regulatory amendments with severity (critical/high/medium/low) and status workflow (new→under_review→assessed→actioned→closed) |
+| **Obligations™** | Extract and track compliance obligations per regulation — priority, implementation status (not_started→in_progress→implemented→validated), owner, due date |
+| **Impact Assessments™** | Per-change impact assessments with impact level and summary; linked to change + regulation |
+| **Watchlists™** | Monitor specific regulations with suggested watchlists for quick setup |
+| **Compliance Horizon™** | AI-powered 4-panel forecast: emerging regulatory risks · upcoming deadlines · global trends · recommended actions (cached 24h) |
+| **Regulatory Readiness Score™** | (implemented + validated obligations) / total obligations × 100 — live on hub dashboard |
+| **AI Regulatory Advisor™** | Cached 24h advisory summary, per-change AI analysis (keyChanges + requiredActions + impactAreas), obligation extraction, control mapping suggestions, NL chat |
+| **REST API** | 5 endpoints: GET /api/v1/regulations, GET/POST /api/v1/obligations, GET /api/v1/regulatory-changes, GET/POST /api/v1/regulatory-assessments, GET /api/v1/regulatory-readiness |
+| **Global built-ins** | 18 regulations seeded with `organization_id = NULL`; returned to all orgs via `OR organization_id IS NULL` repo query |
+
+- Service: `lib/services/regulatory-intelligence/regulatory-service.ts`
+- AI service: `lib/services/regulatory-intelligence/ai-regulatory-service.ts`
+- Repo: `lib/repositories/regulatory-intelligence-repo.ts`
+- Actions: `lib/regulatory-intelligence/actions.ts`
+- Migration: `supabase/migrations/0031_regulatory_intelligence.sql`
+- Routes: `/regulatory-intelligence/*` (8 pages: Hub · Library · Change Monitor · Obligations · Assessments · Watchlists · Horizon · AI Advisor)
+- Seed: `node scripts/seed-regulatory-intelligence.mjs`
+
+**14 DB tables (migration 0031):** `regulations` · `regulation_versions` · `regulatory_changes` · `obligations` · `obligation_mappings` · `regulatory_assessments` · `regulatory_impacts` · `regulatory_reviews` · `regulatory_alerts` · `regulatory_watchlists` · `regulatory_sources` · `regulatory_agents` (Drizzle: `regulatoryAgentConfig`) · `regulatory_tasks` · `regulatory_updates`
+
+**Built-in regulations (18, `organization_id = NULL`):** DPDP Act 2023 · GDPR · CCPA · HIPAA · ISO 27001 · ISO 27701 · ISO 42001 · NIST CSF · NIST AI RMF · PCI DSS · DORA · NIS2 · SOX · RBI CSF · SEBI CSCRF · IRDAI ICS · EU AI Act · SOC 2 Type II. All returned to every org via `OR organization_id IS NULL` repo query.
+
+**CRITICAL — `regulatory_agents` table naming:** Drizzle table is `pgTable("regulatory_agents", ...)` (DB table name is `regulatory_agents`) but the TypeScript export is `regulatoryAgentConfig`. Use `regulatoryAgentConfig` in Drizzle queries. Do not confuse with `governance_agents` from Module 29.
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1533,6 +1634,7 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | Trust API Platform™ | Trust-as-infrastructure — API products, webhooks, developer portal, AI API builder | ✅ Complete (2026-06-13) |
 | Continuous Compliance™ | Always-on compliance — 21 automated checks, evidence automation, access reviews, attestations, training, AI Officer™ | ✅ Complete (2026-06-13) |
 | Governance Agent Framework™ | AI agents that continuously monitor, reason, and act — observations, recommendations, human-approved actions | ✅ Complete (2026-06-13) |
+| Regulatory Intelligence™ | Always-current regulatory tracking — 18 built-in regulations, change monitor, obligations, AI horizon, readiness score | ✅ Complete (2026-06-14) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
@@ -1596,7 +1698,7 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | **Control Health™ AI cache key** | `ai-control-service.ts` uses `aiComplianceInsights` table. The `targetId` field is NOT NULL — executive summary uses `orgId` as targetId; per-control narrative uses `control.id`. Never call `getCached()` or `saveCache()` without a valid UUID for `targetId`. |
 | **`auditFindings.status` vs `finding_status`** | In Drizzle schema, the TypeScript field is `.status` (the Drizzle field name) even though the DB column is `finding_status`. Use `auditFindings.status` in Drizzle queries — NOT `auditFindings.findingStatus` or `auditFindings.finding_status`. |
 | **Analytics tables use `org_id` not `organization_id`** | All 9 analytics tables (`analytics_kpis`, `analytics_snapshots`, `analytics_reports`, `analytics_schedules`, `analytics_forecasts`, etc.) use `org_id` as the FK column name — unlike most other AUDT tables which use `organization_id`. Seed scripts and raw SQL queries must use `org_id`. ON CONFLICT clauses use `(org_id, kpi_key)` and `(org_id, snapshot_date)`. |
-| **Standard module nav pattern (2026-06-14)** | All 29 modules use the pill nav: `rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1` container + `shrink-0 rounded-xl px-4 py-2 text-sm font-medium` links. Active = `bg-white/[0.08] text-[var(--color-ink)]`. Inactive = `text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]`. Modules with `layout.tsx` define the nav there (`"use client"` + `usePathname`). CC and Agents use inline `CcSubNav`/`AgentSubNav` components. **Do not add `p-6` to pages inside a `layout.tsx` module** — the app shell `<main>` already provides `p-5 md:p-8`. CC/Agents pages retain `p-6` because they have no layout wrapper. |
+| **Standard module nav pattern (2026-06-14)** | All 30 modules use the pill nav: `rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1` container + `shrink-0 rounded-xl px-4 py-2 text-sm font-medium` links. Active = `bg-white/[0.08] text-[var(--color-ink)]`. Inactive = `text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]`. Modules with `layout.tsx` define the nav there (`"use client"` + `usePathname`). CC and Agents use inline `CcSubNav`/`AgentSubNav` components. **Do not add `p-6` to pages inside a `layout.tsx` module** — the app shell `<main>` already provides `p-5 md:p-8`. CC/Agents pages retain `p-6` because they have no layout wrapper. |
 | **Standard page heading / spacing** | All module hub and sub-pages use `font-[family-name:var(--font-display)] text-xl font-bold` (not `text-2xl`) and `space-y-6` root wrapper (not `space-y-8`). The one exception is `dashboard/page.tsx` line 411 which uses `text-2xl font-extrabold` for a data value display. |
 
 ---

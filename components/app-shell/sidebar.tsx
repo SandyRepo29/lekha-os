@@ -29,6 +29,7 @@ import {
   ChevronRight,
   Cpu,
   Scale,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -77,7 +78,8 @@ const groups: NavGroup[] = [
       { href: "/trust-intelligence",       label: "Trust Intelligence™",      icon: Brain },
       { href: "/benchmarking",             label: "Benchmarking™",            icon: BarChart3 },
       { href: "/executive-reporting",      label: "Executive Reporting™",     icon: LineChart },
-      { href: "/regulatory-intelligence",  label: "Regulatory Intelligence™", icon: Scale },
+      { href: "/regulatory-intelligence",  label: "Regulatory Intelligence™", icon: Scale  },
+      { href: "/asset-intelligence",        label: "Asset Intelligence™",       icon: Layers },
     ],
   },
   {
