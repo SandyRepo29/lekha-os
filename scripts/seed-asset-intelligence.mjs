@@ -78,7 +78,7 @@ async function main() {
     ...processes.map(a => ({ ...a, cloud: null, pii: false, class: "internal", stack: null, sensitive: false, env: "production" })),
   ];
 
-  const insertedIds: string[] = [];
+  const insertedIds = [];
 
   for (const a of allAssets) {
     const [exists] = await sql`SELECT id FROM assets WHERE organization_id = ${orgId} AND name = ${a.name} LIMIT 1`;
@@ -90,8 +90,8 @@ async function main() {
         business_unit, contains_pii, contains_sensitive, data_class, technology_stack, cloud_provider,
         created_by, created_at, updated_at)
       VALUES (${id}, ${orgId}, ${a.name}, ${a.type}, ${a.criticality}, ${a.env ?? "production"}, 'active',
-        ${a.unit ?? null}, ${a.pii ?? false}, ${a.sensitive ?? false}, ${(a as any).class ?? null},
-        ${(a as any).stack ?? null}, ${(a as any).cloud ?? null},
+        ${a.unit ?? null}, ${a.pii ?? false}, ${a.sensitive ?? false}, ${a.class ?? null},
+        ${a.stack ?? null}, ${a.cloud ?? null},
         ${userId ?? null}, NOW(), NOW())
     `;
     insertedIds.push(id);
