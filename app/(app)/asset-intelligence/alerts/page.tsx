@@ -42,7 +42,7 @@ export default async function AlertsPage() {
       <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
         <h2 className="font-semibold text-sm mb-4">Open Alerts</h2>
         {open.length === 0 ? (
-          <p className="text-sm text-[var(--color-ink-dim)] text-center py-8">No open alerts â€” all assets are in good governance health.</p>
+          <p className="text-sm text-[var(--color-ink-dim)] text-center py-8">No open alerts — all assets are in good governance health.</p>
         ) : (
           <div className="space-y-2">
             {(open as any[]).map((al: any) => (

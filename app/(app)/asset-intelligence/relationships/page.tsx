@@ -79,7 +79,7 @@ export default async function RelationshipsPage() {
                           <Link href={`/asset-intelligence/registry/${source.id}`} className="font-medium hover:text-[var(--color-blue)]">{source.name}</Link>
                           <div className="mt-0.5"><AssetTypeBadge type={source.assetType} /></div>
                         </div>
-                      ) : <span className="text-[var(--color-ink-dim)]">â€”</span>}
+                      ) : <span className="text-[var(--color-ink-dim)]">—</span>}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">

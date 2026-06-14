@@ -36,7 +36,7 @@ export default async function AssetIntelligencePage() {
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">
-          Enterprise Asset Graph &amp; Trust Mapping Platform â€” the master inventory connecting every governance entity.
+          Enterprise Asset Graph &amp; Trust Mapping Platform — the master inventory connecting every governance entity.
         </p>
       </div>
 
@@ -151,10 +151,10 @@ export default async function AssetIntelligencePage() {
 
       {/* Strategic Banner */}
       <div className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] p-5">
-        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Asset Intelligence™ â€” The Master Graph</h3>
+        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Asset Intelligence™ — The Master Graph</h3>
         <p className="text-xs text-[var(--color-ink-dim)] max-w-2xl">
           Asset Intelligence™ becomes the central layer connecting Vendors · Risks · Controls · Policies · Contracts · Regulations · AI Systems
-          into a unified trust graph. Every governance entity is mapped to assets â€” answering "Which systems are affected?" for any risk, regulation change, or vendor incident.
+          into a unified trust graph. Every governance entity is mapped to assets — answering "Which systems are affected?" for any risk, regulation change, or vendor incident.
         </p>
       </div>
     </div>
