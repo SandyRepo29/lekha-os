@@ -3,9 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardDataAction, getRunsAction, getObservationsAction } from "@/lib/agents/actions";
-import {
-  Bot, Shield, Cpu, Play, CheckCircle, AlertTriangle, Clock,
-} from "lucide-react";
+import { Cpu, Play, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { AgentStat, RunStatusBadge, SeverityBadge, AgentSubNav } from "@/components/agents/agent-ui";
 import { fmtDate, fmtDuration } from "@/lib/agents/utils";
 
@@ -32,29 +30,9 @@ export default async function AgentsPage() {
     <div className="space-y-6 p-6">
       <AgentSubNav />
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
-            Governance Agent Framework™
-          </h1>
-          <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
-            AI agents that continuously monitor, reason, and act across your entire governance posture.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            href="/agents/registry"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
-          >
-            <Shield className="h-4 w-4" /> Agents
-          </Link>
-          <Link
-            href="/agents/copilot"
-            className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
-          >
-            <Bot className="h-4 w-4" /> Copilot™
-          </Link>
-        </div>
+      <div className="pt-2">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Agent Framework™</h1>
+        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">AI agents that continuously monitor, reason, and act across your entire governance posture.</p>
       </div>
 
       {/* KPI Strip */}
