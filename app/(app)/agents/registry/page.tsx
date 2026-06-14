@@ -5,28 +5,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getAgentsAction } from "@/lib/agents/actions";
 import { Bot, Plus } from "lucide-react";
 import {
-  AgentStat, AgentStatusBadge, AgentTypeBadge, ExecModeBadge,
+  AgentStat, AgentStatusBadge, AgentTypeBadge, ExecModeBadge, AgentSubNav, fmtDate,
 } from "@/components/agents/agent-ui";
 import { AgentRegistryActions } from "@/components/agents/agent-registry-actions";
-
-const SUB_NAV = [
-  { href: "/agents",              label: "Hub" },
-  { href: "/agents/registry",     label: "Registry" },
-  { href: "/agents/studio",       label: "Studio" },
-  { href: "/agents/runs",         label: "Runs" },
-  { href: "/agents/observations", label: "Observations" },
-  { href: "/agents/recommendations", label: "Recommendations" },
-  { href: "/agents/actions",      label: "Actions" },
-  { href: "/agents/orchestration",label: "Orchestration" },
-  { href: "/agents/analytics",    label: "Analytics" },
-  { href: "/agents/copilot",      label: "Copilot™" },
-];
-
-function fmtDate(val?: string | Date | null): string {
-  if (!val) return "-";
-  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "-"; }
-}
 
 export default async function AgentRegistryPage() {
   await requireUser();
@@ -42,19 +23,7 @@ export default async function AgentRegistryPage() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
-        {SUB_NAV.map(n => (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              n.href === "/agents/registry"
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        ))}
-      </div>
+      <AgentSubNav />
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4 pt-2">

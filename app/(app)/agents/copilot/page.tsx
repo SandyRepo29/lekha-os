@@ -1,22 +1,9 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { Bot, Sparkles } from "lucide-react";
+import { Bot } from "lucide-react";
+import { AgentSubNav } from "@/components/agents/agent-ui";
 import { CopilotChat } from "@/components/agents/copilot-chat";
-
-const SUB_NAV = [
-  { href: "/agents", label: "Hub" },
-  { href: "/agents/registry", label: "Registry" },
-  { href: "/agents/studio", label: "Studio" },
-  { href: "/agents/runs", label: "Runs" },
-  { href: "/agents/observations", label: "Observations" },
-  { href: "/agents/recommendations", label: "Recommendations" },
-  { href: "/agents/actions", label: "Actions" },
-  { href: "/agents/orchestration", label: "Orchestration" },
-  { href: "/agents/analytics", label: "Analytics" },
-  { href: "/agents/copilot", label: "Copilot™" },
-];
 
 const EXAMPLE_PROMPTS = [
   "Show me critical governance risks",
@@ -31,20 +18,8 @@ export default async function CopilotPage() {
   await requireUser();
 
   return (
-    <div className="flex h-full flex-col space-y-0 p-6">
-      {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 mb-6">
-        {SUB_NAV.map(n => (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              n.href === "/agents/copilot"
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        ))}
-      </div>
+    <div className="flex h-full flex-col space-y-6 p-6">
+      <AgentSubNav />
 
       {/* Header */}
       <div className="mb-6">

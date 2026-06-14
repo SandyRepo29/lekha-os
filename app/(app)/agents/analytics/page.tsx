@@ -1,23 +1,9 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardDataAction } from "@/lib/agents/actions";
 import { BarChart3, TrendingUp, Zap, Clock, Shield } from "lucide-react";
-import { AgentStat } from "@/components/agents/agent-ui";
-
-const SUB_NAV = [
-  { href: "/agents", label: "Hub" },
-  { href: "/agents/registry", label: "Registry" },
-  { href: "/agents/studio", label: "Studio" },
-  { href: "/agents/runs", label: "Runs" },
-  { href: "/agents/observations", label: "Observations" },
-  { href: "/agents/recommendations", label: "Recommendations" },
-  { href: "/agents/actions", label: "Actions" },
-  { href: "/agents/orchestration", label: "Orchestration" },
-  { href: "/agents/analytics", label: "Analytics" },
-  { href: "/agents/copilot", label: "Copilot™" },
-];
+import { AgentStat, AgentSubNav } from "@/components/agents/agent-ui";
 
 const INSIGHT_CARDS = [
   {
@@ -65,19 +51,7 @@ export default async function AgentAnalyticsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
-        {SUB_NAV.map(n => (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              n.href === "/agents/analytics"
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        ))}
-      </div>
+      <AgentSubNav />
 
       {/* Header */}
       <div className="pt-2">

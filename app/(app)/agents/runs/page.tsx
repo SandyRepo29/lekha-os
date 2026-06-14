@@ -4,33 +4,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getRunsAction } from "@/lib/agents/actions";
 import { Activity } from "lucide-react";
-import { AgentStat, RunStatusBadge } from "@/components/agents/agent-ui";
-
-const SUB_NAV = [
-  { href: "/agents", label: "Hub" },
-  { href: "/agents/registry", label: "Registry" },
-  { href: "/agents/studio", label: "Studio" },
-  { href: "/agents/runs", label: "Runs" },
-  { href: "/agents/observations", label: "Observations" },
-  { href: "/agents/recommendations", label: "Recommendations" },
-  { href: "/agents/actions", label: "Actions" },
-  { href: "/agents/orchestration", label: "Orchestration" },
-  { href: "/agents/analytics", label: "Analytics" },
-  { href: "/agents/copilot", label: "Copilot™" },
-];
-
-function fmtDate(val?: string | Date | null): string {
-  if (!val) return "-";
-  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "-"; }
-}
-
-function fmtDuration(ms?: number): string {
-  if (!ms) return "-";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
-}
+import { AgentStat, RunStatusBadge, AgentSubNav, fmtDate, fmtDuration } from "@/components/agents/agent-ui";
 
 export default async function AgentRunsPage() {
   await requireUser();
@@ -49,19 +23,7 @@ export default async function AgentRunsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
-        {SUB_NAV.map(n => (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              n.href === "/agents/runs"
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        ))}
-      </div>
+      <AgentSubNav />
 
       {/* Header */}
       <div className="pt-2">

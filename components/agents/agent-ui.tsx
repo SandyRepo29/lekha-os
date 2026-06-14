@@ -1,7 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+// ── Sub-nav ───────────────────────────────────────────────────────────────────
+
+const AGENT_SUB_NAV = [
+  { href: "/agents",               label: "Hub" },
+  { href: "/agents/registry",      label: "Registry" },
+  { href: "/agents/studio",        label: "Studio" },
+  { href: "/agents/runs",          label: "Runs" },
+  { href: "/agents/observations",  label: "Observations" },
+  { href: "/agents/recommendations", label: "Recommendations" },
+  { href: "/agents/actions",       label: "Actions" },
+  { href: "/agents/orchestration", label: "Orchestration" },
+  { href: "/agents/analytics",     label: "Analytics" },
+  { href: "/agents/copilot",       label: "Copilot™" },
+];
+
+export function AgentSubNav() {
+  const path = usePathname();
+  return (
+    <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
+      {AGENT_SUB_NAV.map(n => {
+        const active = n.href === "/agents"
+          ? path === n.href
+          : path === n.href || path.startsWith(n.href + "/");
+        return (
+          <Link key={n.href} href={n.href}
+            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
+              active ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]" : "text-[var(--color-ink-dim)]"
+            }`}>
+            {n.label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 // ── Stat card ──────────────────────────────────────────────────────────────────
 

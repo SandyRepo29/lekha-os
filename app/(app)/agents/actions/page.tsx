@@ -1,30 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getPendingActionsAction } from "@/lib/agents/actions";
 import { Zap, Clock, CheckCircle } from "lucide-react";
-import { AgentStat, ActionStatusBadge } from "@/components/agents/agent-ui";
+import { AgentStat, ActionStatusBadge, AgentSubNav, fmtDate } from "@/components/agents/agent-ui";
 import { AgentActionButtons } from "@/components/agents/agent-action-buttons";
-
-const SUB_NAV = [
-  { href: "/agents", label: "Hub" },
-  { href: "/agents/registry", label: "Registry" },
-  { href: "/agents/studio", label: "Studio" },
-  { href: "/agents/runs", label: "Runs" },
-  { href: "/agents/observations", label: "Observations" },
-  { href: "/agents/recommendations", label: "Recommendations" },
-  { href: "/agents/actions", label: "Actions" },
-  { href: "/agents/orchestration", label: "Orchestration" },
-  { href: "/agents/analytics", label: "Analytics" },
-  { href: "/agents/copilot", label: "Copilot™" },
-];
-
-function fmtDate(val?: string | Date | null): string {
-  if (!val) return "-";
-  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "-"; }
-}
 
 export default async function AgentActionsPage() {
   await requireUser();
@@ -41,19 +21,7 @@ export default async function AgentActionsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Sub-nav */}
-      <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
-        {SUB_NAV.map(n => (
-          <Link key={n.href} href={n.href}
-            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
-              n.href === "/agents/actions"
-                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
-                : "text-[var(--color-ink-dim)]"
-            }`}>
-            {n.label}
-          </Link>
-        ))}
-      </div>
+      <AgentSubNav />
 
       {/* Header */}
       <div className="pt-2">

@@ -4,35 +4,9 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardDataAction, getRunsAction, getObservationsAction } from "@/lib/agents/actions";
 import {
-  Bot, Shield, Eye, Lightbulb, Zap, BarChart3, GitBranch,
-  Cpu, Play, ArrowRight, CheckCircle, AlertTriangle, Clock,
-  Activity, Settings,
+  Bot, Shield, Cpu, Play, CheckCircle, AlertTriangle, Clock,
 } from "lucide-react";
-import { AgentStat, AgentStatusBadge, RunStatusBadge, SeverityBadge } from "@/components/agents/agent-ui";
-
-const NAV = [
-  { href: "/agents/registry",        icon: Shield,      label: "Agent Registry™",        description: "All agents - status, runs, execution mode" },
-  { href: "/agents/studio",          icon: Settings,    label: "Agent Studio™",           description: "Create and configure custom governance agents" },
-  { href: "/agents/runs",            icon: Activity,    label: "Agent Runs™",             description: "Full execution history across all agents" },
-  { href: "/agents/observations",    icon: Eye,         label: "Observations™",           description: "Governance signals detected by agents" },
-  { href: "/agents/recommendations", icon: Lightbulb,   label: "Recommendations™",        description: "Prioritized actions from AI analysis" },
-  { href: "/agents/actions",         icon: Zap,         label: "Agent Actions™",          description: "Approval queue and executed governance actions" },
-  { href: "/agents/orchestration",   icon: GitBranch,   label: "Orchestration™",          description: "Multi-agent governance pipelines" },
-  { href: "/agents/analytics",       icon: BarChart3,   label: "Analytics™",              description: "Agent performance and automation metrics" },
-  { href: "/agents/copilot",         icon: Bot,         label: "Governance Copilot™",     description: "NL chat - ask anything about your governance posture" },
-];
-
-function fmtDate(val?: string | Date | null): string {
-  if (!val) return "-";
-  try { return new Date(val as string).toLocaleDateString("en-IN", { day: "numeric", month: "short" }); }
-  catch { return "-"; }
-}
-function fmtDuration(ms?: number): string {
-  if (!ms) return "-";
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.round(ms / 60000)}m`;
-}
+import { AgentStat, RunStatusBadge, SeverityBadge, AgentSubNav, fmtDate, fmtDuration } from "@/components/agents/agent-ui";
 
 export default async function AgentsPage() {
   await requireUser();
@@ -54,7 +28,8 @@ export default async function AgentsPage() {
   }>;
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6 p-6">
+      <AgentSubNav />
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -203,30 +178,6 @@ export default async function AgentsPage() {
         </div>
       )}
 
-      {/* Module Nav */}
-      <div>
-        <h2 className="mb-4 text-sm font-semibold text-[var(--color-ink-dim)] uppercase tracking-wider">Agent Platform</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {NAV.map(({ href, icon: Icon, label, description }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group flex items-start gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04]"
-            >
-              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
-                <Icon className="h-5 w-5 text-[var(--color-blue)]" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold text-sm">{label}</span>
-                  <ArrowRight className="h-4 w-4 text-[var(--color-ink-faint)] transition-transform group-hover:translate-x-0.5" />
-                </div>
-                <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
