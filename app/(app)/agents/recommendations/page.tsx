@@ -4,8 +4,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getRecommendationsAction } from "@/lib/agents/actions";
 import { Lightbulb, CheckCircle, ChevronRight } from "lucide-react";
 import {
-  AgentStat, PriorityBadge, ConfidenceRing, AgentSubNav, fmtDate,
+  AgentStat, PriorityBadge, ConfidenceRing, AgentSubNav,
 } from "@/components/agents/agent-ui";
+import { fmtDate } from "@/lib/agents/utils";
 import { RecommendationActions } from "@/components/agents/recommendation-actions";
 
 const IMPACT_STYLES: Record<string, string> = {

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getObservationsAction } from "@/lib/agents/actions";
 import { Eye, AlertTriangle, CheckCircle } from "lucide-react";
-import { AgentStat, SeverityBadge, ObsStatusBadge, AgentSubNav, fmtDate } from "@/components/agents/agent-ui";
+import { AgentStat, SeverityBadge, ObsStatusBadge, AgentSubNav } from "@/components/agents/agent-ui";
+import { fmtDate } from "@/lib/agents/utils";
 
 const MODULE_COLORS: Record<string, string> = {
   "Risk Lens™":        "bg-red-500/10 text-red-400",

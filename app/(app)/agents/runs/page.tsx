@@ -4,7 +4,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getRunsAction } from "@/lib/agents/actions";
 import { Activity } from "lucide-react";
-import { AgentStat, RunStatusBadge, AgentSubNav, fmtDate, fmtDuration } from "@/components/agents/agent-ui";
+import { AgentStat, RunStatusBadge, AgentSubNav } from "@/components/agents/agent-ui";
+import { fmtDate, fmtDuration } from "@/lib/agents/utils";
 
 export default async function AgentRunsPage() {
   await requireUser();

@@ -6,7 +6,8 @@ import { getDashboardDataAction, getRunsAction, getObservationsAction } from "@/
 import {
   Bot, Shield, Cpu, Play, CheckCircle, AlertTriangle, Clock,
 } from "lucide-react";
-import { AgentStat, RunStatusBadge, SeverityBadge, AgentSubNav, fmtDate, fmtDuration } from "@/components/agents/agent-ui";
+import { AgentStat, RunStatusBadge, SeverityBadge, AgentSubNav } from "@/components/agents/agent-ui";
+import { fmtDate, fmtDuration } from "@/lib/agents/utils";
 
 export default async function AgentsPage() {
   await requireUser();
