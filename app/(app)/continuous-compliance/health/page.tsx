@@ -32,7 +32,7 @@ export default async function ComplianceHealthPage() {
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Health™</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">Organization-wide compliance health score</p>
         </div>
-        <form action={computeHealthAction}>
+        <form action={async () => { "use server"; await computeHealthAction(); }}>
           <button type="submit"
             className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors">
             <RefreshCw className="h-4 w-4" /> Recompute
