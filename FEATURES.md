@@ -1,6 +1,6 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-13 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Last updated: 2026-06-14 · Build: clean · Tests: 201/201 · Live: https://audt.tech
 > Modules: **29 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · **Governance Agent Framework™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
@@ -35,7 +35,7 @@
 | **Encryption** | AES-256-GCM for all integration credentials at rest (`ENCRYPTION_KEY`) |
 | **REST API v1** | 47 endpoints — full CRUD for audits/findings/CAPAs/risks/treatments/reviews/contracts/issues/workflows + Trust Score™ + Control CSV exports + Trust Intelligence™ (overview, org-score, recommendations) + policies + privacy + workflow-runs + trust-exchange + trust-network + benchmarking + integrations · Bearer token auth + bcrypt key validation + in-memory rate limiting |
 | **Audit logging** | Every meaningful mutation logged to `audit_logs` with actor, action, entity, metadata, ip_address |
-| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **187 tables** across 30 migrations — all applied |
+| **DB** | Drizzle ORM, lazy Proxy init, Supabase Postgres pooler, `ssl:"require"`, **204 tables** across 31 migrations — all applied |
 | **Email** | Resend integration — expiry alert emails + AI-written weekly digest |
 | **PDF generation** | `@react-pdf/renderer` — dynamic ESM import pattern |
 
@@ -441,7 +441,7 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 
 ---
 
-## 📍 Current Status (2026-06-13)
+## 📍 Current Status (2026-06-14)
 
 | Layer | Status |
 |---|---|
@@ -449,8 +449,8 @@ Every vendor on AUDT gets a **Trust Profile™** — a public-facing trust passp
 | **Domain** | ✅ audt.tech DNS configured (A + CNAME set at BigRock) — SSL provisioning in progress |
 | **GitHub** | ✅ https://github.com/SandyRepo29/lekha-os — all code current |
 | **Vercel** | ✅ Auto-deployed on push — live at lekha-os.vercel.app and audt.tech |
-| **DB** | ✅ 187 tables, 30 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 28 modules** | ✅ Complete as of 2026-06-13 |
+| **DB** | ✅ 204 tables, 31 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 29 modules** | ✅ Complete as of 2026-06-14 |
 | **Trust Score™** | ✅ Complete |
 | **Phase 1 — Data Governance** | ✅ Complete |
 | **Tests** | ✅ 201/201 Vitest passing |
@@ -1161,6 +1161,7 @@ Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Sec
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-14)** | `CcSubNav` component migrated to standard pill nav (rounded-2xl border container + rounded-xl active chip) — matches all other modules; page heading `text-xl`; `space-y-6` spacing; `p-6` retained (no `layout.tsx`, shell does not provide padding) |
 | **Compliance Checks Library™** | 21 prebuilt checks + custom; categories: aws · azure · gcp · github · m365 · google_workspace · okta · network · endpoint · custom |
 | **Evidence Automation™** | Check runs generate evidence automatically and link to compliance controls |
 | **Control Validation Engine™** | Continuous validation of control effectiveness from check results |
@@ -1189,6 +1190,7 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-14)** | `AgentSubNav` component migrated to standard pill nav; `lib/agents/utils.ts` created for `fmtDate()`/`fmtDuration()` (moved out of `"use client"` module to fix Next.js server-boundary error); redundant nav grids removed from hub and copilot pages; page headings `text-xl`; `space-y-6` spacing |
 | **Agent Registry™** | Registry of all governance agents — type (risk_monitor · vendor_watch · compliance_guardian · policy_enforcer · audit_prep · custom), execution mode (scheduled · realtime · manual), status, last run, success rate |
 | **Agent Studio™** | Create and configure custom governance agents — module scope, scan rules, thresholds, action config, execution schedule |
 | **Agent Runs™** | Full execution history — start/end time, duration, observations generated, recommendations created, actions taken, error log |
@@ -1210,7 +1212,8 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | Layer | Status |
 |---|---|
 | **DB** | ✅ 204 tables, 31 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 29 Modules** | ✅ Complete as of 2026-06-13 |
+| **All 29 Modules** | ✅ Complete as of 2026-06-14 |
+| **UI Consistency** | ✅ Full sweep 2026-06-14 — all 29 modules on standard pill nav, `text-xl` headings, `space-y-6` spacing |
 | **Tests** | ✅ 201/201 Vitest passing |
 | **Deployed** | ✅ lekha-os.vercel.app + audt.tech |
 

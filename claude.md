@@ -964,6 +964,10 @@ lib/
                         createWebhookAction, deleteWebhookAction, pauseWebhookAction, resumeWebhookAction,
                         generatePlatformSummaryAction, generateApiDocsAction, chatAction
 
+  agents/
+    utils.ts            Plain TS (no "use client") — fmtDate(), fmtDuration() used by agents server pages.
+                        Extracted from agent-ui.tsx to avoid Next.js server/client boundary error.
+
   storage/
     server.ts                   Bucket-aware delegator — uploadFile, downloadObject, removeObjects,
                                 createSignedUrl, objectExists. Auto-routes by path prefix (tenant_=compliance-documents)
@@ -1459,6 +1463,7 @@ Always-on compliance automation — closes the gap vs Vanta, Drata, Sprinto, Sec
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-14)** | `CcSubNav` component migrated to standard pill nav; page heading `text-xl`; `space-y-6` spacing; retains root `p-6` (no `layout.tsx`, shell does not provide padding) |
 | **Compliance Checks Library™** | 21 prebuilt checks + custom; categories: aws · azure · gcp · github · m365 · google_workspace · okta · network · endpoint · custom |
 | **Evidence Automation™** | Check runs generate evidence automatically and link to compliance controls |
 | **Control Validation Engine™** | Continuous validation of control effectiveness from check results |
@@ -1491,6 +1496,7 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 
 | Feature | Detail |
 |---|---|
+| **UI polish (2026-06-14)** | `AgentSubNav` migrated to standard pill nav; `lib/agents/utils.ts` added for `fmtDate()`/`fmtDuration()` (extracted from `"use client"` module to fix Next.js server-boundary error); page headings `text-xl`; `space-y-6` spacing |
 | **Agent Registry™** | 6 agent types: risk_monitor · vendor_watch · compliance_guardian · policy_enforcer · audit_prep · custom. Execution modes: scheduled · realtime · manual |
 | **Agent Studio™** | Create/configure custom governance agents — module scope, rules, thresholds, schedule |
 | **Agent Runs™** | Full execution history — duration, observations generated, recommendations created, actions taken |
@@ -1590,6 +1596,8 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | **Control Health™ AI cache key** | `ai-control-service.ts` uses `aiComplianceInsights` table. The `targetId` field is NOT NULL — executive summary uses `orgId` as targetId; per-control narrative uses `control.id`. Never call `getCached()` or `saveCache()` without a valid UUID for `targetId`. |
 | **`auditFindings.status` vs `finding_status`** | In Drizzle schema, the TypeScript field is `.status` (the Drizzle field name) even though the DB column is `finding_status`. Use `auditFindings.status` in Drizzle queries — NOT `auditFindings.findingStatus` or `auditFindings.finding_status`. |
 | **Analytics tables use `org_id` not `organization_id`** | All 9 analytics tables (`analytics_kpis`, `analytics_snapshots`, `analytics_reports`, `analytics_schedules`, `analytics_forecasts`, etc.) use `org_id` as the FK column name — unlike most other AUDT tables which use `organization_id`. Seed scripts and raw SQL queries must use `org_id`. ON CONFLICT clauses use `(org_id, kpi_key)` and `(org_id, snapshot_date)`. |
+| **Standard module nav pattern (2026-06-14)** | All 29 modules use the pill nav: `rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1` container + `shrink-0 rounded-xl px-4 py-2 text-sm font-medium` links. Active = `bg-white/[0.08] text-[var(--color-ink)]`. Inactive = `text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]`. Modules with `layout.tsx` define the nav there (`"use client"` + `usePathname`). CC and Agents use inline `CcSubNav`/`AgentSubNav` components. **Do not add `p-6` to pages inside a `layout.tsx` module** — the app shell `<main>` already provides `p-5 md:p-8`. CC/Agents pages retain `p-6` because they have no layout wrapper. |
+| **Standard page heading / spacing** | All module hub and sub-pages use `font-[family-name:var(--font-display)] text-xl font-bold` (not `text-2xl`) and `space-y-6` root wrapper (not `space-y-8`). The one exception is `dashboard/page.tsx` line 411 which uses `text-2xl font-extrabold` for a data value display. |
 
 ---
 
