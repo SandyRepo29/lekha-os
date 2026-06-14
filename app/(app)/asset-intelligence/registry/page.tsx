@@ -21,7 +21,7 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
     <div className="space-y-6 p-6">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Registryâ„¢</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Registry™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">{assetList.length} assets in inventory</p>
         </div>
         <Link href="/asset-intelligence/registry/new"

@@ -10,8 +10,8 @@ if (!DATABASE_URL) { console.error("DATABASE_URL required"); process.exit(1); }
 const sql = postgres(DATABASE_URL, { ssl: "require", max: 1 });
 
 async function main() {
-  // Find first org
-  const [org] = await sql`SELECT id FROM organizations LIMIT 1`;
+  // Find the most active org (most memberships) — avoids seeding into E2E test org
+  const [org] = await sql`SELECT organization_id AS id FROM memberships GROUP BY organization_id ORDER BY count(*) DESC LIMIT 1`;
   if (!org) { console.error("No organization found. Run seed-demo.mjs first."); process.exit(1); }
   const orgId = org.id;
   console.log(`Seeding Asset Intelligence™ for org: ${orgId}`);

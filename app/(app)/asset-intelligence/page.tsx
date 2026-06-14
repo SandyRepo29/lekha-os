@@ -34,7 +34,7 @@ export default async function AssetIntelligencePage() {
     <div className="space-y-6 p-6">
       {/* Heading */}
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligenceâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">
           Enterprise Asset Graph &amp; Trust Mapping Platform â€” the master inventory connecting every governance entity.
         </p>
@@ -119,7 +119,7 @@ export default async function AssetIntelligencePage() {
                 {alerts.slice(0, 5).map((al: any) => (
                   <div key={al.id} className="rounded-lg border border-[var(--color-line)] p-2 text-xs">
                     <p className="font-medium truncate text-[var(--color-ink)]">{al.title}</p>
-                    <p className="text-[var(--color-ink-dim)] capitalize mt-0.5">{al.severity} Â· {al.alertType?.replace(/_/g," ")}</p>
+                    <p className="text-[var(--color-ink-dim)] capitalize mt-0.5">{al.severity} · {al.alertType?.replace(/_/g," ")}</p>
                   </div>
                 ))}
               </div>
@@ -130,14 +130,14 @@ export default async function AssetIntelligencePage() {
 
       {/* Module Nav Grid */}
       <div>
-        <h2 className="font-semibold text-sm mb-3">Asset Intelligenceâ„¢ Modules</h2>
+        <h2 className="font-semibold text-sm mb-3">Asset Intelligence™ Modules</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { href: "/asset-intelligence/registry",      icon: Monitor,    label: "Asset Registryâ„¢",        desc: "Full inventory" },
-            { href: "/asset-intelligence/data-assets",   icon: FileText,   label: "Data Asset Catalogâ„¢",    desc: "PII & data maps" },
-            { href: "/asset-intelligence/relationships", icon: GitBranch,  label: "Asset Relationshipsâ„¢",   desc: "Dependency graph" },
-            { href: "/asset-intelligence/alerts",        icon: Shield,     label: "Asset Alertsâ„¢",          desc: "Governance alerts" },
-            { href: "/asset-intelligence/ai",            icon: Brain,      label: "AI Asset Advisorâ„¢",      desc: "AI-powered insights" },
+            { href: "/asset-intelligence/registry",      icon: Monitor,    label: "Asset Registry™",        desc: "Full inventory" },
+            { href: "/asset-intelligence/data-assets",   icon: FileText,   label: "Data Asset Catalog™",    desc: "PII & data maps" },
+            { href: "/asset-intelligence/relationships", icon: GitBranch,  label: "Asset Relationships™",   desc: "Dependency graph" },
+            { href: "/asset-intelligence/alerts",        icon: Shield,     label: "Asset Alerts™",          desc: "Governance alerts" },
+            { href: "/asset-intelligence/ai",            icon: Brain,      label: "AI Asset Advisor™",      desc: "AI-powered insights" },
           ].map(({ href, icon: Icon, label, desc }) => (
             <Link key={href} href={href}
               className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
@@ -151,9 +151,9 @@ export default async function AssetIntelligencePage() {
 
       {/* Strategic Banner */}
       <div className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] p-5">
-        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Asset Intelligenceâ„¢ â€” The Master Graph</h3>
+        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Asset Intelligence™ â€” The Master Graph</h3>
         <p className="text-xs text-[var(--color-ink-dim)] max-w-2xl">
-          Asset Intelligenceâ„¢ becomes the central layer connecting Vendors Â· Risks Â· Controls Â· Policies Â· Contracts Â· Regulations Â· AI Systems
+          Asset Intelligence™ becomes the central layer connecting Vendors · Risks · Controls · Policies · Contracts · Regulations · AI Systems
           into a unified trust graph. Every governance entity is mapped to assets â€” answering "Which systems are affected?" for any risk, regulation change, or vendor incident.
         </p>
       </div>

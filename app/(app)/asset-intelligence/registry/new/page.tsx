@@ -14,7 +14,7 @@ export default async function NewAssetPage() {
     <div className="space-y-6 p-6">
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Add Asset</h1>
-        <p className="text-sm text-[var(--color-ink-dim)] mt-1">Register a new asset in the Asset Intelligenceâ„¢ inventory.</p>
+        <p className="text-sm text-[var(--color-ink-dim)] mt-1">Register a new asset in the Asset Intelligence™ inventory.</p>
       </div>
       <AssetSubNav />
       <NewAssetForm assetTypes={assetTypes} />

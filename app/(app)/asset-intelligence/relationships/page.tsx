@@ -29,7 +29,7 @@ export default async function RelationshipsPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Relationshipsâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Relationships™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">Dependency mapping and asset relationship graph.</p>
       </div>
 
@@ -115,8 +115,8 @@ export default async function RelationshipsPage() {
       {/* Trust Graph link */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-sm">Trust Graphâ„¢ Integration</h3>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Asset nodes and relationships are visible in the full governance Trust Graphâ„¢.</p>
+          <h3 className="font-semibold text-sm">Trust Graph™ Integration</h3>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Asset nodes and relationships are visible in the full governance Trust Graph™.</p>
         </div>
         <Link href="/trust-intelligence/trust-graph" className="rounded-xl border border-[var(--color-blue)]/30 px-4 py-2 text-sm text-[var(--color-blue)] hover:bg-[var(--color-blue)]/10 transition-colors">
           Open Trust Graph â†’

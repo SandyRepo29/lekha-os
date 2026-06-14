@@ -14,7 +14,7 @@ export default async function AlertsPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Alertsâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Alerts™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">Governance alerts for assets requiring attention.</p>
       </div>
 

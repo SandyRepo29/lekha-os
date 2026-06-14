@@ -27,7 +27,7 @@ export default async function AssetAiPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Asset Advisorâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Asset Advisor™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">AI-powered asset governance insights, dependency analysis, and impact assessment.</p>
       </div>
 
@@ -41,7 +41,7 @@ export default async function AssetAiPage() {
           </span>
           <div>
             <h2 className="font-semibold text-sm">Asset Intelligence Advisory</h2>
-            <p className="text-xs text-[var(--color-ink-dim)]">AI-generated Â· refreshes every 24 hours</p>
+            <p className="text-xs text-[var(--color-ink-dim)]">AI-generated · refreshes every 24 hours</p>
           </div>
         </div>
         {advisory ? (

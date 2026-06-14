@@ -15,7 +15,7 @@ export default async function DataAssetsPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Data Asset Catalogâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Data Asset Catalog™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">Data collections, PII inventories, and cross-border data flows.</p>
       </div>
 
@@ -53,7 +53,7 @@ export default async function DataAssetsPage() {
                 className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">{a.name}</p>
-                  <p className="text-xs text-[var(--color-ink-dim)]">{a.assetType} Â· {a.dataClass ?? "unclassified"}{a.isCrossB ? " Â· cross-border" : ""}</p>
+                  <p className="text-xs text-[var(--color-ink-dim)]">{a.assetType} · {a.dataClass ?? "unclassified"}{a.isCrossB ? " · cross-border" : ""}</p>
                 </div>
                 <CriticalityBadge level={a.criticality} />
               </Link>
@@ -79,7 +79,7 @@ export default async function DataAssetsPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{a.name}</p>
                   <p className="text-xs text-[var(--color-ink-dim)] truncate">
-                    {a.dataClass ?? "unclassified"}{a.containsPii ? " Â· PII" : ""}{a.isCrossB ? " Â· cross-border" : ""}
+                    {a.dataClass ?? "unclassified"}{a.containsPii ? " · PII" : ""}{a.isCrossB ? " · cross-border" : ""}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -95,8 +95,8 @@ export default async function DataAssetsPage() {
       {/* DPDP Link */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-sm">DPDP Privacyâ„¢ Integration</h3>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Link data assets to consent records, DSRs, and retention policies in DPDP Privacyâ„¢.</p>
+          <h3 className="font-semibold text-sm">DPDP Privacy™ Integration</h3>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Link data assets to consent records, DSRs, and retention policies in DPDP Privacy™.</p>
         </div>
         <Link href="/dpdp-privacy" className="rounded-xl border border-[var(--color-blue)]/30 px-4 py-2 text-sm text-[var(--color-blue)] hover:bg-[var(--color-blue)]/10 transition-colors">
           Go to DPDP â†’
