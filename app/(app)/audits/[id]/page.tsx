@@ -62,7 +62,7 @@ export default async function AuditDetailPage({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+            <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
               {audit.name}
             </h1>
             <AuditStatusBadge status={audit.status} />

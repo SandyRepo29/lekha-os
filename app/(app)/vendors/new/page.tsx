@@ -16,7 +16,7 @@ export default async function NewVendorPage() {
         <ArrowLeft className="h-4 w-4" /> Back to vendors
       </Link>
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Add vendor</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Add vendor</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Register a vendor to start tracking documents, certifications and risk.</p>
       </div>
       <Card className="p-6">

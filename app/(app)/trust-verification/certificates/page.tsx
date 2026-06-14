@@ -12,10 +12,10 @@ export default async function CertificatesPage() {
   const active = certs.filter((c: any) => c.status === "active");
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Trust Certificates™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Certificates™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Issued trust certificates — each publicly verifiable with a unique certificate ID and QR code.</p>
         </div>
         <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-2">

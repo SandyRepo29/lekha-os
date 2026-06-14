@@ -46,7 +46,7 @@ export default async function AssessmentDetailPage({
         </Link>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+            <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
               {assessment.title}
             </h1>
             {assessment.scope && (

@@ -19,7 +19,7 @@ export default async function NewEvidencePage() {
       </Link>
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
           Add evidence
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)]">

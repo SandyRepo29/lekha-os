@@ -41,7 +41,7 @@ export default async function GovernanceTrendsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold flex items-center gap-2">
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
             <TrendingUp className="h-6 w-6 text-[var(--color-blue)]" />
             Governance Trends™
           </h1>

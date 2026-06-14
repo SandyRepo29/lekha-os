@@ -20,7 +20,7 @@ export default async function NewContractPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">New Contract</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">New Contract</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Add a contract to your governance portfolio</p>
       </div>
       <NewContractForm />

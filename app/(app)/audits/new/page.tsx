@@ -26,7 +26,7 @@ export default async function NewAuditPage() {
       </Link>
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
           New Audit
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)]">

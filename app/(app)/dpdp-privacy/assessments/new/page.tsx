@@ -18,7 +18,7 @@ export default async function NewAssessmentPage() {
         >
           <ArrowLeft className="h-4 w-4" /> Back to Assessments
         </Link>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
           New Privacy Impact Assessment
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">

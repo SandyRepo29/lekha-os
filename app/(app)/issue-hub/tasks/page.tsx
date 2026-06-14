@@ -37,7 +37,7 @@ export default async function TasksPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Tasks</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Tasks</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           Org-wide remediation task tracker · {open.length} open · {overdue.length} overdue
         </p>

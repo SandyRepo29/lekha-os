@@ -49,7 +49,7 @@ export default async function IssueAiPage({
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold flex items-center gap-2">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-indigo-400" />
           AI Advisor™
         </h1>

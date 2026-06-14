@@ -27,7 +27,7 @@ export default async function ContractAiPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold flex items-center gap-2">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-purple-400" />
           AI Contract Advisor™
         </h1>

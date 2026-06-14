@@ -18,7 +18,7 @@ export default async function AiCopilotPage() {
   const m = dash?.metrics;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Brain className="h-6 w-6 text-[var(--color-blue)]" /> AI Governance Copilot™

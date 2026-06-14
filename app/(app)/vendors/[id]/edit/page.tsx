@@ -23,7 +23,7 @@ export default async function EditVendorPage({ params }: { params: Promise<{ id:
         <ArrowLeft className="h-4 w-4" /> Back to {vendor.name}
       </Link>
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Edit vendor</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Edit vendor</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Update details for {vendor.name}.</p>
       </div>
       <Card className="p-6">

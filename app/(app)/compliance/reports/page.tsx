@@ -25,7 +25,7 @@ export default async function ComplianceReportsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Reports</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Reports</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">
           Download compliance reports in PDF or CSV format.
         </p>

@@ -57,7 +57,7 @@ export default async function ExecutiveReportingPage() {
   const displayKpis = (ceoData?.kpis ?? kpis).slice(0, 5);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

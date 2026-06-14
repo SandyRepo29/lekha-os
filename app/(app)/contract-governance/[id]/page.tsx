@@ -80,7 +80,7 @@ export default async function ContractDetailPage({
             <span className="text-[var(--color-ink-dim)]">/</span>
             <span className="text-sm">{contract.title}</span>
           </div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">{contract.title}</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">{contract.title}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             <ContractStatusBadge status={contract.status} />
             <span className="text-xs text-[var(--color-ink-dim)]">{contract.contractType.replace(/_/g, " ")}</span>

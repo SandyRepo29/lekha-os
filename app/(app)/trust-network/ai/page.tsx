@@ -53,7 +53,7 @@ export default async function TrustNetworkAiPage() {
     `Profile views: ${metrics.profileViews30d} (30 days).`;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">AI Trust Network Advisor™</h1>

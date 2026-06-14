@@ -29,7 +29,7 @@ export default async function EditContractPage({
           <span>/</span>
           <span>Edit</span>
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Edit Contract</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Edit Contract</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Update contract details and metadata.</p>
       </div>
 

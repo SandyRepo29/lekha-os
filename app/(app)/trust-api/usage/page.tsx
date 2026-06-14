@@ -16,12 +16,12 @@ export default async function UsagePage() {
   const maxDay = analytics?.dailyCounts.reduce((m, d) => Math.max(m, d.cnt), 1) ?? 1;
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6">
       <div>
         <div className="mb-1 text-xs text-[var(--color-ink-faint)]">
           <Link href="/trust-api" className="hover:underline">Trust API Platform™</Link> / API Analytics™
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">API Analytics™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">API Analytics™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Usage metrics, error tracking, and endpoint performance — last 30 days.</p>
       </div>
 

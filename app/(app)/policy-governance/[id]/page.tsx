@@ -58,7 +58,7 @@ export default async function PolicyDetailPage({
           <Link href="/policy-governance/library" className="text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] flex items-center gap-1 mb-2">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Library
           </Link>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">{policy.name}</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">{policy.name}</h1>
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <PolicyStatusBadge status={policy.status} />
             <PolicyHealthBadge score={policy.healthScore ?? null} />

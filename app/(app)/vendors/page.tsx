@@ -61,7 +61,7 @@ export default async function VendorsPage({
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Vendor Hub™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Hub™</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">{total} vendors · {totalDocs} documents tracked</p>
         </div>
         <div className="flex items-center gap-2">

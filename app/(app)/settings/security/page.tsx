@@ -17,7 +17,7 @@ export default async function SecurityPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Security</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Security</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Manage your account security and authentication settings.</p>
       </div>
 

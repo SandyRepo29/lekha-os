@@ -48,7 +48,7 @@ export default async function MarketplacePage() {
   const connectedPhase1 = connections.filter((c) => c.connector.isPhase1).length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">Connector Marketplace™</h1>

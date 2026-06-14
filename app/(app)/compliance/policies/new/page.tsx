@@ -19,7 +19,7 @@ export default async function NewPolicyPage() {
       </Link>
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Add policy</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Add policy</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">
           Create a compliance policy and track its approval lifecycle.
         </p>

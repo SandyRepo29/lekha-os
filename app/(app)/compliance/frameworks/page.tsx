@@ -42,7 +42,7 @@ export default async function FrameworksPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Frameworks</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Frameworks</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {frameworks.length} framework{frameworks.length !== 1 ? "s" : ""}
           </p>

@@ -43,7 +43,7 @@ export default async function WorkflowAIPage({
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold flex items-center gap-2">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-[var(--color-blue)]" /> AI Workflow Advisor™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">

@@ -52,12 +52,12 @@ export default function TrustApiAiPage() {
   }
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6">
       <div>
         <div className="mb-1 text-xs text-[var(--color-ink-faint)]">
           <Link href="/trust-api" className="hover:underline">Trust API Platform™</Link> / AI Advisor
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">AI API Advisor™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI API Advisor™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
           AI-powered platform insights, API documentation generator, and integration guidance.
         </p>

@@ -56,7 +56,7 @@ export default async function WorkflowLibraryPage({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Workflow Library</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Workflow Library</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">{workflows.length} workflow{workflows.length !== 1 ? "s" : ""}</p>
         </div>
         <Link href="/workflow-studio/new"><Button><Plus className="h-4 w-4" /> New Workflow</Button></Link>

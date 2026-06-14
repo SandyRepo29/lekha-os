@@ -50,7 +50,7 @@ export default async function EditWorkflowPage({ params }: { params: Promise<{ i
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Edit Workflow</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Edit Workflow</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">{wf.name}</p>
       </div>
 

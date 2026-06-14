@@ -38,7 +38,7 @@ export default async function ApprovalsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Approvals™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Approvals™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           {pending.length} pending approval{pending.length !== 1 ? "s" : ""}
         </p>

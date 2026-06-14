@@ -29,9 +29,9 @@ export default async function TrustVerificationAiPage() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">AI Verification Advisor™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Verification Advisor™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Eligibility analysis, evidence review, trust assessment, and renewal planning — powered by AI.</p>
       </div>
 

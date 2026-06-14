@@ -102,17 +102,17 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Impact</p>
-                <p className="font-[family-name:var(--font-display)] text-2xl font-bold">{risk.impact}</p>
+                <p className="font-[family-name:var(--font-display)] text-xl font-bold">{risk.impact}</p>
                 <p className="text-xs text-[var(--color-ink-faint)]">/ 5</p>
               </div>
               <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Likelihood</p>
-                <p className="font-[family-name:var(--font-display)] text-2xl font-bold">{risk.likelihood}</p>
+                <p className="font-[family-name:var(--font-display)] text-xl font-bold">{risk.likelihood}</p>
                 <p className="text-xs text-[var(--color-ink-faint)]">/ 5</p>
               </div>
               <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Inherent Score</p>
-                <p className={cn("font-[family-name:var(--font-display)] text-2xl font-bold")} style={{ color: inherent.color }}>
+                <p className={cn("font-[family-name:var(--font-display)] text-xl font-bold")} style={{ color: inherent.color }}>
                   {inherent.score}
                 </p>
                 <p className="text-xs capitalize" style={{ color: inherent.color }}>{inherent.level}</p>

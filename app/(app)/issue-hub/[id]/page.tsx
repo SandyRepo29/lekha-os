@@ -108,7 +108,7 @@ export default async function IssueDetailPage({
             <IssueSeverityBadge severity={issue.severity} />
             <IssueStatusBadge status={issue.status} />
           </div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">{issue.title}</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">{issue.title}</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
             {issue.issueType.replace(/_/g, " ")}
             {issue.sourceModule ? ` · ${issue.sourceModule}` : ""}

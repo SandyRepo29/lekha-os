@@ -89,7 +89,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
           {/* Core info */}
           <div className="min-w-0 flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold leading-tight">
+              <h1 className="font-[family-name:var(--font-display)] text-xl font-bold leading-tight">
                 {vendor.name}
               </h1>
               <VendorStatus vendorId={vendor.id} current={vendor.status} />

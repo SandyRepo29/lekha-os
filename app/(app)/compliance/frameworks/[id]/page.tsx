@@ -72,7 +72,7 @@ export default async function FrameworkDetailPage({
 
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+              <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
                 {fw.name}
               </h1>
               {fw.version && (

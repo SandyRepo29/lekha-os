@@ -26,10 +26,10 @@ export default async function BadgesPage() {
   const active = badges.filter((b: any) => b.status === "active");
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Trust Badges™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Badges™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Active trust badges issued as part of your verification programs.</p>
         </div>
         <div className="text-sm font-semibold text-emerald-400">{active.length} Active Badges</div>

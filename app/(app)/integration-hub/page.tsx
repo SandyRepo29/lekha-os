@@ -36,7 +36,7 @@ export default async function IntegrationHubDashboard() {
   const phase1Pending = phase1Slugs.filter((s) => !connectedSlugs.includes(s));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>

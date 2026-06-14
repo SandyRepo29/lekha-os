@@ -29,7 +29,7 @@ export default async function NewFindingPage({
         <ArrowLeft className="h-4 w-4" /> Back to findings
       </Link>
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
           Add Finding
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)]">{audit.name}</p>

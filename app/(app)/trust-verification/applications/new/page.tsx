@@ -14,7 +14,7 @@ export default async function NewApplicationPage({ searchParams }: { searchParam
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Apply for Verification</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Apply for Verification</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Select a verification program and submit your application for review.</p>
       </div>
 

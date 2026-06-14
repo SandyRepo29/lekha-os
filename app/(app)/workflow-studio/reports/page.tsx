@@ -19,7 +19,7 @@ export default async function WorkflowReportsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Reports</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Reports</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Export workflow data for governance reporting</p>
       </div>
 

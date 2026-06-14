@@ -32,7 +32,7 @@ export default async function VerificationDetailPage({ params }: { params: Promi
   const program = programs.find((p: any) => p.id === v.programId);
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <Link href="/trust-verification/applications" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-blue)] mb-2 inline-block">← Applications</Link>

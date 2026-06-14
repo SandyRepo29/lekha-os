@@ -126,15 +126,15 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
         <div className="grid grid-cols-3 gap-4">
           <Card className="p-4 border-l-2 border-l-emerald-500/60 border-emerald-500/25 bg-emerald-500/[0.04]">
             <p className="text-xs text-[var(--color-ink-faint)]">Completed</p>
-            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{completed}</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-xl font-bold">{completed}</p>
           </Card>
           <Card className="p-4 border-l-2 border-l-red-500/60 border-red-500/25 bg-red-500/[0.04]">
             <p className="text-xs text-[var(--color-ink-faint)]">Failed</p>
-            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{failed}</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-xl font-bold">{failed}</p>
           </Card>
           <Card className="p-4 border-l-2 border-l-[var(--color-line-strong)] border-[var(--color-line)]">
             <p className="text-xs text-[var(--color-ink-faint)]">In Progress</p>
-            <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">{running}</p>
+            <p className="mt-1 font-[family-name:var(--font-display)] text-xl font-bold">{running}</p>
           </Card>
         </div>
       )}

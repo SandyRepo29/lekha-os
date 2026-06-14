@@ -13,9 +13,9 @@ export default async function PassportsPage() {
   const registry = passport?.registry ?? [];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Trust Passport™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Passport™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Your public-facing trust identity — certifications, badges, and proof of governance.</p>
       </div>
 

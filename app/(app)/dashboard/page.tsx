@@ -109,7 +109,7 @@ export default async function DashboardPage() {
       {/* Page header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Governance Dashboard</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Dashboard</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {session.orgName} · organizational trust posture at a glance
           </p>

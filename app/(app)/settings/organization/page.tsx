@@ -23,7 +23,7 @@ export default async function OrganizationPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Organization</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Organization</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Manage your organization profile and branding.</p>
       </div>
 

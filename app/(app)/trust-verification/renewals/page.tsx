@@ -28,9 +28,9 @@ export default async function RenewalsPage() {
   const dueSoon = renewals.filter((r: any) => r.status === "upcoming" && isDueSoon(r.renewalDueDate));
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Renewal Management™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Renewal Management™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Track and manage certification renewals to maintain uninterrupted verified status.</p>
       </div>
 

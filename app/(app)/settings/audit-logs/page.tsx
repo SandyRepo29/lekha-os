@@ -61,7 +61,7 @@ export default async function AuditLogsPage({
     <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Audit Logs</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Audit Logs</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">Complete activity trail for {session.orgName}.</p>
         </div>
         <div className="flex items-center gap-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2">

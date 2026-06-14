@@ -64,7 +64,7 @@ export default async function AiOfficerPage() {
           <Sparkles className="h-5 w-5 text-[var(--color-blue)]" />
         </div>
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
             AI Compliance Officer
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">

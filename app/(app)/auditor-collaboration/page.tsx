@@ -29,7 +29,7 @@ export default async function AuditorCollaborationPage() {
   const m = dash?.metrics;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

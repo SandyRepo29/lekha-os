@@ -48,7 +48,7 @@ export default async function ComplianceDashboardPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
             Evidence Vault™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
@@ -98,7 +98,7 @@ export default async function ComplianceDashboardPage() {
                 <ShieldCheck className="h-5 w-5 text-[var(--color-blue)]" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Frameworks</span>
               </div>
-              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+              <p className="font-[family-name:var(--font-display)] text-xl font-bold">
                 {frameworks.length}
               </p>
               <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">
@@ -111,7 +111,7 @@ export default async function ComplianceDashboardPage() {
                 <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Controls</span>
               </div>
-              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+              <p className="font-[family-name:var(--font-display)] text-xl font-bold">
                 {totalControls}
               </p>
               <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">across all frameworks</p>
@@ -130,7 +130,7 @@ export default async function ComplianceDashboardPage() {
                 <AlertTriangle className="h-5 w-5 text-amber-400" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Open Gaps</span>
               </div>
-              <p className="font-[family-name:var(--font-display)] text-2xl font-bold">
+              <p className="font-[family-name:var(--font-display)] text-xl font-bold">
                 {gapSummary.total}
               </p>
               <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">

@@ -62,12 +62,12 @@ export default async function DeveloperPortalPage() {
   await requireUser();
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6">
       <div>
         <div className="mb-1 text-xs text-[var(--color-ink-faint)]">
           <Link href="/trust-api" className="hover:underline">Trust API Platform™</Link> / Developer Portal™
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Developer Portal™</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Developer Portal™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
           Everything you need to integrate AUDT trust data into your applications.
         </p>

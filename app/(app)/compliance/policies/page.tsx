@@ -37,7 +37,7 @@ export default async function PoliciesPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Policies</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Policies</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {policies.length} polic{policies.length !== 1 ? "ies" : "y"} · {approved} approved
           </p>

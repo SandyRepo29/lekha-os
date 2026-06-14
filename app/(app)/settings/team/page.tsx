@@ -20,7 +20,7 @@ export default async function TeamPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Team</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Team</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Manage who has access to {session.orgName}.</p>
       </div>
 

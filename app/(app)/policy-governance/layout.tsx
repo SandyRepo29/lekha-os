@@ -1,43 +1,45 @@
-import Link from "next/link";
-import { headers } from "next/headers";
+"use client";
 
-const tabs = [
-  { href: "/policy-governance", label: "Overview" },
-  { href: "/policy-governance/library", label: "Library" },
-  { href: "/policy-governance/reviews", label: "Reviews" },
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+const NAV = [
+  { href: "/policy-governance",              label: "Overview",     exact: true },
+  { href: "/policy-governance/library",      label: "Library" },
+  { href: "/policy-governance/reviews",      label: "Reviews" },
   { href: "/policy-governance/attestations", label: "Attestations" },
-  { href: "/policy-governance/ai", label: "AI Advisor" },
+  { href: "/policy-governance/ai",           label: "AI Advisor" },
 ];
 
-export default async function PolicyGovernanceLayout({ children }: { children: React.ReactNode }) {
-  const hdrs = await headers();
-  const pathname = hdrs.get("x-pathname") ?? "";
+export default function PolicyGovernanceLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
 
   return (
     <div className="space-y-6">
-      {/* Sub-nav */}
-      <nav className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)]">
-        {tabs.map((tab) => {
-          const active =
-            tab.href === "/policy-governance"
-              ? pathname === "/policy-governance" || pathname === "/policy-governance/"
-              : pathname.startsWith(tab.href);
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`whitespace-nowrap rounded-t-xl px-4 py-2.5 text-sm font-medium transition-colors ${
-                active
-                  ? "border-b-2 border-indigo-500 text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"
-              }`}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
-      </nav>
-
+      <div className="border-b border-[var(--color-line)] pb-1">
+        <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+          {NAV.map(({ href, label, exact }) => {
+            const isCurrent = exact
+              ? pathname === href || pathname === href + "/"
+              : pathname === href || pathname.startsWith(href + "/");
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
+                  isCurrent
+                    ? "bg-white/[0.08] text-[var(--color-ink)]"
+                    : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                )}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
       {children}
     </div>
   );

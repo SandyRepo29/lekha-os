@@ -19,7 +19,7 @@ export default async function NewFrameworkPage() {
       </Link>
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Add framework</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Add framework</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">
           Choose a standard framework or create a custom one.
         </p>

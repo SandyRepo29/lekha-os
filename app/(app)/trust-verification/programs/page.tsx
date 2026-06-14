@@ -18,10 +18,10 @@ export default async function ProgramsPage() {
   const custom = programs.filter((p: any) => p.programType === "custom");
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Verification Programs™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Verification Programs™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Built-in and custom verification programs — each with requirements, evidence, and validity periods.</p>
         </div>
         <Link href="/trust-verification/applications/new" className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white">

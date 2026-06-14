@@ -16,7 +16,7 @@ export default async function NewControlPage() {
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">New Control</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">New Control</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Add a control to your library</p>
         </div>
       </div>

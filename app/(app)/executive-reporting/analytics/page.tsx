@@ -44,7 +44,7 @@ export default async function AnalyticsPage() {
   const kpiMap = Object.fromEntries(kpis.map((k) => [k.kpiKey, k]));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <Link href="/executive-reporting" className="mb-4 inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">
           <ArrowLeft className="h-3.5 w-3.5" />

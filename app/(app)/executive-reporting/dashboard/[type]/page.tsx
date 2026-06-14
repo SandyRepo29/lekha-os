@@ -145,7 +145,7 @@ export default async function DashboardTypePage({
   const quickLinks = QUICK_LINKS[type] ?? [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Back + header */}
       <div>
         <Link

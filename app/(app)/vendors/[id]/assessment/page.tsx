@@ -45,7 +45,7 @@ export default async function AssessmentPage({
       </Link>
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold">Security Assessment</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Security Assessment</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">{vendor.name} · {assessment.assessment.title}</p>
       </div>
 
