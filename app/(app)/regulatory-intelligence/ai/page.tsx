@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";
 import { generateRegulatoryAdvisorySummary } from "@/lib/services/regulatory-intelligence/ai-regulatory-service";
-import { RegSubNav } from "@/components/regulatory-intelligence/reg-ui";
+import { RegSubNav, RegStat } from "@/components/regulatory-intelligence/reg-ui";
 import { RegAiAdvisorClient } from "@/components/regulatory-intelligence/reg-ai-chat";
 import { Bot, Sparkles } from "lucide-react";
 
@@ -34,6 +34,14 @@ export default async function RegAiAdvisorPage() {
             Ask anything about regulations, changes, obligations, and your regulatory exposure.
           </p>
         </div>
+      </div>
+
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <RegStat label="Regulations" value={m?.totalRegulations ?? 0} accent="neutral" />
+        <RegStat label="Open Alerts" value={m?.openAlerts ?? 0} accent="danger" />
+        <RegStat label="Open Obligations" value={m?.openObligations ?? 0} accent="warn" />
+        <RegStat label="Readiness Score" value={`${readiness?.score ?? 0}%`} accent="good" />
       </div>
 
       {/* Executive Summary */}

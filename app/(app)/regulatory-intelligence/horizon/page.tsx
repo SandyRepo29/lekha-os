@@ -4,7 +4,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getRegulations } from "@/lib/services/regulatory-intelligence/regulatory-service";
 import { generateComplianceHorizon } from "@/lib/services/regulatory-intelligence/ai-regulatory-service";
-import { RegSubNav, CategoryBadge } from "@/components/regulatory-intelligence/reg-ui";
+import { RegSubNav, RegStat, CategoryBadge } from "@/components/regulatory-intelligence/reg-ui";
 import { TrendingUp, Bot, Calendar, AlertCircle, Lightbulb, Globe } from "lucide-react";
 
 export default async function ComplianceHorizonPage() {
@@ -35,6 +35,14 @@ export default async function ComplianceHorizonPage() {
         >
           <Bot className="h-4 w-4" /> AI Advisor™
         </Link>
+      </div>
+
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <RegStat label="Regulations Tracked" value={regs.length} accent="neutral" />
+        <RegStat label="Emerging Risks" value={horizon?.emerging.length ?? 0} accent="danger" />
+        <RegStat label="Upcoming Deadlines" value={horizon?.deadlines.length ?? 0} accent="warn" />
+        <RegStat label="AI Recommendations" value={horizon?.recommendations.length ?? 0} accent="good" />
       </div>
 
       {/* Applicable Regulations */}
