@@ -1,7 +1,44 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+const SUB_NAV = [
+  { href: "/continuous-compliance",             label: "Hub" },
+  { href: "/continuous-compliance/checks",       label: "Checks" },
+  { href: "/continuous-compliance/health",       label: "Health" },
+  { href: "/continuous-compliance/readiness",    label: "Readiness" },
+  { href: "/continuous-compliance/access-reviews", label: "Access Reviews" },
+  { href: "/continuous-compliance/attestations", label: "Attestations" },
+  { href: "/continuous-compliance/training",     label: "Training" },
+  { href: "/continuous-compliance/signals",      label: "Signals" },
+  { href: "/continuous-compliance/automation",   label: "Automation" },
+  { href: "/continuous-compliance/ai",           label: "AI Officer™" },
+];
+
+export function CcSubNav() {
+  const path = usePathname();
+  return (
+    <div className="flex gap-1 overflow-x-auto border-b border-[var(--color-line)] pb-0 -mb-2">
+      {SUB_NAV.map(n => {
+        const active = n.href === "/continuous-compliance"
+          ? path === n.href
+          : path === n.href || path.startsWith(n.href + "/");
+        return (
+          <Link key={n.href} href={n.href}
+            className={`whitespace-nowrap px-3 py-2 text-xs font-medium rounded-t-lg transition-colors hover:text-[var(--color-ink)] ${
+              active
+                ? "border-b-2 border-[var(--color-blue)] text-[var(--color-blue)]"
+                : "text-[var(--color-ink-dim)]"
+            }`}>
+            {n.label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 type Accent = "good" | "warn" | "danger" | "neutral" | "blue";
 

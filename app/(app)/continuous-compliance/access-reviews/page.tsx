@@ -4,8 +4,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getAccessReviews } from "@/lib/services/continuous-compliance/continuous-compliance-service";
 import { startAccessReviewAction } from "@/lib/continuous-compliance/actions";
-import { Users, Plus, ArrowLeft, PlayCircle } from "lucide-react";
-import { StatusBadge, CcStat } from "@/components/continuous-compliance/cc-ui";
+import { Users, Plus, PlayCircle } from "lucide-react";
+import { StatusBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 const TYPE_LABELS: Record<string, string> = {
   quarterly: "Quarterly", privileged: "Privileged", application: "Application",
@@ -27,15 +27,12 @@ export default async function AccessReviewsPage() {
 
   return (
     <div className="space-y-6 p-6">
+      <CcSubNav />
+
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Link href="/continuous-compliance" className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div>
-            <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Access Review Manager™</h1>
-            <p className="text-sm text-[var(--color-ink-dim)]">Enterprise access certification campaigns</p>
-          </div>
+        <div>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Access Review Manager™</h1>
+          <p className="text-sm text-[var(--color-ink-dim)]">Enterprise access certification campaigns</p>
         </div>
         <Link
           href="/continuous-compliance/access-reviews/new"

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { computeHealthAction } from "@/lib/continuous-compliance/actions";
 import * as repo from "@/lib/repositories/continuous-compliance-repo";
-import { BarChart3, ArrowLeft, RefreshCw } from "lucide-react";
-import { HealthLevelBadge, HealthBar, CcStat } from "@/components/continuous-compliance/cc-ui";
+import { BarChart3, RefreshCw } from "lucide-react";
+import { HealthLevelBadge, HealthBar, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 const COMPONENTS = [
   { key: "checkSuccessRate",   label: "Check Success Rate",  weight: "30%" },
@@ -25,17 +25,14 @@ export default async function ComplianceHealthPage() {
 
   return (
     <div className="space-y-6 p-6">
+      <CcSubNav />
+
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Link href="/continuous-compliance" className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div>
-            <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Health™</h1>
-            <p className="text-sm text-[var(--color-ink-dim)]">Organization-wide compliance health score</p>
-          </div>
+        <div>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Health™</h1>
+          <p className="text-sm text-[var(--color-ink-dim)]">Organization-wide compliance health score</p>
         </div>
-        <form action={async () => { "use server"; const s2 = await requireUser(); const { computeHealthScore } = await import("@/lib/services/continuous-compliance/continuous-compliance-service"); await computeHealthScore(s2.org?.id ?? ""); }}>
+        <form action={computeHealthAction}>
           <button type="submit"
             className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors">
             <RefreshCw className="h-4 w-4" /> Recompute

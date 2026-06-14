@@ -4,8 +4,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getSignals } from "@/lib/services/continuous-compliance/continuous-compliance-service";
 import { resolveSignalAction } from "@/lib/continuous-compliance/actions";
-import { Activity, CheckCircle, ArrowLeft } from "lucide-react";
-import { SeverityBadge, StatusBadge, CcStat } from "@/components/continuous-compliance/cc-ui";
+import { Activity, CheckCircle } from "lucide-react";
+import { SeverityBadge, StatusBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 export default async function SignalsPage() {
   const session = await requireUser();
@@ -19,14 +19,11 @@ export default async function SignalsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex items-center gap-3">
-        <Link href="/continuous-compliance" className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Signals™</h1>
-          <p className="text-sm text-[var(--color-ink-dim)]">Auto-generated signals from integrations, checks, and module events</p>
-        </div>
+      <CcSubNav />
+
+      <div>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Signals™</h1>
+        <p className="text-sm text-[var(--color-ink-dim)]">Auto-generated signals from integrations, checks, and module events</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3">

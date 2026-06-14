@@ -3,24 +3,9 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import {
-  Shield, CheckCircle, XCircle, AlertTriangle, Activity, Users, BookOpen,
-  GraduationCap, Cpu, Zap, BarChart3, Bot, RefreshCw, ArrowRight, Clock,
-} from "lucide-react";
-import { CcStat, CheckResultBadge, SeverityBadge, HealthLevelBadge, HealthBar, CategoryIcon } from "@/components/continuous-compliance/cc-ui";
+import { CheckCircle, AlertTriangle, Cpu, BarChart3, Bot, RefreshCw } from "lucide-react";
+import { CcStat, CcSubNav, CheckResultBadge, SeverityBadge, HealthLevelBadge, HealthBar, CategoryIcon } from "@/components/continuous-compliance/cc-ui";
 
-const NAV = [
-  { href: "/continuous-compliance/checks",        icon: Shield,        label: "Compliance Checks™",       description: "21 prebuilt + custom automated checks" },
-  { href: "/continuous-compliance/health",         icon: BarChart3,     label: "Compliance Health™",       description: "Real-time org-wide health score" },
-  { href: "/continuous-compliance/readiness",      icon: CheckCircle,   label: "Continuous Readiness™",    description: "Live framework readiness across SOC 2, ISO 27001, DPDP" },
-  { href: "/continuous-compliance/access-reviews", icon: Users,         label: "Access Review Manager™",   description: "Quarterly & privileged access certifications" },
-  { href: "/continuous-compliance/attestations",   icon: BookOpen,      label: "Compliance Attestations™", description: "Policy attestations & sign-offs" },
-  { href: "/continuous-compliance/training",       icon: GraduationCap, label: "Training Compliance™",     description: "Security awareness & privacy training" },
-  { href: "/continuous-compliance/workforce",      icon: Users,         label: "Workforce Compliance™",    description: "Onboarding, offboarding & lifecycle events" },
-  { href: "/continuous-compliance/signals",        icon: Activity,      label: "Compliance Signals™",      description: "Auto-generated signals from all modules" },
-  { href: "/continuous-compliance/automation",     icon: Zap,           label: "Automation Rules™",        description: "If-this-then-that compliance automation" },
-  { href: "/continuous-compliance/ai",             icon: Bot,           label: "AI Compliance Officer™",   description: "Executive summary, gap analysis & NL chat" },
-];
 
 export default async function ContinuousCompliancePage() {
   const session = await requireUser();
@@ -38,8 +23,13 @@ export default async function ContinuousCompliancePage() {
     return acc;
   }, {});
 
+  const checkMap = new Map(checks.map(c => [c.id, c.name]));
+
   return (
     <div className="space-y-8 p-6">
+      {/* Sub-nav */}
+      <CcSubNav />
+
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -67,7 +57,7 @@ export default async function ContinuousCompliancePage() {
       </div>
 
       {/* KPI Strip */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <CcStat label="Total Checks"      value={m?.totalChecks ?? 0}        accent="neutral" href="/continuous-compliance/checks" />
         <CcStat label="Passing"           value={m?.passingChecks ?? 0}       accent="good"    href="/continuous-compliance/checks" />
         <CcStat label="Failing"           value={m?.failingChecks ?? 0}       accent={(m?.failingChecks ?? 0) > 0 ? "danger" : "neutral"} href="/continuous-compliance/checks" />
@@ -219,7 +209,7 @@ export default async function ContinuousCompliancePage() {
               <tbody className="divide-y divide-[var(--color-line)]/40">
                 {runs.map(r => (
                   <tr key={r.id}>
-                    <td className="py-2 font-mono text-[11px] text-[var(--color-ink-dim)]">{r.checkId.slice(0, 8)}…</td>
+                    <td className="py-2 text-xs font-medium text-[var(--color-ink-dim)]">{checkMap.get(r.checkId) ?? r.checkId.slice(0, 8) + "…"}</td>
                     <td className="py-2"><CheckResultBadge result={r.result} /></td>
                     <td className="py-2 capitalize text-[var(--color-ink-dim)]">{r.triggeredBy}</td>
                     <td className="py-2 text-[var(--color-ink-faint)]">{new Date(r.startedAt).toLocaleString()}</td>
@@ -255,30 +245,6 @@ export default async function ContinuousCompliancePage() {
         </div>
       </div>
 
-      {/* Module Nav */}
-      <div>
-        <h2 className="mb-4 text-sm font-semibold text-[var(--color-ink-dim)] uppercase tracking-wider">Platform Modules</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {NAV.map(({ href, icon: Icon, label, description }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group flex items-start gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04]"
-            >
-              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
-                <Icon className="h-5 w-5 text-[var(--color-blue)]" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold text-sm">{label}</span>
-                  <ArrowRight className="h-4 w-4 text-[var(--color-ink-faint)] transition-transform group-hover:translate-x-0.5" />
-                </div>
-                <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

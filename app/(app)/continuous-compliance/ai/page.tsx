@@ -4,8 +4,9 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/continuous-compliance/continuous-compliance-service";
 import { generateComplianceSummary } from "@/lib/services/continuous-compliance/ai-continuous-compliance-service";
-import { Bot, ArrowLeft, Sparkles } from "lucide-react";
+import { Bot, Sparkles } from "lucide-react";
 import { CcAiChat } from "@/components/continuous-compliance/cc-ai-chat";
+import { CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 export default async function AiCompliancePage() {
   const session = await requireUser();
@@ -24,14 +25,11 @@ export default async function AiCompliancePage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex items-center gap-3">
-        <Link href="/continuous-compliance" className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Compliance Officer™</h1>
-          <p className="text-sm text-[var(--color-ink-dim)]">AI-powered compliance analysis, gap detection, and executive reporting</p>
-        </div>
+      <CcSubNav />
+
+      <div>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Compliance Officer™</h1>
+        <p className="text-sm text-[var(--color-ink-dim)]">AI-powered compliance analysis, gap detection, and executive reporting</p>
       </div>
 
       {summary && (

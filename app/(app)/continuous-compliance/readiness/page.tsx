@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import * as repo from "@/lib/repositories/continuous-compliance-repo";
-import { CheckCircle, ArrowLeft } from "lucide-react";
-import { HealthBar, HealthLevelBadge, CcStat } from "@/components/continuous-compliance/cc-ui";
+import { CheckCircle } from "lucide-react";
+import { HealthBar, HealthLevelBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 const FRAMEWORKS = ["SOC 2", "ISO 27001", "DPDP", "NIST", "HIPAA", "PCI DSS", "ISO 42001"];
 
@@ -33,14 +33,11 @@ export default async function ReadinessPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex items-center gap-3">
-        <Link href="/continuous-compliance" className="text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Continuous Readiness™</h1>
-          <p className="text-sm text-[var(--color-ink-dim)]">Real-time framework readiness — always-on, not point-in-time</p>
-        </div>
+      <CcSubNav />
+
+      <div>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Continuous Readiness™</h1>
+        <p className="text-sm text-[var(--color-ink-dim)]">Real-time framework readiness — always-on, not point-in-time</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
