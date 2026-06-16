@@ -42,6 +42,9 @@ import { demoMetrics, demoVendors } from "@/lib/demo-data";
 import { riskTone } from "@/lib/ui-maps";
 import { scoreBarGradient, scoreLabelColor, scoreLabel } from "@/lib/ui/colors";
 import { getOrgTrustLevel, ORG_TRUST_COMPONENT_LABELS } from "@/lib/services/org-trust-score";
+import { Suspense } from "react";
+import { WelcomeBanner } from "@/components/onboarding/welcome-banner";
+import { OnboardingChecklist } from "@/components/onboarding/onboarding-checklist";
 
 const COMPONENT_KEYS = ["vendorTrust", "riskPosture", "controlHealth", "auditReadiness", "complianceCoverage"] as const;
 const COMPONENT_WEIGHTS: Record<string, number> = { vendorTrust: 25, riskPosture: 25, controlHealth: 20, auditReadiness: 15, complianceCoverage: 15 };
@@ -105,6 +108,11 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
+
+      <Suspense fallback={null}>
+        <WelcomeBanner />
+      </Suspense>
+      <OnboardingChecklist />
 
       {/* Page header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
