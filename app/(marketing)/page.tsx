@@ -1312,6 +1312,224 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* PRICING */}
+        <section className="section section--alt" id="contact">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Simple Pricing</span>
+              <h2>Governance Built on Proof.<br />Priced for scale.</h2>
+              <p>One flat annual price. Every module included. No per-seat surprises.</p>
+            </div>
+
+            <div className="pricing-cards reveal">
+
+              {/* Growth */}
+              <div className="pcard">
+                <div>
+                  <div className="pcard__tier">Growth</div>
+                  <div className="pcard__price">
+                    <span className="pcard__amount">$2,999</span>
+                    <span className="pcard__period">/ year</span>
+                  </div>
+                  <p className="pcard__tagline">The complete governance foundation for fast-growing companies getting compliance-ready.</p>
+                </div>
+                <div className="pcard__divider" />
+                <ul className="pcard__feats">
+                  <li>All Core GRC modules — Vendor Hub™, Evidence Vault™, Audit Management, Risk Lens™, Control Center™, Policy Governance™</li>
+                  <li>DPDP Privacy™ &amp; Contract Governance™</li>
+                  <li>Trust Intelligence™ &amp; Trust Score™</li>
+                  <li>5 compliance frameworks (ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA)</li>
+                  <li>Up to 10 users</li>
+                  <li>Governance Copilot™ AI assistant</li>
+                  <li>Email support</li>
+                </ul>
+                <a href="mailto:hello@audt.tech?subject=AUDT%20Growth%20Plan" className="pcard__cta pcard__cta--ghost">Get Started</a>
+                <p className="pcard__note">Billed annually · Cancel anytime</p>
+              </div>
+
+              {/* Business — featured */}
+              <div className="pcard pcard--featured">
+                <div className="pcard__badge">Most Popular</div>
+                <div>
+                  <div className="pcard__tier">Business</div>
+                  <div className="pcard__price">
+                    <span className="pcard__amount">$6,999</span>
+                    <span className="pcard__period">/ year</span>
+                  </div>
+                  <p className="pcard__tagline">The full Governance OS for organizations scaling their trust program across vendors, auditors, and regulators.</p>
+                </div>
+                <div className="pcard__divider" />
+                <ul className="pcard__feats">
+                  <li>Everything in Growth</li>
+                  <li>All 32 modules — including Executive Reporting™, Regulatory Intelligence™, Asset Intelligence™</li>
+                  <li>Governance Agent Framework™ — 6 AI agent types</li>
+                  <li>Continuous Compliance™ — 21 automated checks</li>
+                  <li>Security Command Center™ — MFA, SSO, IP allowlists</li>
+                  <li>Integration Hub™ — 35+ connectors</li>
+                  <li>Trust Network™, Trust Verification Authority™ &amp; Trust API Platform™</li>
+                  <li>Auditor Collaboration™ — unlimited audit rooms</li>
+                  <li>Up to 50 users</li>
+                  <li>Priority support &amp; onboarding</li>
+                </ul>
+                <a href="mailto:hello@audt.tech?subject=AUDT%20Business%20Plan" className="pcard__cta pcard__cta--primary">Get Started</a>
+                <p className="pcard__note">Billed annually · Cancel anytime</p>
+              </div>
+
+              {/* Enterprise */}
+              <div className="pcard pcard__enterprise">
+                <div>
+                  <div className="pcard__tier">Enterprise</div>
+                  <div className="pcard__price">
+                    <span className="pcard__amount">Custom</span>
+                  </div>
+                  <p className="pcard__tagline">Tailored deployment for large, regulated organizations with complex governance requirements.</p>
+                </div>
+                <div className="pcard__divider" />
+                <ul className="pcard__feats">
+                  <li>Everything in Business</li>
+                  <li>Unlimited users &amp; organizations</li>
+                  <li>Customer Managed Encryption (AWS KMS · Azure Key Vault · Google KMS)</li>
+                  <li>Custom SAML/OIDC SSO configuration</li>
+                  <li>Dedicated Governance Agent™ configurations</li>
+                  <li>Custom compliance frameworks &amp; controls</li>
+                  <li>SLA guarantees &amp; dedicated success manager</li>
+                  <li>On-premise or private cloud deployment</li>
+                  <li>Custom API rate limits &amp; webhooks</li>
+                </ul>
+                <a href="mailto:hello@audt.tech?subject=AUDT%20Enterprise%20Enquiry" className="pcard__cta pcard__cta--enterprise">Talk to Sales</a>
+                <p className="pcard__note">Custom contract · Flexible billing</p>
+              </div>
+            </div>
+
+            {/* Feature comparison table */}
+            <div className="ftable reveal">
+              <div className="ftable__head">
+                <div className="ftable__cell ftable__cell--label">Features</div>
+                <div className="ftable__cell ftable__cell--plan">Growth</div>
+                <div className="ftable__cell ftable__cell--plan ftable__cell--featured">Business</div>
+                <div className="ftable__cell ftable__cell--plan">Enterprise</div>
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Core GRC</div>
+                {[
+                  ["Vendor Hub™ + Trust Score™", true, true, true],
+                  ["Evidence Vault™ + 174 controls", true, true, true],
+                  ["Audit Management + CAPA tracker", true, true, true],
+                  ["Risk Lens™ + Heat Map", true, true, true],
+                  ["Control Center™ + Health scoring", true, true, true],
+                  ["Policy Governance™ + attestations", true, true, true],
+                  ["DPDP Privacy™", true, true, true],
+                  ["Contract Governance™", true, true, true],
+                  ["Issue & Remediation Hub™", false, true, true],
+                  ["Workflow Studio™", false, true, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Intelligence & Analytics</div>
+                {[
+                  ["Trust Intelligence™ + Org Trust Score™", true, true, true],
+                  ["Governance Trends™ + Monitoring™", true, true, true],
+                  ["Governance Benchmarking™", false, true, true],
+                  ["Executive Reporting & Analytics™", false, true, true],
+                  ["Regulatory Intelligence™ — 18 regulations", false, true, true],
+                  ["Asset Intelligence™", false, true, true],
+                  ["Trust Graph™", false, true, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">AI & Agents</div>
+                {[
+                  ["Governance Copilot™ (NL chat across all modules)", true, true, true],
+                  ["AI Governance™ — AI system inventory + risks", false, true, true],
+                  ["Governance Agent Framework™ — 6 agent types", false, true, true],
+                  ["Continuous Compliance™ — 21 automated checks", false, true, true],
+                  ["Custom agent configurations", false, false, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Trust Network</div>
+                {[
+                  ["Third-Party Risk Exchange™", false, true, true],
+                  ["Trust Network™ + public profile", false, true, true],
+                  ["Trust Verification Authority™ + certificates", false, true, true],
+                  ["Trust API Platform™ — 8 products", false, true, true],
+                  ["Auditor Collaboration™ — audit rooms", false, true, true],
+                  ["Integration Hub™ — 35+ connectors", false, true, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Security & Platform</div>
+                {[
+                  ["Security Command Center™ — MFA, SSO, sessions, IP rules", false, true, true],
+                  ["Evidence protection + share links", false, true, true],
+                  ["AI prompt audit trail", false, true, true],
+                  ["Customer Managed Encryption (KMS)", false, false, true],
+                  ["Custom SAML/OIDC SSO", false, false, true],
+                  ["SLA guarantee + dedicated CSM", false, false, true],
+                  ["On-premise / private cloud", false, false, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Users & Support</div>
+                {[
+                  ["Users included", "10", "50", "Unlimited"],
+                  ["Compliance frameworks", "5", "Unlimited", "Unlimited"],
+                  ["Support", "Email", "Priority", "Dedicated CSM"],
+                  ["Onboarding", "Self-serve", "Guided", "White-glove"],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val" style={{ fontSize: "12px", color: "var(--color-ink-dim)" }}>{String(g)}</div>
+                    <div className="ftable__val" style={{ fontSize: "12px", color: "var(--color-ink-dim)" }}>{String(b)}</div>
+                    <div className="ftable__val" style={{ fontSize: "12px", color: "var(--color-ink-dim)" }}>{String(e)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ROADMAP */}
         <section className="section" id="roadmap">
           <div className="container">
