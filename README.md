@@ -42,8 +42,9 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Continuous Compliance™** | ✅ Complete (2026-06-13) | `/continuous-compliance/*` |
 | **Governance Agent Framework™** | ✅ Complete (2026-06-13) | `/agents/*` |
 | **Regulatory Intelligence™** | ✅ Complete (2026-06-14) | `/regulatory-intelligence/*` |
+| **Asset Intelligence™** | ✅ Complete (2026-06-16) | `/asset-intelligence/*` |
 
-**Total: 218 DB tables · 32 migrations applied · 30 modules shipped**
+**Total: 238 DB tables · 33 migrations applied · 31 modules shipped**
 
 ---
 
@@ -106,6 +107,7 @@ node scripts/apply-sql.mjs supabase/migrations/0028_trust_verification_authority
 node scripts/apply-sql.mjs supabase/migrations/0029_continuous_compliance.sql
 node scripts/apply-sql.mjs supabase/migrations/0030_governance_agents.sql
 node scripts/apply-sql.mjs supabase/migrations/0031_regulatory_intelligence.sql
+node scripts/apply-sql.mjs supabase/migrations/0032_asset_intelligence.sql
 
 node scripts/seed-templates.mjs                     # 7 vendor type templates
 node scripts/seed-billing-plans.mjs --assign-all    # Starter / Growth / Enterprise plans
@@ -137,6 +139,7 @@ node scripts/seed-trust-verification.mjs            # AUDT Verified™ cert + Pr
 node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 3 automation rules
 node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
 node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
+node scripts/seed-asset-intelligence.mjs            # 30 assets · 4 alerts · 6 relationships
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -209,6 +212,8 @@ Authorization: Bearer audt_live_<key>
 | `GET /api/v1/regulatory-changes` | read_only | Regulatory change monitor |
 | `GET/POST /api/v1/regulatory-assessments` | read_write | Impact assessments list + create |
 | `GET /api/v1/regulatory-readiness` | read_only | Regulatory readiness score + metrics |
+| `GET /api/v1/assets` | read_only | Asset list (?type=, ?criticality=, ?status=, ?environment=) |
+| `POST /api/v1/assets` | read_write | Create asset |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 
@@ -238,7 +243,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · **218 tables** · 32 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · **238 tables** · 33 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
 | AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance copilot, AI API builder, governance agents |

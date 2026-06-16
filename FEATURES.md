@@ -1,7 +1,7 @@
 # AUDT — Features Implemented to Date
 
-> Last updated: 2026-06-14 · Build: clean · Tests: 201/201 · Live: https://audt.tech
-> Modules: **30 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · **Regulatory Intelligence™**
+> Last updated: 2026-06-16 · Build: clean · Tests: 201/201 · Live: https://audt.tech
+> Modules: **31 shipped** — Vendor Hub™ · Evidence Vault™ · Settings · Data Gov · Audits · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Trust Network™ · Governance Benchmarking™ · Integration Hub™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · Regulatory Intelligence™ · **Asset Intelligence™**
 > Rebranded from Lekha OS → AUDT (audt.tech) on 2026-06-07
 
 ---
@@ -376,7 +376,7 @@ Trust Score™ is AUDT's per-vendor intelligence signal — a single 0–100 sco
 
 ## 🧭 Navigation
 
-**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · **Third-Party Risk Exchange™** · **Trust Network™** · **Governance Benchmarking™** · Trust Intelligence™ · Settings · Team · Notifications · Data Governance
+**Sidebar:** Dashboard · Vendors · Compliance · Audits · Risks · Control Center™ · **Policy Governance™** · **DPDP Privacy™** · **Contract Governance™** · **Issue & Remediation Hub™** · **Workflow Studio™** · **Third-Party Risk Exchange™** · **Trust Network™** · **Governance Benchmarking™** · Trust Intelligence™ · **Regulatory Intelligence™** · **Asset Intelligence™** · Settings · Team · Notifications · Data Governance
 
 **Settings sub-nav (9 tabs):** Profile · Organization · Team · Security · Audit Logs · Billing · API Keys · Integrations · Data Governance
 
@@ -1236,13 +1236,72 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | **Navigation** | Sidebar "Governance Agents™" with Bot icon; sub-nav with 10 tabs: Hub · Registry · Studio · Runs · Observations · Recommendations · Actions · Orchestration · Analytics · Copilot™ |
 | **Seed** | `node scripts/seed-governance-agents.mjs` — 5 agents · runs · observations · recommendations · actions · metrics |
 
+---
+
+## 🗂️ Module 31 — Asset Intelligence™
+
+> Completed 2026-06-16
+
+Enterprise Asset Graph & Trust Mapping Platform — the master inventory connecting every governance entity (vendors, risks, controls, policies, contracts, regulations, AI systems) to enterprise assets. 20 new tables, 7 enums, 30 demo assets seeded across applications, databases, cloud resources, data assets, and business processes.
+
+### Asset Trust Score™ Scoring Model
+
+| Component | Weight | Source |
+|---|---|---|
+| **Security Controls** | 25% | Controls linked to the asset |
+| **Compliance Coverage** | 20% | Compliance frameworks the asset supports |
+| **Risk Posture** | 20% | Open/critical/high risks linked to asset |
+| **Data Protection** | 15% | PII handling, data classification, retention |
+| **Operational Health** | 10% | Review recency, incidents, uptime |
+| **Monitoring Coverage** | 10% | Alert coverage, monitoring integrations |
+
+### Feature Detail
+
+| Feature | Detail |
+|---|---|
+| **Asset Registry™** | Full CRUD registry — 12 asset types: application · database · api · server · cloud_resource · data_asset · business_process · ai_system · vendor_service · network_asset · endpoint · custom |
+| **Asset dashboard** | 6-KPI strip: Total Assets · Active · Critical · Contains PII · Open Alerts · Total Alerts; recent assets list with type icons; by-type breakdown chart; open alerts panel; module nav grid |
+| **Asset Trust Score™** | 6-component 0–100 pure engine (`lib/services/asset-intelligence/`) — score, breakdown, level, strengths/concerns |
+| **Data Asset Catalog™** | Dedicated view of all data assets with PII/sensitive flags, DPDP regulation link, data classification warnings |
+| **Asset Relationships™** | Dependency graph — 10 relationship types: depends_on · contains · processes · hosts · accesses · connects_to · backs_up · replicates · manages · integrates_with. Colored relationship type labels, is_critical flag |
+| **Asset Alerts™** | Auto-generated governance alerts for assets missing controls, risk assessments, owners, or data classification. Severity triage (critical/high/medium/low). One-click resolve |
+| **AI Asset Advisor™** | Advisory summary (cached 24h), Impact Analyzer™ (blast-radius analysis per asset), Dependency Chain Analyzer™, multi-turn NL chat |
+| **Junction tables** | Link assets to risks · controls · vendors · contracts · regulations · AI systems via 6 dedicated junction tables; all RLS-protected via `is_asset_member()` helper function |
+| **Criticality levels** | low · medium · high · critical · mission_critical |
+| **Environments** | production · staging · development · testing · sandbox |
+| **Data classification** | public · internal · confidential · restricted · critical |
+| **REST API** | `GET /api/v1/assets` (?type=, ?criticality=, ?status=, ?environment=) · `POST /api/v1/assets` (read_write) |
+| **Navigation** | Sidebar "Asset Intelligence™" with Layers icon, after Regulatory Intelligence™; 6-item AssetSubNav pill nav |
+| **Sub-pages** | Hub · Registry™ · Data Assets™ · Relationships™ · Alerts · AI Advisor™ |
+| **DB tables** | `assets` · `asset_types` · `asset_owners` · `asset_tags` · `asset_relationships` · `asset_dependencies` · `asset_reviews` · `asset_scores` · `asset_alerts` · `asset_data_flows` · `asset_incidents` · `asset_snapshots` + junctions: `asset_risks` · `asset_controls` · `asset_vendors` · `asset_contracts` · `asset_regulations` · `asset_ai_systems` · `asset_criticality_log` (migration 0032 applied) |
+| **RLS** | All 20 tables enabled. `is_asset_member(p_asset_id UUID)` helper validates org membership for junction table policies |
+| **Seed** | `node scripts/seed-asset-intelligence.mjs` — 30 assets (8 apps · 5 databases · 6 cloud resources · 7 data assets · 4 business processes) · 4 alerts · 6 relationships |
+
+### Seed Data (30 assets)
+
+**Applications (8):** Customer Portal · Admin Dashboard · Mobile App (Android) · Partner API Gateway · Internal API v2 · Analytics Platform · Reporting Service · Vendor Onboarding App
+
+**Databases (5):** Primary PostgreSQL (Supabase) · Analytics DW (BigQuery) · Redis Cache Cluster · Elasticsearch · Test Database
+
+**Cloud Resources (6):** AWS Mumbai (ap-south-1) · Vercel Edge Network · Supabase Storage (Mumbai) · CloudFront CDN · AWS SES (Email) · Dev EC2 Cluster
+
+**Data Assets (7):** Customer PII Dataset · Financial Transaction Logs · Vendor Compliance Documents · Employee HR Records · AI Training Dataset · Audit Log Archive · Analytics Clickstream
+
+**Business Processes (4):** Vendor Onboarding Process · Customer KYC Workflow · Incident Response Process · Data Deletion (DSR) Process
+
+### Strategic Vision
+
+Asset Intelligence™ becomes the **Master Graph** of the AUDT Governance OS — every governance entity is mapped to assets, answering "Which systems are affected?" for any risk, regulation change, or incident. When a regulation changes, Asset Intelligence™ immediately shows which assets need remediation. When a vendor is flagged, it shows which internal systems depend on that vendor. When a control fails, it maps the blast radius across the entire asset estate.
+
+---
+
 ### Current Status
 
 | Layer | Status |
 |---|---|
-| **DB** | ✅ 218 tables, 32 migrations applied, Supabase Mumbai (ap-south-1) |
-| **All 30 Modules** | ✅ Complete as of 2026-06-14 |
-| **UI Consistency** | ✅ Full sweep 2026-06-14 — all 30 modules on standard pill nav, `text-xl` headings, `space-y-6` spacing |
+| **DB** | ✅ 238 tables, 33 migrations applied, Supabase Mumbai (ap-south-1) |
+| **All 31 Modules** | ✅ Complete as of 2026-06-16 |
+| **UI Consistency** | ✅ Full sweep 2026-06-14 — all modules on standard pill nav, `text-xl` headings, `space-y-6` spacing |
 | **Tests** | ✅ 201/201 Vitest passing |
 | **Deployed** | ✅ lekha-os.vercel.app + audt.tech |
 
@@ -1261,3 +1320,5 @@ AI agents that continuously monitor, reason, and act across the entire AUDT gove
 | Governance Graph | Trust Graph™ |
 | Intelligence Layer | Trust Intelligence™ |
 | Org Governance Score | Organizational Trust Score™ |
+| Asset Registry | Asset Intelligence™ |
+| Asset Graph | Asset Graph™ |
