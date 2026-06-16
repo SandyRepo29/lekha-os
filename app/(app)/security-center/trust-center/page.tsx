@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getTrustCenterOverview } from "@/lib/services/security-command-center/security-service";
@@ -14,8 +14,8 @@ export default async function TrustCenterPage() {
   const documents = data?.documents ?? [];
 
   const FEATURES = [
-    { icon: Star,     label: "Live Trust Scoreâ„¢",    desc: "Real-time Org Trust Scoreâ„¢ powered by AUDT" },
-    { icon: Shield,   label: "Trust Certificatesâ„¢",  desc: "AUDT Verifiedâ„¢, Privacy Readyâ„¢, AI Governedâ„¢" },
+    { icon: Star,     label: "Live Trust Score™",    desc: "Real-time Org Trust Score™ powered by AUDT" },
+    { icon: Shield,   label: "Trust Certificates™",  desc: "AUDT Verified™, Privacy Ready™, AI Governed™" },
     { icon: FileText, label: "Security Documents",   desc: "SOC 2, ISO 27001, DPDP reports" },
     { icon: Globe,    label: "Custom Domain",         desc: "trust.yourcompany.com or subdomain" },
   ];
@@ -24,8 +24,8 @@ export default async function TrustCenterPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Centerâ„¢</h1>
-        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Customer-facing public trust portal â€” publish your security posture, certifications, and documents.</p>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Center™</h1>
+        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Customer-facing public trust portal — publish your security posture, certifications, and documents.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

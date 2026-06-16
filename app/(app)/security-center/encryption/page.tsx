@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getEncryptionOverview } from "@/lib/services/security-command-center/security-service";
@@ -18,8 +18,8 @@ export default async function EncryptionPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Encryptionâ„¢</h1>
-        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Customer Managed Encryption Keys (CMK) â€” bring your own keys from AWS KMS, Azure Key Vault, or Google KMS.</p>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Encryption™</h1>
+        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Customer Managed Encryption Keys (CMK) — bring your own keys from AWS KMS, Azure Key Vault, or Google KMS.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -33,7 +33,7 @@ export default async function EncryptionPage() {
         <div className="flex items-start gap-4">
           <Lock className="mt-0.5 h-6 w-6 shrink-0 text-emerald-400" />
           <div>
-            <div className="font-semibold text-sm text-emerald-400">Platform Encryption â€” Active by Default</div>
+            <div className="font-semibold text-sm text-emerald-400">Platform Encryption — Active by Default</div>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
               All data in AUDT is encrypted at rest using AES-256-GCM and in transit using TLS 1.3. Integration credentials, API keys, and sensitive configs are encrypted using a per-organization ENCRYPTION_KEY stored in your secure environment.
             </p>

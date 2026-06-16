@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMfaOverview, getSsoOverview } from "@/lib/services/security-command-center/security-service";
@@ -24,7 +24,7 @@ export default async function IdentityPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Identityâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Identity™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Multi-Factor Authentication, Enterprise SSO, and SCIM provisioning.</p>
       </div>
 
@@ -49,7 +49,7 @@ export default async function IdentityPage() {
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div>
             <div className="text-xs text-[var(--color-ink-dim)]">Remember Device</div>
-            <div className="font-medium mt-0.5">{settings?.allowRememberDevice ? `Yes â€” ${settings.rememberDays} days` : "No"}</div>
+            <div className="font-medium mt-0.5">{settings?.allowRememberDevice ? `Yes — ${settings.rememberDays} days` : "No"}</div>
           </div>
           <div>
             <div className="text-xs text-[var(--color-ink-dim)]">New Device Challenge</div>
@@ -76,7 +76,7 @@ export default async function IdentityPage() {
             {users.map(u => (
               <div key={String(u.id)} className="flex items-center justify-between px-4 py-3">
                 <div>
-                  <div className="text-sm font-medium">{String(u.full_name ?? "â€”")}</div>
+                  <div className="text-sm font-medium">{String(u.full_name ?? "—")}</div>
                   <div className="text-xs text-[var(--color-ink-dim)]">{String(u.email ?? "")}</div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -117,7 +117,7 @@ export default async function IdentityPage() {
                   <div>
                     <div className="text-sm font-medium">{p.name}</div>
                     <div className="text-xs text-[var(--color-ink-dim)]">
-                      JIT: {p.jitEnabled ? "Enabled" : "Disabled"} Â· Default role: {p.defaultRole}
+                      JIT: {p.jitEnabled ? "Enabled" : "Disabled"} · Default role: {p.defaultRole}
                     </div>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export default async function IdentityPage() {
       <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
         <h2 className="font-semibold text-sm mb-2">SCIM Provisioning</h2>
         <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed">
-          SCIM 2.0 provisioning automates user lifecycle management â€” create, update, and deactivate users from your Identity Provider. Available on Enterprise plan.
+          SCIM 2.0 provisioning automates user lifecycle management — create, update, and deactivate users from your Identity Provider. Available on Enterprise plan.
         </p>
         <div className="mt-3 grid grid-cols-2 gap-3 text-xs text-[var(--color-ink-dim)]">
           <div className="rounded-lg border border-[var(--color-line)] p-3">

@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getEvidenceSecurityOverview } from "@/lib/services/security-command-center/security-service";
@@ -20,7 +20,7 @@ export default async function EvidenceSecurityPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Evidence Securityâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Evidence Security™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Watermarking, secure shares, expiring access links, and evidence access audit trail.</p>
       </div>
 
@@ -36,7 +36,7 @@ export default async function EvidenceSecurityPage() {
         <div className="flex items-start gap-4">
           <Shield className="mt-0.5 h-6 w-6 shrink-0 text-violet-400" />
           <div>
-            <div className="font-semibold text-sm text-violet-400">Evidence Watermarkingâ„¢ â€” Active</div>
+            <div className="font-semibold text-sm text-violet-400">Evidence Watermarking™ — Active</div>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
               All evidence shared through AUDT is automatically watermarked with the recipient name, organization, and timestamp. Downloads are tracked in the audit trail.
             </p>
@@ -97,10 +97,10 @@ export default async function EvidenceSecurityPage() {
                     <div className="font-medium">{String(s.recipient_email ?? s.recipient_name ?? "Anonymous")}</div>
                     <div className="text-xs text-[var(--color-ink-dim)] flex items-center gap-2">
                       <span className="capitalize">{String(s.access_level).replace("_", " ")}</span>
-                      <span>Â·</span>
+                      <span>·</span>
                       <Clock className="h-3 w-3" />
                       <span>Expires {new Date(String(s.expires_at)).toLocaleDateString()}</span>
-                      <span>Â· {Number(s.view_count)} views</span>
+                      <span>· {Number(s.view_count)} views</span>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export default async function EvidenceSecurityPage() {
             {accessLogs.slice(0, 20).map(log => (
               <div key={String(log.id)} className="flex items-center justify-between px-4 py-3 text-sm">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-[var(--color-ink-dim)]">{String(log.ip_address ?? "â€”")}</span>
+                  <span className="text-xs font-mono text-[var(--color-ink-dim)]">{String(log.ip_address ?? "—")}</span>
                   <div>
                     <span className="font-medium capitalize">{String(log.action)}</span>
                     {!!log.full_name && <span className="text-[var(--color-ink-dim)]"> by {String(log.full_name)}</span>}

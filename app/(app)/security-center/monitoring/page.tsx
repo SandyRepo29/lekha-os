@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMonitoringOverview } from "@/lib/services/security-command-center/security-service";
@@ -31,8 +31,8 @@ export default async function MonitoringPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Monitoringâ„¢</h1>
-        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Continuous vendor security monitoring â€” domain expiry, SSL, reputation, and breach detection.</p>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Monitoring™</h1>
+        <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Continuous vendor security monitoring — domain expiry, SSL, reputation, and breach detection.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -87,7 +87,7 @@ export default async function MonitoringPage() {
                   <Globe className="h-4 w-4 text-[var(--color-ink-dim)] shrink-0" />
                   <div>
                     <div className="font-mono text-sm">{String(a.asset_value)}</div>
-                    <div className="text-xs text-[var(--color-ink-dim)] capitalize">{String(a.asset_type)} Â· {String(a.check_interval)} checks {a.vendor_name ? `Â· ${a.vendor_name}` : ""}</div>
+                    <div className="text-xs text-[var(--color-ink-dim)] capitalize">{String(a.asset_type)} · {String(a.check_interval)} checks {a.vendor_name ? `· ${a.vendor_name}` : ""}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ export default async function MonitoringPage() {
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium">{String(a.title)}</div>
                   {!!a.description && <div className="text-xs text-[var(--color-ink-dim)] mt-0.5 truncate">{String(a.description)}</div>}
-                  <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{String(a.vendor_name ?? "â€”")} Â· {new Date(String(a.created_at)).toLocaleDateString()}</div>
+                  <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{String(a.vendor_name ?? "—")} · {new Date(String(a.created_at)).toLocaleDateString()}</div>
                 </div>
                 <div className="flex items-center gap-2 ml-4 shrink-0">
                   <SeverityBadge severity={String(a.severity)} />

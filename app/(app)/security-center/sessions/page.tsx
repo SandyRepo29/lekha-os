@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getSessionOverview } from "@/lib/services/security-command-center/security-service";
@@ -22,7 +22,7 @@ export default async function SessionsPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Sessionsâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Sessions™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">View and revoke active user sessions across your organization.</p>
       </div>
 
@@ -47,7 +47,7 @@ export default async function SessionsPage() {
                 <div className="flex items-center justify-between bg-white/[0.02] px-4 py-3 border-b border-[var(--color-line)]">
                   <div>
                     <div className="text-sm font-semibold">{String(first.full_name ?? "Unknown")}</div>
-                    <div className="text-xs text-[var(--color-ink-dim)]">{String(first.email ?? "")} &middot; {userSessions.length} session(s)</div>
+                    <div className="text-xs text-[var(--color-ink-dim)]">{String(first.email ?? "")} · {userSessions.length} session(s)</div>
                   </div>
                   <RevokeAllSessionsButton userId={uid} />
                 </div>
@@ -57,15 +57,15 @@ export default async function SessionsPage() {
                       <div className="flex items-center gap-6 text-[var(--color-ink-dim)]">
                         <span className="flex items-center gap-1.5">
                           <Monitor className="h-3.5 w-3.5" />
-                          {String(s.browser ?? "Unknown browser")} Â· {String(s.os ?? "Unknown OS")}
+                          {String(s.browser ?? "Unknown browser")} · {String(s.os ?? "Unknown OS")}
                         </span>
                         <span className="flex items-center gap-1.5">
                           <Globe className="h-3.5 w-3.5" />
-                          {String(s.ip_address ?? s.ipAddress ?? "â€”")} {s.country ? `(${s.country})` : ""}
+                          {String(s.ip_address ?? s.ipAddress ?? "—")} {s.country ? `(${s.country})` : ""}
                         </span>
                         <span className="flex items-center gap-1.5">
                           <Clock className="h-3.5 w-3.5" />
-                          {s.last_active ? new Date(String(s.last_active)).toLocaleString() : "â€”"}
+                          {s.last_active ? new Date(String(s.last_active)).toLocaleString() : "—"}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">

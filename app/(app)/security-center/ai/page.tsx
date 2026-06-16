@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAiSecurityOverview } from "@/lib/services/security-command-center/security-service";
@@ -20,7 +20,7 @@ export default async function AiSecurityPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Securityâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Security™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Prompt audit trail, PII detection, sensitive data masking, and AI usage analytics.</p>
       </div>
 
@@ -38,7 +38,7 @@ export default async function AiSecurityPage() {
         <div className="flex items-start gap-4">
           <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-amber-400" />
           <div>
-            <div className="font-semibold text-sm text-amber-400">Prompt Security â€” PII Detection Active</div>
+            <div className="font-semibold text-sm text-amber-400">Prompt Security — PII Detection Active</div>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
               AUDT scans all AI prompts for sensitive data patterns. Detected PII types are flagged, logged, and optionally blocked before being sent to the AI model.
             </p>
@@ -55,7 +55,7 @@ export default async function AiSecurityPage() {
       <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
         <div className="flex items-center gap-2">
           <Bot className="h-5 w-5 text-violet-400" />
-          <h2 className="font-semibold">AI Security Advisorâ„¢</h2>
+          <h2 className="font-semibold">AI Security Advisor™</h2>
         </div>
         <SecAiChat />
       </div>
@@ -70,7 +70,7 @@ export default async function AiSecurityPage() {
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-medium">{String(log.full_name ?? "Unknown user")}</span>
-                    <span className="text-[10px] text-[var(--color-ink-dim)] capitalize">{String(log.module ?? "â€”")}</span>
+                    <span className="text-[10px] text-[var(--color-ink-dim)] capitalize">{String(log.module ?? "—")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <StatusBadge status={String(log.sensitivity ?? "clean")} />

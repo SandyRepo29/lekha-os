@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAccessControl } from "@/lib/services/security-command-center/security-service";
@@ -27,7 +27,7 @@ export default async function AccessControlPage() {
     <div className="space-y-6 p-6">
       <SecSubNav />
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Access Controlâ„¢</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Access Control™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">IP allow lists, fine-grained permissions, and resource-level access controls.</p>
       </div>
 
