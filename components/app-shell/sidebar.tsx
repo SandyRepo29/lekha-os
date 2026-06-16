@@ -30,6 +30,7 @@ import {
   Cpu,
   Scale,
   Layers,
+  ShieldAlert,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +80,8 @@ const groups: NavGroup[] = [
       { href: "/benchmarking",             label: "Benchmarking™",            icon: BarChart3 },
       { href: "/executive-reporting",      label: "Executive Reporting™",     icon: LineChart },
       { href: "/regulatory-intelligence",  label: "Regulatory Intelligence™", icon: Scale  },
-      { href: "/asset-intelligence",        label: "Asset Intelligence™",       icon: Layers },
+      { href: "/asset-intelligence",         label: "Asset Intelligence™",       icon: Layers },
+      { href: "/security-center",            label: "Security Command Center™",  icon: ShieldAlert },
     ],
   },
   {

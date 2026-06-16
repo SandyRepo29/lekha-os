@@ -140,7 +140,9 @@
       "Bash(Get-ChildItem \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\" -Filter \"*.md\" -Depth 1)",
       "Bash(Select-Object Name, FullName)",
       "Bash(Test-Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\SEED.md\")",
-      "PowerShell(python \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\scripts\\\\fix-encoding.py\")"
+      "PowerShell(python \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\scripts\\\\fix-encoding.py\")",
+      "Bash(python scripts/fix-emdash.py)",
+      "Bash(python scripts/inspect-page.py)"
     ]
   }
 }

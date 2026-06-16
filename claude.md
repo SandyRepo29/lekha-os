@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · Regulatory Intelligence™ · **Asset Intelligence™**
-- **Total tables:** 238 (218 previous + 20 Asset Intelligence™ tables from migration 0032)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · Regulatory Intelligence™ · Asset Intelligence™ · **Security Command Center™**
+- **Total tables:** 259 (238 previous + 21 Security Command Center™ tables from migration 0033)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -273,6 +273,7 @@ node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 atte
 node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
 node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
 node scripts/seed-asset-intelligence.mjs            # 30 assets · 4 alerts · 6 relationships (targets most-active org)
+node scripts/seed-security-command-center.mjs       # MFA settings · SSO provider · 5 sessions · 4 IP rules · 3 shares · 45 prompt logs · monitoring assets + alerts · trust center config
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -1281,6 +1282,7 @@ vi.mock("@/lib/db", () => ({
 ### Module 28 — Continuous Compliance™ ✅ Complete (2026-06-13)
 ### Module 29 — Governance Agent Framework™ ✅ Complete (2026-06-13)
 ### Module 30 — Regulatory Intelligence™ ✅ Complete (2026-06-14)
+### Module 32 — Security Command Center™ ✅ Complete (2026-06-16)
 ### Module 31 — Asset Intelligence™ ✅ Complete (2026-06-16)
 
 Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
@@ -1691,6 +1693,41 @@ Enterprise Asset Graph & Trust Mapping Platform — master inventory connecting 
 
 **CRITICAL — seed org selection:** Seed script uses `SELECT organization_id FROM memberships GROUP BY organization_id ORDER BY count(*) DESC LIMIT 1` to target the most-active org (not `SELECT id FROM organizations LIMIT 1` which returns the E2E test org first).
 
+### Module 32 — Security Command Center™ ✅ Complete (2026-06-16)
+
+Enterprise security platform transforming AUDT into an enterprise-grade system for Banking, Fintech, Healthcare, and regulated industries. 21 new tables, 9 enums, 8 security phases.
+
+| Feature | Detail |
+|---|---|
+| **MFA Management™** | TOTP enrollment tracking, per-org enforcement modes (optional/required_admins/required_all), remember-device policy, per-user status table |
+| **Enterprise SSO™** | Entra ID · Okta · Google Workspace · Ping Identity · SAML 2.0 · OIDC; JIT provisioning, default role, domain verification |
+| **Session Management™** | Active sessions per org with IP, browser, device, country; revoke individual or all sessions for a user |
+| **IP Allow Lists™** | CIDR-based IP rules scoped to all/login/api/compliance/vendors resources; enable/disable per rule |
+| **Fine-Grained Permissions™** | 20 built-in global permissions + org-level role overrides + per-user overrides |
+| **Evidence Protection™** | Expiring share links (view_only/download/api), watermarking config, access log per share |
+| **AI Security Governance™** | Prompt audit trail with sensitivity classification (clean/low/medium/high), PII detection, blocked prompt tracking, 30-day usage stats |
+| **Customer Managed Encryption™** | AWS KMS · Azure Key Vault · Google KMS provider registry with audit log |
+| **Public Trust Center™** | Per-org trust center config — title, tagline, description, security email, show/hide trust score/certs/documents |
+| **Continuous Vendor Monitoring™** | Domain / SSL / reputation / certificate monitoring assets per vendor; alert lifecycle (open → acknowledged → resolved) |
+| **Security Readiness Score™** | 5-component 0–100: mfaScore(30%) + ssoScore(20%) + ipScore(15%) + monScore(20%) + aiScore(15%). Levels: Enterprise Ready(≥90) · Strong(≥75) · Moderate(≥60) · Needs Attention(≥40) · Critical |
+| **AI Security Advisor™** | Advisory summary (cached 24h), 5 prioritized recommendations, multi-turn NL chat |
+
+- Service: `lib/services/security-command-center/security-service.ts`
+- AI service: `lib/services/security-command-center/ai-security-service.ts`
+- Repo: `lib/repositories/security-command-center-repo.ts`
+- Actions: `lib/security-command-center/actions.ts`
+- Migration: `supabase/migrations/0033_security_command_center.sql`
+- Routes: `/security-center/*` (10 pages: Hub · Identity · Sessions · Access · Evidence · AI · Encryption · Trust Center · Monitoring · Reports)
+- Seed: `node scripts/seed-security-command-center.mjs`
+
+**21 DB tables (migration 0033):** `security_mfa_settings` (UNIQUE org) · `user_mfa_status` (UNIQUE user+org) · `sso_providers` · `sso_domains` (UNIQUE org+domain) · `user_sessions` · `ip_allowlists` · `security_permissions` (global, no org_id) · `security_role_permissions` (UNIQUE org+role+key) · `security_user_permissions` (UNIQUE org+user+key) · `evidence_shares` · `evidence_access_logs` · `evidence_watermarks` (UNIQUE org) · `ai_prompt_logs` · `encryption_providers` · `customer_keys` · `encryption_audit_logs` · `trust_center_config` (UNIQUE org) · `trust_center_documents` · `vendor_monitoring_assets` · `vendor_monitoring_events` · `vendor_monitoring_alerts`
+
+**9 enums:** `mfa_enforcement_enum` · `sso_provider_type_enum` · `session_status_enum` · `ip_allowlist_resource_enum` · `evidence_share_access_enum` · `ai_prompt_sensitivity_enum` · `encryption_provider_type_enum` · `vendor_monitor_check_enum` · `vendor_monitor_severity_enum`
+
+**CRITICAL — Security Readiness Score:** `computeSecurityReadiness(metrics)` is a pure function in `security-service.ts`. Call it with the metrics object from `getDashboardData()`. Never call it with partial metrics — all 6 keys required: `mfaPercent`, `ssoActive`, `ipRules`, `activeSessions`, `openMonAlerts`, `criticalMonAlerts`, `blockedPrompts`.
+
+**CRITICAL — `security_permissions` global table:** Has no `organization_id` column. RLS policy is SELECT-only for authenticated users (all orgs can read). Never add org-scoped data to this table. Org-level permission overrides go in `security_role_permissions` and `security_user_permissions`.
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1708,6 +1745,7 @@ Enterprise Asset Graph & Trust Mapping Platform — master inventory connecting 
 | Governance Agent Framework™ | AI agents that continuously monitor, reason, and act — observations, recommendations, human-approved actions | ✅ Complete (2026-06-13) |
 | Regulatory Intelligence™ | Always-current regulatory tracking — 18 built-in regulations, change monitor, obligations, AI horizon, readiness score | ✅ Complete (2026-06-14) |
 | Asset Intelligence™ | Enterprise Asset Graph & Trust Mapping — 30-asset registry, dependency graph, PII tracking, alerts, AI advisor | ✅ Complete (2026-06-16) |
+| Security Command Center™ | Enterprise security platform — MFA, SSO, sessions, IP allow lists, evidence protection, AI security, CMK, trust center, vendor monitoring | ✅ Complete (2026-06-16) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
