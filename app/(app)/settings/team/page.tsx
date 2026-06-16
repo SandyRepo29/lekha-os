@@ -51,7 +51,7 @@ export default async function TeamPage() {
             <CardHeader><CardTitle>Invite a teammate</CardTitle></CardHeader>
             <CardContent>
               <p className="mb-4 text-sm text-[var(--color-ink-dim)]">
-                They&apos;ll receive an email to join <strong>{session.orgName}</strong> on Lekha OS.
+                They&apos;ll receive an email to join <strong>{session.orgName}</strong> on AUDT.
               </p>
               <InviteForm />
             </CardContent>

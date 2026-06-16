@@ -6,9 +6,9 @@ import { requireUser } from "@/lib/auth/session";
 import { getBillingOverview, seedDefaultPlans, ensureStarterSubscription } from "@/lib/services/billing-service";
 
 const PLAN_HIGHLIGHTS: Record<string, string[]> = {
-  Starter: ["5 users", "10 vendors", "1 GB storage", "Basic reports", "Email alerts"],
-  Growth: ["25 users", "100 vendors", "10 GB storage", "All reports", "AI features", "Compliance module", "API access"],
-  Enterprise: ["Unlimited users", "Unlimited vendors", "100 GB storage", "All modules", "Custom integrations", "SSO/SAML", "Dedicated support"],
+  Growth: ["10 users", "All Core GRC modules", "DPDP Privacy™ & Contract Governance™", "Trust Intelligence™", "5 compliance frameworks", "Governance Copilot™ AI"],
+  Business: ["50 users", "All 32 modules", "Governance Agent Framework™", "Continuous Compliance™", "Security Command Center™", "Integration Hub™ (35+ connectors)", "Auditor Collaboration™"],
+  Enterprise: ["Unlimited users", "Customer Managed Encryption", "Custom SAML/OIDC SSO", "Dedicated Governance Agents™", "Custom frameworks & controls", "SLA guarantees", "Dedicated success manager"],
 };
 
 function UsageMeter({ label, used, max }: { label: string; used: number; max: number }) {
@@ -59,7 +59,7 @@ export default async function BillingPage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-3">
-                <span>{plan?.name ?? "Starter"}</span>
+                <span>{plan?.name ?? "Growth"}</span>
                 <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
                   subscription?.status === "active"
                     ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
@@ -68,19 +68,20 @@ export default async function BillingPage() {
                   {subscription?.status ?? "Trial"}
                 </span>
               </CardTitle>
-              {plan?.priceMonthly === 0 ? (
-                <span className="text-sm text-[var(--color-ink-dim)]">Free</span>
-              ) : (
-                <span className="text-sm font-semibold text-[var(--color-ink)]">
-                  ₹{(plan?.priceMonthly ?? 0).toLocaleString("en-IN")}/mo
-                </span>
-              )}
+              {plan?.priceYearly === 0 ? (
+                <span className="text-sm text-[var(--color-ink-dim)]">Custom pricing</span>
+              ) : plan?.priceYearly ? (
+                <div className="text-right">
+                  <div className="text-sm font-semibold text-[var(--color-ink)]">${plan.priceYearly.toLocaleString()}/yr</div>
+                  <div className="text-xs text-[var(--color-ink-faint)]">${plan.priceMonthly}/mo billed annually</div>
+                </div>
+              ) : null}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-[var(--color-ink-dim)]">{plan?.description}</p>
             <div className="flex flex-wrap gap-2">
-              {(PLAN_HIGHLIGHTS[plan?.name ?? "Starter"] ?? []).map((f) => (
+              {(PLAN_HIGHLIGHTS[plan?.name ?? "Growth"] ?? []).map((f) => (
                 <span key={f} className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-2.5 py-0.5 text-xs text-[var(--color-ink-dim)]">
                   {f}
                 </span>
@@ -106,15 +107,26 @@ export default async function BillingPage() {
       </div>
 
       {/* Upgrade CTA */}
-      {(plan?.name === "Starter" || !plan) && (
+      {plan?.name === "Growth" && (
         <Card className="border-[var(--color-blue)]/30 bg-[var(--color-blue)]/[0.04] p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-ink)]">Upgrade to Growth</h3>
+          <h3 className="text-sm font-semibold text-[var(--color-ink)]">Upgrade to Business</h3>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
-            Get 25 users, 100 vendors, AI features, Compliance module access, and API keys. Starting at ₹4,999/month.
+            Get all 32 modules, 50 users, Governance Agent Framework™, Continuous Compliance™, Security Command Center™, and 35+ integrations. Starting at $6,999/year.
           </p>
           <button className="mt-4 rounded-xl bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white opacity-80 cursor-not-allowed">
             Upgrade plan — coming soon
           </button>
+        </Card>
+      )}
+      {plan?.name === "Business" && (
+        <Card className="border-purple-500/30 bg-purple-500/[0.04] p-5">
+          <h3 className="text-sm font-semibold text-[var(--color-ink)]">Need more? Go Enterprise</h3>
+          <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
+            Unlimited users, Customer Managed Encryption, custom SSO, dedicated success manager, and on-premise deployment options.
+          </p>
+          <a href="mailto:sales@audt.tech" className="mt-4 inline-block rounded-xl bg-purple-600 px-4 py-2 text-sm font-semibold text-white">
+            Talk to Sales
+          </a>
         </Card>
       )}
 

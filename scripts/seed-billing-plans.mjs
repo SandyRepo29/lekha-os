@@ -25,36 +25,63 @@ const sql = postgres(DATABASE_URL, { ssl: "require", max: 1 });
 
 const PLANS = [
   {
-    name: "Starter",
-    description: "For small teams getting started with vendor governance",
-    price_monthly: 0,
-    price_yearly: 0,
-    features: JSON.stringify(["Up to 5 users", "Up to 10 vendors", "1 GB storage", "Basic reports", "Email alerts"]),
-    max_users: 5,
-    max_vendors: 10,
-    max_storage_gb: 1,
-    is_active: true,
-  },
-  {
     name: "Growth",
-    description: "For growing teams managing compliance at scale",
-    price_monthly: 4999,
-    price_yearly: 49999,
-    features: JSON.stringify(["Up to 25 users", "Up to 100 vendors", "10 GB storage", "All reports", "AI features", "Compliance module", "API access"]),
-    max_users: 25,
+    description: "The complete governance foundation for fast-growing companies getting compliance-ready",
+    price_monthly: 250,
+    price_yearly: 2999,
+    features: JSON.stringify([
+      "Up to 10 users",
+      "All Core GRC modules",
+      "DPDP Privacy™ & Contract Governance™",
+      "Trust Intelligence™ & Trust Score™",
+      "5 compliance frameworks",
+      "Governance Copilot™ AI",
+      "Email support",
+    ]),
+    max_users: 10,
     max_vendors: 100,
     max_storage_gb: 10,
     is_active: true,
   },
   {
-    name: "Enterprise",
-    description: "Unlimited scale with dedicated support and custom integrations",
-    price_monthly: 0,
-    price_yearly: 0,
-    features: JSON.stringify(["Unlimited users", "Unlimited vendors", "100 GB storage", "All modules", "Custom integrations", "SSO/SAML", "Dedicated support", "SLA"]),
-    max_users: 9999,
+    name: "Business",
+    description: "The full Governance OS for organizations scaling their trust program",
+    price_monthly: 583,
+    price_yearly: 6999,
+    features: JSON.stringify([
+      "Up to 50 users",
+      "All 32 modules",
+      "Governance Agent Framework™",
+      "Continuous Compliance™ (21 checks)",
+      "Security Command Center™",
+      "Integration Hub™ (35+ connectors)",
+      "Trust Verification Authority™",
+      "Auditor Collaboration™",
+      "Priority support & onboarding",
+    ]),
+    max_users: 50,
     max_vendors: 9999,
     max_storage_gb: 100,
+    is_active: true,
+  },
+  {
+    name: "Enterprise",
+    description: "Tailored deployment for large, regulated organizations with complex governance requirements",
+    price_monthly: 0,
+    price_yearly: 0,
+    features: JSON.stringify([
+      "Unlimited users & organizations",
+      "Customer Managed Encryption (AWS KMS, Azure, GCP)",
+      "Custom SAML/OIDC SSO",
+      "Dedicated Governance Agent™ configurations",
+      "Custom compliance frameworks & controls",
+      "SLA guarantees & dedicated success manager",
+      "On-premise or private cloud deployment",
+      "Custom API rate limits & webhooks",
+    ]),
+    max_users: 9999,
+    max_vendors: 9999,
+    max_storage_gb: 9999,
     is_active: true,
   },
 ];
@@ -77,9 +104,9 @@ async function main() {
   }
 
   if (assignAll) {
-    console.log("\nAssigning Starter subscription to orgs without one…");
-    const starter = await sql`SELECT id FROM billing_plans WHERE name = 'Starter' LIMIT 1`;
-    if (!starter.length) { console.error("Starter plan not found"); process.exit(1); }
+    console.log("\nAssigning Growth (trial) subscription to orgs without one…");
+    const starter = await sql`SELECT id FROM billing_plans WHERE name = 'Growth' LIMIT 1`;
+    if (!starter.length) { console.error("Growth plan not found"); process.exit(1); }
     const starterPlanId = starter[0].id;
 
     const orgs = await sql`
