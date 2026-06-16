@@ -4,6 +4,7 @@ import { DomainError } from "./errors";
 import * as vendorRepo from "@/lib/repositories/vendor-repo";
 import * as documentRepo from "@/lib/repositories/document-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
+import { checkPlanLimit } from "./billing-service";
 
 // Re-export pure types and functions from scoring.ts so existing imports work
 export type { DocCounts, Risk } from "./scoring";
@@ -206,6 +207,9 @@ export async function createVendor(params: {
   if (name.length < 2) {
     throw new DomainError("Vendor name is required.");
   }
+
+  await checkPlanLimit(params.orgId, "vendors");
+
   const risk = toRisk(params.input.risk);
 
   return db.transaction(async (tx) => {

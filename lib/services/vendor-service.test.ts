@@ -25,6 +25,10 @@ vi.mock("@/lib/repositories/audit-repo", () => ({
   recordAudit: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("./billing-service", () => ({
+  checkPlanLimit: vi.fn().mockResolvedValue(undefined),
+}));
+
 vi.mock("@/lib/db", () => ({
   db: {
     transaction: vi.fn((fn: (tx: unknown) => Promise<unknown>) => fn({})),

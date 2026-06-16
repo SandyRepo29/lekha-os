@@ -1,4 +1,4 @@
-/** Branded HTML email templates for Lekha OS notifications. */
+/** Branded HTML email templates for AUDT notifications. */
 
 const BASE = `
   <div style="font-family:Inter,system-ui,sans-serif;background:#06070d;color:#e8eaf2;max-width:600px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)">
@@ -7,13 +7,13 @@ const BASE = `
         <div style="width:12px;height:12px;background:#fff;border-radius:50%"></div>
       </div>
       <div>
-        <div style="font-weight:800;font-size:20px;letter-spacing:0.05em">LEKHA<span style="color:#2dd4ff">OS</span></div>
-        <div style="font-size:11px;opacity:0.7;margin-top:2px">Trust. Governance. Compliance.</div>
+        <div style="font-weight:800;font-size:20px;letter-spacing:0.08em">AUDT</div>
+        <div style="font-size:11px;opacity:0.7;margin-top:2px">Governance Built on Proof.</div>
       </div>
     </div>
     <div style="padding:32px">BODY</div>
     <div style="padding:20px 32px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:#646a82;text-align:center">
-      Lekha OS · Built for India 🇮🇳 · <a href="SITE_URL" style="color:#6366f1;text-decoration:none">Open platform →</a>
+      AUDT · Built for India 🇮🇳 · <a href="SITE_URL" style="color:#6366f1;text-decoration:none">audt.tech →</a>
     </div>
   </div>
 `;
@@ -154,4 +154,137 @@ export function weeklyDigestHtml(d: WeeklyDigestData, aiBrief?: string): { subje
   `;
 
   return { subject, html: wrap(body) };
+}
+
+// ─── Billing templates ────────────────────────────────────────────────────────
+
+export function trialEndingSoonHtml(d: { orgName: string; daysLeft: number }): string {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://audt.tech";
+  return wrap(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700">Your trial ends in ${d.daysLeft} day${d.daysLeft === 1 ? "" : "s"}</h2>
+    <p style="color:#9aa0b5;margin:0 0 24px;font-size:15px">Action required for <strong style="color:#e8eaf2">${d.orgName}</strong></p>
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:20px;margin-bottom:24px">
+      <p style="margin:0;font-size:14px;color:#e8eaf2;line-height:1.6">
+        Your AUDT free trial expires in <strong>${d.daysLeft} day${d.daysLeft === 1 ? "" : "s"}</strong>. Upgrade to a paid plan to continue accessing your governance data and keep your compliance program running.
+      </p>
+    </div>
+    <a href="${siteUrl}/settings/billing" style="display:inline-block;background:linear-gradient(120deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;font-size:15px">
+      Upgrade Now →
+    </a>
+    <p style="color:#646a82;font-size:13px;margin-top:24px">
+      Questions? Reply to this email or contact us at billing@audt.tech
+    </p>
+  `);
+}
+
+export function upgradeRequestedHtml(d: {
+  orgName: string;
+  planName: string;
+  billingName: string;
+  billingEmail: string;
+  amount: string;
+  invoiceNumber: string;
+  dueAt: string;
+}): string {
+  return wrap(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700">New upgrade request</h2>
+    <p style="color:#9aa0b5;margin:0 0 24px;font-size:15px">A customer has requested to upgrade their plan.</p>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:24px">
+      ${[
+        ["Organization", d.orgName],
+        ["Plan requested", d.planName],
+        ["Billing name", d.billingName],
+        ["Billing email", d.billingEmail],
+        ["Invoice", d.invoiceNumber],
+        ["Amount", d.amount],
+        ["Due", d.dueAt],
+      ].map(([k, v]) => `
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="color:#9aa0b5;font-size:13px">${k}</span>
+          <span style="color:#e8eaf2;font-size:13px;font-weight:600">${v}</span>
+        </div>
+      `).join("")}
+    </div>
+    <p style="color:#646a82;font-size:13px">Send the bank transfer details to the customer and mark the invoice as paid once the UTR is received.</p>
+  `);
+}
+
+export function upgradeConfirmationHtml(d: {
+  billingName: string;
+  planName: string;
+  amount: string;
+  invoiceNumber: string;
+  dueAt: string;
+}): string {
+  return wrap(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700">Upgrade request received</h2>
+    <p style="color:#9aa0b5;margin:0 0 24px;font-size:15px">Hi ${d.billingName}, we've received your request to upgrade to <strong style="color:#e8eaf2">${d.planName}</strong>.</p>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:24px">
+      ${[
+        ["Invoice number", d.invoiceNumber],
+        ["Plan", d.planName],
+        ["Amount due", d.amount],
+        ["Payment due by", d.dueAt],
+      ].map(([k, v]) => `
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="color:#9aa0b5;font-size:13px">${k}</span>
+          <span style="color:#e8eaf2;font-size:13px;font-weight:600">${v}</span>
+        </div>
+      `).join("")}
+    </div>
+    <div style="background:rgba(99,102,241,0.08);border-left:3px solid #6366f1;border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px">
+      <p style="margin:0;font-size:14px;color:#e8eaf2;line-height:1.6">
+        <strong>Bank Transfer Instructions</strong><br/>
+        Account Name: AUDT Technologies Pvt. Ltd.<br/>
+        Reference: ${d.invoiceNumber}<br/>
+        After payment, email your UTR/transaction ID to <a href="mailto:billing@audt.tech" style="color:#6366f1">billing@audt.tech</a> and we'll activate your subscription within 24 hours.
+      </p>
+    </div>
+    <p style="color:#646a82;font-size:13px">Questions? Contact us at billing@audt.tech</p>
+  `);
+}
+
+export function invoicePaidHtml(d: {
+  billingName: string;
+  planName: string;
+  invoiceNumber: string;
+}): string {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://audt.tech";
+  return wrap(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700">Payment confirmed ✓</h2>
+    <p style="color:#9aa0b5;margin:0 0 24px;font-size:15px">Hi ${d.billingName}, your payment has been received and your subscription is now active.</p>
+    <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:20px;margin-bottom:24px;text-align:center">
+      <div style="font-size:32px;margin-bottom:8px">🎉</div>
+      <div style="font-size:18px;font-weight:700;color:#10b981">Welcome to AUDT ${d.planName}!</div>
+      <div style="color:#9aa0b5;font-size:13px;margin-top:4px">Invoice ${d.invoiceNumber} · Paid</div>
+    </div>
+    <a href="${siteUrl}/dashboard" style="display:inline-block;background:linear-gradient(120deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;font-size:15px">
+      Go to Dashboard →
+    </a>
+    <p style="color:#646a82;font-size:13px;margin-top:24px">
+      Thank you for choosing AUDT. Your governance platform is ready.
+    </p>
+  `);
+}
+
+export function subscriptionCancelledHtml(d: { accessUntil: string }): string {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://audt.tech";
+  return wrap(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700">Subscription cancelled</h2>
+    <p style="color:#9aa0b5;margin:0 0 24px;font-size:15px">Your AUDT subscription has been scheduled for cancellation.</p>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:24px">
+      <p style="margin:0;font-size:14px;color:#e8eaf2;line-height:1.6">
+        You'll continue to have full access to AUDT until <strong>${d.accessUntil}</strong>. After that date, your account will be downgraded and data will be preserved for 90 days.
+      </p>
+    </div>
+    <p style="color:#9aa0b5;font-size:14px;margin-bottom:24px">
+      Changed your mind? You can reactivate your subscription anytime before the period ends.
+    </p>
+    <a href="${siteUrl}/settings/billing" style="display:inline-block;background:linear-gradient(120deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;font-size:15px">
+      Reactivate Subscription →
+    </a>
+    <p style="color:#646a82;font-size:13px;margin-top:24px">
+      Questions? Contact us at billing@audt.tech
+    </p>
+  `);
 }

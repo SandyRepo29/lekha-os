@@ -65,9 +65,9 @@ describe("expiryAlertHtml", () => {
     expect(html).toContain("/vendors/vendor-id");
   });
 
-  it("html contains LEKHA OS branding", () => {
+  it("html contains AUDT branding", () => {
     const { html } = expiryAlertHtml(baseData);
-    expect(html).toContain("LEKHA");
+    expect(html).toContain("AUDT");
   });
 
   it("html includes the site URL for the footer link", () => {

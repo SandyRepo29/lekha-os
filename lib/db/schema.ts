@@ -600,6 +600,38 @@ export const subscriptions = pgTable("subscriptions", {
   billingCycle: text("billing_cycle").notNull().default("trial"),
   currentPeriodStart: timestamp("current_period_start", { withTimezone: true }).defaultNow(),
   currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+  /** pending upgrade plan name while awaiting manual payment */
+  requestedPlan: text("requested_plan"),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+  cancelReason: text("cancel_reason"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/** Invoice records — created on upgrade request; marked paid manually or via webhook. */
+export const invoices = pgTable("invoices", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .references(() => organizations.id, { onDelete: "cascade" }),
+  planId: uuid("plan_id").references(() => billingPlans.id),
+  /** AUDT-YYYY-NNNN */
+  invoiceNumber: text("invoice_number").notNull().unique(),
+  /** draft | sent | paid | void */
+  status: text("status").notNull().default("draft"),
+  amountCents: integer("amount_cents").notNull().default(0),
+  currency: text("currency").notNull().default("USD"),
+  /** bank_transfer | razorpay | stripe | manual */
+  paymentMethod: text("payment_method").notNull().default("bank_transfer"),
+  paymentReference: text("payment_reference"),
+  billingName: text("billing_name"),
+  billingEmail: text("billing_email"),
+  billingGstin: text("billing_gstin"),
+  notes: text("notes"),
+  pdfUrl: text("pdf_url"),
+  dueAt: timestamp("due_at", { withTimezone: true }),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
@@ -1868,6 +1900,7 @@ export type OrganizationSettings = typeof organizationSettings.$inferSelect;
 export type LoginHistory = typeof loginHistory.$inferSelect;
 export type BillingPlan = typeof billingPlans.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
+export type Invoice = typeof invoices.$inferSelect;
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type Integration = typeof integrations.$inferSelect;
 

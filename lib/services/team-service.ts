@@ -4,6 +4,7 @@ import { getAuthProvider } from "@/lib/providers/auth";
 import * as teamRepo from "@/lib/repositories/team-repo";
 import * as profileRepo from "@/lib/repositories/profile-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
+import { checkPlanLimit } from "./billing-service";
 
 export type { TeamMember } from "@/lib/repositories/team-repo";
 
@@ -24,6 +25,8 @@ export async function inviteMember(params: {
   role: Role;
 }): Promise<void> {
   if (!ROLES.includes(params.role)) throw new DomainError("Invalid role.");
+
+  await checkPlanLimit(params.orgId, "users");
 
   const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
   const { userId } = await getAuthProvider().inviteUser(params.email, redirectTo);
