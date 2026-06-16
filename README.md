@@ -48,6 +48,17 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 
 ---
 
+## Help System
+
+AUDT has a built-in help system available to all authenticated users:
+
+- **Contextual help panel** — click the `?` icon in the topbar on any page to open a slide-over panel showing the current module's overview, key features, and power-user tips.
+- **Documentation center** — `/help` — full searchable docs for all 32 modules, grouped by nav section, accessible from the sidebar footer ("Help & Docs").
+
+Content lives in `components/help/help-content.ts` — update it when adding new modules or features.
+
+---
+
 ## Architecture
 
 Layered modular monolith with a clean provider abstraction:
