@@ -174,14 +174,17 @@ export default async function RisksDashboardPage() {
         <Card>
           <EmptyState
             icon={AlertTriangle}
-            title="No risks yet"
-            description="Create your first risk — operational, cyber security, compliance, vendor, or custom."
+            title="No risks logged yet"
+            description="Risk Lens™ is your central register for operational, cyber, compliance and vendor risks. Log your first risk to start building your governance posture."
             action={
-              <Link href="/risks/new">
-                <Button variant="primary" size="sm">
-                  <Plus className="h-4 w-4" /> New Risk
-                </Button>
-              </Link>
+              <div className="flex flex-col items-center gap-2">
+                <Link href="/risks/new">
+                  <Button variant="primary" size="md">
+                    <Plus className="h-4 w-4" /> Log your first risk
+                  </Button>
+                </Link>
+                <p className="text-xs text-[var(--color-ink-faint)]">5×5 heat map · AI risk narratives · Treatment tracking</p>
+              </div>
             }
           />
         </Card>

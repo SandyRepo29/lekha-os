@@ -92,14 +92,17 @@ export default async function AuditsDashboardPage() {
         <Card>
           <EmptyState
             icon={ClipboardCheck}
-            title="No audits yet"
-            description="Create your first audit — internal, external, vendor, or regulatory."
+            title="No audits planned yet"
+            description="Plan your first audit, assign it to a framework, and let AUDT generate your audit program automatically from your compliance controls."
             action={
-              <Link href="/audits/new">
-                <Button variant="primary" size="sm">
-                  <Plus className="h-4 w-4" /> New Audit
-                </Button>
-              </Link>
+              <div className="flex flex-col items-center gap-2">
+                <Link href="/audits/new">
+                  <Button variant="primary" size="md">
+                    <Plus className="h-4 w-4" /> Plan your first audit
+                  </Button>
+                </Link>
+                <p className="text-xs text-[var(--color-ink-faint)]">Auto-program from controls · AI finding generator · PDF reports</p>
+              </div>
             }
           />
         </Card>

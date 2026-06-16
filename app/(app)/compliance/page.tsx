@@ -67,14 +67,17 @@ export default async function ComplianceDashboardPage() {
         <Card>
           <EmptyState
             icon={ShieldCheck}
-            title="No frameworks yet"
-            description="Add your first compliance framework — ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA or custom."
+            title="No compliance frameworks yet"
+            description="Start with ISO 27001, SOC 2, DPDP, PCI DSS or HIPAA — or create a custom framework. AUDT ships with 174 pre-built controls ready to map."
             action={
-              <Link href="/compliance/frameworks/new">
-                <Button variant="primary" size="sm">
-                  <Plus className="h-4 w-4" /> Add framework
-                </Button>
-              </Link>
+              <div className="flex flex-col items-center gap-2">
+                <Link href="/compliance/frameworks/new">
+                  <Button variant="primary" size="md">
+                    <Plus className="h-4 w-4" /> Add a framework
+                  </Button>
+                </Link>
+                <p className="text-xs text-[var(--color-ink-faint)]">174 pre-built controls · AI gap analysis · PDF reports</p>
+              </div>
             }
           />
         </Card>

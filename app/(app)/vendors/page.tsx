@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, Building2, Download, FileText } from "lucide-react";
+import { CoachMark } from "@/components/onboarding/coach-mark";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -97,9 +98,17 @@ export default async function VendorsPage({
               </a>
             </div>
           )}
-          <Link href="/vendors/new">
-            <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add vendor</Button>
-          </Link>
+          <CoachMark
+            id="vendor_add_btn"
+            title="Start here"
+            body="Add your first vendor to begin building your supplier governance registry."
+            position="bottom"
+            disabled={vendors.length > 0 || session.demo || !session.org}
+          >
+            <Link href="/vendors/new">
+              <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add vendor</Button>
+            </Link>
+          </CoachMark>
         </div>
       </div>
 
@@ -118,11 +127,16 @@ export default async function VendorsPage({
           <EmptyState
             icon={Building2}
             title="No vendors yet"
-            description="Register your first vendor to start tracking documents, certifications, expiry and risk."
+            description="Your supplier registry is empty. Add your first vendor to start building your governance posture — assess risk, track documents, and generate Trust Scores™."
             action={
-              <Link href="/vendors/new">
-                <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> Add your first vendor</Button>
-              </Link>
+              <div className="flex flex-col items-center gap-2">
+                <Link href="/vendors/new">
+                  <Button variant="primary" size="md">
+                    <Plus className="h-4 w-4" /> Add your first vendor
+                  </Button>
+                </Link>
+                <p className="text-xs text-[var(--color-ink-faint)]">Takes 2 minutes · AI extracts document fields automatically</p>
+              </div>
             }
           />
         </Card>
