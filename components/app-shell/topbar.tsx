@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Sparkles } from "lucide-react";
+import { Search, Sparkles, CircleHelp } from "lucide-react";
 import { useState } from "react";
+import { HelpPanel } from "@/components/help/help-panel";
 
 const NL_TRIGGERS = ["with","without","missing","expired","expiring","risk","score",
   "below","above","less than","more than","show","find","vendors","who","high risk",
@@ -21,6 +22,7 @@ export function Topbar({ email, orgName, fullName }: {
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [helpOpen, setHelpOpen] = useState(false);
   const display = fullName || email;
   const initial = (display?.[0] ?? "?").toUpperCase();
   const looksNL = isNL(query);
@@ -40,6 +42,7 @@ export function Topbar({ email, orgName, fullName }: {
   }
 
   return (
+    <>
     <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-[var(--color-line)] bg-[var(--color-bg)]/80 px-5 backdrop-blur-md">
       <div className={`flex flex-1 max-w-sm items-center gap-2 rounded-full border bg-white/[0.03] px-3 py-1.5 text-sm transition-colors focus-within:border-[var(--color-blue)]/60 ${looksNL ? "border-[var(--color-blue)]/40" : "border-[var(--color-line)]"}`}>
         {looksNL
@@ -64,6 +67,14 @@ export function Topbar({ email, orgName, fullName }: {
           <div className="text-sm font-semibold text-[var(--color-ink)]">{orgName}</div>
           <div className="text-xs text-[var(--color-ink-faint)]">{email}</div>
         </div>
+        <button
+          onClick={() => setHelpOpen(true)}
+          className="grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] text-[var(--color-ink-faint)] transition-all hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+          title="Help & docs"
+          aria-label="Open help panel"
+        >
+          <CircleHelp className="h-4 w-4" />
+        </button>
         <Link
           href="/settings"
           className="grid h-9 w-9 place-items-center rounded-full grad-brand text-sm font-bold text-white ring-2 ring-transparent transition-all hover:ring-white/30"
@@ -73,5 +84,7 @@ export function Topbar({ email, orgName, fullName }: {
         </Link>
       </div>
     </header>
+    <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+    </>
   );
 }

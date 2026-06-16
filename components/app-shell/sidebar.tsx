@@ -31,6 +31,7 @@ import {
   Scale,
   Layers,
   ShieldAlert,
+  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -188,6 +189,23 @@ export function Sidebar() {
             <div className="text-[11px] text-[var(--color-ink-faint)] truncate">Ask about your posture</div>
           </div>
           <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[var(--color-ink-faint)]" />
+        </Link>
+
+        {/* Help & Docs */}
+        <Link
+          href="/help"
+          className={cn(
+            "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
+            pathname.startsWith("/help")
+              ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
+              : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+          )}
+        >
+          <HelpCircle className={cn(
+            "h-4 w-4 shrink-0",
+            pathname.startsWith("/help") ? "text-[var(--color-blue)]" : "text-[var(--color-ink-faint)]"
+          )} />
+          <span>Help &amp; Docs</span>
         </Link>
 
         {/* Settings */}
