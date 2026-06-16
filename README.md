@@ -5,7 +5,6 @@
 Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://lekha-os.vercel.app) · GitHub: [SandyRepo29/lekha-os](https://github.com/SandyRepo29/lekha-os)
 
 > Complete developer reference: **[CLAUDE.md](./CLAUDE.md)** — architecture, schema, features, caveats, dev commands, environment variables.
-> Seed data reference: **[SEED.md](./SEED.md)** · Feature inventory: **[FEATURES.md](./FEATURES.md)**
 
 ---
 
