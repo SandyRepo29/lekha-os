@@ -69,14 +69,24 @@ export function encryptConfig(
 }
 
 /**
- * Decrypt a config object. If the object has no "_enc" key, returns it
- * unchanged (backwards compat for rows written before encryption).
+ * Decrypt a config object. If the object has no "_enc" key the row predates
+ * encryption. We return it unchanged so the app keeps working, but emit a
+ * server-side warning so the issue is visible in logs. Run
+ * `node scripts/encrypt-plaintext-integrations.mjs` to backfill these rows.
  */
 export function decryptConfig(
   storedConfig: Record<string, unknown>
 ): Record<string, unknown> {
   if (!storedConfig || typeof storedConfig._enc !== "string") {
-    // Not encrypted — return as-is (backwards compat / empty configs)
+    if (storedConfig && Object.keys(storedConfig).length > 0) {
+      // Non-empty config without encryption — row predates AES-256-GCM storage.
+      // This is a security gap: credentials are stored in plaintext.
+      // Fix: run `node scripts/encrypt-plaintext-integrations.mjs`
+      console.warn(
+        "[config-cipher] SECURITY WARNING: integration config row is not encrypted. " +
+          "Run `node scripts/encrypt-plaintext-integrations.mjs` to backfill."
+      );
+    }
     return storedConfig ?? {};
   }
 

@@ -23,7 +23,7 @@ export async function getDashboards(orgId: string): Promise<AnalyticsDashboard[]
   return db
     .select()
     .from(analyticsDashboards)
-    .where(eq(analyticsDashboards.orgId, orgId))
+    .where(eq(analyticsDashboards.organizationId, orgId))
     .orderBy(asc(analyticsDashboards.dashboardType));
 }
 
@@ -31,7 +31,7 @@ export async function getDashboard(orgId: string, dashboardType: string) {
   const rows = await db
     .select()
     .from(analyticsDashboards)
-    .where(and(eq(analyticsDashboards.orgId, orgId), eq(analyticsDashboards.dashboardType, dashboardType)))
+    .where(and(eq(analyticsDashboards.organizationId, orgId), eq(analyticsDashboards.dashboardType, dashboardType)))
     .limit(1);
   return rows[0] ?? null;
 }
@@ -44,7 +44,7 @@ export async function upsertDashboard(
 ) {
   const rows = await db
     .insert(analyticsDashboards)
-    .values({ orgId, dashboardType, name, createdBy, isDefault: true })
+    .values({ organizationId: orgId, dashboardType, name, createdBy, isDefault: true })
     .onConflictDoNothing()
     .returning();
   return rows[0] ?? null;
@@ -56,7 +56,7 @@ export async function getReports(orgId: string, limit = 20): Promise<AnalyticsRe
   return db
     .select()
     .from(analyticsReports)
-    .where(eq(analyticsReports.orgId, orgId))
+    .where(eq(analyticsReports.organizationId, orgId))
     .orderBy(desc(analyticsReports.createdAt))
     .limit(limit);
 }
@@ -65,7 +65,7 @@ export async function getReport(orgId: string, reportId: string) {
   const rows = await db
     .select()
     .from(analyticsReports)
-    .where(and(eq(analyticsReports.orgId, orgId), eq(analyticsReports.id, reportId)))
+    .where(and(eq(analyticsReports.organizationId, orgId), eq(analyticsReports.id, reportId)))
     .limit(1);
   return rows[0] ?? null;
 }
@@ -81,7 +81,11 @@ export async function createReport(data: {
   const rows = await db
     .insert(analyticsReports)
     .values({
-      ...data,
+      organizationId: data.orgId,
+      name: data.name,
+      reportType: data.reportType,
+      format: data.format,
+      generatedBy: data.generatedBy,
       status: "ready",
       generatedAt: new Date(),
       contentSnapshot: data.contentSnapshot ?? {},
@@ -94,7 +98,7 @@ export async function countReportsByType(orgId: string) {
   const rows = await db
     .select({ reportType: analyticsReports.reportType, count: sql<number>`count(*)::int` })
     .from(analyticsReports)
-    .where(eq(analyticsReports.orgId, orgId))
+    .where(eq(analyticsReports.organizationId, orgId))
     .groupBy(analyticsReports.reportType);
   return rows;
 }
@@ -105,7 +109,7 @@ export async function getSchedules(orgId: string): Promise<AnalyticsSchedule[]> 
   return db
     .select()
     .from(analyticsSchedules)
-    .where(eq(analyticsSchedules.orgId, orgId))
+    .where(eq(analyticsSchedules.organizationId, orgId))
     .orderBy(desc(analyticsSchedules.createdAt));
 }
 
@@ -120,7 +124,15 @@ export async function createSchedule(data: {
 }): Promise<AnalyticsSchedule> {
   const rows = await db
     .insert(analyticsSchedules)
-    .values({ ...data, recipients: data.recipients })
+    .values({
+      organizationId: data.orgId,
+      name: data.name,
+      reportType: data.reportType,
+      frequency: data.frequency,
+      deliveryMethod: data.deliveryMethod,
+      recipients: data.recipients,
+      createdBy: data.createdBy,
+    })
     .returning();
   return rows[0];
 }
@@ -129,7 +141,7 @@ export async function toggleSchedule(orgId: string, scheduleId: string, isActive
   await db
     .update(analyticsSchedules)
     .set({ isActive })
-    .where(and(eq(analyticsSchedules.orgId, orgId), eq(analyticsSchedules.id, scheduleId)));
+    .where(and(eq(analyticsSchedules.organizationId, orgId), eq(analyticsSchedules.id, scheduleId)));
 }
 
 // ── Snapshots ────────────────────────────────────────────────────────────────
@@ -138,7 +150,7 @@ export async function getLatestSnapshot(orgId: string): Promise<AnalyticsSnapsho
   const rows = await db
     .select()
     .from(analyticsSnapshots)
-    .where(eq(analyticsSnapshots.orgId, orgId))
+    .where(eq(analyticsSnapshots.organizationId, orgId))
     .orderBy(desc(analyticsSnapshots.snapshotDate))
     .limit(1);
   return rows[0] ?? null;
@@ -150,7 +162,7 @@ export async function getSnapshotHistory(orgId: string, days = 90): Promise<Anal
   return db
     .select()
     .from(analyticsSnapshots)
-    .where(and(eq(analyticsSnapshots.orgId, orgId), gte(analyticsSnapshots.snapshotDate, since.toISOString().split("T")[0])))
+    .where(and(eq(analyticsSnapshots.organizationId, orgId), gte(analyticsSnapshots.snapshotDate, since.toISOString().split("T")[0])))
     .orderBy(asc(analyticsSnapshots.snapshotDate));
 }
 
@@ -164,9 +176,16 @@ export async function upsertSnapshot(data: {
 }) {
   await db
     .insert(analyticsSnapshots)
-    .values(data)
+    .values({
+      organizationId: data.orgId,
+      snapshotDate: data.snapshotDate,
+      kpiData: data.kpiData,
+      trendData: data.trendData,
+      benchmarkData: data.benchmarkData,
+      forecastData: data.forecastData,
+    })
     .onConflictDoUpdate({
-      target: [analyticsSnapshots.orgId, analyticsSnapshots.snapshotDate],
+      target: [analyticsSnapshots.organizationId, analyticsSnapshots.snapshotDate],
       set: {
         kpiData: data.kpiData,
         trendData: data.trendData,
@@ -182,7 +201,7 @@ export async function getKpis(orgId: string): Promise<AnalyticsKpi[]> {
   return db
     .select()
     .from(analyticsKpis)
-    .where(eq(analyticsKpis.orgId, orgId))
+    .where(eq(analyticsKpis.organizationId, orgId))
     .orderBy(asc(analyticsKpis.kpiKey));
 }
 
@@ -198,7 +217,7 @@ export async function upsertKpi(data: {
   period?: string;
 }) {
   const vals = {
-    orgId: data.orgId,
+    organizationId: data.orgId,
     kpiKey: data.kpiKey,
     kpiName: data.kpiName,
     currentValue: String(data.currentValue),
@@ -212,7 +231,7 @@ export async function upsertKpi(data: {
     .insert(analyticsKpis)
     .values(vals)
     .onConflictDoUpdate({
-      target: [analyticsKpis.orgId, analyticsKpis.kpiKey],
+      target: [analyticsKpis.organizationId, analyticsKpis.kpiKey],
       set: {
         currentValue: String(data.currentValue),
         previousValue: data.previousValue != null ? String(data.previousValue) : undefined,
@@ -228,7 +247,7 @@ export async function getForecasts(orgId: string): Promise<AnalyticsForecast[]> 
   return db
     .select()
     .from(analyticsForecasts)
-    .where(eq(analyticsForecasts.orgId, orgId))
+    .where(eq(analyticsForecasts.organizationId, orgId))
     .orderBy(asc(analyticsForecasts.metricName));
 }
 
@@ -246,7 +265,7 @@ export async function upsertForecast(data: {
   await db
     .insert(analyticsForecasts)
     .values({
-      orgId: data.orgId,
+      organizationId: data.orgId,
       metricName: data.metricName,
       horizonDays: data.horizonDays,
       currentValue: String(data.currentValue),

@@ -3388,7 +3388,7 @@ export const analyticsDashboards = pgTable(
   "analytics_dashboards",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     dashboardType: text("dashboard_type").notNull(),
     description: text("description"),
@@ -3399,7 +3399,7 @@ export const analyticsDashboards = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("idx_analytics_dashboards_org").on(t.orgId)]
+  (t) => [index("idx_analytics_dashboards_org").on(t.organizationId)]
 );
 
 export const analyticsWidgets = pgTable(
@@ -3422,7 +3422,7 @@ export const analyticsReports = pgTable(
   "analytics_reports",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     reportType: text("report_type").notNull(),
     status: text("status").notNull().default("draft"),
@@ -3435,8 +3435,8 @@ export const analyticsReports = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
-    index("idx_analytics_reports_org_type").on(t.orgId, t.reportType),
-    index("idx_analytics_reports_org_status").on(t.orgId, t.status),
+    index("idx_analytics_reports_org_type").on(t.organizationId, t.reportType),
+    index("idx_analytics_reports_org_status").on(t.organizationId, t.status),
   ]
 );
 
@@ -3444,7 +3444,7 @@ export const analyticsSchedules = pgTable(
   "analytics_schedules",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     reportType: text("report_type").notNull(),
     frequency: text("frequency").notNull(),
@@ -3457,14 +3457,14 @@ export const analyticsSchedules = pgTable(
     createdBy: uuid("created_by").references(() => profiles.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("idx_analytics_schedules_org").on(t.orgId, t.isActive)]
+  (t) => [index("idx_analytics_schedules_org").on(t.organizationId, t.isActive)]
 );
 
 export const analyticsSnapshots = pgTable(
   "analytics_snapshots",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     snapshotDate: date("snapshot_date").notNull(),
     kpiData: jsonb("kpi_data").notNull().default({}),
     trendData: jsonb("trend_data").notNull().default({}),
@@ -3473,8 +3473,8 @@ export const analyticsSnapshots = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
-    uniqueIndex("uq_analytics_snapshots_org_date").on(t.orgId, t.snapshotDate),
-    index("idx_analytics_snapshots_org_date").on(t.orgId, t.snapshotDate),
+    uniqueIndex("uq_analytics_snapshots_org_date").on(t.organizationId, t.snapshotDate),
+    index("idx_analytics_snapshots_org_date").on(t.organizationId, t.snapshotDate),
   ]
 );
 
@@ -3482,7 +3482,7 @@ export const analyticsExports = pgTable(
   "analytics_exports",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     reportId: uuid("report_id").references(() => analyticsReports.id, { onDelete: "set null" }),
     exportType: text("export_type").notNull(),
     format: text("format").notNull(),
@@ -3498,7 +3498,7 @@ export const analyticsForecasts = pgTable(
   "analytics_forecasts",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     metricName: text("metric_name").notNull(),
     horizonDays: integer("horizon_days").notNull(),
     currentValue: numeric("current_value", { precision: 5, scale: 2 }),
@@ -3509,14 +3509,14 @@ export const analyticsForecasts = pgTable(
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("idx_analytics_forecasts_org_metric").on(t.orgId, t.metricName)]
+  (t) => [index("idx_analytics_forecasts_org_metric").on(t.organizationId, t.metricName)]
 );
 
 export const analyticsSubscriptions = pgTable(
   "analytics_subscriptions",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
     scheduleId: uuid("schedule_id").references(() => analyticsSchedules.id, { onDelete: "cascade" }),
     reportType: text("report_type").notNull(),
@@ -3530,7 +3530,7 @@ export const analyticsKpis = pgTable(
   "analytics_kpis",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    orgId: uuid("org_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
+    organizationId: uuid("organization_id").notNull().references(() => organizations.id, { onDelete: "cascade" }),
     kpiKey: text("kpi_key").notNull(),
     kpiName: text("kpi_name").notNull(),
     currentValue: numeric("current_value", { precision: 10, scale: 2 }),
@@ -3543,8 +3543,8 @@ export const analyticsKpis = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
-    uniqueIndex("uq_analytics_kpis_org_key").on(t.orgId, t.kpiKey),
-    index("idx_analytics_kpis_org").on(t.orgId),
+    uniqueIndex("uq_analytics_kpis_org_key").on(t.organizationId, t.kpiKey),
+    index("idx_analytics_kpis_org").on(t.organizationId),
   ]
 );
 
