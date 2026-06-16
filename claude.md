@@ -14,8 +14,8 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Tagline:** Governance Built on Proof.
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
-- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · **Regulatory Intelligence™**
-- **Total tables:** 218 (204 previous + 14 Regulatory Intelligence™ tables from migration 0031)
+- **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · Regulatory Intelligence™ · **Asset Intelligence™**
+- **Total tables:** 238 (218 previous + 20 Asset Intelligence™ tables from migration 0032)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -272,6 +272,7 @@ node scripts/seed-trust-verification.mjs            # AUDT Verified™ (cert+bad
 node scripts/seed-continuous-compliance.mjs         # 3 access reviews · 3 attestations · 3 training campaigns · 5 signals · 1 health score · 5 readiness snapshots · 3 automation rules
 node scripts/seed-governance-agents.mjs             # 5 agents · runs · observations · recommendations · actions · metrics
 node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
+node scripts/seed-asset-intelligence.mjs            # 30 assets · 4 alerts · 6 relationships (targets most-active org)
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -795,6 +796,17 @@ GET /api/v1/regulatory-assessments          Assessment list (?status=, ?page=)
 POST /api/v1/regulatory-assessments         Create assessment (read_write key)
 GET /api/v1/regulatory-readiness            Readiness score + metrics
 
+--- Asset Intelligence™ ---
+/asset-intelligence                          Hub (KPI strip: total/active/critical/PII/alerts · recent assets · by-type chart · open alerts · module nav)
+/asset-intelligence/registry                Asset Registry™ (filterable list by type/criticality/status/environment + create)
+/asset-intelligence/registry/new           Add asset form (all fields: name, type, criticality, env, data class, PII flags, stack, cloud, notes)
+/asset-intelligence/data-assets            Data Asset Catalog™ (PII assets warning panel + data asset registry + DPDP link)
+/asset-intelligence/relationships          Asset Relationships™ (dependency table with relationship type labels + Trust Graph link)
+/asset-intelligence/alerts                 Asset Alerts™ (open/resolved with ResolveAlertButton + severity badges)
+/asset-intelligence/ai                     AI Asset Advisor™ (advisory summary + suggested questions + AssetAiChat NL chat)
+GET /api/v1/assets                          Asset list (?type=, ?criticality=, ?status=, ?environment=)
+POST /api/v1/assets                         Create asset (read_write key)
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -1031,6 +1043,34 @@ lib/
     watchlist-actions.tsx   DeleteWatchlistButton (confirm dialog + delete)
     reg-ai-chat.tsx         NL chat with suggested question click handler ([data-question] attribute delegation)
 
+  --- Asset Intelligence™ services ---
+  services/asset-intelligence/
+    asset-service.ts        getDashboardData(), getAssets(filters), getAsset(id), createAsset(), updateAsset(), deleteAsset(),
+                            getRelationships(), createRelationship(), addReview(),
+                            computeAndSaveAssetScore(), takeSnapshot(), getAlerts(), resolveAlert()
+    ai-asset-service.ts     generateAdvisorySummary() (cached 24h), analyzeImpact(), analyzeDependencyChain(), chat()
+                            Uses aiComplianceInsights table with generatedAt column (not createdAt)
+
+  --- Asset Intelligence™ repository ---
+  repositories/
+    asset-intelligence-repo.ts  findAllAssets(orgId, filters), findAssetById(), insertAsset(), updateAsset(), deleteAsset(),
+                                getDashboardMetrics(), getAssetCountsByType(), getAssetCountsByCriticality(),
+                                linkAssetRisk/Control/Vendor/Contract/Regulation/AiSystem(),
+                                findAssetRisks/Controls/Vendors/Contracts/Regulations/AiSystems(),
+                                saveAssetScore(), insertAlert(), resolveAlert(), saveSnapshot()
+
+  asset-intelligence/actions.ts  createAssetAction, updateAssetAction, deleteAssetAction,
+                                  createRelationshipAction, resolveAlertAction,
+                                  generateAdvisorySummaryAction, chatAction
+
+  components/asset-intelligence/
+    asset-ui.tsx            AssetSubNav (6-item pill nav: Dashboard/Registry/Data Assets/Relationships/Alerts/AI Advisor)
+                            AssetStat (border-l-2 accent card) · CriticalityBadge · AssetStatusBadge
+                            AssetTypeBadge · AssetTrustBadge · AlertSeverityBadge
+    new-asset-form.tsx      Create asset — useActionState<any, FormData>(createAssetAction as any, undefined)
+    alert-actions.tsx       ResolveAlertButton (useTransition + router.refresh())
+    asset-ai-chat.tsx       NL chat with [data-question] suggested question delegation
+
   agents/
     utils.ts            Plain TS (no "use client") — fmtDate(), fmtDuration() used by agents server pages.
                         Extracted from agent-ui.tsx to avoid Next.js server/client boundary error.
@@ -1171,6 +1211,7 @@ scripts/
   seed-trust-exchange.mjs       1 published trust profile · 5 documents · 4 badges · 1 global questionnaire with answers
   seed-executive-reporting.mjs  10 KPIs + 5 snapshots + 3 board reports + 2 schedules + 9 forecasts (3 metrics × 3 horizons)
   seed-regulatory-intelligence.mjs  8 regulatory changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates (idempotent)
+  seed-asset-intelligence.mjs      30 assets (apps/databases/cloud/data-assets/processes) · 4 alerts · 6 relationships (idempotent; targets most-active org via membership count query)
   SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
@@ -1240,6 +1281,7 @@ vi.mock("@/lib/db", () => ({
 ### Module 28 — Continuous Compliance™ ✅ Complete (2026-06-13)
 ### Module 29 — Governance Agent Framework™ ✅ Complete (2026-06-13)
 ### Module 30 — Regulatory Intelligence™ ✅ Complete (2026-06-14)
+### Module 31 — Asset Intelligence™ ✅ Complete (2026-06-16)
 
 Centralized Governance Execution Layer. 6 new tables: `issues`, `issue_tasks`, `issue_comments`, `issue_exceptions`, `issue_escalations`, `issue_history`.
 
@@ -1619,6 +1661,36 @@ Always-current regulatory tracking for India (DPDP, RBI, SEBI, IRDAI) and global
 
 **CRITICAL — `regulatory_agents` table naming:** Drizzle table is `pgTable("regulatory_agents", ...)` (DB table name is `regulatory_agents`) but the TypeScript export is `regulatoryAgentConfig`. Use `regulatoryAgentConfig` in Drizzle queries. Do not confuse with `governance_agents` from Module 29.
 
+### Module 31 — Asset Intelligence™ ✅ Complete (2026-06-16)
+
+Enterprise Asset Graph & Trust Mapping Platform — master inventory connecting every governance entity to enterprise assets. 20 new tables, 7 enums, 30 demo assets (8 apps, 5 databases, 6 cloud, 7 data assets, 4 processes).
+
+| Feature | Detail |
+|---|---|
+| **Asset Registry™** | Full CRUD asset registry — 12 asset types: application · database · api · server · cloud_resource · data_asset · business_process · ai_system · vendor_service · network_asset · endpoint · custom |
+| **Asset Trust Score™** | 6-component 0–100 engine: security controls (25%) + compliance coverage (20%) + risk posture (20%) + data protection (15%) + operational health (10%) + monitoring coverage (10%) |
+| **Data Asset Catalog™** | PII/sensitive data tracking with DPDP regulation link, data classification badge |
+| **Asset Relationships™** | Dependency graph: depends_on · contains · processes · hosts · accesses · connects_to · backs_up · replicates · manages · integrates_with |
+| **Asset Alerts™** | Auto-generated alerts for critical assets missing owner/risk-assessment/controls/classification; severity triage |
+| **AI Asset Advisor™** | Advisory summary (cached 24h), impact analyzer, dependency chain analyzer, multi-turn NL chat |
+| **REST API** | GET/POST `/api/v1/assets` — Bearer auth, `read_write` for POST |
+
+- Service: `lib/services/asset-intelligence/asset-service.ts`
+- AI service: `lib/services/asset-intelligence/ai-asset-service.ts`
+- Repo: `lib/repositories/asset-intelligence-repo.ts`
+- Actions: `lib/asset-intelligence/actions.ts`
+- Migration: `supabase/migrations/0032_asset_intelligence.sql`
+- Routes: `/asset-intelligence/*` (6 pages: Hub · Registry™ · Data Assets™ · Relationships™ · Alerts · AI Advisor™)
+- Seed: `node scripts/seed-asset-intelligence.mjs` — 30 assets · 4 alerts · 6 relationships
+
+**20 DB tables (migration 0032):** `assets` · `asset_types` · `asset_owners` · `asset_tags` · `asset_relationships` · `asset_dependencies` · `asset_reviews` · `asset_scores` · `asset_alerts` · `asset_data_flows` · `asset_incidents` · `asset_snapshots` + 7 junction tables: `asset_risks` · `asset_controls` · `asset_vendors` · `asset_contracts` · `asset_regulations` · `asset_ai_systems` · `asset_criticality_log`
+
+**7 enums:** `asset_type_enum` · `asset_criticality_enum` · `asset_status_enum` · `asset_environment_enum` · `asset_data_class_enum` · `asset_relationship_type_enum` · `asset_alert_type_enum`
+
+**RLS helper:** `is_asset_member(p_asset_id UUID)` — validates org membership via asset lookup. Used by all junction table RLS policies.
+
+**CRITICAL — seed org selection:** Seed script uses `SELECT organization_id FROM memberships GROUP BY organization_id ORDER BY count(*) DESC LIMIT 1` to target the most-active org (not `SELECT id FROM organizations LIMIT 1` which returns the E2E test org first).
+
 | Next Module | Description | Status |
 |---|---|---|
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
@@ -1635,6 +1707,7 @@ Always-current regulatory tracking for India (DPDP, RBI, SEBI, IRDAI) and global
 | Continuous Compliance™ | Always-on compliance — 21 automated checks, evidence automation, access reviews, attestations, training, AI Officer™ | ✅ Complete (2026-06-13) |
 | Governance Agent Framework™ | AI agents that continuously monitor, reason, and act — observations, recommendations, human-approved actions | ✅ Complete (2026-06-13) |
 | Regulatory Intelligence™ | Always-current regulatory tracking — 18 built-in regulations, change monitor, obligations, AI horizon, readiness score | ✅ Complete (2026-06-14) |
+| Asset Intelligence™ | Enterprise Asset Graph & Trust Mapping — 30-asset registry, dependency graph, PII tracking, alerts, AI advisor | ✅ Complete (2026-06-16) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
@@ -1700,6 +1773,8 @@ Always-current regulatory tracking for India (DPDP, RBI, SEBI, IRDAI) and global
 | **Analytics tables use `org_id` not `organization_id`** | All 9 analytics tables (`analytics_kpis`, `analytics_snapshots`, `analytics_reports`, `analytics_schedules`, `analytics_forecasts`, etc.) use `org_id` as the FK column name — unlike most other AUDT tables which use `organization_id`. Seed scripts and raw SQL queries must use `org_id`. ON CONFLICT clauses use `(org_id, kpi_key)` and `(org_id, snapshot_date)`. |
 | **Standard module nav pattern (2026-06-14)** | All 30 modules use the pill nav: `rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1` container + `shrink-0 rounded-xl px-4 py-2 text-sm font-medium` links. Active = `bg-white/[0.08] text-[var(--color-ink)]`. Inactive = `text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]`. Modules with `layout.tsx` define the nav there (`"use client"` + `usePathname`). CC and Agents use inline `CcSubNav`/`AgentSubNav` components. **Do not add `p-6` to pages inside a `layout.tsx` module** — the app shell `<main>` already provides `p-5 md:p-8`. CC/Agents pages retain `p-6` because they have no layout wrapper. |
 | **Standard page heading / spacing** | All module hub and sub-pages use `font-[family-name:var(--font-display)] text-xl font-bold` (not `text-2xl`) and `space-y-6` root wrapper (not `space-y-8`). The one exception is `dashboard/page.tsx` line 411 which uses `text-2xl font-extrabold` for a data value display. |
+| **Asset Intelligence™ encoding** | Asset Intelligence™ pages were written via PowerShell which corrupted UTF-8 `™` → `â„¢` and `—` → `â€"`. Fixed via binary byte replacement (`scripts/fix-encoding.py` + `scripts/fix-emdash.py`). If adding new asset-intelligence pages, write via the Write tool (not PowerShell `Set-Content`) to avoid re-corruption. |
+| **`is_asset_member()` RLS helper** | Migration 0032 creates a `is_asset_member(p_asset_id UUID)` Postgres function for junction table RLS. All 7 junction tables (`asset_risks`, `asset_controls`, etc.) validate org membership via this function. Never add junction table RLS that bypasses this helper. |
 
 ---
 
