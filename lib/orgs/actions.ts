@@ -29,6 +29,8 @@ export async function createOrganization(
     await orgService.createOrganization({
       actorId: user.id,
       name: String(formData.get("name") || ""),
+      industry: String(formData.get("industry") || "") || undefined,
+      companySize: String(formData.get("companySize") || "") || undefined,
     });
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };

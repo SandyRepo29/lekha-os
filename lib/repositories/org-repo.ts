@@ -4,13 +4,21 @@ import { organizations, memberships } from "@/lib/db/schema";
 
 export type ActiveOrg = { id: string; name: string; slug: string; role: string };
 
+type IndustryType = "saas" | "it_services" | "fintech" | "healthcare" | "manufacturing" | "government" | "education" | "other";
+type CompanySizeRange = "1_10" | "11_50" | "51_200" | "201_500" | "501_1000" | "1000_plus";
+
 export async function insertOrganization(
-  values: { name: string; slug: string },
+  values: { name: string; slug: string; industry?: string; companySize?: string },
   exec: Executor = db
 ): Promise<{ id: string }> {
   const [org] = await exec
     .insert(organizations)
-    .values(values)
+    .values({
+      name: values.name,
+      slug: values.slug,
+      ...(values.industry ? { industry: values.industry as IndustryType } : {}),
+      ...(values.companySize ? { companySize: values.companySize as CompanySizeRange } : {}),
+    })
     .returning({ id: organizations.id });
   return org;
 }

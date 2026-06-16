@@ -808,6 +808,9 @@ GET /api/v1/regulatory-readiness            Readiness score + metrics
 GET /api/v1/assets                          Asset list (?type=, ?criticality=, ?status=, ?environment=)
 POST /api/v1/assets                         Create asset (read_write key)
 
+--- Help & Docs ---
+/help                                        Documentation center — all 32 modules, search, grouped left nav (authenticated)
+
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
@@ -1117,7 +1120,11 @@ components/
   ui/                           Button, Card, Badge, StatusBadge, Input, Select, Tabs,
                                 SectionHeading, EmptyState, ScoreRing
   ai/                           AiInsightPanel (collapsible), AiRecommendedActions
-  app-shell/                    Sidebar, Topbar (NL search detection)
+  app-shell/                    Sidebar (7 nav groups: AI & Agents · Core GRC · Privacy & Legal · Intelligence · Security · Trust Network — see `groups` array in sidebar.tsx), Topbar (NL search detection + CircleHelp ? button opens HelpPanel)
+  help/
+    help-content.ts             Static HELP_CONTENT map — all 32 modules, each with title/icon/group/overview/features[]/tips[]/route
+    help-panel.tsx              "use client" slide-over panel (w-80, fixed right-0) — detects current module via usePathname(), shows overview + features + tips; triggered by ? in topbar
+    help-docs-client.tsx        "use client" full docs page component — search, grouped left sidebar, module cards
   vendors/                      All vendor UI — forms, detail tabs, document components
   assessments/                  AssessmentForm, AiAssessmentSummary
   activity/                     ActivityFeed

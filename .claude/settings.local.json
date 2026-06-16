@@ -142,7 +142,12 @@
       "Bash(Test-Path \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\SEED.md\")",
       "PowerShell(python \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\scripts\\\\fix-encoding.py\")",
       "Bash(python scripts/fix-emdash.py)",
-      "Bash(python scripts/inspect-page.py)"
+      "Bash(python scripts/inspect-page.py)",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/help)",
+      "WebFetch(domain:www.vanta.com)"
     ]
   }
 }

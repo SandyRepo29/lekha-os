@@ -23,6 +23,8 @@ function slugify(input: string): string {
 export async function createOrganization(params: {
   actorId: string;
   name: string;
+  industry?: string;
+  companySize?: string;
 }): Promise<{ id: string; slug: string }> {
   const name = params.name.trim();
   if (name.length < 2) {
@@ -31,7 +33,10 @@ export async function createOrganization(params: {
   const slug = `${slugify(name)}-${Math.random().toString(36).slice(2, 7)}`;
 
   return db.transaction(async (tx) => {
-    const org = await orgRepo.insertOrganization({ name, slug }, tx);
+    const org = await orgRepo.insertOrganization(
+      { name, slug, industry: params.industry, companySize: params.companySize },
+      tx
+    );
     await orgRepo.insertMembership(
       { organizationId: org.id, userId: params.actorId, role: "owner" },
       tx

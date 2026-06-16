@@ -26,7 +26,7 @@ export default async function OnboardingPage() {
               <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_12px_#fff]" />
             </span>
             <span className="font-[family-name:var(--font-display)] text-lg font-extrabold tracking-wide">
-              LEKHA<span className="ml-0.5 text-[var(--color-blue)]">OS</span>
+              AUD<span className="ml-0.5 text-[var(--color-blue)]">T</span>
             </span>
           </Link>
         </div>
