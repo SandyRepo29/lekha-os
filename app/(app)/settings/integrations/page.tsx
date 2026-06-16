@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { Link2 } from "lucide-react";
+import { Link2, Plug, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getIntegrations } from "@/lib/services/integration-service";
 import { IntegrationGrid } from "@/components/settings/integration-grid";
@@ -19,8 +20,18 @@ export default async function IntegrationsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Integrations</h1>
-        <p className="text-sm text-[var(--color-ink-dim)]">Connect external services to Lekha OS.</p>
+        <p className="text-sm text-[var(--color-ink-dim)]">Connect external services to AUDT.</p>
       </div>
+
+      {/* Integration Hub callout */}
+      <Link href="/integration-hub" className="flex items-center gap-4 rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] px-4 py-3.5 hover:bg-[var(--color-blue)]/[0.08] transition-colors">
+        <Plug className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-[var(--color-ink)]">Integration Hub™ — 35+ Connectors</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Full connector marketplace · Sync Engine™ · Webhook Engine™ · Connection Health™ · AI Integration Advisor™ · Evidence collection from Entra ID, Okta, AWS, GitHub, Jira, Slack &amp; more</p>
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
+      </Link>
 
       <div className="space-y-1.5">
         <div className="flex items-center gap-2 px-1">

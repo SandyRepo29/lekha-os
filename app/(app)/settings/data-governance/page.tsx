@@ -13,7 +13,10 @@ import {
   Building2,
   ClipboardCheck,
   HardDrive,
+  ShieldAlert,
+  ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import {
@@ -261,7 +264,7 @@ export default async function DataGovernancePage() {
                 { label: "TLS in transit", ok: true },
                 { label: "Supabase at-rest encryption", ok: true },
                 { label: "Vector search tenant isolation", ok: true },
-                { label: "BYOK / Customer Managed Keys", ok: false, note: "Enterprise roadmap" },
+                { label: "BYOK / Customer Managed Keys", ok: true, note: "Security Command Center™" },
                 { label: "Customer-owned storage (S3/Azure)", ok: false, note: "Enterprise roadmap" },
               ].map(({ label, ok, note }) => (
                 <div key={label} className="flex items-center gap-2 text-sm">
@@ -288,6 +291,16 @@ export default async function DataGovernancePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Security Command Center callout */}
+      <Link href="/security-center" className="flex items-center gap-4 rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] px-4 py-3.5 hover:bg-[var(--color-blue)]/[0.08] transition-colors">
+        <ShieldAlert className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-[var(--color-ink)]">Manage Advanced Security in Security Command Center™</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Customer managed encryption keys · MFA enforcement · SSO · IP allowlists · Session management · Evidence protection · Public Trust Center™</p>
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
+      </Link>
 
       {/* Recent Audit Events */}
       <div className="space-y-2">

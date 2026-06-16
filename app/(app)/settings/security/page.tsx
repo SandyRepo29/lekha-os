@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { Shield, KeyRound, Clock } from "lucide-react";
+import { Shield, KeyRound, Clock, ShieldAlert, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { listByUser } from "@/lib/repositories/login-history-repo";
@@ -20,6 +21,16 @@ export default async function SecurityPage() {
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Security</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">Manage your account security and authentication settings.</p>
       </div>
+
+      {/* Security Command Center callout */}
+      <Link href="/security-center" className="flex items-center gap-4 rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] px-4 py-3.5 hover:bg-[var(--color-blue)]/[0.08] transition-colors">
+        <ShieldAlert className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-[var(--color-ink)]">Security Command Center™</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Enterprise SSO · MFA enforcement · Session management · IP allowlists · Evidence protection · AI audit logs · Customer managed encryption</p>
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
+      </Link>
 
       {/* Password */}
       <div className="space-y-1.5">
