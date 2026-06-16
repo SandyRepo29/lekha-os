@@ -59,6 +59,26 @@ Content lives in `components/help/help-content.ts` — update it when adding new
 
 ---
 
+## Onboarding System
+
+Enterprise-grade onboarding for new users — 3 phases shipped:
+
+**Phase 1 — Setup Wizard** (`/onboarding`)
+- 3-step client-side wizard: org name + industry + company size → goal selection (6 use-case cards) → invite teammates
+- Goals stored to `localStorage` as `audt_onboarding_goals` for dashboard personalization
+- Industry and company size now saved to the `organizations` table
+- Redirects to `/dashboard?welcome=1` on completion
+
+**Phase 2 — Dashboard Activation**
+- **Welcome banner** — gradient banner shown once on `?welcome=1`, permanently dismissible
+- **Onboarding checklist** — 8-task collapsible widget (add vendor · upload doc · run assessment · add framework · create risk · invite team · connect integration · view trust score); all state in `localStorage`; self-hides when all tasks complete
+
+**Phase 3 — Module Guidance**
+- **CoachMark component** — reusable pulsing beacon + tooltip, shown once per element (`components/onboarding/coach-mark.tsx`); dismiss via click or ×; state in `localStorage` per unique `id`
+- **Rich empty states** — Vendor Hub™, Risk Lens™, Evidence Vault™, and Audit Management show helpful CTA buttons with hint text when an org has zero data (instead of a bare icon)
+
+---
+
 ## Architecture
 
 Layered modular monolith with a clean provider abstraction:
