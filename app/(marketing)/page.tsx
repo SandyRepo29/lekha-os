@@ -224,7 +224,7 @@ export default function LandingPage() {
                 <span className="dot">·</span>
                 <span>Trust Infrastructure™</span>
                 <span className="dot">·</span>
-                <span>29 Modules</span>
+                <span>32 Modules</span>
                 <span className="dot">·</span>
                 <span>AI-Native</span>
               </div>
@@ -315,11 +315,11 @@ export default function LandingPage() {
                 <div className="metric__label">Pre-built Compliance Controls</div>
               </div>
               <div className="metric reveal" data-delay="80">
-                <div className="metric__num"><span className="counter" data-target="204">0</span><i>+</i></div>
+                <div className="metric__num"><span className="counter" data-target="259">0</span><i>+</i></div>
                 <div className="metric__label">Database Tables — Full Governance Data Model</div>
               </div>
               <div className="metric reveal" data-delay="160">
-                <div className="metric__num"><span className="counter" data-target="29">0</span></div>
+                <div className="metric__num"><span className="counter" data-target="32">0</span></div>
                 <div className="metric__label">Modules Live &amp; In Production</div>
               </div>
             </div>
@@ -552,7 +552,7 @@ export default function LandingPage() {
               </div>
               <div className="metrics-banner__divider" />
               <div className="metrics-banner__item">
-                <div className="metrics-banner__val">29</div>
+                <div className="metrics-banner__val">32</div>
                 <div className="metrics-banner__label">Governance Modules</div>
               </div>
               <div className="metrics-banner__divider" />
@@ -584,8 +584,8 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Complete Governance Platform</span>
-              <h2>29 Governance Modules. One OS.</h2>
-              <p>29 integrated governance modules working together through AI, automation and trust intelligence.</p>
+              <h2>32 Governance Modules. One OS.</h2>
+              <p>32 integrated governance modules working together through AI, automation and trust intelligence.</p>
             </div>
             <div className="pillars">
 
@@ -912,6 +912,91 @@ export default function LandingPage() {
                 </ul>
               </article>
 
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🔄</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Continuous Compliance™</h3>
+                <p>Always-on compliance automation — 21 automated checks, evidence collection, access reviews, and attestations.</p>
+                <ul className="pillar__feats">
+                  <li>21 Pre-built Checks (AWS · Azure · GCP · GitHub · Okta)</li>
+                  <li>Evidence Automation™</li>
+                  <li>Access Review Manager™</li>
+                  <li>Compliance Attestations™</li>
+                  <li>Compliance Health™ Score</li>
+                  <li>AI Compliance Officer™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🤖</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Governance Agent Framework™</h3>
+                <p>AI agents that continuously monitor, reason, and act — observations, recommendations, and human-approved actions.</p>
+                <ul className="pillar__feats">
+                  <li>Agent Registry™ — 6 agent types</li>
+                  <li>Agent Studio™ — custom agents</li>
+                  <li>Observations™ &amp; Recommendations™</li>
+                  <li>Human Approval Queue</li>
+                  <li>Multi-agent Orchestration™</li>
+                  <li>Governance Copilot™ NL chat</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal">
+                <div className="pillar__top">
+                  <div className="pillar__icon">⚖️</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Regulatory Intelligence™</h3>
+                <p>Always-current regulatory tracking — 18 built-in global regulations, change monitoring, obligation tracking, and AI horizon forecasting.</p>
+                <ul className="pillar__feats">
+                  <li>18 Built-in Regulations (DPDP · GDPR · EU AI Act · ISO 27001 · DORA…)</li>
+                  <li>Change Monitor™</li>
+                  <li>Obligations Tracker™</li>
+                  <li>Compliance Horizon™ AI forecast</li>
+                  <li>Regulatory Readiness Score™</li>
+                  <li>AI Regulatory Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🗂️</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Asset Intelligence™</h3>
+                <p>Enterprise asset graph — master inventory connecting every governance entity to enterprise assets, PII tracking, and dependency mapping.</p>
+                <ul className="pillar__feats">
+                  <li>Asset Registry™ — 12 asset types</li>
+                  <li>Asset Trust Score™</li>
+                  <li>Data Asset Catalog™ (PII tracking)</li>
+                  <li>Asset Relationships™ — dependency graph</li>
+                  <li>Asset Alerts™</li>
+                  <li>AI Asset Advisor™</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="120">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🛡️</div>
+                  <span className="status status--live">Live</span>
+                </div>
+                <h3>Security Command Center™</h3>
+                <p>Enterprise security platform — MFA enforcement, SSO, session management, IP allow lists, evidence protection, and vendor monitoring.</p>
+                <ul className="pillar__feats">
+                  <li>MFA Management™ &amp; Enterprise SSO™</li>
+                  <li>Session Management™</li>
+                  <li>IP Allow Lists™</li>
+                  <li>Evidence Protection™ (expiring share links)</li>
+                  <li>AI Security Governance™ (prompt audit trail)</li>
+                  <li>Public Trust Center™</li>
+                </ul>
+              </article>
+
             </div>
           </div>
         </section>
@@ -1232,7 +1317,7 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">What&apos;s Built</span>
-              <h2>29 Modules. One Governance OS.</h2>
+              <h2>32 Modules. One Governance OS.</h2>
               <p>AUDT is the most complete AI-native governance platform available — every module is live and in production.</p>
             </div>
             <div className="roadmap-grid">
@@ -1280,7 +1365,18 @@ export default function LandingPage() {
                   <div className="rmap__item rmap__item--done">✓ Trust Verification Authority™</div>
                 </div>
               </div>
-              <div className="rmap rmap--vision reveal" data-delay="320">
+              <div className="rmap rmap--done reveal" data-delay="320">
+                <div className="rmap__label">AI, Security &amp; Automation</div>
+                <div className="rmap__items">
+                  <div className="rmap__item rmap__item--done">✓ Continuous Compliance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Governance Agent Framework™</div>
+                  <div className="rmap__item rmap__item--done">✓ Regulatory Intelligence™</div>
+                  <div className="rmap__item rmap__item--done">✓ Asset Intelligence™</div>
+                  <div className="rmap__item rmap__item--done">✓ Security Command Center™</div>
+                  <div className="rmap__item rmap__item--done">✓ Help &amp; Documentation Center</div>
+                </div>
+              </div>
+              <div className="rmap rmap--vision reveal" data-delay="400">
                 <div className="rmap__label">Vision</div>
                 <div className="rmap__vision">
                   <span className="grad-text">Governance OS</span>
@@ -1297,7 +1393,7 @@ export default function LandingPage() {
             <div className="cta-final__badge">audt.tech</div>
             <h2>Ready for Autonomous Governance?</h2>
             <p>
-              AI agents. Continuous compliance. Trust infrastructure. 29 governance modules in one OS — built for organizations that can&apos;t afford to get governance wrong.
+              AI agents. Continuous compliance. Trust infrastructure. 32 governance modules in one OS — built for organizations that can&apos;t afford to get governance wrong.
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
