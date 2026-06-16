@@ -8,7 +8,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 
 ---
 
-## Modules Shipped — 30 Complete
+## Modules Shipped — 32 Complete
 
 | Module | Status | Routes |
 |---|---|---|
@@ -42,8 +42,9 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Governance Agent Framework™** | ✅ Complete (2026-06-13) | `/agents/*` |
 | **Regulatory Intelligence™** | ✅ Complete (2026-06-14) | `/regulatory-intelligence/*` |
 | **Asset Intelligence™** | ✅ Complete (2026-06-16) | `/asset-intelligence/*` |
+| **Security Command Center™** | ✅ Complete (2026-06-16) | `/security-center/*` |
 
-**Total: 238 DB tables · 33 migrations applied · 31 modules shipped**
+**Total: 259 DB tables · 34 migrations applied · 32 modules shipped**
 
 ---
 
