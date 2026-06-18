@@ -164,6 +164,7 @@ export default function LandingPage() {
             <a href="#solutions">Solutions</a>
             <a href="#trust-intelligence">Trust Intelligence</a>
             <a href="#roadmap">Resources</a>
+            <a href="/docs">Docs</a>
             <a href="#contact">Pricing</a>
             <a href="#contact">Contact</a>
           </nav>
@@ -183,6 +184,7 @@ export default function LandingPage() {
           <a href="#solutions">Solutions</a>
           <a href="#trust-intelligence">Trust Intelligence</a>
           <a href="#roadmap">Resources</a>
+          <a href="/docs">Docs</a>
           <a href="#contact">Pricing</a>
           <a href="#contact">Contact</a>
           <a href="/login">Sign in</a>
