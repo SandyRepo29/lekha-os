@@ -620,7 +620,7 @@ function NumberedSteps({ steps }: { steps: string[] }) {
       {steps.map((s, i) => (
         <li className="docs-step" key={i}>
           <span className="docs-step-num">{i + 1}</span>
-          <span className="docs-step-text">{s}</span>
+          <span className="docs-step-text"><StepText text={s} /></span>
         </li>
       ))}
     </ol>
@@ -634,6 +634,22 @@ function TipCallout({ text }: { text: string }) {
       <span>{text}</span>
     </div>
   );
+}
+
+/* Parses plain text and turns any /route paths into clickable links */
+function StepText({ text }: { text: string }) {
+  const parts: React.ReactNode[] = [];
+  const re = /(\/[a-zA-Z0-9][a-zA-Z0-9\-_\/\[\]?=&#.]*)/g;
+  let last = 0;
+  let match;
+  while ((match = re.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index));
+    const href = match[1];
+    parts.push(<a key={match.index} href={href} className="docs-route-link">{href}</a>);
+    last = match.index + href.length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return <>{parts}</>;
 }
 
 /* ============================================================
@@ -741,7 +757,7 @@ function ModulesSection() {
               <div className="docs-module-card" key={j}>
                 <div className="docs-module-head">
                   <span className="docs-module-name">{m.name}</span>
-                  {m.route && <code className="docs-module-route">{m.route}</code>}
+                  {m.route && <a href={m.route} className="docs-module-route">{m.route}</a>}
                 </div>
                 <p className="docs-module-desc">{m.desc}</p>
                 <p className="docs-module-features"><strong>Features:</strong> {m.features}</p>
@@ -759,7 +775,7 @@ function FrameworksSection() {
   return (
     <section id="frameworks" className="docs-section">
       <h1 className="docs-h1">Compliance Framework Center</h1>
-      <p className="docs-p">AUDT ships with 174 built-in controls across five frameworks. Add a framework at /compliance/frameworks to begin tracking readiness.</p>
+      <p className="docs-p">AUDT ships with 174 built-in controls across five frameworks. Add a framework at <a href="/compliance/frameworks" className="docs-route-link">/compliance/frameworks</a> to begin tracking readiness.</p>
       {FRAMEWORKS.map((f, i) => (
         <div id={f.id} className="docs-anchor docs-fw-card" key={i}>
           <div className="docs-fw-head">
@@ -773,7 +789,7 @@ function FrameworksSection() {
             ))}
           </div>
           <p className="docs-p"><strong>Evidence:</strong> {f.evidence}</p>
-          {f.note && <p className="docs-fw-note">{f.note}</p>}
+          {f.note && <p className="docs-fw-note"><StepText text={f.note} /></p>}
         </div>
       ))}
     </section>
@@ -876,7 +892,7 @@ function AiAgentsSection() {
       <div id="ag-framework" className="docs-anchor">
         <h2 className="docs-h2">Governance Agent Framework™</h2>
         <p className="docs-p">
-          Six purpose-built agents monitor your governance posture continuously. Each agent has a defined module scope, configurable thresholds, and an execution schedule. Manage them at <code className="docs-code">/agents</code>.
+          Six purpose-built agents monitor your governance posture continuously. Each agent has a defined module scope, configurable thresholds, and an execution schedule. Manage them at <a href="/agents" className="docs-route-link">/agents</a>.
         </p>
       </div>
 
@@ -926,7 +942,7 @@ function AiAgentsSection() {
                 <span className="docs-agent-icon" style={{ fontSize: 18 }}>{a.icon}</span>
                 <span className="docs-module-name">{a.name}</span>
                 <span className="docs-module-name" style={{ color: "var(--docs-ink-dim)", fontWeight: 400, fontSize: 12 }}>in {a.module}</span>
-                <code className="docs-module-route">{a.route}</code>
+                <a href={a.route} className="docs-module-route">{a.route}</a>
               </div>
               <p className="docs-module-desc">{a.what}</p>
               <div className="docs-agent-caps">
@@ -961,7 +977,7 @@ function AiAgentsSection() {
               ].map((row, i) => (
                 <tr key={i}>
                   <td><strong>{row[0]}</strong></td>
-                  <td><code className="docs-code">{row[1]}</code></td>
+                  <td><a href={row[1]} className="docs-route-link">{row[1]}</a></td>
                   <td>{row[2]}</td>
                 </tr>
               ))}
@@ -970,7 +986,7 @@ function AiAgentsSection() {
         </div>
         <div className="docs-callout docs-callout-tip" style={{ marginTop: 20 }}>
           <span className="docs-callout-icon">💡</span>
-          <div><strong>Getting started:</strong> Go to <code className="docs-code">/agents/registry</code>, enable the Risk Monitor and Vendor Watch agents, set your schedule to daily, and click Run Now. Your first observations will appear within seconds.</div>
+          <div><strong>Getting started:</strong> Go to <a href="/agents/registry" className="docs-route-link">/agents/registry</a>, enable the Risk Monitor and Vendor Watch agents, set your schedule to daily, and click Run Now. Your first observations will appear within seconds.</div>
         </div>
       </div>
     </section>
@@ -985,7 +1001,7 @@ function ApiSection() {
       <div id="api-auth" className="docs-anchor">
         <h2 className="docs-h2">Authentication</h2>
         <p className="docs-p">
-          AUDT uses Bearer token authentication. Create API keys at <code className="docs-inline-code">/settings/api-keys</code>.
+          AUDT uses Bearer token authentication. Create API keys at <a href="/settings/api-keys" className="docs-route-link">/settings/api-keys</a>.
           Two permission levels are available: <strong>read_only</strong> and <strong>read_write</strong>. Keys are shown
           once at creation and stored as a bcrypt hash.
         </p>
@@ -1042,7 +1058,7 @@ function ApiSection() {
         </div>
         <h4 className="docs-h4">How to Connect</h4>
         <p className="docs-p">
-          Go to <code className="docs-inline-code">/integration-hub/marketplace</code> → click connector → Configure →
+          Go to <a href="/integration-hub/marketplace" className="docs-route-link">/integration-hub/marketplace</a> → click connector → Configure →
           enter credentials → Test Connection → Save. Credentials are stored AES-256-GCM encrypted.
         </p>
         <h4 className="docs-h4">Categories</h4>

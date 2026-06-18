@@ -637,6 +637,12 @@
   color: var(--docs-cyan);
   background: rgba(34, 211, 238, 0.1);
   border: 1px solid rgba(34, 211, 238, 0.2);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.docs-module-route:hover {
+  background: rgba(34, 211, 238, 0.18);
+  border-color: rgba(34, 211, 238, 0.38);
 }
 
 .docs-module-desc {
@@ -954,7 +960,7 @@
 .docs-flow-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--docs-ink);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -974,11 +980,11 @@
 .docs-agent-concept-term {
   font-size: 14px;
   font-weight: 700;
-  color: var(--docs-ink);
+  color: var(--ink);
 }
 .docs-agent-concept-def {
   font-size: 13px;
-  color: var(--docs-ink-dim);
+  color: var(--ink-dim);
   line-height: 1.6;
 }
 
@@ -1009,7 +1015,7 @@
 .docs-agent-name {
   font-size: 17px;
   font-weight: 700;
-  color: var(--docs-ink);
+  color: var(--ink);
   margin-bottom: 6px;
 }
 .docs-agent-meta {
@@ -1040,14 +1046,14 @@
   gap: 20px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid var(--docs-border);
+  border-top: 1px solid var(--line);
 }
 .docs-agent-col-title {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--docs-ink-dim);
+  color: var(--ink-dim);
   margin-bottom: 10px;
 }
 
@@ -1091,6 +1097,24 @@
   font-size: 11px;
   color: var(--docs-purple);
   font-weight: 500;
+}
+
+/* Route hyperlinks */
+.docs-route-link {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.87em;
+  padding: 1px 6px;
+  border-radius: 5px;
+  color: var(--docs-cyan);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.docs-route-link:hover {
+  background: rgba(34, 211, 238, 0.14);
+  border-color: rgba(34, 211, 238, 0.35);
+  text-decoration: none;
 }
 
 /* Callout tip variant */
