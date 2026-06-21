@@ -8,28 +8,6 @@ export default function LandingPage() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-    const nav = document.getElementById("nav");
-    const onScroll = () => nav?.classList.toggle("scrolled", window.scrollY > 24);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    const toggle = document.getElementById("navToggle");
-    const mobile = document.getElementById("navMobile");
-    const onToggle = () => {
-      if (!mobile || !toggle) return;
-      const open = mobile.classList.toggle("open");
-      toggle.classList.toggle("open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    };
-    toggle?.addEventListener("click", onToggle);
-    const closeMobile = () => {
-      mobile?.classList.remove("open");
-      toggle?.classList.remove("open");
-    };
-    mobile?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobile));
 
     const animateCounter = (el: HTMLElement) => {
       const target = parseFloat(el.getAttribute("data-target") || "0");
@@ -133,8 +111,6 @@ export default function LandingPage() {
     }
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      toggle?.removeEventListener("click", onToggle);
       io?.disconnect();
       visual?.removeEventListener("mousemove", onMove);
       visual?.removeEventListener("mouseleave", onLeave);
@@ -143,48 +119,6 @@ export default function LandingPage() {
 
   return (
     <>
-      <div className="bg-grid" aria-hidden="true" />
-      <div className="bg-glow bg-glow--1" aria-hidden="true" />
-      <div className="bg-glow bg-glow--2" aria-hidden="true" />
-      <div className="bg-glow bg-glow--3" aria-hidden="true" />
-
-      {/* ── NAV ── */}
-      <header className="nav" id="nav">
-        <div className="container nav__inner">
-          <a href="#top" className="logo" aria-label="AUDT home">
-            <span className="logo__mark" aria-hidden="true"><span className="logo__icon">A</span></span>
-            <span className="logo__text">AUDT</span>
-          </a>
-          <nav className="nav__menu" aria-label="Primary">
-            <a href="#platform">Platform</a>
-            <a href="#solutions">Solutions</a>
-            <a href="#why-audt">Why AUDT</a>
-            <a href="/docs">Docs</a>
-            <a href="#pricing">Pricing</a>
-            <a href="mailto:hello@audt.tech">Contact</a>
-          </nav>
-          <div className="nav__actions">
-            <a href="/login" className="nav__signin">Sign in</a>
-            <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost btn--sm">Book Demo</a>
-            <a href="/signup" className="btn btn--primary btn--sm">Start Free</a>
-          </div>
-          <button className="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-            <span /><span /><span />
-          </button>
-        </div>
-        <div className="nav__mobile" id="navMobile">
-          <a href="#platform">Platform</a>
-          <a href="#solutions">Solutions</a>
-          <a href="#why-audt">Why AUDT</a>
-          <a href="/docs">Docs</a>
-          <a href="#pricing">Pricing</a>
-          <a href="mailto:hello@audt.tech">Contact</a>
-          <a href="/login">Sign in</a>
-          <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost">Book Demo</a>
-          <a href="/signup" className="btn btn--primary">Start Free</a>
-        </div>
-      </header>
-
       <main id="top">
 
         {/* ════════════════════════════════════
@@ -211,6 +145,7 @@ export default function LandingPage() {
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
                 <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial <span className="arrow">→</span></a>
+                <a href="/platform" className="btn btn--ghost btn--lg" style={{ borderColor: "rgba(99,102,241,0.35)", color: "var(--color-ink-dim,rgba(241,245,249,.65))" }}>Explore Platform</a>
               </div>
               <div className="hero__trust">
                 <span>Vendor Governance</span>
@@ -985,7 +920,7 @@ export default function LandingPage() {
               <p style={{ fontSize: "14px", color: "var(--text-dim)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                 Powered by 32 integrated modules and a shared intelligence layer.
               </p>
-              <a href="/docs" className="btn btn--ghost">Explore Platform →</a>
+              <a href="/platform" className="btn btn--ghost">View Platform Overview →</a>
             </div>
           </div>
         </section>
@@ -1259,53 +1194,6 @@ export default function LandingPage() {
 
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="footer">
-        <div className="container footer__inner">
-          <div className="footer__brand">
-            <a href="#top" className="logo">
-              <span className="logo__mark" aria-hidden="true"><span className="logo__icon">A</span></span>
-              <span className="logo__text">AUDT</span>
-            </a>
-            <p className="footer__tag">Governance Built on Proof.</p>
-            <p className="footer__sub">The Vendor Governance Platform for modern organizations.</p>
-          </div>
-          <div className="footer__cols">
-            <div className="footer__col">
-              <div className="footer__col-head">Platform</div>
-              <a href="#platform">Vendor Governance</a>
-              <a href="#platform">Vendor Assessment</a>
-              <a href="#platform">Risk &amp; Compliance</a>
-              <a href="#platform">Trust Intelligence</a>
-            </div>
-            <div className="footer__col">
-              <div className="footer__col-head">Solutions</div>
-              <a href="#solutions">Security Teams</a>
-              <a href="#solutions">Compliance Teams</a>
-              <a href="#solutions">Procurement Teams</a>
-              <a href="#solutions">Risk Teams</a>
-            </div>
-            <div className="footer__col">
-              <div className="footer__col-head">Resources</div>
-              <a href="/docs">Documentation</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#vision">Vision</a>
-              <a href="mailto:hello@audt.tech">Contact</a>
-            </div>
-            <div className="footer__col">
-              <div className="footer__col-head">Differentiators</div>
-              <a href="#trust-score">Trust Score™</a>
-              <a href="#copilot">Governance Copilot™</a>
-              <a href="#agents">AI Agents</a>
-              <a href="#lifecycle">Vendor Lifecycle</a>
-            </div>
-          </div>
-        </div>
-        <div className="container footer__bottom">
-          <span>© <span id="year" /> AUDT. All rights reserved.</span>
-          <span>audt.tech · Vendor Governance Platform</span>
-        </div>
-      </footer>
     </>
   );
 }
