@@ -206,7 +206,7 @@ export default function LandingPage() {
                 AUDT is the Vendor Governance Platform for modern organizations.
               </p>
               <p style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-dim)", maxWidth: "520px", marginBottom: "28px", lineHeight: 1.7 }}>
-                Using a Trust Operations model, AUDT helps teams discover, assess, govern, monitor, audit, and continuously validate every vendor — from a single platform.
+                Using a continuous vendor governance model, AUDT helps teams discover, assess, govern, monitor, audit, and continuously validate every vendor — from a single platform.
               </p>
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
@@ -215,7 +215,7 @@ export default function LandingPage() {
               <div className="hero__trust">
                 <span>Vendor Governance</span>
                 <span className="dot">·</span>
-                <span>Trust Operations</span>
+                <span>Lifecycle Governance</span>
                 <span className="dot">·</span>
                 <span>Risk &amp; Compliance</span>
                 <span className="dot">·</span>
@@ -599,11 +599,50 @@ export default function LandingPage() {
             <div className="section__head reveal">
               <span className="eyebrow">Why AUDT</span>
               <h2>Most Platforms Start With Compliance.<br />We Start With The Vendor.</h2>
-              <p>Compliance is one part of vendor governance. AUDT governs the entire lifecycle.</p>
+              <p>Compliance is one dimension of vendor governance. AUDT governs the entire vendor lifecycle — from intake to offboarding — with continuous trust measurement at every stage.</p>
+            </div>
+
+            <div className="reveal" style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "16px",
+              maxWidth: "820px",
+              margin: "0 auto 2.5rem",
+            }}>
+              {[
+                { icon: "▤", title: "Vendor-First", body: "Governance starts with the vendor, not the framework. Every risk, control, and audit connects back to the vendor it governs." },
+                { icon: "🔄", title: "Lifecycle-Driven", body: "AUDT governs the complete vendor lifecycle. Not just assessments — intake, classification, monitoring, renewal, and offboarding." },
+                { icon: "📡", title: "Continuous", body: "Vendor trust is not a point-in-time score. AUDT continuously monitors vendor signals and updates trust posture in real time." },
+              ].map(({ icon, title, body }) => (
+                <div key={title} style={{
+                  padding: "28px 24px",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  textAlign: "center",
+                }}>
+                  <div style={{ fontSize: "26px", marginBottom: "14px" }}>{icon}</div>
+                  <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "10px", color: "var(--text)" }}>{title}</div>
+                  <div style={{ fontSize: "13px", color: "var(--text-dim)", lineHeight: 1.65 }}>{body}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════
+            7B. COMPETITIVE POSITIONING
+        ════════════════════════════════════ */}
+        <section className="section" id="competitive">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">How We Compare</span>
+              <h2>Why AUDT Wins.</h2>
+              <p>Most compliance platforms focus on audits. Most GRC platforms focus on risks. AUDT governs the complete vendor lifecycle.</p>
             </div>
 
             <div className="reveal" style={{ overflowX: "auto" }}>
-              <div style={{ minWidth: "560px" }}>
+              <div style={{ minWidth: "560px", maxWidth: "860px", margin: "0 auto" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", background: "rgba(255,255,255,0.03)", borderRadius: "12px 12px 0 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
                   {[
                     { label: "Capability", color: "var(--text-dim)" },
@@ -642,25 +681,6 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-
-            <div className="reveal" style={{
-              marginTop: "2.5rem",
-              textAlign: "center",
-              padding: "28px 32px",
-              borderRadius: "16px",
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              maxWidth: "680px",
-              margin: "2.5rem auto 0",
-            }}>
-              <p style={{ fontSize: "15px", color: "var(--text-dim)", lineHeight: 1.8 }}>
-                Most compliance platforms focus on audits.{" "}
-                Most GRC platforms focus on risks.{" "}<br />
-                <strong style={{ color: "var(--text)" }}>
-                  AUDT governs the complete vendor lifecycle while continuously measuring trust.
-                </strong>
-              </p>
-            </div>
           </div>
         </section>
 
@@ -672,14 +692,25 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Trust Score™</span>
-              <h2>The Universal Measure Of Vendor Trust.</h2>
+              <h2>Your Vendor Trust Posture In A Single Number.</h2>
               <p>
-                Every vendor generates signals. Security posture. Compliance status. Risk exposure.
-                Audit readiness. Operational performance.
+                Every vendor generates thousands of governance signals.
+                AUDT converts those signals into a single Trust Score™ that helps organizations:
               </p>
-              <p style={{ color: "var(--text-dim)", fontSize: "18px", lineHeight: 1.65, marginTop: "12px" }}>
-                AUDT continuously combines these signals into a single Trust Score™ — so organizations always know which vendors can be trusted and which require attention.
-              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "420px", margin: "1.25rem auto 0", textAlign: "left" }}>
+                {[
+                  "Identify risky vendors before they become a problem",
+                  "Prioritize which vendors need immediate attention",
+                  "Improve governance scores over time",
+                  "Accelerate audits with pre-scored vendor evidence",
+                  "Make renewal decisions based on trust data",
+                ].map((item) => (
+                  <div key={item} style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "15px", color: "var(--text-dim)" }}>
+                    <span style={{ color: "var(--blue)", fontWeight: 700, flexShrink: 0, marginTop: "2px" }}>✓</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Signal equation */}
@@ -788,12 +819,6 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="reveal" style={{ textAlign: "center", marginTop: "2.5rem" }}>
-              <p style={{ fontSize: "15px", color: "var(--text-dim)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-                Move beyond periodic assessments and static reviews.<br />
-                <strong style={{ color: "var(--text)" }}>Continuously understand which vendors are trusted and which require attention.</strong>
-              </p>
-            </div>
           </div>
         </section>
 
@@ -935,7 +960,7 @@ export default function LandingPage() {
             }}>
               {[
                 "Vendor Governance",
-                "Trust Operations",
+                "Vendor Assessment",
                 "Risk Management",
                 "Compliance Management",
                 "Audit Management",
@@ -1249,7 +1274,7 @@ export default function LandingPage() {
             <div className="footer__col">
               <div className="footer__col-head">Platform</div>
               <a href="#platform">Vendor Governance</a>
-              <a href="#platform">Trust Operations</a>
+              <a href="#platform">Vendor Assessment</a>
               <a href="#platform">Risk &amp; Compliance</a>
               <a href="#platform">Trust Intelligence</a>
             </div>
