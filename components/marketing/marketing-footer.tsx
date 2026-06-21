@@ -1,19 +1,21 @@
+import Link from "next/link";
+
 export function MarketingFooter() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
         <div className="footer__brand">
-          <a href="/" className="logo">
+          <Link href="/" className="logo">
             <span className="logo__mark" aria-hidden="true"><span className="logo__icon">A</span></span>
             <span className="logo__text">AUDT</span>
-          </a>
+          </Link>
           <p className="footer__tag">Governance Built on Proof.</p>
           <p className="footer__sub">The Vendor Governance Platform for modern organizations.</p>
         </div>
         <div className="footer__cols">
           <div className="footer__col">
             <div className="footer__col-head">Platform</div>
-            <a href="/platform">Platform Overview</a>
+            <Link href="/platform">Platform Overview</Link>
             <a href="/platform#vendor-governance">Vendor Governance</a>
             <a href="/platform#trust-operations">Trust Operations</a>
             <a href="/platform#risk-compliance">Risk &amp; Compliance</a>
@@ -28,7 +30,7 @@ export function MarketingFooter() {
           </div>
           <div className="footer__col">
             <div className="footer__col-head">Resources</div>
-            <a href="/docs">Documentation</a>
+            <Link href="/docs">Documentation</Link>
             <a href="/#pricing">Pricing</a>
             <a href="/#vision">Vision</a>
             <a href="mailto:hello@audt.tech">Contact</a>
@@ -43,7 +45,7 @@ export function MarketingFooter() {
         </div>
       </div>
       <div className="container footer__bottom">
-        <span>© <span id="year" /> AUDT. All rights reserved.</span>
+        <span>© 2026 AUDT. All rights reserved.</span>
         <span>audt.tech · Vendor Governance Platform</span>
       </div>
     </footer>

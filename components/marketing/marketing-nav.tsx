@@ -1,18 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const PLATFORM_ITEMS = [
-  { label: "Platform Overview",  href: "/platform",                      desc: "Everything inside AUDT" },
-  { label: "Vendor Governance",  href: "/platform#vendor-governance",    desc: "Vendor lifecycle management" },
-  { label: "Trust Operations",   href: "/platform#trust-operations",     desc: "Assessments & evidence" },
-  { label: "Risk & Compliance",  href: "/platform#risk-compliance",      desc: "Risk, controls & frameworks" },
-  { label: "Trust Intelligence", href: "/platform#trust-intelligence",   desc: "AI insights & Trust Score™" },
+  { label: "Platform Overview",  href: "/platform",                    desc: "Everything inside AUDT" },
+  { label: "Vendor Governance",  href: "/platform#vendor-governance",  desc: "Vendor lifecycle management" },
+  { label: "Trust Operations",   href: "/platform#trust-operations",   desc: "Assessments & evidence" },
+  { label: "Risk & Compliance",  href: "/platform#risk-compliance",    desc: "Risk, controls & frameworks" },
+  { label: "Trust Intelligence", href: "/platform#trust-intelligence", desc: "AI insights & Trust Score™" },
 ];
 
 export function MarketingNav() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen]     = useState(false);
   const [mobilePlatOpen, setMobilePlatOpen] = useState(false);
+  const [dropOpen, setDropOpen]         = useState(false);
+  const dropRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const nav = document.getElementById("nav");
@@ -22,105 +26,121 @@ export function MarketingNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const close = () => { setMobileOpen(false); setMobilePlatOpen(false); };
+  const openDrop  = () => { if (timerRef.current) clearTimeout(timerRef.current); setDropOpen(true); };
+  const closeDrop = () => { timerRef.current = setTimeout(() => setDropOpen(false), 120); };
+  const close     = () => { setMobileOpen(false); setMobilePlatOpen(false); };
 
   return (
     <>
       <style>{`
-        .ndrop { position: relative; }
-        .ndrop__btn {
-          cursor: default;
-          display: flex; align-items: center; gap: 5px;
-          font-size: inherit; color: inherit; font-weight: inherit;
-          background: none; border: none; padding: 0;
-          font-family: inherit;
+        .ndrop-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%);
+          width: 270px;
+          background: rgba(8,8,18,0.97);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 14px;
+          padding: 8px;
+          backdrop-filter: blur(24px);
+          z-index: 200;
+          box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+          animation: dropIn .15s ease;
         }
-        .ndrop__btn::after {
+        @keyframes dropIn {
+          from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .ndrop-item {
+          display: flex; flex-direction: column; gap: 2px;
+          padding: 10px 14px; border-radius: 9px;
+          text-decoration: none; transition: background .12s;
+        }
+        .ndrop-item:hover { background: rgba(255,255,255,0.07); }
+        .ndrop-label { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+        .ndrop-desc  { font-size: 11px; color: rgba(241,245,249,0.5); }
+        .ndrop-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 4px 6px; }
+        .ndrop-section { font-size: 10px; font-weight: 700; letter-spacing: .09em;
+          text-transform: uppercase; color: #6366f1; padding: 6px 14px 4px; }
+        .ndrop-btn {
+          display: flex; align-items: center; gap: 5px; cursor: pointer;
+          font-size: 14px; color: var(--text-dim); font-weight: 400;
+          background: none; border: none; padding: 0; font-family: inherit;
+          transition: color .2s;
+        }
+        .ndrop-btn:hover { color: var(--text); }
+        .ndrop-btn::after {
           content: "";
           width: 5px; height: 5px;
           border-right: 1.5px solid currentColor;
           border-bottom: 1.5px solid currentColor;
           transform: rotate(45deg) translateY(-1px);
           opacity: 0.55;
-          transition: transform 0.14s;
+          transition: transform .14s;
           flex-shrink: 0;
         }
-        .ndrop:hover .ndrop__btn::after { transform: rotate(-135deg) translateY(2px); }
-        .ndrop__menu {
-          position: absolute;
-          top: calc(100% + 14px);
-          left: 50%; transform: translateX(-50%) translateY(-6px);
-          width: 268px;
-          background: rgba(8,8,18,0.97);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 14px;
-          padding: 8px;
-          backdrop-filter: blur(24px);
-          opacity: 0; pointer-events: none;
-          transition: opacity 0.15s, transform 0.15s;
-          z-index: 200;
-          box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-        }
-        .ndrop:hover .ndrop__menu {
-          opacity: 1; pointer-events: auto;
-          transform: translateX(-50%) translateY(0);
-        }
-        .ndrop__item {
-          display: flex; flex-direction: column; gap: 2px;
-          padding: 10px 14px;
-          border-radius: 9px;
-          text-decoration: none;
-          transition: background 0.12s;
-        }
-        .ndrop__item:hover { background: rgba(255,255,255,0.07); }
-        .ndrop__item-label { font-size: 13px; font-weight: 600; color: var(--color-ink,#f1f5f9); }
-        .ndrop__item-desc  { font-size: 11px; color: var(--color-ink-dim,rgba(241,245,249,.5)); }
-        .ndrop__divider { height: 1px; background: rgba(255,255,255,0.07); margin: 4px 6px; }
-        .ndrop__overview-label {
-          font-size: 10px; font-weight: 700; letter-spacing: .09em;
-          text-transform: uppercase; color: var(--color-blue,#6366f1);
-          padding: 6px 14px 4px;
-        }
+        .ndrop-btn.open::after { transform: rotate(-135deg) translateY(2px); }
       `}</style>
 
       <header className="nav" id="nav">
         <div className="container nav__inner">
-          <a href="/" className="logo" aria-label="AUDT home">
+          <Link href="/" className="logo" aria-label="AUDT home">
             <span className="logo__mark" aria-hidden="true"><span className="logo__icon">A</span></span>
             <span className="logo__text">AUDT</span>
-          </a>
+          </Link>
 
           <nav className="nav__menu" aria-label="Primary">
             {/* Platform dropdown */}
-            <div className="ndrop">
-              <button className="ndrop__btn">Platform</button>
-              <div className="ndrop__menu" role="menu">
-                <div className="ndrop__overview-label">Overview</div>
-                <a href="/platform" className="ndrop__item">
-                  <span className="ndrop__item-label">Platform Overview</span>
-                  <span className="ndrop__item-desc">Everything inside AUDT</span>
-                </a>
-                <div className="ndrop__divider" />
-                <div className="ndrop__overview-label">Pillars</div>
-                {PLATFORM_ITEMS.slice(1).map((item) => (
-                  <a key={item.href} href={item.href} className="ndrop__item">
-                    <span className="ndrop__item-label">{item.label}</span>
-                    <span className="ndrop__item-desc">{item.desc}</span>
-                  </a>
-                ))}
-              </div>
+            <div
+              ref={dropRef}
+              style={{ position: "relative" }}
+              onMouseEnter={openDrop}
+              onMouseLeave={closeDrop}
+            >
+              <button
+                className={`ndrop-btn${dropOpen ? " open" : ""}`}
+                aria-expanded={dropOpen}
+                aria-haspopup="true"
+                onClick={() => setDropOpen((o) => !o)}
+              >
+                Platform
+              </button>
+
+              {dropOpen && (
+                <div
+                  className="ndrop-menu"
+                  onMouseEnter={openDrop}
+                  onMouseLeave={closeDrop}
+                >
+                  <div className="ndrop-section">Overview</div>
+                  <Link href="/platform" className="ndrop-item" onClick={close}>
+                    <span className="ndrop-label">Platform Overview</span>
+                    <span className="ndrop-desc">Everything inside AUDT</span>
+                  </Link>
+                  <div className="ndrop-divider" />
+                  <div className="ndrop-section">Pillars</div>
+                  {PLATFORM_ITEMS.slice(1).map((item) => (
+                    <a key={item.href} href={item.href} className="ndrop-item" onClick={close}>
+                      <span className="ndrop-label">{item.label}</span>
+                      <span className="ndrop-desc">{item.desc}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-            <a href="/#solutions">Solutions</a>
-            <a href="/#why-audt">Why AUDT</a>
-            <a href="/docs">Docs</a>
-            <a href="/#pricing">Pricing</a>
+
+            <Link href="/#solutions">Solutions</Link>
+            <Link href="/#why-audt">Why AUDT</Link>
+            <Link href="/docs">Docs</Link>
+            <Link href="/#pricing">Pricing</Link>
             <a href="mailto:hello@audt.tech">Contact</a>
           </nav>
 
           <div className="nav__actions">
-            <a href="/login" className="nav__signin">Sign in</a>
+            <Link href="/login" className="nav__signin">Sign in</Link>
             <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost btn--sm">Book Demo</a>
-            <a href="/signup" className="btn btn--primary btn--sm">Start Free</a>
+            <Link href="/signup" className="btn btn--primary btn--sm">Start Free</Link>
           </div>
 
           <button
@@ -136,36 +156,41 @@ export function MarketingNav() {
 
         {/* Mobile nav */}
         <div className={`nav__mobile${mobileOpen ? " open" : ""}`} id="navMobile">
-          {/* Platform expandable */}
           <button
             onClick={() => setMobilePlatOpen((o) => !o)}
             style={{
-              background: "none", border: "none", color: "inherit",
+              background: "none", border: "none", color: "rgba(154,160,181,1)",
               font: "inherit", cursor: "pointer", textAlign: "left",
               display: "flex", justifyContent: "space-between", width: "100%",
-              padding: "0", alignItems: "center",
+              padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.08)",
+              alignItems: "center",
             }}
           >
             Platform
             <span style={{ fontSize: "18px", opacity: 0.5, lineHeight: 1 }}>{mobilePlatOpen ? "−" : "+"}</span>
           </button>
           {mobilePlatOpen && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px", paddingLeft: "16px", paddingTop: "4px" }}>
+            <div style={{ display: "flex", flexDirection: "column", paddingLeft: "16px" }}>
               {PLATFORM_ITEMS.map((item) => (
-                <a key={item.href} href={item.href} onClick={close} style={{ fontSize: "13px", opacity: 0.75 }}>
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={close}
+                  style={{ padding: "10px 0", fontSize: "13px", color: "rgba(154,160,181,0.85)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+                >
                   {item.label}
                 </a>
               ))}
             </div>
           )}
-          <a href="/#solutions" onClick={close}>Solutions</a>
-          <a href="/#why-audt" onClick={close}>Why AUDT</a>
-          <a href="/docs" onClick={close}>Docs</a>
-          <a href="/#pricing" onClick={close}>Pricing</a>
+          <Link href="/#solutions" onClick={close}>Solutions</Link>
+          <Link href="/#why-audt" onClick={close}>Why AUDT</Link>
+          <Link href="/docs" onClick={close}>Docs</Link>
+          <Link href="/#pricing" onClick={close}>Pricing</Link>
           <a href="mailto:hello@audt.tech" onClick={close}>Contact</a>
-          <a href="/login" onClick={close}>Sign in</a>
+          <Link href="/login" onClick={close}>Sign in</Link>
           <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost" onClick={close}>Book Demo</a>
-          <a href="/signup" className="btn btn--primary" onClick={close}>Start Free</a>
+          <Link href="/signup" className="btn btn--primary" onClick={close}>Start Free</Link>
         </div>
       </header>
     </>
