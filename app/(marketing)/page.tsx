@@ -148,7 +148,7 @@ export default function LandingPage() {
       <div className="bg-glow bg-glow--2" aria-hidden="true" />
       <div className="bg-glow bg-glow--3" aria-hidden="true" />
 
-      {/* ── NAV ── */}
+      {/* NAV */}
       <header className="nav" id="nav">
         <div className="container nav__inner">
           <a href="#top" className="logo" aria-label="AUDT home">
@@ -187,10 +187,7 @@ export default function LandingPage() {
 
       <main id="top">
 
-        {/* ════════════════════════════════════
-            1. HERO
-            What AUDT is.
-        ════════════════════════════════════ */}
+        {/* ── 1. HERO ── */}
         <section className="hero">
           <div className="container hero__inner">
             <div className="hero__copy reveal">
@@ -203,10 +200,7 @@ export default function LandingPage() {
                 <span className="grad-text">Trust Every Decision.</span>
               </h1>
               <p className="hero__sub">
-                Govern vendor risk, compliance, audits, and renewals from a single platform.
-              </p>
-              <p className="hero__support">
-                The complete system for vendor governance — from onboarding and assessments to audits and offboarding.
+                The complete platform for vendor governance — from onboarding and assessments to audits, renewals, and continuous trust.
               </p>
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
@@ -294,23 +288,19 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            2. PROBLEM
-            Why vendor governance matters.
-        ════════════════════════════════════ */}
+        {/* ── 2. PROBLEM ── */}
         <section className="section" id="problem">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">The Problem</span>
               <h2>Vendor Risk Is The New Business Risk.</h2>
               <p>
-                Organizations depend on hundreds of vendors, SaaS applications, suppliers, and AI providers.
-                Yet vendor governance is still fragmented across spreadsheets, questionnaires, emails,
-                and disconnected compliance tools.
+                Organizations depend on hundreds of vendors, SaaS applications, and AI providers.
+                Yet vendor governance is still fragmented across spreadsheets, questionnaires, and disconnected tools.
               </p>
             </div>
             <div className="pain-grid">
-              <div className="pain reveal"><span className="pain__icon">🌫️</span>Poor vendor visibility</div>
+              <div className="pain reveal"><span className="pain__icon">🌫️</span>No vendor visibility</div>
               <div className="pain reveal" data-delay="60"><span className="pain__icon">✍️</span>Manual assessments</div>
               <div className="pain reveal" data-delay="120"><span className="pain__icon">◎</span>Audit chaos</div>
               <div className="pain reveal"><span className="pain__icon">📋</span>Compliance gaps</div>
@@ -320,16 +310,70 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            3. VENDOR LIFECYCLE
-            How the lifecycle works.
-        ════════════════════════════════════ */}
-        <section className="section section--alt" id="lifecycle">
+        {/* ── 3. WHY NOW ── */}
+        <section className="section section--alt" id="why-now">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Why Now</span>
+              <h2>The Governance Explosion.</h2>
+              <p>The volume and complexity of vendor governance has grown beyond what spreadsheets and annual reviews can handle.</p>
+            </div>
+
+            <div className="reveal" style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "16px",
+              maxWidth: "860px",
+              margin: "0 auto 3rem",
+            }}>
+              {[
+                { icon: "📦", label: "Hundreds of SaaS applications",  desc: "Each with their own security posture, contracts, and renewal cycles." },
+                { icon: "🤝", label: "Third-party vendors",             desc: "Suppliers, service providers, and outsourcing partners — each a risk vector." },
+                { icon: "🤖", label: "AI providers",                    desc: "New category of vendor with unique governance, transparency, and bias risk." },
+                { icon: "🔒", label: "Security reviews",                desc: "Continuous security assessments replacing annual point-in-time audits." },
+                { icon: "📜", label: "Regulatory obligations",          desc: "DPDP, GDPR, HIPAA, ISO 27001 — compliance requirements multiplying." },
+                { icon: "◎",  label: "Continuous audits",               desc: "Auditors, customers, and regulators demanding always-on audit readiness." },
+              ].map(({ icon, label, desc }) => (
+                <div key={label} style={{
+                  padding: "22px",
+                  borderRadius: "14px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}>
+                  <div style={{ fontSize: "22px", marginBottom: "10px" }}>{icon}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--color-ink)", marginBottom: "6px", lineHeight: 1.3 }}>{label}</div>
+                  <div style={{ fontSize: "12px", color: "var(--color-ink-dim)", lineHeight: 1.6 }}>{desc}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="reveal" style={{
+              maxWidth: "640px",
+              margin: "0 auto",
+              textAlign: "center",
+              padding: "28px 32px",
+              borderRadius: "16px",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(45,212,255,0.04))",
+              border: "1px solid rgba(99,102,241,0.25)",
+            }}>
+              <p style={{ fontSize: "16px", fontWeight: 600, color: "var(--color-ink)", lineHeight: 1.7, marginBottom: "8px" }}>
+                Traditional governance — built around spreadsheets and annual reviews — no longer scales.
+              </p>
+              <p style={{ fontSize: "14px", color: "var(--color-ink-dim)" }}>
+                Governance has become continuous.{" "}
+                <strong style={{ color: "var(--color-ink)" }}>AUDT was built for this new reality.</strong>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 4. VENDOR LIFECYCLE ── */}
+        <section className="section" id="lifecycle">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Vendor Lifecycle</span>
               <h2>Manage The Entire Vendor Lifecycle.</h2>
-              <p>AUDT covers every stage — so your team always has a complete, up-to-date picture of every vendor relationship.</p>
+              <p>AUDT governs every stage of the vendor relationship — from discovery through offboarding.</p>
             </div>
 
             <div className="reveal" style={{ overflowX: "auto", paddingBottom: "8px" }}>
@@ -339,7 +383,7 @@ export default function LandingPage() {
                 gap: "0",
                 minWidth: "700px",
                 margin: "0 auto",
-                maxWidth: "920px",
+                maxWidth: "940px",
               }}>
                 {[
                   { step: "01", icon: "🔎", label: "Discover",  desc: "Find all vendors" },
@@ -377,89 +421,25 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* ════════════════════════════════════
-            4. ENTERPRISE PROOF
-            Proof the platform exists.
-        ════════════════════════════════════ */}
-        <section className="section" id="proof">
-          <div className="container">
-            <div className="section__head reveal">
-              <span className="eyebrow">Built For Modern Governance Teams</span>
-              <h2>A Platform Built For Scale.</h2>
-              <p>Every number reflects production-ready capability — not a roadmap.</p>
-            </div>
-            <div className="metrics-grid">
-              <div className="mstat reveal">
-                <div className="mstat__num"><span className="counter" data-target="32">0</span></div>
-                <div className="mstat__label">Integrated Governance Modules</div>
-              </div>
-              <div className="mstat reveal" data-delay="60">
-                <div className="mstat__num"><span className="counter" data-target="174">0</span><span style={{ fontSize: "1.2rem" }}>+</span></div>
-                <div className="mstat__label">Pre-Mapped Compliance Controls</div>
-              </div>
-              <div className="mstat reveal" data-delay="120">
-                <div className="mstat__num">10</div>
-                <div className="mstat__label">Vendor Lifecycle Stages</div>
-              </div>
-              <div className="mstat reveal" data-delay="180">
-                <div className="mstat__num"><span className="counter" data-target="35">0</span><span style={{ fontSize: "1.2rem" }}>+</span></div>
-                <div className="mstat__label">Integration Connectors</div>
-              </div>
-            </div>
-
-            {/* Platform Coverage */}
-            <div style={{ marginTop: "3.5rem" }}>
-              <p className="reveal" style={{ textAlign: "center", fontSize: "13px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-ink-dim)", marginBottom: "1.5rem", fontWeight: 600 }}>Platform Coverage</p>
-              <div className="reveal" style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "10px",
-                justifyContent: "center",
-                maxWidth: "780px",
-                margin: "0 auto",
-              }}>
-                {[
-                  "Vendor Governance", "Trust Operations", "Risk Management",
-                  "Compliance Management", "Audit Management", "Policy Governance",
-                  "Privacy Governance", "Asset Intelligence", "AI Governance",
-                ].map((item) => (
-                  <div key={item} style={{
-                    padding: "8px 18px",
-                    borderRadius: "999px",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    background: "rgba(255,255,255,0.04)",
-                    fontSize: "13px",
-                    color: "var(--color-ink-dim)",
-                    fontWeight: 500,
-                  }}>{item}</div>
-                ))}
-              </div>
-              <p className="reveal" style={{ textAlign: "center", fontSize: "13px", color: "var(--color-ink-dim)", marginTop: "1.5rem", maxWidth: "480px", margin: "1.5rem auto 0", lineHeight: 1.6 }}>
-                Powered by 32 integrated modules working together through a unified vendor governance platform.
+            <div className="reveal" style={{ textAlign: "center", marginTop: "2.5rem" }}>
+              <p style={{ fontSize: "15px", color: "var(--color-ink-dim)", lineHeight: 1.7, maxWidth: "480px", margin: "0 auto" }}>
+                Most platforms focus on one stage.<br />
+                <strong style={{ color: "var(--color-ink)" }}>AUDT manages the complete lifecycle.</strong>
               </p>
-              <div className="reveal" style={{ textAlign: "center", marginTop: "1.5rem" }}>
-                <a href="/docs" className="btn btn--ghost">Explore Platform →</a>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            5. PLATFORM PILLARS
-            What AUDT covers — outcome-focused.
-        ════════════════════════════════════ */}
+        {/* ── 5. PLATFORM PILLARS ── */}
         <section className="section section--alt" id="platform">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Platform Overview</span>
-              <h2>One Platform For Vendor Governance.</h2>
-              <p>Four integrated pillars that cover every dimension of vendor governance.</p>
+              <h2>One Platform. Four Pillars.</h2>
+              <p>Every dimension of vendor governance, integrated into a single platform.</p>
             </div>
             <div className="pillars">
-
               <article className="pillar pillar--live reveal">
                 <div className="pillar__top">
                   <div className="pillar__icon">▤</div>
@@ -468,66 +448,59 @@ export default function LandingPage() {
                 <h3>Vendor Governance</h3>
                 <p>Single source of truth for every vendor relationship.</p>
                 <ul className="pillar__feats">
-                  <li>Registry &amp; Ownership</li>
-                  <li>Classification &amp; Contacts</li>
+                  <li>Vendor Registry</li>
+                  <li>Ownership &amp; Contacts</li>
                   <li>Contract Tracking</li>
                   <li>Vendor Reviews</li>
                 </ul>
               </article>
-
               <article className="pillar pillar--live reveal" data-delay="60">
                 <div className="pillar__top">
                   <div className="pillar__icon">🛡</div>
                   <span className="status status--live">Pillar 2</span>
                 </div>
                 <h3>Trust Operations</h3>
-                <p>Operational workflows that validate vendor trust throughout the lifecycle.</p>
+                <p>Assessments, reviews, evidence collection, and remediation.</p>
                 <ul className="pillar__feats">
-                  <li>Assessments &amp; Questionnaires</li>
-                  <li>Evidence Requests</li>
+                  <li>Security Assessments</li>
+                  <li>Evidence Collection</li>
                   <li>Vendor Reviews</li>
                   <li>Remediation Tracking</li>
                 </ul>
               </article>
-
               <article className="pillar pillar--live reveal" data-delay="120">
                 <div className="pillar__top">
                   <div className="pillar__icon">◷</div>
                   <span className="status status--live">Pillar 3</span>
                 </div>
                 <h3>Risk &amp; Compliance</h3>
-                <p>Manage vendor risk, controls, compliance, and audits from one platform.</p>
+                <p>Risks, controls, compliance frameworks, and audits.</p>
                 <ul className="pillar__feats">
-                  <li>Risk Register &amp; Heat Map</li>
-                  <li>Controls &amp; Frameworks</li>
+                  <li>Risk Register</li>
+                  <li>Control Center™</li>
+                  <li>Framework Coverage</li>
                   <li>Audit Management</li>
-                  <li>Findings &amp; CAPAs</li>
                 </ul>
               </article>
-
               <article className="pillar pillar--live reveal" data-delay="180">
                 <div className="pillar__top">
                   <div className="pillar__icon">✦</div>
                   <span className="status status--live">Pillar 4</span>
                 </div>
                 <h3>Trust Intelligence</h3>
-                <p>AI-powered trust insights that help teams make better governance decisions.</p>
+                <p>AI-powered signals that surface trust across the entire vendor portfolio.</p>
                 <ul className="pillar__feats">
                   <li>Trust Score™</li>
                   <li>Governance Copilot™</li>
+                  <li>Benchmarking™</li>
                   <li>Continuous Monitoring</li>
-                  <li>Executive Reporting</li>
                 </ul>
               </article>
-
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            6. SOLUTIONS BY TEAM
-            Help buyers identify themselves.
-        ════════════════════════════════════ */}
+        {/* ── 6. BUILT FOR EVERY GOVERNANCE TEAM ── */}
         <section className="section" id="solutions">
           <div className="container">
             <div className="section__head reveal">
@@ -537,43 +510,40 @@ export default function LandingPage() {
             </div>
             <div className="solutions">
               <div className="sol reveal">
-                <div className="sol__icon">▤</div>
-                <h3>Procurement Teams</h3>
-                <p>Manage vendor onboarding, reviews, renewals, and offboarding from a single platform. Vendor intake, contract tracking, renewal management — all in one place.</p>
-              </div>
-              <div className="sol reveal" data-delay="60">
                 <div className="sol__icon">🛡</div>
                 <h3>Security Teams</h3>
-                <p>Assess vendor security posture. Monitor risk across the vendor portfolio. Track findings and remediation to completion.</p>
+                <p>Assess vendor risk. Monitor security posture. Manage third-party exposure. Track assessments and remediation end-to-end.</p>
               </div>
-              <div className="sol reveal" data-delay="120">
+              <div className="sol reveal" data-delay="60">
                 <div className="sol__icon">◷</div>
                 <h3>Compliance Teams</h3>
-                <p>Automate evidence collection from vendors. Maintain audit readiness every day of the year. Track framework coverage continuously.</p>
+                <p>Automate evidence collection from vendors. Maintain audit readiness. Track framework coverage continuously.</p>
+              </div>
+              <div className="sol reveal" data-delay="120">
+                <div className="sol__icon">▤</div>
+                <h3>Procurement Teams</h3>
+                <p>Manage vendor onboarding. Track contract renewals. Coordinate periodic reviews. Handle safe offboarding.</p>
               </div>
               <div className="sol reveal">
                 <div className="sol__icon">⚠</div>
                 <h3>Risk Teams</h3>
-                <p>Identify and prioritize vendor risk. Track treatments and remediation. Maintain a live view of vendor risk exposure.</p>
+                <p>Prioritize vendor risk. Track remediation progress. Monitor vendor health continuously across the portfolio.</p>
               </div>
               <div className="sol reveal" data-delay="60">
                 <div className="sol__icon">📊</div>
-                <h3>Leadership</h3>
-                <p>Measure organizational trust. Understand vendor exposure through board-ready reports, scorecards, and executive dashboards.</p>
+                <h3>Leadership Teams</h3>
+                <p>Measure organizational trust. Understand vendor exposure. Make informed renewal and onboarding decisions.</p>
               </div>
               <div className="sol reveal" data-delay="120">
                 <div className="sol__icon">🤝</div>
                 <h3>Audit Teams</h3>
-                <p>Work with external auditors in secure rooms. Exchange vendor evidence. Track findings and assessment progress.</p>
+                <p>Engage external auditors in secure rooms. Exchange vendor evidence. Track findings and assessment progress.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            7. WHY AUDT
-            Why we are different.
-        ════════════════════════════════════ */}
+        {/* ── 7. WHY AUDT ── */}
         <section className="section section--alt" id="why-audt">
           <div className="container">
             <div className="section__head reveal">
@@ -582,55 +552,123 @@ export default function LandingPage() {
               <p>Compliance is one part of vendor governance. AUDT governs the entire lifecycle.</p>
             </div>
 
-            {/* 3-column comparison */}
-            <div className="comparison-table reveal" style={{ overflowX: "auto" }}>
-              <div className="comparison-table__head" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: "1px" }}>
-                <div className="comparison-table__col comparison-table__col--label">Capability</div>
-                <div className="comparison-table__col comparison-table__col--old" style={{ textAlign: "center" }}>Compliance Platforms</div>
-                <div className="comparison-table__col comparison-table__col--old" style={{ textAlign: "center" }}>Traditional GRC</div>
-                <div className="comparison-table__col comparison-table__col--new" style={{ textAlign: "center" }}>AUDT</div>
-              </div>
-              {[
-                ["Vendor Lifecycle",      "Partial",  "Partial",  "Complete"],
-                ["Vendor Governance",     "Limited",  "Strong",   "Strong"],
-                ["Compliance",            "Strong",   "Strong",   "Strong"],
-                ["Audit Management",      "Partial",  "Strong",   "Strong"],
-                ["Continuous Monitoring", "Partial",  "Limited",  "Always-on"],
-                ["AI Governance",         "Limited",  "Limited",  "Native"],
-                ["Trust Intelligence",    "None",     "None",     "Native"],
-              ].map(([label, col1, col2, col3]) => (
-                <div key={label} className="comparison-table__row" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: "1px" }}>
-                  <div className="comparison-table__col comparison-table__col--label">{label}</div>
-                  <div className="comparison-table__col comparison-table__col--old" style={{ textAlign: "center", justifyContent: "center" }}>
-                    <span className="comparison-table__x">✕</span> {col1}
-                  </div>
-                  <div className="comparison-table__col comparison-table__col--old" style={{ textAlign: "center", justifyContent: "center" }}>
-                    {col2 === "Strong" || col2 === "Partial"
-                      ? <><span className="comparison-table__x" style={{ opacity: col2 === "Strong" ? 0 : 1 }}>✕</span> {col2}</>
-                      : <><span className="comparison-table__x">✕</span> {col2}</>}
-                  </div>
-                  <div className="comparison-table__col comparison-table__col--new" style={{ textAlign: "center", justifyContent: "center" }}>
-                    <span className="comparison-table__check">✓</span> {col3}
-                  </div>
+            <div className="reveal" style={{ overflowX: "auto" }}>
+              <div style={{ minWidth: "560px" }}>
+                {/* Header row */}
+                <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", background: "rgba(255,255,255,0.03)", borderRadius: "12px 12px 0 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                  {[
+                    { label: "Capability", color: "var(--color-ink-dim)" },
+                    { label: "Compliance Platforms", color: "var(--color-ink-dim)" },
+                    { label: "Traditional GRC", color: "var(--color-ink-dim)" },
+                    { label: "AUDT", color: "var(--color-blue)" },
+                  ].map(({ label, color }) => (
+                    <div key={label} style={{ padding: "14px 20px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color, textAlign: label === "Capability" ? "left" as const : "center" as const }}>
+                      {label}
+                    </div>
+                  ))}
                 </div>
-              ))}
+                {/* Data rows */}
+                {[
+                  ["Vendor Lifecycle",      "Partial",  "Partial",  "Complete"],
+                  ["Vendor Registry",       "Limited",  "Strong",   "Strong"],
+                  ["Compliance Frameworks", "Strong",   "Strong",   "Strong"],
+                  ["Audit Management",      "Partial",  "Strong",   "Strong"],
+                  ["Continuous Monitoring", "Partial",  "Limited",  "Always-on"],
+                  ["AI Governance",         "Limited",  "Limited",  "Native"],
+                  ["Trust Intelligence",    "None",     "None",     "Native"],
+                ].map(([label, col1, col2, col3], ri) => (
+                  <div key={label} style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", borderBottom: ri < 6 ? "1px solid rgba(255,255,255,0.05)" : "none", borderRadius: ri === 6 ? "0 0 12px 12px" : undefined }}>
+                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "var(--color-ink)", borderRight: "1px solid rgba(255,255,255,0.05)" }}>{label}</div>
+                    {[col1, col2].map((val, ci) => (
+                      <div key={ci} style={{ padding: "14px 20px", fontSize: "13px", color: "var(--color-ink-dim)", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                        <span style={{ color: val === "Strong" ? "#4ade80" : val === "None" || val === "Limited" ? "#f87171" : "#facc15", fontWeight: 700, fontSize: "10px" }}>
+                          {val === "Strong" ? "●" : val === "None" ? "○" : "◐"}
+                        </span>
+                        {val}
+                      </div>
+                    ))}
+                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "#a5f3a0", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                      <span style={{ color: "#34d399", fontWeight: 700 }}>✓</span> {col3}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Competitive summary */}
+            <div className="reveal" style={{
+              marginTop: "2.5rem",
+              textAlign: "center",
+              padding: "28px 32px",
+              borderRadius: "16px",
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              maxWidth: "680px",
+              margin: "2.5rem auto 0",
+            }}>
+              <p style={{ fontSize: "15px", color: "var(--color-ink-dim)", lineHeight: 1.8 }}>
+                Most compliance platforms focus on audits.{" "}
+                Most GRC platforms focus on risks.{" "}<br />
+                <strong style={{ color: "var(--color-ink)" }}>
+                  AUDT governs the complete vendor lifecycle while continuously measuring trust.
+                </strong>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            8. TRUST SCORE™
-            First differentiator.
-        ════════════════════════════════════ */}
+        {/* ── 8. TRUST SCORE™ ── */}
         <section className="section" id="trust-score">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Differentiator 1 — Trust Score™</span>
+              <span className="eyebrow">Core Innovation — Trust Score™</span>
               <h2>Measure Vendor Trust In Real Time.</h2>
               <p>
-                Trust should not be subjective. AUDT continuously calculates a Trust Score™ for every vendor
-                using live signals across six dimensions — so your team always knows exactly where they stand.
+                Trust should not be subjective. AUDT continuously measures vendor trust using governance,
+                risk, compliance, monitoring, and audit signals — updated automatically as your vendor posture changes.
               </p>
+            </div>
+
+            {/* Signal equation */}
+            <div className="reveal" style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              gap: "8px",
+              padding: "24px",
+              borderRadius: "16px",
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              maxWidth: "760px",
+              margin: "0 auto 3rem",
+            }}>
+              {(["Security", "Compliance", "Risk", "Monitoring", "Audit Readiness"] as string[]).map((item, i, arr) => (
+                <span key={item} style={{ display: "contents" }}>
+                  <div style={{
+                    padding: "8px 16px",
+                    borderRadius: "8px",
+                    background: "rgba(99,102,241,0.1)",
+                    border: "1px solid rgba(99,102,241,0.25)",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "var(--color-ink)",
+                  }}>{item}</div>
+                  {i < arr.length - 1 && (
+                    <span style={{ color: "var(--color-blue)", fontWeight: 700, opacity: 0.5, fontSize: "16px" }}>+</span>
+                  )}
+                </span>
+              ))}
+              <span style={{ color: "var(--color-blue)", fontWeight: 700, fontSize: "20px", margin: "0 4px" }}>=</span>
+              <div style={{
+                padding: "10px 20px",
+                borderRadius: "8px",
+                background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(45,212,255,0.1))",
+                border: "1px solid rgba(99,102,241,0.4)",
+                fontSize: "14px",
+                fontWeight: 700,
+                color: "var(--color-ink)",
+              }}>Trust Score™</div>
             </div>
 
             <div className="trust-scores reveal">
@@ -696,34 +734,20 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Six signal components */}
-            <div className="cc-grid reveal" style={{ marginTop: "3rem" }}>
-              {[
-                { icon: "🔐", label: "Security",       desc: "Assessment scores, certifications, vulnerability status" },
-                { icon: "◷",  label: "Compliance",     desc: "Framework coverage, control status, readiness scores" },
-                { icon: "⚠",  label: "Risk",           desc: "Active risks, severity distribution, treatment progress" },
-                { icon: "📡", label: "Monitoring",     desc: "Evidence freshness, expiry alerts, continuous check results" },
-                { icon: "⚙",  label: "Performance",    desc: "Review history, responsiveness, document turnaround" },
-                { icon: "◎",  label: "Audit Readiness", desc: "Open findings, CAPA completion, program status" },
-              ].map(({ icon, label, desc }) => (
-                <div key={label} className="cc-card">
-                  <div className="cc-card__icon">{icon}</div>
-                  <h3>{label}</h3>
-                  <p>{desc}</p>
-                </div>
-              ))}
+            <div className="reveal" style={{ textAlign: "center", marginTop: "2.5rem" }}>
+              <p style={{ fontSize: "15px", color: "var(--color-ink-dim)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
+                Move beyond periodic assessments and static reviews.<br />
+                <strong style={{ color: "var(--color-ink)" }}>Continuously understand which vendors are trusted and which require attention.</strong>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            9. GOVERNANCE COPILOT™
-            Second differentiator.
-        ════════════════════════════════════ */}
+        {/* ── 9. GOVERNANCE COPILOT™ ── */}
         <section className="section section--alt" id="copilot">
           <div className="container ai-sec">
             <div className="ai-sec__copy reveal">
-              <span className="eyebrow">Differentiator 2 — Governance Copilot™</span>
+              <span className="eyebrow">Governance Copilot™</span>
               <h2>AI For Governance Teams.</h2>
               <p>
                 The Governance Copilot™ is woven through every module — not a chatbot bolted on.
@@ -767,14 +791,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            10. AI AGENTS
-            Third differentiator.
-        ════════════════════════════════════ */}
+        {/* ── 10. AI AGENTS ── */}
         <section className="section" id="agents">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Differentiator 3 — AI Agents</span>
+              <span className="eyebrow">AI Agents</span>
               <h2>Autonomous Governance Operations.</h2>
               <p>AI agents continuously monitor vendor governance and surface observations, recommendations, and actions — with human approval always in the loop.</p>
             </div>
@@ -832,56 +853,153 @@ export default function LandingPage() {
                 </ul>
               </div>
             </div>
-            <div className="agents-cta reveal">
-              <a href="/signup" className="btn btn--primary">Activate Governance Agents</a>
-              <a href="#copilot" className="btn btn--ghost">See Governance Copilot™ <span className="arrow">→</span></a>
+          </div>
+        </section>
+
+        {/* ── 11. PLATFORM COVERAGE ── */}
+        <section className="section section--alt" id="coverage">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Platform Coverage</span>
+              <h2>Every Governance Domain. One Platform.</h2>
+              <p>AUDT covers the full breadth of modern vendor governance.</p>
+            </div>
+            <div className="reveal" style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+              justifyContent: "center",
+              maxWidth: "780px",
+              margin: "0 auto 2rem",
+            }}>
+              {[
+                "Vendor Governance", "Trust Operations", "Risk Management",
+                "Compliance Management", "Audit Management", "Policy Governance",
+                "Privacy Governance", "Asset Intelligence", "AI Governance",
+              ].map((item) => (
+                <div key={item} style={{
+                  padding: "10px 20px",
+                  borderRadius: "999px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(255,255,255,0.04)",
+                  fontSize: "14px",
+                  color: "var(--color-ink-dim)",
+                  fontWeight: 500,
+                }}>{item}</div>
+              ))}
+            </div>
+            <div className="reveal" style={{ textAlign: "center", maxWidth: "540px", margin: "0 auto" }}>
+              <p style={{ fontSize: "14px", color: "var(--color-ink-dim)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+                Powered by 32 integrated modules working together through a shared vendor intelligence layer.
+              </p>
+              <a href="/docs" className="btn btn--ghost">Explore Platform →</a>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            11. VISION
-            Today and tomorrow — simplified.
-        ════════════════════════════════════ */}
+        {/* ── 12. SHARED INTELLIGENCE LAYER ── */}
+        <section className="section" id="intelligence">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Architecture</span>
+              <h2>Everything Shares The Same Intelligence.</h2>
+              <p>
+                Unlike point solutions that operate in silos, every AUDT module shares a single vendor intelligence layer —
+                so risk data informs compliance, compliance informs audits, and audits inform trust scores. Automatically.
+              </p>
+            </div>
+
+            <div className="reveal" style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "16px",
+              maxWidth: "860px",
+              margin: "0 auto 3rem",
+            }}>
+              {[
+                { icon: "🔗", title: "Connected Data Model",     body: "Every vendor, risk, control, evidence, and audit is linked. Changes propagate across modules automatically." },
+                { icon: "✦",  title: "Shared AI Layer",          body: "The Governance Copilot™ and AI Agents operate on your complete governance graph — not isolated module data." },
+                { icon: "📡", title: "Continuous Signal Engine", body: "Trust scores, compliance readiness, and risk posture update in real time as vendor data changes." },
+              ].map(({ icon, title, body }) => (
+                <div key={title} style={{
+                  padding: "28px 24px",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  textAlign: "center",
+                }}>
+                  <div style={{ fontSize: "28px", marginBottom: "16px" }}>{icon}</div>
+                  <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "10px", color: "var(--color-ink)" }}>{title}</div>
+                  <div style={{ fontSize: "13px", color: "var(--color-ink-dim)", lineHeight: 1.65 }}>{body}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="metrics-grid reveal">
+              <div className="mstat">
+                <div className="mstat__num"><span className="counter" data-target="32">0</span></div>
+                <div className="mstat__label">Integrated Modules</div>
+              </div>
+              <div className="mstat">
+                <div className="mstat__num"><span className="counter" data-target="174">0</span><span style={{ fontSize: "1.2rem" }}>+</span></div>
+                <div className="mstat__label">Pre-Mapped Controls</div>
+              </div>
+              <div className="mstat">
+                <div className="mstat__num">10</div>
+                <div className="mstat__label">Vendor Lifecycle Stages</div>
+              </div>
+              <div className="mstat">
+                <div className="mstat__num"><span className="counter" data-target="35">0</span><span style={{ fontSize: "1.2rem" }}>+</span></div>
+                <div className="mstat__label">Integration Connectors</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 13. VISION ── */}
         <section className="section section--alt" id="vision">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Our Vision</span>
               <h2>Building The System Of Record For Vendor Trust.</h2>
+              <p>
+                Today, organizations use AUDT to govern vendors.<br />
+                Tomorrow, organizations will use AUDT to verify trust across an entire ecosystem.
+              </p>
             </div>
 
-            <div className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", maxWidth: "800px", margin: "0 auto 3rem" }}>
-
-              {/* Today */}
+            <div className="reveal" style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2rem",
+              maxWidth: "760px",
+              margin: "0 auto 3rem",
+            }}>
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
                 background: "rgba(255,255,255,0.03)",
                 border: "1px solid rgba(255,255,255,0.08)",
               }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-blue)", marginBottom: "1rem" }}>Today</div>
-                <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--color-ink)", marginBottom: "1.25rem", lineHeight: 1.5 }}>Manage every vendor.</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {["Vendor Governance", "Risk Management", "Compliance", "Audit Management", "Trust Intelligence"].map((item) => (
-                    <div key={item} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "13px", color: "var(--color-ink-dim)" }}>
+                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Platform Today</div>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
+                  {["Vendor Governance", "Trust Operations", "Risk & Compliance", "Trust Intelligence"].map((item) => (
+                    <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13px", color: "var(--color-ink-dim)" }}>
                       <span style={{ color: "#4ade80", fontSize: "10px" }}>●</span>{item}
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* Tomorrow */}
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
                 background: "rgba(99,102,241,0.05)",
                 border: "1px solid rgba(99,102,241,0.2)",
               }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-blue)", marginBottom: "1rem" }}>Tomorrow</div>
-                <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--color-ink)", marginBottom: "1.25rem", lineHeight: 1.5 }}>Create a global trust network for vendor governance.</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {["Trust Network™", "Trust Exchange™", "Trust Verification Authority™"].map((item) => (
-                    <div key={item} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "13px", color: "var(--color-ink-dim)" }}>
+                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--color-blue)", marginBottom: "1rem" }}>Future Vision</div>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
+                  {["Trust Network™", "Trust Exchange™", "Trust Verification Authority™", "Industry Benchmarking™"].map((item) => (
+                    <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13px", color: "var(--color-ink-dim)" }}>
                       <span style={{ color: "var(--color-blue)", fontSize: "10px" }}>◆</span>{item}
                     </div>
                   ))}
@@ -889,20 +1007,15 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="reveal" style={{ textAlign: "center", lineHeight: 2.2, fontSize: "1.05rem", color: "var(--color-ink-dim)", marginBottom: "0.5rem" }}>
-              Every vendor. Every assessment. Every risk. Every audit. Every decision.
-            </div>
             <div className="reveal" style={{ textAlign: "center" }}>
-              <span style={{ fontSize: "1.4rem", fontWeight: 700, background: "linear-gradient(135deg, #818cf8, #2dd4ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                One platform.
+              <span style={{ fontSize: "1.5rem", fontWeight: 700, background: "linear-gradient(135deg, #818cf8, #2dd4ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                One platform. Every vendor. Continuous trust.
               </span>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            PRICING
-        ════════════════════════════════════ */}
+        {/* ── PRICING ── */}
         <section className="section" id="pricing">
           <div className="container">
             <div className="section__head reveal">
@@ -910,7 +1023,6 @@ export default function LandingPage() {
               <h2>Governance Built on Proof.<br />Priced for scale.</h2>
               <p>One flat annual price. Every module included. No per-seat surprises.</p>
             </div>
-
             <div className="pricing-cards reveal">
               <div className="pcard">
                 <div>
@@ -935,7 +1047,6 @@ export default function LandingPage() {
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Growth%20Plan" className="pcard__cta pcard__cta--ghost">Get Started</a>
                 <p className="pcard__note">Billed annually · Cancel anytime</p>
               </div>
-
               <div className="pcard pcard--featured">
                 <div className="pcard__badge">Most Popular</div>
                 <div>
@@ -961,22 +1072,20 @@ export default function LandingPage() {
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Business%20Plan" className="pcard__cta pcard__cta--primary">Get Started</a>
                 <p className="pcard__note">Billed annually · Cancel anytime</p>
               </div>
-
               <div className="pcard pcard__enterprise">
                 <div>
                   <div className="pcard__tier">Enterprise</div>
                   <div className="pcard__price">
                     <span className="pcard__amount">Custom</span>
                   </div>
-                  <p className="pcard__tagline">Tailored deployment for large, regulated organizations with complex vendor governance requirements.</p>
+                  <p className="pcard__tagline">Tailored deployment for large, regulated organizations.</p>
                 </div>
                 <div className="pcard__divider" />
                 <ul className="pcard__feats">
                   <li>Everything in Business</li>
                   <li>Unlimited users &amp; organizations</li>
-                  <li>Customer Managed Encryption (AWS KMS · Azure Key Vault · Google KMS)</li>
+                  <li>Customer Managed Encryption (AWS KMS · Azure Key Vault)</li>
                   <li>Custom SAML/OIDC SSO</li>
-                  <li>Dedicated Governance Agent™ configurations</li>
                   <li>Custom compliance frameworks &amp; controls</li>
                   <li>SLA guarantees &amp; dedicated success manager</li>
                   <li>On-premise or private cloud deployment</li>
@@ -988,9 +1097,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ════════════════════════════════════
-            FINAL CTA
-        ════════════════════════════════════ */}
+        {/* ── FINAL CTA ── */}
         <section className="cta-final" id="cta">
           <div className="container cta-final__inner reveal">
             <div className="cta-final__badge">audt.tech</div>
@@ -1028,9 +1135,9 @@ export default function LandingPage() {
             </div>
             <div className="footer__col">
               <div className="footer__col-head">Solutions</div>
-              <a href="#solutions">Procurement Teams</a>
               <a href="#solutions">Security Teams</a>
               <a href="#solutions">Compliance Teams</a>
+              <a href="#solutions">Procurement Teams</a>
               <a href="#solutions">Risk Teams</a>
             </div>
             <div className="footer__col">
