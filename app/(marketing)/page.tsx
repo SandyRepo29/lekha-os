@@ -64,7 +64,6 @@ export default function LandingPage() {
       );
     };
 
-    // Score counter animation for trust intelligence section
     const animateScores = () => {
       document.querySelectorAll<HTMLElement>(".score-num[data-score]").forEach((el) => {
         if (el.dataset.done) return;
@@ -163,10 +162,10 @@ export default function LandingPage() {
             <a href="#platform">Platform</a>
             <a href="#solutions">Solutions</a>
             <a href="#trust-intelligence">Trust Intelligence</a>
-            <a href="#roadmap">Resources</a>
+            <a href="/docs">Resources</a>
             <a href="/docs">Docs</a>
-            <a href="#contact">Pricing</a>
-            <a href="#contact">Contact</a>
+            <a href="#pricing">Pricing</a>
+            <a href="mailto:hello@audt.tech">Contact</a>
           </nav>
 
           <div className="nav__actions">
@@ -183,10 +182,10 @@ export default function LandingPage() {
           <a href="#platform">Platform</a>
           <a href="#solutions">Solutions</a>
           <a href="#trust-intelligence">Trust Intelligence</a>
-          <a href="#roadmap">Resources</a>
+          <a href="/docs">Resources</a>
           <a href="/docs">Docs</a>
-          <a href="#contact">Pricing</a>
-          <a href="#contact">Contact</a>
+          <a href="#pricing">Pricing</a>
+          <a href="mailto:hello@audt.tech">Contact</a>
           <a href="/login">Sign in</a>
           <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost">Book Demo</a>
           <a href="/signup" className="btn btn--primary">Start Free</a>
@@ -201,32 +200,32 @@ export default function LandingPage() {
             <div className="hero__copy reveal">
               <div className="badge">
                 <span className="badge__pulse" />
-                AI-Native · Governance OS · audt.tech
+                Vendor Governance &amp; Trust Operations · audt.tech
               </div>
               <h1 className="hero__title">
-                The AI-Native<br />
-                <span className="grad-text">Governance OS</span>
+                Govern Every Vendor.<br />
+                <span className="grad-text">Trust Every Decision.</span>
               </h1>
               <p className="hero__sub">
-                Govern risk, compliance, audits, vendors, privacy, contracts and AI systems from a single platform powered by autonomous AI agents.
+                AUDT is the Vendor Governance &amp; Trust Operations platform that helps organizations discover, assess, monitor, audit, and continuously validate every vendor from a single system of record.
               </p>
               <p className="hero__support">
-                AUDT continuously monitors controls, collects evidence, identifies risk, prepares audits and improves trust posture—without manual effort.
+                From onboarding to offboarding — AUDT manages the entire vendor lifecycle while continuously measuring trust, so your governance is always evidence-based and audit-ready.
               </p>
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
-                <a href="#agents" className="btn btn--ghost btn--lg">
-                  See Governance Agents <span className="arrow">→</span>
+                <a href="#lifecycle" className="btn btn--ghost btn--lg">
+                  See the Lifecycle <span className="arrow">→</span>
                 </a>
               </div>
               <div className="hero__trust">
-                <span>Governance Agents™</span>
+                <span>Vendor Governance™</span>
                 <span className="dot">·</span>
-                <span>Continuous Compliance™</span>
+                <span>Trust Operations™</span>
                 <span className="dot">·</span>
-                <span>Trust Infrastructure™</span>
+                <span>Continuous Monitoring™</span>
                 <span className="dot">·</span>
-                <span>32 Modules</span>
+                <span>Trust Score™</span>
                 <span className="dot">·</span>
                 <span>AI-Native</span>
               </div>
@@ -245,8 +244,8 @@ export default function LandingPage() {
                       AUDT
                     </div>
                     <div className="mock__nav active">▦ Dashboard</div>
-                    <div className="mock__nav">▤ Vendors</div>
-                    <div className="mock__nav">◷ Compliance</div>
+                    <div className="mock__nav">▤ Vendor Hub™</div>
+                    <div className="mock__nav">◷ Evidence Vault™</div>
                     <div className="mock__nav">◎ Audits</div>
                     <div className="mock__nav">⚠ Risk Lens™</div>
                     <div className="mock__nav">◻ Controls</div>
@@ -256,7 +255,7 @@ export default function LandingPage() {
                   <div className="mock__main">
                     <div className="mock__row">
                       <div className="mcard mcard--score">
-                        <div className="mcard__label">Trust Score™</div>
+                        <div className="mcard__label">Vendor Trust Score™</div>
                         <div className="ring" data-ring="92">
                           <svg viewBox="0 0 120 120">
                             <circle className="ring__bg" cx="60" cy="60" r="52" />
@@ -269,7 +268,7 @@ export default function LandingPage() {
                         </div>
                       </div>
                       <div className="mcard mcard--risk">
-                        <div className="mcard__label">Risk Overview</div>
+                        <div className="mcard__label">Vendor Risk Overview</div>
                         <div className="bars">
                           <div className="bar"><span style={{ "--h": "30%" } as CSSVars} /><em>Low</em></div>
                           <div className="bar"><span style={{ "--h": "65%" } as CSSVars} /><em>Med</em></div>
@@ -289,14 +288,14 @@ export default function LandingPage() {
                       <div className="mcard mcard--ai">
                         <div className="ai-chip">✦ Governance Copilot™</div>
                         <p className="ai-line">2 vendor certs expire in 14 days.</p>
-                        <p className="ai-line muted">ISO 27001 — 8 controls need evidence.</p>
+                        <p className="ai-line muted">4 vendors need assessment refresh.</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="float-chip float-chip--1">✓ Evidence Vault™ synced</div>
-              <div className="float-chip float-chip--2">✦ Trust Score™ updated</div>
+              <div className="float-chip float-chip--1">✓ Vendor Trust Score™ updated</div>
+              <div className="float-chip float-chip--2">✦ 3 vendors assessed today</div>
             </div>
           </div>
         </section>
@@ -305,7 +304,7 @@ export default function LandingPage() {
         <section className="proof">
           <div className="container">
             <p className="proof__head reveal">
-              Built for governance teams across SaaS, Fintech, Healthcare, Manufacturing &amp; IT Services
+              Built for vendor governance teams across SaaS, Fintech, Healthcare, Manufacturing &amp; IT Services
             </p>
             <div className="proof__logos reveal">
               <span>SaaS</span><span>Fintech</span><span>Healthcare</span>
@@ -313,8 +312,8 @@ export default function LandingPage() {
             </div>
             <div className="proof__metrics">
               <div className="metric reveal">
-                <div className="metric__num"><span className="counter" data-target="174">0</span><i>+</i></div>
-                <div className="metric__label">Pre-built Compliance Controls</div>
+                <div className="metric__num"><span className="counter" data-target="10">0</span><i>+</i></div>
+                <div className="metric__label">Vendor Lifecycle Stages Covered</div>
               </div>
               <div className="metric reveal" data-delay="80">
                 <div className="metric__num"><span className="counter" data-target="259">0</span><i>+</i></div>
@@ -328,674 +327,142 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* GOVERNANCE AGENTS */}
-        <section className="section section--alt" id="agents">
-          <div className="container">
-            <div className="section__head reveal">
-              <span className="eyebrow">Governance Agents™</span>
-              <h2>Meet Your AI Governance Team</h2>
-              <p>Specialized AI agents continuously monitor governance across your organization and take action when issues arise.</p>
-            </div>
-            <div className="agents-grid">
-              <div className="agent-card reveal">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--compliance">◷</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">Compliance Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Monitors controls</li>
-                  <li>Collects evidence</li>
-                  <li>Tracks framework readiness</li>
-                  <li>Launches remediation</li>
-                </ul>
-              </div>
-              <div className="agent-card reveal" data-delay="60">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--risk">⚠</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">Risk Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Detects emerging risks</li>
-                  <li>Monitors trends</li>
-                  <li>Escalates critical issues</li>
-                  <li>Tracks mitigation</li>
-                </ul>
-              </div>
-              <div className="agent-card reveal" data-delay="120">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--audit">◎</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">Audit Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Prepares audit rooms</li>
-                  <li>Collects evidence</li>
-                  <li>Identifies audit gaps</li>
-                  <li>Creates findings</li>
-                </ul>
-              </div>
-              <div className="agent-card reveal">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--vendor">▤</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">Vendor Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Monitors vendor trust</li>
-                  <li>Requests evidence</li>
-                  <li>Launches assessments</li>
-                  <li>Tracks reviews</li>
-                </ul>
-              </div>
-              <div className="agent-card reveal" data-delay="60">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--trust">✦</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">Trust Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Monitors trust posture</li>
-                  <li>Tracks verification health</li>
-                  <li>Improves trust scores</li>
-                  <li>Identifies trust risks</li>
-                </ul>
-              </div>
-              <div className="agent-card reveal" data-delay="120">
-                <div className="agent-card__top">
-                  <div className="agent-card__icon agent-card__icon--ai">🤖</div>
-                  <span className="agent-card__badge">Active 24/7</span>
-                </div>
-                <h3 className="agent-card__name">AI Governance Agent™</h3>
-                <ul className="agent-card__caps">
-                  <li>Monitors AI systems</li>
-                  <li>Tracks AI risks</li>
-                  <li>Evaluates compliance</li>
-                  <li>Recommends controls</li>
-                </ul>
-              </div>
-            </div>
-            <div className="agents-cta reveal">
-              <a href="/signup" className="btn btn--primary">Activate Governance Agents</a>
-              <a href="#copilot" className="btn btn--ghost">See Governance Copilot™ <span className="arrow">→</span></a>
-            </div>
-          </div>
-        </section>
-
         {/* PROBLEM */}
         <section className="section" id="problem">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">The Problem</span>
-              <h2>Governance Is Fragmented.</h2>
+              <h2>Vendor Risk Is The New Business Risk.</h2>
               <p>
-                Most organizations manage vendors, compliance evidence, risks, policies, and audits
-                across disconnected systems. This creates blind spots, duplicated effort, audit delays,
-                and unnecessary risk. AUDT unifies governance into a single operating system.
+                Organizations rely on hundreds of vendors, SaaS applications, suppliers, contractors, and AI providers.
+                But most teams lack a centralized vendor inventory, visibility into vendor risk, continuous compliance validation,
+                audit readiness, and structured renewal decisions. Governance becomes reactive, expensive, and impossible to scale.
               </p>
             </div>
             <div className="pain-grid">
-              <div className="pain reveal"><span className="pain__icon">🔍</span>Missing evidence at audit time</div>
-              <div className="pain reveal" data-delay="60"><span className="pain__icon">🌫️</span>Compliance gaps no one can see</div>
-              <div className="pain reveal" data-delay="120"><span className="pain__icon">📦</span>Vendor blind spots &amp; third-party risk</div>
-              <div className="pain reveal"><span className="pain__icon">✍️</span>Manual audits burning weeks every quarter</div>
-              <div className="pain reveal" data-delay="60"><span className="pain__icon">📋</span>Policy sprawl with no version control</div>
-              <div className="pain reveal" data-delay="120"><span className="pain__icon">🔗</span>Risk data siloed across teams and tools</div>
+              <div className="pain reveal"><span className="pain__icon">🔍</span>No centralized vendor inventory</div>
+              <div className="pain reveal" data-delay="60"><span className="pain__icon">🌫️</span>Zero visibility into vendor risk</div>
+              <div className="pain reveal" data-delay="120"><span className="pain__icon">📦</span>Compliance validation is manual and point-in-time</div>
+              <div className="pain reveal"><span className="pain__icon">✍️</span>Audit preparation burns weeks every quarter</div>
+              <div className="pain reveal" data-delay="60"><span className="pain__icon">📋</span>No structured vendor renewal process</div>
+              <div className="pain reveal" data-delay="120"><span className="pain__icon">🔗</span>Multiple disconnected tools for one problem</div>
             </div>
           </div>
         </section>
 
-        {/* CONTINUOUS COMPLIANCE */}
-        <section className="section" id="continuous-compliance">
+        {/* VENDOR LIFECYCLE */}
+        <section className="section section--alt" id="lifecycle">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Continuous Compliance™</span>
-              <h2>Compliance That Never Stops</h2>
-              <p>Continuous monitoring, evidence collection and control validation ensure your organization remains audit-ready every day.</p>
+              <span className="eyebrow">One Platform. Complete Lifecycle.</span>
+              <h2>From Discover to Offboard — In One System.</h2>
+              <p>AUDT manages the entire vendor lifecycle so your team always has a complete, up-to-date picture of every vendor relationship.</p>
             </div>
-            <div className="cc-grid">
-              <div className="cc-card reveal">
-                <div className="cc-card__icon">🗄</div>
-                <h3>Evidence Collection™</h3>
-                <p>Automatically collect evidence from integrated systems across your entire stack.</p>
-              </div>
-              <div className="cc-card reveal" data-delay="50">
-                <div className="cc-card__icon">◻</div>
-                <h3>Control Validation™</h3>
-                <p>Continuously validate controls across all active compliance frameworks.</p>
-              </div>
-              <div className="cc-card reveal" data-delay="100">
-                <div className="cc-card__icon">◷</div>
-                <h3>Framework Readiness™</h3>
-                <p>Track readiness for SOC 2, ISO 27001, DPDP and more — updated in real time.</p>
-              </div>
-              <div className="cc-card reveal" data-delay="150">
-                <div className="cc-card__icon">🔐</div>
-                <h3>Access Reviews™</h3>
-                <p>Automate access certifications and attestations on a continuous schedule.</p>
-              </div>
-              <div className="cc-card reveal" data-delay="200">
-                <div className="cc-card__icon">⚡</div>
-                <h3>Compliance Signals™</h3>
-                <p>Monitor governance changes across all connected systems and surface issues instantly.</p>
-              </div>
-              <div className="cc-card reveal" data-delay="250">
-                <div className="cc-card__icon">✦</div>
-                <h3>Trust Score Updates™</h3>
-                <p>Trust scores update automatically as your compliance posture improves or changes.</p>
-              </div>
+            <div className="agents-grid">
+              {[
+                { icon: "🔎", title: "Discover", desc: "Identify all vendors across the organization — shadow IT, SaaS, suppliers, AI providers.", delay: "0" },
+                { icon: "📋", title: "Inventory", desc: "Create a complete vendor system of record with profiles, contacts, and ownership.", delay: "60" },
+                { icon: "🏷", title: "Classify", desc: "Determine vendor criticality, data access level, and business impact.", delay: "120" },
+                { icon: "🔬", title: "Assess", desc: "Evaluate security, privacy, and compliance posture with AI-powered assessments.", delay: "0" },
+                { icon: "⚠", title: "Risk", desc: "Calculate and continuously monitor vendor risk with Trust Score™ and risk scoring.", delay: "60" },
+                { icon: "◷", title: "Comply", desc: "Map vendors to controls and compliance frameworks — ISO 27001, SOC 2, DPDP, and more.", delay: "120" },
+                { icon: "📡", title: "Monitor", desc: "Continuously validate vendor trustworthiness with automated monitoring rules.", delay: "0" },
+                { icon: "◎", title: "Audit", desc: "Maintain evidence and stay audit-ready with structured programs and findings.", delay: "60" },
+                { icon: "🔄", title: "Renew", desc: "Make informed vendor renewal decisions using contract data, risk posture, and trust trends.", delay: "120" },
+                { icon: "🚪", title: "Offboard", desc: "Safely terminate vendor relationships with documented governance and evidence trails.", delay: "0" },
+              ].map(({ icon, title, desc, delay }) => (
+                <div key={title} className="agent-card reveal" data-delay={delay}>
+                  <div className="agent-card__top">
+                    <div className="agent-card__icon agent-card__icon--compliance">{icon}</div>
+                    <span className="agent-card__badge">{title}</span>
+                  </div>
+                  <h3 className="agent-card__name">{title}</h3>
+                  <p style={{ fontSize: "13px", color: "var(--color-ink-dim)", lineHeight: 1.5, margin: 0 }}>{desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="agents-cta reveal">
+              <a href="/signup" className="btn btn--primary">Start Governing Vendors</a>
+              <a href="#platform" className="btn btn--ghost">See Platform Pillars <span className="arrow">→</span></a>
             </div>
           </div>
         </section>
 
-        {/* TRUST INFRASTRUCTURE */}
-        <section className="section section--alt" id="trust-infrastructure">
+        {/* PLATFORM PILLARS */}
+        <section className="section" id="platform">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Trust Infrastructure™</span>
-              <h2>Governance Built on Trust</h2>
-              <p>Every governance activity contributes to measurable trust outcomes visible to your team, partners, and auditors.</p>
-            </div>
-            <div className="ti-grid">
-              <div className="ti-item reveal">
-                <div className="ti-item__icon">✦</div>
-                <div>
-                  <h3>Trust Score™</h3>
-                  <p>Measure organizational trust across vendors, controls, compliance and audits — one live score.</p>
-                </div>
-              </div>
-              <div className="ti-item reveal" data-delay="60">
-                <div className="ti-item__icon">✅</div>
-                <div>
-                  <h3>Trust Verification™</h3>
-                  <p>Issue and publicly verify trust credentials. AUDT becomes your Trust Authority.</p>
-                </div>
-              </div>
-              <div className="ti-item reveal" data-delay="120">
-                <div className="ti-item__icon">🌐</div>
-                <div>
-                  <h3>Trust Network™</h3>
-                  <p>Connect organizations, auditors and partners across a shared trust infrastructure.</p>
-                </div>
-              </div>
-              <div className="ti-item reveal">
-                <div className="ti-item__icon">🛂</div>
-                <div>
-                  <h3>Trust Passport™</h3>
-                  <p>Your public trust profile — aggregated certificates, badges, and governance posture.</p>
-                </div>
-              </div>
-              <div className="ti-item reveal" data-delay="60">
-                <div className="ti-item__icon">🔌</div>
-                <div>
-                  <h3>Trust API Platform™</h3>
-                  <p>Expose trust intelligence through APIs. Build trust-aware integrations for partners and customers.</p>
-                </div>
-              </div>
-              <div className="ti-item reveal" data-delay="120">
-                <div className="ti-item__icon">📊</div>
-                <div>
-                  <h3>Trust Intelligence™</h3>
-                  <p>Real-time Organizational Trust Score™ with driver and detractor analysis for every decision.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* METRICS BANNER */}
-        <section className="metrics-banner-section">
-          <div className="container">
-            <div className="metrics-banner reveal">
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">24/7</div>
-                <div className="metrics-banner__label">AI Monitoring</div>
-              </div>
-              <div className="metrics-banner__divider" />
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">32</div>
-                <div className="metrics-banner__label">Governance Modules</div>
-              </div>
-              <div className="metrics-banner__divider" />
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">Continuous</div>
-                <div className="metrics-banner__label">Compliance Validation</div>
-              </div>
-              <div className="metrics-banner__divider" />
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">1,000+</div>
-                <div className="metrics-banner__label">Evidence Records Processed</div>
-              </div>
-              <div className="metrics-banner__divider" />
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">Trust</div>
-                <div className="metrics-banner__label">Verification Built In</div>
-              </div>
-              <div className="metrics-banner__divider" />
-              <div className="metrics-banner__item">
-                <div className="metrics-banner__val">AI</div>
-                <div className="metrics-banner__label">Governance Native</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* GOVERNANCE OS PILLARS */}
-        <section className="section section--alt" id="platform">
-          <div className="container">
-            <div className="section__head reveal">
-              <span className="eyebrow">Complete Governance Platform</span>
-              <h2>32 Governance Modules. One OS.</h2>
-              <p>32 integrated governance modules working together through AI, automation and trust intelligence.</p>
+              <span className="eyebrow">Built For Modern Vendor Governance</span>
+              <h2>Four Pillars. One Platform.</h2>
+              <p>Every capability you need to govern vendors, operate trust, manage risk and compliance, and make data-driven decisions — unified in a single system.</p>
             </div>
             <div className="pillars">
 
               <article className="pillar pillar--live reveal">
                 <div className="pillar__top">
                   <div className="pillar__icon">▤</div>
-                  <span className="status status--live">Live</span>
+                  <span className="status status--live">Pillar 1</span>
                 </div>
-                <h3>Vendor Hub™</h3>
-                <p>Manage vendors, suppliers, and third parties — from onboarding to risk and Trust Score™ monitoring.</p>
+                <h3>Vendor Governance</h3>
+                <p>Single source of truth for every vendor. Know every vendor, who owns them, and the current state of every relationship.</p>
                 <ul className="pillar__feats">
                   <li>Vendor Registry &amp; Profiles</li>
-                  <li>AI Document Extraction</li>
-                  <li>Expiry Alerts</li>
+                  <li>Vendor Ownership &amp; Contacts</li>
+                  <li>Vendor Classification</li>
+                  <li>Contract Governance™</li>
+                  <li>Vendor Portal (Magic Link)</li>
+                  <li>Renewal Management</li>
+                </ul>
+              </article>
+
+              <article className="pillar pillar--live reveal" data-delay="60">
+                <div className="pillar__top">
+                  <div className="pillar__icon">🛡</div>
+                  <span className="status status--live">Pillar 2</span>
+                </div>
+                <h3>Trust Operations</h3>
+                <p>Operational workflows that validate vendor trust continuously — not just at renewal time.</p>
+                <ul className="pillar__feats">
                   <li>Security Assessments</li>
-                  <li>Trust Score™</li>
-                  <li>Vendor Portal</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🗄</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Evidence Vault™</h3>
-                <p>Collect and maintain proof across every framework — auto-imported from vendors and assessments.</p>
-                <ul className="pillar__feats">
-                  <li>ISO 27001 · SOC 2 · DPDP · PCI DSS · HIPAA</li>
-                  <li>174 Standard Controls</li>
-                  <li>Auto-import Pipeline</li>
-                  <li>Gap Analysis</li>
-                  <li>Readiness Scores</li>
-                  <li>Policy Management</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">◎</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Audit Management</h3>
-                <p>Stay continuously audit-ready with structured programs, findings tracking, and CAPA workflows.</p>
-                <ul className="pillar__feats">
-                  <li>Audit Programs</li>
-                  <li>Findings Management</li>
-                  <li>CAPA Tracker</li>
-                  <li>AI Finding Generator</li>
-                  <li>PDF Reports</li>
-                  <li>AI Auditor Chat</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">⚠</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Risk Lens™</h3>
-                <p>Identify, assess, and treat risks with a unified register, visual heat maps, and AI risk officer.</p>
-                <ul className="pillar__feats">
-                  <li>Risk Register</li>
-                  <li>5×5 Heat Map</li>
-                  <li>Treatment Tracking</li>
-                  <li>AI Risk Officer</li>
-                  <li>13 Risk Categories</li>
-                  <li>CSV Export</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">◻</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Control Center™</h3>
-                <p>Track every control with Control Health™ scoring, testing records, and AI gap detection.</p>
-                <ul className="pillar__feats">
-                  <li>Control Library</li>
-                  <li>Control Health™ Score</li>
-                  <li>Test Records</li>
-                  <li>AI Gap Detection</li>
-                  <li>Cross-framework Mapping</li>
-                  <li>AI Advisor Chat</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">📜</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Policy Governance™</h3>
-                <p>Full policy lifecycle — drafting, versioning, attestations, reviews, and framework mapping.</p>
-                <ul className="pillar__feats">
-                  <li>Policy Lifecycle</li>
-                  <li>Version History</li>
-                  <li>Attestations</li>
-                  <li>Policy Health™</li>
-                  <li>Owner Accountability</li>
-                  <li>Framework Linking</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🔒</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>DPDP Privacy™</h3>
-                <p>India DPDP Act 2023 compliance — data inventory, consent, retention, DSR workflows, and PIA.</p>
-                <ul className="pillar__feats">
-                  <li>Data Asset Inventory</li>
-                  <li>Consent Management</li>
-                  <li>Retention Policies</li>
-                  <li>DSR Workflows</li>
-                  <li>Privacy Impact Assessments</li>
-                  <li>Cross-border Transfer Tracking</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">📄</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Contract Governance™</h3>
-                <p>Contract lifecycle, obligation tracking, renewal management, and Contract Score™ engine.</p>
-                <ul className="pillar__feats">
-                  <li>Contract Library</li>
-                  <li>Clause Management</li>
-                  <li>Obligation Tracker</li>
-                  <li>Renewal Dashboard</li>
-                  <li>Contract Score™</li>
-                  <li>AI Contract Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🔧</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Issue &amp; Remediation Hub™</h3>
-                <p>Centralized governance execution — issues, tasks, exceptions, SLA tracking, and escalations.</p>
-                <ul className="pillar__feats">
-                  <li>Issue Registry™</li>
-                  <li>Task Management™</li>
-                  <li>Exception Management™</li>
-                  <li>Escalation Engine™</li>
-                  <li>SLA Tracking™</li>
+                  <li>Questionnaire Exchange™</li>
+                  <li>Evidence Collection™</li>
+                  <li>Evidence Requests</li>
+                  <li>Vendor Reviews</li>
                   <li>AI Remediation Planner™</li>
                 </ul>
               </article>
 
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🔗</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Third-Party Risk Exchange™</h3>
-                <p>Trust Network — vendor trust profiles, evidence exchange, badges, and a searchable trust directory.</p>
-                <ul className="pillar__feats">
-                  <li>Trust Profile™</li>
-                  <li>Evidence Exchange™</li>
-                  <li>Trust Badges™</li>
-                  <li>Questionnaire Exchange™</li>
-                  <li>Vendor Trust Directory™</li>
-                  <li>AI Trust Analyst™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">📊</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Governance Benchmarking™</h3>
-                <p>Industry peer comparison across 10 governance categories with percentile rankings and maturity levels.</p>
-                <ul className="pillar__feats">
-                  <li>10 Category Scorecards</li>
-                  <li>Percentile Engine™</li>
-                  <li>Governance Rankings™</li>
-                  <li>Maturity Levels</li>
-                  <li>Benchmark Trends™</li>
-                  <li>AI Benchmark Analyst™</li>
-                </ul>
-              </article>
-
               <article className="pillar pillar--live reveal" data-delay="120">
                 <div className="pillar__top">
-                  <div className="pillar__icon">⚡</div>
-                  <span className="status status--live">Live</span>
+                  <div className="pillar__icon">◷</div>
+                  <span className="status status--live">Pillar 3</span>
                 </div>
-                <h3>Integration Hub™</h3>
-                <p>Connected Governance Platform — 35+ connectors for Identity, Cloud, Security, ITSM, and more.</p>
+                <h3>Risk &amp; Compliance</h3>
+                <p>Governance execution at scale — from risk identification to compliance validation and audit readiness.</p>
                 <ul className="pillar__feats">
-                  <li>35+ Connectors</li>
-                  <li>Sync Engine™</li>
-                  <li>Evidence Collection™</li>
-                  <li>Webhook Engine™</li>
-                  <li>Connection Health™</li>
-                  <li>AI Integration Advisor™</li>
+                  <li>Framework Management (ISO 27001, SOC 2, DPDP…)</li>
+                  <li>Controls Management</li>
+                  <li>Risk Register &amp; Heat Map</li>
+                  <li>Findings Management</li>
+                  <li>Audit Management</li>
+                  <li>Policy Governance™</li>
                 </ul>
               </article>
 
-              <article className="pillar pillar--live reveal">
+              <article className="pillar pillar--live reveal" data-delay="180">
                 <div className="pillar__top">
-                  <div className="pillar__icon">⚙</div>
-                  <span className="status status--live">Live</span>
+                  <div className="pillar__icon">✦</div>
+                  <span className="status status--live">Pillar 4</span>
                 </div>
-                <h3>Workflow Studio™</h3>
-                <p>Governance automation engine — build approval workflows, automate evidence collection, and enforce policy gates.</p>
+                <h3>Trust Intelligence</h3>
+                <p>AI-powered trust insights and decision support — so every vendor decision is backed by real data.</p>
                 <ul className="pillar__feats">
-                  <li>Workflow Builder</li>
-                  <li>Approval Chains</li>
-                  <li>AI Workflow Generator™</li>
-                  <li>Trigger-based Automation</li>
-                  <li>Run History</li>
-                  <li>Cross-module Triggers</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🌐</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Trust Network™</h3>
-                <p>Public trust infrastructure — aggregate your governance posture into a live, shareable trust profile.</p>
-                <ul className="pillar__feats">
-                  <li>Trust Network Reputation™</li>
-                  <li>Public Trust Profile 2.0</li>
-                  <li>Governance Maturity™</li>
-                  <li>Industry Ranking™</li>
-                  <li>Trust Relationships™</li>
-                  <li>AI Trust Network Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">📈</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Executive Reporting &amp; Analytics™</h3>
-                <p>Role-specific dashboards, board reports, predictive forecasting, and executive scorecards.</p>
-                <ul className="pillar__feats">
-                  <li>6 Role Dashboards (CEO/CRO/CISO/Board)</li>
-                  <li>Board Reports™</li>
-                  <li>Predictive Analytics™</li>
-                  <li>KPI Engine™ — 10 live KPIs</li>
-                  <li>Executive Scorecards™</li>
-                  <li>AI Executive Analyst™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🤖</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>AI Governance™</h3>
-                <p>Responsible AI governance — inventory, risk, controls, compliance, and incident tracking for AI systems.</p>
-                <ul className="pillar__feats">
-                  <li>AI System Inventory™</li>
-                  <li>AI Trust Score™</li>
-                  <li>AI Risk Register™</li>
-                  <li>EU AI Act · ISO 42001 · NIST AI RMF</li>
-                  <li>AI Incident Tracker™</li>
-                  <li>AI Governance Copilot™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🤝</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Auditor Collaboration™</h3>
-                <p>Secure audit rooms for external auditors — evidence exchange, findings, assessments, and AI readiness analysis.</p>
-                <ul className="pillar__feats">
-                  <li>Audit Room™</li>
-                  <li>Evidence Exchange™</li>
-                  <li>External Findings™</li>
-                  <li>Assessment Projects™</li>
-                  <li>Auditor User Management™</li>
-                  <li>AI Audit Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🔌</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Trust API Platform™</h3>
-                <p>Turn AUDT into trust infrastructure — 8 API products, webhooks, developer portal, and usage analytics.</p>
-                <ul className="pillar__feats">
-                  <li>8 API Products</li>
-                  <li>API Key Manager™</li>
-                  <li>Webhook Engine™</li>
-                  <li>Developer Portal™</li>
-                  <li>API Analytics™</li>
-                  <li>AI API Builder™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">✅</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Trust Verification Authority™</h3>
-                <p>Issue, revoke, and publicly verify trust certificates — transforming AUDT into a Trust Authority.</p>
-                <ul className="pillar__feats">
-                  <li>10 Verification Programs™</li>
-                  <li>Trust Certificates™</li>
-                  <li>Public Verify Page</li>
-                  <li>Verification Registry™</li>
-                  <li>Trust Passport™</li>
-                  <li>AI Verification Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🔄</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Continuous Compliance™</h3>
-                <p>Always-on compliance automation — 21 automated checks, evidence collection, access reviews, and attestations.</p>
-                <ul className="pillar__feats">
-                  <li>21 Pre-built Checks (AWS · Azure · GCP · GitHub · Okta)</li>
-                  <li>Evidence Automation™</li>
-                  <li>Access Review Manager™</li>
-                  <li>Compliance Attestations™</li>
-                  <li>Compliance Health™ Score</li>
-                  <li>AI Compliance Officer™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🤖</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Governance Agent Framework™</h3>
-                <p>AI agents that continuously monitor, reason, and act — observations, recommendations, and human-approved actions.</p>
-                <ul className="pillar__feats">
-                  <li>Agent Registry™ — 6 agent types</li>
-                  <li>Agent Studio™ — custom agents</li>
-                  <li>Observations™ &amp; Recommendations™</li>
-                  <li>Human Approval Queue</li>
-                  <li>Multi-agent Orchestration™</li>
-                  <li>Governance Copilot™ NL chat</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal">
-                <div className="pillar__top">
-                  <div className="pillar__icon">⚖️</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Regulatory Intelligence™</h3>
-                <p>Always-current regulatory tracking — 18 built-in global regulations, change monitoring, obligation tracking, and AI horizon forecasting.</p>
-                <ul className="pillar__feats">
-                  <li>18 Built-in Regulations (DPDP · GDPR · EU AI Act · ISO 27001 · DORA…)</li>
-                  <li>Change Monitor™</li>
-                  <li>Obligations Tracker™</li>
-                  <li>Compliance Horizon™ AI forecast</li>
-                  <li>Regulatory Readiness Score™</li>
-                  <li>AI Regulatory Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="60">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🗂️</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Asset Intelligence™</h3>
-                <p>Enterprise asset graph — master inventory connecting every governance entity to enterprise assets, PII tracking, and dependency mapping.</p>
-                <ul className="pillar__feats">
-                  <li>Asset Registry™ — 12 asset types</li>
-                  <li>Asset Trust Score™</li>
-                  <li>Data Asset Catalog™ (PII tracking)</li>
-                  <li>Asset Relationships™ — dependency graph</li>
-                  <li>Asset Alerts™</li>
-                  <li>AI Asset Advisor™</li>
-                </ul>
-              </article>
-
-              <article className="pillar pillar--live reveal" data-delay="120">
-                <div className="pillar__top">
-                  <div className="pillar__icon">🛡️</div>
-                  <span className="status status--live">Live</span>
-                </div>
-                <h3>Security Command Center™</h3>
-                <p>Enterprise security platform — MFA enforcement, SSO, session management, IP allow lists, evidence protection, and vendor monitoring.</p>
-                <ul className="pillar__feats">
-                  <li>MFA Management™ &amp; Enterprise SSO™</li>
-                  <li>Session Management™</li>
-                  <li>IP Allow Lists™</li>
-                  <li>Evidence Protection™ (expiring share links)</li>
-                  <li>AI Security Governance™ (prompt audit trail)</li>
-                  <li>Public Trust Center™</li>
+                  <li>Trust Score™ — live vendor trust measurement</li>
+                  <li>Governance Copilot™</li>
+                  <li>Trust Graph™</li>
+                  <li>Governance Benchmarking™</li>
+                  <li>Continuous Monitoring™</li>
+                  <li>Executive Reporting &amp; Analytics™</li>
                 </ul>
               </article>
 
@@ -1003,15 +470,82 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* TRUST INTELLIGENCE */}
-        <section className="section" id="trust-intelligence">
+        {/* WHY AUDT — COMPARISON TABLE */}
+        <section className="section section--alt" id="why-audt">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Trust Intelligence™</span>
-              <h2>Trust Intelligence™ For Every Decision.</h2>
+              <span className="eyebrow">Why AUDT</span>
+              <h2>Most Platforms Start With Compliance.<br />We Start With The Vendor.</h2>
+              <p>Compliance is one part of vendor governance. AUDT governs the entire lifecycle.</p>
+            </div>
+            <div className="comparison-table reveal">
+              <div className="comparison-table__head">
+                <div className="comparison-table__col comparison-table__col--label" />
+                <div className="comparison-table__col comparison-table__col--old">Traditional Platforms</div>
+                <div className="comparison-table__col comparison-table__col--new">AUDT</div>
+              </div>
+              {[
+                ["Approach", "Compliance First", "Vendor First"],
+                ["Model", "Audit Driven", "Lifecycle Driven"],
+                ["Architecture", "Point Solutions", "Unified Platform"],
+                ["Monitoring", "Static Reviews", "Continuous Monitoring"],
+                ["Audits", "Annual Audits", "Continuous Trust Validation"],
+                ["Tooling", "Multiple Disconnected Tools", "Single System of Record"],
+                ["Vendor Trust", "Assumed", "Measured with Trust Score™"],
+                ["AI", "Reports and dashboards", "Governance Agents™ + Copilot™"],
+              ].map(([label, old, neu]) => (
+                <div key={label} className="comparison-table__row">
+                  <div className="comparison-table__col comparison-table__col--label">{label}</div>
+                  <div className="comparison-table__col comparison-table__col--old">
+                    <span className="comparison-table__x">✕</span> {old}
+                  </div>
+                  <div className="comparison-table__col comparison-table__col--new">
+                    <span className="comparison-table__check">✓</span> {neu}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="ti-highlight reveal">
+              <div className="ti-highlight__badge">Category Definition</div>
+              <h3>The Vendor Governance &amp; Trust Operations Platform</h3>
               <p>
-                AUDT continuously evaluates governance posture using evidence, controls, risks,
-                audits, and compliance signals — giving you a live view of organizational trust.
+                AUDT is not another GRC tool. We&apos;re building the system of record for vendor trust —
+                where every vendor relationship is governed, every assessment is tracked, and every trust decision
+                is backed by continuous evidence.
+              </p>
+              <div className="ti-highlight__items">
+                <div className="ti-highlight__item">
+                  <span className="ti-highlight__icon">▤</span>
+                  <span>Every vendor. One system of record.</span>
+                </div>
+                <div className="ti-highlight__item">
+                  <span className="ti-highlight__icon">✦</span>
+                  <span>Trust is measured, not assumed</span>
+                </div>
+                <div className="ti-highlight__item">
+                  <span className="ti-highlight__icon">◷</span>
+                  <span>Compliance built on vendor evidence</span>
+                </div>
+                <div className="ti-highlight__item">
+                  <span className="ti-highlight__icon">📊</span>
+                  <span>Lifecycle-driven, not audit-driven</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TRUST SCORE */}
+        <section className="section" id="trust-score">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Trust Score™</span>
+              <h2>Measure Vendor Trust In Real Time.</h2>
+              <p>
+                Trust should not be a subjective decision. AUDT continuously calculates a Trust Score™ for every vendor
+                using signals from security, compliance, risk, monitoring, performance, and audit readiness —
+                so your team always knows exactly where they stand.
               </p>
             </div>
             <div className="trust-scores reveal">
@@ -1033,7 +567,7 @@ export default function LandingPage() {
                     <span className="score-num" data-score="92">0</span>
                   </div>
                 </div>
-                <div className="tscore__label">Vendor Trust Score™</div>
+                <div className="tscore__label">Security Posture</div>
                 <div className="tscore__sub">↑ 4 pts this month</div>
               </div>
               <div className="tscore">
@@ -1054,7 +588,7 @@ export default function LandingPage() {
                     <span className="score-num" data-score="88">0</span>
                   </div>
                 </div>
-                <div className="tscore__label">Control Health Score</div>
+                <div className="tscore__label">Compliance Coverage</div>
                 <div className="tscore__sub">3 controls need review</div>
               </div>
               <div className="tscore tscore--featured">
@@ -1075,8 +609,8 @@ export default function LandingPage() {
                     <span className="score-num" data-score="94">0</span>
                   </div>
                 </div>
-                <div className="tscore__label">Audit Readiness</div>
-                <div className="tscore__sub">ISO 27001 — Ready</div>
+                <div className="tscore__label">Vendor Trust Score™</div>
+                <div className="tscore__sub">Overall — Trusted</div>
               </div>
               <div className="tscore">
                 <div className="tscore__ring">
@@ -1096,115 +630,116 @@ export default function LandingPage() {
                     <span className="score-num" data-score="90">0</span>
                   </div>
                 </div>
-                <div className="tscore__label">Compliance Score</div>
-                <div className="tscore__sub">SOC 2 in progress</div>
+                <div className="tscore__label">Audit Readiness</div>
+                <div className="tscore__sub">ISO 27001 — Ready</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* AI COPILOT */}
-        <section className="section section--alt" id="copilot">
-          <div className="container ai-sec">
-            <div className="ai-sec__copy reveal">
-              <span className="eyebrow">Governance Copilot™</span>
-              <h2>Ask Governance Anything</h2>
-              <p>
-                Not a chatbot bolted on. The Governance Copilot™ is woven through every module —
-                extracting evidence, explaining risk, writing audit narratives, detecting gaps,
-                and answering questions about your exact governance posture in plain English.
-              </p>
-              <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary">Book a Demo</a>
-            </div>
-            <div className="ai-chat reveal" data-delay="100">
-              <div className="chat__header">
-                <span className="chat__dot" style={{ background: "#ff5f57" }} />
-                <span className="chat__dot" style={{ background: "#febc2e" }} />
-                <span className="chat__dot" style={{ background: "#28c840" }} />
-                <span className="chat__title">✦ Governance Copilot™</span>
-              </div>
-              <div className="chat__body">
-                <div className="chat__q">Are we audit ready?</div>
-                <div className="chat__a">Audit readiness is 92%. 3 evidence gaps remain. 2 controls require review. 1 vendor assessment expires in 14 days.</div>
-                <div className="chat__q">Which vendors need attention?</div>
-                <div className="chat__a">4 vendors have declining trust scores. 2 require document refresh. 1 requires immediate review.</div>
-                <div className="chat__q">Generate board report.</div>
-                <div className="chat__a">Board report prepared. Includes: Risk Summary · Compliance Status · Trust Metrics · Executive Recommendations</div>
-              </div>
-              <div className="chat__input">
-                <span>Ask about your governance posture...</span>
-                <span className="chat__send">✦</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SOLUTIONS */}
-        <section className="section" id="solutions-grid">
+        {/* SOLUTIONS BY TEAM */}
+        <section className="section section--alt" id="solutions">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Solutions</span>
-              <h2>Solutions Built On The Governance OS</h2>
-              <p>Purpose-built solutions for every governance team — powered by the same intelligence layer.</p>
+              <span className="eyebrow">Solutions By Team</span>
+              <h2>Built For Every Governance Team.</h2>
+              <p>Purpose-built workflows for every team that touches vendor governance — from security to procurement to the board.</p>
             </div>
             <div className="solutions">
               <div className="sol reveal">
-                <div className="sol__icon">▤</div>
-                <h3>Vendor Governance</h3>
-                <p>Third-party risk, vendor lifecycle, Trust Score™, document management, and AI-powered assessments.</p>
+                <div className="sol__icon">🛡</div>
+                <h3>Security Teams</h3>
+                <p>Assess vendor security posture, track risk across the vendor portfolio, monitor controls, and manage security incidents — all in one place.</p>
               </div>
               <div className="sol reveal" data-delay="60">
-                <div className="sol__icon">🛡</div>
-                <h3>Risk &amp; Control Management</h3>
-                <p>Risk registers, heat maps, Control Health™ scoring, cross-framework mapping, and AI gap detection.</p>
+                <div className="sol__icon">◷</div>
+                <h3>Compliance Teams</h3>
+                <p>Automate evidence collection from vendors, validate controls against frameworks, and stay audit-ready every day of the year.</p>
               </div>
               <div className="sol reveal" data-delay="120">
-                <div className="sol__icon">◷</div>
-                <h3>Compliance Management</h3>
-                <p>Framework readiness across ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA — with evidence auto-import.</p>
+                <div className="sol__icon">▤</div>
+                <h3>Procurement Teams</h3>
+                <p>Manage vendor onboarding, track contracts and obligations, schedule reviews, and make structured renewal decisions backed by trust data.</p>
               </div>
               <div className="sol reveal">
-                <div className="sol__icon">◎</div>
-                <h3>Audit Readiness</h3>
-                <p>Structured audit programs, findings, CAPAs, benchmarking, and AI-generated board reports.</p>
+                <div className="sol__icon">⚠</div>
+                <h3>Risk Teams</h3>
+                <p>Identify, prioritize, and remediate vendor risk with a unified register, visual heat maps, treatment tracking, and AI risk officer.</p>
               </div>
               <div className="sol reveal" data-delay="60">
-                <div className="sol__icon">🔒</div>
-                <h3>Privacy &amp; Contract</h3>
-                <p>India DPDP Act 2023 compliance, DSR workflows, contract lifecycle, obligation tracking, and renewals.</p>
+                <div className="sol__icon">📊</div>
+                <h3>Leadership Teams</h3>
+                <p>Understand organizational trust posture and vendor exposure through executive dashboards, board reports, and predictive analytics.</p>
               </div>
               <div className="sol reveal" data-delay="120">
-                <div className="sol__icon">⚡</div>
-                <h3>Connected Governance</h3>
-                <p>35+ integrations, trust network exchange, automated evidence collection, and real-time monitoring.</p>
+                <div className="sol__icon">🤝</div>
+                <h3>Audit Teams</h3>
+                <p>Work with external auditors in secure audit rooms, exchange evidence, track findings, and run assessments through structured collaboration.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* WHY AUDT — COMPARISON TABLE */}
-        <section className="section section--alt" id="why-audt">
+        {/* METRICS BANNER */}
+        <section className="metrics-banner-section">
+          <div className="container">
+            <div className="metrics-banner reveal">
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">10</div>
+                <div className="metrics-banner__label">Lifecycle Stages</div>
+              </div>
+              <div className="metrics-banner__divider" />
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">32</div>
+                <div className="metrics-banner__label">Governance Modules</div>
+              </div>
+              <div className="metrics-banner__divider" />
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">Continuous</div>
+                <div className="metrics-banner__label">Trust Monitoring</div>
+              </div>
+              <div className="metrics-banner__divider" />
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">174+</div>
+                <div className="metrics-banner__label">Pre-built Controls</div>
+              </div>
+              <div className="metrics-banner__divider" />
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">Trust</div>
+                <div className="metrics-banner__label">Score Built In</div>
+              </div>
+              <div className="metrics-banner__divider" />
+              <div className="metrics-banner__item">
+                <div className="metrics-banner__val">AI</div>
+                <div className="metrics-banner__label">Governance Native</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* COMPETITIVE COMPARISON */}
+        <section className="section" id="competitive">
           <div className="container">
             <div className="section__head reveal">
-              <span className="eyebrow">Why AUDT</span>
-              <h2>Traditional GRC Is Dead.</h2>
-              <p>Point solutions and spreadsheets cannot keep pace with modern governance. AUDT is the operating system that replaces them.</p>
+              <span className="eyebrow">A Different Approach</span>
+              <h2>A Different Approach To Vendor Governance.</h2>
+              <p>Most platforms solve a single governance problem. AUDT manages the complete vendor lifecycle.</p>
             </div>
             <div className="comparison-table reveal">
               <div className="comparison-table__head">
-                <div className="comparison-table__col comparison-table__col--label" />
-                <div className="comparison-table__col comparison-table__col--old">Traditional GRC</div>
+                <div className="comparison-table__col comparison-table__col--label">Capability</div>
+                <div className="comparison-table__col comparison-table__col--old">Vanta / UpGuard</div>
                 <div className="comparison-table__col comparison-table__col--new">AUDT</div>
               </div>
               {[
-                ["Evidence collection", "Manual, quarterly", "Continuous, automated"],
-                ["Compliance monitoring", "Point-in-time audits", "Always-on validation"],
-                ["Risk management", "Spreadsheet-based", "AI-powered with real-time scoring"],
-                ["Vendor governance", "Email and static portals", "Trust Score™ + live assessments"],
-                ["Audit preparation", "Weeks of effort", "AI-generated, audit-ready always"],
-                ["Trust visibility", "Internal only", "Public Trust Infrastructure™"],
-                ["AI systems governance", "Not covered", "Dedicated AI Governance™ module"],
-                ["Agent automation", "None", "Governance Agent Framework™"],
+                ["Compliance Automation", "Yes", "Yes — continuous, automated"],
+                ["Vendor Governance", "Limited / Partial", "Full lifecycle — Discover to Offboard"],
+                ["Risk Management", "Partial", "Full register + heat map + AI risk officer"],
+                ["Audit Management", "Partial", "Programs + findings + CAPAs + AI auditor"],
+                ["Continuous Monitoring", "Partial", "Always-on 7 monitoring rules"],
+                ["Trust Intelligence", "No", "Trust Score™ + Trust Graph™ + Copilot™"],
+                ["Full Vendor Lifecycle", "No / Partial", "10-stage lifecycle in one platform"],
+                ["AI Governance Agents", "No", "6 agent types — 24/7 autonomous monitoring"],
               ].map(([label, old, neu]) => (
                 <div key={label} className="comparison-table__row">
                   <div className="comparison-table__col comparison-table__col--label">{label}</div>
@@ -1217,33 +752,194 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Trust Infrastructure Highlight */}
-            <div className="ti-highlight reveal">
-              <div className="ti-highlight__badge">Industry First</div>
-              <h3>The Industry&apos;s First Trust Infrastructure Platform</h3>
+        {/* TRUST INTELLIGENCE */}
+        <section className="section section--alt" id="trust-intelligence">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Trust Intelligence™</span>
+              <h2>Trust Intelligence™ For Every Vendor Decision.</h2>
               <p>
-                AUDT goes beyond governance software. We&apos;re building the infrastructure layer for organizational trust —
-                where governance becomes proof, proof becomes trust, and trust becomes competitive advantage.
+                AUDT continuously evaluates vendor governance posture using evidence, controls, risks,
+                audits, and compliance signals — giving you a live view of vendor trust across the entire organization.
               </p>
-              <div className="ti-highlight__items">
-                <div className="ti-highlight__item">
-                  <span className="ti-highlight__icon">✦</span>
-                  <span>Trust is measured, not assumed</span>
-                </div>
-                <div className="ti-highlight__item">
-                  <span className="ti-highlight__icon">✅</span>
-                  <span>Governance becomes proof</span>
-                </div>
-                <div className="ti-highlight__item">
-                  <span className="ti-highlight__icon">🌐</span>
-                  <span>Proof is shared across your network</span>
-                </div>
-                <div className="ti-highlight__item">
-                  <span className="ti-highlight__icon">📊</span>
-                  <span>Trust posture is always visible</span>
+            </div>
+            <div className="ti-grid">
+              <div className="ti-item reveal">
+                <div className="ti-item__icon">✦</div>
+                <div>
+                  <h3>Trust Score™</h3>
+                  <p>A live 0–100 trust score per vendor, computed from security, compliance, risk, assessments, operations, and freshness signals.</p>
                 </div>
               </div>
+              <div className="ti-item reveal" data-delay="60">
+                <div className="ti-item__icon">🌐</div>
+                <div>
+                  <h3>Trust Graph™</h3>
+                  <p>Force-directed governance knowledge graph connecting vendors, controls, risks, findings, policies, and frameworks.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="120">
+                <div className="ti-item__icon">✦</div>
+                <div>
+                  <h3>Governance Copilot™</h3>
+                  <p>Ask anything about your vendor governance posture in plain English — across every module, in real time.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal">
+                <div className="ti-item__icon">📊</div>
+                <div>
+                  <h3>Benchmarking™</h3>
+                  <p>Compare your vendor governance posture against industry peers across 10 categories and see where you rank.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="60">
+                <div className="ti-item__icon">📡</div>
+                <div>
+                  <h3>Continuous Monitoring™</h3>
+                  <p>7 automated governance monitoring rules run continuously — alerting on expired evidence, critical risks, and vendor issues.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="120">
+                <div className="ti-item__icon">📈</div>
+                <div>
+                  <h3>Governance Trends™</h3>
+                  <p>90-day trend analysis across 6 governance metrics with change percentage and historical score tables.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* AI COPILOT */}
+        <section className="section" id="copilot">
+          <div className="container ai-sec">
+            <div className="ai-sec__copy reveal">
+              <span className="eyebrow">Governance Copilot™</span>
+              <h2>Ask Vendor Governance Anything</h2>
+              <p>
+                Not a chatbot bolted on. The Governance Copilot™ is woven through every module —
+                extracting vendor evidence, explaining risk, writing audit narratives, detecting compliance gaps,
+                and answering questions about your exact vendor governance posture in plain English.
+              </p>
+              <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary">Book a Demo</a>
+            </div>
+            <div className="ai-chat reveal" data-delay="100">
+              <div className="chat__header">
+                <span className="chat__dot" style={{ background: "#ff5f57" }} />
+                <span className="chat__dot" style={{ background: "#febc2e" }} />
+                <span className="chat__dot" style={{ background: "#28c840" }} />
+                <span className="chat__title">✦ Governance Copilot™</span>
+              </div>
+              <div className="chat__body">
+                <div className="chat__q">Which vendors need attention?</div>
+                <div className="chat__a">4 vendors have declining trust scores. 2 require document refresh. 1 vendor assessment expires in 14 days. 1 contract renewal is overdue.</div>
+                <div className="chat__q">Are we audit ready for ISO 27001?</div>
+                <div className="chat__a">Audit readiness is 92%. 3 evidence gaps remain. 2 vendor controls require review. Evidence Vault™ is current.</div>
+                <div className="chat__q">Generate vendor risk board report.</div>
+                <div className="chat__a">Board report prepared. Includes: Vendor Risk Summary · Trust Score Trends · Compliance Status · Renewal Pipeline · Executive Recommendations</div>
+              </div>
+              <div className="chat__input">
+                <span>Ask about your vendor governance posture...</span>
+                <span className="chat__send">✦</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* GOVERNANCE AGENTS */}
+        <section className="section section--alt" id="agents">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Governance Agents™</span>
+              <h2>AI Agents That Watch Your Vendors 24/7</h2>
+              <p>Specialized AI agents continuously monitor vendor governance across your organization and surface observations, recommendations, and actions — with human approval always in the loop.</p>
+            </div>
+            <div className="agents-grid">
+              <div className="agent-card reveal">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--vendor">▤</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">Vendor Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Monitors vendor trust scores</li>
+                  <li>Requests vendor evidence</li>
+                  <li>Launches assessments</li>
+                  <li>Tracks periodic reviews</li>
+                </ul>
+              </div>
+              <div className="agent-card reveal" data-delay="60">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--compliance">◷</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">Compliance Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Monitors vendor controls</li>
+                  <li>Collects evidence automatically</li>
+                  <li>Tracks framework readiness</li>
+                  <li>Launches remediation</li>
+                </ul>
+              </div>
+              <div className="agent-card reveal" data-delay="120">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--risk">⚠</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">Risk Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Detects emerging vendor risks</li>
+                  <li>Monitors risk trends</li>
+                  <li>Escalates critical issues</li>
+                  <li>Tracks mitigation progress</li>
+                </ul>
+              </div>
+              <div className="agent-card reveal">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--audit">◎</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">Audit Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Prepares audit rooms</li>
+                  <li>Collects vendor evidence</li>
+                  <li>Identifies audit gaps</li>
+                  <li>Creates findings</li>
+                </ul>
+              </div>
+              <div className="agent-card reveal" data-delay="60">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--trust">✦</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">Trust Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Monitors vendor trust posture</li>
+                  <li>Tracks verification health</li>
+                  <li>Improves trust scores</li>
+                  <li>Identifies trust risks</li>
+                </ul>
+              </div>
+              <div className="agent-card reveal" data-delay="120">
+                <div className="agent-card__top">
+                  <div className="agent-card__icon agent-card__icon--ai">🤖</div>
+                  <span className="agent-card__badge">Active 24/7</span>
+                </div>
+                <h3 className="agent-card__name">AI Governance Agent™</h3>
+                <ul className="agent-card__caps">
+                  <li>Monitors AI vendor systems</li>
+                  <li>Tracks AI risks</li>
+                  <li>Evaluates compliance</li>
+                  <li>Recommends controls</li>
+                </ul>
+              </div>
+            </div>
+            <div className="agents-cta reveal">
+              <a href="/signup" className="btn btn--primary">Activate Governance Agents</a>
+              <a href="#copilot" className="btn btn--ghost">See Governance Copilot™ <span className="arrow">→</span></a>
             </div>
           </div>
         </section>
@@ -1254,13 +950,13 @@ export default function LandingPage() {
             <div className="section__head reveal">
               <span className="eyebrow">Platform Architecture</span>
               <h2>Built On A Shared Intelligence Layer.</h2>
-              <p>Every module is powered by the same evidence, intelligence, and workflow engine — no data silos.</p>
+              <p>Every module is powered by the same vendor evidence, trust intelligence, and workflow engine — no data silos, no disconnected tools.</p>
             </div>
             <div className="arch reveal">
               <div className="arch__top">
                 <div className="arch__layer arch__layer--primary">Governance Copilot™</div>
                 <div className="arch__layer">Trust Intelligence™</div>
-                <div className="arch__layer">Trust Graph™</div>
+                <div className="arch__layer">Trust Score™</div>
                 <div className="arch__layer">Governance Benchmarking™</div>
               </div>
               <div className="arch__divider">
@@ -1270,7 +966,7 @@ export default function LandingPage() {
               </div>
               <div className="arch__bottom">
                 <div className="arch__node">Vendors</div>
-                <div className="arch__node">Policies</div>
+                <div className="arch__node">Assessments</div>
                 <div className="arch__node">Controls</div>
                 <div className="arch__node">Audits</div>
                 <div className="arch__node">Risks</div>
@@ -1291,7 +987,7 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Impact</span>
-              <h2>Govern With Confidence.</h2>
+              <h2>Govern Vendors With Confidence.</h2>
             </div>
             <div className="metrics-grid">
               <div className="mstat reveal">
@@ -1308,14 +1004,81 @@ export default function LandingPage() {
               </div>
               <div className="mstat reveal" data-delay="180">
                 <div className="mstat__num">100%</div>
-                <div className="mstat__label">Governance visibility from day one</div>
+                <div className="mstat__label">Vendor governance visibility from day one</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* VISION */}
+        <section className="section" id="vision">
+          <div className="container">
+            <div className="section__head reveal">
+              <span className="eyebrow">Our Vision</span>
+              <h2>Building The System Of Record For Vendor Trust.</h2>
+              <p>
+                Our vision is simple.
+              </p>
+              <p style={{ marginTop: "1rem", fontSize: "1.1rem", color: "var(--color-ink-dim)", lineHeight: 2 }}>
+                Every vendor.<br />
+                Every assessment.<br />
+                Every risk.<br />
+                Every control.<br />
+                Every audit.
+              </p>
+              <p style={{ marginTop: "1.5rem", fontSize: "1.25rem", fontWeight: 700, background: "linear-gradient(135deg, #818cf8, #2dd4ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                One platform.
+              </p>
+            </div>
+            <div className="ti-grid">
+              <div className="ti-item reveal">
+                <div className="ti-item__icon">▤</div>
+                <div>
+                  <h3>Vendor First</h3>
+                  <p>Every governance activity starts with the vendor relationship — not a compliance checklist.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="60">
+                <div className="ti-item__icon">🔄</div>
+                <div>
+                  <h3>Lifecycle Driven</h3>
+                  <p>Governance covers the entire vendor lifecycle — from discovery to offboarding, not just annual audits.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="120">
+                <div className="ti-item__icon">✦</div>
+                <div>
+                  <h3>Trust Measured</h3>
+                  <p>Every vendor relationship produces a measurable, continuously updated trust signal — not a manual score.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal">
+                <div className="ti-item__icon">📊</div>
+                <div>
+                  <h3>Proof Based</h3>
+                  <p>Governance built on evidence — every decision is backed by collected, verified proof from the vendor itself.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="60">
+                <div className="ti-item__icon">🤖</div>
+                <div>
+                  <h3>AI Powered</h3>
+                  <p>AI agents continuously monitor vendor posture, surface observations, and generate recommendations — without manual effort.</p>
+                </div>
+              </div>
+              <div className="ti-item reveal" data-delay="120">
+                <div className="ti-item__icon">🌐</div>
+                <div>
+                  <h3>Trust Shared</h3>
+                  <p>Trust posture is always visible — to your team, your auditors, your partners, and your customers.</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* PRICING */}
-        <section className="section section--alt" id="contact">
+        <section className="section section--alt" id="pricing">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Simple Pricing</span>
@@ -1333,7 +1096,7 @@ export default function LandingPage() {
                     <span className="pcard__amount">$2,999</span>
                     <span className="pcard__period">/ year</span>
                   </div>
-                  <p className="pcard__tagline">The complete governance foundation for fast-growing companies getting compliance-ready.</p>
+                  <p className="pcard__tagline">The complete vendor governance foundation for fast-growing companies getting compliance-ready.</p>
                 </div>
                 <div className="pcard__divider" />
                 <ul className="pcard__feats">
@@ -1358,7 +1121,7 @@ export default function LandingPage() {
                     <span className="pcard__amount">$6,999</span>
                     <span className="pcard__period">/ year</span>
                   </div>
-                  <p className="pcard__tagline">The full Governance OS for organizations scaling their trust program across vendors, auditors, and regulators.</p>
+                  <p className="pcard__tagline">The full Vendor Governance OS for organizations scaling their trust program across vendors, auditors, and regulators.</p>
                 </div>
                 <div className="pcard__divider" />
                 <ul className="pcard__feats">
@@ -1384,7 +1147,7 @@ export default function LandingPage() {
                   <div className="pcard__price">
                     <span className="pcard__amount">Custom</span>
                   </div>
-                  <p className="pcard__tagline">Tailored deployment for large, regulated organizations with complex governance requirements.</p>
+                  <p className="pcard__tagline">Tailored deployment for large, regulated organizations with complex vendor governance requirements.</p>
                 </div>
                 <div className="pcard__divider" />
                 <ul className="pcard__feats">
@@ -1413,16 +1176,33 @@ export default function LandingPage() {
               </div>
 
               <div className="ftable__group">
-                <div className="ftable__group-head">Core GRC</div>
+                <div className="ftable__group-head">Vendor Governance</div>
                 {[
                   ["Vendor Hub™ + Trust Score™", true, true, true],
+                  ["Contract Governance™", true, true, true],
+                  ["Third-Party Risk Exchange™", false, true, true],
+                  ["Trust Network™ + public profile", false, true, true],
+                  ["Trust Verification Authority™ + certificates", false, true, true],
+                  ["Auditor Collaboration™ — audit rooms", false, true, true],
+                ].map(([label, g, b, e]) => (
+                  <div key={String(label)} className="ftable__row">
+                    <div className="ftable__cell ftable__cell--label">{label}</div>
+                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ftable__group">
+                <div className="ftable__group-head">Risk &amp; Compliance</div>
+                {[
                   ["Evidence Vault™ + 174 controls", true, true, true],
                   ["Audit Management + CAPA tracker", true, true, true],
                   ["Risk Lens™ + Heat Map", true, true, true],
                   ["Control Center™ + Health scoring", true, true, true],
                   ["Policy Governance™ + attestations", true, true, true],
                   ["DPDP Privacy™", true, true, true],
-                  ["Contract Governance™", true, true, true],
                   ["Issue & Remediation Hub™", false, true, true],
                   ["Workflow Studio™", false, true, true],
                 ].map(([label, g, b, e]) => (
@@ -1436,7 +1216,7 @@ export default function LandingPage() {
               </div>
 
               <div className="ftable__group">
-                <div className="ftable__group-head">Intelligence & Analytics</div>
+                <div className="ftable__group-head">Trust Intelligence</div>
                 {[
                   ["Trust Intelligence™ + Org Trust Score™", true, true, true],
                   ["Governance Trends™ + Monitoring™", true, true, true],
@@ -1456,12 +1236,14 @@ export default function LandingPage() {
               </div>
 
               <div className="ftable__group">
-                <div className="ftable__group-head">AI & Agents</div>
+                <div className="ftable__group-head">AI &amp; Agents</div>
                 {[
                   ["Governance Copilot™ (NL chat across all modules)", true, true, true],
                   ["AI Governance™ — AI system inventory + risks", false, true, true],
                   ["Governance Agent Framework™ — 6 agent types", false, true, true],
                   ["Continuous Compliance™ — 21 automated checks", false, true, true],
+                  ["Integration Hub™ — 35+ connectors", false, true, true],
+                  ["Trust API Platform™ — 8 products", false, true, true],
                   ["Custom agent configurations", false, false, true],
                 ].map(([label, g, b, e]) => (
                   <div key={String(label)} className="ftable__row">
@@ -1474,26 +1256,7 @@ export default function LandingPage() {
               </div>
 
               <div className="ftable__group">
-                <div className="ftable__group-head">Trust Network</div>
-                {[
-                  ["Third-Party Risk Exchange™", false, true, true],
-                  ["Trust Network™ + public profile", false, true, true],
-                  ["Trust Verification Authority™ + certificates", false, true, true],
-                  ["Trust API Platform™ — 8 products", false, true, true],
-                  ["Auditor Collaboration™ — audit rooms", false, true, true],
-                  ["Integration Hub™ — 35+ connectors", false, true, true],
-                ].map(([label, g, b, e]) => (
-                  <div key={String(label)} className="ftable__row">
-                    <div className="ftable__cell ftable__cell--label">{label}</div>
-                    <div className="ftable__val">{g ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
-                    <div className="ftable__val">{b ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
-                    <div className="ftable__val">{e ? <span className="ftable__check">✓</span> : <span className="ftable__dash">—</span>}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="ftable__group">
-                <div className="ftable__group-head">Security & Platform</div>
+                <div className="ftable__group-head">Security &amp; Platform</div>
                 {[
                   ["Security Command Center™ — MFA, SSO, sessions, IP rules", false, true, true],
                   ["Evidence protection + share links", false, true, true],
@@ -1513,7 +1276,7 @@ export default function LandingPage() {
               </div>
 
               <div className="ftable__group">
-                <div className="ftable__group-head">Users & Support</div>
+                <div className="ftable__group-head">Users &amp; Support</div>
                 {[
                   ["Users included", "10", "50", "Unlimited"],
                   ["Compliance frameworks", "5", "Unlimited", "Unlimited"],
@@ -1532,75 +1295,75 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ROADMAP */}
-        <section className="section" id="roadmap">
+        {/* MODULES OVERVIEW */}
+        <section className="section" id="modules">
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">What&apos;s Built</span>
-              <h2>32 Modules. One Governance OS.</h2>
-              <p>AUDT is the most complete AI-native governance platform available — every module is live and in production.</p>
+              <h2>32 Modules. One Vendor Governance OS.</h2>
+              <p>AUDT is the most complete vendor governance and trust operations platform available — every module is live and in production.</p>
             </div>
             <div className="roadmap-grid">
               <div className="rmap rmap--done reveal">
-                <div className="rmap__label">Governance Core</div>
+                <div className="rmap__label">Vendor Governance</div>
                 <div className="rmap__items">
-                  <div className="rmap__item rmap__item--done">✓ Vendor Hub™ — Vendor Governance</div>
+                  <div className="rmap__item rmap__item--done">✓ Vendor Hub™ — Vendor Registry &amp; Lifecycle</div>
+                  <div className="rmap__item rmap__item--done">✓ Contract Governance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Third-Party Risk Exchange™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Network™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Verification Authority™</div>
+                  <div className="rmap__item rmap__item--done">✓ Auditor Collaboration™</div>
+                </div>
+              </div>
+              <div className="rmap rmap--done reveal" data-delay="80">
+                <div className="rmap__label">Risk &amp; Compliance</div>
+                <div className="rmap__items">
                   <div className="rmap__item rmap__item--done">✓ Evidence Vault™ — Compliance</div>
                   <div className="rmap__item rmap__item--done">✓ Audit Management</div>
                   <div className="rmap__item rmap__item--done">✓ Risk Lens™ — Risk Management</div>
                   <div className="rmap__item rmap__item--done">✓ Control Center™</div>
                   <div className="rmap__item rmap__item--done">✓ Policy Governance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Issue &amp; Remediation Hub™</div>
                 </div>
               </div>
-              <div className="rmap rmap--done reveal" data-delay="80">
-                <div className="rmap__label">Intelligence Layer</div>
+              <div className="rmap rmap--done reveal" data-delay="160">
+                <div className="rmap__label">Trust Intelligence</div>
                 <div className="rmap__items">
-                  <div className="rmap__item rmap__item--done">✓ Trust Intelligence™</div>
-                  <div className="rmap__item rmap__item--done">✓ Trust Score™</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust Intelligence™ + Trust Score™</div>
                   <div className="rmap__item rmap__item--done">✓ Trust Graph™</div>
                   <div className="rmap__item rmap__item--done">✓ Governance Trends™</div>
                   <div className="rmap__item rmap__item--done">✓ Continuous Monitoring™</div>
                   <div className="rmap__item rmap__item--done">✓ Governance Benchmarking™</div>
-                </div>
-              </div>
-              <div className="rmap rmap--done reveal" data-delay="160">
-                <div className="rmap__label">Extended Platform</div>
-                <div className="rmap__items">
-                  <div className="rmap__item rmap__item--done">✓ DPDP Privacy™</div>
-                  <div className="rmap__item rmap__item--done">✓ Contract Governance™</div>
-                  <div className="rmap__item rmap__item--done">✓ Issue &amp; Remediation Hub™</div>
-                  <div className="rmap__item rmap__item--done">✓ Workflow Studio™</div>
-                  <div className="rmap__item rmap__item--done">✓ Third-Party Risk Exchange™</div>
-                  <div className="rmap__item rmap__item--done">✓ Integration Hub™ — 35+ connectors</div>
+                  <div className="rmap__item rmap__item--done">✓ Executive Reporting &amp; Analytics™</div>
                 </div>
               </div>
               <div className="rmap rmap--done reveal" data-delay="240">
-                <div className="rmap__label">Trust Infrastructure</div>
+                <div className="rmap__label">Privacy &amp; Regulation</div>
                 <div className="rmap__items">
-                  <div className="rmap__item rmap__item--done">✓ Trust Network™</div>
-                  <div className="rmap__item rmap__item--done">✓ Executive Reporting &amp; Analytics™</div>
+                  <div className="rmap__item rmap__item--done">✓ DPDP Privacy™</div>
+                  <div className="rmap__item rmap__item--done">✓ Regulatory Intelligence™</div>
+                  <div className="rmap__item rmap__item--done">✓ Asset Intelligence™</div>
                   <div className="rmap__item rmap__item--done">✓ AI Governance™</div>
-                  <div className="rmap__item rmap__item--done">✓ Auditor Collaboration™</div>
-                  <div className="rmap__item rmap__item--done">✓ Trust API Platform™</div>
-                  <div className="rmap__item rmap__item--done">✓ Trust Verification Authority™</div>
+                  <div className="rmap__item rmap__item--done">✓ Security Command Center™</div>
+                  <div className="rmap__item rmap__item--done">✓ Workflow Studio™</div>
                 </div>
               </div>
               <div className="rmap rmap--done reveal" data-delay="320">
-                <div className="rmap__label">AI, Security &amp; Automation</div>
+                <div className="rmap__label">Automation &amp; APIs</div>
                 <div className="rmap__items">
-                  <div className="rmap__item rmap__item--done">✓ Continuous Compliance™</div>
                   <div className="rmap__item rmap__item--done">✓ Governance Agent Framework™</div>
-                  <div className="rmap__item rmap__item--done">✓ Regulatory Intelligence™</div>
-                  <div className="rmap__item rmap__item--done">✓ Asset Intelligence™</div>
-                  <div className="rmap__item rmap__item--done">✓ Security Command Center™</div>
+                  <div className="rmap__item rmap__item--done">✓ Continuous Compliance™</div>
+                  <div className="rmap__item rmap__item--done">✓ Integration Hub™ — 35+ connectors</div>
+                  <div className="rmap__item rmap__item--done">✓ Trust API Platform™</div>
+                  <div className="rmap__item rmap__item--done">✓ Governance Copilot™</div>
                   <div className="rmap__item rmap__item--done">✓ Help &amp; Documentation Center</div>
                 </div>
               </div>
               <div className="rmap rmap--vision reveal" data-delay="400">
                 <div className="rmap__label">Vision</div>
                 <div className="rmap__vision">
-                  <span className="grad-text">Governance OS</span>
-                  <p>The operating system for organizational trust — already here.</p>
+                  <span className="grad-text">Vendor Governance OS</span>
+                  <p>The system of record for vendor trust — already here.</p>
                 </div>
               </div>
             </div>
@@ -1608,16 +1371,16 @@ export default function LandingPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="cta-final" id="contact">
+        <section className="cta-final" id="cta">
           <div className="container cta-final__inner reveal">
             <div className="cta-final__badge">audt.tech</div>
-            <h2>Ready for Autonomous Governance?</h2>
+            <h2>Ready to Govern Every Vendor?</h2>
             <p>
-              AI agents. Continuous compliance. Trust infrastructure. 32 governance modules in one OS — built for organizations that can&apos;t afford to get governance wrong.
+              One platform. Complete lifecycle. Continuous trust. 32 governance modules built for organizations that cannot afford to get vendor governance wrong.
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
-              <a href="/signup" className="btn btn--ghost btn--lg">Activate Agents →</a>
+              <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial →</a>
             </div>
           </div>
         </section>
@@ -1632,26 +1395,36 @@ export default function LandingPage() {
               <span className="logo__text">AUDT</span>
             </a>
             <p className="footer__tag">Governance Built on Proof.</p>
-            <p className="footer__sub">AI-Native Trust, Risk &amp; Compliance Platform.</p>
+            <p className="footer__sub">Vendor Governance &amp; Trust Operations Platform.</p>
           </div>
           <div className="footer__cols">
             <div className="footer__col">
-              <div className="footer__col-head">Product</div>
-              <a href="#platform">Platform</a>
-              <a href="#solutions">Solutions</a>
-              <a href="#contact">Pricing</a>
+              <div className="footer__col-head">Platform</div>
+              <a href="#platform">Vendor Governance</a>
+              <a href="#platform">Trust Operations</a>
+              <a href="#platform">Risk &amp; Compliance</a>
+              <a href="#trust-intelligence">Trust Intelligence</a>
+            </div>
+            <div className="footer__col">
+              <div className="footer__col-head">Solutions</div>
+              <a href="#solutions">Security Teams</a>
+              <a href="#solutions">Compliance Teams</a>
+              <a href="#solutions">Procurement Teams</a>
+              <a href="#solutions">Risk Teams</a>
             </div>
             <div className="footer__col">
               <div className="footer__col-head">Resources</div>
-              <a href="#roadmap">Roadmap</a>
-              <a href="#contact">Documentation</a>
-              <a href="#contact">Security</a>
+              <a href="/docs">Documentation</a>
+              <a href="#modules">Modules</a>
+              <a href="#pricing">Pricing</a>
+              <a href="mailto:hello@audt.tech">Contact</a>
             </div>
             <div className="footer__col">
-              <div className="footer__col-head">Company</div>
-              <a href="#contact">About</a>
-              <a href="#contact">Careers</a>
-              <a href="mailto:hello@audt.tech">Contact</a>
+              <div className="footer__col-head">Trust Intelligence</div>
+              <a href="#trust-score">Trust Score™</a>
+              <a href="#trust-intelligence">Trust Graph™</a>
+              <a href="#copilot">Governance Copilot™</a>
+              <a href="#trust-intelligence">Benchmarking™</a>
             </div>
           </div>
         </div>
