@@ -31,6 +31,7 @@ import {
   HelpCircle,
   TrendingUp,
   Sparkles,
+  Star,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -292,6 +293,30 @@ export function Sidebar() {
           />
           <span className="flex-1 truncate">Dashboard</span>
           {isActive("/dashboard") && (
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-blue)]" />
+          )}
+        </Link>
+
+        {/* Executive Command Center */}
+        <Link
+          href="/executive-command-center"
+          className={cn(
+            "group mt-1 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all",
+            isActive("/executive-command-center")
+              ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
+              : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+          )}
+        >
+          <Star
+            className={cn(
+              "h-4 w-4 shrink-0 transition-colors",
+              isActive("/executive-command-center")
+                ? "text-[var(--color-blue)]"
+                : "text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-dim)]"
+            )}
+          />
+          <span className="flex-1 truncate">Executive Center</span>
+          {isActive("/executive-command-center") && (
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-blue)]" />
           )}
         </Link>
