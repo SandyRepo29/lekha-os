@@ -97,6 +97,9 @@ export default async function DashboardPage() {
   const criticalCount = scoredVendors.filter((v) => v.trustScore < 50).length;
   const unscoredCount = metrics.totalVendors - scoredVendors.length;
 
+  // Expired docs count derived from vendor list
+  const expiredDocs = allVendors.reduce((sum, v) => sum + ((v as any).expired ?? 0), 0);
+
   // Lifecycle funnel — derived from vendor list
   const withDocs      = allVendors.filter((v) => (v.docs ?? 0) > 0).length;
   const lowRisk       = allVendors.filter((v) => v.risk !== "high" && v.risk !== "critical").length;
