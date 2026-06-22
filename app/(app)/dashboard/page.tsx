@@ -108,7 +108,7 @@ export default async function DashboardPage() {
 
   // Action Center — items needing attention
   const actionItems = [
-    { label: "Expired documents",    value: metrics.expiredDocs,                                  href: "/vendors",          tone: "danger" as const,  icon: XCircle },
+    { label: "Expired documents",    value: expiredDocs,                                  href: "/vendors",          tone: "danger" as const,  icon: XCircle },
     { label: "Expiring soon",        value: metrics.expiringSoon,                                 href: "/vendors?expiring=1", tone: "warn" as const,   icon: Clock },
     { label: "Critical risks",       value: trustOverview?.risks.criticalCount ?? 0,              href: "/risks",            tone: "danger" as const,  icon: AlertTriangle },
     { label: "Open critical findings", value: trustOverview?.audits.openCriticalFindings ?? 0,   href: "/audits/findings",  tone: "danger" as const,  icon: ClipboardCheck },
