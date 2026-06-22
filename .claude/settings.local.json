@@ -147,7 +147,8 @@
       "mcp__visualize__show_widget",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/help)",
-      "WebFetch(domain:www.vanta.com)"
+      "WebFetch(domain:www.vanta.com)",
+      "Bash(dir \"C:\\\\Users\\\\sandy\\\\OneDrive\\\\Desktop\\\\LekhaOS\\\\app\\\\api\\\\v1\")"
     ]
   }
 }

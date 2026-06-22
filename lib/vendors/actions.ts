@@ -39,6 +39,7 @@ export async function createVendor(
         ownerEmail: String(formData.get("ownerEmail") || "") || null,
         ownerDepartment: String(formData.get("ownerDepartment") || "") || null,
         vendorTypeId: String(formData.get("vendorTypeId") || "") || null,
+        lifecycleStage: String(formData.get("lifecycleStage") || "") || null,
       },
     });
   } catch (err) {
@@ -81,6 +82,7 @@ export async function updateVendor(
         ownerEmail: String(formData.get("ownerEmail") || "") || null,
         ownerDepartment: String(formData.get("ownerDepartment") || "") || null,
         vendorTypeId: String(formData.get("vendorTypeId") || "") || null,
+        lifecycleStage: String(formData.get("lifecycleStage") || "") || null,
       } as any,
     });
   } catch (err) {

@@ -24,10 +24,12 @@ import { requireUser } from "@/lib/auth/session";
 import {
   getMetrics,
   listVendors,
+  countByLifecycleStage,
   deriveInsights,
   type VendorRow,
   type VendorMetrics,
 } from "@/lib/services/vendor-service";
+import { type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
 import { getTrustIntelligenceOverview } from "@/lib/services/trust-intelligence/trust-intelligence-service";
 import { listOrgActivity } from "@/lib/repositories/activity-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
@@ -46,6 +48,7 @@ export default async function DashboardPage() {
 
   let metrics: VendorMetrics;
   let allVendors: VendorRow[];
+  let lifecycleCounts: Record<VendorLifecycleStage, number> | null = null;
 
   if (session.demo || !session.org) {
     metrics = demoMetrics;
@@ -55,11 +58,13 @@ export default async function DashboardPage() {
       docs: v.docs, expiring: v.expiring,
       ownerName: v.ownerName, ownerEmail: v.ownerEmail,
       ownerDepartment: v.ownerDepartment, expired: v.expired,
+      lifecycleStage: "inventory" as VendorLifecycleStage,
     }));
   } else {
-    [metrics, allVendors] = await Promise.all([
+    [metrics, allVendors, lifecycleCounts] = await Promise.all([
       getMetrics(session.org.id),
       listVendors(session.org.id),
+      countByLifecycleStage(session.org.id),
     ]);
   }
 
@@ -100,11 +105,14 @@ export default async function DashboardPage() {
   // Expired docs count derived from vendor list
   const expiredDocs = allVendors.reduce((sum, v) => sum + ((v as any).expired ?? 0), 0);
 
-  // Lifecycle funnel — derived from vendor list
-  const withDocs      = allVendors.filter((v) => (v.docs ?? 0) > 0).length;
-  const lowRisk       = allVendors.filter((v) => v.risk !== "high" && v.risk !== "critical").length;
-  const compliant     = allVendors.filter((v) => (v.score ?? 0) >= 70).length;
-  const monitored     = healthyCount;
+  // Lifecycle funnel — real counts from lifecycle_stage column
+  const lc = lifecycleCounts;
+  const catalogued = lc ? (lc.discover ?? 0) + (lc.inventory ?? 0) : allVendors.filter((v) => (v.docs ?? 0) > 0).length;
+  const assessed   = lc ? (lc.classify ?? 0) + (lc.assess ?? 0) + (lc.risk ?? 0) : allVendors.filter((v) => v.risk !== "high" && v.risk !== "critical").length;
+  const compliant  = lc ? (lc.comply ?? 0) : allVendors.filter((v) => (v.score ?? 0) >= 70).length;
+  const monitored  = lc ? (lc.monitor ?? 0) : healthyCount;
+  const audited    = lc ? (lc.audit ?? 0) + (lc.renew ?? 0) : 0;
+  const offboarded = lc ? (lc.offboard ?? 0) : 0;
 
   // Action Center — items needing attention
   const actionItems = [
@@ -213,11 +221,11 @@ export default async function DashboardPage() {
         <Card className="p-5">
           <div className="flex items-center gap-0 overflow-x-auto">
             {[
-              { stage: "Onboarded",  count: metrics.totalVendors, href: "/vendors",           active: true },
-              { stage: "Documented", count: withDocs,             href: "/vendors",           active: withDocs > 0 },
-              { stage: "Low Risk",   count: lowRisk,              href: "/risks",             active: lowRisk > 0 },
-              { stage: "Compliant",  count: compliant,            href: "/compliance",        active: compliant > 0 },
-              { stage: "Monitored",  count: monitored,            href: "/trust-intelligence", active: monitored > 0 },
+              { stage: "Catalogued", count: catalogued, href: "/vendors",            active: catalogued > 0 },
+              { stage: "Assessed",   count: assessed,   href: "/vendors",            active: assessed > 0 },
+              { stage: "Compliant",  count: compliant,  href: "/compliance",         active: compliant > 0 },
+              { stage: "Monitored",  count: monitored,  href: "/trust-intelligence", active: monitored > 0 },
+              { stage: "Audited",    count: audited,    href: "/audits",             active: audited > 0 },
             ].map((step, i, arr) => (
               <div key={step.stage} className="flex shrink-0 items-center">
                 <Link href={step.href}
@@ -242,16 +250,24 @@ export default async function DashboardPage() {
                 )}
               </div>
             ))}
-            {/* Future stages */}
-            {["Audited", "Renewed", "Offboarded"].map((stage, i) => (
-              <div key={stage} className="flex shrink-0 items-center">
-                <ChevronRight className="mx-1 h-4 w-4 shrink-0 text-[var(--color-ink-faint)]/40" />
+            {/* Offboard stage */}
+            <div className="flex shrink-0 items-center">
+              <ChevronRight className="mx-1 h-4 w-4 shrink-0 text-[var(--color-ink-faint)]/40" />
+              {offboarded > 0 ? (
+                <Link href="/vendors"
+                  className="flex flex-col items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-5 py-4 text-center transition-colors hover:bg-white/[0.04] opacity-70">
+                  <div className="font-[family-name:var(--font-display)] text-2xl font-extrabold text-[var(--color-ink-faint)]">
+                    {offboarded}
+                  </div>
+                  <div className="text-[11px] font-medium text-[var(--color-ink-faint)] whitespace-nowrap">Offboarded</div>
+                </Link>
+              ) : (
                 <div className="flex flex-col items-center gap-1.5 rounded-xl border border-dashed border-[var(--color-line)]/50 px-5 py-4 text-center opacity-30">
                   <div className="font-[family-name:var(--font-display)] text-2xl font-extrabold text-[var(--color-ink-faint)]">—</div>
-                  <div className="text-[11px] font-medium text-[var(--color-ink-faint)] whitespace-nowrap">{stage}</div>
+                  <div className="text-[11px] font-medium text-[var(--color-ink-faint)] whitespace-nowrap">Offboarded</div>
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
           </div>
         </Card>
       </div>

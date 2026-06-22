@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";
 import { VENDOR_CATEGORIES, RISK_LEVELS } from "@/lib/constants/vendor-options";
+import { LIFECYCLE_STAGES } from "@/lib/constants/vendor-lifecycle";
 import { OwnerFields } from "./owner-fields";
 
 export function NewVendorForm({ children }: { children?: React.ReactNode }) {
@@ -16,6 +17,7 @@ export function NewVendorForm({ children }: { children?: React.ReactNode }) {
   );
   const [category, setCategory] = useState("");
   const [risk, setRisk] = useState("medium");
+  const [lifecycle, setLifecycle] = useState("inventory");
   const selectedRisk = RISK_LEVELS.find((r) => r.value === risk);
 
   return (
@@ -62,6 +64,18 @@ export function NewVendorForm({ children }: { children?: React.ReactNode }) {
             {getRiskIcon(risk)} {selectedRisk.hint}
           </p>
         )}
+      </div>
+
+      <div>
+        <Label htmlFor="lifecycleStage">Lifecycle stage</Label>
+        <Select id="lifecycleStage" name="lifecycleStage" value={lifecycle} onChange={(e) => setLifecycle(e.target.value)}>
+          {LIFECYCLE_STAGES.map((s) => (
+            <SelectOption key={s.value} value={s.value}>{s.label}</SelectOption>
+          ))}
+        </Select>
+        <p className="mt-1.5 text-xs text-[var(--color-ink-faint)]">
+          {LIFECYCLE_STAGES.find((s) => s.value === lifecycle)?.description}
+        </p>
       </div>
 
       <div className="border-t border-[var(--color-line)] pt-4">

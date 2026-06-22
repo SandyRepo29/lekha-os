@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import type { Vendor, VendorDocument } from "@/lib/db/schema";
 import { DomainError } from "./errors";
+export { LIFECYCLE_STAGES, type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
+import { LIFECYCLE_STAGES, type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
 import * as vendorRepo from "@/lib/repositories/vendor-repo";
 import * as documentRepo from "@/lib/repositories/document-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
@@ -24,6 +26,7 @@ export type VendorRow = {
   ownerName: string | null;
   ownerEmail: string | null;
   ownerDepartment: string | null;
+  lifecycleStage: VendorLifecycleStage;
 };
 
 export type VendorMetrics = {
@@ -63,6 +66,7 @@ function toRow(v: Vendor, counts?: DocCounts): VendorRow {
     ownerName: v.ownerName,
     ownerEmail: v.ownerEmail,
     ownerDepartment: v.ownerDepartment,
+    lifecycleStage: (v.lifecycleStage as VendorLifecycleStage) ?? "inventory",
   };
 }
 
@@ -120,7 +124,7 @@ export async function updateVendor(params: {
   input: {
     name: string; category?: string | null; contactEmail?: string | null; risk?: string;
     ownerName?: string | null; ownerEmail?: string | null; ownerDepartment?: string | null;
-    vendorTypeId?: string | null;
+    vendorTypeId?: string | null; lifecycleStage?: string | null;
   };
 }): Promise<void> {
   const vendor = await vendorRepo.findById(params.orgId, params.vendorId);
@@ -141,7 +145,8 @@ export async function updateVendor(params: {
         ownerName: params.input.ownerName?.trim() || null,
         ownerEmail: params.input.ownerEmail?.trim() || null,
         ownerDepartment: params.input.ownerDepartment?.trim() || null,
-        vendorTypeId: (params.input as { vendorTypeId?: string | null }).vendorTypeId || null,
+        vendorTypeId: params.input.vendorTypeId || null,
+        ...(params.input.lifecycleStage ? { lifecycleStage: params.input.lifecycleStage as VendorLifecycleStage } : {}),
       },
       tx
     );
@@ -200,7 +205,7 @@ export async function createVendor(params: {
   input: {
     name: string; category?: string | null; contactEmail?: string | null; risk?: string;
     ownerName?: string | null; ownerEmail?: string | null; ownerDepartment?: string | null;
-    vendorTypeId?: string | null;
+    vendorTypeId?: string | null; lifecycleStage?: string | null;
   };
 }): Promise<{ id: string }> {
   const name = (params.input.name || "").trim();
@@ -226,6 +231,7 @@ export async function createVendor(params: {
         ownerName: params.input.ownerName?.trim() || null,
         ownerEmail: params.input.ownerEmail?.trim() || null,
         ownerDepartment: params.input.ownerDepartment?.trim() || null,
+        lifecycleStage: (params.input.lifecycleStage as VendorLifecycleStage) || "inventory",
       },
       tx
     );
@@ -261,6 +267,19 @@ export async function listVendors(orgId: string): Promise<VendorRow[]> {
   }
 
   return rows.map((v) => toRow(v, byVendor.get(v.id)));
+}
+
+export async function countByLifecycleStage(
+  orgId: string
+): Promise<Record<VendorLifecycleStage, number>> {
+  const vs = await vendorRepo.findVendorsByOrg(orgId);
+  const result = {} as Record<VendorLifecycleStage, number>;
+  for (const s of LIFECYCLE_STAGES) result[s.value] = 0;
+  for (const v of vs) {
+    const stage = (v.lifecycleStage as VendorLifecycleStage) ?? "inventory";
+    result[stage] = (result[stage] ?? 0) + 1;
+  }
+  return result;
 }
 
 export async function getMetrics(orgId: string): Promise<VendorMetrics> {

@@ -466,7 +466,7 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 
 ```
 /                                            Marketing landing page
-/login  /signup  /onboarding                Auth flow
+/login  /signup  /onboarding                Auth flow (onboarding = 3-step wizard)
 /dashboard                                   Main dashboard
 
 --- Vendor Governance ---
@@ -1125,6 +1125,11 @@ components/
     help-content.ts             Static HELP_CONTENT map — all 32 modules, each with title/icon/group/overview/features[]/tips[]/route
     help-panel.tsx              "use client" slide-over panel (w-80, fixed right-0) — detects current module via usePathname(), shows overview + features + tips; triggered by ? in topbar
     help-docs-client.tsx        "use client" full docs page component — search, grouped left sidebar, module cards
+  onboarding/
+    onboarding-form.tsx         3-step wizard (step 1: org name+industry+size · step 2: 6 goal cards · step 3: invite team); goals saved to localStorage as audt_onboarding_goals
+    welcome-banner.tsx          "use client" dismissible gradient banner shown on ?welcome=1; hides via audt_welcome_dismissed localStorage flag
+    onboarding-checklist.tsx    "use client" collapsible 8-task checklist widget on dashboard; all state in localStorage (audt_checklist_completed, audt_checklist_collapsed, audt_checklist_all_done); self-hides when all done
+    coach-mark.tsx              "use client" reusable first-visit beacon + tooltip; pulsing animate-ping dot + positioned tooltip; dismissed via audt_cm_${id} localStorage; disabled prop short-circuits to children
   vendors/                      All vendor UI — forms, detail tabs, document components
   assessments/                  AssessmentForm, AiAssessmentSummary
   activity/                     ActivityFeed
@@ -1820,6 +1825,10 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Standard page heading / spacing** | All module hub and sub-pages use `font-[family-name:var(--font-display)] text-xl font-bold` (not `text-2xl`) and `space-y-6` root wrapper (not `space-y-8`). The one exception is `dashboard/page.tsx` line 411 which uses `text-2xl font-extrabold` for a data value display. |
 | **Asset Intelligence™ encoding** | Asset Intelligence™ pages were written via PowerShell which corrupted UTF-8 `™` → `â„¢` and `—` → `â€"`. Fixed via binary byte replacement (`scripts/fix-encoding.py` + `scripts/fix-emdash.py`). If adding new asset-intelligence pages, write via the Write tool (not PowerShell `Set-Content`) to avoid re-corruption. |
 | **`is_asset_member()` RLS helper** | Migration 0032 creates a `is_asset_member(p_asset_id UUID)` Postgres function for junction table RLS. All 7 junction tables (`asset_risks`, `asset_controls`, etc.) validate org membership via this function. Never add junction table RLS that bypasses this helper. |
+| **Onboarding wizard** | `/onboarding` renders a 3-step client-side wizard (`components/onboarding/onboarding-form.tsx`). Step 1 collects org name + industry + companySize (all saved to DB). Step 2 captures goals (6 checkboxes) stored to `localStorage` as `audt_onboarding_goals` JSON array — read by dashboard. Step 3 sends team invites via `lib/orgs/onboarding-actions.ts`. On finish, redirects to `/dashboard?welcome=1`. |
+| **Onboarding localStorage keys** | `audt_onboarding_goals` — JSON array of goal keys from Step 2. `audt_welcome_dismissed` — "1" after banner dismissed. `audt_checklist_completed` — JSON array of completed task keys. `audt_checklist_collapsed` — "1" when checklist collapsed. `audt_checklist_all_done` — "1" when all 8 tasks complete (hides checklist permanently). `audt_cm_${id}` — "1" per CoachMark ID when dismissed. Never read these on the server — they are client-only. |
+| **CoachMark pattern** | `CoachMark` from `components/onboarding/coach-mark.tsx` wraps any element. Pass `id` (unique, maps to localStorage key), `title`, `body`, `position` (top/bottom/left/right). Pass `disabled={true}` to render children only (use when data already exists — no beacon on non-empty pages). Wrap CTA buttons on empty-state pages only. |
+| **Rich empty states** | Vendor Hub, Risk Lens™, Evidence Vault™, and Audit Management show rich empty states with CTA buttons and hint text when the org has zero data. Pattern: check `count === 0 && !session.demo && session.org` then render `<EmptyState action={<Link+Button>}>`. Do not change existing demo-mode empty states. |
 
 ---
 

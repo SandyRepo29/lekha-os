@@ -83,6 +83,19 @@ export const vendorStatus = pgEnum("vendor_status", [
   "inactive",
 ]);
 
+export const vendorLifecycleStageEnum = pgEnum("vendor_lifecycle_stage", [
+  "discover",
+  "inventory",
+  "classify",
+  "assess",
+  "risk",
+  "comply",
+  "monitor",
+  "audit",
+  "renew",
+  "offboard",
+]);
+
 export const riskLevel = pgEnum("risk_level", [
   "low",
   "medium",
@@ -238,6 +251,7 @@ export const vendors = pgTable(
     /** AI-generated trust narrative (board-ready summary). */
     aiTrustNarrative: text("ai_trust_narrative"),
     aiTrustNarrativeAt: timestamp("ai_trust_narrative_at", { withTimezone: true }),
+    lifecycleStage: vendorLifecycleStageEnum("lifecycle_stage").notNull().default("inventory"),
     createdBy: uuid("created_by").references(() => profiles.id),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

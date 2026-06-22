@@ -17,6 +17,7 @@ export type NewVendor = {
   ownerName?: string | null;
   ownerEmail?: string | null;
   ownerDepartment?: string | null;
+  lifecycleStage?: "discover" | "inventory" | "classify" | "assess" | "risk" | "comply" | "monitor" | "audit" | "renew" | "offboard";
 };
 
 export async function insertVendor(
@@ -59,10 +60,16 @@ export async function updateVendor(
     aiRecommendedActions?: unknown; aiActionsGeneratedAt?: Date | null;
     checklistScore?: number; vendorTypeId?: string | null;
     aiTrustNarrative?: string | null; aiTrustNarrativeAt?: Date | null;
+    lifecycleStage?: "discover" | "inventory" | "classify" | "assess" | "risk" | "comply" | "monitor" | "audit" | "renew" | "offboard";
   },
   exec: Executor = db
 ): Promise<void> {
-  await exec.update(vendors).set({ ...values, updatedAt: new Date() }).where(eq(vendors.id, id));
+  const { lifecycleStage, ...rest } = values;
+  await exec.update(vendors).set({
+    ...rest,
+    ...(lifecycleStage ? { lifecycleStage } : {}),
+    updatedAt: new Date(),
+  }).where(eq(vendors.id, id));
 }
 
 export async function countByOrg(orgId: string): Promise<number> {

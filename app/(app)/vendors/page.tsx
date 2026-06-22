@@ -9,6 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { requireUser } from "@/lib/auth/session";
 import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service";
+import { type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
 import { demoVendors } from "@/lib/demo-data";
 import { VendorFilters } from "@/components/vendors/vendor-filters";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -34,7 +35,7 @@ export default async function VendorsPage({
   let totalDocs = 0;
 
   if (session.demo || !session.org) {
-    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring, expired: v.expired, ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment }));
+    vendors = demoVendors.map((v, i) => ({ id: String(i), name: v.name, category: v.category, status: v.status, risk: v.risk, score: v.score, docs: v.docs, expiring: v.expiring, expired: v.expired, ownerName: v.ownerName, ownerEmail: v.ownerEmail, ownerDepartment: v.ownerDepartment, lifecycleStage: "inventory" as VendorLifecycleStage }));
     total = vendors.length; totalPages = 1;
   } else {
     const result = await listVendorsPaged(session.org.id, page, PAGE_SIZE);

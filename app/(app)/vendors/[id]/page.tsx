@@ -26,6 +26,8 @@ import { scoreLabelColor, scoreLabel } from "@/lib/ui/colors";
 import { computeAndSaveTrustScore } from "@/lib/services/trust-score-service";
 import { TrustScoreWidget } from "@/components/vendors/trust-score-widget";
 import { TrustScoreBadge } from "@/components/vendors/trust-score-badge";
+import { findActiveByVendor } from "@/lib/repositories/risk-repo";
+import { findContractsByOrg } from "@/lib/repositories/contract-repo";
 
 export default async function VendorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -35,13 +37,15 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
   const vendor = await getVendor(session.org.id, id);
   if (!vendor) notFound();
 
-  const [docs, checklist, requests, assessments, reviews, vendorActivity] = await Promise.all([
+  const [docs, checklist, requests, assessments, reviews, vendorActivity, vendorRisks, vendorContracts] = await Promise.all([
     listForVendor(session.org.id, id),
     getChecklistForVendor(session.org.id, id),
     listRequests(session.org.id, id),
     listAssessments(session.org.id, id),
     listReviews(session.org.id, id),
     listVendorActivity(session.org.id, id, 15),
+    findActiveByVendor(session.org.id, id),
+    findContractsByOrg(session.org.id, { vendorId: id }),
   ]);
 
   const urls = await Promise.all(
@@ -192,6 +196,8 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
         trustScore={vendor.trustScore ?? null}
         trustBreakdown={trustBreakdown}
         trustNarrative={vendor.aiTrustNarrative ?? null}
+        vendorRisks={vendorRisks}
+        vendorContracts={vendorContracts}
       />
     </div>
   );

@@ -165,6 +165,9 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
                 </div>
                 <div><Badge tone={statusTone(v.status)}>{v.status}</Badge></div>
                 <div><Badge tone={riskTone(v.risk)}>{v.risk}</Badge></div>
+                <div className="hidden sm:block">
+                  <LifecycleBadge stage={(v as any).lifecycleStage ?? "inventory"} />
+                </div>
                 <div className="flex items-center gap-3 text-sm text-[var(--color-ink-dim)]">
                   <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" />{v.docs}</span>
                   {v.expiring > 0 && <span className="flex items-center gap-1 text-amber-400"><CalendarClock className="h-3.5 w-3.5" />{v.expiring}</span>}
@@ -184,6 +187,34 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery }: Props) {
         )}
       </div>
     </>
+  );
+}
+
+const LIFECYCLE_COLORS: Record<string, string> = {
+  discover:  "border-slate-500/30 bg-slate-500/10 text-slate-400",
+  inventory: "border-blue-500/30 bg-blue-500/10 text-blue-400",
+  classify:  "border-violet-500/30 bg-violet-500/10 text-violet-400",
+  assess:    "border-purple-500/30 bg-purple-500/10 text-purple-400",
+  risk:      "border-orange-500/30 bg-orange-500/10 text-orange-400",
+  comply:    "border-yellow-500/30 bg-yellow-500/10 text-yellow-400",
+  monitor:   "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+  audit:     "border-cyan-500/30 bg-cyan-500/10 text-cyan-400",
+  renew:     "border-indigo-500/30 bg-indigo-500/10 text-indigo-400",
+  offboard:  "border-red-500/30 bg-red-500/10 text-red-400",
+};
+
+const LIFECYCLE_LABELS: Record<string, string> = {
+  discover: "Discover", inventory: "Inventory", classify: "Classify",
+  assess: "Assess", risk: "Risk Review", comply: "Comply",
+  monitor: "Monitor", audit: "Audit", renew: "Renew", offboard: "Offboard",
+};
+
+function LifecycleBadge({ stage }: { stage: string }) {
+  const cls = LIFECYCLE_COLORS[stage] ?? "border-[var(--color-line)] bg-white/5 text-[var(--color-ink-faint)]";
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${cls}`}>
+      {LIFECYCLE_LABELS[stage] ?? stage}
+    </span>
   );
 }
 
