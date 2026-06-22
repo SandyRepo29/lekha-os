@@ -10,22 +10,17 @@ import {
   ClipboardCheck,
   AlertTriangle,
   Lock,
-  Sparkles,
   Settings,
   Shield,
   FileText,
   FileSignature,
   Target,
   GitBranch,
-  Globe,
   BarChart3,
   Plug,
-  Network,
   LineChart,
   Bot,
   Users2,
-  Zap,
-  BadgeCheck,
   Brain,
   ChevronRight,
   ChevronDown,
@@ -34,6 +29,8 @@ import {
   Layers,
   ShieldAlert,
   HelpCircle,
+  TrendingUp,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +56,7 @@ const navGroups: NavGroup[] = [
     key: "vendor-governance",
     label: "Vendor Governance",
     items: [
-      { href: "/vendors",           label: "Vendor Hub™",          icon: Building2 },
+      { href: "/vendors",             label: "Vendor Hub™",          icon: Building2 },
       { href: "/contract-governance", label: "Contract Governance™", icon: FileSignature },
       { href: "/asset-intelligence",  label: "Asset Intelligence™",  icon: Layers },
     ],
@@ -68,23 +65,23 @@ const navGroups: NavGroup[] = [
     key: "trust-operations",
     label: "Trust Operations",
     items: [
-      { href: "/compliance",     label: "Evidence Vault™",  icon: ShieldCheck },
-      { href: "/workflow-studio", label: "Workflow Studio™", icon: GitBranch },
-      { href: "/issue-hub",      label: "Issue Hub™",       icon: Target },
-      { href: "/auditor-collaboration", label: "Auditor Collab™", icon: Users2 },
+      { href: "/compliance",            label: "Evidence Vault™",   icon: ShieldCheck },
+      { href: "/workflow-studio",       label: "Workflow Studio™",  icon: GitBranch },
+      { href: "/issue-hub",             label: "Issues & Findings", icon: Target },
+      { href: "/auditor-collaboration", label: "Auditor Workspace", icon: Users2 },
     ],
   },
   {
     key: "risk-compliance",
     label: "Risk & Compliance",
     items: [
-      { href: "/risks",                  label: "Risk Lens™",              icon: AlertTriangle },
-      { href: "/controls",               label: "Control Center™",         icon: Shield },
-      { href: "/audits",                 label: "Audit Management",        icon: ClipboardCheck },
-      { href: "/policy-governance",      label: "Policy Governance™",      icon: FileText },
-      { href: "/dpdp-privacy",           label: "DPDP Privacy™",           icon: Lock },
-      { href: "/continuous-compliance",  label: "Continuous Compliance™",  icon: Cpu },
-      { href: "/security-center",        label: "Security Command Center™", icon: ShieldAlert },
+      { href: "/risks",                   label: "Risk Lens™",              icon: AlertTriangle },
+      { href: "/controls",                label: "Control Center™",         icon: Shield },
+      { href: "/audits",                  label: "Audit Management",        icon: ClipboardCheck },
+      { href: "/policy-governance",       label: "Policy Governance™",      icon: FileText },
+      { href: "/dpdp-privacy",            label: "DPDP Privacy™",           icon: Lock },
+      { href: "/continuous-compliance",   label: "Continuous Compliance™",  icon: Cpu },
+      { href: "/security-center",         label: "Security Monitoring",     icon: ShieldAlert },
       { href: "/regulatory-intelligence", label: "Regulatory Intelligence™", icon: Scale },
     ],
   },
@@ -92,18 +89,25 @@ const navGroups: NavGroup[] = [
     key: "trust-intelligence",
     label: "Trust Intelligence",
     items: [
-      { href: "/trust-intelligence",  label: "Trust Intelligence™",  icon: Brain },
-      { href: "/benchmarking",        label: "Benchmarking™",        icon: BarChart3 },
-      { href: "/executive-reporting", label: "Executive Reporting™", icon: LineChart },
+      { href: "/trust-intelligence",          label: "Trust Score™",         icon: TrendingUp },
+      { href: "/trust-intelligence/trends",   label: "Trust Analytics™",     icon: Brain },
+      { href: "/benchmarking",                label: "Benchmarking™",        icon: BarChart3 },
+      { href: "/executive-reporting",         label: "Executive Reporting™", icon: LineChart },
       { href: "/trust-intelligence/executive", label: "Governance Copilot™", icon: Sparkles },
-      { href: "/ai-governance",       label: "AI Governance™",       icon: Brain },
-      { href: "/agents",              label: "Governance Agents™",   icon: Bot },
+      { href: "/ai-governance",               label: "AI Governance™",       icon: Brain },
+      { href: "/agents",                      label: "Governance Agents™",   icon: Bot },
     ],
   },
   {
     key: "reports",
     label: "Reports",
-    items: [],
+    items: [
+      { href: "/executive-reporting",     label: "Executive Reports",  icon: LineChart },
+      { href: "/audits/reports",          label: "Audit Reports",      icon: ClipboardCheck },
+      { href: "/risks/reports",           label: "Risk Reports",       icon: AlertTriangle },
+      { href: "/compliance/reports",      label: "Compliance Reports", icon: ShieldCheck },
+      { href: "/vendors/export",          label: "Vendor Reports",     icon: Building2 },
+    ],
   },
   {
     key: "administration",
@@ -117,7 +121,7 @@ const navGroups: NavGroup[] = [
 
 // ─── Collapse state helpers ───────────────────────────────────────────────────
 
-const STORAGE_KEY = "audt_sidebar_collapsed_v2";
+const STORAGE_KEY = "audt_sidebar_collapsed_v3";
 
 function readCollapsed(): Record<string, boolean> {
   if (typeof window === "undefined") return {};
@@ -155,17 +159,12 @@ function SidebarGroup({
     <div className="mt-1">
       <button
         onClick={onToggle}
-        className={cn(
-          "flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors group",
-          hasActiveChild
-            ? "hover:bg-white/[0.04]"
-            : "hover:bg-white/[0.04]"
-        )}
+        className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.04] group"
       >
         {collapsed ? (
-          <ChevronRight className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)] transition-transform" />
+          <ChevronRight className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)]" />
         ) : (
-          <ChevronDown className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)] transition-transform" />
+          <ChevronDown className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)]" />
         )}
         <span
           className={cn(
@@ -183,16 +182,14 @@ function SidebarGroup({
         <div className="mt-0.5 flex flex-col gap-0.5">
           {group.items.length === 0 ? (
             <div className="mx-2 mb-1 rounded-md border border-dashed border-[var(--color-line)] px-3 py-2">
-              <p className="text-[10px] text-[var(--color-ink-faint)] italic">
-                Coming soon
-              </p>
+              <p className="text-[10px] text-[var(--color-ink-faint)] italic">Coming soon</p>
             </div>
           ) : (
             group.items.map(({ href, label, icon: Icon, soon }) => {
               const active = isActive(href);
               return (
                 <Link
-                  key={href}
+                  key={`${href}-${label}`}
                   href={soon ? "#" : href}
                   aria-disabled={soon}
                   onClick={soon ? (e) => e.preventDefault() : undefined}
@@ -300,7 +297,7 @@ export function Sidebar() {
         </Link>
 
         {/* Platform pillars */}
-        <div className="mt-4 flex flex-col">
+        <div className="mt-3 flex flex-col">
           {navGroups.map((group) => (
             <SidebarGroup
               key={group.key}
@@ -316,7 +313,6 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="shrink-0 border-t border-[var(--color-line)] px-3 py-3 space-y-0.5">
-        {/* Help & Docs */}
         <Link
           href="/help"
           className={cn(
