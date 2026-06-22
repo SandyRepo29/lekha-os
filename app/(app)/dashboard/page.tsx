@@ -92,9 +92,9 @@ export default async function DashboardPage() {
 
   // Vendor health breakdown from trust scores
   const scoredVendors = trustOverview?.vendors.allScored ?? [];
-  const healthyCount  = scoredVendors.filter((v) => v.score >= 80).length;
-  const atRiskCount   = scoredVendors.filter((v) => v.score >= 50 && v.score < 80).length;
-  const criticalCount = scoredVendors.filter((v) => v.score < 50).length;
+  const healthyCount  = scoredVendors.filter((v) => v.trustScore >= 80).length;
+  const atRiskCount   = scoredVendors.filter((v) => v.trustScore >= 50 && v.trustScore < 80).length;
+  const criticalCount = scoredVendors.filter((v) => v.trustScore < 50).length;
   const unscoredCount = metrics.totalVendors - scoredVendors.length;
 
   // Lifecycle funnel — derived from vendor list
