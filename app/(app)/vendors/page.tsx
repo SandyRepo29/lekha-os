@@ -26,7 +26,7 @@ async function getExtraMetrics(orgId: string) {
     const [expiring, findings] = await Promise.all([
       db.select({ count: sql<number>`count(*)::int` })
         .from(contracts)
-        .where(and(eq(contracts.organizationId, orgId), lt(contracts.endDate, in30.toISOString().split("T")[0]))),
+        .where(and(eq(contracts.organizationId, orgId), lt(contracts.expiryDate, in30.toISOString().split("T")[0]))),
       db.select({ count: sql<number>`count(*)::int` })
         .from(auditFindings)
         .where(and(eq(auditFindings.organizationId, orgId), eq(auditFindings.status, "open"))),
