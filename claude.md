@@ -374,24 +374,26 @@ Governance knowledge graph. 2 new tables: `graph_nodes` + `graph_edges`. New tab
 - Migration: `supabase/migrations/0011_control_center.sql`
 - Health levels: Exceptional (95–100) · Healthy (90–94) · Strong (80–89) · Moderate (70–79) · Needs Attention (60–69) · Critical (0–59)
 
-### Trust Score™ ✅ Complete (2026-06-07)
+### Trust Score™ ✅ Complete (2026-06-07, updated 2026-06-23)
 
-6-component governance signal scored 0–100 per vendor. Displayed on vendor detail, computed on page load, recalculable on demand.
+7-component governance signal scored 0–100 per vendor. Displayed on vendor detail, computed on page load, recalculable on demand.
 
 | Component | Weight | Source |
 |---|---|---|
-| **Evidence** | 25% | Doc counts, expiry, required missing |
-| **Compliance** | 20% | `vendor.complianceScore` |
+| **Evidence** | 20% | Doc counts, expiry, required missing |
+| **Compliance** | 15% | `vendor.complianceScore` |
 | **Risk** | 20% | Risk Lens™ linked risks (active/critical/high) |
 | **Assessment** | 15% | Latest security assessment score |
 | **Operational** | 10% | Reviews + document request turnaround |
 | **Freshness** | 10% | Days since last review + assessment age |
+| **Contract** | 10% | Contract Health Score™ from linked contracts (default 70 if no contracts) |
 
 - Pure engine: `lib/services/trust-score.ts` — `computeTrustScore(inputs)` → breakdown + level + strengths/concerns/recommendations
-- Service: `lib/services/trust-score-service.ts` — gathers inputs, computes, persists, generates AI narrative via Gemini
+- Contract health engine: `lib/services/contract-health.ts` — `computeContractHealth(inputs)` → `ContractHealthBreakdown` (pure, no DB)
+- Service: `lib/services/trust-score-service.ts` — gathers inputs + vendor contracts + obligations in parallel, computes, persists, generates AI narrative via Gemini
 - Repo: `lib/repositories/trust-score-repo.ts` — `saveTrustScore()`, `getTrustHistory()`, `getOrgTrustMetrics()`
-- History table: `vendor_trust_history` — daily snapshots with all 6 component scores + trigger_event
-- UI: `TrustScoreWidget` (full breakdown, strengths/concerns, AI narrative) — rendered inside the **Compliance tab** on vendor detail (not above the tabs); `TrustScoreBadge` (inline level chip in header badges row)
+- History table: `vendor_trust_history` — daily snapshots with component scores + trigger_event (contract component included in overallScore; no separate DB column)
+- UI: `TrustScoreWidget` (full breakdown, strengths/concerns, AI narrative) — rendered inside the **Trust Score tab** on vendor detail; `TrustScoreBadge` (inline level chip in header badges row). Widget COMPONENT_KEYS includes `"contract"` for breakdown bar.
 - API: `GET /api/v1/vendors/[id]/trust-score` — score, components, history, narrative
 - Seed: `node scripts/seed-trust-scores.mjs` — scores all active vendors
 - Migration: `supabase/migrations/0010_trust_score.sql`
@@ -570,7 +572,7 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 /contract-governance/[id]/edit             Edit contract
 /contract-governance/obligations           Org-wide obligation tracker
 /contract-governance/renewals              Renewals dashboard sorted by expiry
-/contract-governance/ai                    AI Contract Advisor (executive summary + NL chat)
+/contract-governance/ai                    Contract Intelligence™ (health analysis + renewal risk + executive summary + NL chat)
 /contract-governance/reports               CSV export links
 
 --- Issue & Remediation Hub™ ---
@@ -887,9 +889,19 @@ lib/
 
   --- Risk Lens™ services ---
   services/trust-score.ts       Pure, client-safe: computeTrustScore(inputs) → TrustScoreBreakdown
+                                7 components: evidence(20%) + compliance(15%) + risk(20%) + assessment(15%)
+                                + operational(10%) + freshness(10%) + contract(10%)
                                 getTrustLevel(), TRUST_LEVEL_LABELS, TRUST_LEVEL_COLORS, TRUST_LEVEL_BG,
                                 TRUST_COMPONENT_WEIGHTS, TRUST_COMPONENT_LABELS
+  services/contract-health.ts   Pure, client-safe: computeContractHealth(inputs) → ContractHealthBreakdown
+                                6 components: contractStatus(20%) + renewalStatus(20%) + obligationHealth(25%)
+                                + legalRisk(15%) + complianceAlignment(10%) + vendorRiskFactor(10%)
+                                getContractHealthLevel(), CONTRACT_HEALTH_LABELS, CONTRACT_HEALTH_COLORS,
+                                CONTRACT_HEALTH_BG, CONTRACT_HEALTH_COMPONENT_WEIGHTS, CONTRACT_HEALTH_COMPONENT_LABELS
+                                Levels: excellent(≥85) · good(≥70) · monitor(≥55) · at_risk(≥40) · critical(<40)
   services/trust-score-service.ts  computeAndSaveTrustScore(orgId, vendorId, triggerEvent)
+                                   — fetches vendor contracts + obligations in parallel, computes contractHealthScore,
+                                     passes as 7th component to computeTrustScore
                                    generateTrustNarrative(orgId, vendorId) — Gemini cached (<24h)
                                    getTrustHistory(), getOrgTrustMetrics()
   services/risk-scoring.ts      Pure, client-safe: computeRiskScore(impact, likelihood) → {score, level, color, priority}
@@ -1273,7 +1285,8 @@ vi.mock("@/lib/db", () => ({
 ### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
 ### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
 ### Module 9 — Trust Graph™ ✅ Complete (2026-06-09)
-### Trust Score™ ✅ Complete (2026-06-07)
+### Trust Score™ ✅ Complete (2026-06-07, V2 2026-06-23)
+### Contract Governance V2 ✅ Complete (2026-06-23)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
 
@@ -1330,20 +1343,26 @@ Contract lifecycle, obligation tracking, AI analysis. 6 new tables: `contracts`,
 | **Contract Library** | Registry of all contracts with status, type, value, expiry |
 | **Clause Management** | Per-contract clause tracking with category and risk level |
 | **Obligation Tracker** | Org-wide obligation tracking with due dates and status |
-| **Renewals** | Renewals dashboard sorted by expiry with action deadline calc |
-| **Contract Score™** | 6-component 0–100 engine: clauseCoverage(25%) + obligationCompletion(20%) + renewalReadiness(15%) + riskExposure(20%) + policyAlignment(10%) + privacyCompliance(10%) |
-| **AI Contract Advisor™** | Extract clauses/obligations, analyse clause risk, AI executive summary, NL chat |
+| **Renewals** | Renewals dashboard — expiry, notice period, action deadline + Recommendation (Renew/Review/Renegotiate/Exit), Confidence %, Trust Impact (High/Medium/Low) |
+| **Contract Health Score™** | Pure 6-component 0–100 engine in `lib/services/contract-health.ts`: contractStatus(20%) + renewalStatus(20%) + obligationHealth(25%) + legalRisk(15%) + complianceAlignment(10%) + vendorRiskFactor(10%); levels: excellent/good/monitor/at_risk/critical |
+| **Contract Score™** | Separate internal scoring engine `lib/services/contract-score.ts`: clauseCoverage(25%) + obligationCompletion(20%) + renewalReadiness(15%) + riskExposure(20%) + policyAlignment(10%) + privacyCompliance(10%) |
+| **Vendor Contract Workspace** | Enhanced Contracts tab on vendor detail — per-contract health badge, renewal urgency chip, quick-links to Renewals / Obligations / Contract Intelligence™ |
+| **Contract Intelligence™** | Replaces "AI Contract Advisor™": Contract Health Analysis bars + Renewal Risk Summary + AI executive summary + NL chat |
+| **Trust Score™ integration** | Contract Health feeds into vendor Trust Score™ as 7th component (10% weight) |
 | **Trust Graph integration** | Contract nodes linked to vendor/risk/policy/control entities |
 | **Monitoring rules** | 3 new rules: contract_expiring · contract_renewal_due · contract_obligations_overdue |
 | **REST API** | 3 endpoints: GET/POST /api/v1/contracts, GET/PUT/DELETE /api/v1/contracts/[id], GET /api/v1/contracts/obligations |
 
-- Pure engine: `lib/services/contract-score.ts`
+- Pure Contract Health engine: `lib/services/contract-health.ts` — `computeContractHealth(inputs)` → ContractHealthBreakdown
+- Pure Contract Score engine: `lib/services/contract-score.ts`
 - Service: `lib/services/contract-governance/contract-service.ts`
 - AI service: `lib/services/contract-governance/ai-contract-service.ts`
 - Repo: `lib/repositories/contract-repo.ts`
 - Actions: `lib/contract-governance/actions.ts`
 - Migration: `supabase/migrations/0017_contract_governance.sql`
 - Routes: `/contract-governance/*` (8 pages)
+
+**Obligation status enum:** `open` · `in_progress` · `completed` · `overdue` · `waived`. No "exception" status — use `waived` for legal exceptions/bypasses.
 
 ### Module 15 — Third-Party Risk Exchange™ ✅ Complete (2026-06-11)
 ### Module 16 — Governance Benchmarking™ ✅ Complete (2026-06-11)
@@ -1814,6 +1833,9 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **StorageProvider interface** | Methods are `uploadFile`, `downloadFile`, `deleteFile`, `generateSignedUrl`, `exists`. Old names (`download`, `delete`, `signedUrl`) no longer exist — don't use them. |
 | **Trust Score™ auto-refresh** | Page load triggers `computeAndSaveTrustScore()` only when `trust_score_at` is null or >1h stale. The service writes to both `vendor_trust_history` and `vendors.trust_score`. Never call `saveTrustScore()` without also computing via `computeTrustScore()` — the history row must match the cached column. |
 | **Trust Score `breakdown` prop** | `TrustScoreWidget` accepts a `breakdown` prop (server-computed on page load). If null, the widget shows the cached `trustScore` number but no bar breakdown — the user must click Recalculate to regenerate. |
+| **Trust Score™ contract component** | `contractHealthScore` defaults to 70 (neutral) when a vendor has no contracts — this avoids penalising vendors that simply haven't uploaded contracts yet. The `vendor_trust_history` table has no `contract_score` column; the contract component is included in `overallScore` only. Adding a separate column requires a new migration. |
+| **Contract Health Score™ obligation status** | `contractObligations.status` enum values are: `open` · `in_progress` · `completed` · `overdue` · `waived`. There is NO "exception" status. Use `waived` for legal exceptions/bypasses in `computeContractHealth` inputs. |
+| **Contract Health vs Contract Score** | Two separate pure engines exist: `lib/services/contract-health.ts` (`computeContractHealth`) feeds into Trust Score™ as the 7th component. `lib/services/contract-score.ts` (`computeContractScore`) is the internal contract-level scoring used in the Contract Governance module detail pages. They are independent — do not conflate. |
 | **Risk Lens Drizzle column names** | `riskTreatmentStatus("status")` — the first arg is the DB column name. Compliance module uses `columnEnum("status")`; audit module uses prefixed names. Risk Lens follows compliance pattern: always `("status")`. Using `("risk_treatment_status")` references a non-existent column and causes 500s. |
 | **Risk enum values** | Actual DB enums: category=`cyber_security` (not `cyber`), source=`audit_finding`/`compliance_gap`/`vendor` (not `audit`/`gap_analysis`/`assessment`). Check `seed-risk-lens.mjs` for all valid values. |
 | **audit_findings column names** | The severity column is `finding_severity` (not `severity`) and status is `finding_status` (not `status`). Risk Lens seed uses these correct names. |
