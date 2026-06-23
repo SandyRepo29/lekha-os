@@ -510,7 +510,6 @@ export default async function ExecutiveCommandCenterPage({
       </section>
 
       {/* ══ ROW 4: Vendor Portfolio + Lifecycle Funnel ══════════════════════ */}
-      {(activeRole === "ceo" || activeRole === "ciso" || activeRole === "procurement") && (
         <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
 
           {/* Portfolio */}
@@ -558,13 +557,11 @@ export default async function ExecutiveCommandCenterPage({
             </section>
           )}
         </div>
-      )}
 
       {/* ══ ROW 5: Risk Posture + Audit & Compliance Readiness ══════════════ */}
       <div className="grid gap-5 lg:grid-cols-2">
 
         {/* Risk Posture */}
-        {(activeRole === "ceo" || activeRole === "ciso") && (
           <section>
             <SectionHeader title="Risk Posture" sub="Current risk exposure across all categories" href="/risks" />
             <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
@@ -603,10 +600,8 @@ export default async function ExecutiveCommandCenterPage({
               </Link>
             </div>
           </section>
-        )}
 
         {/* Audit & Compliance Readiness */}
-        {(activeRole === "ceo" || activeRole === "compliance") && (
           <section>
             <SectionHeader title="Audit & Compliance Readiness"
               sub="Readiness across frameworks, controls, evidence, and audit requirements"
@@ -656,7 +651,6 @@ export default async function ExecutiveCommandCenterPage({
               </Link>
             </div>
           </section>
-        )}
       </div>
 
       {/* ══ ROW 6: Trust Distribution + Contract & Renewal Intelligence ══════ */}
