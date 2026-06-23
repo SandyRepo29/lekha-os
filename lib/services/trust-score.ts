@@ -40,6 +40,9 @@ export type TrustScoreInputs = {
 
   // Component 7 — Contract Health (10%)
   contractHealthScore?: number | null; // 0–100; null = no contracts (defaults to 70)
+
+  // Component 8 — Asset Resilience (8%)
+  assetResilienceScore?: number | null; // 0–100; null = no linked assets (defaults to 70)
 };
 
 export type TrustScoreBreakdown = {
@@ -51,6 +54,7 @@ export type TrustScoreBreakdown = {
   operational: number;
   freshness: number;
   contract: number;
+  assetResilience: number;
   level: TrustLevel;
   strengths: string[];
   concerns: string[];
@@ -179,6 +183,7 @@ function buildStrengths(i: TrustScoreInputs, components: Omit<TrustScoreBreakdow
   if (i.reviewsLast12Months >= 1) s.push("Reviewed within the last 12 months");
   if (i.openRequests === 0 && i.totalRequests > 0) s.push("All document requests fulfilled");
   if (components.contract >= 80 && i.contractHealthScore != null) s.push("Contract governance in good standing");
+  if (components.assetResilience >= 80 && i.assetResilienceScore != null) s.push("Dependent assets are well-governed");
   return s;
 }
 
@@ -195,6 +200,7 @@ function buildConcerns(i: TrustScoreInputs, components: Omit<TrustScoreBreakdown
   else if (i.reviewsLast12Months === 0) c.push("No review in the last 12 months");
   if (i.openRequests > 0) c.push(`${i.openRequests} open document request${i.openRequests > 1 ? "s" : ""}`);
   if (i.contractHealthScore != null && components.contract < 55) c.push("Contract health requires attention");
+  if (i.assetResilienceScore != null && components.assetResilience < 55) c.push("Critical assets depending on this vendor have governance gaps");
   return c;
 }
 
@@ -225,18 +231,25 @@ export function computeTrustScore(inputs: TrustScoreInputs): TrustScoreBreakdown
   const contract = inputs.contractHealthScore != null
     ? Math.max(0, Math.min(100, Math.round(inputs.contractHealthScore)))
     : 70;
+  // Asset Resilience component — default 70 (neutral) when no linked assets
+  const assetResilience = inputs.assetResilienceScore != null
+    ? Math.max(0, Math.min(100, Math.round(inputs.assetResilienceScore)))
+    : 70;
 
+  // Weights: 8 components totalling 100%
+  // Evidence(18) + Compliance(13) + Risk(18) + Assessment(13) + Ops(10) + Freshness(10) + Contract(10) + AssetResilience(8)
   const overall = Math.round(
-    evidence    * 0.20 +
-    compliance  * 0.15 +
-    risk        * 0.20 +
-    assessment  * 0.15 +
-    operational * 0.10 +
-    freshness   * 0.10 +
-    contract    * 0.10
+    evidence        * 0.18 +
+    compliance      * 0.13 +
+    risk            * 0.18 +
+    assessment      * 0.13 +
+    operational     * 0.10 +
+    freshness       * 0.10 +
+    contract        * 0.10 +
+    assetResilience * 0.08
   );
 
-  const components = { overall, evidence, compliance, risk, assessment, operational, freshness, contract };
+  const components = { overall, evidence, compliance, risk, assessment, operational, freshness, contract, assetResilience };
 
   return {
     ...components,
@@ -248,21 +261,23 @@ export function computeTrustScore(inputs: TrustScoreInputs): TrustScoreBreakdown
 }
 
 export const TRUST_COMPONENT_WEIGHTS: Record<string, number> = {
-  evidence:   20,
-  compliance: 15,
-  risk:       20,
-  assessment: 15,
-  operational: 10,
-  freshness:  10,
-  contract:   10,
+  evidence:        18,
+  compliance:      13,
+  risk:            18,
+  assessment:      13,
+  operational:     10,
+  freshness:       10,
+  contract:        10,
+  assetResilience:  8,
 };
 
 export const TRUST_COMPONENT_LABELS: Record<string, string> = {
-  evidence:   "Evidence",
-  compliance: "Compliance",
-  risk:       "Risk",
-  assessment: "Assessment",
-  operational: "Operations",
-  freshness:  "Freshness",
-  contract:   "Contracts",
+  evidence:        "Evidence",
+  compliance:      "Compliance",
+  risk:            "Risk",
+  assessment:      "Assessment",
+  operational:     "Operations",
+  freshness:       "Freshness",
+  contract:        "Contracts",
+  assetResilience: "Asset Resilience",
 };

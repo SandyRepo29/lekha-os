@@ -13,7 +13,7 @@ import * as reviewRepo from "@/lib/repositories/review-repo";
 import * as requestRepo from "@/lib/repositories/request-repo";
 import * as trustRepo from "@/lib/repositories/trust-score-repo";
 import * as templateRepo from "@/lib/repositories/template-repo";
-import { risks, riskVendors, contracts, contractObligations } from "@/lib/db/schema";
+import { risks, riskVendors, contracts, contractObligations, assets, assetVendors } from "@/lib/db/schema";
 import { db } from "@/lib/db";
 import { eq, and, inArray } from "drizzle-orm";
 import { generateText, isAIConfigured } from "@/lib/providers/ai";
@@ -33,7 +33,7 @@ export async function computeAndSaveTrustScore(
   if (!vendor) throw new DomainError("Vendor not found.");
 
   // Gather all inputs in parallel
-  const [docs, allAssessments, reviews, requests, templateData, vendorContractsRaw] = await Promise.all([
+  const [docs, allAssessments, reviews, requests, templateData, vendorContractsRaw, vendorLinkedAssets] = await Promise.all([
     documentRepo.listByVendor(orgId, vendorId),
     assessmentRepo.listByVendor(orgId, vendorId),
     reviewRepo.listByVendor(orgId, vendorId),
@@ -42,6 +42,10 @@ export async function computeAndSaveTrustScore(
     db.select({ id: contracts.id, status: contracts.status, expiryDate: contracts.expiryDate })
       .from(contracts)
       .where(and(eq(contracts.organizationId, orgId), eq(contracts.vendorId, vendorId))),
+    db.select({ criticality: assets.criticality, containsPii: assets.containsPii, trustScore: assets.trustScore })
+      .from(assetVendors)
+      .innerJoin(assets, eq(assets.id, assetVendors.assetId))
+      .where(eq(assetVendors.vendorId, vendorId)),
   ]);
 
   // Linked risks via risk_vendors junction
@@ -109,6 +113,22 @@ export async function computeAndSaveTrustScore(
     contractHealthScore = health.overall;
   }
 
+  // Asset Resilience Score (8th component) — how well-governed are assets depending on this vendor?
+  let assetResilienceScore: number | null = null;
+  if (vendorLinkedAssets.length > 0) {
+    const criticalCount = vendorLinkedAssets.filter(
+      (a) => a.criticality === "critical" || a.criticality === "mission_critical"
+    ).length;
+    const piiCount = vendorLinkedAssets.filter((a) => a.containsPii).length;
+    const avgTrust =
+      vendorLinkedAssets.map((a) => a.trustScore ?? 70).reduce((s, t) => s + t, 0) /
+      vendorLinkedAssets.length;
+    let resScore = avgTrust;
+    resScore -= criticalCount * 10; // critical assets expose the vendor to higher impact
+    resScore -= piiCount * 5;       // PII assets elevate data breach risk
+    assetResilienceScore = Math.max(0, Math.min(100, Math.round(resScore)));
+  }
+
   const inputs = {
     docsTotal: docs.length,
     docsValid: docs.filter((d) => d.status === "valid").length,
@@ -125,6 +145,7 @@ export async function computeAndSaveTrustScore(
     openRequests: requests.filter((r) => r.status === "requested").length,
     lastReviewDate,
     contractHealthScore,
+    assetResilienceScore,
   };
 
   const breakdown = computeTrustScore(inputs);

@@ -7,12 +7,13 @@ import { cn } from "@/lib/utils";
 // ─── Sub-nav ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS = [
-  { href: "/asset-intelligence",               label: "Dashboard"    },
-  { href: "/asset-intelligence/registry",      label: "Registry™"    },
-  { href: "/asset-intelligence/data-assets",   label: "Data Assets™" },
-  { href: "/asset-intelligence/relationships", label: "Relationships™"},
-  { href: "/asset-intelligence/alerts",        label: "Alerts"       },
-  { href: "/asset-intelligence/ai",            label: "AI Advisor™"  },
+  { href: "/asset-intelligence",                 label: "Dashboard"        },
+  { href: "/asset-intelligence/registry",        label: "Registry™"        },
+  { href: "/asset-intelligence/data-assets",     label: "Data Assets™"     },
+  { href: "/asset-intelligence/relationships",   label: "Relationships™"   },
+  { href: "/asset-intelligence/impact-analysis", label: "Impact Analysis™" },
+  { href: "/asset-intelligence/alerts",          label: "Alerts"           },
+  { href: "/asset-intelligence/ai",              label: "Copilot™"         },
 ];
 
 export function AssetSubNav() {

@@ -27,8 +27,8 @@ export default async function AssetAiPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Asset Advisor™</h1>
-        <p className="text-sm text-[var(--color-ink-dim)] mt-1">AI-powered asset governance insights, dependency analysis, and impact assessment.</p>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence Copilot&#8482;</h1>
+        <p className="text-sm text-[var(--color-ink-dim)] mt-1">AI-powered insights on critical assets, vendor concentration risk, dependency chains, and governance gaps.</p>
       </div>
 
       <AssetSubNav />
@@ -41,7 +41,7 @@ export default async function AssetAiPage() {
           </span>
           <div>
             <h2 className="font-semibold text-sm">Asset Intelligence Advisory</h2>
-            <p className="text-xs text-[var(--color-ink-dim)]">AI-generated · refreshes every 24 hours</p>
+            <p className="text-xs text-[var(--color-ink-dim)]">Governance-focused AI advisory &#183; refreshes every 24 hours</p>
           </div>
         </div>
         {advisory ? (
@@ -58,13 +58,14 @@ export default async function AssetAiPage() {
         <h2 className="font-semibold text-sm mb-3">Suggested Questions</h2>
         <div className="flex flex-wrap gap-2">
           {[
-            "Which assets are most critical?",
-            "Which systems contain PII?",
-            "Which assets support DPDP compliance?",
-            "Which assets have the highest risk?",
-            "Which vendors access customer data?",
-            "Show me assets missing ownership.",
-            "What are the key dependency risks?",
+            "Which assets depend on AWS?",
+            "Which critical assets contain PII?",
+            "Which assets have low vendor trust?",
+            "Show assets with compliance gaps.",
+            "Which assets would be impacted if this vendor becomes unavailable?",
+            "Which assets are missing controls?",
+            "Show me assets with the highest vendor concentration risk.",
+            "Which assets need immediate governance attention?",
           ].map(q => (
             <button key={q} data-question={q}
               className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:border-[var(--color-blue)]/40 transition-colors">

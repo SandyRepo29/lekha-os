@@ -68,6 +68,7 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Type</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Environment</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Criticality</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Data Class</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Status</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Trust Score</th>
               </tr>
@@ -84,6 +85,12 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
                   <td className="px-4 py-3"><AssetTypeBadge type={a.assetType} /></td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)] capitalize">{a.environment}</td>
                   <td className="px-4 py-3"><CriticalityBadge level={a.criticality} /></td>
+                  <td className="px-4 py-3">
+                    <span className="text-xs capitalize text-[var(--color-ink-dim)]">
+                      {(a as any).dataClass ?? "—"}
+                      {(a as any).containsPii && <span className="ml-1 text-amber-400">&#183; PII</span>}
+                    </span>
+                  </td>
                   <td className="px-4 py-3"><AssetStatusBadge status={a.status} /></td>
                   <td className="px-4 py-3"><AssetTrustBadge score={a.trustScore} /></td>
                 </tr>
