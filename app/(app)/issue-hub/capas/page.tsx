@@ -80,8 +80,7 @@ export default async function IssueHubCapasPage() {
           </h2>
           {[
             { label: "Open",       count: open.filter((c) => c.status === "open").length,         color: "bg-slate-400" },
-            { label: "Assigned",   count: open.filter((c) => c.status === "assigned").length,     color: "bg-blue-400" },
-            { label: "In Progress",count: inProgress.length,                                       color: "bg-amber-400" },
+            { label: "In Progress",count: inProgress.length,                                        color: "bg-blue-400" },
             { label: "Overdue",    count: overdue.length,                                          color: "bg-red-500" },
             { label: "Completed",  count: completed.length,                                        color: "bg-emerald-500" },
           ].map((s) => (
