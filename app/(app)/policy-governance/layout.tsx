@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/policy-governance",              label: "Overview",     exact: true },
+  { href: "/policy-governance",              label: "Overview",          exact: true },
   { href: "/policy-governance/library",      label: "Library" },
+  { href: "/policy-governance/mappings",     label: "Mappings" },
   { href: "/policy-governance/reviews",      label: "Reviews" },
   { href: "/policy-governance/attestations", label: "Attestations" },
-  { href: "/policy-governance/ai",           label: "AI Advisor" },
+  { href: "/policy-governance/reports",      label: "Reports" },
+  { href: "/policy-governance/ai",           label: "Policy Copilot™" },
 ];
 
 export default function PolicyGovernanceLayout({ children }: { children: React.ReactNode }) {
