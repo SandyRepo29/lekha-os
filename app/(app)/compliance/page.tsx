@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { ShieldCheck, Plus, AlertTriangle, CheckCircle2, FileSearch } from "lucide-react";
+import { ShieldCheck, Plus, AlertTriangle, CheckCircle2, FileSearch, BookCheck, BarChart3 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -12,6 +12,7 @@ import { getGapSummary } from "@/lib/services/compliance/gap-service";
 import { FrameworkStatusBadge } from "@/components/compliance/compliance-badges";
 import { ComplianceStat, CoverageBar } from "@/components/compliance/compliance-ui";
 import { scoreTextColor, scoreLabel } from "@/lib/ui/colors";
+import { listEvidence } from "@/lib/services/compliance/evidence-service";
 
 export default async function ComplianceDashboardPage() {
   const session = await requireUser();
@@ -28,9 +29,10 @@ export default async function ComplianceDashboardPage() {
     );
   }
 
-  const [frameworks, gapSummary] = await Promise.all([
+  const [frameworks, gapSummary, evidenceItems] = await Promise.all([
     listFrameworks(session.org.id),
     getGapSummary(session.org.id),
+    listEvidence(session.org.id, {}),
   ]);
 
   const scores = frameworks.map((f) => f.readiness?.overallScore ?? 0);
@@ -42,6 +44,21 @@ export default async function ComplianceDashboardPage() {
   const implementedFrameworks = frameworks.filter(
     (f) => f.status === "certified" || f.status === "ready"
   ).length;
+
+  // Evidence health metrics
+  const totalEvidence    = evidenceItems.length;
+  const validEvidence    = evidenceItems.filter((e) => e.status === "approved").length;
+  const expiredEvidence  = evidenceItems.filter((e) => e.status === "expired").length;
+  const pendingEvidence  = evidenceItems.filter((e) => e.status === "pending_review").length;
+  const missingEvidence  = totalControls - Math.min(totalControls, validEvidence);
+
+  // Per-framework audit readiness
+  const frameworkReadiness = frameworks.map((fw) => {
+    const score = fw.readiness?.overallScore ?? 0;
+    const status = score >= 80 ? "Ready" : score >= 50 ? "Needs Review" : "Not Ready";
+    const color  = score >= 80 ? "text-emerald-400" : score >= 50 ? "text-amber-400" : "text-red-400";
+    return { name: fw.name, score, status, color };
+  });
 
   return (
     <div className="space-y-6">
@@ -141,6 +158,87 @@ export default async function ComplianceDashboardPage() {
               </p>
             </Card>
           </div>
+
+          {/* Evidence Health Widget + Audit Readiness side-by-side */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            {/* Evidence Health Widget */}
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+              <div className="mb-4 flex items-center gap-2">
+                <FileSearch className="h-4 w-4 text-[var(--color-blue)]" />
+                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Health</h2>
+                <Link href="/compliance/evidence" className="ml-auto text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <EvidenceHealthStat label="Valid"           value={validEvidence}   color="text-emerald-400" />
+                <EvidenceHealthStat label="Missing"         value={missingEvidence} color="text-red-400" />
+                <EvidenceHealthStat label="Expired"         value={expiredEvidence} color="text-amber-400" />
+                <EvidenceHealthStat label="Pending Review"  value={pendingEvidence} color="text-[var(--color-blue)]" />
+              </div>
+              {totalEvidence > 0 && (
+                <div className="mt-4">
+                  <div className="mb-1 flex justify-between text-xs text-[var(--color-ink-dim)]">
+                    <span>Evidence Coverage</span>
+                    <span className="font-semibold text-[var(--color-ink)]">
+                      {totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                    <div
+                      className="h-full rounded-full bg-emerald-500"
+                      style={{ width: `${totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%` }}
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-[var(--color-ink-faint)]">{totalEvidence} total evidence items</p>
+                </div>
+              )}
+            </div>
+
+            {/* Audit Readiness Widget */}
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+              <div className="mb-4 flex items-center gap-2">
+                <BookCheck className="h-4 w-4 text-emerald-400" />
+                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Readiness</h2>
+              </div>
+              {frameworkReadiness.length === 0 ? (
+                <p className="text-sm text-[var(--color-ink-dim)]">No frameworks yet.</p>
+              ) : (
+                <div className="space-y-2.5">
+                  {frameworkReadiness.map(({ name, score, status, color }) => (
+                    <div key={name} className="flex items-center justify-between gap-3">
+                      <span className="min-w-0 flex-1 truncate text-xs text-[var(--color-ink-dim)]">{name}</span>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <div className="h-1.5 w-20 overflow-hidden rounded-full bg-white/[0.06]">
+                          <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${score}%` }} />
+                        </div>
+                        <span className={`text-xs font-semibold ${color}`}>{status}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Evidence Intelligence Widget */}
+          {totalEvidence > 0 && (
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
+                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Intelligence&#8482;</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <EvidenceHealthStat label="Total Evidence"    value={totalEvidence} color="text-[var(--color-blue)]" />
+                <EvidenceHealthStat label="Approved"          value={validEvidence} color="text-emerald-400" />
+                <EvidenceHealthStat label="Expired"           value={expiredEvidence} color="text-amber-400" />
+                <EvidenceHealthStat label="Controls Covered"  value={`${totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%`} color="text-emerald-400" />
+              </div>
+              <div className="mt-3 flex gap-2">
+                <Link href="/compliance/evidence" className="text-xs text-[var(--color-blue)] hover:underline">Browse Evidence &rarr;</Link>
+                <span className="text-[var(--color-ink-faint)]">&#183;</span>
+                <Link href="/compliance/controls" className="text-xs text-[var(--color-blue)] hover:underline">View Controls Coverage &rarr;</Link>
+              </div>
+            </div>
+          )}
 
           {/* Frameworks grid */}
           <div>
@@ -260,6 +358,25 @@ function GapCount({
   return (
     <div>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
+      <p className={`mt-0.5 font-[family-name:var(--font-display)] text-xl font-bold ${color}`}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function EvidenceHealthStat({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number | string;
+  color: string;
+}) {
+  return (
+    <div>
+      <p className="text-[10px] text-[var(--color-ink-faint)]">{label}</p>
       <p className={`mt-0.5 font-[family-name:var(--font-display)] text-xl font-bold ${color}`}>
         {value}
       </p>

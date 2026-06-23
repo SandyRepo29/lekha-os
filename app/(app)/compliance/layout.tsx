@@ -5,13 +5,14 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/compliance",             label: "Dashboard",   active: true  },
-  { href: "/compliance/frameworks",  label: "Frameworks",  active: true  },
-  { href: "/compliance/evidence",    label: "Evidence",    active: true  },
-  { href: "/compliance/policies",    label: "Policies",    active: true  },
-  { href: "/compliance/gaps",        label: "Gaps",        active: true  },
-  { href: "/compliance/reports",     label: "Reports",     active: true  },
-  { href: "/compliance/ai",          label: "AI Officer",  active: true  },
+  { href: "/compliance",             label: "Dashboard",            active: true  },
+  { href: "/compliance/evidence",    label: "Evidence",             active: true  },
+  { href: "/compliance/frameworks",  label: "Frameworks",           active: true  },
+  { href: "/compliance/controls",    label: "Controls",             active: true  },
+  { href: "/compliance/policies",    label: "Policies",             active: true  },
+  { href: "/compliance/gaps",        label: "Gaps",                 active: true  },
+  { href: "/compliance/reports",     label: "Reports",              active: true  },
+  { href: "/compliance/ai",          label: "Compliance Copilot™", active: true  },
 ];
 
 export default function ComplianceLayout({ children }: { children: React.ReactNode }) {

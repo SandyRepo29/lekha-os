@@ -27,7 +27,7 @@ export default async function AiOfficerPage() {
       <Card>
         <EmptyState
           icon={Sparkles}
-          title="AI Compliance Officer"
+          title="Compliance Copilot&#8482;"
           description="Connect Supabase to use AI-powered compliance insights."
         />
       </Card>
@@ -65,7 +65,7 @@ export default async function AiOfficerPage() {
         </div>
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            AI Compliance Officer
+            Compliance Copilot&#8482;
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {aiEnabled
@@ -149,7 +149,7 @@ export default async function AiOfficerPage() {
       {/* Chat */}
       <section className="space-y-3">
         <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">
-          Ask the AI Officer
+          Ask Compliance Copilot&#8482;
         </h2>
         <Card>
           <AiComplianceChat aiEnabled={aiEnabled} />

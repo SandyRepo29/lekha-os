@@ -125,21 +125,12 @@ export default async function EvidencePage({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--color-line)] text-left">
-                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-                    Evidence
-                  </th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-                    Source
-                  </th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-                    Status
-                  </th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-                    Expires
-                  </th>
-                  <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">
-                    Controls
-                  </th>
+                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Evidence</th>
+                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Source</th>
+                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Status</th>
+                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Owner</th>
+                  <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Expires</th>
+                  <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Controls</th>
                   <th className="w-8 px-5 py-3" />
                 </tr>
               </thead>
@@ -161,15 +152,15 @@ export default async function EvidencePage({
                           {ev.description}
                         </p>
                       )}
-                      {ev.owner && (
-                        <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">{ev.owner}</p>
-                      )}
                     </td>
                     <td className="px-5 py-3.5">
                       <EvidenceSourceBadge source={ev.source} />
                     </td>
                     <td className="px-5 py-3.5">
                       <EvidenceStatusBadge status={ev.status} />
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-[var(--color-ink-dim)]">
+                      {ev.owner ?? <span className="text-[var(--color-ink-faint)]">—</span>}
                     </td>
                     <td className="px-5 py-3.5 text-xs text-[var(--color-ink-dim)]">
                       {ev.expiresOn ? (
