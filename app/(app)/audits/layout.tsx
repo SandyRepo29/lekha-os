@@ -10,7 +10,7 @@ const NAV = [
   { href: "/audits/findings", label: "Findings",   active: true },
   { href: "/audits/capas",    label: "CAPAs",      active: true },
   { href: "/audits/reports",  label: "Reports",    active: true },
-  { href: "/audits/ai",       label: "AI Auditor", active: true },
+  { href: "/audits/ai",       label: "Audit Copilot™", active: true },
 ];
 
 export default function AuditsLayout({ children }: { children: React.ReactNode }) {

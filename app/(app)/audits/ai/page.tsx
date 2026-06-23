@@ -17,8 +17,8 @@ export default async function AiAuditorPage() {
       <Card>
         <EmptyState
           icon={Sparkles}
-          title="AI Auditor"
-          description="Connect Supabase to use the AI Auditor."
+          title="Audit Copilot&#8482;"
+          description="Connect Supabase to use the Audit Copilot&#8482;."
         />
       </Card>
     );
@@ -34,7 +34,7 @@ export default async function AiAuditorPage() {
         </div>
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            AI Auditor Assistant
+            Audit Copilot&#8482; Assistant
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {aiEnabled
