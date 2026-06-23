@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/issue-hub", label: "Dashboard" },
-  { href: "/issue-hub/list", label: "Issue Registry™" },
-  { href: "/issue-hub/tasks", label: "Tasks" },
-  { href: "/issue-hub/exceptions", label: "Exceptions™" },
-  { href: "/issue-hub/reports", label: "Reports" },
-  { href: "/issue-hub/ai", label: "AI Advisor™" },
+  { href: "/issue-hub",          label: "Overview",           exact: true },
+  { href: "/issue-hub/findings", label: "Findings" },
+  { href: "/issue-hub/list",     label: "Issues" },
+  { href: "/issue-hub/capas",    label: "CAPAs" },
+  { href: "/issue-hub/tasks",    label: "Tasks" },
+  { href: "/issue-hub/reports",  label: "Reports" },
+  { href: "/issue-hub/ai",       label: "Findings Copilot&#8482;" },
 ];
 
 export default function IssueHubLayout({ children }: { children: React.ReactNode }) {
@@ -18,9 +19,8 @@ export default function IssueHubLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 border-b-[var(--color-line)]">
-        {NAV.map(({ href, label }) => {
-          const exact = href === "/issue-hub";
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+        {NAV.map(({ href, label, exact }) => {
           const isCurrent = exact
             ? pathname === href
             : pathname === href || pathname.startsWith(href + "/");

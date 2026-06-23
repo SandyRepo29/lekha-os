@@ -23,7 +23,7 @@ export default async function IssueAiPage({
     return (
       <Card className="p-8 text-center">
         <Sparkles className="h-10 w-10 mx-auto mb-3 text-indigo-400" />
-        <p className="text-sm text-[var(--color-ink-dim)]">Connect Supabase to use AI Advisor.</p>
+        <p className="text-sm text-[var(--color-ink-dim)]">Connect Supabase to use Findings Copilot&#8482;.</p>
       </Card>
     );
   }
@@ -51,10 +51,10 @@ export default async function IssueAiPage({
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-indigo-400" />
-          AI Advisor™
+          Findings Copilot&#8482;
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          AI-powered governance issue analysis and remediation guidance
+          AI-powered governance findings analysis, remediation guidance, and root cause insights
         </p>
       </div>
 
@@ -164,7 +164,7 @@ export default async function IssueAiPage({
       <Card className="p-6">
         <h2 className="font-semibold mb-3 flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-blue-400" />
-          Governance Copilot™ Chat
+          Findings Copilot&#8482; Chat
         </h2>
         <p className="text-sm text-[var(--color-ink-dim)] mb-4">
           Ask questions about your issue posture, SLA compliance, or remediation priorities.
