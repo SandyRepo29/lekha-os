@@ -9,7 +9,7 @@ const NAV = [
   { href: "/controls/library",  label: "Control Library" },
   { href: "/controls/testing",  label: "Testing" },
   { href: "/controls/reports",  label: "Reports" },
-  { href: "/controls/ai",       label: "AI Advisor" },
+  { href: "/controls/ai",       label: "Control Copilot™" },
 ];
 
 export default function ControlsLayout({ children }: { children: React.ReactNode }) {
