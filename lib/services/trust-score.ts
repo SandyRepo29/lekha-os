@@ -12,14 +12,14 @@ export type TrustLevel =
   | "high_concern"; // 0–59
 
 export type TrustScoreInputs = {
-  // Component 1 — Evidence (25%)
+  // Component 1 — Evidence (20%)
   docsTotal: number;
   docsValid: number;
   docsExpiring: number;
   docsExpired: number;
   requiredDocsMissing: number;
 
-  // Component 2 — Compliance (20%)
+  // Component 2 — Compliance (15%)
   complianceScore: number; // 0–100
 
   // Component 3 — Risk (20%)
@@ -37,6 +37,9 @@ export type TrustScoreInputs = {
 
   // Component 6 — Governance Freshness (10%)
   lastReviewDate: Date | null;
+
+  // Component 7 — Contract Health (10%)
+  contractHealthScore?: number | null; // 0–100; null = no contracts (defaults to 70)
 };
 
 export type TrustScoreBreakdown = {
@@ -47,6 +50,7 @@ export type TrustScoreBreakdown = {
   assessment: number;
   operational: number;
   freshness: number;
+  contract: number;
   level: TrustLevel;
   strengths: string[];
   concerns: string[];
@@ -174,6 +178,7 @@ function buildStrengths(i: TrustScoreInputs, components: Omit<TrustScoreBreakdow
   if (components.assessment >= 75 && i.latestAssessmentScore !== null) s.push(`Security assessment: ${i.latestAssessmentScore}/100`);
   if (i.reviewsLast12Months >= 1) s.push("Reviewed within the last 12 months");
   if (i.openRequests === 0 && i.totalRequests > 0) s.push("All document requests fulfilled");
+  if (components.contract >= 80 && i.contractHealthScore != null) s.push("Contract governance in good standing");
   return s;
 }
 
@@ -189,6 +194,7 @@ function buildConcerns(i: TrustScoreInputs, components: Omit<TrustScoreBreakdown
   if (i.totalReviews === 0) c.push("Vendor never reviewed");
   else if (i.reviewsLast12Months === 0) c.push("No review in the last 12 months");
   if (i.openRequests > 0) c.push(`${i.openRequests} open document request${i.openRequests > 1 ? "s" : ""}`);
+  if (i.contractHealthScore != null && components.contract < 55) c.push("Contract health requires attention");
   return c;
 }
 
@@ -215,17 +221,22 @@ export function computeTrustScore(inputs: TrustScoreInputs): TrustScoreBreakdown
   const assessment = assessmentScore(inputs);
   const operational = operationalScore(inputs);
   const freshness = freshnessScore(inputs);
+  // Contract component — default 70 (neutral) when no contracts on file
+  const contract = inputs.contractHealthScore != null
+    ? Math.max(0, Math.min(100, Math.round(inputs.contractHealthScore)))
+    : 70;
 
   const overall = Math.round(
-    evidence    * 0.25 +
-    compliance  * 0.20 +
+    evidence    * 0.20 +
+    compliance  * 0.15 +
     risk        * 0.20 +
     assessment  * 0.15 +
     operational * 0.10 +
-    freshness   * 0.10
+    freshness   * 0.10 +
+    contract    * 0.10
   );
 
-  const components = { overall, evidence, compliance, risk, assessment, operational, freshness };
+  const components = { overall, evidence, compliance, risk, assessment, operational, freshness, contract };
 
   return {
     ...components,
@@ -237,19 +248,21 @@ export function computeTrustScore(inputs: TrustScoreInputs): TrustScoreBreakdown
 }
 
 export const TRUST_COMPONENT_WEIGHTS: Record<string, number> = {
-  evidence: 25,
-  compliance: 20,
-  risk: 20,
+  evidence:   20,
+  compliance: 15,
+  risk:       20,
   assessment: 15,
   operational: 10,
-  freshness: 10,
+  freshness:  10,
+  contract:   10,
 };
 
 export const TRUST_COMPONENT_LABELS: Record<string, string> = {
-  evidence: "Evidence",
+  evidence:   "Evidence",
   compliance: "Compliance",
-  risk: "Risk",
+  risk:       "Risk",
   assessment: "Assessment",
   operational: "Operations",
-  freshness: "Freshness",
+  freshness:  "Freshness",
+  contract:   "Contracts",
 };

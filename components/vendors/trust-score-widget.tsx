@@ -23,7 +23,7 @@ interface TrustScoreWidgetProps {
   aiEnabled: boolean;
 }
 
-const COMPONENT_KEYS = ["evidence", "compliance", "risk", "assessment", "operational", "freshness"] as const;
+const COMPONENT_KEYS = ["evidence", "compliance", "risk", "assessment", "operational", "freshness", "contract"] as const;
 
 function scoreBar(value: number) {
   const color =

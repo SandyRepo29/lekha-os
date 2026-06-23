@@ -8,6 +8,44 @@ import { requireUser } from "@/lib/auth/session";
 import { listContracts } from "@/lib/services/contract-governance/contract-service";
 import { ContractStat } from "@/components/contract-governance/contract-ui";
 
+type RenewalRec = "Renew" | "Review" | "Renegotiate" | "Exit";
+type TrustImpact = "High" | "Medium" | "Low";
+
+function getRenewalIntelligence(
+  status: string,
+  daysUntilExpiry: number | null,
+  autoRenewal: boolean | null
+): { rec: RenewalRec; confidence: number; trustImpact: TrustImpact } {
+  if (status === "terminated" || status === "archived") {
+    return { rec: "Exit", confidence: 95, trustImpact: "Low" };
+  }
+  if (daysUntilExpiry !== null && daysUntilExpiry < 0) {
+    return { rec: "Renegotiate", confidence: 90, trustImpact: "High" };
+  }
+  if (daysUntilExpiry !== null && daysUntilExpiry <= 30) {
+    return autoRenewal
+      ? { rec: "Review", confidence: 80, trustImpact: "High" }
+      : { rec: "Renew", confidence: 92, trustImpact: "High" };
+  }
+  if (daysUntilExpiry !== null && daysUntilExpiry <= 90) {
+    return { rec: "Review", confidence: 75, trustImpact: "Medium" };
+  }
+  return { rec: "Renew", confidence: 65, trustImpact: "Low" };
+}
+
+const REC_STYLES: Record<RenewalRec, string> = {
+  Renew:       "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  Review:      "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  Renegotiate: "bg-orange-500/15 text-orange-400 border-orange-500/30",
+  Exit:        "bg-red-500/15 text-red-400 border-red-500/30",
+};
+
+const IMPACT_STYLES: Record<TrustImpact, string> = {
+  High:   "text-red-400",
+  Medium: "text-amber-400",
+  Low:    "text-emerald-400",
+};
+
 function formatDate(d: string | null | undefined) {
   if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -97,7 +135,9 @@ export default async function RenewalsPage() {
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Expiry</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Notice Period</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Action Deadline</th>
-                  <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Auto-Renew</th>
+                  <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Recommendation</th>
+                  <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Confidence</th>
+                  <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Trust Impact</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
@@ -113,6 +153,7 @@ export default async function RenewalsPage() {
                     actionDeadline = d.toISOString().split("T")[0];
                   }
                   const actionDays = daysUntil(actionDeadline);
+                  const { rec, confidence, trustImpact } = getRenewalIntelligence(c.status, days, c.autoRenewal);
 
                   return (
                     <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
@@ -146,14 +187,17 @@ export default async function RenewalsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        {c.autoRenewal ? (
-                          <span className="px-2 py-0.5 rounded-full text-xs bg-[var(--color-blue)]/20 text-[var(--color-blue)]">Auto</span>
-                        ) : (
-                          <div className="flex items-center gap-1 text-xs text-[var(--color-ink-dim)]">
-                            <CheckCircle2 className="h-3 w-3" />
-                            Manual
-                          </div>
-                        )}
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${REC_STYLES[rec]}`}>
+                          {rec}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-[var(--color-ink-dim)]">
+                        {confidence}%
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`text-sm font-medium ${IMPACT_STYLES[trustImpact]}`}>
+                          {trustImpact}
+                        </span>
                       </td>
                     </tr>
                   );

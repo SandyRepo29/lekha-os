@@ -39,6 +39,7 @@ import type { DocCounts } from "@/lib/services/vendor-service";
 import { TrustScoreWidget } from "./trust-score-widget";
 import { ScoreRing } from "@/components/app-shell/score-ring";
 import { getTrustLevel, TRUST_LEVEL_COLORS } from "@/lib/services/trust-score";
+import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS, getContractHealthLevel } from "@/lib/services/contract-health";
 
 type Props = {
   vendor: Omit<Vendor, "aiRecommendedActions"> & {
@@ -478,14 +479,20 @@ export function VendorDetailTabs({
             <div className="space-y-5">
               <Card>
                 <SectionHeading
-                  title="Contracts"
+                  title="Contract Workspace"
                   icon={FileSignature}
                   subtitle={vendorContracts.length > 0 ? `${vendorContracts.length} contract${vendorContracts.length !== 1 ? "s" : ""}` : undefined}
                   action={
-                    <Link href="/contract-governance/new"
-                      className="text-xs font-medium text-[var(--color-blue)] hover:underline transition-colors">
-                      New contract
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link href="/contract-governance/ai"
+                        className="text-xs font-medium text-purple-400 hover:underline transition-colors">
+                        Contract Intelligence&#8482;
+                      </Link>
+                      <Link href="/contract-governance/new"
+                        className="text-xs font-medium text-[var(--color-blue)] hover:underline transition-colors">
+                        New contract
+                      </Link>
+                    </div>
                   }
                 />
                 {vendorContracts.length === 0 ? (
@@ -502,27 +509,85 @@ export function VendorDetailTabs({
                   />
                 ) : (
                   <div className="divide-y divide-[var(--color-line)]">
-                    {vendorContracts.map((c) => (
-                      <div key={c.id} className="flex items-center justify-between px-5 py-3.5">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <p className="text-sm font-medium text-[var(--color-ink)] truncate">{c.title}</p>
-                            <ContractStatusChip status={c.status} />
+                    {vendorContracts.map((c) => {
+                      const daysUntilExpiry = c.expiryDate
+                        ? Math.floor((new Date(c.expiryDate).getTime() - Date.now()) / 86_400_000)
+                        : null;
+                      const health = computeContractHealth({
+                        isActive: c.status === "active",
+                        daysUntilExpiry,
+                        openObligations: 0,
+                        overdueObligations: 0,
+                        totalObligations: 0,
+                        legalExceptions: 0,
+                        complianceScore: vendor.complianceScore,
+                        vendorRisk: vendor.riskLevel ?? "medium",
+                      });
+                      const healthBg = CONTRACT_HEALTH_BG[health.level];
+                      const healthLabel = CONTRACT_HEALTH_LABELS[health.level];
+
+                      let renewalUrgency: { text: string; cls: string } | null = null;
+                      if (daysUntilExpiry !== null) {
+                        if (daysUntilExpiry < 0)
+                          renewalUrgency = { text: "Expired", cls: "bg-red-500/20 text-red-400" };
+                        else if (daysUntilExpiry <= 30)
+                          renewalUrgency = { text: `${daysUntilExpiry}d to expiry`, cls: "bg-red-500/20 text-red-400" };
+                        else if (daysUntilExpiry <= 90)
+                          renewalUrgency = { text: `${daysUntilExpiry}d to expiry`, cls: "bg-amber-500/20 text-amber-400" };
+                      }
+
+                      return (
+                        <div key={c.id} className="flex items-center gap-3 px-5 py-3.5">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-sm font-medium text-[var(--color-ink)] truncate">{c.title}</p>
+                              <ContractStatusChip status={c.status} />
+                              {renewalUrgency && (
+                                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${renewalUrgency.cls}`}>
+                                  {renewalUrgency.text}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">
+                              {c.contractType ? (c.contractType as string).replace(/_/g, " ") : "Contract"}
+                              {c.expiryDate ? ` · Expires ${new Date(c.expiryDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}
+                            </p>
                           </div>
-                          <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">
-                            {c.contractType ? (c.contractType as string).replace(/_/g, " ") : "Contract"}
-                            {c.expiryDate ? ` · Expires ${new Date(c.expiryDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}
-                          </p>
+                          <div className="flex shrink-0 items-center gap-3">
+                            <div className="text-right">
+                              <div className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${healthBg}`}>
+                                {health.overall} · {healthLabel}
+                              </div>
+                              <p className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">Contract Health</p>
+                            </div>
+                            <Link href={`/contract-governance/${c.id}`}
+                              className="text-xs text-[var(--color-blue)] hover:underline">
+                              View
+                            </Link>
+                          </div>
                         </div>
-                        <Link href={`/contract-governance/${c.id}`}
-                          className="ml-3 shrink-0 text-xs text-[var(--color-blue)] hover:underline">
-                          View
-                        </Link>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </Card>
+
+              {/* Quick links */}
+              {vendorContracts.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {[
+                    { label: "Renewal Timeline", href: "/contract-governance/renewals", desc: "Track expiry & notice periods" },
+                    { label: "Obligation Tracker", href: "/contract-governance/obligations", desc: "Open obligations & due dates" },
+                    { label: "Contract Intelligence™", href: "/contract-governance/ai", desc: "AI analysis & executive summary" },
+                  ].map((l) => (
+                    <Link key={l.href} href={l.href}
+                      className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 hover:bg-white/[0.05] transition-colors">
+                      <p className="text-xs font-semibold text-[var(--color-ink)]">{l.label}</p>
+                      <p className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">{l.desc}</p>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
