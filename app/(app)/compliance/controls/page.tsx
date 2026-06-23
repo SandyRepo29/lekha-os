@@ -82,9 +82,6 @@ export default async function ComplianceControlsPage() {
                   <tr key={c.id} className="border-b border-[var(--color-line)] last:border-0 hover:bg-white/[0.02] transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="font-medium">{c.name}</div>
-                      {c.controlId && (
-                        <p className="mt-0.5 text-xs text-[var(--color-ink-faint)]">{c.controlId}</p>
-                      )}
                     </td>
                     <td className="px-5 py-3.5 text-xs text-[var(--color-ink-dim)]">{c.frameworkName}</td>
                     <td className="px-5 py-3.5"><ControlStatusBadge status={c.status} /></td>
