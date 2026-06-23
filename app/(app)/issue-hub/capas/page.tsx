@@ -7,7 +7,7 @@ import { requireUser } from "@/lib/auth/session";
 import * as capaRepo from "@/lib/repositories/corrective-action-repo";
 import { CapaStatusBadge } from "@/components/audit/audit-status-badge";
 
-function formatDate(d: string | null | undefined) {
+function formatDate(d: string | Date | null | undefined) {
   if (!d) return "&#8212;";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
