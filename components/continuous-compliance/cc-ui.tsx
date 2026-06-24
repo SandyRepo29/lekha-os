@@ -5,16 +5,15 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const SUB_NAV = [
-  { href: "/continuous-compliance",             label: "Hub" },
-  { href: "/continuous-compliance/checks",       label: "Checks" },
-  { href: "/continuous-compliance/health",       label: "Health" },
-  { href: "/continuous-compliance/readiness",    label: "Readiness" },
-  { href: "/continuous-compliance/access-reviews", label: "Access Reviews" },
-  { href: "/continuous-compliance/attestations", label: "Attestations" },
-  { href: "/continuous-compliance/training",     label: "Training" },
-  { href: "/continuous-compliance/signals",      label: "Signals" },
-  { href: "/continuous-compliance/automation",   label: "Automation" },
-  { href: "/continuous-compliance/ai",           label: "AI Officer™" },
+  { href: "/continuous-compliance",                        label: "Overview" },
+  { href: "/continuous-compliance/readiness",              label: "Framework Health" },
+  { href: "/continuous-compliance/checks",                 label: "Control Monitoring" },
+  { href: "/continuous-compliance/health",                 label: "Evidence Monitoring" },
+  { href: "/continuous-compliance/vendor-compliance",      label: "Vendor Compliance" },
+  { href: "/continuous-compliance/signals",                label: "Compliance Alerts" },
+  { href: "/continuous-compliance/timeline",               label: "Timeline" },
+  { href: "/continuous-compliance/reports",                label: "Reports" },
+  { href: "/continuous-compliance/ai",                     label: "Compliance Copilot™" },
 ];
 
 export function CcSubNav() {

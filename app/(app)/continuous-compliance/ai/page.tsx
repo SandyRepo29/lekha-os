@@ -28,8 +28,8 @@ export default async function AiCompliancePage() {
       <CcSubNav />
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Compliance Officer™</h1>
-        <p className="text-sm text-[var(--color-ink-dim)]">AI-powered compliance analysis, gap detection, and executive reporting</p>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Copilot&#8482;</h1>
+        <p className="text-sm text-[var(--color-ink-dim)]">AI-powered continuous compliance analysis, drift detection, and executive reporting</p>
       </div>
 
       {summary && (
