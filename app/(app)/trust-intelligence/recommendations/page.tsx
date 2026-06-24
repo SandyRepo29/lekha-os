@@ -22,10 +22,10 @@ export default async function RecommendationsPage() {
       <div>
         <h2 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Zap className="h-5 w-5 text-[var(--color-blue)]" />
-          Recommendations Engine™
+          Decision Recommendations&#8482;
         </h2>
         <p className="text-sm text-[var(--color-ink-dim)]">
-          Prioritized governance actions — {recs.length} recommendation{recs.length !== 1 ? "s" : ""}
+          Prioritized governance actions &#8212; {recs.length} recommendation{recs.length !== 1 ? "s" : ""}
         </p>
       </div>
 
@@ -43,30 +43,70 @@ export default async function RecommendationsPage() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {recs.map((rec) => (
-            <Card key={rec.id} className="p-5 hover:bg-white/[0.02] transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="flex flex-col gap-1.5 shrink-0">
-                  <PriorityChip priority={rec.priority} />
-                  <CategoryChip category={rec.category} />
+          {recs.map((rec) => {
+            const reasons = rec.description
+              .split(/[.·]/)
+              .filter((s) => s.trim().length > 10)
+              .slice(0, 3);
+
+            const trustImpactPts = rec.impact * 2;
+
+            return (
+              <Card key={rec.id} className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60 hover:bg-white/[0.02] transition-colors">
+                {/* Header row */}
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2">
+                    <PriorityChip priority={rec.priority} />
+                    <CategoryChip category={rec.category} />
+                  </div>
+                  <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 border border-emerald-500/20 shrink-0">
+                    Trust Impact: +{trustImpactPts} pts
+                  </span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-[var(--color-ink)]">{rec.title}</p>
-                  <p className="text-xs text-[var(--color-ink-dim)] mt-1">{rec.description}</p>
-                  <p className="text-xs text-[var(--color-blue)] mt-1.5 font-medium">{rec.action}</p>
-                </div>
-                <div className="shrink-0 flex flex-col items-end gap-1 text-xs text-[var(--color-ink-faint)]">
-                  <span>Impact {rec.impact}/10</span>
-                  <span>Effort {rec.effort}/10</span>
-                  {rec.href && (
-                    <Link href={rec.href} className="mt-1 flex items-center gap-1 text-[var(--color-blue)] hover:underline">
+
+                {/* Title */}
+                <p className="text-sm font-semibold text-[var(--color-ink)] mb-2">{rec.title}</p>
+
+                {/* Reasons */}
+                {reasons.length > 0 && (
+                  <div className="mb-2">
+                    <p className="text-xs text-[var(--color-ink-faint)] mb-1">Reasons:</p>
+                    <ul className="space-y-1">
+                      {reasons.map((reason, i) => (
+                        <li key={i} className="flex items-start gap-1.5 text-xs text-[var(--color-ink-dim)]">
+                          <span className="mt-1 h-1 w-1 rounded-full bg-[var(--color-ink-faint)] shrink-0" />
+                          {reason.trim()}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Recommendation */}
+                <p className="text-xs text-[var(--color-blue)] font-medium mb-3">
+                  Recommendation: {rec.action}
+                </p>
+
+                {/* Footer row */}
+                <div className="flex items-center justify-between">
+                  {rec.href ? (
+                    <Link
+                      href={rec.href}
+                      className="inline-flex items-center gap-1 text-xs text-[var(--color-blue)] hover:underline font-medium"
+                    >
                       Go <ArrowRight className="h-3 w-3" />
                     </Link>
+                  ) : (
+                    <span />
                   )}
+                  <div className="flex items-center gap-3 text-xs text-[var(--color-ink-faint)]">
+                    <span>Impact {rec.impact}/10</span>
+                    <span>Effort {rec.effort}/10</span>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>
