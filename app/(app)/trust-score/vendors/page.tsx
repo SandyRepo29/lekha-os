@@ -20,7 +20,7 @@ export default async function VendorTrustPage() {
 
   const [vendorM, allVendors] = await Promise.all([
     getOrgTrustMetrics(orgId).catch(() => null),
-    findVendorsByOrg(orgId, {}).catch(() => []),
+    findVendorsByOrg(orgId).catch(() => []),
   ]);
 
   const scored = allVendors
