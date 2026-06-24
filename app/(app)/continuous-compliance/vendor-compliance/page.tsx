@@ -38,9 +38,9 @@ export default async function VendorCompliancePage() {
   const vendorM = await getOrgTrustMetrics(session.org.id).catch(() => null);
 
   const allVendors = vendorM ? [...vendorM.topVendors, ...vendorM.lowVendors] : [];
-  const compliant  = allVendors.filter((v) => v.trustScore >= 80);
-  const atRisk     = allVendors.filter((v) => v.trustScore >= 60 && v.trustScore < 80);
-  const nonComp    = allVendors.filter((v) => v.trustScore < 60);
+  const compliant  = allVendors.filter((v) => (v.trustScore ?? 0) >= 80);
+  const atRisk     = allVendors.filter((v) => (v.trustScore ?? 0) >= 60 && (v.trustScore ?? 0) < 80);
+  const nonComp    = allVendors.filter((v) => (v.trustScore ?? 0) < 60);
   const avgScore   = vendorM?.avgScore ?? 0;
 
   return (
@@ -82,9 +82,9 @@ export default async function VendorCompliancePage() {
           ) : (
             <div className="divide-y divide-[var(--color-line)]">
               {nonComp.map((v) => (
-                <div key={v.vendorId} className="flex items-center justify-between px-5 py-3">
+                <div key={v.id} className="flex items-center justify-between px-5 py-3">
                   <div>
-                    <p className="text-sm font-medium">{v.vendorName}</p>
+                    <p className="text-sm font-medium">{v.name}</p>
                     <p className="text-xs text-[var(--color-ink-dim)]">Trust score below threshold</p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ export default async function VendorCompliancePage() {
                       </div>
                     </div>
                     <span className="text-sm font-bold text-red-400 w-8 text-right">{v.trustScore}</span>
-                    <Link href={`/vendors/${v.vendorId}`} className="text-xs text-[var(--color-blue)] hover:underline">View</Link>
+                    <Link href={`/vendors/${v.id}`} className="text-xs text-[var(--color-blue)] hover:underline">View</Link>
                   </div>
                 </div>
               ))}
@@ -116,9 +116,9 @@ export default async function VendorCompliancePage() {
           ) : (
             <div className="divide-y divide-[var(--color-line)]">
               {atRisk.map((v) => (
-                <div key={v.vendorId} className="flex items-center justify-between px-5 py-3">
+                <div key={v.id} className="flex items-center justify-between px-5 py-3">
                   <div>
-                    <p className="text-sm font-medium">{v.vendorName}</p>
+                    <p className="text-sm font-medium">{v.name}</p>
                     <p className="text-xs text-[var(--color-ink-dim)]">Approaching non-compliance</p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export default async function VendorCompliancePage() {
                       </div>
                     </div>
                     <span className="text-sm font-bold text-amber-400 w-8 text-right">{v.trustScore}</span>
-                    <Link href={`/vendors/${v.vendorId}`} className="text-xs text-[var(--color-blue)] hover:underline">View</Link>
+                    <Link href={`/vendors/${v.id}`} className="text-xs text-[var(--color-blue)] hover:underline">View</Link>
                   </div>
                 </div>
               ))}
@@ -162,10 +162,10 @@ export default async function VendorCompliancePage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {compliant.map((v) => (
-                  <tr key={v.vendorId} className="hover:bg-white/[0.02]">
+                  <tr key={v.id} className="hover:bg-white/[0.02]">
                     <td className="px-5 py-3">
-                      <Link href={`/vendors/${v.vendorId}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
-                        {v.vendorName}
+                      <Link href={`/vendors/${v.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
+                        {v.name}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
