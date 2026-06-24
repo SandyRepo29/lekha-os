@@ -90,7 +90,7 @@ const navGroups: NavGroup[] = [
     key: "trust-intelligence",
     label: "Trust Intelligence",
     items: [
-      { href: "/trust-intelligence",          label: "Trust Score™",         icon: TrendingUp },
+      { href: "/trust-score",                 label: "Trust Score™",         icon: TrendingUp },
       { href: "/trust-intelligence/trends",   label: "Trust Analytics™",     icon: Brain },
       { href: "/benchmarking",                label: "Benchmarking™",        icon: BarChart3 },
       { href: "/executive-reporting",         label: "Executive Reporting™", icon: LineChart },
