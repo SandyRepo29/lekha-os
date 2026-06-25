@@ -432,6 +432,23 @@ export async function updateSubscriptionStatus(
   await db.execute(sql.raw(`UPDATE subscriptions SET ${parts.join(", ")} WHERE id = '${subscriptionId}'`))
 }
 
+export async function activateSubscriptionByOrgId(
+  orgId: string,
+  data: { status: string; currentPeriodStart: string; currentPeriodEnd: string; planSlug?: string }
+): Promise<void> {
+  const parts = [
+    `status = '${data.status}'`,
+    `current_period_start = '${data.currentPeriodStart}'`,
+    `current_period_end = '${data.currentPeriodEnd}'`,
+    "updated_at = now()",
+  ]
+  await db.execute(sql.raw(`UPDATE subscriptions SET ${parts.join(", ")} WHERE organization_id = '${orgId}'`))
+}
+
+export async function findTransactionById(id: string): Promise<unknown> {
+  return getTransaction(id)
+}
+
 export async function getOrgSubscription(orgId: string): Promise<unknown> {
   const rows = await db.execute(sql`
     SELECT s.*, bp.name AS plan_name, bp.price_yearly, bp.max_users, bp.max_vendors, bp.max_storage_gb

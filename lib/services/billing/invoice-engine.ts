@@ -17,8 +17,8 @@ import * as billingRepo from "@/lib/repositories/billing-repo";
 import {
   applyCoupon,
   computeTax,
-  getCreditBalance,
-  deductCredits,
+  getOrgCreditBalance,
+  applyCredit,
 } from "@/lib/services/billing/billing-engine";
 
 // â”€â”€â”€ Payment Adapter imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -147,33 +147,24 @@ export async function createInvoice(
   let discountCents = 0;
   let couponMeta: Record<string, unknown> | undefined;
   if (params.couponCode) {
-    const couponResult = await applyCoupon({
-      code: params.couponCode,
-      amountCents: basePriceCents,
-      orgId: params.orgId,
-    });
+    const couponResult = await applyCoupon(params.orgId, params.couponCode, basePriceCents, params.planSlug);
     discountCents = couponResult.discountCents;
-    couponMeta = couponResult.meta;
+    couponMeta = { couponId: couponResult.couponId, discountCents: couponResult.discountCents };
   }
 
   const subtotalCents = Math.max(0, basePriceCents - discountCents);
 
   // 3. Compute tax
   const hasGstin = Boolean(params.billingGstin && params.billingGstin.trim());
-  const taxResult = await computeTax({
-    amountCents: subtotalCents,
-    jurisdiction: "IN",
-    hasGstin,
-  });
-  const taxCents = taxResult.taxCents;
-  const taxRate = taxResult.rate;
-  const taxLabel = taxResult.label; // e.g. "GST 18%"
+  const taxResult = await computeTax(subtotalCents, "IN", hasGstin);
+  const taxCents = taxResult.taxAmountCents;
+  const taxRate = taxResult.taxRate;
+  const taxLabel = taxResult.taxName;
 
   // 4. Credit balance
   let creditsAppliedCents = 0;
   if (params.applyCredits) {
-    const creditBalance = await getCreditBalance(params.orgId);
-    const creditAvailable = creditBalance.balanceCents;
+    const creditAvailable = await getOrgCreditBalance(params.orgId);
     // Credits reduce the post-tax total; cap at total owed
     const totalBeforeCredits = subtotalCents + taxCents;
     creditsAppliedCents = Math.min(creditAvailable, totalBeforeCredits);
@@ -217,17 +208,12 @@ export async function createInvoice(
       notes: params.notes ?? null,
       dueAt,
       updatedAt: new Date(),
-    } as Parameters<typeof db.insert>[0] extends infer T ? any : any)
+    } as any)
     .returning();
 
   // 9. Deduct credits from balance if applied
   if (creditsAppliedCents > 0) {
-    await deductCredits({
-      orgId: params.orgId,
-      amountCents: creditsAppliedCents,
-      referenceId: invoiceRow.id,
-      reason: `Applied to invoice ${invoiceNumber}`,
-    });
+    await applyCredit(params.orgId, invoiceRow.id, creditsAppliedCents, params.actorId ?? params.orgId);
   }
 
   // 10. Create payment transaction via provider
@@ -235,12 +221,12 @@ export async function createInvoice(
   const paymentResult = await provider.createPayment({
     orgId: params.orgId,
     invoiceId: invoiceRow.id,
-    invoiceNumber,
     amountCents: totalCents,
-    currency: "INR",
-    billingName: params.billingName,
-    billingEmail: params.billingEmail,
-    description: `AUDT ${plan.name} plan â€” ${invoiceNumber}`,
+    currency: “INR”,
+    paymentMethod: (params.paymentMethod ?? “bank_transfer”) as any,
+    customerName: params.billingName,
+    customerEmail: params.billingEmail,
+    description: `AUDT ${plan.name} plan - ${invoiceNumber}`,
     metadata: {
       planId: plan.id,
       planName: plan.name,
@@ -380,11 +366,6 @@ export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
       .limit(1);
     plan = planRow ?? null;
   }
-
-  // Payment transactions â€” read from audit_logs where entity_type = 'invoice'
-  // and action like 'billing.%' for this invoice. This avoids needing a
-  // separate payment_transactions table (which lives in the payment-adapter layer).
-  const { recordAudit } = await import("@/lib/repositories/audit-repo");
 
   // Finance actions from audit_logs
   let financeActions: any[] = [];

@@ -5,11 +5,19 @@
  */
 
 import { DomainError } from "@/lib/services/errors";
-import type {
-  BillingCoupon,
-  BillingTransaction,
-  BillingInvoice,
-} from "@/lib/services/billing/payment-adapter";
+
+// Local domain types (repo returns unknown rows; we cast as needed)
+type CouponRow = {
+  id: string; isActive: boolean; expiresAt?: string | null;
+  maxUses?: number | null; timesUsed: number; discountType: string;
+  value: number; applicablePlans?: string[];
+}
+type TransactionRow = {
+  id: string; orgId: string; invoiceId: string; amountCents: number;
+}
+type InvoiceRow = {
+  id: string; orgId: string; planSlug?: string;
+}
 
 // ---------------------------------------------------------------------------
 // Tax configuration (hardcoded rates — no DB lookup needed at this stage)
@@ -34,11 +42,11 @@ export async function applyCoupon(
   finalAmountCents: number;
   couponId: string;
 }> {
-  const { findCouponByCode } = await import(
+  const { getCouponByCode } = await import(
     "@/lib/repositories/billing-engine-repo"
   );
 
-  const coupon: BillingCoupon | null = await findCouponByCode(code);
+  const coupon = (await getCouponByCode(code)) as CouponRow | null;
 
   if (!coupon || !coupon.isActive) {
     throw new DomainError("Coupon code is invalid or inactive.");
@@ -113,13 +121,11 @@ export async function computeTax(
 // ---------------------------------------------------------------------------
 
 export async function getOrgCreditBalance(orgId: string): Promise<number> {
-  const { sumCreditsByOrg } = await import(
+  const { getOrgCreditBalance } = await import(
     "@/lib/repositories/billing-engine-repo"
   );
 
-  // Returns { totalCredits: number; totalDebits: number }
-  const { totalCredits, totalDebits } = await sumCreditsByOrg(orgId);
-  return Math.max(0, totalCredits - totalDebits);
+  return getOrgCreditBalance(orgId);
 }
 
 // ---------------------------------------------------------------------------
@@ -139,20 +145,21 @@ export async function applyCredit(
     );
   }
 
-  const { insertBillingCredit, insertFinanceAction } = await import(
+  const { createCredit, recordFinanceAction } = await import(
     "@/lib/repositories/billing-engine-repo"
   );
 
-  await insertBillingCredit({
+  await createCredit({
     orgId,
     type: "debit",
     amountCents,
+    currency: "INR",
     description: `Credit applied to invoice ${invoiceId}`,
     appliedToInvoiceId: invoiceId,
     createdBy: actorId,
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId,
     invoiceId,
     action: "credit_applied",
@@ -175,30 +182,29 @@ export async function reconcilePayment(
   }
 ): Promise<{ status: "pending_verification" }> {
   const {
-    findTransactionById,
+    getTransaction,
     updateTransaction,
-    updateInvoice,
-    insertFinanceAction,
+    updateInvoiceFull,
+    recordFinanceAction,
   } = await import("@/lib/repositories/billing-engine-repo");
 
-  const transaction: BillingTransaction | null =
-    await findTransactionById(transactionId);
+  const transaction = (await getTransaction(transactionId)) as TransactionRow | null;
   if (!transaction) {
     throw new DomainError("Transaction not found.");
   }
 
   await updateTransaction(transactionId, {
     status: "pending_verification",
-    providerReference: options.providerReference ?? null,
-    paymentProofUrl: options.proofUrl ?? null,
-    notes: options.notes ?? null,
+    providerReference: options.providerReference ?? undefined,
+    paymentProofUrl: options.proofUrl ?? undefined,
+    notes: options.notes ?? undefined,
   });
 
-  await updateInvoice(transaction.invoiceId, {
+  await updateInvoiceFull(transaction.invoiceId, {
     status: "pending_verification",
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId: transaction.orgId,
     invoiceId: transaction.invoiceId,
     transactionId,
@@ -223,23 +229,20 @@ export async function verifyPayment(
   notes?: string
 ): Promise<{ subscriptionActivated: boolean }> {
   const {
-    findTransactionById,
-    findInvoiceById,
+    getTransaction,
+    getInvoiceById,
     updateTransaction,
-    updateInvoice,
+    updateInvoiceFull,
     activateSubscriptionByOrgId,
-    insertFinanceAction,
+    recordFinanceAction,
   } = await import("@/lib/repositories/billing-engine-repo");
 
-  const transaction: BillingTransaction | null =
-    await findTransactionById(transactionId);
+  const transaction = (await getTransaction(transactionId)) as TransactionRow | null;
   if (!transaction) {
     throw new DomainError("Transaction not found.");
   }
 
-  const invoice: BillingInvoice | null = await findInvoiceById(
-    transaction.invoiceId
-  );
+  const invoice = (await getInvoiceById(transaction.invoiceId)) as InvoiceRow | null;
   if (!invoice) {
     throw new DomainError("Invoice not found.");
   }
@@ -251,13 +254,13 @@ export async function verifyPayment(
   await updateTransaction(transactionId, {
     status: "verified",
     verifiedBy: actorId,
-    verifiedAt: now.toISOString(),
-    notes: notes ?? null,
+    verifiedAt: now,
+    notes: notes ?? undefined,
   });
 
-  await updateInvoice(transaction.invoiceId, {
+  await updateInvoiceFull(transaction.invoiceId, {
     status: "paid",
-    paidAt: now.toISOString(),
+    paidAt: now,
   });
 
   await activateSubscriptionByOrgId(transaction.orgId, {
@@ -267,7 +270,7 @@ export async function verifyPayment(
     planSlug: invoice.planSlug,
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId: transaction.orgId,
     invoiceId: transaction.invoiceId,
     transactionId,
@@ -276,7 +279,7 @@ export async function verifyPayment(
     metadata: { notes },
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId: transaction.orgId,
     invoiceId: transaction.invoiceId,
     transactionId,
@@ -301,19 +304,18 @@ export async function rejectPayment(
   reason: string
 ): Promise<void> {
   const {
-    findTransactionById,
+    getTransaction,
     updateTransaction,
-    updateInvoice,
-    insertFinanceAction,
+    updateInvoiceFull,
+    recordFinanceAction,
   } = await import("@/lib/repositories/billing-engine-repo");
 
-  const transaction: BillingTransaction | null =
-    await findTransactionById(transactionId);
+  const transaction = (await getTransaction(transactionId)) as TransactionRow | null;
   if (!transaction) {
     throw new DomainError("Transaction not found.");
   }
 
-  const now = new Date().toISOString();
+  const now = new Date();
 
   await updateTransaction(transactionId, {
     status: "failed",
@@ -322,11 +324,11 @@ export async function rejectPayment(
     rejectionReason: reason,
   });
 
-  await updateInvoice(transaction.invoiceId, {
+  await updateInvoiceFull(transaction.invoiceId, {
     status: "awaiting_payment",
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId: transaction.orgId,
     invoiceId: transaction.invoiceId,
     transactionId,
@@ -347,15 +349,14 @@ export async function issueRefund(
   reason: string
 ): Promise<void> {
   const {
-    findTransactionById,
+    getTransaction,
     updateTransaction,
-    updateInvoice,
-    insertBillingCredit,
-    insertFinanceAction,
+    updateInvoiceFull,
+    createCredit,
+    recordFinanceAction,
   } = await import("@/lib/repositories/billing-engine-repo");
 
-  const transaction: BillingTransaction | null =
-    await findTransactionById(transactionId);
+  const transaction = (await getTransaction(transactionId)) as TransactionRow | null;
   if (!transaction) {
     throw new DomainError("Transaction not found.");
   }
@@ -376,21 +377,22 @@ export async function issueRefund(
     status: "refunded",
   });
 
-  await updateInvoice(transaction.invoiceId, {
+  await updateInvoiceFull(transaction.invoiceId, {
     status: isFullRefund ? "refunded" : "partially_paid",
   });
 
   // Issue a billing credit so the org can apply it to a future invoice
-  await insertBillingCredit({
+  await createCredit({
     orgId: transaction.orgId,
     type: "credit",
     amountCents,
+    currency: "INR",
     description: `Refund: ${reason}`,
     appliedToInvoiceId: null,
     createdBy: actorId,
   });
 
-  await insertFinanceAction({
+  await recordFinanceAction({
     orgId: transaction.orgId,
     invoiceId: transaction.invoiceId,
     transactionId,
