@@ -677,49 +677,31 @@ export default async function BillingPage() {
                 AUDT Bank Account
               </p>
               <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-sm">
-                {bankDetails ? (
+                {bankDetails ? (() => {
+                  const bd = bankDetails as Record<string, unknown>;
+                  return (
                   <div className="space-y-2">
-                    {(bankDetails as Record<string, unknown>).accountName && (
-                      <BankRow
-                        label="Account Name"
-                        value={String((bankDetails as Record<string, unknown>).accountName)}
-                      />
+                    {!!bd.accountName && (
+                      <BankRow label="Account Name" value={String(bd.accountName)} />
                     )}
-                    {(bankDetails as Record<string, unknown>).accountNumber && (
-                      <BankRow
-                        label="Account Number"
-                        value={String((bankDetails as Record<string, unknown>).accountNumber)}
-                        mono
-                      />
+                    {!!bd.accountNumber && (
+                      <BankRow label="Account Number" value={String(bd.accountNumber)} mono />
                     )}
-                    {(bankDetails as Record<string, unknown>).ifscCode && (
-                      <BankRow
-                        label="IFSC Code"
-                        value={String((bankDetails as Record<string, unknown>).ifscCode)}
-                        mono
-                      />
+                    {!!bd.ifscCode && (
+                      <BankRow label="IFSC Code" value={String(bd.ifscCode)} mono />
                     )}
-                    {(bankDetails as Record<string, unknown>).bankName && (
-                      <BankRow
-                        label="Bank"
-                        value={String((bankDetails as Record<string, unknown>).bankName)}
-                      />
+                    {!!bd.bankName && (
+                      <BankRow label="Bank" value={String(bd.bankName)} />
                     )}
-                    {(bankDetails as Record<string, unknown>).branch && (
-                      <BankRow
-                        label="Branch"
-                        value={String((bankDetails as Record<string, unknown>).branch)}
-                      />
+                    {!!bd.branch && (
+                      <BankRow label="Branch" value={String(bd.branch)} />
                     )}
-                    {(bankDetails as Record<string, unknown>).upiId && (
-                      <BankRow
-                        label="UPI ID"
-                        value={String((bankDetails as Record<string, unknown>).upiId)}
-                        mono
-                      />
+                    {!!bd.upiId && (
+                      <BankRow label="UPI ID" value={String(bd.upiId)} mono />
                     )}
                   </div>
-                ) : (
+                  );
+                })() : (
                   /* Fallback static details */
                   <div className="space-y-2">
                     <BankRow label="Account Name" value="AUDT Technologies Pvt. Ltd." />

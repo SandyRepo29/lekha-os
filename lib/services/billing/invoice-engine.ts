@@ -1,5 +1,5 @@
-﻿-/**
- * Invoice Engine --" pure TypeScript, no Next.js imports.
+﻿/**
+ * Invoice Engine - pure TypeScript, no Next.js imports.
  * Handles invoice generation and lifecycle for AUDT billing.
  *
  * Imports from:
@@ -265,7 +265,7 @@ export async function sendInvoice(invoiceId: string): Promise<void> {
     throw new Error("Cannot send a cancelled invoice.");
   }
   if (invoice.status === "paid") {
-    throw new Error("Invoice is already paid --" sending is not applicable.");
+    throw new Error("Invoice is already paid - sending is not applicable.");
   }
 
   await db
