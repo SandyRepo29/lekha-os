@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 
 import { requireUser } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
@@ -7,7 +7,7 @@ import * as billingRepo from "@/lib/repositories/billing-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
 import { DomainError } from "@/lib/services/errors";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export type CreateInvoiceResult = {
   invoiceId?: string;
@@ -95,7 +95,7 @@ export type FinanceDashboardResult = {
   error?: string;
 };
 
-// ─── AUDT bank details (India ─ bank transfer) ────────────────────────────────
+// â”€â”€â”€ AUDT bank details (India â”€ bank transfer) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const AUDT_BANK_DETAILS = {
   bankName: "HDFC Bank",
@@ -105,7 +105,7 @@ const AUDT_BANK_DETAILS = {
   swiftCode: "HDFCINBB",
 };
 
-// ─── 1. createInvoiceAction ───────────────────────────────────────────────────
+// â”€â”€â”€ 1. createInvoiceAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function createInvoiceAction(
   formData: FormData
@@ -159,7 +159,7 @@ export async function createInvoiceAction(
       .join(" | ");
 
     const invoice = await billingRepo.insertInvoice({
-      organizationId: session.orgId,
+      organizationId: session.org?.id,
       planId: plan.id,
       amountCents,
       currency: "INR",
@@ -172,8 +172,8 @@ export async function createInvoiceAction(
     });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.invoice_created",
       entityType: "invoice",
       entityId: invoice.id,
@@ -202,7 +202,7 @@ export async function createInvoiceAction(
   }
 }
 
-// ─── 2. recordPaymentAction ───────────────────────────────────────────────────
+// â”€â”€â”€ 2. recordPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function recordPaymentAction(
   formData: FormData
@@ -220,7 +220,7 @@ export async function recordPaymentAction(
 
     const invoice = await billingRepo.findInvoiceById(invoiceId);
     if (!invoice) return { error: "Invoice not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
     if (invoice.status === "paid") return { error: "Invoice is already paid." };
     if (invoice.status === "cancelled") return { error: "Invoice has been cancelled." };
 
@@ -230,8 +230,8 @@ export async function recordPaymentAction(
     });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.payment_recorded",
       entityType: "invoice",
       entityId: invoiceId,
@@ -253,7 +253,7 @@ export async function recordPaymentAction(
   }
 }
 
-// ─── 3. verifyPaymentAction ───────────────────────────────────────────────────
+// â”€â”€â”€ 3. verifyPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function verifyPaymentAction(
   transactionId: string,
@@ -262,26 +262,26 @@ export async function verifyPaymentAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.role)) {
+    if (!["admin", "owner"].includes(session.org?.role)) {
       return { error: "Only admins and owners can verify payments." };
     }
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
     if (invoice.status === "paid") return { error: "Payment already verified." };
 
     await billingService.markInvoicePaid({
       invoiceId: transactionId,
-      orgId: session.orgId,
-      actorId: session.userId,
+      orgId: session.org?.id,
+      actorId: session.id,
       paymentReference: invoice.paymentReference ?? "verified",
     });
 
     if (notes) {
       await recordAudit({
-        organizationId: session.orgId,
-        actorId: session.userId,
+        organizationId: session.org?.id,
+        actorId: session.id,
         action: "billing.payment_verified",
         entityType: "invoice",
         entityId: transactionId,
@@ -299,7 +299,7 @@ export async function verifyPaymentAction(
   }
 }
 
-// ─── 4. rejectPaymentAction ───────────────────────────────────────────────────
+// â”€â”€â”€ 4. rejectPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function rejectPaymentAction(
   transactionId: string,
@@ -308,7 +308,7 @@ export async function rejectPaymentAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.role)) {
+    if (!["admin", "owner"].includes(session.org?.role)) {
       return { error: "Only admins and owners can reject payments." };
     }
 
@@ -316,7 +316,7 @@ export async function rejectPaymentAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
     if (invoice.status === "paid") {
       return { error: "Cannot reject an already-verified payment." };
     }
@@ -327,8 +327,8 @@ export async function rejectPaymentAction(
     });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.payment_rejected",
       entityType: "invoice",
       entityId: transactionId,
@@ -345,7 +345,7 @@ export async function rejectPaymentAction(
   }
 }
 
-// ─── 5. issueRefundAction ─────────────────────────────────────────────────────
+// â”€â”€â”€ 5. issueRefundAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function issueRefundAction(
   transactionId: string,
@@ -355,7 +355,7 @@ export async function issueRefundAction(
   try {
     const session = await requireUser();
 
-    if (session.role !== "owner") {
+    if (session.org?.role !== "owner") {
       return { error: "Only the organization owner can issue refunds." };
     }
 
@@ -366,7 +366,7 @@ export async function issueRefundAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
     if (invoice.status !== "paid") {
       return { error: "Refunds can only be issued for paid invoices." };
     }
@@ -381,8 +381,8 @@ export async function issueRefundAction(
     });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.refund_issued",
       entityType: "invoice",
       entityId: transactionId,
@@ -404,11 +404,11 @@ export async function issueRefundAction(
   }
 }
 
-// ─── 6. applyCouponAction ─────────────────────────────────────────────────────
+// â”€â”€â”€ 6. applyCouponAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Validate and apply a coupon code.
- * Coupon definitions are static inline — replace with a billing_coupons DB
+ * Coupon definitions are static inline â€” replace with a billing_coupons DB
  * table lookup when that table is added in a future migration.
  */
 export async function applyCouponAction(
@@ -478,7 +478,7 @@ export async function applyCouponAction(
   }
 }
 
-// ─── 7. uploadPaymentProofAction ──────────────────────────────────────────────
+// â”€â”€â”€ 7. uploadPaymentProofAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function uploadPaymentProofAction(
   transactionId: string,
@@ -491,7 +491,7 @@ export async function uploadPaymentProofAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
 
     if (["paid", "cancelled", "refunded"].includes(invoice.status ?? "")) {
       return { error: "Cannot upload proof for a finalised invoice." };
@@ -501,8 +501,8 @@ export async function uploadPaymentProofAction(
     await billingRepo.updateInvoice(transactionId, { pdfUrl: proofUrl });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.payment_proof_uploaded",
       entityType: "invoice",
       entityId: transactionId,
@@ -519,7 +519,7 @@ export async function uploadPaymentProofAction(
   }
 }
 
-// ─── 8. cancelInvoiceAction ───────────────────────────────────────────────────
+// â”€â”€â”€ 8. cancelInvoiceAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function cancelInvoiceAction(
   invoiceId: string
@@ -527,13 +527,13 @@ export async function cancelInvoiceAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.role)) {
+    if (!["admin", "owner"].includes(session.org?.role)) {
       return { error: "Only admins and owners can cancel invoices." };
     }
 
     const invoice = await billingRepo.findInvoiceById(invoiceId);
     if (!invoice) return { error: "Invoice not found." };
-    if (invoice.organizationId !== session.orgId) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
 
     if (invoice.status === "paid") {
       return { error: "Cannot cancel a paid invoice. Issue a refund instead." };
@@ -545,8 +545,8 @@ export async function cancelInvoiceAction(
     await billingRepo.updateInvoice(invoiceId, { status: "cancelled" });
 
     await recordAudit({
-      organizationId: session.orgId,
-      actorId: session.userId,
+      organizationId: session.org?.id,
+      actorId: session.id,
       action: "billing.invoice_cancelled",
       entityType: "invoice",
       entityId: invoiceId,
@@ -563,7 +563,7 @@ export async function cancelInvoiceAction(
   }
 }
 
-// ─── 9. getFinanceDashboardAction ─────────────────────────────────────────────
+// â”€â”€â”€ 9. getFinanceDashboardAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getFinanceDashboardAction(): Promise<FinanceDashboardResult> {
   const empty: FinanceDashboardResult = {
@@ -581,14 +581,14 @@ export async function getFinanceDashboardAction(): Promise<FinanceDashboardResul
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.role)) {
+    if (!["admin", "owner"].includes(session.org?.role)) {
       return {
         ...empty,
         error: "Only admins and owners can view the finance dashboard.",
       };
     }
 
-    const allInvoices = await billingRepo.findInvoicesByOrg(session.orgId);
+    const allInvoices = await billingRepo.findInvoicesByOrg(session.org?.id);
 
     const pendingTransactions = allInvoices
       .filter((inv) => inv.status === "pending_verification")
@@ -628,7 +628,7 @@ export async function getFinanceDashboardAction(): Promise<FinanceDashboardResul
       id: inv.id,
       action: `billing.invoice_${inv.status ?? "created"}`,
       entityId: inv.id,
-      actorId: session.userId,
+      actorId: session.id,
       createdAt: inv.updatedAt ?? inv.createdAt ?? new Date(),
       metadata: {
         invoiceNumber: inv.invoiceNumber,
@@ -644,7 +644,7 @@ export async function getFinanceDashboardAction(): Promise<FinanceDashboardResul
   }
 }
 
-// ─── Legacy actions (kept for backwards compatibility) ────────────────────────
+// â”€â”€â”€ Legacy actions (kept for backwards compatibility) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function requestUpgradeAction(formData: FormData) {
   const session = await requireUser();
@@ -661,8 +661,8 @@ export async function requestUpgradeAction(formData: FormData) {
 
   try {
     const invoice = await billingService.requestUpgrade({
-      orgId: session.orgId,
-      actorId: session.userId,
+      orgId: session.org?.id,
+      actorId: session.id,
       planName,
       billingName,
       billingEmail,
@@ -681,7 +681,7 @@ export async function requestUpgradeAction(formData: FormData) {
 export async function cancelSubscriptionAction(formData: FormData) {
   const session = await requireUser();
 
-  if (!["owner", "admin"].includes(session.role)) {
+  if (!["owner", "admin"].includes(session.org?.role)) {
     return { error: "Only owners and admins can cancel the subscription." };
   }
 
@@ -689,8 +689,8 @@ export async function cancelSubscriptionAction(formData: FormData) {
 
   try {
     await billingService.cancelSubscription({
-      orgId: session.orgId,
-      actorId: session.userId,
+      orgId: session.org?.id,
+      actorId: session.id,
       reason,
     });
     revalidatePath("/settings/billing");
@@ -704,7 +704,7 @@ export async function cancelSubscriptionAction(formData: FormData) {
 export async function markInvoicePaidAction(formData: FormData) {
   const session = await requireUser();
 
-  if (!["owner", "admin"].includes(session.role)) {
+  if (!["owner", "admin"].includes(session.org?.role)) {
     return { error: "Only owners and admins can mark invoices as paid." };
   }
 
@@ -718,8 +718,8 @@ export async function markInvoicePaidAction(formData: FormData) {
   try {
     await billingService.markInvoicePaid({
       invoiceId,
-      orgId: session.orgId,
-      actorId: session.userId,
+      orgId: session.org?.id,
+      actorId: session.id,
       paymentReference,
     });
     revalidatePath("/settings/billing");
@@ -736,3 +736,5 @@ export async function downloadInvoiceAction(
   await requireUser();
   return { url: `/api/v1/invoices/${invoiceId}/pdf` };
 }
+
+
