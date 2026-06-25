@@ -80,7 +80,7 @@ function PaymentMethodBadge({ method }: { method: string | null }) {
 export default async function FinanceConsolePage() {
   const session = await requireUser();
 
-  if (!["admin", "owner"].includes(session.role)) {
+  if (!["admin", "owner"].includes(session.org?.role ?? "")) {
     redirect("/dashboard");
   }
 
