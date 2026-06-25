@@ -20,7 +20,7 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 | **Risk Lens™** | ✅ Complete | `/risks/*` |
 | **Trust Score™** | ✅ Complete | Vendor detail + API |
 | **Control Center™** | ✅ Complete (2026-06-07) | `/controls/*` |
-| **Trust Intelligence™** | ✅ Complete (2026-06-07) | `/trust-intelligence/*` |
+| **Trust Intelligence™** | ✅ Complete (V2 2026-06-25) | `/trust-intelligence/*` |
 | **Governance Trends™** | ✅ Complete (2026-06-09) | `/trust-intelligence/trends` |
 | **Continuous Monitoring™** | ✅ Complete (2026-06-09) | `/trust-intelligence/monitoring` |
 | **Trust Graph™** | ✅ Complete (2026-06-09) | `/trust-intelligence/trust-graph` |
@@ -274,7 +274,7 @@ Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Hosting | Vercel (Mumbai `bom1`) + Supabase (`ap-south-1`) — India data residency |
-| Database | Supabase Postgres · Drizzle ORM · **238 tables** · 33 migrations applied |
+| Database | Supabase Postgres · Drizzle ORM · **259 tables** · 34 migrations applied |
 | Auth | Supabase Auth · org RBAC (7 roles) |
 | Storage | Two private buckets: `vendor-documents` + `compliance-documents`; org-scoped RLS; 15-min signed URLs |
 | AI | Google Gemini 2.5 Flash — extraction, summaries, NL search, compliance officer, audit officer, risk officer, control advisor, trust narratives, governance copilot, AI API builder, governance agents |
