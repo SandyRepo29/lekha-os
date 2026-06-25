@@ -225,12 +225,12 @@ CREATE POLICY "bank_details_select_auth" ON bank_details FOR SELECT TO authentic
 
 -- payment_transactions: org-scoped
 CREATE POLICY "payment_transactions_select_org_member" ON payment_transactions FOR SELECT TO authenticated USING (is_org_member(organization_id));
-CREATE POLICY "payment_transactions_insert_org_admin" ON payment_transactions FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']));
-CREATE POLICY "payment_transactions_update_org_admin" ON payment_transactions FOR UPDATE TO authenticated USING (has_org_role(organization_id, ARRAY['owner', 'admin']));
+CREATE POLICY "payment_transactions_insert_org_admin" ON payment_transactions FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']::public.membership_role[]));
+CREATE POLICY "payment_transactions_update_org_admin" ON payment_transactions FOR UPDATE TO authenticated USING (has_org_role(organization_id, ARRAY['owner', 'admin']::public.membership_role[]));
 
 -- finance_actions: org-scoped
 CREATE POLICY "finance_actions_select_org_member" ON finance_actions FOR SELECT TO authenticated USING (is_org_member(organization_id));
-CREATE POLICY "finance_actions_insert_org_admin" ON finance_actions FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']));
+CREATE POLICY "finance_actions_insert_org_admin" ON finance_actions FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']::public.membership_role[]));
 
 -- coupons: readable by all authenticated, writable by any admin
 CREATE POLICY "coupons_select_auth" ON coupons FOR SELECT TO authenticated USING (true);
@@ -240,4 +240,4 @@ CREATE POLICY "coupons_insert_admin" ON coupons FOR INSERT TO authenticated WITH
 
 -- billing_credits: org-scoped
 CREATE POLICY "billing_credits_select_org_member" ON billing_credits FOR SELECT TO authenticated USING (is_org_member(organization_id));
-CREATE POLICY "billing_credits_insert_org_admin" ON billing_credits FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']));
+CREATE POLICY "billing_credits_insert_org_admin" ON billing_credits FOR INSERT TO authenticated WITH CHECK (has_org_role(organization_id, ARRAY['owner', 'admin']::public.membership_role[]));
