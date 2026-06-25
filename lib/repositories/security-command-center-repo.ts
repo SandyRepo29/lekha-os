@@ -10,26 +10,34 @@ export const aiPromptSensEnum    = pgEnum("ai_prompt_sensitivity_enum", ["clean"
 export const vendorMonSevEnum    = pgEnum("vendor_monitor_severity_enum", ["info", "low", "medium", "high", "critical"]);
 
 export const securityMfaSettings = pgTable("security_mfa_settings", {
-  id:                   uuid("id").primaryKey().defaultRandom(),
-  organizationId:       uuid("organization_id").notNull(),
-  enforcementMode:      text("enforcement_mode").notNull().default("optional"),
-  allowRememberDevice:  boolean("allow_remember_device").notNull().default(true),
-  rememberDays:         integer("remember_days").notNull().default(30),
-  requireOnNewDevice:   boolean("require_on_new_device").notNull().default(true),
-  updatedBy:            uuid("updated_by"),
-  createdAt:            timestamp("created_at").notNull().defaultNow(),
-  updatedAt:            timestamp("updated_at").notNull().defaultNow(),
+  id:                      uuid("id").primaryKey().defaultRandom(),
+  organizationId:          uuid("organization_id").notNull(),
+  enforcementMode:         text("enforcement_mode").notNull().default("optional"),
+  allowRememberDevice:     boolean("allow_remember_device").notNull().default(true),
+  rememberDays:            integer("remember_days").notNull().default(30),
+  requireOnNewDevice:      boolean("require_on_new_device").notNull().default(true),
+  // Session governance (migration 0035)
+  idleTimeoutMinutes:      integer("idle_timeout_minutes").notNull().default(60),
+  absoluteTimeoutHours:    integer("absolute_timeout_hours").notNull().default(8),
+  maxConcurrentSessions:   integer("max_concurrent_sessions").notNull().default(5),
+  updatedBy:               uuid("updated_by"),
+  createdAt:               timestamp("created_at").notNull().defaultNow(),
+  updatedAt:               timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const userMfaStatus = pgTable("user_mfa_status", {
-  id:              uuid("id").primaryKey().defaultRandom(),
-  userId:          uuid("user_id").notNull(),
-  organizationId:  uuid("organization_id").notNull(),
-  enabled:         boolean("enabled").notNull().default(false),
-  method:          text("method"),
-  enabledAt:       timestamp("enabled_at"),
-  lastVerifiedAt:  timestamp("last_verified_at"),
-  createdAt:       timestamp("created_at").notNull().defaultNow(),
+  id:                          uuid("id").primaryKey().defaultRandom(),
+  userId:                      uuid("user_id").notNull(),
+  organizationId:              uuid("organization_id").notNull(),
+  enabled:                     boolean("enabled").notNull().default(false),
+  method:                      text("method"),
+  enabledAt:                   timestamp("enabled_at"),
+  lastVerifiedAt:              timestamp("last_verified_at"),
+  // TOTP fields (migration 0035)
+  totpSecret:                  text("totp_secret"),   // AES-encrypted
+  recoveryCodes:               text("recovery_codes").array(),
+  recoveryCodesGeneratedAt:    timestamp("recovery_codes_generated_at"),
+  createdAt:                   timestamp("created_at").notNull().defaultNow(),
 });
 
 export const ssoProviders = pgTable("sso_providers", {
@@ -732,5 +740,293 @@ export async function insertMonitoringEvent(data: {
     status: data.status, details: data.details ?? {},
   }).returning();
   return rows[0];
+}
+
+// ─── Sprint B2.1 — Enterprise Auth tables ────────────────────────────────────
+
+export const passwordPolicies = pgTable("password_policies", {
+  id:                     uuid("id").primaryKey().defaultRandom(),
+  organizationId:         uuid("organization_id").notNull(),
+  minLength:              integer("min_length").notNull().default(8),
+  requireUppercase:       boolean("require_uppercase").notNull().default(true),
+  requireLowercase:       boolean("require_lowercase").notNull().default(true),
+  requireNumber:          boolean("require_number").notNull().default(true),
+  requireSpecial:         boolean("require_special").notNull().default(false),
+  historyCount:           integer("history_count").notNull().default(5),
+  maxAgeDays:             integer("max_age_days"),
+  lockoutAttempts:        integer("lockout_attempts").notNull().default(10),
+  lockoutDurationMinutes: integer("lockout_duration_minutes").notNull().default(30),
+  createdAt:              timestamp("created_at", {withTimezone:true}).notNull().defaultNow(),
+  updatedAt:              timestamp("updated_at", {withTimezone:true}).notNull().defaultNow(),
+});
+
+export const loginLockouts = pgTable("login_lockouts", {
+  id:              uuid("id").primaryKey().defaultRandom(),
+  email:           text("email").notNull(),
+  organizationId:  uuid("organization_id"),
+  attemptCount:    integer("attempt_count").notNull().default(1),
+  firstAttemptAt:  timestamp("first_attempt_at", {withTimezone:true}).notNull().defaultNow(),
+  lockedUntil:     timestamp("locked_until", {withTimezone:true}),
+  ipAddress:       text("ip_address"),
+  updatedAt:       timestamp("updated_at", {withTimezone:true}).notNull().defaultNow(),
+});
+
+export const trustedDevices = pgTable("trusted_devices", {
+  id:                 uuid("id").primaryKey().defaultRandom(),
+  userId:             uuid("user_id").notNull(),
+  organizationId:     uuid("organization_id").notNull(),
+  deviceFingerprint:  text("device_fingerprint").notNull(),
+  browser:            text("browser"),
+  os:                 text("os"),
+  deviceName:         text("device_name"),
+  ipAddress:          text("ip_address"),
+  trusted:            boolean("trusted").notNull().default(true),
+  lastSeen:           timestamp("last_seen", {withTimezone:true}).notNull().defaultNow(),
+  expiresAt:          timestamp("expires_at", {withTimezone:true}),
+  createdAt:          timestamp("created_at", {withTimezone:true}).notNull().defaultNow(),
+});
+
+export const passwordHistory = pgTable("password_history", {
+  id:              uuid("id").primaryKey().defaultRandom(),
+  userId:          uuid("user_id").notNull(),
+  organizationId:  uuid("organization_id").notNull(),
+  passwordHash:    text("password_hash").notNull(),
+  createdAt:       timestamp("created_at", {withTimezone:true}).notNull().defaultNow(),
+});
+
+export type PasswordPolicy  = typeof passwordPolicies.$inferSelect;
+export type LoginLockout    = typeof loginLockouts.$inferSelect;
+export type TrustedDevice   = typeof trustedDevices.$inferSelect;
+
+// ─── Sprint B2.1 — Password policy repo ──────────────────────────────────────
+
+export async function getPasswordPolicy(orgId: string): Promise<PasswordPolicy | null> {
+  const rows = await db.select().from(passwordPolicies)
+    .where(eq(passwordPolicies.organizationId, orgId)).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function upsertPasswordPolicy(orgId: string, data: Partial<Omit<PasswordPolicy, "id"|"organizationId"|"createdAt"|"updatedAt">>): Promise<void> {
+  await db.execute(sql`
+    INSERT INTO password_policies (organization_id, min_length, require_uppercase, require_lowercase,
+      require_number, require_special, history_count, max_age_days, lockout_attempts, lockout_duration_minutes)
+    VALUES (${orgId}, ${data.minLength??8}, ${data.requireUppercase??true}, ${data.requireLowercase??true},
+      ${data.requireNumber??true}, ${data.requireSpecial??false}, ${data.historyCount??5},
+      ${data.maxAgeDays??null}, ${data.lockoutAttempts??10}, ${data.lockoutDurationMinutes??30})
+    ON CONFLICT (organization_id) DO UPDATE SET
+      min_length = EXCLUDED.min_length,
+      require_uppercase = EXCLUDED.require_uppercase,
+      require_lowercase = EXCLUDED.require_lowercase,
+      require_number = EXCLUDED.require_number,
+      require_special = EXCLUDED.require_special,
+      history_count = EXCLUDED.history_count,
+      max_age_days = EXCLUDED.max_age_days,
+      lockout_attempts = EXCLUDED.lockout_attempts,
+      lockout_duration_minutes = EXCLUDED.lockout_duration_minutes,
+      updated_at = NOW()
+  `);
+}
+
+export async function addPasswordHistory(userId: string, orgId: string, hash: string): Promise<void> {
+  await db.insert(passwordHistory).values({ userId, organizationId: orgId, passwordHash: hash });
+  // Keep only the last 10 entries per user
+  await db.execute(sql`
+    DELETE FROM password_history
+    WHERE user_id = ${userId}
+    AND id NOT IN (
+      SELECT id FROM password_history WHERE user_id = ${userId}
+      ORDER BY created_at DESC LIMIT 10
+    )
+  `);
+}
+
+export async function getPasswordHistory(userId: string, count: number): Promise<string[]> {
+  const rows = await db.select({ hash: passwordHistory.passwordHash })
+    .from(passwordHistory)
+    .where(eq(passwordHistory.userId, userId))
+    .orderBy(desc(passwordHistory.createdAt))
+    .limit(count);
+  return rows.map(r => r.hash);
+}
+
+// ─── Sprint B2.1 — Login lockout repo ────────────────────────────────────────
+
+export async function getLockout(email: string): Promise<LoginLockout | null> {
+  const rows = await db.select().from(loginLockouts)
+    .where(eq(loginLockouts.email, email.toLowerCase())).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function recordFailedAttempt(email: string, ipAddress?: string): Promise<LoginLockout> {
+  const existing = await getLockout(email);
+  if (!existing) {
+    const rows = await db.insert(loginLockouts).values({
+      email: email.toLowerCase(), attemptCount: 1, ipAddress,
+    }).returning();
+    return rows[0];
+  }
+  const rows = await db.execute(sql`
+    UPDATE login_lockouts SET
+      attempt_count = attempt_count + 1,
+      ip_address = ${ipAddress ?? existing.ipAddress},
+      updated_at = NOW()
+    WHERE email = ${email.toLowerCase()}
+    RETURNING *
+  `);
+  return (rows as unknown as LoginLockout[])[0];
+}
+
+export async function lockAccount(email: string, durationMinutes: number): Promise<void> {
+  await db.execute(sql`
+    UPDATE login_lockouts SET
+      locked_until = NOW() + (${durationMinutes} * interval '1 minute'),
+      updated_at = NOW()
+    WHERE email = ${email.toLowerCase()}
+  `);
+}
+
+export async function clearLockout(email: string): Promise<void> {
+  await db.execute(sql`
+    DELETE FROM login_lockouts WHERE email = ${email.toLowerCase()}
+  `);
+}
+
+// ─── Sprint B2.1 — Trusted devices repo ──────────────────────────────────────
+
+export async function getTrustedDevice(userId: string, fingerprint: string): Promise<TrustedDevice | null> {
+  const rows = await db.select().from(trustedDevices)
+    .where(and(eq(trustedDevices.userId, userId), eq(trustedDevices.deviceFingerprint, fingerprint)))
+    .limit(1);
+  const d = rows[0];
+  if (!d) return null;
+  if (d.expiresAt && d.expiresAt < new Date()) return null;
+  return d;
+}
+
+export async function listTrustedDevices(userId: string, orgId: string): Promise<TrustedDevice[]> {
+  return db.select().from(trustedDevices)
+    .where(and(eq(trustedDevices.userId, userId), eq(trustedDevices.organizationId, orgId)))
+    .orderBy(desc(trustedDevices.lastSeen));
+}
+
+export async function upsertTrustedDevice(data: {
+  userId: string; organizationId: string; deviceFingerprint: string;
+  browser?: string; os?: string; deviceName?: string; ipAddress?: string; expiresAt?: Date;
+}): Promise<void> {
+  await db.execute(sql`
+    INSERT INTO trusted_devices (user_id, organization_id, device_fingerprint, browser, os, device_name, ip_address, expires_at, last_seen)
+    VALUES (${data.userId}, ${data.organizationId}, ${data.deviceFingerprint},
+      ${data.browser??null}, ${data.os??null}, ${data.deviceName??null},
+      ${data.ipAddress??null}, ${data.expiresAt??null}, NOW())
+    ON CONFLICT (user_id, device_fingerprint) DO UPDATE SET
+      last_seen = NOW(), trusted = TRUE,
+      browser = EXCLUDED.browser, os = EXCLUDED.os,
+      device_name = EXCLUDED.device_name, ip_address = EXCLUDED.ip_address,
+      expires_at = EXCLUDED.expires_at
+  `);
+}
+
+export async function revokeTrustedDevice(userId: string, deviceId: string): Promise<void> {
+  await db.delete(trustedDevices)
+    .where(and(eq(trustedDevices.userId, userId), eq(trustedDevices.id, deviceId)));
+}
+
+// ─── Sprint B2.1 — Session creation ──────────────────────────────────────────
+
+export async function createUserSession(data: {
+  id?: string; userId: string; organizationId: string;
+  ipAddress?: string; userAgent?: string; browser?: string;
+  device?: string; os?: string; country?: string;
+  mfaVerified?: boolean; expiresAt?: Date;
+}): Promise<typeof userSessions.$inferSelect> {
+  const rows = await db.insert(userSessions).values({
+    id: data.id,
+    userId: data.userId, organizationId: data.organizationId,
+    ipAddress: data.ipAddress, userAgent: data.userAgent,
+    browser: data.browser, device: data.device, os: data.os,
+    country: data.country,
+    mfaVerified: data.mfaVerified ?? false,
+    expiresAt: data.expiresAt,
+    status: "active",
+  }).returning();
+  return rows[0];
+}
+
+export async function updateSessionLastActive(sessionId: string): Promise<void> {
+  await db.execute(sql`
+    UPDATE user_sessions SET last_active = NOW() WHERE id = ${sessionId} AND status = 'active'
+  `);
+}
+
+export async function updateSessionMfaVerified(sessionId: string, verified: boolean): Promise<void> {
+  await db.execute(sql`
+    UPDATE user_sessions SET mfa_verified = ${verified} WHERE id = ${sessionId}
+  `);
+}
+
+export async function getSessionById(sessionId: string): Promise<typeof userSessions.$inferSelect | null> {
+  const rows = await db.select().from(userSessions)
+    .where(and(eq(userSessions.id, sessionId), eq(userSessions.status, "active")))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function countActiveSessions(userId: string, orgId: string): Promise<number> {
+  const rows = await db.select({ c: count() }).from(userSessions)
+    .where(and(eq(userSessions.userId, userId), eq(userSessions.organizationId, orgId), eq(userSessions.status, "active")));
+  return Number(rows[0]?.c ?? 0);
+}
+
+export async function revokeOldestSessions(userId: string, orgId: string, keepCount: number): Promise<void> {
+  await db.execute(sql`
+    UPDATE user_sessions SET status = 'revoked', revoked_at = NOW()
+    WHERE id IN (
+      SELECT id FROM user_sessions
+      WHERE user_id = ${userId} AND organization_id = ${orgId} AND status = 'active'
+      ORDER BY created_at ASC
+      LIMIT GREATEST(0, (SELECT COUNT(*) FROM user_sessions WHERE user_id = ${userId} AND organization_id = ${orgId} AND status = 'active') - ${keepCount})
+    )
+  `);
+}
+
+// ─── Sprint B2.1 — Org IP rules (for middleware) ──────────────────────────────
+
+export async function getActiveIpRules(orgId: string): Promise<Array<{cidrRange: string; appliesTo: string}>> {
+  const rows = await db.select({ cidrRange: ipAllowlists.cidrRange, appliesTo: ipAllowlists.appliesTo })
+    .from(ipAllowlists)
+    .where(and(eq(ipAllowlists.organizationId, orgId), eq(ipAllowlists.enabled, true)));
+  return rows;
+}
+
+// ─── Sprint B2.1 — TOTP on userMfaStatus ─────────────────────────────────────
+
+export async function getMfaStatusForUser(userId: string, orgId: string): Promise<typeof userMfaStatus.$inferSelect | null> {
+  const rows = await db.select().from(userMfaStatus)
+    .where(and(eq(userMfaStatus.userId, userId), eq(userMfaStatus.organizationId, orgId)))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function upsertUserMfaStatus(data: {
+  userId: string; organizationId: string;
+  enabled?: boolean; method?: string;
+  totpSecret?: string | null; recoveryCodes?: string[] | null;
+  enabledAt?: Date | null; lastVerifiedAt?: Date | null;
+  recoveryCodesGeneratedAt?: Date | null;
+}): Promise<void> {
+  await db.execute(sql`
+    INSERT INTO user_mfa_status (user_id, organization_id, enabled, method, totp_secret, recovery_codes,
+      enabled_at, last_verified_at, recovery_codes_generated_at)
+    VALUES (${data.userId}, ${data.organizationId}, ${data.enabled??false}, ${data.method??'totp'},
+      ${data.totpSecret??null}, ${data.recoveryCodes ? sql`ARRAY[${sql.join(data.recoveryCodes.map(c=>sql`${c}`), sql`, `)}]::text[]` : sql`NULL`},
+      ${data.enabledAt??null}, ${data.lastVerifiedAt??null}, ${data.recoveryCodesGeneratedAt??null})
+    ON CONFLICT (user_id, organization_id) DO UPDATE SET
+      enabled = EXCLUDED.enabled, method = EXCLUDED.method,
+      totp_secret = COALESCE(EXCLUDED.totp_secret, user_mfa_status.totp_secret),
+      recovery_codes = COALESCE(EXCLUDED.recovery_codes, user_mfa_status.recovery_codes),
+      enabled_at = COALESCE(EXCLUDED.enabled_at, user_mfa_status.enabled_at),
+      last_verified_at = COALESCE(EXCLUDED.last_verified_at, user_mfa_status.last_verified_at),
+      recovery_codes_generated_at = COALESCE(EXCLUDED.recovery_codes_generated_at, user_mfa_status.recovery_codes_generated_at)
+  `);
 }
 

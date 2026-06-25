@@ -141,8 +141,26 @@ export async function changePassword(
 
   const password = String(formData.get("password") || "");
   const confirm = String(formData.get("confirm") || "");
-  if (password.length < 8) return { error: "Password must be at least 8 characters." };
   if (password !== confirm) return { error: "Passwords do not match." };
+
+  // Validate against org password policy (throws DomainError on violation)
+  if (session.org) {
+    try {
+      const { validateNewPassword, recordPasswordChange } = await import(
+        "@/lib/services/auth/password-policy-service"
+      );
+      await validateNewPassword(session.org.id, session.id, password);
+      const supabase = await createClient();
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) return { error: error.message };
+      await recordPasswordChange(session.org.id, session.id, password);
+      return { ok: true };
+    } catch (err) {
+      if (err instanceof DomainError) return { error: err.message };
+      console.error("changePassword failed:", err);
+      return { error: "Could not update password." };
+    }
+  }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
