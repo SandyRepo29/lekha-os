@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { cancelSubscriptionAction } from "@/lib/billing/actions";
+
+type ActionFn = (fd: FormData) => Promise<{ error?: string }>;
 
 const REASONS = [
   "Too expensive",
@@ -12,7 +13,7 @@ const REASONS = [
   "Other",
 ];
 
-export function CancelModal({ periodEnd }: { periodEnd: Date | null }) {
+export function CancelModal({ periodEnd, action }: { periodEnd: Date | null; action: ActionFn }) {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState(REASONS[0]);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +29,7 @@ export function CancelModal({ periodEnd }: { periodEnd: Date | null }) {
     setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      const res = await cancelSubscriptionAction(fd);
+      const res = await action(fd);
       if ("error" in res && res.error) {
         setError(res.error);
       } else {

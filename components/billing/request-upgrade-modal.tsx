@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { requestUpgradeAction } from "@/lib/billing/actions";
+
+type ActionFn = (fd: FormData) => Promise<{ error?: string; invoiceNumber?: string }>;
 
 const PLANS = ["Business", "Enterprise"] as const;
 
@@ -9,9 +10,10 @@ type Props = {
   currentPlan: string;
   userEmail: string;
   userName: string;
+  action: ActionFn;
 };
 
-export function RequestUpgradeModal({ currentPlan, userEmail, userName }: Props) {
+export function RequestUpgradeModal({ currentPlan, userEmail, userName, action }: Props) {
   const [open, setOpen] = useState(false);
   const [plan, setPlan] = useState<string>("Business");
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +26,7 @@ export function RequestUpgradeModal({ currentPlan, userEmail, userName }: Props)
     setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      const res = await requestUpgradeAction(fd);
+      const res = await action(fd);
       if ("error" in res) {
         setError(res.error ?? "Something went wrong.");
       } else {
