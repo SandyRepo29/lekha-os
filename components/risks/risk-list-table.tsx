@@ -166,7 +166,7 @@ export function RiskListTable({
                     {r.impact} &#215; {r.likelihood}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <RiskScoreBadge score={r.inherentScore} />
+                    <RiskScoreBadge score={r.inherentScore ?? 0} />
                   </td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
                     {TREATMENT_STRATEGY_LABELS[r.treatmentStrategy ?? ""] ?? "&#8212;"}
