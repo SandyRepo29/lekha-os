@@ -6,7 +6,6 @@ import { Search, Sparkles, CircleHelp } from "lucide-react";
 import { useState } from "react";
 import { HelpPanel } from "@/components/help/help-panel";
 import { NotificationBell } from "@/components/notifications/notification-bell";
-import { useNotifications } from "@/hooks/use-notifications";
 
 const NL_TRIGGERS = ["with","without","missing","expired","expiring","risk","score",
   "below","above","less than","more than","show","find","vendors","who","high risk",
@@ -25,7 +24,7 @@ export function Topbar({ email, orgName, fullName }: {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [helpOpen, setHelpOpen] = useState(false);
-  const { notifications, markRead, markAllRead } = useNotifications();
+
   const display = fullName || email;
   const initial = (display?.[0] ?? "?").toUpperCase();
   const looksNL = isNL(query);
@@ -70,11 +69,7 @@ export function Topbar({ email, orgName, fullName }: {
           <div className="text-sm font-semibold text-[var(--color-ink)]">{orgName}</div>
           <div className="text-xs text-[var(--color-ink-faint)]">{email}</div>
         </div>
-        <NotificationBell
-          notifications={notifications}
-          onMarkRead={markRead}
-          onMarkAllRead={markAllRead}
-        />
+        <NotificationBell />
         <button
           onClick={() => setHelpOpen(true)}
           className="grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] text-[var(--color-ink-faint)] transition-all hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
