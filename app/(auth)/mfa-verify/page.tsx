@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function MfaVerifyPage() {
+function MfaVerifyForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "/dashboard";
@@ -133,5 +133,13 @@ export default function MfaVerifyPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function MfaVerifyPage() {
+  return (
+    <Suspense>
+      <MfaVerifyForm />
+    </Suspense>
   );
 }
