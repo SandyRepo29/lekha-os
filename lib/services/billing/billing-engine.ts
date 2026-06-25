@@ -1,6 +1,6 @@
-/**
+﻿/**
  * billing-engine.ts
- * Core billing business logic — no Next.js imports, pure TypeScript service.
+ * Core billing business logic - no Next.js imports, pure TypeScript service.
  * All DB access is lazy (imported inside functions via lib/repositories/billing-engine-repo).
  */
 
@@ -20,7 +20,7 @@ type InvoiceRow = {
 }
 
 // ---------------------------------------------------------------------------
-// Tax configuration (hardcoded rates — no DB lookup needed at this stage)
+// Tax configuration (hardcoded rates - no DB lookup needed at this stage)
 // ---------------------------------------------------------------------------
 
 const TAX_RATES = {

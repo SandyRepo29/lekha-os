@@ -1,4 +1,4 @@
-﻿"use server";
+﻿-"use server";
 
 import { requireUser } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
@@ -7,7 +7,7 @@ import * as billingRepo from "@/lib/repositories/billing-repo";
 import { recordAudit } from "@/lib/repositories/audit-repo";
 import { DomainError } from "@/lib/services/errors";
 
-// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- Types ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export type CreateInvoiceResult = {
   invoiceId?: string;
@@ -95,7 +95,7 @@ export type FinanceDashboardResult = {
   error?: string;
 };
 
-// â”€â”€â”€ AUDT bank details (India â”€ bank transfer) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- AUDT bank details (India --- bank transfer) ------------------------------------------------------------------------------------------------
 
 const AUDT_BANK_DETAILS = {
   bankName: "HDFC Bank",
@@ -105,7 +105,7 @@ const AUDT_BANK_DETAILS = {
   swiftCode: "HDFCINBB",
 };
 
-// â”€â”€â”€ 1. createInvoiceAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 1. createInvoiceAction ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function createInvoiceAction(
   formData: FormData
@@ -202,7 +202,7 @@ export async function createInvoiceAction(
   }
 }
 
-// â”€â”€â”€ 2. recordPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 2. recordPaymentAction ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function recordPaymentAction(
   formData: FormData
@@ -253,7 +253,7 @@ export async function recordPaymentAction(
   }
 }
 
-// â”€â”€â”€ 3. verifyPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 3. verifyPaymentAction ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function verifyPaymentAction(
   transactionId: string,
@@ -299,7 +299,7 @@ export async function verifyPaymentAction(
   }
 }
 
-// â”€â”€â”€ 4. rejectPaymentAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 4. rejectPaymentAction ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function rejectPaymentAction(
   transactionId: string,
@@ -345,7 +345,7 @@ export async function rejectPaymentAction(
   }
 }
 
-// â”€â”€â”€ 5. issueRefundAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 5. issueRefundAction ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function issueRefundAction(
   transactionId: string,
@@ -404,11 +404,11 @@ export async function issueRefundAction(
   }
 }
 
-// â”€â”€â”€ 6. applyCouponAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 6. applyCouponAction ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**
  * Validate and apply a coupon code.
- * Coupon definitions are static inline â€” replace with a billing_coupons DB
+ * Coupon definitions are static inline --- replace with a billing_coupons DB
  * table lookup when that table is added in a future migration.
  */
 export async function applyCouponAction(
@@ -478,7 +478,7 @@ export async function applyCouponAction(
   }
 }
 
-// â”€â”€â”€ 7. uploadPaymentProofAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 7. uploadPaymentProofAction ------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function uploadPaymentProofAction(
   transactionId: string,
@@ -519,7 +519,7 @@ export async function uploadPaymentProofAction(
   }
 }
 
-// â”€â”€â”€ 8. cancelInvoiceAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 8. cancelInvoiceAction ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export async function cancelInvoiceAction(
   invoiceId: string
@@ -563,7 +563,7 @@ export async function cancelInvoiceAction(
   }
 }
 
-// â”€â”€â”€ 9. getFinanceDashboardAction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- 9. getFinanceDashboardAction ---------------------------------------------------------------------------------------------------------------------------------------
 
 export async function getFinanceDashboardAction(): Promise<FinanceDashboardResult> {
   const empty: FinanceDashboardResult = {
@@ -644,7 +644,7 @@ export async function getFinanceDashboardAction(): Promise<FinanceDashboardResul
   }
 }
 
-// â”€â”€â”€ Legacy actions (kept for backwards compatibility) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --------- Legacy actions (kept for backwards compatibility) ------------------------------------------------------------------------
 
 export async function requestUpgradeAction(formData: FormData) {
   const session = await requireUser();

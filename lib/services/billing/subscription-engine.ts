@@ -1,17 +1,17 @@
-/**
+﻿/**
  * subscription-engine.ts
  *
  * Pure TypeScript subscription lifecycle service for AUDT billing.
- * No Next.js imports. Framework-agnostic — safe to call from cron jobs,
+ * No Next.js imports. Framework-agnostic - safe to call from cron jobs,
  * server actions, REST handlers, or CLI scripts.
  *
  * Column mapping (existing schema has no trialEndsAt / gracePeriodEndsAt /
- * suspendedAt columns — we map them to available fields):
+ * suspendedAt columns - we map them to available fields):
  *
- *   trialEndsAt        → currentPeriodEnd  (when status = 'trial')
- *   gracePeriodEndsAt  → currentPeriodEnd  (when status = 'grace_period')
- *   suspendedAt        → cancelledAt       (when status = 'suspended')
- *   paymentProviderSlug / enterpriseContract → stored in cancelReason as JSON
+ *   trialEndsAt        - currentPeriodEnd  (when status = 'trial')
+ *   gracePeriodEndsAt  - currentPeriodEnd  (when status = 'grace_period')
+ *   suspendedAt        - cancelledAt       (when status = 'suspended')
+ *   paymentProviderSlug / enterpriseContract - stored in cancelReason as JSON
  *                         metadata prefix "__meta__:{...}" so it round-trips
  *                         without a schema migration.
  *
@@ -23,7 +23,7 @@ import { db } from "@/lib/db";
 import { subscriptions, billingPlans } from "@/lib/db/schema";
 import { eq, and, lt, inArray, sql } from "drizzle-orm";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// --- Types --------------------------------------------------------------------
 
 export type SubscriptionStatus =
   | "trial"
@@ -72,7 +72,7 @@ function mergeMetaIntoReason(
   return encodeMeta({ ...current, ...patch });
 }
 
-// ─── Internal helpers ─────────────────────────────────────────────────────────
+// --- Internal helpers ---------------------------------------------------------
 
 async function findPlanBySlug(slug: string) {
   // slug is the lowercase plan name used as a stable identifier.
@@ -131,17 +131,17 @@ async function tryRecordFinanceAction(params: {
       `
     );
   } catch {
-    // Table may not exist yet — non-fatal.
+    // Table may not exist yet - non-fatal.
   }
 }
 
-// ─── 1. createSubscription ────────────────────────────────────────────────────
+// --- 1. createSubscription ----------------------------------------------------
 
 /**
  * Create a new subscription for an org.
  *
- * - If trialDays > 0  → status = 'trial', currentPeriodEnd = now + trialDays
- * - Otherwise         → status = 'active', currentPeriodEnd = now + 12 months
+ * - If trialDays > 0  - status = 'trial', currentPeriodEnd = now + trialDays
+ * - Otherwise         - status = 'active', currentPeriodEnd = now + 12 months
  * - Stores paymentProviderSlug and enterpriseContract in cancelReason metadata.
  * - Records a 'subscription_created' finance_action (best-effort).
  */
@@ -223,7 +223,7 @@ export async function createSubscription(
   return { subscriptionId };
 }
 
-// ─── 2. activateSubscription ──────────────────────────────────────────────────
+// --- 2. activateSubscription --------------------------------------------------
 
 /**
  * Transition a subscription to 'active'.
@@ -264,7 +264,7 @@ export async function activateSubscription(
     .where(eq(subscriptions.id, subscriptionId));
 }
 
-// ─── 3. enterGracePeriod ──────────────────────────────────────────────────────
+// --- 3. enterGracePeriod ------------------------------------------------------
 
 /**
  * Transition a subscription to 'grace_period'.
@@ -299,7 +299,7 @@ export async function enterGracePeriod(
     .where(eq(subscriptions.id, subscriptionId));
 }
 
-// ─── 4. suspendSubscription ───────────────────────────────────────────────────
+// --- 4. suspendSubscription ---------------------------------------------------
 
 /**
  * Transition a subscription to 'suspended'.
@@ -331,7 +331,7 @@ export async function suspendSubscription(
     .where(eq(subscriptions.id, subscriptionId));
 }
 
-// ─── 5. expireSubscription ────────────────────────────────────────────────────
+// --- 5. expireSubscription ----------------------------------------------------
 
 /**
  * Transition a subscription to 'expired'.
@@ -351,13 +351,13 @@ export async function expireSubscription(
     .where(eq(subscriptions.id, subscriptionId));
 }
 
-// ─── 6. cancelSubscription ───────────────────────────────────────────────────
+// --- 6. cancelSubscription ---------------------------------------------------
 
 /**
  * Cancel a subscription.
  *
- * - immediate = true  → status = 'cancelled', cancelledAt = NOW()
- * - immediate = false → cancelAtPeriodEnd = true (cron handles final cancel)
+ * - immediate = true  - status = 'cancelled', cancelledAt = NOW()
+ * - immediate = false - cancelAtPeriodEnd = true (cron handles final cancel)
  */
 export async function cancelSubscription(
   subscriptionId: string,
@@ -389,7 +389,7 @@ export async function cancelSubscription(
   }
 }
 
-// ─── 7. checkAndExpireTrials ──────────────────────────────────────────────────
+// --- 7. checkAndExpireTrials --------------------------------------------------
 
 /**
  * Find all trial subscriptions where currentPeriodEnd (trialEndsAt) < NOW()
@@ -422,7 +422,7 @@ export async function checkAndExpireTrials(): Promise<{ expired: number }> {
   return { expired: expiredTrials.length };
 }
 
-// ─── 8. checkAndExpireGracePeriods ───────────────────────────────────────────
+// --- 8. checkAndExpireGracePeriods -------------------------------------------
 
 /**
  * Find all grace_period subscriptions where currentPeriodEnd (gracePeriodEndsAt)
@@ -456,7 +456,7 @@ export async function checkAndExpireGracePeriods(): Promise<{
   return { suspended: expired.length };
 }
 
-// ─── 9. getSubscriptionStatus ─────────────────────────────────────────────────
+// --- 9. getSubscriptionStatus -------------------------------------------------
 
 export type SubscriptionStatusResult = {
   subscription: typeof subscriptions.$inferSelect | null;
@@ -467,9 +467,9 @@ export type SubscriptionStatusResult = {
 /**
  * Fetch the subscription for an org and compute derived fields:
  *
- *   daysUntilExpiry — days until currentPeriodEnd or trialEndsAt (same column),
+ *   daysUntilExpiry - days until currentPeriodEnd or trialEndsAt (same column),
  *                     null if no subscription or no end date.
- *   isActive        — true when status is trial | active | grace_period | enterprise.
+ *   isActive        - true when status is trial | active | grace_period | enterprise.
  */
 export async function getSubscriptionStatus(
   orgId: string

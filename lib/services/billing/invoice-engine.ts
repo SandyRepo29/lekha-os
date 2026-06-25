@@ -1,5 +1,5 @@
-﻿/**
- * Invoice Engine â€” pure TypeScript, no Next.js imports.
+﻿-/**
+ * Invoice Engine --" pure TypeScript, no Next.js imports.
  * Handles invoice generation and lifecycle for AUDT billing.
  *
  * Imports from:
@@ -12,7 +12,7 @@ import { invoices, billingPlans, organizations } from "@/lib/db/schema";
 import { eq, sql, desc } from "drizzle-orm";
 import * as billingRepo from "@/lib/repositories/billing-repo";
 
-// â”€â”€â”€ Billing Engine imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- Billing Engine imports -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 // These functions will be provided by lib/services/billing/billing-engine.ts
 import {
   applyCoupon,
@@ -21,11 +21,11 @@ import {
   applyCredit,
 } from "@/lib/services/billing/billing-engine";
 
-// â”€â”€â”€ Payment Adapter imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- Payment Adapter imports -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 // These functions will be provided by lib/services/billing/payment-adapter.ts
 import { getProvider } from "@/lib/services/billing/payment-adapter";
 
-// â”€â”€â”€ Finance action recorder (local helper) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- Finance action recorder (local helper) -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 async function recordFinanceAction(params: {
   organizationId: string;
   invoiceId: string;
@@ -46,7 +46,7 @@ async function recordFinanceAction(params: {
   });
 }
 
-// â”€â”€â”€ Type helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- Type helpers -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 export type ParsedPaymentTerms = {
   label: string;
@@ -66,7 +66,7 @@ function parsePaymentTerms(terms?: string | null): ParsedPaymentTerms {
   return { label: terms, netDays: 7 };
 }
 
-// â”€â”€â”€ 1. generateInvoiceNumber â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 1. generateInvoiceNumber -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 /**
  * Generate a globally unique, year-scoped invoice number.
@@ -90,7 +90,7 @@ export async function generateInvoiceNumber(orgId: string): Promise<string> {
   return `INV-${year}-${seq}`;
 }
 
-// â”€â”€â”€ 2. createInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 2. createInvoice -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 export type CreateInvoiceParams = {
   orgId: string;
@@ -122,7 +122,7 @@ export type CreateInvoiceResult = {
  * Steps:
  *  1. Look up plan by slug/name, use priceYearly as base amount
  *  2. Apply coupon if provided (billing engine)
- *  3. Compute tax (billing engine â€” IN jurisdiction, GSTIN flag)
+ *  3. Compute tax (billing engine --" IN jurisdiction, GSTIN flag)
  *  4. Check and deduct credit balance if applyCredits=true
  *  5. Compute totals: subtotal = planPrice - discount; tax = subtotal * rate; total = subtotal + tax - credits
  *  6. Generate invoice number
@@ -181,7 +181,7 @@ export async function createInvoice(
   const { netDays } = parsePaymentTerms(params.paymentTerms);
   const dueAt = new Date(Date.now() + netDays * 86_400_000);
 
-  // 8. Persist invoice record (raw SQL — uses columns added in migration 0034 not yet in Drizzle schema)
+  // 8. Persist invoice record (raw SQL - uses columns added in migration 0034 not yet in Drizzle schema)
   const insertRows = await db.execute(sql`
     INSERT INTO invoices (
       organization_id, plan_id, invoice_number, status, amount_cents,
@@ -212,8 +212,8 @@ export async function createInvoice(
     orgId: params.orgId,
     invoiceId: invoiceId,
     amountCents: totalCents,
-    currency: “INR”,
-    paymentMethod: (params.paymentMethod ?? “bank_transfer”) as any,
+    currency: "INR",
+    paymentMethod: (params.paymentMethod ?? "bank_transfer") as any,
     customerName: params.billingName,
     customerEmail: params.billingEmail,
     description: `AUDT ${plan.name} plan - ${invoiceNumber}`,
@@ -251,7 +251,7 @@ export async function createInvoice(
   };
 }
 
-// â”€â”€â”€ 3. sendInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 3. sendInvoice -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 /**
  * Mark invoice as issued (ready to be sent to the customer).
@@ -265,7 +265,7 @@ export async function sendInvoice(invoiceId: string): Promise<void> {
     throw new Error("Cannot send a cancelled invoice.");
   }
   if (invoice.status === "paid") {
-    throw new Error("Invoice is already paid â€” sending is not applicable.");
+    throw new Error("Invoice is already paid --" sending is not applicable.");
   }
 
   await db
@@ -274,7 +274,7 @@ export async function sendInvoice(invoiceId: string): Promise<void> {
     .where(eq(invoices.id, invoiceId));
 }
 
-// â”€â”€â”€ 4. cancelInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 4. cancelInvoice -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 /**
  * Cancel an unpaid invoice. Records a finance_action for audit.
@@ -313,13 +313,13 @@ export async function cancelInvoice(
   });
 }
 
-// â”€â”€â”€ 5. getInvoiceWithDetails â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 5. getInvoiceWithDetails -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 /**
  * Fetch a fully-hydrated invoice including org name, plan name,
  * payment transactions, and finance action log entries.
  *
- * Returns a plain object â€” callers can type-assert as needed.
+ * Returns a plain object --" callers can type-assert as needed.
  */
 export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
   // Core invoice + plan join
@@ -378,7 +378,7 @@ export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
   };
 }
 
-// â”€â”€â”€ 6. listPendingVerification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -"--"--"- 6. listPendingVerification -"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"--"-
 
 /**
  * Return all invoices with status = 'pending_verification'.
