@@ -17,7 +17,7 @@
 - No `memory/` folder in project root — it was deleted 2026-06-25.
 - No ad-hoc planning/audit/research MDs in project root — put findings directly into CLAUDE.md.
 - After each sprint: add new routes to §7, new caveats to §11, new features to §6.
-- `tokens.txt` and `audt_platform_readiness_trackb.md` — do not recreate these.
+- `tokens.txt` and `audt_platform_readiness_trackb.md` — do not recreate these. `tokens.txt` is in `.gitignore` — it contained a GitHub PAT that triggered GitHub push protection.
 
 ---
 
@@ -552,11 +552,70 @@ India-first bank-transfer SaaS billing — no Stripe. Manual verification flow. 
 
 ---
 
+### Sprint B2.1 — Enterprise Authentication ✅ Complete (2026-06-25)
+
+TOTP MFA, password policies, session governance, device trust, and IP enforcement. All controls sit on top of Supabase Auth — no replacement, only augmentation.
+
+**Architecture:** Supabase Auth (identity) → AUDT session record (`user_sessions`) → `audt-sid` cookie → proxy.ts enforcement → TOTP gate (`audt-mfa` cookie)
+
+| File | Purpose |
+|---|---|
+| `lib/services/auth/mfa-service.ts` | TOTP enrollment (`startTotpEnrollment`), confirm (`confirmTotpEnrollment`), verify (`verifyTotpCode`), recovery codes (`useRecoveryCode`, `regenerateRecoveryCodes`), disable, policy check (`getMfaRequirement`). Secrets AES-256-GCM encrypted via `encryptConfig()` then JSON-stringified for TEXT column. |
+| `lib/services/auth/password-policy-service.ts` | `validatePasswordStrength(password, policy)` (pure), `validateNewPassword(orgId, userId, password)` (DB — history + policy), `recordPasswordChange(orgId, userId, password)` (bcrypt 12r), `checkLockout(email)`, `recordFailedLogin(email, orgId, ip)`, `clearFailedAttempts(email)`, `isPasswordExpired(orgId, passwordChangedAt)` |
+| `lib/services/auth/session-service.ts` | `createSession(params)` — enforces `maxConcurrentSessions` (revokeOldest), sets `expiresAt` from `absoluteTimeoutHours`. `validateSession(sessionId, orgId)` — checks idle + absolute timeout + MFA. `touchSession(sessionId)` — updates `lastActive`. |
+| `lib/services/auth/device-trust-service.ts` | `buildDeviceFingerprint(headers)` — djb2 hash of UA + accept-language. `isDeviceTrusted(userId, fingerprint)`. `trustDevice(params)` — upserts with 30-day `expiresAt`. `getUserDevices`, `revokeDevice`. |
+| `lib/services/auth/ip-check-service.ts` | Pure TS CIDR implementation — no external library. `isIpInCidr(ip, cidr)` handles IPv4-mapped IPv6 (`::ffff:` prefix). `isIpAllowed(orgId, requestIp, context)` — open default when no rules. `extractRequestIp(headers)`. |
+| `proxy.ts` | `enforceEnterpriseAuth()` called after `updateSession()`. Order: load session → idle timeout → absolute timeout → IP allowlist → MFA gate. Fail-open (catch block allows through). Sets/clears `audt-sid` + `audt-mfa` cookies on timeout. |
+| `app/auth/callback/route.ts` | On successful code exchange: creates AUDT session record + sets `audt-sid` httpOnly cookie (8h maxAge). Fail-open — session creation failure does not block login. |
+| `lib/settings/actions.ts` `changePassword` | Dynamically imports `validateNewPassword` + `recordPasswordChange`; enforces org password policy before calling `supabase.auth.updateUser`. Falls back to plain 8-char check if no org context. |
+| `components/settings/mfa-panel.tsx` | Full TOTP enrollment UI: fetch status → show QR → confirm code → download recovery codes → enabled state with regen + disable buttons. Steps: idle → enrolling → codes → enabled → regen. |
+| `app/(auth)/mfa-verify/page.tsx` | Post-login TOTP entry page. `useSearchParams` wrapped in `<Suspense>` (required by Next.js App Router). Supports TOTP + recovery code + remember device (30-day trust cookie). |
+
+**New tables (migration 0035):**
+
+| Table | Purpose |
+|---|---|
+| `password_policies` | Per-org policy — minLength, requireUppercase/Lowercase/Number/Special, historyCount, maxAgeDays, lockoutAttempts, lockoutDurationMinutes. UNIQUE(organization_id). |
+| `login_lockouts` | Per-email lockout tracking — attemptCount, firstAttemptAt, lockedUntil, ipAddress. UNIQUE(email). |
+| `trusted_devices` | Per-user trusted device registry — fingerprint (djb2), browser, os, ipAddress, expiresAt. UNIQUE(user_id, device_fingerprint). |
+| `password_history` | Per-user password hash history — bcrypt at 12 rounds. Used to prevent reuse up to `historyCount` recent passwords. |
+
+**Altered columns (migration 0035):**
+- `user_mfa_status`: added `totp_secret TEXT` (AES-encrypted JSON string), `recovery_codes TEXT[]` (bcrypt hashes), `recovery_codes_generated_at TIMESTAMPTZ`
+- `security_mfa_settings`: added `idle_timeout_minutes INT DEFAULT 60`, `absolute_timeout_hours INT DEFAULT 8`, `max_concurrent_sessions INT DEFAULT 5`
+- `profiles`: added `password_changed_at TIMESTAMPTZ`
+
+**Cookies:**
+
+| Cookie | Value | Purpose |
+|---|---|---|
+| `audt-sid` | session UUID | Links HTTP request to `user_sessions` row. httpOnly, 8h maxAge. |
+| `audt-mfa` | `"1"` | Signals TOTP verified this session. httpOnly, 8h (30d if remember device). |
+
+**CRITICAL — otplib import:** `otplib` v12+ exports `authenticator` as a named export. The service uses a dynamic import with fallback: `const mod = await import("otplib"); const auth = mod.authenticator ?? mod.default`. Do not revert to static `import { authenticator } from "otplib"` — it fails TypeScript compilation with some module resolution configs.
+
+**CRITICAL — TOTP secret storage:** Secrets are NOT stored as raw strings. Flow: `encryptConfig({ totpSecret: secret })` → `JSON.stringify(result)` → stored in `totp_secret TEXT` column. On read: `JSON.parse(stored)` → `decryptConfig(parsed)` → extract `.totpSecret`. Never pass a plain string directly to `encryptConfig` or `decryptConfig` — they expect `Record<string, unknown>`.
+
+**CRITICAL — proxy.ts fail-open:** The enterprise enforcement block (`enforceEnterpriseAuth`) is wrapped in try/catch that allows the request through on any error. This is intentional — availability trumps enforcement for non-critical paths. Only IP blocking and session timeout redirects are "hard" — they happen only when the DB is reachable.
+
+**CRITICAL — `useSearchParams` + Suspense:** Any page using `useSearchParams()` in Next.js App Router must wrap the component in `<Suspense>`. The MFA verify page splits into `MfaVerifyForm` (uses the hook) + `MfaVerifyPage` (default export, wraps in `<Suspense>`). Forgetting this causes a Vercel build failure: `useSearchParams() should be wrapped in a suspense boundary`.
+
+**Out of scope (B2.1):** Google OAuth, Microsoft OAuth, SAML, OIDC, SCIM, Business Units, Bulk User Import, Access Reviews.
+
+---
+
 ## 7. App Routes
 
 ```
 /                                            Marketing landing page
 /login  /signup  /onboarding                Auth flow (onboarding = 3-step wizard)
+/auth/mfa-verify                             Post-login TOTP / recovery-code gate (redirects to ?redirect= on success)
+/api/auth/mfa/enroll                         POST — begin TOTP enrollment, returns qrDataUrl
+/api/auth/mfa/confirm                        POST — confirm first TOTP token, returns 10 recovery codes
+/api/auth/mfa/verify                         POST — verify TOTP or recovery code at login, sets audt-mfa cookie
+/api/auth/mfa/disable                        POST — disable MFA (respects org enforcement policy)
+/api/auth/mfa/recovery                       POST — regenerate recovery codes (invalidates old set)
+/api/auth/mfa/status                         GET  — current MFA enabled/enrolledAt/recoveryCodesCount
 /dashboard                                   Main dashboard
 
 --- Vendor Governance ---
@@ -2005,6 +2064,14 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **`searchParams` in Next.js 16** | Typed as `Promise<{ [key]: string \| string[] \| undefined }>` and must be awaited. Values are `string \| string[]` — unwrap with `Array.isArray(sp.page) ? sp.page[0] : sp.page` before passing to `parseInt` or string ops. |
 | **Migration 0034 Drizzle schema gap** | Several `invoices` columns from migration 0034 are not in `lib/db/schema.ts`. Drizzle `.insert().returning()` on those columns yields `never[]`. Fix: use `db.execute(sql\`INSERT ... RETURNING id\`)` raw SQL and return `Promise<any>`. |
 | **`unknown` fields in JSX conditionals** | `{someUnknown && <Component />}` is rejected — TypeScript sees `unknown` as the potential JSX child. Use `{!!someUnknown && <Component />}` (boolean) or cast via `((x as unknown) as Record<string, unknown>)` when a direct cast fails the overlap check. |
+| **`useSearchParams` requires `<Suspense>`** | Any page component calling `useSearchParams()` in App Router must wrap the hook consumer in `<Suspense>`. Pattern: split into `FooForm` (uses hook) + `default export FooPage` (wraps in `<Suspense>`). Forgetting causes Vercel build failure: `useSearchParams() should be wrapped in a suspense boundary`. |
+| **otplib import pattern** | `otplib` v12+ exports `authenticator` as a named export; some resolution configs fail on static `import { authenticator } from "otplib"`. Safe pattern: `const mod = await import("otplib"); const auth = mod.authenticator ?? mod.default`. The mfa-service already uses this — do not revert to a static import. |
+| **TOTP secret storage format** | Secrets are never stored as raw strings. Flow: `encryptConfig({ totpSecret: secret })` (returns `Record<string,unknown>`) → `JSON.stringify(result)` → stored in TEXT column. On read: `JSON.parse(stored)` → `decryptConfig(parsed)` → `.totpSecret`. `encryptConfig`/`decryptConfig` always take `Record<string,unknown>` — never pass a plain string. |
+| **Enterprise auth cookies** | `audt-sid` (httpOnly, 8h) — links request to `user_sessions` row. `audt-mfa` (httpOnly, 8h or 30d) — signals TOTP verified. Both set by API routes, cleared by proxy on timeout/logout. Never read these client-side — they are httpOnly. |
+| **proxy.ts fail-open** | `enforceEnterpriseAuth()` is wrapped in try/catch that allows the request through on any error. Intentional — availability over enforcement for non-critical failures. IP block + session timeout redirect only happen when DB is reachable. Never remove the catch block. |
+| **`tokens.txt` is gitignored** | Contained a GitHub PAT — triggered GitHub push protection. The file is in `.gitignore`. Do not recreate or commit it. |
+| **Security tables not in `lib/db/schema.ts`** | Security Command Center tables (`securityMfaSettings`, `userMfaStatus`, `userSessions`, `ipAllowlists`, `passwordPolicies`, `loginLockouts`, `trustedDevices`, `passwordHistory`, etc.) are defined inline in `lib/repositories/security-command-center-repo.ts`, not in the main Drizzle schema file. Add new B2 tables there, not in `schema.ts`. |
+| **Migration 0035 new tables** | `password_policies` (UNIQUE org), `login_lockouts` (UNIQUE email), `trusted_devices` (UNIQUE user+fingerprint), `password_history`. New columns on `user_mfa_status` (totp_secret, recovery_codes, recovery_codes_generated_at), `security_mfa_settings` (idle_timeout_minutes, absolute_timeout_hours, max_concurrent_sessions), `profiles` (password_changed_at). |
 
 ---
 
