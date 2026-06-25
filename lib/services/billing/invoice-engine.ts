@@ -180,47 +180,36 @@ export async function createInvoice(
   const { netDays } = parsePaymentTerms(params.paymentTerms);
   const dueAt = new Date(Date.now() + netDays * 86_400_000);
 
-  // 8. Persist invoice record
-  const [invoiceRow] = await db
-    .insert(invoices)
-    .values({
-      organizationId: params.orgId,
-      planId: plan.id,
-      invoiceNumber,
-      status: "issued",
-      amountCents: basePriceCents,
-      discountCents,
-      taxCents,
-      taxRate: String(taxRate),
-      taxLabel: taxLabel ?? null,
-      creditsAppliedCents,
-      totalCents,
-      currency: "INR",
-      paymentMethod: params.paymentMethod ?? "bank_transfer",
-      billingName: params.billingName,
-      billingEmail: params.billingEmail,
-      billingGstin: params.billingGstin ?? null,
-      billingAddress: params.billingAddress ?? null,
-      purchaseOrderNumber: params.purchaseOrderNumber ?? null,
-      couponCode: params.couponCode ?? null,
-      couponMeta: couponMeta ? JSON.stringify(couponMeta) : null,
-      paymentTerms: params.paymentTerms ?? "Due on Receipt",
-      notes: params.notes ?? null,
-      dueAt,
-      updatedAt: new Date(),
-    } as any)
-    .returning();
+  // 8. Persist invoice record (raw SQL — uses columns added in migration 0034 not yet in Drizzle schema)
+  const insertRows = await db.execute(sql`
+    INSERT INTO invoices (
+      organization_id, plan_id, invoice_number, status, amount_cents,
+      discount_amount_cents, tax_amount_cents, tax_rate, tax_name,
+      total_cents, currency, payment_method, billing_name, billing_email,
+      billing_gstin, purchase_order_number, coupon_code, payment_terms,
+      notes, due_at, updated_at
+    ) VALUES (
+      ${params.orgId}, ${plan.id}, ${invoiceNumber}, 'issued', ${basePriceCents},
+      ${discountCents}, ${taxCents}, ${taxRate}, ${taxLabel ?? null},
+      ${totalCents}, 'INR', ${params.paymentMethod ?? 'bank_transfer'},
+      ${params.billingName}, ${params.billingEmail},
+      ${params.billingGstin ?? null}, ${params.purchaseOrderNumber ?? null},
+      ${params.couponCode ?? null}, ${params.paymentTerms ?? 'Due on Receipt'},
+      ${params.notes ?? null}, ${dueAt.toISOString()}, now()
+    ) RETURNING id
+  `);
+  const invoiceId = (insertRows[0] as { id: string }).id;
 
   // 9. Deduct credits from balance if applied
   if (creditsAppliedCents > 0) {
-    await applyCredit(params.orgId, invoiceRow.id, creditsAppliedCents, params.actorId ?? params.orgId);
+    await applyCredit(params.orgId, invoiceId, creditsAppliedCents, params.actorId ?? params.orgId);
   }
 
   // 10. Create payment transaction via provider
   const provider = await getProvider(params.paymentProviderSlug);
   const paymentResult = await provider.createPayment({
     orgId: params.orgId,
-    invoiceId: invoiceRow.id,
+    invoiceId: invoiceId,
     amountCents: totalCents,
     currency: “INR”,
     paymentMethod: (params.paymentMethod ?? “bank_transfer”) as any,
@@ -235,18 +224,10 @@ export async function createInvoice(
     },
   });
 
-  // Store payment transaction reference back on the invoice if provider returned one
-  if (paymentResult.transactionId) {
-    await db
-      .update(invoices)
-      .set({ paymentReference: paymentResult.transactionId, updatedAt: new Date() } as any)
-      .where(eq(invoices.id, invoiceRow.id));
-  }
-
   // 11. Record finance action
   await recordFinanceAction({
     organizationId: params.orgId,
-    invoiceId: invoiceRow.id,
+    invoiceId: invoiceId,
     action: "invoice_created",
     actorId: params.actorId ?? null,
     metadata: {
@@ -262,7 +243,7 @@ export async function createInvoice(
   });
 
   return {
-    invoiceId: invoiceRow.id,
+    invoiceId: invoiceId,
     invoiceNumber,
     totalCents,
     bankDetails: paymentResult.bankDetails,
