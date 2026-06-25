@@ -154,7 +154,7 @@ export function RiskListTable({
                     </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <RiskCategoryBadge category={r.category} />
+                    <RiskCategoryBadge category={r.category ?? "custom"} />
                   </td>
                   <td className="px-4 py-3">
                     <RiskStatusBadge status={r.status} />
