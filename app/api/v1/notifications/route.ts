@@ -32,7 +32,7 @@ function alertToHref(alertType: string, entityType?: string | null): string {
 export async function GET(_req: NextRequest) {
   try {
     const user = await requireUser();
-    const alerts = await findAlerts(user.orgId, { status: "open", limit: 20 });
+    const alerts = await findAlerts(user.org?.id ?? "", { status: "open", limit: 20 });
 
     const notifications = alerts.map((a) => ({
       id: a.id,
