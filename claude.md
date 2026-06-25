@@ -15,7 +15,7 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 - **Category:** AI-Native Trust, Risk & Compliance Platform (Governance OS)
 - **Positioning:** Category-defining OS — not a point solution
 - **Modules shipped:** Vendor Hub™ · Evidence Vault™ (Compliance) · Settings & Org Management · Data Governance (Phase 1) · Audit Management · Risk Lens™ · Trust Score™ · Control Center™ · Trust Intelligence™ · Governance Trends™ · Continuous Monitoring™ · Trust Graph™ · Policy Governance™ · DPDP Privacy™ · Contract Governance™ · Issue & Remediation Hub™ · Workflow Studio™ · Third-Party Risk Exchange™ · Governance Benchmarking™ · Integration Hub™ · Trust Network™ · Executive Reporting & Analytics™ · AI Governance™ · Auditor Collaboration™ · Trust API Platform™ · Trust Verification Authority™ · Continuous Compliance™ · Governance Agent Framework™ · Regulatory Intelligence™ · Asset Intelligence™ · **Security Command Center™**
-- **Total tables:** 259 (238 previous + 21 Security Command Center™ tables from migration 0033)
+- **Total tables:** 259+ (migration 0034 adds billing tables — invoices, billing_plans, subscriptions, billing_credits, billing_transactions, billing_coupons, bank_details, finance_actions)
 - **Target customers:** SaaS, Fintech, Healthcare, Manufacturing, IT Services
 - **Live:** https://audt.tech (DNS propagating) + https://lekha-os.vercel.app (always works)
 - **GitHub:** https://github.com/SandyRepo29/lekha-os (private)
@@ -474,6 +474,42 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 
 ---
 
+### Billing & Commerce Sprint 1 ✅ Complete (2026-06-25)
+
+India-first bank-transfer SaaS billing — no Stripe. Manual verification flow.
+
+| File | Purpose |
+|---|---|
+| `lib/services/billing/billing-engine.ts` | Pure TS: applyCoupon, computeTax (GST 18%), getOrgCreditBalance, applyCredit, reconcilePayment, verifyPayment, rejectPayment, issueRefund |
+| `lib/services/billing/invoice-engine.ts` | Pure TS: generateInvoiceNumber (INV-YYYY-NNNNNN), createInvoice (raw SQL), sendInvoice, cancelInvoice, getInvoiceWithDetails, listPendingVerification |
+| `lib/services/billing/subscription-engine.ts` | getSubscriptionStatus — daysUntilExpiry, isActive, grace period logic |
+| `lib/services/billing/payment-adapter.ts` | Provider pattern: getProvider(slug) → { createPayment } — bank_transfer returns bankDetails |
+| `lib/services/billing-service.ts` | getBillingOverview, seedDefaultPlans, ensureStarterSubscription (idempotent) |
+| `lib/repositories/billing-repo.ts` | findPlanByName, findInvoiceById, findTransactionsByInvoice, listInvoicesByOrg |
+| `lib/repositories/billing-engine-repo.ts` | getCouponByCode, getOrgCreditBalance, createCredit, getTransaction, updateTransaction, updateInvoiceFull, activateSubscriptionByOrgId, recordFinanceAction, getOrgCredits, getPrimaryBankDetails |
+| `lib/billing/actions.ts` | Server actions for all billing operations |
+| `components/billing/cancel-modal.tsx` | "use client" — cancel subscription modal; accepts `action: ActionFn` prop |
+| `components/billing/request-upgrade-modal.tsx` | "use client" — upgrade request form; accepts `action: ActionFn` prop |
+| `components/billing/mark-paid-form.tsx` | "use client" — mark invoice paid; accepts `action: ActionFn` prop |
+| `components/billing/trial-banner.tsx` | Trial expiry alert banner |
+
+Finance Console (`/finance/*`) — admin-only:
+
+| Route | Purpose |
+|---|---|
+| `/finance` | Dashboard — pending queue, recent transactions, revenue KPIs |
+| `/finance/invoices` | Invoice list with status/month filter, search, pagination |
+| `/finance/pending` | Pending verification queue — bank transfers awaiting manual confirmation |
+| `/finance/transactions/[id]` | Transaction detail — Verify or Reject with notes |
+
+**Migration:** `supabase/migrations/0034_billing_commerce.sql` ✅ APPLIED
+
+**Plans seeded:** Starter / Growth / Business / Enterprise — via `seedDefaultPlans()` (idempotent). `ensureStarterSubscription(orgId)` creates a trial sub if none exists.
+
+**CRITICAL — Drizzle schema gap (migration 0034):** Columns `discount_amount_cents`, `tax_amount_cents`, `tax_rate`, `tax_name`, `total_cents`, `billing_name`, `billing_email`, `billing_gstin`, `purchase_order_number`, `coupon_code`, `payment_terms`, `due_at` are in the DB but NOT in `lib/db/schema.ts`. Drizzle insert on these returns `never[]`. Fix: use `db.execute(sql\`INSERT ... RETURNING id\`)` raw SQL. Return type `Promise<any>`.
+
+---
+
 ## 7. App Routes
 
 ```
@@ -822,6 +858,12 @@ POST /api/v1/assets                         Create asset (read_write key)
 GET /api/v1/notifications                   Governance alerts for notification bell — top 20 open (session auth)
 GET /api/v1/contracts/export/csv            Contracts CSV export (session auth)
 GET /api/v1/assets/export/csv              Assets CSV export (session auth)
+
+--- Finance Console (admin-only) ---
+/finance                                     Dashboard — pending invoices, recent transactions, revenue KPIs
+/finance/invoices                            Invoice list (status/month filter, search, pagination)
+/finance/pending                             Pending verification queue — bank transfers awaiting manual confirmation
+/finance/transactions/[id]                   Transaction detail — Verify or Reject with notes
 
 --- Help & Docs ---
 /help                                        Documentation center — all 32 modules, search, grouped left nav (authenticated)
@@ -1911,6 +1953,12 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Role guard import pattern** | `lib/ui/role-guard.ts` is pure TS (no imports, no `"use client"`). Import in server components: `import { canEdit, canDelete, canCreate } from '@/lib/ui/role-guard'`. Then conditionally render: `{canDelete(session.role) && <DeleteButton />}`. The `session.role` value comes from `requireUser()`. |
 | **ArchiveDialog pattern** | Replace all direct delete calls with `ArchiveDialog` from `components/ui/archive-dialog.tsx`. Archive (soft-delete, sets status → `archived`) is the default. Hard-delete requires the user to type the item name. Always present Archive first — it's the safer default for enterprise users. |
 | **useSelection hook** | `hooks/use-selection.ts` — `useSelection<T extends { id: string }>(items)` → `{ selected, toggleItem, toggleAll, clearAll, isSelected, selectedItems, allSelected, someSelected }`. Used by `vendor-list-table.tsx` and `risk-list-table.tsx`. When `selectedItems.length > 0`, render `BulkActionBar`. |
+| **Billing client components must NOT import from `lib/billing/actions.ts`** | That file chains through `lib/auth/session` → `lib/supabase/server` → `next/headers` — cannot be bundled for the browser. Pattern: accept the server action as a typed prop `action: (fd: FormData) => Promise<{ error?: string }>`. The server page imports the action and passes it as a prop to the client component. |
+| **`db.execute()` returns `RowList` directly (array-like)** | Access via `rows[0]`, NOT `rows.rows[0]`. The `.rows` sub-property does not exist on `RowList`. |
+| **`session` shape from `requireUser()`** | Returns `{ id, email, org: { id, name, role } \| null }`. Correct: `session.org!.id`, `session.id`, `session.org!.role`. Fields `session.orgId`, `session.userId`, `session.role` do NOT exist — TypeScript will error. |
+| **`searchParams` in Next.js 16** | Typed as `Promise<{ [key]: string \| string[] \| undefined }>` and must be awaited. Values are `string \| string[]` — unwrap with `Array.isArray(sp.page) ? sp.page[0] : sp.page` before passing to `parseInt` or string ops. |
+| **Migration 0034 Drizzle schema gap** | Several `invoices` columns from migration 0034 are not in `lib/db/schema.ts`. Drizzle `.insert().returning()` on those columns yields `never[]`. Fix: use `db.execute(sql\`INSERT ... RETURNING id\`)` raw SQL and return `Promise<any>`. |
+| **`unknown` fields in JSX conditionals** | `{someUnknown && <Component />}` is rejected — TypeScript sees `unknown` as the potential JSX child. Use `{!!someUnknown && <Component />}` (boolean) or cast via `((x as unknown) as Record<string, unknown>)` when a direct cast fails the overlap check. |
 
 ---
 
