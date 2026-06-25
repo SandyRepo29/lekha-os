@@ -1,5 +1,5 @@
-/**
- * Invoice Engine — pure TypeScript, no Next.js imports.
+﻿/**
+ * Invoice Engine â€” pure TypeScript, no Next.js imports.
  * Handles invoice generation and lifecycle for AUDT billing.
  *
  * Imports from:
@@ -12,7 +12,7 @@ import { invoices, billingPlans, organizations } from "@/lib/db/schema";
 import { eq, sql, desc } from "drizzle-orm";
 import * as billingRepo from "@/lib/repositories/billing-repo";
 
-// ─── Billing Engine imports ───────────────────────────────────────────────────
+// â”€â”€â”€ Billing Engine imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // These functions will be provided by lib/services/billing/billing-engine.ts
 import {
   applyCoupon,
@@ -21,11 +21,11 @@ import {
   deductCredits,
 } from "@/lib/services/billing/billing-engine";
 
-// ─── Payment Adapter imports ──────────────────────────────────────────────────
+// â”€â”€â”€ Payment Adapter imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // These functions will be provided by lib/services/billing/payment-adapter.ts
 import { getProvider } from "@/lib/services/billing/payment-adapter";
 
-// ─── Finance action recorder (local helper) ───────────────────────────────────
+// â”€â”€â”€ Finance action recorder (local helper) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function recordFinanceAction(params: {
   organizationId: string;
   invoiceId: string;
@@ -46,7 +46,7 @@ async function recordFinanceAction(params: {
   });
 }
 
-// ─── Type helpers ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Type helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export type ParsedPaymentTerms = {
   label: string;
@@ -66,7 +66,7 @@ function parsePaymentTerms(terms?: string | null): ParsedPaymentTerms {
   return { label: terms, netDays: 7 };
 }
 
-// ─── 1. generateInvoiceNumber ─────────────────────────────────────────────────
+// â”€â”€â”€ 1. generateInvoiceNumber â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Generate a globally unique, year-scoped invoice number.
@@ -90,7 +90,7 @@ export async function generateInvoiceNumber(orgId: string): Promise<string> {
   return `INV-${year}-${seq}`;
 }
 
-// ─── 2. createInvoice ─────────────────────────────────────────────────────────
+// â”€â”€â”€ 2. createInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export type CreateInvoiceParams = {
   orgId: string;
@@ -122,7 +122,7 @@ export type CreateInvoiceResult = {
  * Steps:
  *  1. Look up plan by slug/name, use priceYearly as base amount
  *  2. Apply coupon if provided (billing engine)
- *  3. Compute tax (billing engine — IN jurisdiction, GSTIN flag)
+ *  3. Compute tax (billing engine â€” IN jurisdiction, GSTIN flag)
  *  4. Check and deduct credit balance if applyCredits=true
  *  5. Compute totals: subtotal = planPrice - discount; tax = subtotal * rate; total = subtotal + tax - credits
  *  6. Generate invoice number
@@ -240,7 +240,7 @@ export async function createInvoice(
     currency: "INR",
     billingName: params.billingName,
     billingEmail: params.billingEmail,
-    description: `AUDT ${plan.name} plan — ${invoiceNumber}`,
+    description: `AUDT ${plan.name} plan â€” ${invoiceNumber}`,
     metadata: {
       planId: plan.id,
       planName: plan.name,
@@ -283,7 +283,7 @@ export async function createInvoice(
   };
 }
 
-// ─── 3. sendInvoice ───────────────────────────────────────────────────────────
+// â”€â”€â”€ 3. sendInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Mark invoice as issued (ready to be sent to the customer).
@@ -297,7 +297,7 @@ export async function sendInvoice(invoiceId: string): Promise<void> {
     throw new Error("Cannot send a cancelled invoice.");
   }
   if (invoice.status === "paid") {
-    throw new Error("Invoice is already paid — sending is not applicable.");
+    throw new Error("Invoice is already paid â€” sending is not applicable.");
   }
 
   await db
@@ -306,7 +306,7 @@ export async function sendInvoice(invoiceId: string): Promise<void> {
     .where(eq(invoices.id, invoiceId));
 }
 
-// ─── 4. cancelInvoice ─────────────────────────────────────────────────────────
+// â”€â”€â”€ 4. cancelInvoice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Cancel an unpaid invoice. Records a finance_action for audit.
@@ -345,13 +345,13 @@ export async function cancelInvoice(
   });
 }
 
-// ─── 5. getInvoiceWithDetails ─────────────────────────────────────────────────
+// â”€â”€â”€ 5. getInvoiceWithDetails â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Fetch a fully-hydrated invoice including org name, plan name,
  * payment transactions, and finance action log entries.
  *
- * Returns a plain object — callers can type-assert as needed.
+ * Returns a plain object â€” callers can type-assert as needed.
  */
 export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
   // Core invoice + plan join
@@ -381,7 +381,7 @@ export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
     plan = planRow ?? null;
   }
 
-  // Payment transactions — read from audit_logs where entity_type = 'invoice'
+  // Payment transactions â€” read from audit_logs where entity_type = 'invoice'
   // and action like 'billing.%' for this invoice. This avoids needing a
   // separate payment_transactions table (which lives in the payment-adapter layer).
   const { recordAudit } = await import("@/lib/repositories/audit-repo");
@@ -415,7 +415,7 @@ export async function getInvoiceWithDetails(invoiceId: string): Promise<any> {
   };
 }
 
-// ─── 6. listPendingVerification ───────────────────────────────────────────────
+// â”€â”€â”€ 6. listPendingVerification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Return all invoices with status = 'pending_verification'.
@@ -446,3 +446,4 @@ export async function listPendingVerification(limit = 50): Promise<any[]> {
     },
   }));
 }
+

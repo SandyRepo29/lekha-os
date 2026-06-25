@@ -92,14 +92,14 @@ export async function listTransactionsByOrg(
       WHERE organization_id = ${orgId} AND status = ${filters.status}
       ORDER BY created_at DESC LIMIT ${limit}
     `)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`
     SELECT * FROM payment_transactions
     WHERE organization_id = ${orgId}
     ORDER BY created_at DESC LIMIT ${limit}
   `)
-  return rows.rows
+  return rows
 }
 
 export async function listPendingTransactions(limit = 100): Promise<unknown[]> {
@@ -110,7 +110,7 @@ export async function listPendingTransactions(limit = 100): Promise<unknown[]> {
     WHERE pt.status IN ('pending', 'pending_verification')
     ORDER BY pt.created_at ASC LIMIT ${limit}
   `)
-  return rows.rows
+  return rows
 }
 
 // â”€â”€â”€ Finance Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -156,7 +156,7 @@ export async function listFinanceActions(filters?: {
       WHERE fa.transaction_id = ${filters.transactionId}
       ORDER BY fa.created_at DESC LIMIT ${limit}
     `)
-    return rows.rows
+    return rows
   }
   if (filters?.invoiceId) {
     const rows = await db.execute(sql`
@@ -165,7 +165,7 @@ export async function listFinanceActions(filters?: {
       WHERE fa.invoice_id = ${filters.invoiceId}
       ORDER BY fa.created_at DESC LIMIT ${limit}
     `)
-    return rows.rows
+    return rows
   }
   if (filters?.orgId) {
     const rows = await db.execute(sql`
@@ -174,14 +174,14 @@ export async function listFinanceActions(filters?: {
       WHERE fa.organization_id = ${filters.orgId}
       ORDER BY fa.created_at DESC LIMIT ${limit}
     `)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`
     SELECT fa.*, p.full_name AS actor_name
     FROM finance_actions fa LEFT JOIN profiles p ON p.id = fa.actor_id
     ORDER BY fa.created_at DESC LIMIT ${limit}
   `)
-  return rows.rows
+  return rows
 }
 
 // â”€â”€â”€ Coupons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -207,10 +207,10 @@ export async function listCoupons(activeOnly = false): Promise<unknown[]> {
         AND (max_uses IS NULL OR uses_count < max_uses)
       ORDER BY created_at DESC
     `)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`SELECT * FROM coupons ORDER BY created_at DESC`)
-  return rows.rows
+  return rows
 }
 
 // â”€â”€â”€ Credits â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -219,7 +219,7 @@ export async function getOrgCredits(orgId: string): Promise<unknown[]> {
   const rows = await db.execute(sql`
     SELECT * FROM billing_credits WHERE organization_id = ${orgId} ORDER BY created_at DESC
   `)
-  return rows.rows
+  return rows
 }
 
 export async function createCredit(data: {
@@ -270,10 +270,10 @@ export async function listTaxRates(country?: string): Promise<unknown[]> {
     const rows = await db.execute(sql`
       SELECT * FROM tax_rates WHERE country = ${country} AND is_active = true ORDER BY name ASC
     `)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`SELECT * FROM tax_rates WHERE is_active = true ORDER BY country, name`)
-  return rows.rows
+  return rows
 }
 
 // â”€â”€â”€ Payment Providers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -281,10 +281,10 @@ export async function listTaxRates(country?: string): Promise<unknown[]> {
 export async function listPaymentProviders(activeOnly = false): Promise<unknown[]> {
   if (activeOnly) {
     const rows = await db.execute(sql`SELECT * FROM payment_providers WHERE is_active = true ORDER BY name ASC`)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`SELECT * FROM payment_providers ORDER BY name ASC`)
-  return rows.rows
+  return rows
 }
 
 export async function getPaymentProvider(slug: string): Promise<unknown> {
@@ -356,7 +356,7 @@ export async function listInvoicesByOrg(orgId: string, limit = 50): Promise<unkn
     WHERE i.organization_id = ${orgId}
     ORDER BY i.created_at DESC LIMIT ${limit}
   `)
-  return rows.rows
+  return rows
 }
 
 export async function listAllInvoices(filters?: {
@@ -375,7 +375,7 @@ export async function listAllInvoices(filters?: {
       WHERE i.status = ${filters.status}
       ORDER BY i.created_at DESC LIMIT ${limit} OFFSET ${offset}
     `)
-    return rows.rows
+    return rows
   }
   const rows = await db.execute(sql`
     SELECT i.*, o.name AS org_name, bp.name AS plan_name
@@ -384,7 +384,7 @@ export async function listAllInvoices(filters?: {
     LEFT JOIN billing_plans bp ON bp.id = i.plan_id
     ORDER BY i.created_at DESC LIMIT ${limit} OFFSET ${offset}
   `)
-  return rows.rows
+  return rows
 }
 
 export async function getInvoiceById(invoiceId: string): Promise<unknown> {
@@ -407,7 +407,7 @@ export async function listInvoicesPendingVerification(limit = 50): Promise<unkno
     WHERE i.status = 'pending_verification'
     ORDER BY i.created_at ASC LIMIT ${limit}
   `)
-  return rows.rows
+  return rows
 }
 
 // â”€â”€â”€ Subscriptions (extended) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -468,4 +468,5 @@ export async function getRevenueStats(): Promise<{
     activeSubscriptions: Number(s.active ?? 0),
   }
 }
+
 
