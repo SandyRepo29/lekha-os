@@ -4,18 +4,22 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getAssets } from "@/lib/services/asset-intelligence/asset-service";
 import { AssetSubNav, CriticalityBadge, AssetStatusBadge, AssetTypeBadge, AssetTrustBadge } from "@/components/asset-intelligence/asset-ui";
-import { Plus } from "lucide-react";
+import { Plus, Shield } from "lucide-react";
+import { SearchInput } from "@/components/ui/search-input";
 
-export default async function AssetRegistryPage({ searchParams }: { searchParams: Promise<{ type?: string; criticality?: string; status?: string }> }) {
+export default async function AssetRegistryPage({ searchParams }: { searchParams: Promise<{ type?: string; criticality?: string; status?: string; search?: string }> }) {
   const session = await requireUser();
   const orgId = session.org?.id ?? "";
   const params  = await searchParams;
+  const search = params.search?.toLowerCase() ?? "";
 
-  const assetList = await getAssets(orgId, {
+  let assetList = await getAssets(orgId, {
     type:        params.type,
     criticality: params.criticality,
     status:      params.status,
   }).catch(() => []);
+
+  if (search) assetList = assetList.filter(a => a.name.toLowerCase().includes(search) || (a.businessUnit ?? "").toLowerCase().includes(search));
 
   return (
     <div className="space-y-6 p-6">
@@ -31,6 +35,11 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
       </div>
 
       <AssetSubNav />
+
+      {/* Search */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <SearchInput placeholder="Search assets&#8230;" />
+      </div>
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
@@ -86,10 +95,15 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)] capitalize">{a.environment}</td>
                   <td className="px-4 py-3"><CriticalityBadge level={a.criticality} /></td>
                   <td className="px-4 py-3">
-                    <span className="text-xs capitalize text-[var(--color-ink-dim)]">
-                      {(a as any).dataClass ?? "—"}
-                      {(a as any).containsPii && <span className="ml-1 text-amber-400">&#183; PII</span>}
-                    </span>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs capitalize text-[var(--color-ink-dim)]">{(a as any).dataClass ?? "—"}</span>
+                      {((a as any).containsPii || ((a as any).piiTypes && (a as any).piiTypes.length > 0)) && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400">
+                          <Shield className="h-3 w-3" />
+                          PII
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3"><AssetStatusBadge status={a.status} /></td>
                   <td className="px-4 py-3"><AssetTrustBadge score={a.trustScore} /></td>

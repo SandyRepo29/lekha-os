@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Security Command Center&#8482; — AUDT' };
+
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData, computeSecurityReadiness } from "@/lib/services/security-command-center/security-service";
@@ -89,7 +91,10 @@ export default async function SecurityCommandCenterPage() {
       {/* Feature Status */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="space-y-2">
-          <h2 className="text-sm font-semibold text-[var(--color-ink-dim)] px-1">Identity & Access</h2>
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-sm font-semibold text-[var(--color-ink-dim)]">Identity &amp; Access</h2>
+            <Link href="/security-center/sessions" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View sessions &#8594;</Link>
+          </div>
           <FeatureRow label="Multi-Factor Authentication"   status={(m?.mfaPercent ?? 0) > 0}  href="/security-center/identity" />
           <FeatureRow label="Enterprise SSO"               status={(m?.ssoActive ?? 0) > 0}   href="/security-center/identity" />
           <FeatureRow label="IP Allow Lists"               status={(m?.ipRules ?? 0) > 0}     href="/security-center/access" />
@@ -107,7 +112,10 @@ export default async function SecurityCommandCenterPage() {
       {/* Open Monitoring Alerts */}
       {alerts.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-sm font-semibold">Open Monitoring Alerts</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold">Open Monitoring Alerts</h2>
+            <Link href="/security-center/monitoring" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all &#8594;</Link>
+          </div>
           <div className="space-y-2">
             {alerts.slice(0, 5).map((a) => (
               <div key={String(a.id)} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">

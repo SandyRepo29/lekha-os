@@ -5,12 +5,15 @@ import { requireUser } from "@/lib/auth/session";
 import { getRegulations } from "@/lib/services/regulatory-intelligence/regulatory-service";
 import { RegSubNav, RegStat, CategoryBadge } from "@/components/regulatory-intelligence/reg-ui";
 import { BookOpen, Plus, Globe, Shield, Lock, Brain } from "lucide-react";
+import { SearchInput } from "@/components/ui/search-input";
 
-export default async function RegLibraryPage() {
-  await requireUser();
+export default async function RegLibraryPage({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
   const session = await requireUser();
   const orgId = session.org?.id ?? "";
-  const regs = await getRegulations(orgId).catch(() => []);
+  const sp = await searchParams;
+  const search = sp.search?.toLowerCase() ?? "";
+  let regs = await getRegulations(orgId).catch(() => []);
+  if (search) regs = regs.filter(r => r.name.toLowerCase().includes(search) || (r.shortName ?? "").toLowerCase().includes(search));
 
   const byCategory = regs.reduce<Record<string, number>>((acc, r) => {
     acc[r.category] = (acc[r.category] ?? 0) + 1;
@@ -29,12 +32,15 @@ export default async function RegLibraryPage() {
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Regulation Library™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Central repository of all applicable regulations across jurisdictions and industries.</p>
         </div>
-        <Link
-          href="/regulatory-intelligence/library/new"
-          className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
-        >
-          <Plus className="h-4 w-4" /> Add Regulation
-        </Link>
+        <div className="flex items-center gap-3">
+          <SearchInput placeholder="Search regulations&#8230;" />
+          <Link
+            href="/regulatory-intelligence/library/new"
+            className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
+          >
+            <Plus className="h-4 w-4" /> Add Regulation
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

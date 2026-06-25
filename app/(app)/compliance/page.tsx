@@ -1,7 +1,9 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Evidence Vault&#8482; — AUDT' };
+
 import Link from "next/link";
-import { ShieldCheck, Plus, AlertTriangle, CheckCircle2, FileSearch, BookCheck, BarChart3 } from "lucide-react";
+import { ShieldCheck, Plus, AlertTriangle, CheckCircle2, FileSearch, BookCheck, BarChart3, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -73,11 +75,17 @@ export default async function ComplianceDashboardPage() {
             {totalControls} controls tracked
           </p>
         </div>
-        <Link href="/compliance/frameworks/new">
-          <Button variant="primary" size="md">
-            <Plus className="h-4 w-4" /> Add framework
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/compliance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Compliance Officer&#8482;
+          </Link>
+          <Link href="/compliance/frameworks/new">
+            <Button variant="primary" size="md">
+              <Plus className="h-4 w-4" /> Add framework
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {frameworks.length === 0 ? (
@@ -242,9 +250,12 @@ export default async function ComplianceDashboardPage() {
 
           {/* Frameworks grid */}
           <div>
-            <h2 className="mb-3 font-[family-name:var(--font-display)] text-base font-semibold">
-              Frameworks
-            </h2>
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">
+                Frameworks
+              </h2>
+              <Link href="/compliance/frameworks" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {frameworks.map((fw) => {
                 const score = fw.readiness?.overallScore ?? 0;
@@ -312,6 +323,7 @@ export default async function ComplianceDashboardPage() {
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">
                   Open Gaps
                 </h2>
+                <Link href="/compliance/gaps" className="ml-auto text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <GapCount label="Critical" value={gapSummary.critical} color="text-red-400" />

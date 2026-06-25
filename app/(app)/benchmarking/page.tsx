@@ -1,7 +1,9 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Governance Benchmarking&#8482; — AUDT' };
+
 import Link from "next/link";
-import { BarChart3, TrendingUp, Award, Zap, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { BarChart3, TrendingUp, Award, Zap, ArrowUpRight, ArrowDownRight, Sparkles, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
@@ -65,12 +67,23 @@ export default async function BenchmarkingDashboard() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">Governance Benchmarking™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Benchmarking&#8482;</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
             Compare your governance posture against industry peers and discover your competitive position.
           </p>
         </div>
         <div className="flex gap-2">
+          <a
+            href="/api/v1/benchmarking/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Benchmark CSV
+          </a>
+          <Link href="/benchmarking/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Benchmark Analyst&#8482;
+          </Link>
           <Link
             href="/benchmarking/rankings"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-white/[0.04] transition-colors"
@@ -149,7 +162,10 @@ export default async function BenchmarkingDashboard() {
 
           {/* Category scores grid */}
           <div>
-            <h2 className="text-base font-semibold mb-4">Benchmark Scorecards™</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-semibold">Benchmark Scorecards&#8482;</h2>
+              <Link href="/benchmarking/rankings" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            </div>
             <div className="grid md:grid-cols-2 gap-3">
               {scores.map((score) => {
                 const label = BENCHMARK_CATEGORY_LABELS[score.category as BenchmarkCategory] ?? score.category;

@@ -1,10 +1,12 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Asset Intelligence&#8482; — AUDT' };
+
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/asset-intelligence/asset-service";
 import { AssetSubNav, AssetStat, CriticalityBadge, AssetTypeBadge, AssetStatusBadge, AlertSeverityBadge } from "@/components/asset-intelligence/asset-ui";
-import { Database, Monitor, Cloud, FileText, GitBranch, Brain, Zap, Server, Network, Shield, AlertTriangle, TrendingUp, Activity } from "lucide-react";
+import { Database, Monitor, Cloud, FileText, GitBranch, Brain, Zap, Server, Network, Shield, AlertTriangle, TrendingUp, Activity, Download } from "lucide-react";
 
 const TYPE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   application:      Monitor,
@@ -40,13 +42,43 @@ export default async function AssetIntelligencePage() {
     <div className="space-y-6 p-6">
       {/* Heading */}
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence&#8482;</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence&#8482;</h1>
+          <span className="text-xs text-[var(--color-ink-dim)] border border-[var(--color-line)] rounded px-2 py-0.5">REST API available</span>
+        </div>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">
           Business Asset Intelligence &amp; Dependency Mapping &#8212; understand how vendors, assets, data, controls, and risks connect across your organization.
         </p>
       </div>
 
       <AssetSubNav />
+
+      {/* Export actions */}
+      <div className="flex items-center gap-2">
+        <a
+          href="/api/v1/assets/export/csv"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+        >
+          <Download className="h-3.5 w-3.5" />
+          Export Assets CSV
+        </a>
+      </div>
+
+      {/* Empty-state callout */}
+      {metrics.totalAssets === 0 && (
+        <div className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] p-5 flex items-start gap-4">
+          <Monitor className="h-6 w-6 text-[var(--color-blue)] shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold text-[var(--color-blue)]">No assets in the registry yet</p>
+            <p className="mt-1 text-xs text-[var(--color-ink-dim)]">
+              Add assets to the registry to enable Trust Mapping, PII tracking, and dependency analysis.
+            </p>
+            <Link href="/asset-intelligence/registry/new" className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[var(--color-blue)] px-4 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity">
+              Add your first asset &#8594;
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Governance KPI Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

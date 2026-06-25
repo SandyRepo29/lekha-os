@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Sparkles, Plus, CheckCircle2, Loader2, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArchiveDialog } from "@/components/ui/archive-dialog";
 import {
   updateRiskStatusAction,
   deleteRiskAction,
@@ -18,11 +19,14 @@ import { useRouter } from "next/navigation";
 export function RiskDetailActions({
   riskId,
   currentStatus,
+  riskTitle,
 }: {
   riskId: string;
   currentStatus: string;
+  riskTitle: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [archiveOpen, setArchiveOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -46,8 +50,8 @@ export function RiskDetailActions({
   }
 
   function handleDelete() {
-    if (!confirm("Delete this risk? This cannot be undone.")) return;
-    startTransition(async () => { await deleteRiskAction(riskId); });
+    setOpen(false);
+    setArchiveOpen(true);
   }
 
   return (
@@ -70,6 +74,20 @@ export function RiskDetailActions({
           </div>
         )}
       </div>
+      <ArchiveDialog
+        open={archiveOpen}
+        onClose={() => setArchiveOpen(false)}
+        itemName={riskTitle}
+        itemType="risk"
+        onArchive={() => {
+          setArchiveOpen(false);
+          startTransition(async () => { await deleteRiskAction(riskId); });
+        }}
+        onDelete={() => {
+          setArchiveOpen(false);
+          startTransition(async () => { await deleteRiskAction(riskId); });
+        }}
+      />
     </div>
   );
 }

@@ -28,8 +28,9 @@ export async function GET(request: NextRequest) {
   // Rate limit
   const rl = checkRateLimit(ctx.keyId, ctx.permissions);
   if (!rl.allowed) {
+    const retryAfter = Math.max(1, Math.ceil((rl.resetAt - Date.now()) / 1000));
     return withRateLimitHeaders(
-      err(`Rate limit exceeded. Retry after ${new Date(rl.resetAt).toISOString()}.`, 429),
+      err(`Rate limit exceeded. Please wait ${retryAfter} second${retryAfter !== 1 ? "s" : ""} before retrying.`, 429),
       rl
     );
   }

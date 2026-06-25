@@ -6,7 +6,7 @@ import { getDashboardData } from "@/lib/services/trust-verification/trust-verifi
 import {
   ShieldCheck, Award, CheckCircle, Clock, XCircle, AlertTriangle,
   RefreshCw, Globe, Bot, FileText, ArrowRight,
-  Star, Lock, Activity,
+  Star, Lock, Activity, Sparkles,
 } from "lucide-react";
 import { VerificationStat, VerificationStatusBadge } from "@/components/trust-verification/verification-ui";
 
@@ -47,6 +47,10 @@ export default async function TrustVerificationPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Link href="/trust-verification/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Verification Advisor&#8482;
+          </Link>
           <Link
             href="/trust-verification/registry"
             className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
@@ -150,7 +154,9 @@ export default async function TrustVerificationPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Verification Events</h3>
-            <Link href="/trust-verification/monitoring" className="text-xs text-[var(--color-blue)] hover:underline">Monitoring →</Link>
+            <div className="flex items-center gap-3">
+              <Link href="/trust-verification/monitoring" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            </div>
           </div>
           {events.length > 0 ? (
             <div className="space-y-2">

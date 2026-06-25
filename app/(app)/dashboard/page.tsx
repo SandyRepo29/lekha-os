@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Dashboard — AUDT' };
+
 import Link from "next/link";
 import {
   Building2, AlertTriangle, Sparkles, ArrowRight, Plus, ShieldCheck,

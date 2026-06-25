@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, like, and } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { auditLogs, profiles } from "@/lib/db/schema";
 
@@ -28,6 +28,31 @@ export async function listOrgActivity(orgId: string, limit = 20): Promise<Activi
     .from(auditLogs)
     .leftJoin(profiles, eq(auditLogs.actorId, profiles.id))
     .where(eq(auditLogs.organizationId, orgId))
+    .orderBy(desc(auditLogs.createdAt))
+    .limit(limit);
+
+  return rows.map((r) => ({
+    ...r,
+    metadata: (r.metadata as Record<string, unknown> | null) ?? null,
+    createdAt: r.createdAt ?? new Date(),
+  }));
+}
+
+export async function listModuleActivity(orgId: string, actionPrefix: string, limit = 5): Promise<ActivityItem[]> {
+  const rows = await db
+    .select({
+      id: auditLogs.id,
+      action: auditLogs.action,
+      entityType: auditLogs.entityType,
+      entityId: auditLogs.entityId,
+      metadata: auditLogs.metadata,
+      actorName: profiles.fullName,
+      actorEmail: profiles.email,
+      createdAt: auditLogs.createdAt,
+    })
+    .from(auditLogs)
+    .leftJoin(profiles, eq(auditLogs.actorId, profiles.id))
+    .where(and(eq(auditLogs.organizationId, orgId), like(auditLogs.action, `${actionPrefix}.%`)))
     .orderBy(desc(auditLogs.createdAt))
     .limit(limit);
 

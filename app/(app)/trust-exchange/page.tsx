@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import {
   Globe, ShieldCheck, FileText, Star, Users, MessageSquare,
-  ArrowRight, CheckCircle2, AlertCircle, Zap,
+  ArrowRight, CheckCircle2, AlertCircle, Zap, Sparkles,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
@@ -47,6 +47,10 @@ export default async function TrustExchangeDashboard() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Link href="/trust-exchange/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Trust Analyst&#8482;
+          </Link>
           <Link href="/trust-exchange/directory" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-white/[0.04] transition-colors">
             <Globe className="h-4 w-4" /> Vendor Directory
           </Link>
@@ -127,7 +131,10 @@ export default async function TrustExchangeDashboard() {
       {/* Activity feed + Getting started */}
       <div className="grid xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2">
-          <h2 className="text-base font-semibold mb-3">Recent Exchange Activity</h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold">Recent Exchange Activity</h2>
+            <Link href="/trust-exchange/documents" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+          </div>
           <Card className="divide-y divide-[var(--color-line)]">
             {activity.length === 0 ? (
               <div className="p-8 text-center text-sm text-[var(--color-ink-dim)]">

@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Trust Intelligence&#8482; — AUDT' };
+
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -159,14 +161,27 @@ export default async function TrustIntelligencePage() {
         <Card className="p-6 lg:col-span-2 space-y-4">
           <p className="text-sm font-semibold text-[var(--color-ink)]">Component Breakdown</p>
           <div className="space-y-3">
-            {components.map(({ key, value }) => (
-              <ComponentBar
-                key={key}
-                label={ORG_TRUST_COMPONENT_LABELS[key]}
-                score={value}
-                weight={ORG_TRUST_COMPONENT_WEIGHTS[key]}
-              />
-            ))}
+            {components.map(({ key, value }) => {
+              const momentum = momentumRows.find((m) => m.key === key);
+              const trendArrow =
+                momentum?.dir === "improving" ? (
+                  <span className="text-emerald-400 text-xs font-bold" title={`+${momentum.delta} pts`}>&#8593;</span>
+                ) : momentum?.dir === "declining" ? (
+                  <span className="text-red-400 text-xs font-bold" title={`${momentum.delta} pts`}>&#8595;</span>
+                ) : null;
+              return (
+                <div key={key} className="flex items-center gap-2">
+                  <div className="flex-1">
+                    <ComponentBar
+                      label={ORG_TRUST_COMPONENT_LABELS[key]}
+                      score={value}
+                      weight={ORG_TRUST_COMPONENT_WEIGHTS[key]}
+                    />
+                  </div>
+                  {trendArrow && <div className="shrink-0 w-4 text-center">{trendArrow}</div>}
+                </div>
+              );
+            })}
           </div>
         </Card>
       </div>

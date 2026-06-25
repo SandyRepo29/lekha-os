@@ -12,6 +12,7 @@ import {
   ContractStatusBadge,
 } from "@/components/contract-governance/contract-ui";
 import { scoreTextColor } from "@/lib/ui/colors";
+import { SearchInput } from "@/components/ui/search-input";
 
 const TYPE_LABELS: Record<string, string> = {
   vendor_agreement: "Vendor Agreement",
@@ -73,7 +74,10 @@ export default async function ContractLibraryPage({
         </Link>
       </div>
 
-      {/* Filters */}
+      {/* Search + Filters */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <SearchInput placeholder="Search contracts&#8230;" />
+      </div>
       <Card className="p-4 flex flex-wrap gap-2">
         {FILTER_STATUSES.map((s) => (
           <ContractFilterChip

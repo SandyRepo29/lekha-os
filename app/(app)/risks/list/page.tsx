@@ -6,15 +6,15 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
+import { canCreate, canEdit, canDelete } from "@/lib/ui/role-guard";
 import { listRisks } from "@/lib/services/risk/risk-service";
-import { RiskStatusBadge, RiskScoreBadge, RiskCategoryBadge } from "@/components/risk/risk-status-badge";
-import { RiskFilterChip, formatDate, isOverdue } from "@/components/risk/risk-ui";
-import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS, TREATMENT_STRATEGY_LABELS } from "@/lib/services/risk-scoring";
+import { RiskFilterChip } from "@/components/risk/risk-ui";
+import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS } from "@/lib/services/risk-scoring";
+import { RiskListTable } from "@/components/risks/risk-list-table";
 
 const STATUS_FILTERS = [
   "all", "identified", "under_assessment", "open", "mitigating", "accepted", "transferred", "closed",
 ];
-const CATEGORY_FILTERS = ["all", ...Object.keys(RISK_CATEGORY_LABELS)];
 
 export default async function RiskListPage({
   searchParams,
@@ -43,7 +43,6 @@ export default async function RiskListPage({
 
   return (
     <div className="space-y-5">
-      {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Risk Register</h1>
@@ -53,13 +52,14 @@ export default async function RiskListPage({
           <Link href="/reports/risks/csv">
             <Button variant="ghost" size="sm"><Download className="h-4 w-4" /> CSV</Button>
           </Link>
-          <Link href="/risks/new">
-            <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button>
-          </Link>
+          {canCreate(session.role) && (
+            <Link href="/risks/new">
+              <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button>
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Filters */}
       <div className="space-y-2">
         <div className="flex flex-wrap gap-1">
           {STATUS_FILTERS.map((s) => (
@@ -89,69 +89,15 @@ export default async function RiskListPage({
             icon={AlertTriangle}
             title="No risks found"
             description="Adjust your filters or create a new risk."
-            action={<Link href="/risks/new"><Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button></Link>}
+            action={canCreate(session.role) ? <Link href="/risks/new"><Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button></Link> : undefined}
           />
         </Card>
       ) : (
-        <Card>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-[var(--color-line)] text-xs text-[var(--color-ink-faint)]">
-                  <th className="px-4 py-3 text-left font-medium">Title</th>
-                  <th className="px-4 py-3 text-left font-medium">Category</th>
-                  <th className="px-4 py-3 text-left font-medium">Status</th>
-                  <th className="px-4 py-3 text-left font-medium">Owner</th>
-                  <th className="px-4 py-3 text-center font-medium">I × L</th>
-                  <th className="px-4 py-3 text-center font-medium">Score</th>
-                  <th className="px-4 py-3 text-left font-medium">Treatment</th>
-                  <th className="px-4 py-3 text-left font-medium">Due Date</th>
-                  <th className="px-4 py-3" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--color-line)]">
-                {risks.map((r) => {
-                  const due = r.targetDate ? isOverdue(r.targetDate) : false;
-                  return (
-                    <tr key={r.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-4 py-3">
-                        <Link href={`/risks/${r.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors line-clamp-1">
-                          {r.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <RiskCategoryBadge category={r.category} />
-                      </td>
-                      <td className="px-4 py-3">
-                        <RiskStatusBadge status={r.status} />
-                      </td>
-                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                        {r.ownerName ?? "—"}
-                      </td>
-                      <td className="px-4 py-3 text-center text-xs text-[var(--color-ink-dim)]">
-                        {r.impact} × {r.likelihood}
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <RiskScoreBadge score={r.inherentScore} />
-                      </td>
-                      <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                        {TREATMENT_STRATEGY_LABELS[r.treatmentStrategy ?? ""] ?? "—"}
-                      </td>
-                      <td className={`px-4 py-3 text-xs ${due ? "text-red-400" : "text-[var(--color-ink-dim)]"}`}>
-                        {formatDate(r.targetDate)}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link href={`/risks/${r.id}`} className="text-xs text-[var(--color-blue)] hover:underline">
-                          View
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <RiskListTable
+          risks={risks}
+          canEdit={canEdit(session.role)}
+          canDelete={canDelete(session.role)}
+        />
       )}
     </div>
   );

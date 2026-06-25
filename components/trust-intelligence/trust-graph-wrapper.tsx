@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { buildGraphAction } from "@/lib/trust-graph/actions";
+import { toast } from "@/components/ui/toast-simple";
 import { TrustGraphExplorer } from "./trust-graph-explorer";
 import type { GraphNode, GraphEdge } from "@/lib/db/schema";
 
@@ -21,18 +22,23 @@ export function TrustGraphWrapper({ initialNodes, initialEdges }: Props) {
 
   const handleBuild = () => {
     setError(null);
+    toast("Rebuilding Trust Graph&#8230;", "loading", 0);
     startTransition(async () => {
       const res = await buildGraphAction();
-      if (res.error) { setError(res.error); return; }
+      if (res.error) {
+        setError(res.error);
+        toast("Failed to rebuild Trust Graph", "error");
+        return;
+      }
       if (res.data) {
         setBuildResult(res.data);
-        // Reload graph data
         const { getGraphDataAction } = await import("@/lib/trust-graph/actions");
         const graphRes = await getGraphDataAction();
         if (graphRes.data) {
           setNodes(graphRes.data.nodes as GraphNode[]);
           setEdges(graphRes.data.edges as GraphEdge[]);
         }
+        toast("Trust Graph rebuilt successfully", "success");
       }
     });
   };

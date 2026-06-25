@@ -32,7 +32,9 @@ import {
   TrendingUp,
   Sparkles,
   Star,
+  Network,
 } from "lucide-react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -68,8 +70,10 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/compliance",            label: "Evidence Vault™",   icon: ShieldCheck },
       { href: "/workflow-studio",       label: "Workflow Studio™",  icon: GitBranch },
-      { href: "/issue-hub",             label: "Issues & Findings", icon: Target },
-      { href: "/auditor-collaboration", label: "Auditor Workspace", icon: Users2 },
+      { href: "/issue-hub",             label: "Issue &#38; Remediation Hub&#8482;", icon: Target },
+      { href: "/trust-exchange",        label: "Trust Exchange&#8482;",            icon: Network },
+      { href: "/trust-network",         label: "Trust Network&#8482;",             icon: Network },
+      { href: "/auditor-collaboration", label: "Auditor Workspace&#8482;",         icon: Users2 },
     ],
   },
   {
@@ -78,11 +82,11 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/risks",                   label: "Risk Lens™",              icon: AlertTriangle },
       { href: "/controls",                label: "Control Center™",         icon: Shield },
-      { href: "/audits",                  label: "Audit Management",        icon: ClipboardCheck },
+      { href: "/audits",                  label: "Audit Management&#8482;",  icon: ClipboardCheck },
       { href: "/policy-governance",       label: "Policy Governance™",      icon: FileText },
       { href: "/dpdp-privacy",            label: "DPDP Privacy™",           icon: Lock },
       { href: "/continuous-compliance",   label: "Continuous Compliance™",  icon: Cpu },
-      { href: "/security-center",         label: "Security Monitoring",     icon: ShieldAlert },
+      { href: "/security-center",         label: "Security Command Center&#8482;", icon: ShieldAlert },
       { href: "/regulatory-intelligence", label: "Regulatory Intelligence™", icon: Scale },
     ],
   },
@@ -160,6 +164,8 @@ function SidebarGroup({
     <div className="mt-1">
       <button
         onClick={onToggle}
+        aria-label={`${collapsed ? "Expand" : "Collapse"} ${group.label}`}
+        aria-expanded={!collapsed}
         className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.04] group"
       >
         {collapsed ? (
@@ -338,6 +344,9 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="shrink-0 border-t border-[var(--color-line)] px-3 py-3 space-y-0.5">
+        <div className="flex items-center justify-between px-2.5 py-1">
+          <NotificationBell />
+        </div>
         <Link
           href="/help"
           className={cn(

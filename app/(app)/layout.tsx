@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/app-shell/sidebar";
 import { Topbar } from "@/components/app-shell/topbar";
 import { requireUser } from "@/lib/auth/session";
 import { findProfile } from "@/lib/services/settings-service";
+import { ToastContainer } from "@/components/ui/toast-simple";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
@@ -21,6 +22,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         )}
         <main className="scroll-thin flex-1 overflow-y-auto p-5 md:p-8">{children}</main>
       </div>
+      <ToastContainer />
     </div>
   );
 }

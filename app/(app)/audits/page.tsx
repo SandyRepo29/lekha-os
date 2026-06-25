@@ -1,9 +1,11 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Audit Management&#8482; — AUDT' };
+
 import Link from "next/link";
 import {
   ClipboardCheck, Plus, AlertTriangle, Brain, Activity,
-  FileSearch, CheckCircle2, Clock, BarChart3, TrendingUp, Zap, Target,
+  FileSearch, CheckCircle2, Clock, BarChart3, TrendingUp, Zap, Target, Sparkles,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,8 @@ import { AuditStat, formatDate } from "@/components/audit/audit-ui";
 import * as findingRepo from "@/lib/repositories/audit-finding-repo";
 import * as capaRepo from "@/lib/repositories/corrective-action-repo";
 import * as collabRepo from "@/lib/repositories/auditor-collaboration-repo";
+import { listModuleActivity } from "@/lib/repositories/activity-repo";
+import { ActivityFeed } from "@/components/activity/activity-feed";
 
 export default async function AuditsDashboardPage() {
   const session = await requireUser();
@@ -33,12 +37,13 @@ export default async function AuditsDashboardPage() {
 
   const orgId = session.org.id;
 
-  const [metrics, audits, severityCounts, allCapas, evidenceRequests] = await Promise.all([
+  const [metrics, audits, severityCounts, allCapas, evidenceRequests, recentActivity] = await Promise.all([
     getDashboardMetrics(orgId),
     listAudits(orgId),
     findingRepo.countBySeverity(orgId),
     capaRepo.findByOrg(orgId).catch(() => [] as any[]),
     collabRepo.findAllEvidenceRequests(orgId).catch(() => [] as any[]),
+    listModuleActivity(orgId, "audit", 5).catch(() => [] as any[]),
   ]);
 
   const recentAudits = audits.slice(0, 6);
@@ -113,9 +118,15 @@ export default async function AuditsDashboardPage() {
             Audit planning, execution, evidence, findings &#8212; CAPA to closure
           </p>
         </div>
-        <Link href="/audits/new">
-          <Button variant="primary" size="md"><Plus className="h-4 w-4" /> New Audit</Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/audits/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Auditor&#8482;
+          </Link>
+          <Link href="/audits/new">
+            <Button variant="primary" size="md"><Plus className="h-4 w-4" /> New Audit</Button>
+          </Link>
+        </div>
       </div>
 
       {/* Row 1 — Primary KPIs (P2 Audit Readiness™ added) */}
@@ -287,9 +298,12 @@ export default async function AuditsDashboardPage() {
                 title="No audits planned yet"
                 description="Plan your first audit, assign it to a framework, and let AUDT generate your audit program automatically."
                 action={
-                  <Link href="/audits/new">
-                    <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Plan your first audit</Button>
-                  </Link>
+                  <div className="flex flex-col items-center gap-2">
+                    <Link href="/audits/new">
+                      <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Plan your first audit</Button>
+                    </Link>
+                    <p className="text-xs text-[var(--color-ink-faint)]">Tip: Create compliance frameworks first to auto-generate audit programs.</p>
+                  </div>
                 }
               />
             </Card>
@@ -324,7 +338,7 @@ export default async function AuditsDashboardPage() {
           )}
         </div>
 
-        {/* Audit Intelligence™ + Trust Impact (P8 + P9) */}
+        {/* Audit Intelligence™ + Trust Impact + Recent Activity */}
         <div className="space-y-4">
 
           {/* Audit Intelligence™ */}
@@ -386,6 +400,20 @@ export default async function AuditsDashboardPage() {
                 </p>
               )}
             </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />
+                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Recent Activity</h2>
+              </div>
+              <Link href="/settings/audit-logs" className="text-xs text-[var(--color-blue)] hover:underline">
+                View all &#8594;
+              </Link>
+            </div>
+            <ActivityFeed items={recentActivity} emptyMessage="No audit activity yet." />
           </div>
         </div>
       </div>

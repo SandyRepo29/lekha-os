@@ -5,6 +5,21 @@
 Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://lekha-os.vercel.app) · GitHub: [SandyRepo29/lekha-os](https://github.com/SandyRepo29/lekha-os)
 
 > Complete developer reference: **[CLAUDE.md](./CLAUDE.md)** — architecture, schema, features, caveats, dev commands, environment variables.
+> Platform audit report: **[audt_platform_audit_june2026.md](./audt_platform_audit_june2026.md)** — Phase 2 enterprise readiness audit (55 items, June 2026).
+
+---
+
+## Platform Status
+
+| Phase | Status | Date |
+|---|---|---|
+| Phase 1 — 32 modules built | ✅ Complete | 2026-06-16 |
+| Trust Intelligence V2 | ✅ Complete | 2026-06-25 |
+| Contract Governance V2 + Trust Score V2 | ✅ Complete | 2026-06-23 |
+| **Phase 2 — Enterprise Quality Audit (55 items)** | ✅ Complete | 2026-06-25 |
+| Phase 3 — Commercial Launch Hardening | 🔜 Planned | — |
+
+**Maturity:** Advanced MVP → approaching Production Ready after Phase 2.
 
 ---
 
@@ -48,6 +63,35 @@ Live: [audt.tech](https://audt.tech) · Fallback: [lekha-os.vercel.app](https://
 
 ---
 
+## Shared Component Library (Phase 2)
+
+Reusable UI building blocks added in Phase 2. Always use these — never build one-off patterns.
+
+| Component | Path | Purpose |
+|---|---|---|
+| `ArchiveDialog` | `components/ui/archive-dialog.tsx` | Safe delete — Archive default, hard-delete requires name confirmation |
+| `ConfirmDialog` | `components/ui/confirm-dialog.tsx` | Simple confirmation modal |
+| `CacheIndicator` | `components/ui/cache-indicator.tsx` | Shows AI output age + Refresh button |
+| `SkeletonCard` | `components/ui/skeleton-card.tsx` | Animated loading skeleton |
+| `BulkActionBar` | `components/ui/bulk-action-bar.tsx` | Fixed-bottom multi-select toolbar |
+| `ImportModal` | `components/ui/import-modal.tsx` | 3-step CSV import: upload → preview → confirm |
+| `SearchInput` | `components/ui/search-input.tsx` | URL-param search (use client) |
+| `PageHeader` | `components/ui/page-header.tsx` | Standard h1 + description + actions row |
+| `toast()` + `ToastContainer` | `components/ui/toast-simple.tsx` | Imperative toasts — add `<ToastContainer />` to `app/(app)/layout.tsx` |
+| `NotificationBell` | `components/notifications/notification-bell.tsx` | Bell icon + unread count badge |
+| `NotificationPanel` | `components/notifications/notification-panel.tsx` | Slide-over notification list |
+
+**Hooks & utilities:**
+
+| File | Purpose |
+|---|---|
+| `hooks/use-selection.ts` | Multi-select state for list views |
+| `hooks/use-notifications.ts` | Fetches `/api/v1/notifications`, falls back to mock |
+| `lib/ui/role-guard.ts` | `canEdit(role)`, `canDelete(role)`, `canCreate(role)`, `isAdminOrOwner(role)` |
+| `lib/utils/csv-parser.ts` | `parseCSV()`, `validateCSVHeaders()`, `generateCSVTemplate()` |
+
+---
+
 ## Help System
 
 AUDT has a built-in help system available to all authenticated users:
@@ -70,8 +114,8 @@ Enterprise-grade onboarding for new users — 3 phases shipped:
 - Redirects to `/dashboard?welcome=1` on completion
 
 **Phase 2 — Dashboard Activation**
-- **Welcome banner** — gradient banner shown once on `?welcome=1`, permanently dismissible
-- **Onboarding checklist** — 8-task collapsible widget (add vendor · upload doc · run assessment · add framework · create risk · invite team · connect integration · view trust score); all state in `localStorage`; self-hides when all tasks complete
+- **Welcome banner** — gradient banner shown once on `?welcome=1`, permanently dismissible; now shows goal-aware CTA (e.g. "Your SOC 2 journey starts here → Evidence Vault™")
+- **Onboarding checklist** — 8-task collapsible widget; tasks reordered based on selected goals (`audt_onboarding_goals` from localStorage); goal chips shown above checklist; self-hides when all tasks complete
 
 **Phase 3 — Module Guidance**
 - **CoachMark component** — reusable pulsing beacon + tooltip, shown once per element (`components/onboarding/coach-mark.tsx`); dismiss via click or ×; state in `localStorage` per unique `id`
@@ -245,6 +289,9 @@ Authorization: Bearer audt_live_<key>
 | `GET /api/v1/regulatory-readiness` | read_only | Regulatory readiness score + metrics |
 | `GET /api/v1/assets` | read_only | Asset list (?type=, ?criticality=, ?status=, ?environment=) |
 | `POST /api/v1/assets` | read_write | Create asset |
+| `GET /api/v1/notifications` | session | Governance alerts for notification bell (top 20 open) |
+| `GET /api/v1/contracts/export/csv` | session | Contracts CSV export |
+| `GET /api/v1/assets/export/csv` | session | Assets CSV export |
 
 Rate limits: 100 req/60s (read_only) · 300 (read_write) · 1000 (admin).
 

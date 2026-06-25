@@ -1,7 +1,10 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Risk Lens&#8482; — AUDT' };
+
 import Link from "next/link";
-import { AlertTriangle, Plus } from "lucide-react";
+import { AlertTriangle, Plus, Sparkles, Clock } from "lucide-react";
+import { RiskImportButton } from "@/components/risks/risk-import-button";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -11,6 +14,8 @@ import { RiskScoreBadge, RiskCategoryBadge, RiskStatusBadge } from "@/components
 import { RiskStat, formatDate } from "@/components/risk/risk-ui";
 import { RiskHeatMap } from "@/components/risk/risk-heat-map";
 import { RISK_CATEGORY_LABELS } from "@/lib/services/risk-scoring";
+import { listModuleActivity } from "@/lib/repositories/activity-repo";
+import { ActivityFeed } from "@/components/activity/activity-feed";
 
 export default async function RisksDashboardPage() {
   const session = await requireUser();
@@ -27,7 +32,10 @@ export default async function RisksDashboardPage() {
     );
   }
 
-  const metrics = await getDashboardMetrics(session.org.id);
+  const [metrics, recentActivity] = await Promise.all([
+    getDashboardMetrics(session.org.id),
+    listModuleActivity(session.org.id, "risk", 5).catch(() => [] as any[]),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -42,11 +50,18 @@ export default async function RisksDashboardPage() {
             {metrics.critical} critical · {metrics.overdueReviews} overdue review{metrics.overdueReviews !== 1 ? "s" : ""}
           </p>
         </div>
-        <Link href="/risks/new">
-          <Button variant="primary" size="md">
-            <Plus className="h-4 w-4" /> New Risk
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/risks/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Risk Officer&#8482;
+          </Link>
+          <RiskImportButton />
+          <Link href="/risks/new">
+            <Button variant="primary" size="md">
+              <Plus className="h-4 w-4" /> New Risk
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Metrics grid */}
@@ -108,8 +123,9 @@ export default async function RisksDashboardPage() {
 
         {/* By Category */}
         <Card>
-          <div className="px-5 py-4 border-b border-[var(--color-line)]">
+          <div className="px-5 py-4 border-b border-[var(--color-line)] flex items-center justify-between">
             <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Risk by Category</h2>
+            <Link href="/risks/list" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
           </div>
           <div className="p-5 space-y-2">
             {Object.keys(metrics.byCategory).length === 0 ? (
@@ -175,7 +191,7 @@ export default async function RisksDashboardPage() {
           <EmptyState
             icon={AlertTriangle}
             title="No risks logged yet"
-            description="Risk Lens™ is your central register for operational, cyber, compliance and vendor risks. Log your first risk to start building your governance posture."
+            description="Risk Lens&#8482; is your central register for operational, cyber, compliance and vendor risks. Log your first risk to start building your governance posture."
             action={
               <div className="flex flex-col items-center gap-2">
                 <Link href="/risks/new">
@@ -183,12 +199,26 @@ export default async function RisksDashboardPage() {
                     <Plus className="h-4 w-4" /> Log your first risk
                   </Button>
                 </Link>
-                <p className="text-xs text-[var(--color-ink-faint)]">5×5 heat map · AI risk narratives · Treatment tracking</p>
+                <p className="text-xs text-[var(--color-ink-faint)]">5&#215;5 heat map &#183; AI risk narratives &#183; Treatment tracking</p>
               </div>
             }
           />
         </Card>
       )}
+
+      {/* Recent Activity */}
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Recent Activity</h2>
+          </div>
+          <Link href="/settings/audit-logs" className="text-xs text-[var(--color-blue)] hover:underline">
+            View all &#8594;
+          </Link>
+        </div>
+        <ActivityFeed items={recentActivity} emptyMessage="No risk activity yet." />
+      </div>
     </div>
   );
 }

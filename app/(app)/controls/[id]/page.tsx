@@ -7,6 +7,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { findControlById, findTestsByControl, getHealthInputs } from "@/lib/repositories/control-center-repo";
+import { db } from "@/lib/db";
+import { count, eq } from "drizzle-orm";
+import { controlFrameworks } from "@/lib/db/schema";
 import { computeControlHealth, HEALTH_COMPONENT_LABELS } from "@/lib/services/control-health";
 import { generateControlNarrative } from "@/lib/services/control-center/ai-control-service";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
@@ -40,11 +43,13 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
 
   if (session.demo || !session.org) notFound();
 
-  const [control, tests, inputs] = await Promise.all([
+  const [control, tests, inputs, frameworkCountResult] = await Promise.all([
     findControlById(session.org.id, id),
     findTestsByControl(id),
     getHealthInputs(session.org.id, id),
+    db.select({ count: count() }).from(controlFrameworks).where(eq(controlFrameworks.controlId, id)),
   ]);
+  const linkedFrameworkCount = frameworkCountResult[0]?.count ?? 0;
 
   if (!control) notFound();
 
@@ -238,6 +243,35 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
       </Section>
+
+      {/* Connected Entities */}
+      <section className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 space-y-4">
+        <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">Connected Entities</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link href="/compliance/frameworks" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+            <div className={`text-2xl font-bold ${linkedFrameworkCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedFrameworkCount}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Frameworks</div>
+          </Link>
+          <Link href="/risks/list" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+            <div className={`text-2xl font-bold ${inputs.totalRisks > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalRisks}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Risks</div>
+          </Link>
+          <Link href={`/controls/${id}`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+            <div className={`text-2xl font-bold ${inputs.totalTests > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalTests}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Tests Recorded</div>
+          </Link>
+          <Link href="/compliance/evidence" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+            <div className={`text-2xl font-bold ${inputs.totalEvidenceCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalEvidenceCount}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Evidence</div>
+          </Link>
+        </div>
+        <p className="text-xs text-[var(--color-ink-dim)]">
+          View the full dependency map in{" "}
+          <Link href="/trust-intelligence/trust-graph" className="text-[var(--color-blue)] hover:underline">
+            Trust Graph&#8482;
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }

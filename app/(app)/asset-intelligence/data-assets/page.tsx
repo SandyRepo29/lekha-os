@@ -4,7 +4,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getAssets } from "@/lib/services/asset-intelligence/asset-service";
 import { AssetSubNav, CriticalityBadge, AssetStatusBadge } from "@/components/asset-intelligence/asset-ui";
-import { FileText, ShieldAlert } from "lucide-react";
+import { FileText, ShieldAlert, Shield } from "lucide-react";
 
 export default async function DataAssetsPage() {
   const session    = await requireUser();
@@ -52,7 +52,13 @@ export default async function DataAssetsPage() {
               <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
                 className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">{a.name}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium">{a.name}</p>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400">
+                      <Shield className="h-3 w-3" />
+                      PII
+                    </span>
+                  </div>
                   <p className="text-xs text-[var(--color-ink-dim)]">{a.assetType} · {a.dataClass ?? "unclassified"}{a.isCrossB ? " · cross-border" : ""}</p>
                 </div>
                 <CriticalityBadge level={a.criticality} />
@@ -77,9 +83,17 @@ export default async function DataAssetsPage() {
                 className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
                 <FileText className="h-4 w-4 text-amber-400 shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{a.name}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium truncate">{a.name}</p>
+                    {(a.containsPii || (a.piiTypes && a.piiTypes.length > 0)) && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400 shrink-0">
+                        <Shield className="h-3 w-3" />
+                        PII
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-[var(--color-ink-dim)] truncate">
-                    {a.dataClass ?? "unclassified"}{a.containsPii ? " · PII" : ""}{a.isCrossB ? " · cross-border" : ""}
+                    {a.dataClass ?? "unclassified"}{a.isCrossB ? " · cross-border" : ""}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">

@@ -1,0 +1,2 @@
+name,category,riskLevel,contactEmail,contactName,website,country,description,complianceScore
+Acme Corp,Technology,low,contact@acme.com,John Smith,https://acme.com,India,Cloud infrastructure provider,75

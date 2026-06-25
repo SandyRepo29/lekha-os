@@ -5,7 +5,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/trust-api/trust-api-service";
 import {
   Zap, Key, Webhook, BarChart3, Code2, BookOpen, Bot, ArrowRight,
-  Globe, TrendingUp, Activity,
+  Globe, TrendingUp, Activity, Sparkles,
 } from "lucide-react";
 import { TrustAPIStat, ApiKeyStatusBadge, ApiPlanBadge } from "@/components/trust-api/trust-api-ui";
 
@@ -46,6 +46,10 @@ export default async function TrustApiPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Link href="/trust-api/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI API Builder&#8482;
+          </Link>
           <Link
             href="/trust-api/portal"
             className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"

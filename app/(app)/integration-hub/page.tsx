@@ -1,7 +1,9 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Integration Hub&#8482; — AUDT' };
+
 import Link from "next/link";
-import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, Zap, Activity } from "lucide-react";
+import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, Zap, Activity, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/integration-hub/integration-service";
@@ -40,14 +42,20 @@ export default async function IntegrationHubDashboard() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">Integration Hub™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Integration Hub&#8482;</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
             Connect your technology ecosystem and automate governance evidence collection.
           </p>
         </div>
-        <Link href="/integration-hub/marketplace" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-blue)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">
-          <Plug className="h-4 w-4" /> Add Connector
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/integration-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Integration Advisor&#8482;
+          </Link>
+          <Link href="/integration-hub/marketplace" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-blue)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">
+            <Plug className="h-4 w-4" /> Add Connector
+          </Link>
+        </div>
       </div>
 
       {/* Metrics strip */}
@@ -79,6 +87,18 @@ export default async function IntegrationHubDashboard() {
         />
       </div>
 
+      {/* No integrations warning */}
+      {metrics.connected === 0 && phase1Pending.length === 0 && (
+        <Card className="p-4 border-amber-500/30 bg-amber-500/[0.05] flex items-start gap-3">
+          <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5 shrink-0" />
+          <p className="text-sm text-[var(--color-ink-dim)]">
+            Connect your first integration from the{" "}
+            <Link href="/integration-hub/marketplace" className="text-[var(--color-blue)] hover:underline">Marketplace</Link>{" "}
+            to start collecting governance evidence automatically.
+          </p>
+        </Card>
+      )}
+
       {/* Getting Started / Phase 1 */}
       {phase1Pending.length > 0 && metrics.connected === 0 && (
         <Card className="p-6 border-[var(--color-blue)]/25 bg-[var(--color-blue)]/[0.04]">
@@ -106,9 +126,12 @@ export default async function IntegrationHubDashboard() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Connected integrations */}
         <div>
-          <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-green-400" /> Connected Systems™
-          </h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-green-400" /> Connected Systems&#8482;
+            </h2>
+            <Link href="/integration-hub/connections" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+          </div>
           {connections.length === 0 ? (
             <Card className="p-8 text-center">
               <Plug className="h-8 w-8 text-[var(--color-ink-faint)] mx-auto mb-2" />

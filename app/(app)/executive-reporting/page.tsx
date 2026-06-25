@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Executive Reporting&#8482; — AUDT' };
+
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData, computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
 import Link from "next/link";
@@ -61,7 +63,7 @@ export default async function ExecutiveReportingPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Executive Reporting & Analytics™</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Executive Reporting &#38; Analytics&#8482;</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Board-ready governance intelligence — dashboards, reports, forecasts, and AI-powered decision support.
           </p>

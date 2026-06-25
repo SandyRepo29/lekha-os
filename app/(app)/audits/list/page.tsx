@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { ClipboardCheck, Plus } from "lucide-react";
+import { ClipboardCheck, Plus, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -12,6 +12,7 @@ import {
   AuditTypeBadge,
 } from "@/components/audit/audit-status-badge";
 import { AuditFilterChip, formatDate } from "@/components/audit/audit-ui";
+import { SearchInput } from "@/components/ui/search-input";
 
 const STATUS_FILTERS = [
   { label: "All", value: "" },
@@ -31,6 +32,25 @@ const TYPE_FILTERS = [
   { label: "Regulatory", value: "regulatory" },
 ];
 
+function SortHeader({ column, label, currentSort, currentOrder, base }: {
+  column: string; label: string; currentSort: string; currentOrder: string; base: URLSearchParams;
+}) {
+  const active = currentSort === column;
+  const nextOrder = active && currentOrder === "asc" ? "desc" : "asc";
+  const p = new URLSearchParams(base);
+  p.set("sortBy", column);
+  p.set("sortOrder", nextOrder);
+  return (
+    <Link href={`/audits/list?${p.toString()}`}
+      className={`inline-flex items-center gap-1 text-xs font-medium transition-colors hover:text-[var(--color-ink)] ${active ? "text-[var(--color-ink)]" : "text-[var(--color-ink-faint)]"}`}>
+      {label}
+      {active ? (nextOrder === "asc" ? <ArrowDown className="h-3 w-3" /> : <ArrowUp className="h-3 w-3" />) : <ArrowUpDown className="h-3 w-3 opacity-40" />}
+    </Link>
+  );
+}
+
+const STATUS_ORDER: Record<string, number> = { planned: 0, in_progress: 1, completed: 2, cancelled: 3 };
+
 export default async function AuditListPage({
   searchParams,
 }: {
@@ -40,6 +60,9 @@ export default async function AuditListPage({
   const params = await searchParams;
   const statusFilter = params.status ?? "";
   const typeFilter = params.type ?? "";
+  const searchFilter = params.search?.toLowerCase() ?? "";
+  const sortBy = params.sortBy ?? "name";
+  const sortOrder = params.sortOrder === "desc" ? "desc" : "asc";
 
   if (session.demo || !session.org) {
     return (
@@ -50,11 +73,24 @@ export default async function AuditListPage({
   }
 
   const allAudits = await listAudits(session.org.id);
-  const filtered = allAudits.filter((a) => {
+  let filtered = allAudits.filter((a) => {
     if (statusFilter && a.status !== statusFilter) return false;
     if (typeFilter && a.auditType !== typeFilter) return false;
+    if (searchFilter && !a.name.toLowerCase().includes(searchFilter)) return false;
     return true;
   });
+
+  filtered = [...filtered].sort((a, b) => {
+    let cmp = 0;
+    if (sortBy === "name")       cmp = a.name.localeCompare(b.name);
+    else if (sortBy === "type")  cmp = (a.auditType ?? "").localeCompare(b.auditType ?? "");
+    else if (sortBy === "status") cmp = (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+    else if (sortBy === "startDate") cmp = (a.startDate ?? "").localeCompare(b.startDate ?? "");
+    else if (sortBy === "endDate")   cmp = (a.endDate ?? "").localeCompare(b.endDate ?? "");
+    return sortOrder === "asc" ? cmp : -cmp;
+  });
+
+  const baseParams = new URLSearchParams({ status: statusFilter, type: typeFilter, sortBy, sortOrder });
 
   return (
     <div className="space-y-4">
@@ -70,12 +106,15 @@ export default async function AuditListPage({
         </Link>
       </div>
 
-      {/* Filters */}
+      {/* Search + Filters */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <SearchInput placeholder="Search audits&#8230;" />
+      </div>
       <div className="flex flex-wrap gap-2">
         {STATUS_FILTERS.map((f) => (
           <AuditFilterChip
             key={f.value}
-            href={`/audits/list?status=${f.value}&type=${typeFilter}`}
+            href={`/audits/list?status=${f.value}&type=${typeFilter}&sortBy=${sortBy}&sortOrder=${sortOrder}${searchFilter ? `&search=${encodeURIComponent(searchFilter)}` : ""}`}
             label={f.label}
             active={statusFilter === f.value}
           />
@@ -85,7 +124,7 @@ export default async function AuditListPage({
         {TYPE_FILTERS.map((f) => (
           <AuditFilterChip
             key={f.value}
-            href={`/audits/list?status=${statusFilter}&type=${f.value}`}
+            href={`/audits/list?status=${statusFilter}&type=${f.value}&sortBy=${sortBy}&sortOrder=${sortOrder}${searchFilter ? `&search=${encodeURIComponent(searchFilter)}` : ""}`}
             label={f.label}
             active={typeFilter === f.value}
           />
@@ -113,30 +152,55 @@ export default async function AuditListPage({
         </Card>
       ) : (
         <Card>
-          <div className="divide-y divide-[var(--color-line)]">
-            {filtered.map((a) => (
-              <Link
-                key={a.id}
-                href={`/audits/${a.id}`}
-                className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-white/[0.02] transition-colors"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium">{a.name}</p>
-                  <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-[var(--color-ink-dim)]">
-                    <AuditTypeBadge type={a.auditType} />
-                    {a.startDate && <span>From {formatDate(a.startDate)}</span>}
-                    {a.endDate && <span>· Due {formatDate(a.endDate)}</span>}
-                  </div>
-                </div>
-                <div className="flex shrink-0 flex-col items-end gap-1.5">
-                  <AuditStatusBadge status={a.status} />
-                  <span className="text-xs text-[var(--color-ink-faint)]">
-                    {a.totalFindings} finding{a.totalFindings !== 1 ? "s" : ""} ·{" "}
-                    {a.programCount} checks
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--color-line)]">
+                  <th className="px-5 py-3 text-left"><SortHeader column="name" label="Name" currentSort={sortBy} currentOrder={sortOrder} base={baseParams} /></th>
+                  <th className="px-5 py-3 text-left"><SortHeader column="type" label="Type" currentSort={sortBy} currentOrder={sortOrder} base={baseParams} /></th>
+                  <th className="px-5 py-3 text-left"><SortHeader column="status" label="Status" currentSort={sortBy} currentOrder={sortOrder} base={baseParams} /></th>
+                  <th className="px-5 py-3 text-left"><SortHeader column="startDate" label="Start" currentSort={sortBy} currentOrder={sortOrder} base={baseParams} /></th>
+                  <th className="px-5 py-3 text-left"><SortHeader column="endDate" label="Due" currentSort={sortBy} currentOrder={sortOrder} base={baseParams} /></th>
+                  <th className="px-5 py-3 text-left font-medium text-xs text-[var(--color-ink-faint)]">Findings</th>
+                  <th className="px-5 py-3 text-left font-medium text-xs text-[var(--color-ink-faint)]">Checks</th>
+                  <th className="px-5 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-line)]">
+                {filtered.map((a) => (
+                  <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="px-5 py-3">
+                      <Link href={`/audits/${a.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors line-clamp-1">
+                        {a.name}
+                      </Link>
+                    </td>
+                    <td className="px-5 py-3">
+                      <AuditTypeBadge type={a.auditType} />
+                    </td>
+                    <td className="px-5 py-3">
+                      <AuditStatusBadge status={a.status} />
+                    </td>
+                    <td className="px-5 py-3 text-xs text-[var(--color-ink-dim)]">
+                      {formatDate(a.startDate)}
+                    </td>
+                    <td className="px-5 py-3 text-xs text-[var(--color-ink-dim)]">
+                      {formatDate(a.endDate)}
+                    </td>
+                    <td className="px-5 py-3 text-xs text-[var(--color-ink-dim)]">
+                      {a.totalFindings}
+                    </td>
+                    <td className="px-5 py-3 text-xs text-[var(--color-ink-dim)]">
+                      {a.programCount}
+                    </td>
+                    <td className="px-5 py-3 text-right">
+                      <Link href={`/audits/${a.id}`} className="text-xs text-[var(--color-blue)] hover:underline">
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Card>
       )}

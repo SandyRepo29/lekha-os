@@ -1,9 +1,11 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Issue &#38; Remediation Hub&#8482; — AUDT' };
+
 import Link from "next/link";
 import {
   AlertCircle, Plus, CheckCircle2, Shield, Sparkles, TrendingDown,
-  Brain, Network, BarChart3, Clock, AlertTriangle, ArrowRight,
+  Brain, Network, BarChart3, Clock, AlertTriangle, ArrowRight, Download,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -113,9 +115,22 @@ export default async function IssueHubDashboardPage() {
             Identify &#8901; Assign &#8901; Remediate &#8901; Validate &#8901; Close
           </p>
         </div>
-        <Link href="/issue-hub/new">
-          <Button><Plus className="h-4 w-4" /> New Issue</Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <a
+            href="/api/v1/issues/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Issues CSV
+          </a>
+          <Link href="/issue-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Advisor&#8482;
+          </Link>
+          <Link href="/issue-hub/new">
+            <Button><Plus className="h-4 w-4" /> New Issue</Button>
+          </Link>
+        </div>
       </div>
 
       {/* KPI Row */}

@@ -319,21 +319,31 @@ Governance knowledge graph. 2 new tables: `graph_nodes` + `graph_edges`. New tab
 - Migration: `supabase/migrations/0013_governance_trends.sql` ✅ APPLIED
 - New tables: `governance_alerts` + `evidence_coverage_score` column on `governance_snapshots`
 
-### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
+### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07, V2 2026-06-25)
 
 7-tab sub-nav at `/trust-intelligence/*`. Executive governance command center — aggregates all modules into Organizational Trust Score™.
 
 | Tab | Features |
 |---|---|
-| **Overview** | Org Trust Score™ ring + component bars · Metrics grid · Trust Drivers™ · Trust Detractors™ · Governance Timeline |
-| **Vendor Trust** | Avg trust · Top 10 / Bottom 10 trusted vendors · Full scored list |
+| **Overview** | Org Trust Score™ ring + component bars · Metrics grid · Trust Drivers™ · Trust Detractors™ · Governance Timeline · **Trust Explainability™** (component contribution vs 70-pt baseline) · **Trust Change Analysis™** (30-day delta + root causes) · **Governance Momentum™** (per-component direction) |
+| **Vendor Trust** | Avg trust · Top 10 / Bottom 10 trusted vendors · Full scored list · **Trust Velocity™** (High Performers / At Risk / Watch List buckets) · **Trust Concentration Analysis™** (top-5 risk exposure bar chart) |
 | **Risk Insights** | Active/critical/high/medium counts · Top critical risks · Category distribution |
 | **Control Health** | Avg health · Healthy/Weak counts · Weakest controls list |
 | **Compliance** | Framework readiness bars · Avg readiness |
-| **Recommendations** | Prioritized actions (high/medium/low) · Impact + effort · Deep-links to source module |
-| **Executive View** | Org Trust ring · AI Governance Summary (cached 24h) · Drivers/Detractors · Open actions · Governance Copilot™ chat |
+| **Recommendations** | Renamed **Decision Recommendations™** · Priority/Category chips · Trust Impact pts badge · Reasons list · Go deep-link |
+| **Executive View** | Org Trust ring · AI Governance Summary (cached 24h) · Drivers/Detractors · Open actions · **Trust Decision Intelligence™** (5 pre-computed Q&A cards) · Governance Copilot™ chat |
+| **Trends** | 90-day sparkline grid · **Projected Trust Decay™** (30/90/180-day extrapolated forecast) · **Trust Recovery Plan™** (6 actions with effort/impact + deep-links) · Score history table |
+| **Monitoring** | Alert counts strip · Open alert list with resolve buttons · Run Monitoring™ button |
 
 **Organizational Trust Score™** — 5-component pure engine: Vendor Trust (25%) · Risk Posture (25%) · Control Health (20%) · Audit Readiness (15%) · Compliance Coverage (15%)
+
+**V2 — Trust Decision Intelligence™ (2026-06-25, commit `1bb3d3f`):**
+- No new routes or menu items — all 9 intelligence phases added to existing 5 tabs
+- `getSnapshotHistory(orgId, days)` imported from `lib/repositories/trust-intelligence-repo` (NOT service layer) — returns `GovernanceSnapshot[]`
+- Snapshot field access: cast to `Record<string, unknown>` then index by component key
+- All special chars use HTML entities in TSX: `&#8482;` (™) `&#8212;` (—) `&#8593;/&#8595;/&#8594;` (arrows)
+- Governance Momentum™ requires ≥2 daily snapshots to show delta; shows "Stable" placeholder until then
+- Projected Trust Decay: `proj30 = current + (change/3)`, `proj90 = current + change`, `proj180 = current + change*2`
 
 - Pure engine: `lib/services/org-trust-score.ts`
 - Service: `lib/services/trust-intelligence/trust-intelligence-service.ts`
@@ -809,6 +819,9 @@ GET /api/v1/regulatory-readiness            Readiness score + metrics
 /asset-intelligence/ai                     AI Asset Advisor™ (advisory summary + suggested questions + AssetAiChat NL chat)
 GET /api/v1/assets                          Asset list (?type=, ?criticality=, ?status=, ?environment=)
 POST /api/v1/assets                         Create asset (read_write key)
+GET /api/v1/notifications                   Governance alerts for notification bell — top 20 open (session auth)
+GET /api/v1/contracts/export/csv            Contracts CSV export (session auth)
+GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 
 --- Help & Docs ---
 /help                                        Documentation center — all 32 modules, search, grouped left nav (authenticated)
@@ -1131,8 +1144,42 @@ app/
 components/
   ui/                           Button, Card, Badge, StatusBadge, Input, Select, Tabs,
                                 SectionHeading, EmptyState, ScoreRing
+                                --- Phase 2 shared components (always use these) ---
+                                ArchiveDialog      Safe delete: Archive default, hard-delete requires name confirmation
+                                ConfirmDialog      Simple confirmation modal
+                                CacheIndicator     Shows AI output age + Refresh button ("use client")
+                                SkeletonCard       Animated loading skeleton (no "use client" needed)
+                                BulkActionBar      Fixed-bottom multi-select action toolbar ("use client")
+                                ImportModal        3-step CSV import: upload → preview → confirm ("use client")
+                                SearchInput        URL-param search input ("use client" — uses useRouter/useSearchParams)
+                                PageHeader         Standard h1 + description + actions row (server-safe)
+                                toast-simple.tsx   Imperative toast() function + ToastContainer (add ToastContainer to app/(app)/layout.tsx)
+  notifications/                notification-bell.tsx   Bell icon + unread badge ("use client")
+                                notification-panel.tsx  Slide-over notification list ("use client")
+                                notification-types.ts   NotificationItem type (no "use client" — shared)
   ai/                           AiInsightPanel (collapsible), AiRecommendedActions
-  app-shell/                    Sidebar (7 nav groups: AI & Agents · Core GRC · Privacy & Legal · Intelligence · Security · Trust Network — see `groups` array in sidebar.tsx), Topbar (NL search detection + CircleHelp ? button opens HelpPanel)
+  app-shell/                    Sidebar (7 nav groups: AI & Agents · Core GRC · Privacy & Legal · Intelligence · Security · Trust Network — see `groups` array in sidebar.tsx), Topbar (NL search detection + CircleHelp ? button opens HelpPanel + NotificationBell)
+
+hooks/
+  use-selection.ts              Multi-select state for list views — useSelection<T>() → { selected, toggleItem, toggleAll, clearAll, isSelected, selectedItems, allSelected, someSelected }
+  use-notifications.ts          Notification data — fetches /api/v1/notifications, falls back to mock
+
+lib/
+  ui/role-guard.ts              Pure TS role checks: canEdit(role), canDelete(role), canCreate(role), isAdminOrOwner(role), isOwner(role). Import in server components for conditional button rendering.
+  utils/csv-parser.ts           parseCSV(text), validateCSVHeaders(headers, required), generateCSVTemplate(columns, exampleRow)
+
+--- Import infrastructure (Phase 2) ---
+  vendors/import-actions.ts    importVendorsAction(orgId, rows[]) — "use server", deduplicates by name, creates via vendor service
+  risk/import-actions.ts       importRisksAction(orgId, rows[]) — "use server", validates enums + range (1–5), creates via risk service
+components/vendors/
+  vendor-import-button.tsx     "use client" — opens ImportModal, calls importVendorsAction
+  vendor-list-table.tsx        "use client" — vendor table with useSelection + BulkActionBar
+components/risks/
+  risk-import-button.tsx       "use client" — opens ImportModal, calls importRisksAction
+  risk-list-table.tsx          "use client" — risk table with useSelection + BulkActionBar
+public/templates/
+  vendors-import-template.csv  CSV template for vendor import
+  risks-import-template.csv    CSV template for risk import
   help/
     help-content.ts             Static HELP_CONTENT map — all 32 modules, each with title/icon/group/overview/features[]/tips[]/route
     help-panel.tsx              "use client" slide-over panel (w-80, fixed right-0) — detects current module via usePathname(), shows overview + features + tips; triggered by ? in topbar
@@ -1282,10 +1329,11 @@ vi.mock("@/lib/db", () => ({
 ### Module 4 — Audit Management ✅ Complete (2026-06-06)
 ### Module 5 — Risk Lens™ ✅ Complete (2026-06-07)
 ### Module 6 — Control Center™ ✅ Complete (2026-06-07)
-### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07)
+### Module 7 — Trust Intelligence™ ✅ Complete (2026-06-07, V2 2026-06-25)
 ### Module 8 — Governance Trends™ + Continuous Monitoring™ ✅ Complete (2026-06-09)
 ### Module 9 — Trust Graph™ ✅ Complete (2026-06-09)
 ### Trust Score™ ✅ Complete (2026-06-07, V2 2026-06-23)
+### Trust Intelligence V2 — Trust Decision Intelligence ✅ Complete (2026-06-25)
 ### Contract Governance V2 ✅ Complete (2026-06-23)
 ### Landing Page — AUDT Rebrand ✅ Complete (2026-06-07)
 ### Domain — audt.tech ✅ DNS configured, SSL pending propagation (2026-06-07)
@@ -1847,10 +1895,22 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Standard page heading / spacing** | All module hub and sub-pages use `font-[family-name:var(--font-display)] text-xl font-bold` (not `text-2xl`) and `space-y-6` root wrapper (not `space-y-8`). The one exception is `dashboard/page.tsx` line 411 which uses `text-2xl font-extrabold` for a data value display. |
 | **Asset Intelligence™ encoding** | Asset Intelligence™ pages were written via PowerShell which corrupted UTF-8 `™` → `â„¢` and `—` → `â€"`. Fixed via binary byte replacement (`scripts/fix-encoding.py` + `scripts/fix-emdash.py`). If adding new asset-intelligence pages, write via the Write tool (not PowerShell `Set-Content`) to avoid re-corruption. |
 | **`is_asset_member()` RLS helper** | Migration 0032 creates a `is_asset_member(p_asset_id UUID)` Postgres function for junction table RLS. All 7 junction tables (`asset_risks`, `asset_controls`, etc.) validate org membership via this function. Never add junction table RLS that bypasses this helper. |
+| **`findVendorsByOrg` takes 1 arg** | `findVendorsByOrg(orgId)` accepts only 1 argument. Never pass a second options/filter object — it's a TypeScript error. Fixed in commit `233f4ea` at `app/(app)/trust-score/vendors/page.tsx:23`. |
+| **Trust Intelligence™ `getSnapshotHistory`** | Import from `lib/repositories/trust-intelligence-repo` (NOT the service layer). Returns `GovernanceSnapshot[]`. Access component fields via `(snapshot as Record<string, unknown>)[key]` — field names match `ORG_TRUST_COMPONENT_WEIGHTS` keys: `vendorTrust`, `riskPosture`, `controlHealth`, `auditReadiness`, `complianceCoverage`. |
+| **HTML entities in TSX files** | Always use HTML entities for special characters to prevent Windows/PowerShell encoding corruption: `&#8482;` (™), `&#8212;` (—), `&#8593;` (↑), `&#8595;` (↓), `&#8594;` (→). This applies to ALL module pages, not just asset-intelligence. |
 | **Onboarding wizard** | `/onboarding` renders a 3-step client-side wizard (`components/onboarding/onboarding-form.tsx`). Step 1 collects org name + industry + companySize (all saved to DB). Step 2 captures goals (6 checkboxes) stored to `localStorage` as `audt_onboarding_goals` JSON array — read by dashboard. Step 3 sends team invites via `lib/orgs/onboarding-actions.ts`. On finish, redirects to `/dashboard?welcome=1`. |
 | **Onboarding localStorage keys** | `audt_onboarding_goals` — JSON array of goal keys from Step 2. `audt_welcome_dismissed` — "1" after banner dismissed. `audt_checklist_completed` — JSON array of completed task keys. `audt_checklist_collapsed` — "1" when checklist collapsed. `audt_checklist_all_done` — "1" when all 8 tasks complete (hides checklist permanently). `audt_cm_${id}` — "1" per CoachMark ID when dismissed. Never read these on the server — they are client-only. |
 | **CoachMark pattern** | `CoachMark` from `components/onboarding/coach-mark.tsx` wraps any element. Pass `id` (unique, maps to localStorage key), `title`, `body`, `position` (top/bottom/left/right). Pass `disabled={true}` to render children only (use when data already exists — no beacon on non-empty pages). Wrap CTA buttons on empty-state pages only. |
 | **Rich empty states** | Vendor Hub, Risk Lens™, Evidence Vault™, and Audit Management show rich empty states with CTA buttons and hint text when the org has zero data. Pattern: check `count === 0 && !session.demo && session.org` then render `<EmptyState action={<Link+Button>}>`. Do not change existing demo-mode empty states. |
+| **ToastContainer placement** | `components/ui/toast-simple.tsx` exports `toast(message, type?, duration?)` + `ToastContainer`. `ToastContainer` MUST be rendered in `app/(app)/layout.tsx` — the `_setToast` module-level singleton wires on mount. Calling `toast()` without `ToastContainer` in the tree is a silent no-op. |
+| **Bulk action client components** | `components/vendors/vendor-list-table.tsx` and `components/risks/risk-list-table.tsx` are `"use client"` wrappers that use `useSelection`. The server hub page fetches data and passes it as props to these client components. Never add `useSelection` directly to a server page. |
+| **SearchInput is `"use client"`** | `components/ui/search-input.tsx` uses `useRouter` + `useSearchParams`. Import it into server hub/list pages as a client island; the surrounding page stays server. The server page reads the URL param via `searchParams` prop. |
+| **importVendorsAction / importRisksAction** | Live in `lib/vendors/import-actions.ts` and `lib/risk/import-actions.ts` (separate from the main `actions.ts` files). These are `"use server"` files. Deduplicate by name within org before inserting. Do not merge with main `actions.ts` — the import files are standalone to keep the client surface minimal. |
+| **notification-types.ts has no `"use client"`** | `components/notifications/notification-types.ts` is a plain type file shared between server and client components. Never add `"use client"` to it. |
+| **Page metadata exports cannot be in `"use client"` files** | `export const metadata = { title: "..." }` is Next.js server-only. If a hub page requires `"use client"` (e.g. for state), add the metadata export to the nearest `layout.tsx` instead. |
+| **Role guard import pattern** | `lib/ui/role-guard.ts` is pure TS (no imports, no `"use client"`). Import in server components: `import { canEdit, canDelete, canCreate } from '@/lib/ui/role-guard'`. Then conditionally render: `{canDelete(session.role) && <DeleteButton />}`. The `session.role` value comes from `requireUser()`. |
+| **ArchiveDialog pattern** | Replace all direct delete calls with `ArchiveDialog` from `components/ui/archive-dialog.tsx`. Archive (soft-delete, sets status → `archived`) is the default. Hard-delete requires the user to type the item name. Always present Archive first — it's the safer default for enterprise users. |
+| **useSelection hook** | `hooks/use-selection.ts` — `useSelection<T extends { id: string }>(items)` → `{ selected, toggleItem, toggleAll, clearAll, isSelected, selectedItems, allSelected, someSelected }`. Used by `vendor-list-table.tsx` and `risk-list-table.tsx`. When `selectedItems.length > 0`, render `BulkActionBar`. |
 
 ---
 

@@ -38,9 +38,14 @@ export function withRateLimitHeaders(
   response: NextResponse,
   rl: RateLimitResult
 ): NextResponse {
+  const resetSeconds = Math.ceil(rl.resetAt / 1000);
   response.headers.set("X-RateLimit-Limit", String(rl.limit));
   response.headers.set("X-RateLimit-Remaining", String(rl.remaining));
-  response.headers.set("X-RateLimit-Reset", String(Math.ceil(rl.resetAt / 1000)));
+  response.headers.set("X-RateLimit-Reset", String(resetSeconds));
+  if (!rl.allowed) {
+    const retryAfter = Math.max(1, Math.ceil((rl.resetAt - Date.now()) / 1000));
+    response.headers.set("Retry-After", String(retryAfter));
+  }
   return response;
 }
 

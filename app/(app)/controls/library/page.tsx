@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
+import { canCreate } from "@/lib/ui/role-guard";
 import { findAllControls } from "@/lib/repositories/control-center-repo";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 import { ControlStatusBadge, ControlTypeBadge, AutomationBadge } from "@/components/controls/control-status-badge";
@@ -56,9 +57,11 @@ export default async function ControlLibraryPage({
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Control Library</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">{controls.length} control{controls.length !== 1 ? "s" : ""}</p>
         </div>
-        <Link href="/controls/new">
-          <Button size="sm"><Plus className="h-4 w-4" /> New Control</Button>
-        </Link>
+        {canCreate(session.role) && (
+          <Link href="/controls/new">
+            <Button size="sm"><Plus className="h-4 w-4" /> New Control</Button>
+          </Link>
+        )}
       </div>
 
       {/* Filters */}
@@ -106,7 +109,7 @@ export default async function ControlLibraryPage({
             icon={Shield}
             title="No controls found"
             description="Add controls to your library to track Control Health™."
-            action={<Link href="/controls/new"><Button size="sm"><Plus className="h-4 w-4" /> New Control</Button></Link>}
+            action={canCreate(session.role) ? <Link href="/controls/new"><Button size="sm"><Plus className="h-4 w-4" /> New Control</Button></Link> : undefined}
           />
         </Card>
       ) : (

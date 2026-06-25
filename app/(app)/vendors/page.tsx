@@ -1,17 +1,21 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Vendor Hub&#8482; — AUDT' };
+
 import Link from "next/link";
-import { Plus, Building2, Download, FileText, AlertTriangle, TrendingUp, ClipboardCheck } from "lucide-react";
+import { Plus, Building2, Download, FileText, AlertTriangle, TrendingUp, ClipboardCheck, Sparkles } from "lucide-react";
 import { CoachMark } from "@/components/onboarding/coach-mark";
 import { Suspense } from "react";
 import { Card } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { requireUser } from "@/lib/auth/session";
+import { canCreate } from "@/lib/ui/role-guard";
 import { listVendorsPaged, type VendorRow } from "@/lib/services/vendor-service";
 import { type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
 import { demoVendors } from "@/lib/demo-data";
 import { VendorFilters } from "@/components/vendors/vendor-filters";
+import { VendorImportButton } from "@/components/vendors/vendor-import-button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { parseNaturalLanguageSearch, isNaturalLanguageQuery, type NLSearchFilters } from "@/lib/services/nl-search-service";
 import { db } from "@/lib/db";
@@ -94,6 +98,10 @@ export default async function VendorsPage({
           <p className="text-sm text-[var(--color-ink-dim)]">{total} vendor{total !== 1 ? "s" : ""} &middot; governance workspace</p>
         </div>
         <div className="flex items-center gap-2">
+          <Link href="/trust-intelligence/vendors" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Insights&#8482;
+          </Link>
           {!session.demo && session.org && (
             <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-1">
               <a href="/reports/compliance" target="_blank" rel="noopener noreferrer"
@@ -112,17 +120,22 @@ export default async function VendorsPage({
               </a>
             </div>
           )}
-          <CoachMark
-            id="vendor_add_btn"
-            title="Start here"
-            body="Add your first vendor to begin building your supplier governance registry."
-            position="bottom"
-            disabled={vendors.length > 0 || session.demo || !session.org}
-          >
-            <Link href="/vendors/new">
-              <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add Vendor</Button>
-            </Link>
-          </CoachMark>
+          {canCreate(session.role) && !session.demo && session.org && (
+            <VendorImportButton />
+          )}
+          {canCreate(session.role) && (
+            <CoachMark
+              id="vendor_add_btn"
+              title="Start here"
+              body="Add your first vendor to begin building your supplier governance registry."
+              position="bottom"
+              disabled={vendors.length > 0 || session.demo || !session.org}
+            >
+              <Link href="/vendors/new">
+                <Button variant="primary" size="md"><Plus className="h-4 w-4" /> Add Vendor</Button>
+              </Link>
+            </CoachMark>
+          )}
         </div>
       </div>
 
@@ -173,11 +186,13 @@ export default async function VendorsPage({
             description="Your supplier registry is empty. Add your first vendor to start building your governance posture."
             action={
               <div className="flex flex-col items-center gap-2">
-                <Link href="/vendors/new">
-                  <Button variant="primary" size="md">
-                    <Plus className="h-4 w-4" /> Add your first vendor
-                  </Button>
-                </Link>
+                {canCreate(session.role) && (
+                  <Link href="/vendors/new">
+                    <Button variant="primary" size="md">
+                      <Plus className="h-4 w-4" /> Add your first vendor
+                    </Button>
+                  </Link>
+                )}
                 <p className="text-xs text-[var(--color-ink-faint)]">Takes 2 minutes &middot; AI extracts document fields automatically</p>
               </div>
             }

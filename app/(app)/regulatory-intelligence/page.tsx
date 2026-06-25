@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Regulatory Intelligence&#8482; — AUDT' };
+
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";
@@ -7,7 +9,7 @@ import {
   RegSubNav, RegStat, SeverityBadge, ChangeStatusBadge,
   AlertIcon, ReadinessBar, ReadinessLabel,
 } from "@/components/regulatory-intelligence/reg-ui";
-import { Scale, BookOpen, Bell, ClipboardList, Bot, RefreshCw, TrendingUp } from "lucide-react";
+import { Scale, BookOpen, Bell, ClipboardList, Bot, RefreshCw, TrendingUp, Download } from "lucide-react";
 
 export default async function RegulatoryIntelligencePage() {
   const session = await requireUser();
@@ -27,14 +29,31 @@ export default async function RegulatoryIntelligencePage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 pt-2">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Regulatory Intelligence™
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
+              Regulatory Intelligence&#8482;
+            </h1>
+            <span className="text-xs text-[var(--color-ink-dim)] border border-[var(--color-line)] rounded px-2 py-0.5">REST API available</span>
+          </div>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Track regulations, monitor changes, manage obligations, and assess regulatory exposure.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="/api/v1/regulations/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Regulations CSV
+          </a>
+          <a
+            href="/api/v1/obligations/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Obligations CSV
+          </a>
           <Link
             href="/regulatory-intelligence/changes"
             className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
@@ -45,7 +64,7 @@ export default async function RegulatoryIntelligencePage() {
             href="/regulatory-intelligence/ai"
             className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
           >
-            <Bot className="h-4 w-4" /> AI Advisor™
+            <Bot className="h-4 w-4" /> AI Advisor&#8482;
           </Link>
         </div>
       </div>
@@ -149,6 +168,7 @@ export default async function RegulatoryIntelligencePage() {
             <h3 className="font-semibold text-sm flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-violet-400" /> Open Tasks
             </h3>
+            <Link href="/regulatory-intelligence/obligations" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all &#8594;</Link>
           </div>
           {tasks.length > 0 ? (
             <div className="space-y-2">

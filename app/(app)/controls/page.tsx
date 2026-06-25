@@ -1,9 +1,11 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Control Center&#8482; — AUDT' };
+
 import Link from "next/link";
 import {
   Shield, Plus, AlertTriangle, Brain, Activity, Users, FlaskConical,
-  CheckCircle2, TrendingUp, Zap, Target, BarChart3,
+  CheckCircle2, TrendingUp, Zap, Target, BarChart3, Sparkles,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,9 +82,15 @@ export default async function ControlsDashboardPage() {
             Governance control intelligence &#8212; evidence &#8594; controls &#8594; risks &#8594; compliance &#8594; trust
           </p>
         </div>
-        <Link href="/controls/new">
-          <Button><Plus className="h-4 w-4" /> New Control</Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/controls/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI Control Advisor&#8482;
+          </Link>
+          <Link href="/controls/new">
+            <Button><Plus className="h-4 w-4" /> New Control</Button>
+          </Link>
+        </div>
       </div>
 
       {/* Row 1 — Primary KPIs */}
@@ -116,6 +124,16 @@ export default async function ControlsDashboardPage() {
           accent={coveragePct >= 80 ? "good" : coveragePct >= 50 ? "warn" : "danger"}
         />
       </div>
+
+      {/* Prerequisite callout */}
+      {metrics.total === 0 && (
+        <div className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.05] px-5 py-4 flex items-start gap-3">
+          <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5 shrink-0" />
+          <p className="text-sm text-[var(--color-ink-dim)]">
+            No controls yet. <Link href="/compliance/frameworks" className="text-[var(--color-blue)] hover:underline">Import from a compliance framework</Link> or <Link href="/controls/new" className="text-[var(--color-blue)] hover:underline">create standalone controls</Link>.
+          </p>
+        </div>
+      )}
 
       {/* Main panels row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

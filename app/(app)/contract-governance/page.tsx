@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Contract Governance&#8482; — AUDT' };
+
 import Link from "next/link";
 import {
   FileSignature,
@@ -9,6 +11,8 @@ import {
   Clock,
   RefreshCw,
   DollarSign,
+  Sparkles,
+  Download,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -56,11 +60,31 @@ export default async function ContractGovernanceDashboardPage() {
             Contract lifecycle, obligations, renewals and AI analysis
           </p>
         </div>
-        <Link href="/contract-governance/new">
-          <Button>
-            <Plus className="h-4 w-4" /> New Contract
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <a
+            href="/api/v1/contracts/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Contracts CSV
+          </a>
+          <a
+            href="/api/v1/contracts/obligations/export/csv"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          >
+            <Download className="h-3.5 w-3.5" />
+            Export Obligations CSV
+          </a>
+          <Link href="/contract-governance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+            <Sparkles className="h-3.5 w-3.5" />
+            Contract Intelligence&#8482;
+          </Link>
+          <Link href="/contract-governance/new">
+            <Button>
+              <Plus className="h-4 w-4" /> New Contract
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Metrics strip */}
@@ -126,10 +150,13 @@ export default async function ContractGovernanceDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Expiring contracts */}
         <Card className="p-5">
-          <h2 className="font-semibold mb-4 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-amber-400" />
-            Expiring Contracts
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold flex items-center gap-2">
+              <Clock className="h-4 w-4 text-amber-400" />
+              Expiring Contracts
+            </h2>
+            <Link href="/contract-governance/renewals" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
+          </div>
           {metrics.expiringContracts.length === 0 ? (
             <div className="flex items-center gap-2 text-sm text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
@@ -169,10 +196,13 @@ export default async function ContractGovernanceDashboardPage() {
 
         {/* Open obligations */}
         <Card className="p-5">
-          <h2 className="font-semibold mb-4 flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-orange-400" />
-            Open Obligations
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-orange-400" />
+              Open Obligations
+            </h2>
+            <Link href="/contract-governance/obligations" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
+          </div>
           {metrics.recentObligations.length === 0 ? (
             <div className="flex items-center gap-2 text-sm text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />

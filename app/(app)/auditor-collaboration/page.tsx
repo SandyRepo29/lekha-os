@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: 'Auditor Collaboration&#8482; — AUDT' };
+
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/auditor-collaboration/auditor-collaboration-service";
 import Link from "next/link";
@@ -33,8 +35,8 @@ export default async function AuditorCollaborationPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Shield className="h-6 w-6 text-[var(--color-blue)]" /> Auditor Collaboration™
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
+            <Shield className="h-6 w-6 text-[var(--color-blue)]" /> Auditor Collaboration&#8482;
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Centralize all external governance activities — auditors, assessors, evidence, findings, and CAPAs.
