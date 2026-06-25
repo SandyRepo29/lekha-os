@@ -120,10 +120,10 @@ export default async function VendorsPage({
               </a>
             </div>
           )}
-          {canCreate(session.role) && !session.demo && session.org && (
+          {canCreate(session.org?.role ?? "viewer") && !session.demo && session.org && (
             <VendorImportButton />
           )}
-          {canCreate(session.role) && (
+          {canCreate(session.org?.role ?? "viewer") && (
             <CoachMark
               id="vendor_add_btn"
               title="Start here"
@@ -186,7 +186,7 @@ export default async function VendorsPage({
             description="Your supplier registry is empty. Add your first vendor to start building your governance posture."
             action={
               <div className="flex flex-col items-center gap-2">
-                {canCreate(session.role) && (
+                {canCreate(session.org?.role ?? "viewer") && (
                   <Link href="/vendors/new">
                     <Button variant="primary" size="md">
                       <Plus className="h-4 w-4" /> Add your first vendor

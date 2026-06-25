@@ -57,7 +57,7 @@ export default async function ControlLibraryPage({
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Control Library</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">{controls.length} control{controls.length !== 1 ? "s" : ""}</p>
         </div>
-        {canCreate(session.role) && (
+        {canCreate(session.org?.role ?? "viewer") && (
           <Link href="/controls/new">
             <Button size="sm"><Plus className="h-4 w-4" /> New Control</Button>
           </Link>
@@ -109,7 +109,7 @@ export default async function ControlLibraryPage({
             icon={Shield}
             title="No controls found"
             description="Add controls to your library to track Control Health™."
-            action={canCreate(session.role) ? <Link href="/controls/new"><Button size="sm"><Plus className="h-4 w-4" /> New Control</Button></Link> : undefined}
+            action={canCreate(session.org?.role ?? "viewer") ? <Link href="/controls/new"><Button size="sm"><Plus className="h-4 w-4" /> New Control</Button></Link> : undefined}
           />
         </Card>
       ) : (

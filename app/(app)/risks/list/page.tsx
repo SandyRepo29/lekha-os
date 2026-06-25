@@ -52,7 +52,7 @@ export default async function RiskListPage({
           <Link href="/reports/risks/csv">
             <Button variant="ghost" size="sm"><Download className="h-4 w-4" /> CSV</Button>
           </Link>
-          {canCreate(session.role) && (
+          {canCreate(session.org?.role ?? "viewer") && (
             <Link href="/risks/new">
               <Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button>
             </Link>
@@ -89,14 +89,14 @@ export default async function RiskListPage({
             icon={AlertTriangle}
             title="No risks found"
             description="Adjust your filters or create a new risk."
-            action={canCreate(session.role) ? <Link href="/risks/new"><Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button></Link> : undefined}
+            action={canCreate(session.org?.role ?? "viewer") ? <Link href="/risks/new"><Button variant="primary" size="sm"><Plus className="h-4 w-4" /> New Risk</Button></Link> : undefined}
           />
         </Card>
       ) : (
         <RiskListTable
           risks={risks}
-          canEdit={canEdit(session.role)}
-          canDelete={canDelete(session.role)}
+          canEdit={canEdit(session.org?.role ?? "viewer")}
+          canDelete={canDelete(session.org?.role ?? "viewer")}
         />
       )}
     </div>

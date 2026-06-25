@@ -151,7 +151,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
           {/* Actions */}
           <div className="flex shrink-0 flex-col items-end gap-2 self-start">
             <div className="flex gap-2">
-              {canEdit(session.role) && (
+              {canEdit(session.org?.role ?? "viewer") && (
                 <Link href={`/vendors/${vendor.id}/edit`}>
                   <Button variant="outline" size="sm">
                     <Pencil className="h-3.5 w-3.5" /> Edit
@@ -175,7 +175,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
               >
                 <Package className="h-3.5 w-3.5" /> Audit PDF
               </a>
-              {canDelete(session.role) && (
+              {canDelete(session.org?.role ?? "viewer") && (
                 <DeleteVendor vendorId={vendor.id} vendorName={vendor.name} />
               )}
             </div>
