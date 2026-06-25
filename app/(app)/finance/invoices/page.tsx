@@ -245,10 +245,10 @@ export default async function InvoicesPage({
   await requireUser();
 
   const sp = await searchParams;
-  const statusFilter = sp.status ?? "all";
-  const search = sp.search ?? "";
-  const month = sp.month ?? "";
-  const page = Math.max(1, parseInt(sp.page ?? "1", 10));
+  const statusFilter = (Array.isArray(sp.status) ? sp.status[0] : sp.status) ?? "all";
+  const search = (Array.isArray(sp.search) ? sp.search[0] : sp.search) ?? "";
+  const month = (Array.isArray(sp.month) ? sp.month[0] : sp.month) ?? "";
+  const page = Math.max(1, parseInt((Array.isArray(sp.page) ? sp.page[0] : sp.page) ?? "1", 10));
 
   const [{ rows, total }, summary] = await Promise.all([
     fetchInvoices({ status: statusFilter, search, month, page }),
