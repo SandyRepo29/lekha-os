@@ -1,7 +1,7 @@
-import { db } from "@/lib/db"
+﻿import { db } from "@/lib/db"
 import { sql } from "drizzle-orm"
 
-// ─── Payment Transactions ──────────────────────────────────────────────────
+// â”€â”€â”€ Payment Transactions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function createTransaction(data: {
   orgId: string
@@ -36,7 +36,7 @@ export async function createTransaction(data: {
     )
     RETURNING id
   `)
-  return { id: (rows.rows[0] as { id: string }).id }
+  return { id: (rows[0] as { id: string }).id }
 }
 
 export async function updateTransaction(
@@ -78,7 +78,7 @@ export async function getTransaction(id: string): Promise<unknown> {
     WHERE pt.id = ${id}
     LIMIT 1
   `)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
 export async function listTransactionsByOrg(
@@ -113,7 +113,7 @@ export async function listPendingTransactions(limit = 100): Promise<unknown[]> {
   return rows.rows
 }
 
-// ─── Finance Actions ───────────────────────────────────────────────────────
+// â”€â”€â”€ Finance Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function recordFinanceAction(data: {
   orgId: string
@@ -184,13 +184,13 @@ export async function listFinanceActions(filters?: {
   return rows.rows
 }
 
-// ─── Coupons ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Coupons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getCouponByCode(code: string): Promise<unknown> {
   const rows = await db.execute(sql`
     SELECT * FROM coupons WHERE code = ${code.toUpperCase()} LIMIT 1
   `)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
 export async function incrementCouponUses(couponId: string): Promise<void> {
@@ -213,7 +213,7 @@ export async function listCoupons(activeOnly = false): Promise<unknown[]> {
   return rows.rows
 }
 
-// ─── Credits ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Credits â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getOrgCredits(orgId: string): Promise<unknown[]> {
   const rows = await db.execute(sql`
@@ -241,7 +241,7 @@ export async function createCredit(data: {
       ${data.type}, ${data.expiresAt ?? null}, ${data.appliedToInvoiceId ?? null}, ${data.createdBy ?? null}
     ) RETURNING id
   `)
-  return { id: (rows.rows[0] as { id: string }).id }
+  return { id: (rows[0] as { id: string }).id }
 }
 
 export async function getOrgCreditBalance(orgId: string): Promise<number> {
@@ -254,15 +254,15 @@ export async function getOrgCreditBalance(orgId: string): Promise<number> {
       AND (expires_at IS NULL OR expires_at > now())
       AND applied_to_invoice_id IS NULL
   `)
-  const row = rows.rows[0] as { total_credits: string; total_debits: string }
+  const row = rows[0] as { total_credits: string; total_debits: string }
   return Math.max(0, Number(row.total_credits) - Number(row.total_debits))
 }
 
-// ─── Tax Rates ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Tax Rates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getTaxRate(slug: string): Promise<unknown> {
   const rows = await db.execute(sql`SELECT * FROM tax_rates WHERE slug = ${slug} LIMIT 1`)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
 export async function listTaxRates(country?: string): Promise<unknown[]> {
@@ -276,7 +276,7 @@ export async function listTaxRates(country?: string): Promise<unknown[]> {
   return rows.rows
 }
 
-// ─── Payment Providers ─────────────────────────────────────────────────────
+// â”€â”€â”€ Payment Providers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function listPaymentProviders(activeOnly = false): Promise<unknown[]> {
   if (activeOnly) {
@@ -289,19 +289,19 @@ export async function listPaymentProviders(activeOnly = false): Promise<unknown[
 
 export async function getPaymentProvider(slug: string): Promise<unknown> {
   const rows = await db.execute(sql`SELECT * FROM payment_providers WHERE slug = ${slug} LIMIT 1`)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
-// ─── Bank Details ──────────────────────────────────────────────────────────
+// â”€â”€â”€ Bank Details â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getPrimaryBankDetails(): Promise<unknown> {
   const rows = await db.execute(sql`
     SELECT * FROM bank_details WHERE is_primary = true AND is_active = true LIMIT 1
   `)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
-// ─── Invoices (extended) ───────────────────────────────────────────────────
+// â”€â”€â”€ Invoices (extended) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function updateInvoiceStatus(
   invoiceId: string,
@@ -395,7 +395,7 @@ export async function getInvoiceById(invoiceId: string): Promise<unknown> {
     LEFT JOIN billing_plans bp ON bp.id = i.plan_id
     WHERE i.id = ${invoiceId} LIMIT 1
   `)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
 export async function listInvoicesPendingVerification(limit = 50): Promise<unknown[]> {
@@ -410,7 +410,7 @@ export async function listInvoicesPendingVerification(limit = 50): Promise<unkno
   return rows.rows
 }
 
-// ─── Subscriptions (extended) ──────────────────────────────────────────────
+// â”€â”€â”€ Subscriptions (extended) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function updateSubscriptionStatus(
   subscriptionId: string,
@@ -438,10 +438,10 @@ export async function getOrgSubscription(orgId: string): Promise<unknown> {
     FROM subscriptions s LEFT JOIN billing_plans bp ON bp.id = s.plan_id
     WHERE s.organization_id = ${orgId} LIMIT 1
   `)
-  return rows.rows[0] ?? null
+  return rows[0] ?? null
 }
 
-// ─── Revenue stats for finance dashboard ──────────────────────────────────
+// â”€â”€â”€ Revenue stats for finance dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getRevenueStats(): Promise<{
   paidThisMonth: number
@@ -459,8 +459,8 @@ export async function getRevenueStats(): Promise<{
   const subRows = await db.execute(sql`
     SELECT COUNT(*) AS active FROM subscriptions WHERE status IN ('trial', 'active', 'enterprise')
   `)
-  const r = rows.rows[0] as Record<string, string>
-  const s = subRows.rows[0] as { active: string }
+  const r = rows[0] as Record<string, string>
+  const s = subRows[0] as { active: string }
   return {
     paidThisMonth: Number(r.paid_this_month ?? 0),
     pendingCount: Number(r.pending_count ?? 0),
@@ -468,3 +468,4 @@ export async function getRevenueStats(): Promise<{
     activeSubscriptions: Number(s.active ?? 0),
   }
 }
+
