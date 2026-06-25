@@ -3,6 +3,22 @@
 > **End-to-end project brief for any AI session. Read this first.**
 > Rebranded from Lekha OS → AUDT on 2026-06-07. Domain: audt.tech.
 
+## Doc Structure — Read Before Every Session
+
+**This file (`CLAUDE.md`) is the single source of truth.** Do not create additional planning docs, audit reports, or reference MDs in the project root.
+
+| File | Purpose |
+|---|---|
+| `CLAUDE.md` | Everything — stack, modules, routes, caveats, sprints. Update §6/§7/§11 after each sprint. |
+| `README.md` | GitHub-facing human doc only. Keep short. |
+| `.claude/memory/session-learnings.md` | Debugging patterns and sprint notes NOT yet stable enough for §11. Migrate to §11 once proven. |
+
+**Rules:**
+- No `memory/` folder in project root — it was deleted 2026-06-25.
+- No ad-hoc planning/audit/research MDs in project root — put findings directly into CLAUDE.md.
+- After each sprint: add new routes to §7, new caveats to §11, new features to §6.
+- `tokens.txt` and `audt_platform_readiness_trackb.md` — do not recreate these.
+
 ---
 
 ## 1. Product Brief
@@ -474,26 +490,38 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 
 ---
 
-### Billing & Commerce Sprint 1 ✅ Complete (2026-06-25)
+### Sprint B1 — Commercial Foundation ✅ Complete (2026-06-25)
 
-India-first bank-transfer SaaS billing — no Stripe. Manual verification flow.
+India-first bank-transfer SaaS billing — no Stripe. Manual verification flow. Provider-independent payment architecture.
+
+**Architecture:** Subscription Engine → Billing Engine → Payment Provider Adapter → Manual Invoice / Bank Transfer (Razorpay/Stripe future plugins)
 
 | File | Purpose |
 |---|---|
+| `lib/services/billing/entitlements.ts` | Feature entitlement system — 30 FeatureKey types, plan→feature map, `getEntitlements(orgId)`, `requireFeature(orgId, key)`, `canUseFeature(orgId, key)`. Trial orgs get all features. |
 | `lib/services/billing/billing-engine.ts` | Pure TS: applyCoupon, computeTax (GST 18%), getOrgCreditBalance, applyCredit, reconcilePayment, verifyPayment, rejectPayment, issueRefund |
 | `lib/services/billing/invoice-engine.ts` | Pure TS: generateInvoiceNumber (INV-YYYY-NNNNNN), createInvoice (raw SQL), sendInvoice, cancelInvoice, getInvoiceWithDetails, listPendingVerification |
-| `lib/services/billing/subscription-engine.ts` | getSubscriptionStatus — daysUntilExpiry, isActive, grace period logic |
-| `lib/services/billing/payment-adapter.ts` | Provider pattern: getProvider(slug) → { createPayment } — bank_transfer returns bankDetails |
-| `lib/services/billing-service.ts` | getBillingOverview, seedDefaultPlans, ensureStarterSubscription (idempotent) |
-| `lib/repositories/billing-repo.ts` | findPlanByName, findInvoiceById, findTransactionsByInvoice, listInvoicesByOrg |
+| `lib/services/billing/subscription-engine.ts` | createSubscription, activateSubscription, enterGracePeriod, suspendSubscription, expireSubscription, cancelSubscription, checkAndExpireTrials, checkAndExpireGracePeriods, getSubscriptionStatus |
+| `lib/services/billing/payment-adapter.ts` | Provider interface + registry: registerProvider, getProvider(slug), listProviders. bank_transfer + manual_invoice providers. |
+| `lib/services/billing-service.ts` | getBillingOverview, ensureStarterSubscription (idempotent), checkPlanLimit (users/vendors/assets/storage_gb), requestUpgrade, markInvoicePaid, cancelSubscription, runBillingCron, seedDefaultPlans |
+| `lib/reports/invoice-pdf.tsx` | react-pdf invoice template — InvoicePdf component + InvoicePdfData type |
+| `lib/repositories/billing-repo.ts` | findPlanByName, findInvoiceById, findTrialsExpiringSoon, findExpiredTrials, findCancelAtPeriodEnd, listInvoicesByOrg |
 | `lib/repositories/billing-engine-repo.ts` | getCouponByCode, getOrgCreditBalance, createCredit, getTransaction, updateTransaction, updateInvoiceFull, activateSubscriptionByOrgId, recordFinanceAction, getOrgCredits, getPrimaryBankDetails |
-| `lib/billing/actions.ts` | Server actions for all billing operations |
-| `components/billing/cancel-modal.tsx` | "use client" — cancel subscription modal; accepts `action: ActionFn` prop |
-| `components/billing/request-upgrade-modal.tsx` | "use client" — upgrade request form; accepts `action: ActionFn` prop |
-| `components/billing/mark-paid-form.tsx` | "use client" — mark invoice paid; accepts `action: ActionFn` prop |
+| `lib/billing/actions.ts` | All server actions; downloadInvoiceAction → /api/invoices/[id]/pdf |
+| `components/billing/cancel-modal.tsx` | "use client" — accepts `action: ActionFn` prop (never imports from lib/billing/actions) |
+| `components/billing/request-upgrade-modal.tsx` | "use client" — accepts `action: ActionFn` prop |
+| `components/billing/mark-paid-form.tsx` | "use client" — accepts `action: ActionFn` prop |
 | `components/billing/trial-banner.tsx` | Trial expiry alert banner |
 
-Finance Console (`/finance/*`) — admin-only:
+**API routes:**
+
+| Route | Purpose |
+|---|---|
+| `GET /api/health` | Liveness/readiness probe — DB latency, AI/email/storage/encryption config checks. Returns `{ status, checks }`. 200 = ok, 503 = down. |
+| `GET /api/invoices/[id]/pdf` | Download invoice as PDF (session auth, org-scoped) |
+| `GET /api/cron/billing` | Daily cron: expire trials → grace period, warn expiring trials (email), process cancel-at-period-end (CRON_SECRET) |
+
+**Finance Console (`/finance/*`) — admin-only:**
 
 | Route | Purpose |
 |---|---|
@@ -502,11 +530,25 @@ Finance Console (`/finance/*`) — admin-only:
 | `/finance/pending` | Pending verification queue — bank transfers awaiting manual confirmation |
 | `/finance/transactions/[id]` | Transaction detail — Verify or Reject with notes |
 
+**Security (`next.config.ts`):** HSTS (1yr + preload), CSP, X-Frame-Options (DENY), X-Content-Type-Options, Referrer-Policy, Permissions-Policy, `poweredByHeader: false`.
+
+**Plans seeded:** Growth / Business / Enterprise — via `seedDefaultPlans()` (idempotent). `ensureStarterSubscription(orgId)` creates a 14-day trial (Growth plan) on org creation.
+
+**Subscription statuses:** trial → active → grace_period → suspended → expired → cancelled → enterprise
+
+**Feature entitlements — Growth plan includes:** core_grc, trust_intelligence, trust_score, contract_governance, issue_hub, dpdp_privacy, policy_governance, workflow_studio, trust_exchange, trust_graph, governance_trends, custom_frameworks.
+
+**Feature entitlements — Business adds:** ai_governance, governance_agents, executive_reporting, benchmarking, api_access, integration_hub, security_command_center, continuous_compliance, auditor_collaboration, trust_verification, trust_network, regulatory_intelligence, asset_intelligence, unlimited_vendors, unlimited_users, priority_support.
+
+**Feature entitlements — Enterprise adds:** cmk, sso, scim, dedicated_success.
+
 **Migration:** `supabase/migrations/0034_billing_commerce.sql` ✅ APPLIED
 
-**Plans seeded:** Starter / Growth / Business / Enterprise — via `seedDefaultPlans()` (idempotent). `ensureStarterSubscription(orgId)` creates a trial sub if none exists.
-
 **CRITICAL — Drizzle schema gap (migration 0034):** Columns `discount_amount_cents`, `tax_amount_cents`, `tax_rate`, `tax_name`, `total_cents`, `billing_name`, `billing_email`, `billing_gstin`, `purchase_order_number`, `coupon_code`, `payment_terms`, `due_at` are in the DB but NOT in `lib/db/schema.ts`. Drizzle insert on these returns `never[]`. Fix: use `db.execute(sql\`INSERT ... RETURNING id\`)` raw SQL. Return type `Promise<any>`.
+
+**CRITICAL — Entitlements: trial gets all features.** `getEntitlements()` returns full Enterprise feature set during trial to maximise conversion. Never gate trial orgs. After upgrade, plan features enforced.
+
+**CRITICAL — Client billing components never import actions.ts.** `lib/billing/actions.ts` chains to `next/headers`. Any "use client" component must accept `action: ActionFn` as a prop — server page passes the action down. Breaking this causes Vercel build failure.
 
 ---
 
@@ -871,6 +913,10 @@ GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
 /api/cron/expiry  /api/cron/digest           Scheduled cron routes (CRON_SECRET)
+/api/cron/billing                            Daily billing cron — expire trials, warn expiring, cancel (CRON_SECRET)
+/api/cron/governance-snapshot               Daily org snapshot + monitoring rules (CRON_SECRET)
+/api/health                                  Liveness/readiness probe — DB + config checks, returns { status, checks }
+/api/invoices/[id]/pdf                       Download invoice PDF (session auth, org-scoped)
 /api/cron/governance-snapshot               Daily org snapshot + monitoring rules (CRON_SECRET)
 /api/export/audit-logs                       CSV export (session auth)
 /api/export/tenant-data                      ZIP export: vendors + docs + assessments + team + audit (session auth)
