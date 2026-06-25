@@ -33,6 +33,7 @@ import {
   Sparkles,
   Star,
   Network,
+  Receipt,
 } from "lucide-react";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { cn } from "@/lib/utils";
@@ -118,7 +119,8 @@ const navGroups: NavGroup[] = [
     key: "administration",
     label: "Administration",
     items: [
-      { href: "/integration-hub", label: "Integration Hub™", icon: Plug },
+      { href: "/integration-hub", label: "Integration Hub&#8482;", icon: Plug },
+      { href: "/finance",         label: "Finance Console",  icon: Receipt },
       { href: "/settings",        label: "Settings",         icon: Settings },
     ],
   },
