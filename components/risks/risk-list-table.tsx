@@ -157,7 +157,7 @@ export function RiskListTable({
                     <RiskCategoryBadge category={r.category ?? "custom"} />
                   </td>
                   <td className="px-4 py-3">
-                    <RiskStatusBadge status={r.status} />
+                    <RiskStatusBadge status={r.status ?? "identified"} />
                   </td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
                     {r.ownerName ?? "&#8212;"}
