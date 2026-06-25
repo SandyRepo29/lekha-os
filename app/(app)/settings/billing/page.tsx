@@ -245,7 +245,7 @@ export default async function BillingPage() {
   let creditBalanceCents = 0;
   try {
     const credits = await getOrgCredits(orgId);
-    creditBalanceCents = credits?.balanceCents ?? 0;
+    creditBalanceCents = (credits as Record<string, unknown>)?.balanceCents as number ?? 0;
   } catch {
     creditBalanceCents = 0;
   }
