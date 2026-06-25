@@ -159,7 +159,7 @@ export async function createInvoiceAction(
       .join(" | ");
 
     const invoice = await billingRepo.insertInvoice({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       planId: plan.id,
       amountCents,
       currency: "INR",
@@ -172,7 +172,7 @@ export async function createInvoiceAction(
     });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.invoice_created",
       entityType: "invoice",
@@ -220,7 +220,7 @@ export async function recordPaymentAction(
 
     const invoice = await billingRepo.findInvoiceById(invoiceId);
     if (!invoice) return { error: "Invoice not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
     if (invoice.status === "paid") return { error: "Invoice is already paid." };
     if (invoice.status === "cancelled") return { error: "Invoice has been cancelled." };
 
@@ -230,7 +230,7 @@ export async function recordPaymentAction(
     });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.payment_recorded",
       entityType: "invoice",
@@ -262,25 +262,25 @@ export async function verifyPaymentAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.org?.role)) {
+    if (!["admin", "owner"].includes(session.org!.role)) {
       return { error: "Only admins and owners can verify payments." };
     }
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
     if (invoice.status === "paid") return { error: "Payment already verified." };
 
     await billingService.markInvoicePaid({
       invoiceId: transactionId,
-      orgId: session.org?.id,
+      orgId: session.org!.id,
       actorId: session.id,
       paymentReference: invoice.paymentReference ?? "verified",
     });
 
     if (notes) {
       await recordAudit({
-        organizationId: session.org?.id,
+        organizationId: session.org!.id,
         actorId: session.id,
         action: "billing.payment_verified",
         entityType: "invoice",
@@ -308,7 +308,7 @@ export async function rejectPaymentAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.org?.role)) {
+    if (!["admin", "owner"].includes(session.org!.role)) {
       return { error: "Only admins and owners can reject payments." };
     }
 
@@ -316,7 +316,7 @@ export async function rejectPaymentAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
     if (invoice.status === "paid") {
       return { error: "Cannot reject an already-verified payment." };
     }
@@ -327,7 +327,7 @@ export async function rejectPaymentAction(
     });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.payment_rejected",
       entityType: "invoice",
@@ -355,7 +355,7 @@ export async function issueRefundAction(
   try {
     const session = await requireUser();
 
-    if (session.org?.role !== "owner") {
+    if (session.org!.role !== "owner") {
       return { error: "Only the organization owner can issue refunds." };
     }
 
@@ -366,7 +366,7 @@ export async function issueRefundAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
     if (invoice.status !== "paid") {
       return { error: "Refunds can only be issued for paid invoices." };
     }
@@ -381,7 +381,7 @@ export async function issueRefundAction(
     });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.refund_issued",
       entityType: "invoice",
@@ -491,7 +491,7 @@ export async function uploadPaymentProofAction(
 
     const invoice = await billingRepo.findInvoiceById(transactionId);
     if (!invoice) return { error: "Transaction not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
 
     if (["paid", "cancelled", "refunded"].includes(invoice.status ?? "")) {
       return { error: "Cannot upload proof for a finalised invoice." };
@@ -501,7 +501,7 @@ export async function uploadPaymentProofAction(
     await billingRepo.updateInvoice(transactionId, { pdfUrl: proofUrl });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.payment_proof_uploaded",
       entityType: "invoice",
@@ -527,13 +527,13 @@ export async function cancelInvoiceAction(
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.org?.role)) {
+    if (!["admin", "owner"].includes(session.org!.role)) {
       return { error: "Only admins and owners can cancel invoices." };
     }
 
     const invoice = await billingRepo.findInvoiceById(invoiceId);
     if (!invoice) return { error: "Invoice not found." };
-    if (invoice.organizationId !== session.org?.id) return { error: "Access denied." };
+    if (invoice.organizationId !== session.org!.id) return { error: "Access denied." };
 
     if (invoice.status === "paid") {
       return { error: "Cannot cancel a paid invoice. Issue a refund instead." };
@@ -545,7 +545,7 @@ export async function cancelInvoiceAction(
     await billingRepo.updateInvoice(invoiceId, { status: "cancelled" });
 
     await recordAudit({
-      organizationId: session.org?.id,
+      organizationId: session.org!.id,
       actorId: session.id,
       action: "billing.invoice_cancelled",
       entityType: "invoice",
@@ -581,14 +581,14 @@ export async function getFinanceDashboardAction(): Promise<FinanceDashboardResul
   try {
     const session = await requireUser();
 
-    if (!["admin", "owner"].includes(session.org?.role)) {
+    if (!["admin", "owner"].includes(session.org!.role)) {
       return {
         ...empty,
         error: "Only admins and owners can view the finance dashboard.",
       };
     }
 
-    const allInvoices = await billingRepo.findInvoicesByOrg(session.org?.id);
+    const allInvoices = await billingRepo.findInvoicesByOrg(session.org!.id);
 
     const pendingTransactions = allInvoices
       .filter((inv) => inv.status === "pending_verification")
@@ -661,7 +661,7 @@ export async function requestUpgradeAction(formData: FormData) {
 
   try {
     const invoice = await billingService.requestUpgrade({
-      orgId: session.org?.id,
+      orgId: session.org!.id,
       actorId: session.id,
       planName,
       billingName,
@@ -681,7 +681,7 @@ export async function requestUpgradeAction(formData: FormData) {
 export async function cancelSubscriptionAction(formData: FormData) {
   const session = await requireUser();
 
-  if (!["owner", "admin"].includes(session.org?.role)) {
+  if (!["owner", "admin"].includes(session.org!.role)) {
     return { error: "Only owners and admins can cancel the subscription." };
   }
 
@@ -689,7 +689,7 @@ export async function cancelSubscriptionAction(formData: FormData) {
 
   try {
     await billingService.cancelSubscription({
-      orgId: session.org?.id,
+      orgId: session.org!.id,
       actorId: session.id,
       reason,
     });
@@ -704,7 +704,7 @@ export async function cancelSubscriptionAction(formData: FormData) {
 export async function markInvoicePaidAction(formData: FormData) {
   const session = await requireUser();
 
-  if (!["owner", "admin"].includes(session.org?.role)) {
+  if (!["owner", "admin"].includes(session.org!.role)) {
     return { error: "Only owners and admins can mark invoices as paid." };
   }
 
@@ -718,7 +718,7 @@ export async function markInvoicePaidAction(formData: FormData) {
   try {
     await billingService.markInvoicePaid({
       invoiceId,
-      orgId: session.org?.id,
+      orgId: session.org!.id,
       actorId: session.id,
       paymentReference,
     });
@@ -736,5 +736,6 @@ export async function downloadInvoiceAction(
   await requireUser();
   return { url: `/api/v1/invoices/${invoiceId}/pdf` };
 }
+
 
 
