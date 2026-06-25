@@ -2,9 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { markInvoicePaidAction } from "@/lib/billing/actions";
 
-export function MarkPaidForm({ invoiceId }: { invoiceId: string }) {
+type ActionFn = (fd: FormData) => Promise<{ error?: string }>;
+
+export function MarkPaidForm({ invoiceId, action }: { invoiceId: string; action: ActionFn }) {
   const [open, setOpen] = useState(false);
   const [ref, setRef] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +19,7 @@ export function MarkPaidForm({ invoiceId }: { invoiceId: string }) {
     fd.set("invoiceId", invoiceId);
     fd.set("paymentReference", ref);
     startTransition(async () => {
-      const res = await markInvoicePaidAction(fd);
+      const res = await action(fd);
       if ("error" in res && res.error) {
         setError(res.error);
       } else {
