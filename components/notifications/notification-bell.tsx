@@ -2,17 +2,12 @@
 
 import { useState } from "react";
 import { Bell } from "lucide-react";
-import type { NotificationItem } from "./notification-types";
+import { useNotifications } from "@/hooks/use-notifications";
 import { NotificationPanel } from "./notification-panel";
 
-type Props = {
-  notifications: NotificationItem[];
-  onMarkAllRead: () => void;
-  onMarkRead: (id: string) => void;
-};
-
-export function NotificationBell({ notifications, onMarkAllRead, onMarkRead }: Props) {
+export function NotificationBell() {
   const [open, setOpen] = useState(false);
+  const { notifications, markRead, markAllRead } = useNotifications();
   const unreadCount = notifications.filter((n) => !n.read).length;
   const badgeLabel = unreadCount > 9 ? "9+" : String(unreadCount);
 
@@ -35,9 +30,9 @@ export function NotificationBell({ notifications, onMarkAllRead, onMarkRead }: P
         open={open}
         onClose={() => setOpen(false)}
         notifications={notifications}
-        onMarkRead={onMarkRead}
+        onMarkRead={markRead}
         onMarkAllRead={() => {
-          onMarkAllRead();
+          markAllRead();
           setOpen(false);
         }}
       />
