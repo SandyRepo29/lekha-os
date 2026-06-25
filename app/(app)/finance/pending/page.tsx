@@ -285,12 +285,12 @@ const TABS: { id: FilterTab; label: string }[] = [
 export default async function PendingPaymentsPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ tab?: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireUser();
 
-  const params = await (searchParams ?? Promise.resolve({}));
-  const activeTab = (params.tab ?? "all") as FilterTab;
+  const params = await searchParams;
+  const activeTab = ((params.tab as string) ?? "all") as FilterTab;
 
   const allTransactions = getMockTransactions();
 

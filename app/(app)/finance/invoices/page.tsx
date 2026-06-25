@@ -240,7 +240,7 @@ function SummaryStat({ label, value, accent }: { label: string; value: string; a
 export default async function InvoicesPage({
   searchParams,
 }: {
-  searchParams: Promise<Record<string, string | undefined>>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireUser();
 
