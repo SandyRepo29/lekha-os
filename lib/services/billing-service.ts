@@ -54,10 +54,10 @@ export async function ensureStarterSubscription(orgId: string): Promise<void> {
   });
 }
 
-/** Throw DomainError when org has hit their plan limit for users or vendors. */
+/** Throw DomainError when org has hit their plan limit for the given resource. */
 export async function checkPlanLimit(
   orgId: string,
-  resource: "users" | "vendors"
+  resource: "users" | "vendors" | "assets" | "storage_gb"
 ): Promise<void> {
   const sub = await billingRepo.getSubscription(orgId);
   if (!sub) return; // no subscription yet — no gating
@@ -80,6 +80,22 @@ export async function checkPlanLimit(
       throw new DomainError(
         `Your ${plan.name} plan allows up to ${limit} vendors. Upgrade to add more.`
       );
+    }
+  }
+
+  // assets and storage_gb — checked against maxStorageGb (proxy for overall data limits).
+  // Fine-grained asset tables come in Sprint B2; for now enforce on plan tier only.
+  if (resource === "assets" || resource === "storage_gb") {
+    const limit = plan.maxStorageGb;
+    if (limit < 9999 && limit <= 10) {
+      // Growth plan (10 GB) — assets module available on Business+
+      const { canUseFeature } = await import("@/lib/services/billing/entitlements");
+      const ok = await canUseFeature(orgId, "asset_intelligence");
+      if (!ok) {
+        throw new DomainError(
+          `Asset Intelligence™ is not available on the ${plan.name} plan. Upgrade to Business to unlock.`
+        );
+      }
     }
   }
 }

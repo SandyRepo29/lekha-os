@@ -733,8 +733,14 @@ export async function markInvoicePaidAction(formData: FormData) {
 export async function downloadInvoiceAction(
   invoiceId: string
 ): Promise<{ url?: string; error?: string }> {
-  await requireUser();
-  return { url: `/api/v1/invoices/${invoiceId}/pdf` };
+  const session = await requireUser();
+  if (!session.org) return { error: "No organisation found." };
+  // Verify the invoice belongs to this org before returning URL
+  const { findInvoiceById } = await import("@/lib/repositories/billing-repo");
+  const invoice = await findInvoiceById(invoiceId);
+  if (!invoice) return { error: "Invoice not found." };
+  if (invoice.organizationId !== session.org.id) return { error: "Access denied." };
+  return { url: `/api/invoices/${invoiceId}/pdf` };
 }
 
 
