@@ -11,7 +11,7 @@ import type { OffboardingStep } from "@/lib/services/vendor-lifecycle/offboardin
 export type OffboardingActionState = { error?: string; ok?: boolean };
 
 export async function initiateOffboardingAction(
-  _prev: OffboardingActionState,
+  _prev: OffboardingActionState | undefined,
   formData: FormData
 ): Promise<OffboardingActionState> {
   const session = await requireUser();
@@ -54,7 +54,7 @@ export async function initiateOffboardingAction(
 }
 
 export async function completeOffboardingStepAction(
-  _prev: OffboardingActionState,
+  _prev: OffboardingActionState | undefined,
   formData: FormData
 ): Promise<OffboardingActionState> {
   const session = await requireUser();

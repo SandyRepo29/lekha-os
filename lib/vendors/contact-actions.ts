@@ -9,7 +9,7 @@ import type { ContactType } from "@/lib/constants/vendor-contacts";
 export type ContactActionState = { error?: string; ok?: boolean };
 
 export async function addContactAction(
-  _prev: ContactActionState,
+  _prev: ContactActionState | undefined,
   formData: FormData
 ): Promise<ContactActionState> {
   const session = await requireUser();

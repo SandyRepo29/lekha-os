@@ -17,7 +17,7 @@ export {
 } from "./lifecycle-constants";
 
 import type { VendorState } from "./lifecycle-constants";
-import { isValidTransition } from "./lifecycle-constants";
+import { isValidTransition, VENDOR_STATE_LABELS, TRANSITION_LABELS } from "./lifecycle-constants";
 
 export async function transitionVendor(params: {
   orgId: string;

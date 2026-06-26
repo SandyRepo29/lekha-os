@@ -34,7 +34,8 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
   const router = useRouter();
   const [selectedTransition, setSelectedTransition] = useState<VendorState | null>(null);
   const [reason, setReason] = useState("");
-  const [state, formAction, pending] = useActionState<LifecycleActionState | undefined>(transitionVendorAction, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [state, formAction, pending] = useActionState<LifecycleActionState | undefined>(transitionVendorAction as any, undefined);
 
   const allowedTransitions = getAllowedTransitions(currentState);
   const currentIndex = LIFECYCLE_ORDER.indexOf(currentState);

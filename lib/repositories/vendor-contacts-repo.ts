@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
+import type { ContactType } from "@/lib/constants/vendor-contacts";
 
 // Re-export from client-safe constants module
 export type { ContactType } from "@/lib/constants/vendor-contacts";

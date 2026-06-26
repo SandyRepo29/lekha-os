@@ -82,8 +82,10 @@ interface Props {
 }
 
 export function RenewalWorkspace({ vendorId, vendorName, currentState, assessments, trustScore, complianceScore, canEdit }: Props) {
-  const [startState, startAction, startPending] = useActionState<RenewalActionState | undefined>(startRenewalAction, undefined);
-  const [finalState, finalAction, finalPending] = useActionState<RenewalActionState | undefined>(finaliseRenewalAction, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [startState, startAction, startPending] = useActionState<RenewalActionState | undefined>(startRenewalAction as any, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [finalState, finalAction, finalPending] = useActionState<RenewalActionState | undefined>(finaliseRenewalAction as any, undefined);
   const [selectedDecision, setSelectedDecision] = useState<RenewalRecommendation | null>(null);
 
   const latestAssessment = assessments[0] ?? null;

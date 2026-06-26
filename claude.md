@@ -482,11 +482,41 @@ All 7 sub-nav tabs live: Dashboard · Frameworks · Evidence · Policies · Gaps
 
 **UI polish (2026-06-13):** Dashboard heading "Evidence Vault™"; ComplianceStat upgraded with border-l-2 left accent bar + tinted background (danger/warn/good); Frameworks page: new 4-card stat strip (Total / Certified / In Progress / Avg Readiness); layout sub-nav border-b separator added; Reports page hardcoded `text-indigo-400` replaced with `var(--color-blue)`.
 
-### Module 1 — Vendor Governance ✅ Complete (Launch-Ready)
+### Module 1 — Vendor Governance ✅ Complete (Launch-Ready) + Epic 1 Vendor Hub 2.0 (In Progress)
 
 25 features including: vendor registry, document management (AI extraction v2 — 10 fields), risk engine, security assessments, NL search (Gemini), executive PDFs, vendor portal (magic link), team RBAC, email cron jobs (expiry alerts + AI weekly digest).
 
 **UI polish (2026-06-13):** Page heading "Vendor Hub™"; export buttons grouped in compact pill strip; MiniStat cards with border-l-2 accent bar; TrustScoreBadge inline in header badges row (redundant standalone score box removed); TrustScoreWidget moved into Compliance tab on vendor detail (was between header and tabs); vendor-filters.tsx now uses shared `lib/ui/colors` + `lib/ui-maps` (4 duplicate local helper functions removed); emoji toggle buttons replaced with icon components.
+
+**Epic 1 — Vendor Hub 2.0: Vendor Lifecycle Orchestration (2026-06-26, in progress)**
+
+New sub-pages on vendor detail:
+
+| Route | Feature |
+|---|---|
+| `/vendors/[id]/lifecycle` | Lifecycle state machine — visual stepper, transition actions, transition history |
+| `/vendors/[id]/contacts` | Contact directory — 7 contact types, add/remove contacts |
+| `/vendors/[id]/timeline` | Full governance timeline — 31 event types, filter by type, chronological grouping |
+| `/vendors/[id]/renewal` | Renewal workspace — AI assessment, 5 recommendations (renew/renegotiate/offboard/…), final decision |
+| `/vendors/[id]/offboarding` | Offboarding checklist — 9 sequential steps, completion tracking, auto-transition to offboarded |
+
+New vendor detail tabs: **Lifecycle** · **Contacts** · **Timeline** (added to 10 existing tabs)
+
+**Migration:** `supabase/migrations/0036_vendor_lifecycle.sql` — 7 new enums + 10 new tables + 17 new columns on `vendors`
+
+**New tables:** `vendor_lifecycle_history` · `vendor_contacts` · `vendor_timeline` · `approval_templates` · `approval_steps` · `approval_instances` · `approval_decisions` · `vendor_onboarding_progress` · `vendor_renewal_assessments` · `vendor_offboarding_checklists`
+
+**New services:** `lib/services/vendor-lifecycle/lifecycle-service.ts` · `lib/services/vendor-lifecycle/approval-service.ts` · `lib/services/vendor-lifecycle/contact-service.ts` · `lib/services/vendor-lifecycle/renewal-service.ts` · `lib/services/vendor-lifecycle/offboarding-service.ts`
+
+**New repositories:** `lib/repositories/lifecycle-repo.ts` · `lib/repositories/vendor-timeline-repo.ts` · `lib/repositories/vendor-contacts-repo.ts` · `lib/repositories/approval-repo.ts`
+
+**Lifecycle states:** `draft` → `invited` → `onboarding` → `active` → `under_review` → `renewal_due` → `renewing` → `offboarding` → `offboarded` → `archived`
+
+**Renewal scoring:** Pure `computeRenewalRecommendation()` in `renewal-service.ts` — 6 weighted inputs → 5 decisions: renew / renew_with_conditions / renegotiate / suspend / offboard
+
+**CRITICAL — `vendors.lifecycle_state`:** New column with `vendor_state` enum (distinct from old `lifecycle_stage` column using `vendorLifecycleStageEnum`). Both columns coexist. `getVendorLifecycleState()` reads `lifecycle_state`; the old `lifecycleStage` field is the governance activity stage (discover/assess/renew). Never confuse the two.
+
+**CRITICAL — Approval service `require("drizzle-orm").sql`:** `approval-service.ts` uses a dynamic require inside async functions to advance the step counter. This should be changed to a top-level import at next edit.
 
 ---
 
@@ -626,6 +656,11 @@ TOTP MFA, password policies, session governance, device trust, and IP enforcemen
 /vendors/[id]/assessment
 /vendors/[id]/audit-package
 /vendors/[id]/executive-report
+/vendors/[id]/lifecycle                      Lifecycle state machine — transitions, history (Epic 1)
+/vendors/[id]/contacts                       Contact directory — 7 contact types (Epic 1)
+/vendors/[id]/timeline                       Full governance timeline — 31 event types (Epic 1)
+/vendors/[id]/renewal                        Renewal workspace — AI assessment + decision (Epic 1)
+/vendors/[id]/offboarding                    9-step offboarding checklist (Epic 1)
 /vendors/export
 /reports/compliance  /reports/expiry
 
@@ -2072,6 +2107,11 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **`tokens.txt` is gitignored** | Contained a GitHub PAT — triggered GitHub push protection. The file is in `.gitignore`. Do not recreate or commit it. |
 | **Security tables not in `lib/db/schema.ts`** | Security Command Center tables (`securityMfaSettings`, `userMfaStatus`, `userSessions`, `ipAllowlists`, `passwordPolicies`, `loginLockouts`, `trustedDevices`, `passwordHistory`, etc.) are defined inline in `lib/repositories/security-command-center-repo.ts`, not in the main Drizzle schema file. Add new B2 tables there, not in `schema.ts`. |
 | **Migration 0035 new tables** | `password_policies` (UNIQUE org), `login_lockouts` (UNIQUE email), `trusted_devices` (UNIQUE user+fingerprint), `password_history`. New columns on `user_mfa_status` (totp_secret, recovery_codes, recovery_codes_generated_at), `security_mfa_settings` (idle_timeout_minutes, absolute_timeout_hours, max_concurrent_sessions), `profiles` (password_changed_at). |
+| **Epic 1 — `vendors.lifecycle_state` vs `vendors.lifecycle_stage`** | Two separate columns coexist. `lifecycle_state` (new, `vendor_state` enum: draft/invited/onboarding/active/…) is the relationship lifecycle managed by Epic 1. `lifecycle_stage` (old, `vendorLifecycleStageEnum`: discover/inventory/classify/…) is the governance activity stage. `getVendorLifecycleState()` reads `lifecycle_state`. Never conflate the two. |
+| **Epic 1 — `vendor_offboarding_checklists` is a flat row** | All 9 offboarding steps are boolean columns on a single row (not a junction table). `completeStep()` uses `sql.raw(\`"${step}" = true\`)` to set the correct column. The page must normalize this flat row into `OffboardingChecklistRow[]` using `OFFBOARDING_STEPS_ORDER`. |
+| **Epic 1 — Timeline events use `db.execute(sql\`...\`)` pattern** | `vendor_timeline` table is not in `lib/db/schema.ts`. All timeline repo functions use raw SQL. Same pattern as Security Command Center tables. |
+| **Epic 1 — Renewal `getRenewalAssessments()` normalizes DB column names** | The DB stores `confidence_pct` and `ai_analysis`, but the component expects `confidence_score` and `ai_rationale`. The service function maps these on read. Do not change the DB column names. |
+| **Epic 1 — Migration 0036 must be applied before any lifecycle features work** | Run `node scripts/apply-sql.mjs supabase/migrations/0036_vendor_lifecycle.sql` on a fresh DB. The `vendor_state` enum and all 10 new tables must exist before lifecycle service functions are called. |
 
 ---
 

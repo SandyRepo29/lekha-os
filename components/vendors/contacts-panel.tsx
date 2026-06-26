@@ -31,7 +31,8 @@ export function ContactsPanel({ vendorId, contacts, canEdit }: Props) {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);
-  const [state, formAction, pending] = useActionState<ContactActionState | undefined>(addContactAction, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [state, formAction, pending] = useActionState<ContactActionState | undefined>(addContactAction as any, undefined);
 
   const handleRemove = async (contactId: string) => {
     setRemoving(contactId);

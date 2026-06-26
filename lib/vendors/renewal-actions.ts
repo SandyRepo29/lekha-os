@@ -13,7 +13,7 @@ import type { RenewalRecommendation } from "@/lib/services/vendor-lifecycle/rene
 export type RenewalActionState = { error?: string; ok?: boolean; recommendation?: RenewalRecommendation };
 
 export async function startRenewalAction(
-  _prev: RenewalActionState,
+  _prev: RenewalActionState | undefined,
   formData: FormData
 ): Promise<RenewalActionState> {
   const session = await requireUser();
@@ -79,7 +79,7 @@ export async function startRenewalAction(
 }
 
 export async function finaliseRenewalAction(
-  _prev: RenewalActionState,
+  _prev: RenewalActionState | undefined,
   formData: FormData
 ): Promise<RenewalActionState> {
   const session = await requireUser();

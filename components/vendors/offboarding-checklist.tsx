@@ -61,7 +61,8 @@ interface StepItemProps {
 }
 
 function StepItem({ vendorId, step, row, isNext, canEdit }: StepItemProps) {
-  const [state, formAction, pending] = useActionState<OffboardingActionState | undefined>(completeOffboardingStepAction, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [state, formAction, pending] = useActionState<OffboardingActionState | undefined>(completeOffboardingStepAction as any, undefined);
   const done = row?.completed ?? false;
 
   return (

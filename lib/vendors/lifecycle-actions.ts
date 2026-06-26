@@ -11,7 +11,7 @@ import {
 export type LifecycleActionState = { error?: string; ok?: boolean };
 
 export async function transitionVendorAction(
-  _prev: LifecycleActionState,
+  _prev: LifecycleActionState | undefined,
   formData: FormData
 ): Promise<LifecycleActionState> {
   const session = await requireUser();
