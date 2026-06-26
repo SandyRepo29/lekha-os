@@ -5,6 +5,7 @@ import { CheckCircle2, Circle, AlertTriangle, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { completeOffboardingStepAction } from "@/lib/vendors/offboarding-actions";
+import type { OffboardingActionState } from "@/lib/vendors/offboarding-actions";
 import type { OffboardingStep } from "@/lib/services/vendor-lifecycle/offboarding-service";
 
 const STEP_LABELS: Record<OffboardingStep, string> = {
@@ -60,7 +61,7 @@ interface StepItemProps {
 }
 
 function StepItem({ vendorId, step, row, isNext, canEdit }: StepItemProps) {
-  const [state, formAction, pending] = useActionState(completeOffboardingStepAction, undefined);
+  const [state, formAction, pending] = useActionState<OffboardingActionState | undefined>(completeOffboardingStepAction, undefined);
   const done = row?.completed ?? false;
 
   return (

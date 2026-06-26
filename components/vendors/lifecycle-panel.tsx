@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LifecycleBadge } from "./lifecycle-badge";
 import { transitionVendorAction } from "@/lib/vendors/lifecycle-actions";
+import type { LifecycleActionState } from "@/lib/vendors/lifecycle-actions";
 import {
   VENDOR_STATE_LABELS, VENDOR_STATE_COLORS, getAllowedTransitions, TRANSITION_LABELS, LIFECYCLE_ORDER,
 } from "@/lib/services/vendor-lifecycle/lifecycle-constants";
@@ -33,7 +34,7 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
   const router = useRouter();
   const [selectedTransition, setSelectedTransition] = useState<VendorState | null>(null);
   const [reason, setReason] = useState("");
-  const [state, formAction, pending] = useActionState(transitionVendorAction, undefined);
+  const [state, formAction, pending] = useActionState<LifecycleActionState | undefined>(transitionVendorAction, undefined);
 
   const allowedTransitions = getAllowedTransitions(currentState);
   const currentIndex = LIFECYCLE_ORDER.indexOf(currentState);

@@ -34,7 +34,7 @@ export default async function VendorTimelinePage({ params }: Props) {
     entity_type: e.entity_type,
     entity_id:   e.entity_id,
     metadata:    e.metadata,
-    occurred_at: e.occurred_at,
+    occurred_at: e.created_at,
   }));
 
   return (

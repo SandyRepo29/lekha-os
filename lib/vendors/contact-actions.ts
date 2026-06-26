@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
 import { DomainError } from "@/lib/services/errors";
 import { addContact, updateContact, removeContact } from "@/lib/services/vendor-lifecycle/contact-service";
-import type { ContactType } from "@/lib/repositories/vendor-contacts-repo";
+import type { ContactType } from "@/lib/constants/vendor-contacts";
 
 export type ContactActionState = { error?: string; ok?: boolean };
 

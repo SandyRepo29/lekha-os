@@ -6,6 +6,7 @@ import { Users, Plus, Mail, Phone, Briefcase, Trash2, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { addContactAction, removeContactAction } from "@/lib/vendors/contact-actions";
+import type { ContactActionState } from "@/lib/vendors/contact-actions";
 import { CONTACT_TYPE_LABELS } from "@/lib/constants/vendor-contacts";
 import type { ContactType } from "@/lib/constants/vendor-contacts";
 import type { VendorContact } from "@/lib/repositories/vendor-contacts-repo";
@@ -30,7 +31,7 @@ export function ContactsPanel({ vendorId, contacts, canEdit }: Props) {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);
-  const [state, formAction, pending] = useActionState(addContactAction, undefined);
+  const [state, formAction, pending] = useActionState<ContactActionState | undefined>(addContactAction, undefined);
 
   const handleRemove = async (contactId: string) => {
     setRemoving(contactId);

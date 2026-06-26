@@ -5,6 +5,7 @@ import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Chevr
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { startRenewalAction, finaliseRenewalAction } from "@/lib/vendors/renewal-actions";
+import type { RenewalActionState } from "@/lib/vendors/renewal-actions";
 import type { RenewalRecommendation } from "@/lib/services/vendor-lifecycle/renewal-service";
 
 const RECOMMENDATION_CONFIG: Record<RenewalRecommendation, {
@@ -81,8 +82,8 @@ interface Props {
 }
 
 export function RenewalWorkspace({ vendorId, vendorName, currentState, assessments, trustScore, complianceScore, canEdit }: Props) {
-  const [startState, startAction, startPending] = useActionState(startRenewalAction, undefined);
-  const [finalState, finalAction, finalPending] = useActionState(finaliseRenewalAction, undefined);
+  const [startState, startAction, startPending] = useActionState<RenewalActionState | undefined>(startRenewalAction, undefined);
+  const [finalState, finalAction, finalPending] = useActionState<RenewalActionState | undefined>(finaliseRenewalAction, undefined);
   const [selectedDecision, setSelectedDecision] = useState<RenewalRecommendation | null>(null);
 
   const latestAssessment = assessments[0] ?? null;
