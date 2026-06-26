@@ -1,17 +1,9 @@
 import { sql } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 
-export type ContactType = "primary" | "security" | "privacy_officer" | "legal" | "finance" | "technical" | "escalation";
-
-export const CONTACT_TYPE_LABELS: Record<ContactType, string> = {
-  primary:         "Primary Contact",
-  security:        "Security Contact",
-  privacy_officer: "Privacy Officer",
-  legal:           "Legal Contact",
-  finance:         "Finance Contact",
-  technical:       "Technical Contact",
-  escalation:      "Escalation Contact",
-};
+// Re-export from client-safe constants module
+export type { ContactType } from "@/lib/constants/vendor-contacts";
+export { CONTACT_TYPE_LABELS } from "@/lib/constants/vendor-contacts";
 
 export type VendorContact = {
   id: string;

@@ -6,8 +6,9 @@ import { Users, Plus, Mail, Phone, Briefcase, Trash2, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { addContactAction, removeContactAction } from "@/lib/vendors/contact-actions";
-import { CONTACT_TYPE_LABELS } from "@/lib/repositories/vendor-contacts-repo";
-import type { VendorContact, ContactType } from "@/lib/repositories/vendor-contacts-repo";
+import { CONTACT_TYPE_LABELS } from "@/lib/constants/vendor-contacts";
+import type { ContactType } from "@/lib/constants/vendor-contacts";
+import type { VendorContact } from "@/lib/repositories/vendor-contacts-repo";
 
 const CONTACT_TYPE_COLORS: Record<ContactType, string> = {
   primary:         "bg-blue-500/10 text-blue-400 border-blue-500/20",
