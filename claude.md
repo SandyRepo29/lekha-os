@@ -634,6 +634,42 @@ TOTP MFA, password policies, session governance, device trust, and IP enforcemen
 
 ---
 
+### Sprint EP2-S1 — Platform Foundation ✅ Complete
+
+Shared platform services that power every AUDT module.
+
+**New tables (migration 0037):** platform_activity · platform_comments · comment_reactions · platform_tags · entity_tags · notification_channels · notification_subscriptions
+
+**New tables (migration 0038):** platform_tasks · task_dependencies · platform_attachments · attachment_versions · workflow_triggers · workflow_trigger_runs · approval_delegations
+
+**New tables (migration 0039):** saved_searches · recent_searches · export_jobs · platform_settings · notification_templates · search_suggestions
+
+**New services (lib/services/platform/):**
+- activity-service.ts — publishActivity(), getActivityFeed(), getEntityActivity(), getActivityStats()
+- comment-service.ts — addComment(), getComments(), editComment(), resolveComment(), addReaction()
+- tag-service.ts — createTag(), tagEntity(), getEntityTags(), findOrCreateTag()
+- task-service.ts — createTask(), updateTask(), completeTask(), getOrgTasks(), getMyTasks(), checkSlaBreaches()
+- search-service.ts — search(), getSuggestions(), rebuildSearchIndex(), saveSearch()
+- attachment-service.ts — uploadAttachment(), getEntityAttachments(), addVersion(), getAttachmentDownloadUrl()
+- workflow-trigger-service.ts — fireTrigger(), createTrigger(), getTriggerStats()
+- platform-settings-service.ts — getSetting(), getSettings(), setSetting(), getAllOrgSettings()
+
+**New actions (lib/platform/):** comment-actions.ts · tag-actions.ts · task-actions.ts · search-actions.ts
+
+**New components (components/platform/):** CommentsPanel · TagManager · TaskPanel · ActivityFeed · GlobalSearch · AttachmentPanel · PlatformActivityWidget
+
+**New routes:**
+- /platform/activity — Global activity feed
+- /platform/tasks — Universal task hub
+- /platform/tags — Tag library management
+- /platform/workflows — Workflow trigger management
+- /platform/settings — Platform settings
+- /search — Global search page
+- POST /api/platform/attachments — Upload attachment
+- GET /api/platform/attachments/[id]/download — Download attachment
+
+---
+
 ## 7. App Routes
 
 ```
@@ -1003,6 +1039,16 @@ GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 
 --- Help & Docs ---
 /help                                        Documentation center — all 32 modules, search, grouped left nav (authenticated)
+
+--- Platform Services ---
+/platform/activity                           Global activity feed
+/platform/tasks                              Universal task hub
+/platform/tags                               Tag library management
+/platform/workflows                          Workflow trigger management
+/platform/settings                           Platform settings
+/search                                      Global search page
+POST /api/platform/attachments               Upload attachment (session auth)
+GET /api/platform/attachments/[id]/download  Download attachment (session auth)
 
 --- Platform ---
 /portal/[token]                              Vendor self-service portal (no auth)
@@ -2112,6 +2158,11 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Epic 1 — Timeline events use `db.execute(sql\`...\`)` pattern** | `vendor_timeline` table is not in `lib/db/schema.ts`. All timeline repo functions use raw SQL. Same pattern as Security Command Center tables. |
 | **Epic 1 — Renewal `getRenewalAssessments()` normalizes DB column names** | The DB stores `confidence_pct` and `ai_analysis`, but the component expects `confidence_score` and `ai_rationale`. The service function maps these on read. Do not change the DB column names. |
 | **Epic 1 — Migration 0036 must be applied before any lifecycle features work** | Run `node scripts/apply-sql.mjs supabase/migrations/0036_vendor_lifecycle.sql` on a fresh DB. The `vendor_state` enum and all 10 new tables must exist before lifecycle service functions are called. |
+| **publishActivity() is fire-and-forget** | Never await publishActivity in a request path that can't afford extra latency. It catches all errors internally. Use it liberally in services. |
+| **platform_settings defaults merge** | getSetting() merges org overrides with DEFAULTS map in platform-settings-service.ts. Never store sensitive values (keys, passwords) in platform_settings — use integrations table with encryption instead. |
+| **search_suggestions must be rebuilt** | After bulk data import or migration, call searchService.rebuildSearchIndex(orgId) to populate search_suggestions. New entities added via services are NOT auto-indexed — add publishActivity + upsertSearchSuggestion calls to service create functions as follow-up work. |
+| **Global search route is /search** | Located at app/(app)/search/page.tsx. Not /platform/search — kept short for discoverability. |
+| **Platform pages use p-6 (no layout.tsx)** | /platform/* pages have no layout.tsx — they include their own p-6 padding and space-y-6. Same pattern as CC/Agents modules. |
 
 ---
 
