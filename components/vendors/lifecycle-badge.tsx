@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { VENDOR_STATE_LABELS, VENDOR_STATE_BG } from "@/lib/services/vendor-lifecycle/lifecycle-service";
-import type { VendorState } from "@/lib/services/vendor-lifecycle/lifecycle-service";
+import { VENDOR_STATE_LABELS, VENDOR_STATE_BG } from "@/lib/services/vendor-lifecycle/lifecycle-constants";
+import type { VendorState } from "@/lib/services/vendor-lifecycle/lifecycle-constants";
 
 interface Props {
   state: VendorState | string;

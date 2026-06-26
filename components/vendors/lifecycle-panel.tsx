@@ -9,8 +9,8 @@ import { LifecycleBadge } from "./lifecycle-badge";
 import { transitionVendorAction } from "@/lib/vendors/lifecycle-actions";
 import {
   VENDOR_STATE_LABELS, VENDOR_STATE_COLORS, getAllowedTransitions, TRANSITION_LABELS, LIFECYCLE_ORDER,
-} from "@/lib/services/vendor-lifecycle/lifecycle-service";
-import type { VendorState } from "@/lib/services/vendor-lifecycle/lifecycle-service";
+} from "@/lib/services/vendor-lifecycle/lifecycle-constants";
+import type { VendorState } from "@/lib/services/vendor-lifecycle/lifecycle-constants";
 
 interface HistoryRow {
   id: string;
