@@ -1,14 +1,12 @@
 import {
   insertTask,
-  updateTaskById,
-  deleteTaskById,
-  findTaskById,
-  findTasksByOrg,
-  findTasksByEntity,
-  findTasksByAssignee,
-  getDashboardCounts,
+  updateTask as repoUpdateTask,
+  deleteTask as repoDeleteTask,
+  findOrgTasks,
+  findEntityTasks,
+  findMyTasks,
+  countOrgTasks,
   markSlaBreached,
-  findSlaBreachCandidates,
 } from "@/lib/repositories/platform/task-repo";
 import { publishActivity } from "@/lib/services/platform/activity-service";
 import { DomainError } from "@/lib/services/errors";
@@ -44,7 +42,6 @@ export async function createTask(params: {
     description: params.description,
     entityType: params.entityType,
     entityId: params.entityId,
-    entityName: params.entityName,
     priority,
     slaHours,
     assignedTo: params.assignedTo,
@@ -59,7 +56,8 @@ export async function createTask(params: {
     orgId: params.orgId,
     actorId: params.createdBy,
     actorName: params.createdByName,
-    verb: "created",
+    eventType: "task_created",
+    title: `Task created: ${params.title}`,
     entityType: "task",
     entityId: result.id,
     entityName: params.title,
@@ -82,12 +80,9 @@ export async function updateTask(
     dueDate: Date;
   }>
 ): Promise<void> {
-  const task = await findTaskById(orgId, taskId);
-  if (!task) throw new DomainError("Task not found");
-
   const patch: Record<string, unknown> = { ...values };
 
-  if (values.status === "completed" && task.status !== "completed") {
+  if (values.status === "completed") {
     patch.completedAt = new Date();
   }
 
@@ -95,14 +90,14 @@ export async function updateTask(
     patch.slaHours = SLA_HOURS[values.priority];
   }
 
-  await updateTaskById(orgId, taskId, patch);
+  await repoUpdateTask(orgId, taskId, patch as Parameters<typeof repoUpdateTask>[2]);
 
   await publishActivity({
     orgId,
-    verb: "updated",
+    eventType: "task_updated",
+    title: `Task updated`,
     entityType: "task",
     entityId: taskId,
-    entityName: task.title,
     metadata: { changes: Object.keys(values) },
   }).catch(() => {});
 }
@@ -112,11 +107,7 @@ export async function completeTask(
   taskId: string,
   actorName?: string
 ): Promise<void> {
-  const task = await findTaskById(orgId, taskId);
-  if (!task) throw new DomainError("Task not found");
-  if (task.status === "completed") throw new DomainError("Task is already completed");
-
-  await updateTaskById(orgId, taskId, {
+  await repoUpdateTask(orgId, taskId, {
     status: "completed",
     completedAt: new Date(),
   });
@@ -124,25 +115,22 @@ export async function completeTask(
   await publishActivity({
     orgId,
     actorName,
-    verb: "completed",
+    eventType: "task_completed",
+    title: "Task completed",
     entityType: "task",
     entityId: taskId,
-    entityName: task.title,
   }).catch(() => {});
 }
 
 export async function deleteTask(orgId: string, taskId: string): Promise<void> {
-  const task = await findTaskById(orgId, taskId);
-  if (!task) throw new DomainError("Task not found");
-
-  await deleteTaskById(orgId, taskId);
+  await repoDeleteTask(orgId, taskId);
 
   await publishActivity({
     orgId,
-    verb: "deleted",
+    eventType: "task_deleted",
+    title: "Task deleted",
     entityType: "task",
     entityId: taskId,
-    entityName: task.title,
   }).catch(() => {});
 }
 
@@ -157,7 +145,7 @@ export async function getOrgTasks(
     overdue?: boolean;
   }
 ) {
-  return findTasksByOrg(orgId, opts);
+  return findOrgTasks(orgId, opts);
 }
 
 export async function getEntityTasks(
@@ -165,11 +153,11 @@ export async function getEntityTasks(
   entityType: string,
   entityId: string
 ) {
-  return findTasksByEntity(orgId, entityType, entityId);
+  return findEntityTasks(orgId, entityType, entityId);
 }
 
 export async function getMyTasks(orgId: string, userId: string) {
-  return findTasksByAssignee(orgId, userId);
+  return findMyTasks(orgId, userId);
 }
 
 export async function getTaskDashboard(orgId: string): Promise<{
@@ -178,15 +166,18 @@ export async function getTaskDashboard(orgId: string): Promise<{
   overdue: number;
   completedToday: number;
 }> {
-  return getDashboardCounts(orgId);
+  return countOrgTasks(orgId);
 }
 
 export async function checkSlaBreaches(orgId: string): Promise<number> {
-  const now = new Date();
-  const candidates = await findSlaBreachCandidates(orgId, now);
-  if (!candidates.length) return 0;
+  const overdueTasks = await findOrgTasks(orgId, { overdue: true });
+  if (!overdueTasks.length) return 0;
 
-  const ids = candidates.map((t: { id: string }) => t.id);
-  await markSlaBreached(orgId, ids);
-  return ids.length;
+  const nonBreached = overdueTasks.filter((t) => !t.sla_breached);
+  for (const task of nonBreached) {
+    await markSlaBreached(task.id).catch(() => {});
+  }
+  return nonBreached.length;
 }
+
+export { DomainError };

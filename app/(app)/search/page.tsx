@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { GlobalSearch } from "@/components/platform/global-search";
+import GlobalSearch from "@/components/platform/global-search";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

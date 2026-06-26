@@ -1,7 +1,8 @@
 import {
   insertActivity,
-  findActivities,
-  countActivities,
+  findOrgActivity,
+  findEntityActivity,
+  countOrgActivity,
 } from "@/lib/repositories/platform/activity-repo";
 import { DomainError } from "@/lib/services/errors";
 
@@ -50,7 +51,7 @@ export async function getActivityFeed(
     to?: Date;
   }
 ) {
-  return findActivities(orgId, {
+  return findOrgActivity(orgId, {
     entityType: opts?.entityType,
     entityId: opts?.entityId,
     actorId: opts?.actorId,
@@ -68,7 +69,7 @@ export async function getEntityActivity(
   entityId: string,
   limit = 20
 ) {
-  return findActivities(orgId, { entityType, entityId, limit, offset: 0 });
+  return findEntityActivity(orgId, entityType, entityId, limit);
 }
 
 export async function getActivityStats(orgId: string): Promise<{
@@ -77,11 +78,12 @@ export async function getActivityStats(orgId: string): Promise<{
   byEntityType: Record<string, number>;
   recentActors: { actor_name: string; count: number }[];
 }> {
-  const [total, last24h, all] = await Promise.all([
-    countActivities(orgId, {}),
-    countActivities(orgId, { from: new Date(Date.now() - 86_400_000) }),
-    findActivities(orgId, { limit: 1000, offset: 0 }),
+  const since24h = new Date(Date.now() - 86_400_000);
+  const [total, all] = await Promise.all([
+    countOrgActivity(orgId),
+    findOrgActivity(orgId, { limit: 1000, offset: 0 }),
   ]);
+  const last24h = all.filter((r) => new Date(r.created_at) >= since24h).length;
 
   const byEntityType: Record<string, number> = {};
   const actorCounts: Record<string, number> = {};

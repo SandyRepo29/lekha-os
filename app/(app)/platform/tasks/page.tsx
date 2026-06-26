@@ -116,7 +116,8 @@ interface TaskRowProps {
 }
 
 async function CompleteButton({ taskId }: { taskId: string }) {
-  const action = completeTaskAction.bind(null, taskId);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const action = completeTaskAction.bind(null, taskId) as any;
   return (
     <form action={action}>
       <button
@@ -130,7 +131,8 @@ async function CompleteButton({ taskId }: { taskId: string }) {
 }
 
 async function DeleteButton({ taskId }: { taskId: string }) {
-  const action = deleteTaskAction.bind(null, taskId);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const action = deleteTaskAction.bind(null, taskId) as any;
   return (
     <form action={action}>
       <button

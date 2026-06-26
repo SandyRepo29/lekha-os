@@ -11,7 +11,11 @@ export async function searchAction(
   try {
     const session = await requireUser();
     if (!session.org) return { error: "No organization found" };
-    const data = await searchService.search(session.org.id, query, entityTypes);
+    const data = await searchService.search(
+      session.org.id,
+      query,
+      entityTypes ? { entityTypes } : undefined
+    );
     return { results: data.results, total: data.total };
   } catch (err: any) {
     return { error: err.message ?? "Search failed" };
@@ -41,7 +45,7 @@ export async function rebuildSearchIndexAction(): Promise<{
     if (!isAdminOrOwner(session.org.role)) {
       return { error: "Admin or owner role required" };
     }
-    const indexed = await searchService.rebuildSearchIndex(session.org.id);
+    const { indexed } = await searchService.rebuildSearchIndex(session.org.id);
     return { indexed };
   } catch (err: any) {
     return { error: err.message ?? "Failed to rebuild search index" };
@@ -56,8 +60,14 @@ export async function saveSearchAction(
   try {
     const session = await requireUser();
     if (!session.org) return { error: "No organization found" };
-    const id = await searchService.saveSearch(session.org.id, session.id, name, query, entityTypes);
-    return { id };
+    const result = await searchService.saveSearch({
+      orgId: session.org.id,
+      userId: session.id,
+      name,
+      query,
+      entityTypes,
+    });
+    return { id: result.id };
   } catch (err: any) {
     return { error: err.message ?? "Failed to save search" };
   }

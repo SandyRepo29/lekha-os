@@ -106,8 +106,9 @@ function GlobalSearchInner() {
 
   useEffect(() => {
     getRecentSearchesAction().then((data) => {
-      if (data?.recent) setRecentSearches(data.recent);
-      if (data?.saved) setSavedSearches(data.saved);
+      if (data?.searches) {
+        setRecentSearches((data.searches as any[]).map((s: any) => s.query ?? s));
+      }
     });
   }, []);
 
@@ -118,10 +119,8 @@ function GlobalSearchInner() {
         return;
       }
       startTransition(async () => {
-        const data = await searchAction({
-          query: q,
-          entity_type: filter === "all" ? undefined : filter,
-        });
+        const entityTypes = filter === "all" ? undefined : [filter];
+        const data = await searchAction(q, entityTypes);
         setResults(data?.results ?? []);
       });
     },
@@ -152,10 +151,8 @@ function GlobalSearchInner() {
   const handleSaveSearch = async () => {
     if (!query.trim()) return;
     setSavingSearch(true);
-    await saveSearchAction({ query });
+    await saveSearchAction(query, query);
     setSavingSearch(false);
-    const data = await getRecentSearchesAction();
-    if (data?.saved) setSavedSearches(data.saved);
   };
 
   const handleRecentClick = (q: string) => {

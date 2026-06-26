@@ -1,13 +1,12 @@
 import {
-  createTag as repoCreateTag,
+  insertTag as repoCreateTag,
   updateTag as repoUpdateTag,
   deleteTag as repoDeleteTag,
-  getOrgTags as repoGetOrgTags,
-  tagEntity as repoTagEntity,
-  untagEntity as repoUntagEntity,
-  getEntityTags as repoGetEntityTags,
+  findOrgTags as repoGetOrgTags,
+  addTagToEntity as repoTagEntity,
+  removeTagFromEntity as repoUntagEntity,
+  findEntityTags as repoGetEntityTags,
   searchTags as repoSearchTags,
-  findTagByName,
   type TagRow,
 } from "@/lib/repositories/platform/tag-repo";
 import { DomainError } from "@/lib/services/errors";
@@ -29,19 +28,16 @@ function validateColor(color: string): void {
   }
 }
 
-export async function createTag(params: {
-  orgId: string;
-  name: string;
-  color?: string;
-  description?: string;
-  createdBy?: string;
-}): Promise<{ id: string }> {
+export async function createTag(
+  orgId: string,
+  params: { name: string; color?: string; description?: string; createdBy?: string }
+): Promise<{ id: string }> {
   validateName(params.name);
   if (params.color !== undefined) {
     validateColor(params.color);
   }
   return repoCreateTag({
-    orgId: params.orgId,
+    orgId,
     name: params.name.trim(),
     color: params.color,
     description: params.description,
@@ -72,23 +68,23 @@ export async function getOrgTags(orgId: string): Promise<TagRow[]> {
   return repoGetOrgTags(orgId);
 }
 
-export async function tagEntity(params: {
-  orgId: string;
-  tagId: string;
-  entityType: string;
-  entityId: string;
-  taggedBy?: string;
-}): Promise<void> {
-  await repoTagEntity(params);
+export async function tagEntity(
+  orgId: string,
+  taggedBy: string,
+  tagId: string,
+  entityType: string,
+  entityId: string
+): Promise<void> {
+  await repoTagEntity({ orgId, tagId, entityType, entityId, taggedBy });
 }
 
-export async function untagEntity(params: {
-  orgId: string;
-  tagId: string;
-  entityType: string;
-  entityId: string;
-}): Promise<void> {
-  await repoUntagEntity(params);
+export async function untagEntity(
+  orgId: string,
+  tagId: string,
+  entityType: string,
+  entityId: string
+): Promise<void> {
+  await repoUntagEntity({ orgId, tagId, entityType, entityId });
 }
 
 export async function getEntityTags(
@@ -114,7 +110,8 @@ export async function findOrCreateTag(
     validateColor(color);
   }
   const trimmed = name.trim();
-  const existing = await findTagByName(orgId, trimmed);
+  const matches = await repoSearchTags(orgId, trimmed);
+  const existing = matches.find((t) => t.name.toLowerCase() === trimmed.toLowerCase());
   if (existing) {
     return { id: existing.id };
   }

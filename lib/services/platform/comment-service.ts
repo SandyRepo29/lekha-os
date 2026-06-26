@@ -1,11 +1,11 @@
 import {
   insertComment,
   findComments,
-  updateCommentBody,
-  markCommentResolved,
-  deleteCommentById,
-  upsertReaction,
-  deleteReaction,
+  updateComment as repoUpdateComment,
+  resolveComment as repoResolveComment,
+  deleteComment as repoDeleteComment,
+  addReaction as repoAddReaction,
+  removeReaction as repoRemoveReaction,
   countComments,
 } from "@/lib/repositories/platform/comment-repo";
 import { DomainError } from "@/lib/services/errors";
@@ -54,6 +54,7 @@ export async function addComment(params: {
     actorId: params.authorId,
     actorName: params.authorName,
     eventType: "commented",
+    title: `Comment added${params.entityName ? ` on ${params.entityName}` : ""}`,
     metadata: { commentId: result.id },
   }).catch(() => {});
 
@@ -74,7 +75,7 @@ export async function editComment(
   body: string
 ): Promise<void> {
   validateBody(body);
-  await updateCommentBody(orgId, commentId, body.trim());
+  await repoUpdateComment(orgId, commentId, body.trim());
 }
 
 export async function resolveComment(
@@ -82,14 +83,14 @@ export async function resolveComment(
   commentId: string,
   resolvedBy: string
 ): Promise<void> {
-  await markCommentResolved(orgId, commentId, resolvedBy);
+  await repoResolveComment(orgId, commentId, resolvedBy);
 }
 
 export async function deleteComment(
   orgId: string,
   commentId: string
 ): Promise<void> {
-  await deleteCommentById(orgId, commentId);
+  await repoDeleteComment(orgId, commentId);
 }
 
 export async function addReaction(
@@ -98,7 +99,7 @@ export async function addReaction(
   emoji: string
 ): Promise<void> {
   validateEmoji(emoji);
-  await upsertReaction(commentId, userId, emoji);
+  await repoAddReaction(commentId, userId, emoji);
 }
 
 export async function removeReaction(
@@ -107,7 +108,7 @@ export async function removeReaction(
   emoji: string
 ): Promise<void> {
   validateEmoji(emoji);
-  await deleteReaction(commentId, userId, emoji);
+  await repoRemoveReaction(commentId, userId, emoji);
 }
 
 export async function getCommentCount(

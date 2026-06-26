@@ -50,8 +50,9 @@ export default async function PlatformActivityPage({ searchParams }: Props) {
     getActivityStats(orgId),
   ]);
 
-  const topEntityType = Object.entries(stats.byEntityType).sort(
-    (a, b) => b[1] - a[1]
+  const byType = stats.byEntityType as Record<string, number>;
+  const topEntityType = Object.entries(byType).sort(
+    (a, b) => (b[1] as number) - (a[1] as number)
   )[0]?.[0] ?? "&#8212;";
 
   const activeUsers = stats.recentActors.length;

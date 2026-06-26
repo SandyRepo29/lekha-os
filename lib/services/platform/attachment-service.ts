@@ -1,15 +1,19 @@
 import {
   insertAttachment,
-  findAttachmentsByEntity,
+  findEntityAttachments,
   findAttachmentById,
-  deleteAttachmentById,
-  insertAttachmentVersion,
-  getAttachmentVersions,
-  bumpAttachmentVersion,
-  countAttachmentsByEntity,
+  deleteAttachment as repoDeleteAttachment,
+  addAttachmentVersion,
+  findAttachmentVersions,
+  updateAttachmentLatest,
+  countEntityAttachments,
 } from "@/lib/repositories/platform/attachment-repo";
-import { getStorageProvider } from "@/lib/providers/storage";
-import publishActivity from "@/lib/services/platform/activity-service";
+import {
+  uploadFile,
+  removeObjects,
+  createSignedUrl,
+} from "@/lib/storage/server";
+import { publishActivity } from "@/lib/services/platform/activity-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function uploadAttachment(params: {
@@ -41,10 +45,7 @@ export async function uploadAttachment(params: {
 
   const storagePath = `attachments/${orgId}/${entityType}/${entityId}/${Date.now()}_${fileName}`;
 
-  const storage = getStorageProvider();
-  await storage.uploadFile(storagePath, fileBuffer, {
-    contentType: contentType ?? "application/octet-stream",
-  });
+  await uploadFile(storagePath, fileBuffer, contentType ?? "application/octet-stream");
 
   const record = await insertAttachment({
     orgId,
@@ -64,6 +65,7 @@ export async function uploadAttachment(params: {
     entityId,
     entityName: entityName ?? entityId,
     eventType: "attachment_added",
+    title: `Attachment uploaded: ${fileName}`,
     actorId: uploadedBy,
     actorName: uploadedByName,
     metadata: { fileName, attachmentId: record.id },
@@ -77,7 +79,7 @@ export async function getEntityAttachments(
   entityType: string,
   entityId: string
 ) {
-  return findAttachmentsByEntity(orgId, entityType, entityId);
+  return findEntityAttachments(orgId, entityType, entityId);
 }
 
 export async function getAttachment(orgId: string, attachmentId: string) {
@@ -97,8 +99,8 @@ export async function getAttachmentDownloadUrl(
     throw new DomainError("Attachment not found");
   }
 
-  const storage = getStorageProvider();
-  const url = await storage.generateSignedUrl(attachment.storagePath, 15 * 60);
+  const url = await createSignedUrl(attachment.storage_path, 15 * 60);
+  if (!url) throw new DomainError("Could not generate download URL");
   return url;
 }
 
@@ -110,36 +112,34 @@ export async function addVersion(params: {
   uploadedBy?: string;
   changeNote?: string;
 }): Promise<void> {
-  const { orgId, attachmentId, fileBuffer, fileName, uploadedBy, changeNote } =
-    params;
+  const { orgId, attachmentId, fileBuffer, fileName, uploadedBy, changeNote } = params;
 
   const attachment = await findAttachmentById(orgId, attachmentId);
   if (!attachment) {
     throw new DomainError("Attachment not found");
   }
 
-  const newVersionNumber = (attachment.versionNumber ?? 1) + 1;
-  const storagePath = `attachments/${orgId}/${attachment.entityType}/${attachment.entityId}/${Date.now()}_${fileName}`;
+  const newVersion = (attachment.version ?? 1) + 1;
+  const storagePath = `attachments/${orgId}/${attachment.entity_type}/${attachment.entity_id}/${Date.now()}_${fileName}`;
 
-  const storage = getStorageProvider();
-  await storage.uploadFile(storagePath, fileBuffer, {
-    contentType: attachment.contentType ?? "application/octet-stream",
-  });
-
-  await insertAttachmentVersion({
-    attachmentId,
-    orgId,
-    versionNumber: newVersionNumber,
+  await uploadFile(
     storagePath,
-    fileName,
+    fileBuffer,
+    attachment.content_type ?? "application/octet-stream"
+  );
+
+  await addAttachmentVersion({
+    attachmentId,
+    version: newVersion,
+    storagePath,
     uploadedBy,
     changeNote,
   });
 
-  await bumpAttachmentVersion(orgId, attachmentId, newVersionNumber, storagePath, fileName);
+  await updateAttachmentLatest(orgId, attachmentId);
 }
 
-export async function deleteAttachment(
+export async function deleteAttachmentById(
   orgId: string,
   attachmentId: string,
   actorName?: string
@@ -149,20 +149,24 @@ export async function deleteAttachment(
     throw new DomainError("Attachment not found");
   }
 
-  const storage = getStorageProvider();
-  await storage.deleteFile(attachment.storagePath).catch(() => {});
+  await removeObjects([attachment.storage_path]).catch(() => {});
 
-  await deleteAttachmentById(orgId, attachmentId);
+  await repoDeleteAttachment(orgId, attachmentId);
 
   await publishActivity({
     orgId,
-    entityType: attachment.entityType,
-    entityId: attachment.entityId,
-    entityName: attachment.entityId,
+    entityType: attachment.entity_type,
+    entityId: attachment.entity_id,
+    entityName: attachment.entity_id,
     eventType: "attachment_removed",
+    title: `Attachment removed: ${attachment.file_name}`,
     actorName,
-    metadata: { fileName: attachment.fileName, attachmentId },
+    metadata: { fileName: attachment.file_name, attachmentId },
   }).catch(() => {});
+}
+
+export async function getAttachmentVersions(orgId: string, attachmentId: string) {
+  return findAttachmentVersions(orgId, attachmentId);
 }
 
 export async function getAttachmentCount(
@@ -170,5 +174,5 @@ export async function getAttachmentCount(
   entityType: string,
   entityId: string
 ): Promise<number> {
-  return countAttachmentsByEntity(orgId, entityType, entityId);
+  return countEntityAttachments(orgId, entityType, entityId);
 }

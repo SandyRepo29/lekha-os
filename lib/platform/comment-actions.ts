@@ -9,18 +9,12 @@ export type CommentActionState = { error?: string; ok?: boolean };
 
 function getEntityPath(entityType: string, entityId: string): string {
   switch (entityType) {
-    case "vendor":
-      return `/vendors/${entityId}`;
-    case "risk":
-      return `/risks/${entityId}`;
-    case "audit":
-      return `/audits/${entityId}`;
-    case "contract":
-      return `/contract-governance/${entityId}`;
-    case "issue":
-      return `/issue-hub/${entityId}`;
-    default:
-      return "/";
+    case "vendor": return `/vendors/${entityId}`;
+    case "risk":   return `/risks/${entityId}`;
+    case "audit":  return `/audits/${entityId}`;
+    case "contract": return `/contract-governance/${entityId}`;
+    case "issue":  return `/issue-hub/${entityId}`;
+    default:       return "/";
   }
 }
 
@@ -31,26 +25,23 @@ export async function addCommentAction(
   try {
     const session = await requireUser();
     const orgId = session.org!.id;
-    const userId = session.id;
-
     const entityType = formData.get("entityType") as string;
-    const entityId = formData.get("entityId") as string;
-    const entityName = formData.get("entityName") as string | undefined;
-    const body = formData.get("body") as string;
-    const parentId = formData.get("parentId") as string | undefined;
+    const entityId   = formData.get("entityId")   as string;
+    const entityName = (formData.get("entityName") as string) || undefined;
+    const body       = formData.get("body")        as string;
+    const parentId   = (formData.get("parentId")   as string) || undefined;
 
-    if (!entityType || !entityId || !body?.trim()) {
+    if (!entityType || !entityId || !body?.trim())
       return { error: "Entity type, entity ID, and comment body are required." };
-    }
 
     await commentService.addComment({
       orgId,
-      userId,
+      authorId: session.id,
       entityType,
       entityId,
-      entityName: entityName ?? undefined,
+      entityName,
       body: body.trim(),
-      parentId: parentId ?? undefined,
+      parentId,
     });
 
     revalidatePath(getEntityPath(entityType, entityId));
@@ -66,19 +57,16 @@ export async function editCommentAction(
   formData: FormData
 ): Promise<CommentActionState> {
   try {
-    const session = await requireUser();
-    const userId = session.id;
-
-    const commentId = formData.get("commentId") as string;
-    const body = formData.get("body") as string;
+    const session    = await requireUser();
+    const orgId      = session.org!.id;
+    const commentId  = formData.get("commentId") as string;
+    const body       = formData.get("body")       as string;
     const entityType = formData.get("entityType") as string;
-    const entityId = formData.get("entityId") as string;
+    const entityId   = formData.get("entityId")   as string;
 
-    if (!commentId || !body?.trim()) {
-      return { error: "Comment ID and body are required." };
-    }
+    if (!commentId || !body?.trim()) return { error: "Comment ID and body are required." };
 
-    await commentService.editComment({ commentId, userId, body: body.trim() });
+    await commentService.editComment(orgId, commentId, body.trim());
 
     revalidatePath(getEntityPath(entityType, entityId));
     return { ok: true };
@@ -95,10 +83,7 @@ export async function resolveCommentAction(
 ): Promise<{ error?: string }> {
   try {
     const session = await requireUser();
-    const userId = session.id;
-
-    await commentService.resolveComment({ commentId, userId });
-
+    await commentService.resolveComment(session.org!.id, commentId, session.id);
     revalidatePath(getEntityPath(entityType, entityId));
     return {};
   } catch (err) {
@@ -114,10 +99,7 @@ export async function deleteCommentAction(
 ): Promise<{ error?: string }> {
   try {
     const session = await requireUser();
-    const userId = session.id;
-
-    await commentService.deleteComment({ commentId, userId });
-
+    await commentService.deleteComment(session.org!.id, commentId);
     revalidatePath(getEntityPath(entityType, entityId));
     return {};
   } catch (err) {
@@ -132,9 +114,7 @@ export async function addReactionAction(
 ): Promise<{ error?: string }> {
   try {
     const session = await requireUser();
-    const userId = session.id;
-
-    await commentService.addReaction({ commentId, userId, emoji });
+    await commentService.addReaction(commentId, session.id, emoji);
     return {};
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };
@@ -148,9 +128,7 @@ export async function removeReactionAction(
 ): Promise<{ error?: string }> {
   try {
     const session = await requireUser();
-    const userId = session.id;
-
-    await commentService.removeReaction({ commentId, userId, emoji });
+    await commentService.removeReaction(commentId, session.id, emoji);
     return {};
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };

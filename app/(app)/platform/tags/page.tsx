@@ -28,9 +28,10 @@ export default async function TagsPage() {
   const tags = session.org ? await getOrgTags(session.org.id) : [];
   const canManage = !!session.org && isAdminOrOwner(session.org.role);
 
-  // Bind server actions so they work as plain form actions (removes _prev arg)
-  const boundCreate = createTagAction.bind(null, undefined);
-  const boundUpdate = updateTagAction.bind(null, undefined);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const boundCreate = createTagAction.bind(null, undefined) as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const boundUpdate = updateTagAction.bind(null, undefined) as any;
 
   return (
     <div className="p-6 space-y-6">

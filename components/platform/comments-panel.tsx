@@ -12,7 +12,17 @@ import {
   deleteCommentAction,
   addReactionAction,
 } from "@/lib/platform/comment-actions";
-import type { CommentActionState, CommentRow } from "@/lib/platform/comment-actions";
+import type { CommentActionState } from "@/lib/platform/comment-actions";
+
+export type CommentRow = {
+  id: string; organization_id?: string; entity_type: string; entity_id: string;
+  parent_id: string | null; author_id: string | null; author_name: string | null;
+  body: string; is_edited: boolean; is_resolved: boolean;
+  resolved_by?: string | null; resolved_at?: Date | null;
+  created_at: Date | string; updated_at?: Date | string;
+  reactions?: Record<string, number>;
+  replies?: CommentRow[];
+};
 
 interface Props {
   entityType: string;
@@ -111,18 +121,24 @@ function CommentItem({
 
   async function handleDelete() {
     if (!confirm("Delete this comment?")) return;
-    await deleteCommentAction(comment.id);
+    await deleteCommentAction(comment.id, entityType, entityId);
     onRefresh();
   }
 
   async function handleResolve() {
-    await resolveCommentAction(comment.id);
+    await resolveCommentAction(comment.id, entityType, entityId);
     onRefresh();
   }
 
   async function handleEdit(e: React.FormEvent) {
     e.preventDefault();
-    await editCommentAction(comment.id, editBody);
+    // Edit via addDispatch using FormData approach — entityType/entityId needed server-side
+    const fd = new FormData();
+    fd.append("commentId", comment.id);
+    fd.append("body", editBody);
+    fd.append("entityType", entityType);
+    fd.append("entityId", entityId);
+    await (editCommentAction as any)(undefined, fd);
     setEditing(false);
     onRefresh();
   }
@@ -308,7 +324,7 @@ function CommentItem({
       {/* Nested replies */}
       {comment.replies && comment.replies.length > 0 && (
         <div style={{ marginTop: "0.5rem" }}>
-          {comment.replies.map((reply) => (
+          {comment.replies.map((reply: CommentRow) => (
             <CommentItem
               key={reply.id}
               comment={reply}

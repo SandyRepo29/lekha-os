@@ -23,14 +23,14 @@ export async function POST(request: NextRequest) {
     const result = await attachmentService.uploadAttachment({
       orgId,
       uploadedBy: session.id,
-      file: buffer,
+      fileBuffer: buffer,
       fileName: file.name,
       contentType: file.type,
       fileSize: file.size,
       entityType,
       entityId,
-      entityName,
-      description,
+      entityName: entityName ?? undefined,
+      description: description ?? undefined,
     });
 
     return NextResponse.json({ id: result.id, storagePath: result.storagePath });
