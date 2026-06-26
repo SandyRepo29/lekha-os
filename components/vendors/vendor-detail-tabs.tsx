@@ -129,6 +129,9 @@ export function VendorDetailTabs({
       count: openRequests > 0 ? openRequests : undefined,
       badge: openRequests > 0 ? "warn" as const : undefined,
     },
+    { id: "lifecycle", label: "Lifecycle" },
+    { id: "contacts",  label: "Contacts" },
+    { id: "timeline",  label: "Timeline" },
   ];
 
   return (
@@ -687,6 +690,71 @@ export function VendorDetailTabs({
                 <Card className="p-5">
                   <VendorNotes vendorId={vendor.id} notes={vendor.notes} />
                 </Card>
+              </div>
+            </div>
+          )}
+
+          {/* ──── LIFECYCLE TAB ──── */}
+          {activeTab === "lifecycle" && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/5 p-4">
+                <p className="text-sm text-[var(--color-blue)]">
+                  Manage the full vendor relationship lifecycle &#8212; transitions, approvals, and history.
+                </p>
+                <Link href={`/vendors/${vendor.id}/lifecycle`}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-blue)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 transition-opacity">
+                  Open Lifecycle Manager <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Link href={`/vendors/${vendor.id}/lifecycle`}
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  <Activity className="h-5 w-5 text-indigo-400" />
+                  <span className="text-sm font-semibold text-[var(--color-ink)]">Lifecycle</span>
+                  <span className="text-xs text-[var(--color-ink-faint)]">View and transition lifecycle states</span>
+                </Link>
+                <Link href={`/vendors/${vendor.id}/renewal`}
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  <Monitor className="h-5 w-5 text-emerald-400" />
+                  <span className="text-sm font-semibold text-[var(--color-ink)]">Renewal</span>
+                  <span className="text-xs text-[var(--color-ink-faint)]">AI renewal assessment and decisions</span>
+                </Link>
+                <Link href={`/vendors/${vendor.id}/offboarding`}
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  <AlertTriangle className="h-5 w-5 text-red-400" />
+                  <span className="text-sm font-semibold text-[var(--color-ink)]">Offboarding</span>
+                  <span className="text-xs text-[var(--color-ink-faint)]">9-step offboarding checklist</span>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* ──── CONTACTS TAB ──── */}
+          {activeTab === "contacts" && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+                <p className="text-sm text-[var(--color-ink-faint)]">
+                  Manage vendor contacts across all relationship types &#8212; primary, security, legal, finance, and more.
+                </p>
+                <Link href={`/vendors/${vendor.id}/contacts`}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors">
+                  Manage contacts <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* ──── TIMELINE TAB ──── */}
+          {activeTab === "timeline" && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+                <p className="text-sm text-[var(--color-ink-faint)]">
+                  Complete chronological history of all governance events for this vendor.
+                </p>
+                <Link href={`/vendors/${vendor.id}/timeline`}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors">
+                  View full timeline <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             </div>
           )}
