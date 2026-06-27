@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
+import { logger, generateCorrelationId } from "@/lib/logger";
 
 /**
  * Next.js proxy (formerly "middleware"). Runs on every matched request.
@@ -21,8 +22,23 @@ const PUBLIC_ROUTES = ["/", "/login", "/signup", "/verify/", "/api/health"];
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // 1. API v1 routes — skip entirely
-  if (pathname.startsWith("/api/v1/")) return;
+  // Attach a correlation ID to every request so logs can be traced end-to-end.
+  const correlationId = generateCorrelationId();
+  logger.info("request", {
+    method: request.method,
+    path: pathname,
+    correlationId,
+  });
+
+  // Propagate the correlation ID to downstream handlers via a request header.
+  // Next.js middleware can clone request headers via NextResponse.next().
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-correlation-id", correlationId);
+
+  // 1. API v1 routes — skip entirely (but forward the correlation header)
+  if (pathname.startsWith("/api/v1/")) {
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
 
   // 2. Public routes — skip enforcement
   if (PUBLIC_ROUTES.some(p => pathname === p || pathname.startsWith(p))) {

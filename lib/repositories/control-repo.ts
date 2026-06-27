@@ -1,4 +1,4 @@
-import { and, eq, desc, count } from "drizzle-orm";
+import { and, eq, desc, count, isNull } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { controls } from "@/lib/db/schema";
 import type { Control } from "@/lib/db/schema";
@@ -46,7 +46,8 @@ export async function findByFramework(
     .where(
       and(
         eq(controls.organizationId, orgId),
-        eq(controls.frameworkId, frameworkId)
+        eq(controls.frameworkId, frameworkId),
+        isNull(controls.deletedAt)
       )
     )
     .orderBy(controls.controlRef);
@@ -56,7 +57,7 @@ export async function findById(orgId: string, id: string): Promise<Control | nul
   const [row] = await db
     .select()
     .from(controls)
-    .where(and(eq(controls.organizationId, orgId), eq(controls.id, id)))
+    .where(and(eq(controls.organizationId, orgId), eq(controls.id, id), isNull(controls.deletedAt)))
     .limit(1);
   return row ?? null;
 }
@@ -102,7 +103,8 @@ export async function countByStatus(
     .where(
       and(
         eq(controls.organizationId, orgId),
-        eq(controls.frameworkId, frameworkId)
+        eq(controls.frameworkId, frameworkId),
+        isNull(controls.deletedAt)
       )
     )
     .groupBy(controls.status);

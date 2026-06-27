@@ -18,6 +18,8 @@ import { VendorFilters } from "@/components/vendors/vendor-filters";
 import { VendorImportButton } from "@/components/vendors/vendor-import-button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { parseNaturalLanguageSearch, isNaturalLanguageQuery, type NLSearchFilters } from "@/lib/services/nl-search-service";
+import { getUsageWarnings } from "@/lib/billing/usage";
+import { UsageWarningBanner } from "@/components/billing/usage-warning-banner";
 import { db } from "@/lib/db";
 import { contracts, auditFindings } from "@/lib/db/schema";
 import { eq, and, lt, gte, sql } from "drizzle-orm";
@@ -58,6 +60,7 @@ export default async function VendorsPage({
   let totalPages = 1;
   let contractsExpiring = 0;
   let openFindings = 0;
+  let usageWarnings: Awaited<ReturnType<typeof getUsageWarnings>> = [];
 
   if (session.demo || !session.org) {
     vendors = demoVendors.map((v, i) => ({
@@ -68,13 +71,15 @@ export default async function VendorsPage({
     }));
     total = vendors.length; totalPages = 1;
   } else {
-    const [result, extra] = await Promise.all([
+    const [result, extra, warnings] = await Promise.all([
       listVendorsPaged(session.org.id, page, PAGE_SIZE),
       getExtraMetrics(session.org.id),
+      getUsageWarnings(session.org.id),
     ]);
     vendors = result.vendors; total = result.total; totalPages = result.totalPages;
     contractsExpiring = extra.contractsExpiring;
     openFindings = extra.openFindings;
+    usageWarnings = warnings;
   }
 
   const avgScore = vendors.length ? Math.round(vendors.reduce((n, v) => n + v.score, 0) / vendors.length) : 0;
@@ -91,6 +96,7 @@ export default async function VendorsPage({
 
   return (
     <div className="space-y-5">
+      <UsageWarningBanner warnings={usageWarnings} />
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>

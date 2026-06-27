@@ -6,6 +6,8 @@ import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
 import { listAudits, createAudit } from "@/lib/services/audit/audit-service";
 import { DomainError } from "@/lib/services/errors";
+import { parseBody } from "@/lib/api/validate";
+import { CreateAuditSchema } from "@/lib/api/schemas/audit-schemas";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);
@@ -53,8 +55,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json();
-    if (!body.name) return withRateLimitHeaders(err("name is required.", 400), rl);
+    const [body, validationError] = await parseBody(request, CreateAuditSchema);
+    if (validationError) return withRateLimitHeaders(validationError as ReturnType<typeof err>, rl);
 
     const result = await createAudit({
       orgId: ctx.orgId,

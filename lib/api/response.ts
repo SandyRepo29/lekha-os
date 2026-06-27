@@ -8,6 +8,7 @@
 
 import { NextResponse } from "next/server";
 import type { RateLimitResult } from "@/lib/providers/rate-limit";
+import { logger } from "@/lib/logger";
 
 export type PaginationMeta = {
   page: number;
@@ -16,21 +17,42 @@ export type PaginationMeta = {
   totalPages: number;
 };
 
+export type ResponseOpts = {
+  correlationId?: string;
+};
+
 /** Successful response. */
 export function ok<T>(
   data: T,
   status = 200,
-  meta?: PaginationMeta
+  meta?: PaginationMeta,
+  opts?: ResponseOpts
 ): NextResponse {
-  return NextResponse.json(
+  const res = NextResponse.json(
     meta ? { data, meta } : { data },
     { status }
   );
+  if (opts?.correlationId) {
+    res.headers.set("X-Correlation-ID", opts.correlationId);
+  }
+  return res;
 }
 
 /** Error response. */
-export function err(message: string, status: number): NextResponse {
-  return NextResponse.json({ error: message }, { status });
+export function err(message: string, status: number, opts?: ResponseOpts): NextResponse {
+  if (status >= 500) {
+    logger.error("api_error", { message, status });
+  }
+  const res = NextResponse.json({ error: message }, { status });
+  if (opts?.correlationId) {
+    res.headers.set("X-Correlation-ID", opts.correlationId);
+  }
+  return res;
+}
+
+/** Return elapsed milliseconds since a start timestamp from Date.now(). */
+export function withTiming(startMs: number): number {
+  return Date.now() - startMs;
 }
 
 /** Add rate-limit headers to a response. */
@@ -61,4 +83,9 @@ export function buildMeta(
     total,
     totalPages: Math.ceil(total / pageSize),
   };
+}
+
+/** Standard validation error — joins multiple field errors into one 400 response. */
+export function validationErr(errors: string[]): NextResponse {
+  return err(`Validation failed: ${errors.join("; ")}`, 400);
 }

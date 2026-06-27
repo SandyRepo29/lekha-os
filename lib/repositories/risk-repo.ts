@@ -1,4 +1,4 @@
-import { and, eq, desc, count, sql, inArray } from "drizzle-orm";
+import { and, eq, desc, count, sql, inArray, isNull, isNotNull } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { risks, profiles } from "@/lib/db/schema";
 import type { Risk } from "@/lib/db/schema";
@@ -50,6 +50,7 @@ export async function findByOrg(
     .where(
       and(
         eq(risks.organizationId, orgId),
+        isNull(risks.deletedAt),
         filters?.status ? eq(risks.status, filters.status as Risk["status"]) : undefined,
         filters?.category ? eq(risks.category, filters.category as Risk["category"]) : undefined
       )
@@ -75,7 +76,7 @@ export async function findById(
     })
     .from(risks)
     .leftJoin(profiles, eq(risks.ownerId, profiles.id))
-    .where(and(eq(risks.organizationId, orgId), eq(risks.id, id)))
+    .where(and(eq(risks.organizationId, orgId), eq(risks.id, id), isNull(risks.deletedAt)))
     .limit(1);
   if (!row) return null;
   return { ...row.risk, ownerName: row.ownerName ?? null, ownerEmail: row.ownerEmail ?? null };
@@ -106,7 +107,7 @@ export async function countByStatus(orgId: string): Promise<Record<string, numbe
   const rows = await db
     .select({ status: risks.status, count: count() })
     .from(risks)
-    .where(eq(risks.organizationId, orgId))
+    .where(and(eq(risks.organizationId, orgId), isNull(risks.deletedAt)))
     .groupBy(risks.status);
   const out: Record<string, number> = {};
   for (const r of rows) out[r.status] = r.count;
@@ -117,7 +118,7 @@ export async function countByCategory(orgId: string): Promise<Record<string, num
   const rows = await db
     .select({ category: risks.category, count: count() })
     .from(risks)
-    .where(eq(risks.organizationId, orgId))
+    .where(and(eq(risks.organizationId, orgId), isNull(risks.deletedAt)))
     .groupBy(risks.category);
   const out: Record<string, number> = {};
   for (const r of rows) out[r.category] = r.count;
@@ -132,6 +133,7 @@ export async function countOverdueReviews(orgId: string): Promise<number> {
     .where(
       and(
         eq(risks.organizationId, orgId),
+        isNull(risks.deletedAt),
         sql`${risks.nextReviewDate} < ${today}`,
         sql`${risks.status} NOT IN ('closed','archived')`
       )
@@ -147,8 +149,40 @@ export async function findActiveByVendor(orgId: string, vendorId: string): Promi
       and(
         eq(risks.organizationId, orgId),
         eq(risks.sourceVendorId, vendorId),
+        isNull(risks.deletedAt),
         sql`${risks.status} NOT IN ('closed','archived')`
       )
     )
     .orderBy(desc(risks.inherentScore));
+}
+
+export async function softDeleteRisk(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(risks)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(risks.id, id), eq(risks.organizationId, orgId)));
+}
+
+export async function restoreRisk(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(risks)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(risks.id, id), eq(risks.organizationId, orgId)));
+}
+
+export async function findDeletedRisks(orgId: string): Promise<Risk[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  return db
+    .select({ risk: risks, ownerName: profiles.fullName, ownerEmail: profiles.email })
+    .from(risks)
+    .leftJoin(profiles, eq(risks.ownerId, profiles.id))
+    .where(
+      and(
+        eq(risks.organizationId, orgId),
+        isNotNull(risks.deletedAt),
+        sql`${risks.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(risks.deletedAt))
+    .then((rows) => rows.map((r) => ({ ...r.risk, ownerName: r.ownerName ?? null, ownerEmail: r.ownerEmail ?? null })));
 }

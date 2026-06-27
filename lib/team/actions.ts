@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
 import { DomainError } from "@/lib/services/errors";
 import * as teamService from "@/lib/services/team-service";
+import { checkPlanLimit } from "@/lib/services/billing-service";
 
 export type TeamState = { error?: string; ok?: boolean } | undefined;
 
@@ -16,6 +17,7 @@ export async function inviteMember(_prev: TeamState, formData: FormData): Promis
   if (session.demo || !session.org) return { error: "Not available in demo mode." };
   try {
     requireAdmin(session.org.role);
+    await checkPlanLimit(session.org.id, "users");
     await teamService.inviteMember({
       orgId: session.org.id,
       actorId: session.id,

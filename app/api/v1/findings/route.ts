@@ -6,6 +6,8 @@ import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
 import { listFindings, createFinding } from "@/lib/services/audit/finding-service";
 import { DomainError } from "@/lib/services/errors";
+import { parseBody } from "@/lib/api/validate";
+import { CreateFindingSchema } from "@/lib/api/schemas/audit-schemas";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);
@@ -51,9 +53,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json();
-    if (!body.auditId) return withRateLimitHeaders(err("auditId is required.", 400), rl);
-    if (!body.title)   return withRateLimitHeaders(err("title is required.", 400), rl);
+    const [body, validationError] = await parseBody(request, CreateFindingSchema);
+    if (validationError) return withRateLimitHeaders(validationError as ReturnType<typeof err>, rl);
 
     const result = await createFinding({
       orgId: ctx.orgId,
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
         auditId:        body.auditId,
         title:          body.title,
         description:    body.description ?? null,
-        severity:       body.severity,
+        severity:       body.findingSeverity,
         recommendation: body.recommendation ?? null,
         controlId:      body.controlId ?? null,
       },

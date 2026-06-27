@@ -1,4 +1,4 @@
-import { and, eq, desc } from "drizzle-orm";
+import { and, eq, desc, isNull, isNotNull, sql } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { policies, policyVersions } from "@/lib/db/schema";
 import type { Policy, PolicyVersion } from "@/lib/db/schema";
@@ -41,7 +41,7 @@ export async function findByOrg(orgId: string): Promise<Policy[]> {
   return db
     .select()
     .from(policies)
-    .where(eq(policies.organizationId, orgId))
+    .where(and(eq(policies.organizationId, orgId), isNull(policies.deletedAt)))
     .orderBy(desc(policies.createdAt));
 }
 
@@ -49,7 +49,7 @@ export async function findById(orgId: string, id: string): Promise<Policy | null
   const [row] = await db
     .select()
     .from(policies)
-    .where(and(eq(policies.organizationId, orgId), eq(policies.id, id)))
+    .where(and(eq(policies.organizationId, orgId), eq(policies.id, id), isNull(policies.deletedAt)))
     .limit(1);
   return row ?? null;
 }
@@ -109,6 +109,35 @@ export async function countApproved(orgId: string): Promise<number> {
   const rows = await db
     .select({ id: policies.id })
     .from(policies)
-    .where(and(eq(policies.organizationId, orgId), eq(policies.status, "approved")));
+    .where(and(eq(policies.organizationId, orgId), eq(policies.status, "approved"), isNull(policies.deletedAt)));
   return rows.length;
+}
+
+export async function softDeletePolicy(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(policies)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(policies.id, id), eq(policies.organizationId, orgId)));
+}
+
+export async function restorePolicy(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(policies)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(policies.id, id), eq(policies.organizationId, orgId)));
+}
+
+export async function findDeletedPolicies(orgId: string): Promise<Policy[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  return db
+    .select()
+    .from(policies)
+    .where(
+      and(
+        eq(policies.organizationId, orgId),
+        isNotNull(policies.deletedAt),
+        sql`${policies.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(policies.deletedAt));
 }

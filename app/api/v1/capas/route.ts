@@ -6,6 +6,8 @@ import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
 import { listCapas, createCapa } from "@/lib/services/audit/capa-service";
 import { DomainError } from "@/lib/services/errors";
+import { parseBody } from "@/lib/api/validate";
+import { CreateCapaSchema } from "@/lib/api/schemas/audit-schemas";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);
@@ -50,9 +52,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json();
-    if (!body.findingId) return withRateLimitHeaders(err("findingId is required.", 400), rl);
-    if (!body.title)     return withRateLimitHeaders(err("title is required.", 400), rl);
+    const [body, validationError] = await parseBody(request, CreateCapaSchema);
+    if (validationError) return withRateLimitHeaders(validationError as ReturnType<typeof err>, rl);
 
     const result = await createCapa({
       orgId: ctx.orgId,

@@ -11,6 +11,16 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/dashboard";
 
+  // Handle password recovery token (arrives as token_hash + type=recovery)
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type");
+  if (token_hash && type === "recovery") {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.verifyOtp({ token_hash, type: "recovery" });
+    if (!error) return NextResponse.redirect(`${origin}${next}`);
+    return NextResponse.redirect(`${origin}/login?error=reset_expired`);
+  }
+
   if (code) {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);

@@ -1,4 +1,4 @@
-import { and, eq, desc, lte, isNotNull } from "drizzle-orm";
+import { and, eq, desc, lte, isNotNull, isNull, sql } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { evidence, controlEvidenceMappings, controls } from "@/lib/db/schema";
 import type { Evidence, ControlEvidenceMapping } from "@/lib/db/schema";
@@ -31,7 +31,7 @@ export async function findByOrg(
   orgId: string,
   filters?: { status?: string; source?: string }
 ): Promise<Evidence[]> {
-  const conditions = [eq(evidence.organizationId, orgId)];
+  const conditions = [eq(evidence.organizationId, orgId), isNull(evidence.deletedAt)];
   if (filters?.status) {
     conditions.push(eq(evidence.status, filters.status as Evidence["status"]));
   }
@@ -49,7 +49,7 @@ export async function findById(orgId: string, id: string): Promise<Evidence | nu
   const [row] = await db
     .select()
     .from(evidence)
-    .where(and(eq(evidence.organizationId, orgId), eq(evidence.id, id)))
+    .where(and(eq(evidence.organizationId, orgId), eq(evidence.id, id), isNull(evidence.deletedAt)))
     .limit(1);
   return row ?? null;
 }
@@ -65,7 +65,8 @@ export async function findBySourceEntity(
     .where(
       and(
         eq(evidence.organizationId, orgId),
-        eq(evidence.sourceEntityId, sourceEntityId)
+        eq(evidence.sourceEntityId, sourceEntityId),
+        isNull(evidence.deletedAt)
       )
     )
     .limit(1);
@@ -109,11 +110,41 @@ export async function findExpiring(orgId: string, days: number): Promise<Evidenc
     .where(
       and(
         eq(evidence.organizationId, orgId),
+        isNull(evidence.deletedAt),
         isNotNull(evidence.expiresOn),
         lte(evidence.expiresOn, cutoff)
       )
     )
     .orderBy(evidence.expiresOn);
+}
+
+export async function softDeleteEvidence(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(evidence)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(evidence.id, id), eq(evidence.organizationId, orgId)));
+}
+
+export async function restoreEvidence(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(evidence)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(evidence.id, id), eq(evidence.organizationId, orgId)));
+}
+
+export async function findDeletedEvidence(orgId: string): Promise<Evidence[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  return db
+    .select()
+    .from(evidence)
+    .where(
+      and(
+        eq(evidence.organizationId, orgId),
+        isNotNull(evidence.deletedAt),
+        sql`${evidence.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(evidence.deletedAt));
 }
 
 // ---- Mapping operations --------------------------------------

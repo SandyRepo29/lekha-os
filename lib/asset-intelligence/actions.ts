@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth/session";
 import * as svc from "@/lib/services/asset-intelligence/asset-service";
 import * as aiSvc from "@/lib/services/asset-intelligence/ai-asset-service";
 import { revalidatePath } from "next/cache";
+import { checkPlanLimit } from "@/lib/services/billing-service";
 
 function getOrgId(session: Awaited<ReturnType<typeof requireUser>>) {
   return session.org?.id ?? "";
@@ -57,6 +58,7 @@ export async function createAssetAction(formData: FormData) {
   if (!data.name) return { error: "Asset name is required" };
 
   try {
+    await checkPlanLimit(orgId, "assets");
     const asset = await svc.createAsset(orgId, session.id, data);
     revalidatePath("/asset-intelligence");
     return { data: asset };

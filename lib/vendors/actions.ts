@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/auth/session";
 import { DomainError } from "@/lib/services/errors";
 import * as vendorService from "@/lib/services/vendor-service";
 import * as documentService from "@/lib/services/document-service";
+import { checkPlanLimit } from "@/lib/services/billing-service";
 
 export type VendorState = { error?: string } | undefined;
 export type DeleteState = { error?: string; ok?: boolean };
@@ -23,6 +24,8 @@ export async function createVendor(
   if (!session.org) redirect("/onboarding");
 
   try {
+    await checkPlanLimit(session.org.id, "vendors");
+
     const categoryRaw = String(formData.get("category") || "");
     const categoryOther = String(formData.get("categoryOther") || "");
     const category = categoryRaw === "Other" ? categoryOther : categoryRaw;

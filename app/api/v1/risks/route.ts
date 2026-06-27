@@ -6,6 +6,8 @@ import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
 import { listRisks, createRisk } from "@/lib/services/risk/risk-service";
 import { DomainError } from "@/lib/services/errors";
+import { parseBody } from "@/lib/api/validate";
+import { CreateRiskSchema } from "@/lib/api/schemas/risk-schemas";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);
@@ -50,8 +52,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json();
-    if (!body.title) return withRateLimitHeaders(err("title is required.", 400), rl);
+    const [body, validationError] = await parseBody(request, CreateRiskSchema);
+    if (validationError) return withRateLimitHeaders(validationError as ReturnType<typeof err>, rl);
 
     const result = await createRisk({
       orgId: ctx.orgId,
@@ -59,13 +61,13 @@ export async function POST(request: NextRequest) {
       input: {
         title: body.title,
         description: body.description ?? null,
-        category: body.category ?? "operational",
-        status: body.status ?? "identified",
+        category: body.category,
+        status: body.status,
         source: body.source ?? "api",
-        impact: body.impact ?? 3,
-        likelihood: body.likelihood ?? 3,
-        treatmentStrategy: body.treatmentStrategy ?? "mitigate",
-        targetDate: body.targetDate ?? null,
+        impact: body.impact,
+        likelihood: body.likelihood,
+        treatmentStrategy: body.treatment_strategy ?? "mitigate",
+        targetDate: body.target_date ?? null,
       },
     });
 

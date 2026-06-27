@@ -15,7 +15,7 @@ import {
   type ContractClause,
   type ContractObligation,
 } from "@/lib/db/schema";
-import { and, eq, sql, desc, count, asc } from "drizzle-orm";
+import { and, eq, sql, desc, count, asc, isNull, isNotNull } from "drizzle-orm";
 import type { ContractScoreInputs } from "@/lib/services/contract-score";
 
 export type ContractWithMeta = Contract & {
@@ -64,6 +64,7 @@ export async function findContractsByOrg(
     .where(
       and(
         eq(contracts.organizationId, orgId),
+        isNull(contracts.deletedAt),
         filters?.status ? sql`${contracts.status} = ${filters.status}` : undefined,
         filters?.contractType ? sql`${contracts.contractType} = ${filters.contractType}` : undefined,
         filters?.vendorId ? eq(contracts.vendorId, filters.vendorId) : undefined,
@@ -91,7 +92,7 @@ export async function findContractById(orgId: string, contractId: string): Promi
     .from(contracts)
     .leftJoin(vendors, eq(contracts.vendorId, vendors.id))
     .leftJoin(profiles, eq(contracts.ownerId, profiles.id))
-    .where(and(eq(contracts.id, contractId), eq(contracts.organizationId, orgId)));
+    .where(and(eq(contracts.id, contractId), eq(contracts.organizationId, orgId), isNull(contracts.deletedAt)));
 
   if (rows.length === 0) return null;
   const { contract, vendorName, ownerName, ownerEmail } = rows[0];
@@ -230,7 +231,7 @@ export async function getDashboardMetrics(orgId: string): Promise<ContractDashbo
     .from(contracts)
     .leftJoin(vendors, eq(contracts.vendorId, vendors.id))
     .leftJoin(profiles, eq(contracts.ownerId, profiles.id))
-    .where(eq(contracts.organizationId, orgId));
+    .where(and(eq(contracts.organizationId, orgId), isNull(contracts.deletedAt)));
 
   const total = allContracts.length;
   const active = allContracts.filter((c) => c.contract.status === "active").length;
@@ -562,4 +563,46 @@ export async function getLinkedPolicies(contractId: string) {
     .from(contractPolicies)
     .innerJoin(policies, eq(contractPolicies.policyId, policies.id))
     .where(eq(contractPolicies.contractId, contractId));
+}
+
+export async function softDeleteContract(id: string, orgId: string): Promise<void> {
+  await db
+    .update(contracts)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(contracts.id, id), eq(contracts.organizationId, orgId)));
+}
+
+export async function restoreContract(id: string, orgId: string): Promise<void> {
+  await db
+    .update(contracts)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(contracts.id, id), eq(contracts.organizationId, orgId)));
+}
+
+export async function findDeletedContracts(orgId: string): Promise<ContractWithMeta[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  const rows = await db
+    .select({
+      contract: contracts,
+      vendorName: vendors.name,
+      ownerName: profiles.fullName,
+      ownerEmail: profiles.email,
+    })
+    .from(contracts)
+    .leftJoin(vendors, eq(contracts.vendorId, vendors.id))
+    .leftJoin(profiles, eq(contracts.ownerId, profiles.id))
+    .where(
+      and(
+        eq(contracts.organizationId, orgId),
+        isNotNull(contracts.deletedAt),
+        sql`${contracts.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(contracts.deletedAt));
+  return rows.map(({ contract, vendorName, ownerName, ownerEmail }) => ({
+    ...contract,
+    vendorName: vendorName ?? null,
+    ownerName: ownerName ?? null,
+    ownerEmail: ownerEmail ?? null,
+  }));
 }

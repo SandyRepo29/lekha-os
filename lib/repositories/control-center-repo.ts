@@ -16,7 +16,7 @@ import {
   type Control,
   type ControlTest,
 } from "@/lib/db/schema";
-import { and, eq, sql, desc, count, inArray } from "drizzle-orm";
+import { and, eq, sql, desc, count, inArray, isNull, isNotNull } from "drizzle-orm";
 
 export type ControlWithMeta = Control & {
   ownerName: string | null;
@@ -53,7 +53,7 @@ export async function findAllControls(orgId: string): Promise<ControlWithMeta[]>
     .from(controls)
     .leftJoin(profiles, eq(controls.ownerId, profiles.id))
     .leftJoin(frameworks, eq(controls.frameworkId, frameworks.id))
-    .where(eq(controls.organizationId, orgId))
+    .where(and(eq(controls.organizationId, orgId), isNull(controls.deletedAt)))
     .orderBy(controls.controlRef);
 
   // Batch evidence + test + risk counts
@@ -108,7 +108,7 @@ export async function findControlById(
     .from(controls)
     .leftJoin(profiles, eq(controls.ownerId, profiles.id))
     .leftJoin(frameworks, eq(controls.frameworkId, frameworks.id))
-    .where(and(eq(controls.id, id), eq(controls.organizationId, orgId)));
+    .where(and(eq(controls.id, id), eq(controls.organizationId, orgId), isNull(controls.deletedAt)));
 
   if (!row) return null;
 
@@ -239,7 +239,7 @@ export async function getDashboardMetrics(orgId: string) {
   const rows = await db
     .select({ health: controls.healthScore, effectiveness: controls.effectivenessScore, status: controls.status })
     .from(controls)
-    .where(eq(controls.organizationId, orgId));
+    .where(and(eq(controls.organizationId, orgId), isNull(controls.deletedAt)));
 
   const total = rows.length;
   const healthy = rows.filter((r) => (r.health ?? 0) >= 80).length;
@@ -255,6 +255,7 @@ export async function getDashboardMetrics(orgId: string) {
     .where(
       and(
         eq(controls.organizationId, orgId),
+        isNull(controls.deletedAt),
         sql`${controls.nextTestDate} < CURRENT_DATE`
       )
     );
@@ -404,4 +405,33 @@ export async function getLinkedFrameworks(controlId: string) {
     .from(controlFrameworks)
     .innerJoin(frameworks, eq(controlFrameworks.frameworkId, frameworks.id))
     .where(eq(controlFrameworks.controlId, controlId));
+}
+
+export async function softDeleteControl(id: string, orgId: string): Promise<void> {
+  await db
+    .update(controls)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(controls.id, id), eq(controls.organizationId, orgId)));
+}
+
+export async function restoreControl(id: string, orgId: string): Promise<void> {
+  await db
+    .update(controls)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(controls.id, id), eq(controls.organizationId, orgId)));
+}
+
+export async function findDeletedControls(orgId: string): Promise<Control[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  return db
+    .select()
+    .from(controls)
+    .where(
+      and(
+        eq(controls.organizationId, orgId),
+        isNotNull(controls.deletedAt),
+        sql`${controls.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(controls.deletedAt));
 }

@@ -1,4 +1,4 @@
-import { and, eq, gte, lte, desc, count } from "drizzle-orm";
+import { and, eq, gte, lte, desc, count, isNull, isNotNull, sql } from "drizzle-orm";
 import { db, type Executor } from "@/lib/db";
 import { vendors, vendorDocuments } from "@/lib/db/schema";
 import type { Vendor } from "@/lib/db/schema";
@@ -32,7 +32,7 @@ export async function findById(orgId: string, id: string): Promise<Vendor | null
   const [vendor] = await db
     .select()
     .from(vendors)
-    .where(and(eq(vendors.organizationId, orgId), eq(vendors.id, id)))
+    .where(and(eq(vendors.organizationId, orgId), eq(vendors.id, id), isNull(vendors.deletedAt)))
     .limit(1);
   return vendor ?? null;
 }
@@ -73,12 +73,12 @@ export async function updateVendor(
 }
 
 export async function countByOrg(orgId: string): Promise<number> {
-  const [row] = await db.select({ n: count() }).from(vendors).where(eq(vendors.organizationId, orgId));
+  const [row] = await db.select({ n: count() }).from(vendors).where(and(eq(vendors.organizationId, orgId), isNull(vendors.deletedAt)));
   return Number(row?.n ?? 0);
 }
 
 export async function findVendorsByOrgPaged(orgId: string, limit: number, offset: number): Promise<Vendor[]> {
-  return db.select().from(vendors).where(eq(vendors.organizationId, orgId))
+  return db.select().from(vendors).where(and(eq(vendors.organizationId, orgId), isNull(vendors.deletedAt)))
     .orderBy(desc(vendors.createdAt)).limit(limit).offset(offset);
 }
 
@@ -92,8 +92,37 @@ export async function findVendorsByOrg(orgId: string): Promise<Vendor[]> {
   return db
     .select()
     .from(vendors)
-    .where(eq(vendors.organizationId, orgId))
+    .where(and(eq(vendors.organizationId, orgId), isNull(vendors.deletedAt)))
     .orderBy(desc(vendors.createdAt));
+}
+
+export async function softDeleteVendor(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(vendors)
+    .set({ deletedAt: new Date(), updatedAt: new Date() })
+    .where(and(eq(vendors.id, id), eq(vendors.organizationId, orgId)));
+}
+
+export async function restoreVendor(id: string, orgId: string, exec: Executor = db): Promise<void> {
+  await exec
+    .update(vendors)
+    .set({ deletedAt: null, updatedAt: new Date() })
+    .where(and(eq(vendors.id, id), eq(vendors.organizationId, orgId)));
+}
+
+export async function findDeletedVendors(orgId: string): Promise<Vendor[]> {
+  const since = new Date(Date.now() - 30 * 86_400_000);
+  return db
+    .select()
+    .from(vendors)
+    .where(
+      and(
+        eq(vendors.organizationId, orgId),
+        isNotNull(vendors.deletedAt),
+        sql`${vendors.deletedAt} >= ${since.toISOString()}`
+      )
+    )
+    .orderBy(desc(vendors.deletedAt));
 }
 
 export async function countDocuments(orgId: string): Promise<number> {
