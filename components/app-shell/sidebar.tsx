@@ -34,6 +34,8 @@ import {
   Star,
   Network,
   Receipt,
+  Zap,
+  Terminal,
 } from "lucide-react";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { cn } from "@/lib/utils";
@@ -56,6 +58,19 @@ type NavGroup = {
 // ─── Navigation structure ─────────────────────────────────────────────────────
 
 const navGroups: NavGroup[] = [
+  {
+    key: "trust-operations-engine",
+    label: "Trust Operations",
+    items: [
+      { href: "/operations",                label: "TOE Dashboard&#8482;",      icon: Zap },
+      { href: "/operations/command-center", label: "Command Center&#8482;",     icon: Terminal },
+      { href: "/operations/approvals",      label: "Approval Queue&#8482;",     icon: Target },
+      { href: "/operations/workflows",      label: "Workflow Engine&#8482;",    icon: GitBranch },
+      { href: "/operations/automation",     label: "Automation&#8482;",         icon: Cpu },
+      { href: "/operations/events",         label: "Event Log&#8482;",          icon: BarChart3 },
+      { href: "/operations/ai",             label: "AI Decision Engine&#8482;", icon: Sparkles },
+    ],
+  },
   {
     key: "vendor-governance",
     label: "Vendor Governance",

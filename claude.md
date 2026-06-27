@@ -670,6 +670,46 @@ Shared platform services that power every AUDT module.
 
 ---
 
+### Epic 03 — Trust Operations Engine ✅ Complete (2026-06-27)
+
+The orchestration layer connecting every governance capability into one intelligent, event-driven platform.
+
+**New tables (migration 0040):** toe_event_types · toe_events · toe_event_subscriptions · toe_workflows · toe_workflow_instances · toe_workflow_instance_steps · toe_approvals · toe_automation_rules · toe_automation_runs · toe_ai_decisions · toe_workflow_analytics
+
+**7 enums:** toe_event_severity · toe_workflow_status · toe_instance_status · toe_step_status · toe_approval_status · toe_ai_decision_status · toe_automation_action
+
+**Seeded at migration:** 37 built-in event types across all modules · 6 built-in workflow templates (Vendor Onboarding, Evidence Expiry Response, Trust Score Drop Response, Contract Renewal, Vendor Offboarding, Critical Risk Escalation)
+
+**New services:**
+- `lib/services/toe/toe-service.ts` — publishEvent(), getWorkflows(), startWorkflow(), getApprovals(), createApproval(), resolveApproval(), getAutomationRules(), createAutomationRule(), resolveAiDecision(), getDashboardData(), getWorkflowAnalytics()
+- `lib/services/toe/ai-toe-service.ts` — generateOperationsAdvisory() (cached 24h), generateWorkflowRecommendations(), getWorkflowStepGuidance(), chat()
+
+**New repository:** `lib/repositories/toe-repo.ts` — all TOE DB operations via raw SQL (tables not in schema.ts, same pattern as Security Command Center)
+
+**New actions:** `lib/toe/actions.ts` — all server actions
+
+**New components (components/toe/):** ToeSubNav · ToeStat · InstanceStatusBadge · ApprovalStatusBadge · EventSeverityBadge · PriorityBadge · ToeAiChat · StartWorkflowButton · CreateWorkflowButton · DeleteWorkflowButton · ResolveApprovalButtons · ToggleRuleButton · DeleteRuleButton · CreateRuleForm · DecisionActions · GenerateRecommendationsButton
+
+**New routes:**
+- /operations — TOE Hub (metrics, event stream, active workflows, AI advisory, module nav)
+- /operations/events — Event Log (stream + full catalogue of 37 event types)
+- /operations/workflows — Workflow Engine (6 built-in templates + custom workflows + instance history)
+- /operations/approvals — Unified Approval Queue (approve/reject with notes, resolved history)
+- /operations/automation — Automation Engine (event→action rules, toggle/delete, create form)
+- /operations/analytics — Workflow Analytics (by status, by workflow, SLA metrics, historical data)
+- /operations/command-center — Governance Command Center (cross-module live stats, attention strip)
+- /operations/ai — AI Decision Engine (recommendations panel, advisory, Operations Copilot™ chat)
+
+**Sidebar:** New "Trust Operations" nav group added as first group with 7 items (TOE Dashboard, Command Center, Approval Queue, Workflow Engine, Automation, Event Log, AI Decision Engine)
+
+**CRITICAL — `toe_` table prefix:** All TOE tables use `toe_` prefix to avoid collisions with platform_ and other module tables. Drizzle schema.ts does NOT include these tables — all queries use raw `db.execute(sql\`...\`)`. Same pattern as security-command-center-repo.ts.
+
+**CRITICAL — `toe_workflows` is_template = true rows:** Seeded with `org_id = NULL`. findWorkflows() returns both org-specific AND template workflows via `OR is_template = true`. Never filter by org_id alone on this table.
+
+**CRITICAL — Advisory cache key:** `ai-toe-service.ts` uses `"toe_advisory"` as the `insight_type` in `ai_compliance_insights` table. `target_id = orgId`. Cache TTL = 24h. Force-refresh by passing `force = true` to `generateOperationsAdvisory()`.
+
+---
+
 ## 7. App Routes
 
 ```
@@ -2163,6 +2203,14 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **search_suggestions must be rebuilt** | After bulk data import or migration, call searchService.rebuildSearchIndex(orgId) to populate search_suggestions. New entities added via services are NOT auto-indexed — add publishActivity + upsertSearchSuggestion calls to service create functions as follow-up work. |
 | **Global search route is /search** | Located at app/(app)/search/page.tsx. Not /platform/search — kept short for discoverability. |
 | **Platform pages use p-6 (no layout.tsx)** | /platform/* pages have no layout.tsx — they include their own p-6 padding and space-y-6. Same pattern as CC/Agents modules. |
+| **Platform repo function names differ from assumed names** | Workflow agents that write services and repos in parallel often diverge on export names. Always read the repo file before writing service imports. Canonical pattern: import with alias when the service's public API name must be preserved (`import { updateComment as repoUpdateComment } from "..."` then export `updateComment` using the original name). |
+| **`countOrgActivity(orgId)` takes no filter params** | `lib/repositories/platform/activity-repo.ts` exports `countOrgActivity(orgId: string)` with no date range or filter opts. To get a last-24h count, fetch via `findOrgActivity(orgId, { limit: 1000 })` then filter in TS: `all.filter(r => new Date(r.created_at) >= since24h).length`. |
+| **`markSlaBreached(taskId)` takes a single taskId** | `lib/repositories/platform/task-repo.ts` exports `markSlaBreached(taskId: string)` — one task per call, not `(orgId, ids[])`. `checkSlaBreaches()` in task-service must loop over `findOrgTasks(orgId, { overdue: true })` and call `markSlaBreached(task.id)` per row. |
+| **Platform storage: use `lib/storage/server` not `lib/providers/storage`** | `lib/providers/storage/index.ts` exports only the `StorageProvider` interface — there is NO `getStorageProvider()` factory function. Platform services must import `uploadFile`, `removeObjects`, `createSignedUrl` directly from `lib/storage/server`. `removeObjects` takes an array: `removeObjects([path])`. |
+| **`publishActivity` is a named export and requires `title`** | `publishActivity` from `lib/services/platform/activity-service` is a named export (never default). The params type has `title: string` as a required field — omitting it is a TypeScript error. Always pass `title` alongside `eventType`. |
+| **Platform attachment rows are snake_case** | `db.execute()` returns snake_case column names. `AttachmentRow` fields: `storage_path`, `entity_type`, `entity_id`, `content_type`, `file_name`, `version` (not `versionNumber`). Access via `attachment.storage_path`, not `attachment.storagePath`. |
+| **`addAttachmentVersion` params (no orgId, no fileName)** | `lib/repositories/platform/attachment-repo.ts`: `addAttachmentVersion({ attachmentId, version, storagePath, uploadedBy?, changeNote? })` — no `orgId` or `fileName` in the params. `updateAttachmentLatest(orgId, attachmentId)` — only 2 args. |
+| **`tagEntity` and `createTag` calling conventions** | `lib/services/platform/tag-service.ts`: `createTag(orgId, params)` — orgId is a separate first arg, not inside params. `tagEntity(orgId, taggedBy, tagId, entityType, entityId)` — 5 positional args, not an object. `findOrCreateTag` uses `searchTags(orgId, name)` + `.find()` exact match — there is no `findTagByName` in the tag repo. |
 
 ---
 
