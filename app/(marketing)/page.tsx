@@ -130,17 +130,17 @@ export default function LandingPage() {
             <div className="hero__copy reveal">
               <div className="badge">
                 <span className="badge__pulse" />
-                Vendor Governance Platform · audt.tech
+                AI-Native Trust, Risk &amp; Compliance Platform · audt.tech
               </div>
               <h1 className="hero__title">
-                Govern Every Vendor.<br />
+                Governance Built on Proof.<br />
                 <span className="grad-text">Trust Every Decision.</span>
               </h1>
               <p className="hero__sub">
-                AUDT is the Vendor Governance Platform for modern organizations.
+                AUDT is the Governance OS for modern organizations &#8212; replacing spreadsheets and disconnected tools with a single AI-native platform.
               </p>
               <p style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-dim)", maxWidth: "520px", marginBottom: "28px", lineHeight: 1.7 }}>
-                Using a continuous vendor governance model, AUDT helps teams discover, assess, govern, monitor, audit, and continuously validate every vendor — from a single platform.
+                32 modules. Vendor governance, risk, compliance, audits, regulatory intelligence, AI governance, and continuous monitoring &#8212; unified in one platform with a shared intelligence layer.
               </p>
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
@@ -150,9 +150,11 @@ export default function LandingPage() {
               <div className="hero__trust">
                 <span>Vendor Governance</span>
                 <span className="dot">·</span>
-                <span>Lifecycle Governance</span>
-                <span className="dot">·</span>
                 <span>Risk &amp; Compliance</span>
+                <span className="dot">·</span>
+                <span>AI Governance</span>
+                <span className="dot">·</span>
+                <span>Regulatory Intelligence</span>
                 <span className="dot">·</span>
                 <span>Continuous Trust</span>
               </div>
@@ -598,6 +600,8 @@ export default function LandingPage() {
                   ["Continuous Monitoring", "Partial",  "Limited",  "Always-on"],
                   ["AI Governance",         "Limited",  "Limited",  "Native"],
                   ["Trust Intelligence",    "None",     "None",     "Native"],
+                  ["Workflow Automation",   "Limited",  "Partial",  "Native"],
+                  ["Regulatory Intelligence","None",    "Partial",  "Native"],
                 ].map(([label, col1, col2, col3], ri) => (
                   <div key={label} style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", borderBottom: ri < 6 ? "1px solid rgba(255,255,255,0.05)" : "none", borderRadius: ri === 6 ? "0 0 12px 12px" : undefined }}>
                     <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "var(--text)", borderRight: "1px solid rgba(255,255,255,0.05)" }}>{label}</div>
@@ -900,9 +904,13 @@ export default function LandingPage() {
                 "Compliance Management",
                 "Audit Management",
                 "Policy Governance",
-                "Privacy Governance",
+                "Privacy &amp; DPDP",
+                "Contract Governance",
                 "Asset Intelligence",
                 "AI Governance",
+                "Regulatory Intelligence",
+                "Trust Operations Engine™",
+                "Executive Reporting",
                 "Continuous Monitoring",
               ].map((item) => (
                 <div key={item} style={{
@@ -918,7 +926,7 @@ export default function LandingPage() {
             </div>
             <div className="reveal" style={{ textAlign: "center", maxWidth: "540px", margin: "0 auto" }}>
               <p style={{ fontSize: "14px", color: "var(--text-dim)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-                Powered by 32 integrated modules and a shared intelligence layer.
+                Powered by 32 integrated modules, 259+ database tables, and a shared intelligence layer.
               </p>
               <a href="/platform" className="btn btn--ghost">View Platform Overview →</a>
             </div>
@@ -1057,11 +1065,11 @@ export default function LandingPage() {
                 background: "rgba(255,255,255,0.03)",
                 border: "1px solid rgba(255,255,255,0.08)",
               }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Platform Today</div>
+                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Live Today &#8212; 32 Modules</div>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
-                  {["Vendor Governance", "Trust Operations", "Risk & Compliance", "Trust Intelligence"].map((item) => (
+                  {["Vendor Governance + Lifecycle", "Risk, Compliance &amp; Audit", "Trust Intelligence + Monitoring", "AI Governance + Regulatory Intel", "Trust Network + Verification", "Security Command Center™", "Governance Agent Framework™", "Trust Operations Engine™"].map((item) => (
                     <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13px", color: "var(--text-dim)" }}>
-                      <span style={{ color: "#4ade80", fontSize: "10px" }}>●</span>{item}
+                      <span style={{ color: "#4ade80", fontSize: "10px" }}>●</span><span dangerouslySetInnerHTML={{ __html: item }} />
                     </div>
                   ))}
                 </div>
@@ -1072,9 +1080,9 @@ export default function LandingPage() {
                 background: "rgba(99,102,241,0.05)",
                 border: "1px solid rgba(99,102,241,0.2)",
               }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--blue)", marginBottom: "1rem" }}>Future Vision</div>
+                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--blue)", marginBottom: "1rem" }}>On The Roadmap</div>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
-                  {["Trust Network™", "Trust Exchange™", "Trust Verification Authority™", "Industry Benchmarking™"].map((item) => (
+                  {["Multi-entity org hierarchy", "SCIM user provisioning", "Redis-backed rate limiting", "S3 / Azure Blob storage providers", "Mobile governance app"].map((item) => (
                     <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13px", color: "var(--text-dim)" }}>
                       <span style={{ color: "var(--blue)", fontSize: "10px" }}>◆</span>{item}
                     </div>
@@ -1180,10 +1188,10 @@ export default function LandingPage() {
         ════════════════════════════════════ */}
         <section className="cta-final" id="cta">
           <div className="container cta-final__inner reveal">
-            <div className="cta-final__badge">Vendor Governance Platform</div>
-            <h2>Ready to Govern Every Vendor?</h2>
+            <div className="cta-final__badge">AI-Native Trust, Risk &amp; Compliance Platform</div>
+            <h2>Ready to Build Governance on Proof?</h2>
             <p>
-              One platform. Complete lifecycle. Continuous trust.<br />Built for organizations that cannot afford to get vendor governance wrong.
+              One platform. 32 modules. Continuous trust.<br />Built for organizations that cannot afford to get governance wrong.
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
