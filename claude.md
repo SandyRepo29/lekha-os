@@ -290,6 +290,7 @@ node scripts/seed-governance-agents.mjs             # 5 agents · runs · observ
 node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates
 node scripts/seed-asset-intelligence.mjs            # 30 assets · 4 alerts · 6 relationships (targets most-active org)
 node scripts/seed-security-command-center.mjs       # MFA settings · SSO provider · 5 sessions · 4 IP rules · 3 shares · 45 prompt logs · monitoring assets + alerts · trust center config
+node scripts/apply-sql.mjs supabase/migrations/0041_soft_delete.sql  # soft-delete columns on 7 tables ✅ APPLIED
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -710,11 +711,54 @@ The orchestration layer connecting every governance capability into one intellig
 
 ---
 
+### Epic 04 — Commercial Foundation ✅ Complete (2026-06-28)
+
+8 initiatives making AUDT production-ready for commercial launch.
+
+| Initiative | Files | Detail |
+|---|---|---|
+| **1. Password Recovery** | `app/(auth)/forgot-password/`, `app/(auth)/reset-password/`, `components/auth/forgot-password-form.tsx`, `components/auth/reset-password-form.tsx`, `lib/auth/password-reset-actions.ts` | Supabase `token_hash` + `type=recovery` flow. `app/auth/callback/route.ts` extended. "Forgot password?" link added to login form. |
+| **2. Plan Enforcement** | `lib/billing/usage.ts`, `components/billing/usage-warning-banner.tsx` | `checkPlanLimit()` wired into vendor/user/asset create operations. `UsageWarningBanner` shown on vendor hub at 80% (amber) and 90% (red). |
+| **3. Comprehensive Audit Logs** | `lib/audit/audit-events.ts` | `AuditEvent` constants + fire-and-forget `audit()` helper. All vendor, risk, audit, CAPA, team, settings, and auth write operations now emit audit records. |
+| **4. API Documentation** | `lib/openapi/spec.ts`, `app/api/docs/route.ts`, `app/api/docs/ui/route.ts` | OpenAPI 3.1 spec at `/api/docs` (JSON). Swagger UI at `/api/docs/ui` (CDN). Linked from sidebar Administration group. |
+| **5. API Validation** | `lib/api/validate.ts`, `lib/api/schemas/` | `parseBody(request, schema)` helper. Zod schemas for risks, audits, findings, CAPAs, vendors. Standardized 400 validation errors on all POST/PUT routes. |
+| **6. Structured Logging** | `lib/logger.ts`, `lib/api/middleware.ts` | Zero-dependency JSON logger (Vercel-compatible). `logger.info/warn/error()`. Correlation IDs generated in `proxy.ts` and forwarded via `x-correlation-id` header. `withLogging()` wrapper for API routes. |
+| **7. Soft Delete** | `supabase/migrations/0041_soft_delete.sql`, `lib/repositories/trash-repo.ts` | `deleted_at TIMESTAMPTZ` added to vendors, risks, controls, evidence, policies, contracts, assessments. All repos guard with `isNull(*.deletedAt)`. `softDelete*()` + `restore*()` functions added. `trash-repo.ts` provides `getOrgTrash()` and `permanentDelete()`. |
+| **8. Trust Center** | `app/trust/` (9 pages) | Public pages at `/trust/*` — no auth required. Architecture, Frameworks, Encryption, Data Protection, Privacy, Responsible AI, Contact. Layout with public nav bar and footer. |
+
+**New routes (Epic 04):**
+- `/forgot-password` — password reset request (public)
+- `/reset-password` — new password entry after Supabase email link (public)
+- `/trust` — Trust Center hub (public, 9 sub-pages)
+- `/trust/architecture` · `/trust/frameworks` · `/trust/encryption` · `/trust/data-protection` · `/trust/privacy` · `/trust/ai` · `/trust/contact`
+- `GET /api/docs` — OpenAPI 3.1 JSON spec (public)
+- `GET /api/docs/ui` — Swagger UI HTML page (public)
+
+**CRITICAL — Soft delete pattern:** All 7 repos now filter `WHERE deleted_at IS NULL` by default. Call `softDeleteVendor(id, orgId)` (not hard-delete) from services. The `deleted_at IS NULL` filter is in `findByOrg` / `findAllControls` / equivalent list queries — standalone `findById` calls do NOT filter deleted rows (intentional, for restore UI). `permanentDelete()` in trash-repo is admin-only and bypasses the soft-delete guard.
+
+**CRITICAL — `audit()` is fire-and-forget:** `lib/audit/audit-events.ts` exports `audit(params)` which calls `recordAudit(params).catch(() => {})`. Never await it in a critical request path. Never log passwords, API key values, tokens, or PII in audit records.
+
+**CRITICAL — Password recovery callback flow:** `app/auth/callback/route.ts` handles `token_hash + type=recovery` BEFORE the existing `code` exchange block. Flow: Supabase emails link → `/auth/callback?token_hash=XXX&type=recovery&next=/auth/reset-password` → `verifyOtp({ token_hash, type: 'recovery' })` → redirect to `/auth/reset-password`. Expired tokens redirect to `/login?error=reset_expired`.
+
+**CRITICAL — Zod `parseBody` usage:** Returns `[data, null]` on success, `[null, Response]` on failure. Pattern:
+```typescript
+const [body, err] = await parseBody(request, CreateRiskSchema)
+if (err) return err
+// use body.title, body.category etc.
+```
+Never call `request.json()` after `parseBody` — the stream is consumed.
+
+**Migration applied:** `node scripts/apply-sql.mjs supabase/migrations/0041_soft_delete.sql` ✅ APPLIED
+
+---
+
 ## 7. App Routes
 
 ```
 /                                            Marketing landing page
 /login  /signup  /onboarding                Auth flow (onboarding = 3-step wizard)
+/forgot-password                             Password reset request — email entry (public)
+/reset-password                              New password entry after Supabase recovery email (public)
 /auth/mfa-verify                             Post-login TOTP / recovery-code gate (redirects to ?redirect= on success)
 /api/auth/mfa/enroll                         POST — begin TOTP enrollment, returns qrDataUrl
 /api/auth/mfa/confirm                        POST — confirm first TOTP token, returns 10 recovery codes
@@ -1096,6 +1140,18 @@ GET /api/platform/attachments/[id]/download  Download attachment (session auth)
 /api/cron/billing                            Daily billing cron — expire trials, warn expiring, cancel (CRON_SECRET)
 /api/cron/governance-snapshot               Daily org snapshot + monitoring rules (CRON_SECRET)
 /api/health                                  Liveness/readiness probe — DB + config checks, returns { status, checks }
+GET /api/docs                                OpenAPI 3.1 JSON spec (public, no auth)
+GET /api/docs/ui                             Swagger UI HTML — interactive API explorer (public, no auth)
+
+--- Trust Center (public, no auth) ---
+/trust                                       Security overview hub — links to all trust sub-pages
+/trust/architecture                          Security architecture — RLS, data residency, zero-trust, session mgmt
+/trust/frameworks                            Compliance frameworks — ISO 27001, SOC 2, DPDP, PCI DSS, HIPAA, GDPR, EU AI Act
+/trust/encryption                            Encryption — TLS 1.3, AES-256-GCM, bcrypt, HSTS
+/trust/data-protection                       Data protection — India residency, tenant isolation, DPDP
+/trust/privacy                               Privacy — data handling, no-training guarantee, erasure
+/trust/ai                                    Responsible AI — Gemini usage, audit trail, EU AI Act alignment
+/trust/contact                               Security contact — responsible disclosure, security@audt.tech
 /api/invoices/[id]/pdf                       Download invoice PDF (session auth, org-scoped)
 /api/cron/governance-snapshot               Daily org snapshot + monitoring rules (CRON_SECRET)
 /api/export/audit-logs                       CSV export (session auth)
@@ -2075,8 +2131,9 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 
 **CRITICAL — `security_permissions` global table:** Has no `organization_id` column. RLS policy is SELECT-only for authenticated users (all orgs can read). Never add org-scoped data to this table. Org-level permission overrides go in `security_role_permissions` and `security_user_permissions`.
 
-| Next Module | Description | Status |
+| Sprint / Epic | Description | Status |
 |---|---|---|
+| Epic 04 — Commercial Foundation | Password recovery, plan enforcement, audit logs, API docs, Zod validation, structured logging, soft delete, trust center | ✅ Complete (2026-06-28) |
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
 | Policy Governance™ | Full policy lifecycle, versioning, attestations, Policy Health™ | ✅ Complete (2026-06-09) |
 | DPDP Privacy™ | India DPDP Act 2023 — data inventory, consent, retention, DSR, PIA | ✅ Complete (2026-06-09) |
@@ -2211,6 +2268,13 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Platform attachment rows are snake_case** | `db.execute()` returns snake_case column names. `AttachmentRow` fields: `storage_path`, `entity_type`, `entity_id`, `content_type`, `file_name`, `version` (not `versionNumber`). Access via `attachment.storage_path`, not `attachment.storagePath`. |
 | **`addAttachmentVersion` params (no orgId, no fileName)** | `lib/repositories/platform/attachment-repo.ts`: `addAttachmentVersion({ attachmentId, version, storagePath, uploadedBy?, changeNote? })` — no `orgId` or `fileName` in the params. `updateAttachmentLatest(orgId, attachmentId)` — only 2 args. |
 | **`tagEntity` and `createTag` calling conventions** | `lib/services/platform/tag-service.ts`: `createTag(orgId, params)` — orgId is a separate first arg, not inside params. `tagEntity(orgId, taggedBy, tagId, entityType, entityId)` — 5 positional args, not an object. `findOrCreateTag` uses `searchTags(orgId, name)` + `.find()` exact match — there is no `findTagByName` in the tag repo. |
+| **Soft delete — `deleted_at IS NULL` is in list queries only** | `findByOrg` / `findAllControls` etc. filter `isNull(table.deletedAt)`. Standalone `findById` does NOT filter — intentional so restore UI can fetch the deleted row. `softDelete*()` sets `deleted_at = NOW()`; `restore*()` sets it back to NULL. `permanentDelete()` in `trash-repo.ts` is the only hard-delete path. |
+| **`audit()` helper is fire-and-forget** | `lib/audit/audit-events.ts` exports `audit(params)` which calls `recordAudit(params).catch(() => {})`. Never await it. Never log passwords, API key values, tokens, or PII. If orgId is unavailable, skip the call rather than crashing. |
+| **Password recovery callback** | `app/auth/callback/route.ts` checks for `token_hash + type=recovery` BEFORE the code exchange block. Uses `supabase.auth.verifyOtp({ token_hash, type: 'recovery' })`. Expired tokens redirect to `/login?error=reset_expired`. The `next` param carries the redirect destination (`/auth/reset-password`). |
+| **`parseBody()` consumes the request stream** | After calling `parseBody(request, schema)`, never call `request.json()` again — the body stream is consumed. `parseBody` returns `[data, null]` on success or `[null, Response]` on failure. Return the Response immediately on failure. |
+| **OpenAPI spec is hand-authored in `lib/openapi/spec.ts`** | Not auto-generated from routes. Update it manually when adding new API endpoints. The spec is served as JSON from `/api/docs` (no auth required) and rendered by Swagger UI at `/api/docs/ui`. |
+| **`lib/logger.ts` is Edge Runtime compatible** | Zero external dependencies. Uses `console.log/warn/error` with `JSON.stringify`. Safe to import in `proxy.ts` (Edge middleware). Do NOT add `pino` or any Node.js-only logger — it will break the Edge middleware build. |
+| **Trust Center pages have NO auth** | `app/trust/**` pages must never call `requireUser()`. They are public marketing pages. The layout (`app/trust/layout.tsx`) has no auth check. Do not add `export const dynamic = "force-dynamic"` to these pages. |
 
 ---
 
