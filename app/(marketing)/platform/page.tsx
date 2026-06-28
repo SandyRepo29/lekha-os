@@ -35,14 +35,14 @@ export default function PlatformPage() {
           <div className="hero__copy reveal" style={{ maxWidth: "100%" }}>
             <div className="badge" style={{ display: "inline-flex" }}>
               <span className="badge__pulse" />
-              Vendor Governance Platform
+              AI-Native Trust, Risk &amp; Compliance Platform
             </div>
             <h1 className="hero__title">
-              The Complete Vendor<br />
-              <span className="grad-text">Governance Platform.</span>
+              The Complete Governance<br />
+              <span className="grad-text">OS for Modern Teams.</span>
             </h1>
             <p className="hero__sub" style={{ margin: "0 auto 34px" }}>
-              One platform for every stage of the vendor lifecycle — governance, risk, compliance, audits, and continuous trust.
+              32 modules. One platform. Vendor governance, risk, compliance, audits, regulatory intelligence, AI governance, and continuous monitoring &#8212; unified through a shared intelligence layer.
             </p>
             <div className="hero__cta" style={{ justifyContent: "center" }}>
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
@@ -57,10 +57,9 @@ export default function PlatformPage() {
         <div className="container">
           <div className="section__head reveal">
             <span className="eyebrow">Architecture</span>
-            <h2>Built Around The Vendor.</h2>
+            <h2>Built For Complete Governance.</h2>
             <p>
-              AUDT starts with the vendor — not the audit or the framework.
-              Every workflow, assessment, and decision connects back to a single vendor record.
+              AUDT connects every governance domain into a single intelligent platform &#8212; from vendor management through regulatory intelligence, all sharing one data model and AI layer.
             </p>
           </div>
 
@@ -246,7 +245,7 @@ export default function PlatformPage() {
             <p>Every governance domain your organization needs — in a single platform.</p>
           </div>
           <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center", maxWidth: "840px", margin: "0 auto 2rem" }}>
-            {["Vendor Governance","Trust Operations","Risk Management","Compliance Management","Audit Management","Policy Governance","Privacy Governance","Asset Intelligence","AI Governance","Continuous Monitoring"].map((item) => (
+            {["Vendor Governance","Trust Operations","Risk Management","Compliance Management","Audit Management","Policy Governance","Privacy & DPDP","Contract Governance","Asset Intelligence","AI Governance","Regulatory Intelligence","Trust Verification","Executive Reporting","Continuous Monitoring"].map((item) => (
               <div key={item} style={{
                 padding: "10px 20px", borderRadius: "999px",
                 border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)",
@@ -274,7 +273,7 @@ export default function PlatformPage() {
             background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)",
             maxWidth: "780px", margin: "0 auto 3rem",
           }}>
-            {["Security","Compliance","Risk","Monitoring","Performance","Audit Readiness"].map((item, i, arr) => (
+            {["Evidence (20%)","Risk (20%)","Compliance (15%)","Assessment (15%)","Contract (10%)","Operational (10%)","Freshness (10%)"].map((item, i, arr) => (
               <span key={item} style={{ display: "contents" }}>
                 <div style={{
                   padding: "10px 18px", borderRadius: "8px",
@@ -341,7 +340,7 @@ export default function PlatformPage() {
               <div className="chat__a">Audit readiness is 92%. 3 evidence gaps remain across 2 vendor controls. Evidence Vault™ is current for 171 of 174 controls.</div>
             </div>
             <div className="chat__input">
-              <span>Ask about your vendor governance posture...</span>
+              <span>Ask about your governance posture...</span>
               <span className="chat__send">✦</span>
             </div>
           </div>
@@ -420,8 +419,8 @@ export default function PlatformPage() {
       {/* ─── 10. CTA ─────────────────────────────────── */}
       <section className="cta-final">
         <div className="container cta-final__inner reveal">
-          <div className="cta-final__badge">Vendor Governance Platform</div>
-          <h2>Govern Every Vendor.<br />Trust Every Decision.</h2>
+          <div className="cta-final__badge">AI-Native Trust, Risk &amp; Compliance Platform</div>
+          <h2>Governance Built on Proof.<br />Trust Every Decision.</h2>
           <p>See how AUDT helps modern organizations manage vendor governance, risk, compliance, audits, and trust from a single platform.</p>
           <div className="cta-final__btns">
             <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
