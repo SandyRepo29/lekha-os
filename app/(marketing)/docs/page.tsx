@@ -45,6 +45,7 @@ const SIDEBAR: Record<string, SidebarGroup[]> = {
         { id: "uc-prepare-audit", label: "Prepare for an Audit" },
         { id: "uc-manage-policies", label: "Create & Manage Policies" },
         { id: "uc-review-status", label: "Review Compliance Status" },
+        { id: "uc-automate-governance", label: "Automate Governance (TOE)" },
         { id: "uc-govern-ai", label: "Govern AI Systems" },
       ],
     },
@@ -137,6 +138,7 @@ const QUICK_ACTIONS = [
   { icon: "📋", title: "Prepare for an Audit" },
   { icon: "📝", title: "Create & Manage Policies" },
   { icon: "📊", title: "Review Compliance Status" },
+  { icon: "⚡", title: "Automate Governance (TOE)" },
   { icon: "🤖", title: "Govern AI Systems" },
 ];
 
@@ -156,7 +158,7 @@ const SCORING_ENGINES = [
   },
   {
     name: "Vendor Trust Score™",
-    components: ["Evidence (25%)", "Compliance (20%)", "Risk (20%)", "Assessment (15%)", "Operational (10%)", "Freshness (10%)"],
+    components: ["Evidence (20%)", "Risk (20%)", "Compliance (15%)", "Assessment (15%)", "Contract (10%)", "Operational (10%)", "Freshness (10%)"],
   },
   {
     name: "Control Health™",
@@ -301,6 +303,25 @@ const USE_CASES: UseCase[] = [
     ],
   },
   {
+    id: "uc-automate-governance",
+    title: "Automate Governance with Trust Operations Engine™",
+    goal: "Connect governance events across modules to automated workflows and approval queues.",
+    time: "15–20 minutes",
+    prereq: "Active vendors, risks, or compliance frameworks in the platform.",
+    outcome: "Governance events automatically trigger workflows, route approvals, and fire automation rules — reducing manual follow-up.",
+    flow: ["Review Event Stream", "Choose Workflow Template", "Start Instance", "Monitor Steps", "Approve Actions", "View Analytics"],
+    steps: [
+      "Go to /operations/events — see the live event stream across all 37 event types (vendor.document_expired, risk.score_critical, control.health_low, etc.)",
+      "Go to /operations/workflows — choose from 6 built-in templates: Vendor Onboarding, Evidence Expiry Response, Trust Score Drop Response, Contract Renewal, Vendor Offboarding, Critical Risk Escalation",
+      "Click Start Workflow on any template — fill in parameters, assign owner",
+      "Monitor active instances at /operations/workflows — each step shows pending/in_progress/completed/failed status",
+      "Go to /operations/approvals — review pending approvals and approve or reject with notes",
+      "Create automation rules at /operations/automation — define event→action triggers (e.g., 'When trust score drops below 60, create a risk review task')",
+      "View /operations/analytics for workflow SLA metrics, completion rates, and historical throughput",
+    ],
+    tip: "Use /operations/command-center for a real-time cross-module governance snapshot — critical items needing attention surface automatically.",
+  },
+  {
     id: "uc-govern-ai",
     title: "Govern AI Systems",
     goal: "Inventory, risk-assess, and monitor AI systems for responsible governance.",
@@ -314,7 +335,7 @@ const USE_CASES: UseCase[] = [
       "Link AI risks: type (hallucination/bias/privacy_leakage/prompt_injection/etc.), impact, likelihood",
       "Map to AI controls: human oversight, output review, prompt logging, model approval",
       "Check compliance: AUDT maps to ISO 42001, NIST AI RMF, EU AI Act, DPDP AI",
-      "Monitor via AI Trust Score™ — Risk(25%), Controls(25%), Compliance(20%), Monitoring(15%), Vendor(10%), Incidents(5%)",
+      "Monitor via AI Trust Score™ — Risk(25%), Controls(25%), Compliance(20%), Monitoring(15%), Vendor(10%), Incidents(5%). Set up automation rules at /operations/automation to trigger alerts when AI risk scores breach thresholds.",
     ],
   },
 ];
@@ -362,6 +383,7 @@ const MODULE_GROUPS: { id: string; group: string; modules: Module[] }[] = [
     id: "mod-operations",
     group: "Operations",
     modules: [
+      { name: "Trust Operations Engine™", route: "/operations", desc: "Event-driven orchestration layer connecting every governance capability into one intelligent platform.", features: "37 built-in event types, 6 workflow templates, unified approval queue, automation rules engine, AI Decision Engine, Operations Copilot™.", workflow: "Publish event → Match workflow → Run steps → Approve actions → Monitor analytics" },
       { name: "Issue & Remediation Hub™", route: "/issue-hub", desc: "Centralized governance issue registry with SLA tracking.", features: "Issue registry, task management, exception management, escalation engine, SLA tracking." },
       { name: "Workflow Studio™", desc: "Governance automation engine with approval workflows.", features: "Workflow definitions, approval workflows, AI workflow generator, run history." },
     ],
@@ -535,7 +557,7 @@ const INSIGHTS = [
 ];
 
 const RATE_LIMITS = [
-  { plan: "Starter", limit: "100 requests", window: "60 seconds" },
+  { plan: "Growth (Trial)", limit: "100 requests", window: "60 seconds" },
   { plan: "Growth", limit: "300 requests", window: "60 seconds" },
   { plan: "Business", limit: "1,000 requests", window: "60 seconds" },
   { plan: "Enterprise", limit: "Unlimited", window: "—" },
@@ -564,6 +586,16 @@ const ENDPOINTS = [
   { method: "GET", path: "/api/v1/audit-logs", desc: "Audit event stream", perm: "read_only" },
   { method: "GET", path: "/api/v1/monitoring/alerts", desc: "Governance alerts", perm: "read_only" },
   { method: "GET", path: "/api/v1/registry", desc: "Public verification registry", perm: "public" },
+  { method: "GET", path: "/api/v1/benchmarking", desc: "Governance benchmark dashboard", perm: "read_only" },
+  { method: "GET", path: "/api/v1/benchmarking/rankings", desc: "Full rankings + maturity level", perm: "read_only" },
+  { method: "GET", path: "/api/v1/ai/systems", desc: "AI system inventory", perm: "read_only" },
+  { method: "GET", path: "/api/v1/agents", desc: "Governance agent list", perm: "read_only" },
+  { method: "GET", path: "/api/v1/agent-runs", desc: "Agent execution history", perm: "read_only" },
+  { method: "GET", path: "/api/v1/public/trust-score", desc: "Real-time org trust score (Trust API Platform™)", perm: "bearer" },
+  { method: "GET", path: "/api/v1/public/verification", desc: "Proof-of-governance bundle", perm: "bearer" },
+  { method: "GET", path: "/api/v1/public/benchmarking", desc: "Industry benchmark snapshot", perm: "bearer" },
+  { method: "GET", path: "/api/health", desc: "Liveness/readiness probe &#8212; DB + config checks", perm: "public" },
+  { method: "GET", path: "/api/docs", desc: "OpenAPI 3.1 JSON spec", perm: "public" },
 ];
 
 const CURL_EXAMPLES = `# Get Org Trust Score
@@ -661,9 +693,9 @@ function GettingStartedSection() {
       <div id="gs-welcome" className="docs-anchor">
         <div className="docs-hero">
           <h1 className="docs-hero-title">Welcome to AUDT</h1>
-          <p className="docs-hero-sub">Vendor Governance, Compliance &amp; Audit Management Platform</p>
+          <p className="docs-hero-sub">AI-Native Trust, Risk &amp; Compliance Platform &#8212; Governance OS</p>
           <p className="docs-hero-body">
-            Manage vendors, compliance programs, risks and audits from a single platform. From vendor onboarding to board-ready audit reports.
+            Replace spreadsheets and disconnected tools with a single AI-native platform for vendor governance, compliance, audits, risk, board governance, regulatory intelligence, and more. 32 modules. 259+ tables. Governance built on proof.
           </p>
         </div>
       </div>
@@ -748,7 +780,7 @@ function ModulesSection() {
   return (
     <section id="modules" className="docs-section">
       <h1 className="docs-h1">Module Reference</h1>
-      <p className="docs-p">AUDT ships 31 governance modules across six groups. Each module is self-contained with its own data layer, services, AI assistant, and REST API surface.</p>
+      <p className="docs-p">AUDT ships 32 governance modules across six groups. Each module is self-contained with its own data layer, services, AI assistant, and REST API surface.</p>
       {MODULE_GROUPS.map((g, i) => (
         <div id={g.id} className="docs-anchor" key={i}>
           <h2 className="docs-h2 docs-module-group">{g.group}</h2>
@@ -1227,6 +1259,11 @@ const MODULE_AI_ASSISTANTS = [
   { icon: "🛡", module: "Security Command Center™", name: "AI Security Advisor™", route: "/security-center", what: "Reviews your security posture across MFA adoption, SSO configuration, session hygiene, IP allow list coverage, and AI prompt audit logs. Generates 5 prioritised security recommendations and an overall Security Readiness Score™ narrative.", capabilities: ["Security posture summary (cached 24h)", "5 prioritised recommendations", "Prompt sensitivity analysis", "Multi-turn NL chat"] },
   { icon: "🗂️", module: "Asset Intelligence™", name: "AI Asset Advisor™", route: "/asset-intelligence/ai", what: "Analyses your asset inventory for coverage gaps, high-criticality assets without owners or risk assessments, and PII assets without DPDP linkage. Performs dependency chain analysis to show the blast radius of a critical asset failure.", capabilities: ["Advisory summary (cached 24h)", "Impact analyser", "Dependency chain analysis", "Multi-turn NL chat"] },
   { icon: "🧠", module: "Governance Agent Framework™", name: "Governance Copilot™", route: "/agents/copilot", what: "A dedicated NL chat interface for querying agent activity across all governance agents. Ask 'Which agents raised critical observations this week?', 'What actions are pending approval?', or 'Summarise the vendor watch agent findings for Q1'.", capabilities: ["Cross-agent NL reasoning", "Observation query", "Recommendation query", "Action status query"] },
+  { icon: "✅", module: "Continuous Compliance™", name: "AI Compliance Officer™", route: "/continuous-compliance/ai", what: "Reviews your automated check results, access review completions, attestation rates, and training compliance. Generates a Compliance Health™ narrative and per-check remediation guides for any failing checks.", capabilities: ["Health score narrative", "Per-check remediation guide", "Compliance summary (cached 24h)", "Multi-turn NL chat"] },
+  { icon: "⚡", module: "Trust Operations Engine™", name: "Operations Copilot™", route: "/operations/ai", what: "Generates an Operations Advisory covering your event pipeline, active workflow instances, pending approvals, and automation rule effectiveness. Provides AI Decision Engine recommendations and workflow guidance.", capabilities: ["Operations advisory (cached 24h)", "Workflow recommendations", "Step guidance", "Multi-turn NL chat"] },
+  { icon: "🤝", module: "Auditor Collaboration™", name: "AI Audit Advisor™", route: "/auditor-collaboration/ai", what: "Assesses audit readiness across all active audit rooms, identifies the top evidence gaps auditors are likely to flag, and generates AI-drafted findings from room activity. Answers questions about evidence request status and external finding trends.", capabilities: ["Audit readiness summary (cached 24h)", "Evidence gap analysis (top 5)", "AI finding drafter", "Multi-turn NL chat"] },
+  { icon: "🌐", module: "Trust Network™", name: "AI Trust Network Advisor™", route: "/trust-network/ai", what: "Generates a Trust Network Reputation™ narrative explaining your 5-component network score, identifies the highest-ROI actions for improving your public trust presence, and provides a Network Improvement Plan™ with 4 prioritised actions.", capabilities: ["Network reputation summary", "4-action Improvement Plan™", "Profile completeness guidance", "Multi-turn NL chat"] },
+  { icon: "🔌", module: "Trust API Platform™", name: "AI API Builder™", route: "/trust-api/ai", what: "Generates per-product API documentation, code samples, and integration guides for each of the 8 Trust API Platform™ products. Provides an integration health summary and recommends the highest-value API products for your platform tier.", capabilities: ["Per-product API docs", "Code sample generation", "Platform health summary (cached 24h)", "Multi-turn NL chat"] },
 ];
 
 
