@@ -10,7 +10,7 @@ export function MarketingFooter() {
             <span className="logo__text">AUDT</span>
           </Link>
           <p className="footer__tag">Governance Built on Proof.</p>
-          <p className="footer__sub">The Vendor Governance Platform for modern organizations.</p>
+          <p className="footer__sub">The AI-Native Trust, Risk &amp; Compliance Platform for modern organizations.</p>
         </div>
         <div className="footer__cols">
           <div className="footer__col">
@@ -46,7 +46,7 @@ export function MarketingFooter() {
       </div>
       <div className="container footer__bottom">
         <span>© 2026 AUDT. All rights reserved.</span>
-        <span>audt.tech · Vendor Governance Platform</span>
+        <span>audt.tech · Governance Built on Proof.</span>
       </div>
     </footer>
   );

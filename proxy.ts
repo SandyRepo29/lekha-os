@@ -17,7 +17,14 @@ import { logger, generateCorrelationId } from "@/lib/logger";
 // Routes that bypass enterprise auth enforcement
 const AUTH_BYPASS = ["/auth/", "/api/auth/", "/_next/", "/favicon", "/portal/"];
 // Routes that are public (no auth required, skip all checks)
-const PUBLIC_ROUTES = ["/", "/login", "/signup", "/verify/", "/api/health"];
+// Marketing pages must be listed here so logged-in users with MFA enabled are not
+// redirected to /auth/mfa-verify when visiting the public site.
+const PUBLIC_ROUTES = [
+  "/", "/login", "/signup", "/verify/", "/api/health",
+  "/platform", "/docs", "/trust",
+  "/forgot-password", "/reset-password",
+  "/api/docs",
+];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
