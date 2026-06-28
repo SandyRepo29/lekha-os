@@ -14,48 +14,120 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     icon: "LayoutDashboard",
     group: "",
     overview:
-      "Your governance command centre &#8212; a single-screen summary of organisational trust posture, recent activity, and module health across all 32 AUDT modules.",
+      "Your governance command centre — a single-screen summary of organisational trust posture, recent activity, and module health across all 32 AUDT modules.",
     features: [
-      "Live Org Trust Score&#8482; ring with 5-component breakdown (Vendor Trust, Risk Posture, Control Health, Audit Readiness, Compliance Coverage)",
-      "Module health strip &#8212; quick status for Vendor Hub, Risk Lens, Compliance, Audits, Controls, and more",
+      "Live Org Trust Score™ ring with 5-component breakdown (Vendor Trust, Risk Posture, Control Health, Audit Readiness, Compliance Coverage)",
+      "Module health strip — quick status for Vendor Hub, Risk Lens, Compliance, Audits, Controls, and more",
       "Recent audit log events and activity feed",
       "Quick-access cards to every major module across all 7 nav groups",
       "Critical alerts and overdue action counts at a glance",
-      "Onboarding checklist &#8212; 8-task guided setup for new organisations",
+      "Onboarding checklist — 8-task guided setup for new organisations",
     ],
     tips: [
-      "Bookmark /dashboard as your daily starting point &#8212; it surfaces whatever needs attention first.",
-      "Click any metric card to deep-link directly into that module&#8217;s filtered view.",
+      "Bookmark /dashboard as your daily starting point — it surfaces whatever needs attention first.",
+      "Click any metric card to deep-link directly into that module's filtered view.",
       "Use the global search (/) to find vendors, risks, controls, and more from any page.",
-      "The Trust Operations Engine&#8482; at /operations gives a cross-module live command view.",
+      "The Trust Operations Engine™ at /operations gives a cross-module live command view.",
     ],
     route: "/dashboard",
+  },
+
+  "/operations": {
+    title: "Trust Operations Engine™",
+    icon: "Workflow",
+    group: "Trust Operations",
+    overview:
+      "The orchestration layer connecting every governance capability into one intelligent, event-driven platform — 37 built-in event types, 6 workflow templates, unified approval queue, automation rules, and AI Decision Engine™.",
+    features: [
+      "TOE Dashboard — live event stream, active workflows, pending approvals, AI advisory",
+      "Governance Command Center — cross-module live stats and attention strip for all 32 modules",
+      "Event Log — stream of all 37 built-in governance event types with severity badges",
+      "Workflow Engine — 6 built-in templates: Vendor Onboarding, Evidence Expiry Response, Trust Score Drop, Contract Renewal, Vendor Offboarding, Critical Risk Escalation",
+      "Unified Approval Queue — all approvals from every module in one place with approve/reject and notes",
+      "Automation Engine — if-event-then-action rules with toggle, delete, and create",
+      "Workflow Analytics — by status, by workflow, SLA metrics, and historical data",
+      "AI Decision Engine™ — recommendations panel, Operations Advisory™ cached 24h, Operations Copilot™ NL chat",
+    ],
+    tips: [
+      "Start with the Vendor Onboarding workflow template — it covers the full lifecycle from invite to active in one automated flow.",
+      "The Approval Queue consolidates approvals from Workflow Studio, Agent Actions, and TOE in one view — check it daily.",
+      "Create automation rules to auto-trigger workflows on critical events (e.g., Trust Score drops below 60 → start review workflow).",
+      "Use the Command Center as your daily governance ops view — it shows live counts across all 32 modules at once.",
+    ],
+    route: "/operations",
+  },
+
+  "/workflow-studio": {
+    title: "Workflow Studio™",
+    icon: "GitBranch",
+    group: "Trust Operations",
+    overview:
+      "Governance automation engine — build approval workflows, escalation chains, and automated triggers across all AUDT modules.",
+    features: [
+      "Visual workflow builder with step-by-step configuration",
+      "Approval chains with multi-level sign-off",
+      "Escalation rules based on SLA breaches and severity",
+      "Cross-module triggers (e.g., create a risk when a critical finding is raised)",
+      "Workflow run history and status tracking",
+      "AI Workflow Generator™ for automated workflow creation from descriptions",
+      "Workflow templates for common governance processes",
+    ],
+    tips: [
+      "Start with the pre-built Vendor Onboarding workflow template",
+      "Use escalation rules to auto-notify executives on critical governance events",
+      "Link workflows to Governance Agent Framework™ for fully automated governance",
+    ],
+    route: "/workflow-studio",
+  },
+
+  "/issue-hub": {
+    title: "Issue & Remediation Hub™",
+    icon: "Target",
+    group: "Trust Operations",
+    overview:
+      "Centralised governance execution layer — create, track, escalate, and resolve governance issues from every module with SLA tracking and AI remediation planning.",
+    features: [
+      "Issue registry sourced from any AUDT module (risk, audit, compliance, control, vendor)",
+      "Task management per issue with owner and due date",
+      "Exception management — request, approve, and reject governance exceptions",
+      "Escalation engine — escalate to owner, manager, exec, or board",
+      "SLA tracking — auto-calculated by severity (Critical=7d, High=14d, Medium=30d, Low=90d)",
+      "AI Issue Generator — convert observations into structured issues",
+      "AI Remediation Planner — generate task plans with owners and timelines",
+      "AI Advisor — executive summary and NL chat",
+    ],
+    tips: [
+      "Use the AI Issue Generator to batch-convert audit findings into trackable issues in seconds.",
+      "SLA breach monitoring is automatic — configure the Continuous Monitoring™ rules to alert on breaches.",
+      "Link issues to risks so Risk Lens™ reflects the current remediation status.",
+    ],
+    route: "/issue-hub",
   },
 
   "/vendors": {
     title: "Vendor Hub™",
     icon: "Building2",
-    group: "Core GRC",
+    group: "Vendor Governance",
     overview:
       "The central registry for all third-party vendors — manage relationships, documents, assessments, risk scores, and AI-powered due diligence from one place.",
     features: [
       "Vendor registry with 25-column profiles including owner, risk level, and compliance tier",
       "AI document extraction — automatically pulls 10 key fields from uploaded certificates and contracts",
       "Security assessments with 17-question scorecard and AI summary",
-      "Trust Score&#8482; &#8212; 7-component 0&#8211;100 governance signal: Evidence (20%), Risk (20%), Compliance (15%), Assessment (15%), Contract (10%), Operational (10%), Freshness (10%)",
-      "Vendor Lifecycle&#8482; &#8212; full state machine: draft &#8594; invited &#8594; onboarding &#8594; active &#8594; renewal_due &#8594; offboarding &#8594; offboarded",
-      "Contact Directory &#8212; 7 contact types per vendor with role and ownership tracking",
-      "Governance Timeline &#8212; 31 event types in a chronological audit trail per vendor",
-      "Renewal Workspace &#8212; AI-scored renewal recommendation (renew / renegotiate / offboard) with confidence %",
-      "Offboarding Checklist &#8212; 9 sequential steps with completion tracking and auto-transition",
+      "Trust Score™ — 7-component 0–100 governance signal: Evidence (20%), Risk (20%), Compliance (15%), Assessment (15%), Contract (10%), Operational (10%), Freshness (10%)",
+      "Vendor Lifecycle™ — full state machine: draft → invited → onboarding → active → renewal_due → offboarding → offboarded",
+      "Contact Directory — 7 contact types per vendor with role and ownership tracking",
+      "Governance Timeline — 31 event types in a chronological audit trail per vendor",
+      "Renewal Workspace — AI-scored renewal recommendation (renew / renegotiate / offboard) with confidence %",
+      "Offboarding Checklist — 9 sequential steps with completion tracking and auto-transition",
       "Vendor portal with magic-link self-service for document submission",
       "Periodic governance reviews with AI narrative",
-      "Natural language search &#8212; ask &#8216;show high-risk vendors missing ISO cert&#8217;",
+      "Natural language search — ask 'show high-risk vendors missing ISO cert'",
       "Executive PDF and Audit Package export per vendor",
     ],
     tips: [
       "Use the natural language search bar in the topbar for complex vendor queries — it understands plain English like 'vendors expiring in 30 days'.",
-      "The Trust Score&#8482; auto-refreshes on page load if older than 1 hour — click Recalculate to force a fresh score immediately.",
+      "The Trust Score™ auto-refreshes on page load if older than 1 hour — click Recalculate to force a fresh score immediately.",
       "Assign document templates to vendor types so required docs are enforced automatically on every new vendor.",
       "Press N anywhere on the Vendor Hub to quickly add a new vendor.",
       "Use the global search (/) to find vendors, risks, controls, and more from any page.",
@@ -63,10 +135,57 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     route: "/vendors",
   },
 
+  "/contract-governance": {
+    title: "Contract Governance™",
+    icon: "FileSignature",
+    group: "Vendor Governance",
+    overview:
+      "Complete contract lifecycle management — library, clauses, obligations, renewals, and AI-powered risk scoring with a 6-component Contract Score™ engine.",
+    features: [
+      "Contract library with status, type, value, and expiry tracking",
+      "Clause management with category and risk level per clause",
+      "Obligation tracker with due dates, owner, and status workflow",
+      "Renewals dashboard sorted by expiry date",
+      "Contract Score™ — 6-component engine: clause coverage, obligation completion, renewal readiness, risk exposure, policy alignment, privacy compliance",
+      "Contract Intelligence™ — contract health analysis, renewal risk summary, AI executive summary, NL chat",
+      "Trust Graph integration — contract nodes linked to vendor/risk/policy/control entities",
+      "Monitoring rules for expiring and overdue contracts",
+    ],
+    tips: [
+      "Use the AI obligation extractor when uploading new contracts — it pulls out key obligations automatically.",
+      "Set renewal reminders 90 days out for material vendor contracts to avoid auto-renewal surprises.",
+      "Link contracts to risks so Risk Lens™ tracks contract-related risk exposure.",
+    ],
+    route: "/contract-governance",
+  },
+
+  "/asset-intelligence": {
+    title: "Asset Intelligence™",
+    icon: "Layers",
+    group: "Vendor Governance",
+    overview:
+      "Enterprise asset graph and trust mapping — master inventory connecting every governance entity (risks, controls, vendors, regulations) to the assets they protect.",
+    features: [
+      "12 asset types: application, database, API, server, cloud resource, data asset, business process, AI system, vendor service, network asset, endpoint, custom",
+      "Asset Trust Score™ — 6-component engine: security controls, compliance coverage, risk posture, data protection, operational health, monitoring coverage",
+      "Data Asset Catalog™ — PII tracking with DPDP regulation links and data classification",
+      "Asset Relationships™ — dependency graph with 10 relationship types",
+      "Asset Alerts™ — auto-generated alerts for critical assets missing owners, risk assessments, or classification",
+      "AI Asset Advisor™ — advisory summary, impact analysis, dependency chain analysis, NL chat",
+      "Junction links to risks, controls, vendors, contracts, regulations, and AI systems",
+    ],
+    tips: [
+      "Start with your critical-tier assets — classify all production databases and customer-facing applications first.",
+      "Use the dependency graph before a major change to understand blast radius.",
+      "PII-tagged assets automatically surface in the DPDP Privacy™ Data Asset Catalog.",
+    ],
+    route: "/asset-intelligence",
+  },
+
   "/compliance": {
     title: "Evidence Vault™",
     icon: "ShieldCheck",
-    group: "Core GRC",
+    group: "Risk & Compliance",
     overview:
       "Full compliance lifecycle management — frameworks, controls, evidence, policies, gap analysis, and AI-narrated reports for ISO 27001, SOC 2, DPDP, PCI DSS, and HIPAA.",
     features: [
@@ -90,7 +209,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/audits": {
     title: "Audit Management",
     icon: "ClipboardCheck",
-    group: "Core GRC",
+    group: "Risk & Compliance",
     overview:
       "End-to-end audit lifecycle — plan audits, execute checklists, raise findings, manage CAPAs, and generate board-ready PDF reports with AI narratives.",
     features: [
@@ -114,7 +233,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/risks": {
     title: "Risk Lens™",
     icon: "AlertTriangle",
-    group: "Core GRC",
+    group: "Risk & Compliance",
     overview:
       "Full risk lifecycle management — identify, assess, treat, and review risks across 13 categories with a 5×5 heat map, AI narratives, and board-ready reporting.",
     features: [
@@ -129,7 +248,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     ],
     tips: [
       "Use the heat map as a presentation tool — it instantly communicates top risks to board audiences.",
-      "Link risks to controls so Control Health&#8482; picks up the risk-reduction signal automatically.",
+      "Link risks to controls so Control Health™ picks up the risk-reduction signal automatically.",
       "The AI executive report is cached for 24 hours — click 'Regenerate' when major changes occur.",
       "Use the global search (/) to find any risk by title from any page.",
     ],
@@ -139,7 +258,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/controls": {
     title: "Control Center™",
     icon: "Shield",
-    group: "Core GRC",
+    group: "Risk & Compliance",
     overview:
       "Central governance layer for all controls — create, test, score, and monitor every control across frameworks with the 6-component Control Health™ engine.",
     features: [
@@ -162,18 +281,18 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   },
 
   "/policy-governance": {
-    title: "Policy Governance&#8482;",
+    title: "Policy Governance™",
     icon: "FileText",
-    group: "Trust Operations",
+    group: "Risk & Compliance",
     overview:
-      "Full policy lifecycle management &#8212; create, version, approve, attest, and retire governance policies across your organization.",
+      "Full policy lifecycle management — create, version, approve, attest, and retire governance policies across your organization.",
     features: [
       "Policy Library with version history and immutable snapshots",
       "Review workflows and scheduled review reminders",
       "Attestation campaigns for org-wide policy sign-off",
       "Control and framework linkage for compliance mapping",
-      "Policy Health&#8482; scoring based on review freshness and attestation rate",
-      "AI Policy Advisor&#8482; for drafting, gap analysis, and executive summaries",
+      "Policy Health™ scoring based on review freshness and attestation rate",
+      "AI Policy Advisor™ for drafting, gap analysis, and executive summaries",
     ],
     tips: [
       "Link policies to compliance controls to improve readiness scores",
@@ -186,7 +305,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/dpdp-privacy": {
     title: "DPDP Privacy™",
     icon: "Lock",
-    group: "Privacy & Legal",
+    group: "Risk & Compliance",
     overview:
       "India DPDP Act 2023 compliance module — manage data assets, consent records, privacy requests (DSR), retention schedules, and privacy impact assessments.",
     features: [
@@ -207,96 +326,98 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     route: "/dpdp-privacy",
   },
 
-  "/contract-governance": {
-    title: "Contract Governance™",
-    icon: "FileSignature",
-    group: "Privacy & Legal",
+  "/continuous-compliance": {
+    title: "Continuous Compliance™",
+    icon: "Cpu",
+    group: "Risk & Compliance",
     overview:
-      "Complete contract lifecycle management — library, clauses, obligations, renewals, and AI-powered risk scoring with a 6-component Contract Score™ engine.",
+      "Always-on compliance automation — 21 prebuilt checks across AWS, Azure, GCP, GitHub, M365, Google Workspace, and Okta, with evidence automation, access reviews, and training campaigns.",
     features: [
-      "Contract library with status, type, value, and expiry tracking",
-      "Clause management with category and risk level per clause",
-      "Obligation tracker with due dates, owner, and status workflow",
-      "Renewals dashboard sorted by expiry date",
-      "Contract Score™ — 6-component engine: clause coverage, obligation completion, renewal readiness, risk exposure, policy alignment, privacy compliance",
-      "Contract Intelligence&#8482; — contract health analysis, renewal risk summary, AI executive summary, NL chat",
-      "Trust Graph integration — contract nodes linked to vendor/risk/policy/control entities",
-      "Monitoring rules for expiring and overdue contracts",
+      "21 prebuilt compliance checks covering MFA, encryption, audit logs, branch protection, DLP, and more",
+      "Evidence Automation™ — check runs generate and link evidence to controls automatically",
+      "Control Validation Engine™ — continuous effectiveness validation from check results",
+      "Access Review Manager™ — quarterly and privileged access certifications with approve/revoke decisions",
+      "Compliance Attestations™ — policy sign-offs with completion percentage tracking",
+      "Training Compliance™ — security awareness and privacy training campaigns",
+      "Compliance Health™ — 5-component 0–100 score: check success, signal reduction, evidence, training, access reviews",
+      "AI Compliance Officer™ — executive summary, per-check remediation guides, NL chat",
     ],
     tips: [
-      "Use the AI obligation extractor when uploading new contracts — it pulls out key obligations automatically.",
-      "Set renewal reminders 90 days out for material vendor contracts to avoid auto-renewal surprises.",
-      "Link contracts to risks so Risk Lens™ tracks contract-related risk exposure.",
+      "Connect the Integration Hub™ before running checks — connected systems produce real check results instead of simulated ones.",
+      "Set up quarterly access reviews for privileged accounts as a baseline DPDP and ISO 27001 control.",
+      "The Compliance Health score factors into the Org Trust Score™ — improving check pass rate directly lifts the overall score.",
     ],
-    route: "/contract-governance",
+    route: "/continuous-compliance",
   },
 
-  "/issue-hub": {
-    title: "Issue & Remediation Hub™",
-    icon: "Target",
-    group: "Privacy & Legal",
+  "/security-center": {
+    title: "Security Command Center™",
+    icon: "ShieldAlert",
+    group: "Risk & Compliance",
     overview:
-      "Centralised governance execution layer — create, track, escalate, and resolve governance issues from every module with SLA tracking and AI remediation planning.",
+      "Enterprise security platform — MFA enforcement, SSO, session management, IP allow lists, evidence protection, AI prompt auditing, customer managed encryption, and vendor monitoring.",
     features: [
-      "Issue registry sourced from any AUDT module (risk, audit, compliance, control, vendor)",
-      "Task management per issue with owner and due date",
-      "Exception management — request, approve, and reject governance exceptions",
-      "Escalation engine — escalate to owner, manager, exec, or board",
-      "SLA tracking — auto-calculated by severity (Critical=7d, High=14d, Medium=30d, Low=90d)",
-      "AI Issue Generator — convert observations into structured issues",
-      "AI Remediation Planner — generate task plans with owners and timelines",
-      "AI Advisor — executive summary and NL chat",
+      "MFA Management™ — TOTP enrollment tracking with per-org enforcement modes (optional / required_admins / required_all)",
+      "Enterprise SSO™ — Entra ID, Okta, Google Workspace, Ping Identity, SAML 2.0, OIDC with JIT provisioning",
+      "Session Management™ — active sessions per org with revoke individual or all sessions",
+      "IP Allow Lists™ — CIDR-based rules scoped to login, API, compliance, and vendor resources",
+      "Evidence Protection™ — expiring share links with view-only/download/API access and watermarking",
+      "AI Prompt Logs™ — audit trail with PII detection and sensitivity classification",
+      "Customer Managed Encryption™ — AWS KMS, Azure Key Vault, Google KMS provider registry",
+      "Public Trust Center™ — configurable per-org trust page showing certs, score, and documents",
+      "Continuous Vendor Monitoring™ — domain, SSL, and reputation monitoring with alert lifecycle",
     ],
     tips: [
-      "Use the AI Issue Generator to batch-convert audit findings into trackable issues in seconds.",
-      "SLA breach monitoring is automatic — configure the Continuous Monitoring™ rules to alert on breaches.",
-      "Link issues to risks so Risk Lens™ reflects the current remediation status.",
+      "Enable MFA required_all mode for regulated industries — Banking, Fintech, and Healthcare require it.",
+      "Configure IP allow lists for API access to lock down your REST API endpoints to known CIDRs.",
+      "Review the AI Prompt Log weekly to detect sensitive data leakage in Copilot interactions.",
     ],
-    route: "/issue-hub",
+    route: "/security-center",
   },
 
-  "/workflow-studio": {
-    title: "Workflow Studio&#8482;",
-    icon: "GitBranch",
-    group: "Trust Operations",
+  "/regulatory-intelligence": {
+    title: "Regulatory Intelligence™",
+    icon: "Scale",
+    group: "Risk & Compliance",
     overview:
-      "Governance automation engine &#8212; build approval workflows, escalation chains, and automated triggers across all AUDT modules.",
+      "Always-current regulatory tracking — monitor 18 built-in global regulations (DPDP, GDPR, RBI, SEBI, EU AI Act, DORA, NIS2, SOX, and more) plus custom org-specific regulations.",
     features: [
-      "Visual workflow builder with step-by-step configuration",
-      "Approval chains with multi-level sign-off",
-      "Escalation rules based on SLA breaches and severity",
-      "Cross-module triggers (e.g., create a risk when a critical finding is raised)",
-      "Workflow run history and status tracking",
-      "AI Workflow Generator&#8482; for automated workflow creation from descriptions",
-      "Workflow templates for common governance processes",
+      "18 built-in regulations covering India, EU, US, and global frameworks",
+      "Change Monitor™ — track regulatory amendments with severity and status workflow",
+      "Obligations Registry™ — extract and track compliance obligations per regulation",
+      "Impact Assessments™ — per-change impact analysis with affected areas",
+      "Watchlists™ — curated regulation monitoring lists",
+      "Compliance Horizon™ — AI 4-panel forecast: emerging risks, upcoming deadlines, global trends, recommended actions",
+      "Regulatory Readiness Score™ — implemented + validated obligations as a percentage",
+      "AI Regulatory Advisor™ — advisory summary, per-change analysis, obligation extraction, NL chat",
     ],
     tips: [
-      "Start with the pre-built Vendor Onboarding workflow template",
-      "Use escalation rules to auto-notify executives on critical governance events",
-      "Link workflows to Governance Agent Framework&#8482; for fully automated governance",
+      "Add critical regulations to a Watchlist so amendments surface immediately in your monitoring feed.",
+      "Run the Compliance Horizon quarterly — it anticipates regulatory changes 6–12 months ahead.",
+      "Link obligations to AUDT controls via the obligation mappings to close the compliance loop.",
     ],
-    route: "/workflow-studio",
+    route: "/regulatory-intelligence",
   },
 
   "/trust-intelligence": {
     title: "Trust Intelligence™",
     icon: "Brain",
-    group: "Intelligence",
+    group: "Trust Intelligence",
     overview:
-      "Executive governance command centre &#8212; aggregates all 32 modules into an Organisational Trust Score&#8482; with drivers, detractors, recommendations, and AI Governance Copilot&#8482;.",
+      "Executive governance command centre — aggregates all 32 modules into an Organisational Trust Score™ with drivers, detractors, recommendations, and AI Governance Copilot™.",
     features: [
-      "Org Trust Score&#8482; ring &#8212; 5-component engine: Vendor Trust (25%), Risk Posture (25%), Control Health (20%), Audit Readiness (15%), Compliance Coverage (15%)",
+      "Org Trust Score™ ring — 5-component engine: Vendor Trust (25%), Risk Posture (25%), Control Health (20%), Audit Readiness (15%), Compliance Coverage (15%)",
       "Vendor Trust, Risk Insights, Control Health, and Compliance sub-views",
-      "Recommendations Engine&#8482; &#8212; prioritised actions with Trust Impact pts, effort, and module deep-links",
-      "Executive View &#8212; AI Governance Summary cached 24h, Trust Decision Intelligence&#8482; (5 pre-computed Q&A cards), open actions",
-      "Trust Velocity&#8482; &#8212; High Performers / At Risk / Watch List vendor buckets",
-      "Governance Momentum&#8482; &#8212; per-component direction indicator from 30-day snapshot delta",
-      "Projected Trust Decay&#8482; &#8212; 30/90/180-day extrapolated forecast for trust score",
-      "Trust Recovery Plan&#8482; &#8212; 6 prioritised recovery actions with effort and impact ratings",
-      "Governance Trends&#8482; &#8212; 90-day sparklines for 6 metrics with change percentages",
-      "Continuous Monitoring&#8482; &#8212; 7 automated alert rules with resolve workflow",
-      "Trust Graph&#8482; &#8212; force-directed knowledge graph with root cause and impact analysis",
-      "Governance Copilot&#8482; &#8212; multi-turn NL chat about your governance posture",
+      "Recommendations Engine™ — prioritised actions with Trust Impact pts, effort, and module deep-links",
+      "Executive View — AI Governance Summary cached 24h, Trust Decision Intelligence™ (5 pre-computed Q&A cards), open actions",
+      "Trust Velocity™ — High Performers / At Risk / Watch List vendor buckets",
+      "Governance Momentum™ — per-component direction indicator from 30-day snapshot delta",
+      "Projected Trust Decay™ — 30/90/180-day extrapolated forecast for trust score",
+      "Trust Recovery Plan™ — 6 prioritised recovery actions with effort and impact ratings",
+      "Governance Trends™ — 90-day sparklines for 6 metrics with change percentages",
+      "Continuous Monitoring™ — 7 automated alert rules with resolve workflow",
+      "Trust Graph™ — force-directed knowledge graph with root cause and impact analysis",
+      "Governance Copilot™ — multi-turn NL chat about your governance posture",
     ],
     tips: [
       "Run the daily governance snapshot cron job to maintain accurate 90-day trend charts.",
@@ -309,7 +430,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/benchmarking": {
     title: "Governance Benchmarking™",
     icon: "BarChart3",
-    group: "Intelligence",
+    group: "Trust Intelligence",
     overview:
       "Compare your governance posture against industry peers across 10 categories — percentile ranking, maturity level (Reactive → Trust Leader), and AI improvement planner.",
     features: [
@@ -332,7 +453,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
   "/executive-reporting": {
     title: "Executive Reporting & Analytics™",
     icon: "LineChart",
-    group: "Intelligence",
+    group: "Trust Intelligence",
     overview:
       "Role-specific executive dashboards, board reporting, predictive forecasting, and governance scorecards — the boardroom layer of the AUDT Governance OS.",
     features: [
@@ -352,100 +473,52 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     route: "/executive-reporting",
   },
 
-  "/regulatory-intelligence": {
-    title: "Regulatory Intelligence™",
-    icon: "Scale",
-    group: "Intelligence",
+  "/ai-governance": {
+    title: "AI Governance™",
+    icon: "Brain",
+    group: "Trust Intelligence",
     overview:
-      "Always-current regulatory tracking — monitor 18 built-in global regulations (DPDP, GDPR, RBI, SEBI, EU AI Act, DORA, NIS2, SOX, and more) plus custom org-specific regulations.",
+      "Responsible AI governance — manage AI systems, risks, controls, vendors, compliance frameworks (ISO 42001, EU AI Act, NIST AI RMF), and incidents with an AI Trust Score™ per system.",
     features: [
-      "18 built-in regulations covering India, EU, US, and global frameworks",
-      "Change Monitor™ — track regulatory amendments with severity and status workflow",
-      "Obligations Registry™ — extract and track compliance obligations per regulation",
-      "Impact Assessments™ — per-change impact analysis with affected areas",
-      "Watchlists™ — curated regulation monitoring lists",
-      "Compliance Horizon™ — AI 4-panel forecast: emerging risks, upcoming deadlines, global trends, recommended actions",
-      "Regulatory Readiness Score™ — implemented + validated obligations as a percentage",
-      "AI Regulatory Advisor™ — advisory summary, per-change analysis, obligation extraction, NL chat",
+      "AI System Inventory™ — registry of all AI systems with type, vendor, risk classification, and deployment environment",
+      "AI Trust Score™ — 6-component engine: risk (25%), controls (25%), compliance (20%), monitoring (15%), vendor (10%), incidents (5%)",
+      "AI Risk Register™ — 13 risk categories: hallucination, bias, privacy leakage, prompt injection, model drift, and more",
+      "AI Controls™ — 11 control categories: human oversight, output review, prompt logging, model approval, red team testing",
+      "AI Compliance™ — 6 frameworks: ISO 42001, NIST AI RMF, EU AI Act, OECD AI Principles, DPDP AI, Internal",
+      "AI Incident Tracker™ — full incident lifecycle from open to resolved with root cause and remediation",
+      "AI Vendor Cards™ — vendor registry with privacy and security posture indicators",
+      "AI Governance Copilot™ — summary, risk advisory, compliance readiness analysis, multi-turn NL chat",
     ],
     tips: [
-      "Add critical regulations to a Watchlist so amendments surface immediately in your monitoring feed.",
-      "Run the Compliance Horizon quarterly — it anticipates regulatory changes 6-12 months ahead.",
-      "Link obligations to AUDT controls via the obligation mappings to close the compliance loop.",
+      "Register every AI system in use — shadow AI is the biggest gap in most organisations' AI governance posture.",
+      "Map AI controls to your ISO 42001 framework in the Compliance tab to track readiness automatically.",
+      "The EU AI Act requires a risk classification for every AI system — complete this before the compliance deadline.",
     ],
-    route: "/regulatory-intelligence",
+    route: "/ai-governance",
   },
 
-  "/asset-intelligence": {
-    title: "Asset Intelligence™",
-    icon: "Layers",
-    group: "Intelligence",
+  "/agents": {
+    title: "Governance Agent Framework™",
+    icon: "Bot",
+    group: "Trust Intelligence",
     overview:
-      "Enterprise asset graph and trust mapping — master inventory connecting every governance entity (risks, controls, vendors, regulations) to the assets they protect.",
+      "AI agents that continuously monitor, reason, and propose actions across your entire governance posture — observations, recommendations, and human-approved action queue.",
     features: [
-      "12 asset types: application, database, API, server, cloud resource, data asset, business process, AI system, vendor service, network asset, endpoint, custom",
-      "Asset Trust Score™ — 6-component engine: security controls, compliance coverage, risk posture, data protection, operational health, monitoring coverage",
-      "Data Asset Catalog™ — PII tracking with DPDP regulation links and data classification",
-      "Asset Relationships™ — dependency graph with 10 relationship types",
-      "Asset Alerts™ — auto-generated alerts for critical assets missing owners, risk assessments, or classification",
-      "AI Asset Advisor™ — advisory summary, impact analysis, dependency chain analysis, NL chat",
-      "Junction links to risks, controls, vendors, contracts, regulations, and AI systems",
+      "6 agent types: Risk Monitor, Vendor Watch, Compliance Guardian, Policy Enforcer, Audit Prep, Custom",
+      "Agent Studio™ — create and configure custom governance agents with module scope, rules, and thresholds",
+      "Agent Runs™ — full execution history with duration, observations generated, and recommendations created",
+      "Observations™ — governance signals with severity (critical/high/medium/low/info) and source module",
+      "Recommendations™ — prioritised actions with confidence 0–100 and impact/effort labels",
+      "Agent Actions™ — human approval queue: all agent mutations require explicit Approve or Reject",
+      "Orchestration™ — multi-agent governance pipelines with sequenced runs",
+      "Governance Copilot™ — multi-turn NL chat about your governance posture",
     ],
     tips: [
-      "Start with your critical-tier assets — classify all production databases and customer-facing applications first.",
-      "Use the dependency graph before a major change to understand blast radius.",
-      "PII-tagged assets automatically surface in the DPDP Privacy™ Data Asset Catalog.",
+      "Start with the built-in Compliance Guardian agent — it covers the most common governance gaps out of the box.",
+      "All agent actions require human approval — review the Actions queue daily to avoid bottlenecks.",
+      "Use Orchestration to chain agents: Risk Monitor → Vendor Watch → Compliance Guardian for end-to-end coverage.",
     ],
-    route: "/asset-intelligence",
-  },
-
-  "/security-center": {
-    title: "Security Command Center™",
-    icon: "ShieldAlert",
-    group: "Security",
-    overview:
-      "Enterprise security platform — MFA enforcement, SSO, session management, IP allow lists, evidence protection, AI prompt auditing, customer managed encryption, and vendor monitoring.",
-    features: [
-      "MFA Management™ — TOTP enrollment tracking with per-org enforcement modes (optional / required_admins / required_all)",
-      "Enterprise SSO™ — Entra ID, Okta, Google Workspace, Ping Identity, SAML 2.0, OIDC with JIT provisioning",
-      "Session Management™ — active sessions per org with revoke individual or all sessions",
-      "IP Allow Lists™ — CIDR-based rules scoped to login, API, compliance, and vendor resources",
-      "Evidence Protection™ — expiring share links with view-only/download/API access and watermarking",
-      "AI Prompt Logs™ — audit trail with PII detection and sensitivity classification",
-      "Customer Managed Encryption™ — AWS KMS, Azure Key Vault, Google KMS provider registry",
-      "Public Trust Center™ — configurable per-org trust page showing certs, score, and documents",
-      "Continuous Vendor Monitoring™ — domain, SSL, and reputation monitoring with alert lifecycle",
-    ],
-    tips: [
-      "Enable MFA required_all mode for regulated industries — Banking, Fintech, and Healthcare require it.",
-      "Configure IP allow lists for API access to lock down your REST API endpoints to known CIDRs.",
-      "Review the AI Prompt Log weekly to detect sensitive data leakage in Copilot interactions.",
-    ],
-    route: "/security-center",
-  },
-
-  "/continuous-compliance": {
-    title: "Continuous Compliance™",
-    icon: "Cpu",
-    group: "Security",
-    overview:
-      "Always-on compliance automation — 21 prebuilt checks across AWS, Azure, GCP, GitHub, M365, Google Workspace, and Okta, with evidence automation, access reviews, and training campaigns.",
-    features: [
-      "21 prebuilt compliance checks covering MFA, encryption, audit logs, branch protection, DLP, and more",
-      "Evidence Automation™ — check runs generate and link evidence to controls automatically",
-      "Control Validation Engine™ — continuous effectiveness validation from check results",
-      "Access Review Manager™ — quarterly and privileged access certifications with approve/revoke decisions",
-      "Compliance Attestations™ — policy sign-offs with completion percentage tracking",
-      "Training Compliance™ — security awareness and privacy training campaigns",
-      "Compliance Health™ — 5-component 0-100 score: check success, signal reduction, evidence, training, access reviews",
-      "AI Compliance Officer™ — executive summary, per-check remediation guides, NL chat",
-    ],
-    tips: [
-      "Connect the Integration Hub™ before running checks — connected systems produce real check results instead of simulated ones.",
-      "Set up quarterly access reviews for privileged accounts as a baseline DPDP and ISO 27001 control.",
-      "The Compliance Health score factors into the Org Trust Score™ — improving check pass rate directly lifts the overall score.",
-    ],
-    route: "/continuous-compliance",
+    route: "/agents",
   },
 
   "/trust-exchange": {
@@ -478,7 +551,7 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     overview:
       "Public trust infrastructure layer — aggregates Trust Exchange, Benchmarking, Integration Hub, Trust Intelligence, and Trust Graph into a unified external governance presence.",
     features: [
-      "Trust Network Reputation™ — 5-component 0-100 score: profile quality, benchmark percentile, automation coverage, org trust score, network activity",
+      "Trust Network Reputation™ — 5-component 0–100 score: profile quality, benchmark percentile, automation coverage, org trust score, network activity",
       "Governance Maturity™ — 6-level ladder powered by Benchmarking™",
       "Industry Ranking™ — percentile bar with Top Quartile badge",
       "Automation Transparency™ — evidence automation %, monitoring coverage %, connected systems",
@@ -591,76 +664,27 @@ export const HELP_CONTENT: Record<string, ModuleHelp> = {
     route: "/integration-hub",
   },
 
-  "/agents": {
-    title: "Governance Agent Framework™",
-    icon: "Bot",
-    group: "AI & Agents",
+  "/settings": {
+    title: "Settings & Organization",
+    icon: "Settings",
+    group: "Administration",
     overview:
-      "AI agents that continuously monitor, reason, and propose actions across your entire governance posture — observations, recommendations, and human-approved action queue.",
+      "Organization profile, team management, security controls, billing, API keys, integrations, and data governance — all platform administration in one place.",
     features: [
-      "6 agent types: Risk Monitor, Vendor Watch, Compliance Guardian, Policy Enforcer, Audit Prep, Custom",
-      "Agent Studio™ — create and configure custom governance agents with module scope, rules, and thresholds",
-      "Agent Runs™ — full execution history with duration, observations generated, and recommendations created",
-      "Observations™ — governance signals with severity (critical/high/medium/low/info) and source module",
-      "Recommendations™ — prioritised actions with confidence 0-100 and impact/effort labels",
-      "Agent Actions™ — human approval queue: all agent mutations require explicit Approve or Reject",
-      "Orchestration™ — multi-agent governance pipelines with sequenced runs",
-      "Governance Copilot™ — multi-turn NL chat about your governance posture",
+      "Organization Profile — legal name, industry, branding (colors, report footer, email signature)",
+      "Team Management — invite members, 7 roles (owner/admin/member/viewer/compliance_manager/security_manager/procurement_manager), transfer ownership",
+      "Security — password change with strength indicator, MFA (TOTP) enrollment, login history table",
+      "Billing — current plan, usage meters (users/vendors/storage vs limits), upgrade CTA, invoice history",
+      "API Keys — create/rotate/revoke bearer keys with bcrypt storage; key shown once on creation",
+      "Integrations — 10 providers with per-provider config fields; credentials encrypted at rest (AES-256-GCM)",
+      "Audit Logs — filterable org-wide event log with CSV export",
+      "Data Governance — data residency badge, retention policy, AI transparency guarantee, Export Tenant Data (ZIP), Request Data Deletion",
     ],
     tips: [
-      "Start with the built-in Compliance Guardian agent — it covers the most common governance gaps out of the box.",
-      "All agent actions require human approval — review the Actions queue daily to avoid bottlenecks.",
-      "Use Orchestration to chain agents: Risk Monitor → Vendor Watch → Compliance Guardian for end-to-end coverage.",
+      "The Data Governance tab exports all your org data as a ZIP of CSVs — use it before migrations.",
+      "API Keys shown only once at creation — save them immediately to a secrets manager.",
+      "Enabling MFA for all members (required_all mode) is required for Banking and Fintech compliance postures.",
     ],
-    route: "/agents",
-  },
-
-  "/operations": {
-    title: "Trust Operations Engine&#8482;",
-    icon: "Workflow",
-    group: "AI & Agents",
-    overview:
-      "The orchestration layer connecting every governance capability into one intelligent, event-driven platform &#8212; 37 built-in event types, 6 workflow templates, unified approval queue, automation rules, and AI Decision Engine&#8482;.",
-    features: [
-      "TOE Dashboard &#8212; live event stream, active workflows, pending approvals, AI advisory",
-      "Governance Command Center &#8212; cross-module live stats and attention strip for all 32 modules",
-      "Event Log &#8212; stream of all 37 built-in governance event types with severity badges",
-      "Workflow Engine &#8212; 6 built-in templates: Vendor Onboarding, Evidence Expiry Response, Trust Score Drop, Contract Renewal, Vendor Offboarding, Critical Risk Escalation",
-      "Unified Approval Queue &#8212; all approvals from every module in one place with approve/reject and notes",
-      "Automation Engine &#8212; if-event-then-action rules with toggle, delete, and create",
-      "Workflow Analytics &#8212; by status, by workflow, SLA metrics, and historical data",
-      "AI Decision Engine&#8482; &#8212; recommendations panel, Operations Advisory&#8482; cached 24h, Operations Copilot&#8482; NL chat",
-    ],
-    tips: [
-      "Start with the Vendor Onboarding workflow template &#8212; it covers the full lifecycle from invite to active in one automated flow.",
-      "The Approval Queue consolidates approvals from Workflow Studio, Agent Actions, and TOE in one view &#8212; check it daily.",
-      "Create automation rules to auto-trigger workflows on critical events (e.g., Trust Score drops below 60 &#8594; start review workflow).",
-      "Use the Command Center as your daily governance ops view &#8212; it shows live counts across all 32 modules at once.",
-    ],
-    route: "/operations",
-  },
-
-  "/ai-governance": {
-    title: "AI Governance™",
-    icon: "Brain",
-    group: "AI & Agents",
-    overview:
-      "Responsible AI governance — manage AI systems, risks, controls, vendors, compliance frameworks (ISO 42001, EU AI Act, NIST AI RMF), and incidents with an AI Trust Score™ per system.",
-    features: [
-      "AI System Inventory™ — registry of all AI systems with type, vendor, risk classification, and deployment environment",
-      "AI Trust Score™ — 6-component engine: risk (25%), controls (25%), compliance (20%), monitoring (15%), vendor (10%), incidents (5%)",
-      "AI Risk Register™ — 13 risk categories: hallucination, bias, privacy leakage, prompt injection, model drift, and more",
-      "AI Controls™ — 11 control categories: human oversight, output review, prompt logging, model approval, red team testing",
-      "AI Compliance™ — 6 frameworks: ISO 42001, NIST AI RMF, EU AI Act, OECD AI Principles, DPDP AI, Internal",
-      "AI Incident Tracker™ — full incident lifecycle from open to resolved with root cause and remediation",
-      "AI Vendor Cards™ — vendor registry with privacy and security posture indicators",
-      "AI Governance Copilot™ — summary, risk advisory, compliance readiness analysis, multi-turn NL chat",
-    ],
-    tips: [
-      "Register every AI system in use — shadow AI is the biggest gap in most organisations' AI governance posture.",
-      "Map AI controls to your ISO 42001 framework in the Compliance tab to track readiness automatically.",
-      "The EU AI Act requires a risk classification for every AI system — complete this before the compliance deadline.",
-    ],
-    route: "/ai-governance",
+    route: "/settings",
   },
 };

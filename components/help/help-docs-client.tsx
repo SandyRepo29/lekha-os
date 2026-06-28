@@ -8,22 +8,22 @@ import { HELP_CONTENT, ModuleHelp } from "./help-content";
 // Group order matches sidebar
 const GROUP_ORDER = [
   "",
-  "AI & Agents",
-  "Core GRC",
-  "Privacy & Legal",
-  "Intelligence",
-  "Security",
+  "Trust Operations",
+  "Vendor Governance",
+  "Risk & Compliance",
+  "Trust Intelligence",
   "Trust Network",
+  "Administration",
 ];
 
 const GROUP_LABELS: Record<string, string> = {
   "": "Platform",
-  "AI & Agents": "AI & Agents",
-  "Core GRC": "Core GRC",
-  "Privacy & Legal": "Privacy & Legal",
-  "Intelligence": "Intelligence",
-  "Security": "Security",
+  "Trust Operations": "Trust Operations",
+  "Vendor Governance": "Vendor Governance",
+  "Risk & Compliance": "Risk & Compliance",
+  "Trust Intelligence": "Trust Intelligence",
   "Trust Network": "Trust Network",
+  "Administration": "Administration",
 };
 
 function groupModules(entries: [string, ModuleHelp][]) {
