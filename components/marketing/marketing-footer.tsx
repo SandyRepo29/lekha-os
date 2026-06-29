@@ -30,6 +30,7 @@ export function MarketingFooter() {
           </div>
           <div className="footer__col">
             <div className="footer__col-head">Resources</div>
+            <Link href="/docs/getting-started">Getting Started</Link>
             <Link href="/docs">Documentation</Link>
             <a href="/docs#api">API Reference</a>
             <Link href="/trust">Trust Center</Link>

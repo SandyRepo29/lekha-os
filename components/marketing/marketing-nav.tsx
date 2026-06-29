@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const PLATFORM_ITEMS = [
-  { label: "Platform Overview",  href: "/platform",                    desc: "Everything inside AUDT" },
-  { label: "Vendor Governance",  href: "/platform#vendor-governance",  desc: "Vendor lifecycle management" },
-  { label: "Trust Operations",   href: "/platform#trust-operations",   desc: "Assessments & evidence" },
-  { label: "Risk & Compliance",  href: "/platform#risk-compliance",    desc: "Risk, controls & frameworks" },
-  { label: "Trust Intelligence", href: "/platform#trust-intelligence", desc: "AI insights & Trust Score™" },
+  { label: "Platform Overview",        href: "/platform",                              desc: "Everything inside AUDT" },
+  { label: "Vendor Governance",        href: "/platform#vendor-governance",            desc: "Vendor lifecycle management" },
+  { label: "Trust Operations",         href: "/platform#trust-operations",             desc: "Assessments & evidence" },
+  { label: "Risk & Compliance",        href: "/platform#risk-compliance",              desc: "Risk, controls & frameworks" },
+  { label: "Trust Intelligence",       href: "/platform#trust-intelligence",           desc: "AI insights & Trust Score™" },
+  { label: "Trust Operations Engine™", href: "/platform#trust-operations-engine",      desc: "Workflow & automation layer" },
 ];
 
 export function MarketingNav() {

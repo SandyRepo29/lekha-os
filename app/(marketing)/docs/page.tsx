@@ -31,6 +31,8 @@ const SIDEBAR: Record<string, SidebarGroup[]> = {
         { id: "gs-first-15", label: "First 15 Minutes" },
         { id: "gs-overview", label: "Platform Overview" },
         { id: "gs-scoring", label: "Scoring Engines" },
+        { id: "gs-trust-score", label: "Trust Score™ Deep Dive" },
+        { id: "gs-toe", label: "Trust Operations Engine™" },
       ],
     },
   ],
@@ -115,12 +117,27 @@ const SIDEBAR: Record<string, SidebarGroup[]> = {
   ],
   api: [
     {
-      group: "API & Integrations",
+      group: "Getting Started",
       items: [
         { id: "api-auth", label: "Authentication" },
         { id: "api-rate-limits", label: "Rate Limits" },
+        { id: "api-error-handling", label: "Error Handling" },
+      ],
+    },
+    {
+      group: "Code Examples",
+      items: [
+        { id: "api-curl", label: "cURL Examples" },
+        { id: "api-js", label: "JavaScript / TypeScript" },
+        { id: "api-python", label: "Python" },
+        { id: "api-webhooks", label: "Webhooks" },
+      ],
+    },
+    {
+      group: "Reference",
+      items: [
         { id: "api-endpoints", label: "Key Endpoints" },
-        { id: "api-curl", label: "Examples" },
+        { id: "api-trust-score-ref", label: "Trust Score API" },
         { id: "api-integrations", label: "Integrations" },
       ],
     },
@@ -612,6 +629,208 @@ curl -X POST -H "Authorization: Bearer tap_your_key" \\
 curl -H "Authorization: Bearer tap_your_key" \\
   https://audt.tech/api/v1/vendors/{id}/trust-score`;
 
+const JS_EXAMPLES = `// Install: no SDK needed — use fetch or axios
+
+const AUDT_KEY = process.env.AUDT_API_KEY; // tap_...
+const BASE = "https://audt.tech";
+
+// Get Org Trust Score
+async function getOrgTrustScore() {
+  const res = await fetch(\`\${BASE}/api/v1/trust-intelligence/org-score\`, {
+    headers: { Authorization: \`Bearer \${AUDT_KEY}\` },
+  });
+  const data = await res.json();
+  // data.score: number, data.level: string, data.components: object
+  return data;
+}
+
+// Create a Risk
+async function createRisk(title, category, impact, likelihood) {
+  const res = await fetch(\`\${BASE}/api/v1/risks\`, {
+    method: "POST",
+    headers: {
+      Authorization: \`Bearer \${AUDT_KEY}\`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, category, impact, likelihood }),
+  });
+  return res.json(); // { id, title, score, ... }
+}
+
+// Get Vendor Trust Score with history
+async function getVendorTrustScore(vendorId) {
+  const res = await fetch(\`\${BASE}/api/v1/vendors/\${vendorId}/trust-score\`, {
+    headers: { Authorization: \`Bearer \${AUDT_KEY}\` },
+  });
+  return res.json();
+  // .score, .level, .components, .history (30 days), .narrative
+}
+
+// List open risks (filter by status + category)
+async function getOpenRisks() {
+  const params = new URLSearchParams({ status: "open", category: "cyber_security" });
+  const res = await fetch(\`\${BASE}/api/v1/risks?\${params}\`, {
+    headers: { Authorization: \`Bearer \${AUDT_KEY}\` },
+  });
+  return res.json(); // { data: Risk[], meta: { page, total } }
+}`;
+
+const PYTHON_EXAMPLES = `import os, requests
+
+AUDT_KEY = os.environ["AUDT_API_KEY"]  # tap_...
+BASE = "https://audt.tech"
+HEADERS = {"Authorization": f"Bearer {AUDT_KEY}"}
+
+# Get Org Trust Score
+def get_org_trust_score():
+    r = requests.get(f"{BASE}/api/v1/trust-intelligence/org-score", headers=HEADERS)
+    r.raise_for_status()
+    return r.json()  # { score, level, components }
+
+# Create a Risk
+def create_risk(title, category, impact, likelihood):
+    payload = {"title": title, "category": category,
+               "impact": impact, "likelihood": likelihood}
+    r = requests.post(f"{BASE}/api/v1/risks", json=payload, headers=HEADERS)
+    r.raise_for_status()
+    return r.json()  # { id, title, score, ... }
+
+# Get all frameworks with readiness
+def get_frameworks():
+    r = requests.get(f"{BASE}/api/v1/compliance/frameworks", headers=HEADERS)
+    r.raise_for_status()
+    return r.json()  # [{ id, name, readinessScore, controlCount }]
+
+# Paginate through vendors
+def get_all_vendors():
+    vendors, page = [], 1
+    while True:
+        r = requests.get(f"{BASE}/api/v1/vendors?page={page}&pageSize=50",
+                         headers=HEADERS)
+        data = r.json()
+        vendors.extend(data["data"])
+        if page >= data["meta"]["totalPages"]:
+            break
+        page += 1
+    return vendors`;
+
+const WEBHOOK_EXAMPLES = `// Register a webhook at /trust-api/webhooks
+// AUDT delivers POST to your endpoint for each subscribed event.
+
+// 1. Verify the payload (check x-audt-signature header)
+// 2. Process the event type
+// 3. Return 200 OK within 10 seconds (AUDT retries on timeout)
+
+// Node.js webhook handler (Express)
+app.post("/audt-webhook", express.raw({ type: "application/json" }), (req, res) => {
+  const event = JSON.parse(req.body.toString());
+
+  switch (event.event_type) {
+    case "trust_score.dropped":
+      // event.data: { vendor_id, old_score, new_score, delta }
+      console.log("Trust score dropped for", event.data.vendor_id);
+      break;
+
+    case "evidence.expired":
+      // event.data: { evidence_id, vendor_id, expired_at }
+      notifyTeam("Evidence expired: " + event.data.evidence_id);
+      break;
+
+    case "risk.critical":
+      // event.data: { risk_id, title, score, vendor_id }
+      escalateRisk(event.data);
+      break;
+  }
+
+  res.status(200).json({ received: true });
+});
+
+// Available event types:
+// trust_score.dropped  trust_score.improved  evidence.expired
+// evidence.expiring_soon  risk.critical  vendor.status_changed
+// contract.expiring  capa.overdue  audit.completed`;
+
+const ERROR_HANDLING = `// AUDT API error response format:
+// { "error": "string description", "code": "ERROR_CODE" (optional) }
+
+// HTTP status codes:
+// 200  OK
+// 201  Created
+// 400  Bad Request — invalid body, missing required fields
+// 401  Unauthorized — missing or invalid Bearer token
+// 403  Forbidden — key lacks required permission (read_write needed for POST/PUT/DELETE)
+// 404  Not Found — resource does not exist in your organisation
+// 422  Unprocessable Entity — valid JSON but business rule violation
+// 429  Too Many Requests — rate limit exceeded (see Retry-After header)
+// 500  Internal Server Error — contact support@audt.tech
+
+// Rate limit headers on every response:
+// X-RateLimit-Limit: 100
+// X-RateLimit-Remaining: 87
+// X-RateLimit-Reset: 1720000060
+
+// Retry-After on 429:
+// Retry-After: 60  (seconds)
+
+// Example: robust fetch with retry
+async function audtFetch(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: { Authorization: \`Bearer \${AUDT_KEY}\`, ...options.headers },
+  });
+  if (res.status === 429) {
+    const wait = parseInt(res.headers.get("Retry-After") ?? "60", 10);
+    await new Promise(r => setTimeout(r, wait * 1000));
+    return audtFetch(url, options);
+  }
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error ?? \`AUDT API \${res.status}\`);
+  }
+  return res.json();
+}`;
+
+const TRUST_SCORE_API = `// Vendor Trust Score™ — full breakdown
+GET /api/v1/vendors/{id}/trust-score
+
+Response:
+{
+  "score": 82,
+  "level": "Strong",       // Exceptional | Trusted | Strong | Moderate | Needs Attention | High Concern
+  "components": {
+    "evidence":     { "score": 75, "weight": 0.20, "weighted": 15.0 },
+    "risk":         { "score": 85, "weight": 0.20, "weighted": 17.0 },
+    "compliance":   { "score": 80, "weight": 0.15, "weighted": 12.0 },
+    "assessment":   { "score": 90, "weight": 0.15, "weighted": 13.5 },
+    "contract":     { "score": 70, "weight": 0.10, "weighted": 7.0 },
+    "operational":  { "score": 80, "weight": 0.10, "weighted": 8.0 },
+    "freshness":    { "score": 90, "weight": 0.10, "weighted": 9.0 }
+  },
+  "history": [          // last 30 daily snapshots
+    { "date": "2026-06-28", "score": 82 },
+    { "date": "2026-06-27", "score": 79 }
+  ],
+  "narrative": "Vendor X maintains a Strong trust posture...",
+  "strengths": ["Assessment score 90/100", "Evidence up to date"],
+  "concerns":  ["Contract expires in 45 days", "2 open risks"]
+}
+
+// Org Trust Score™
+GET /api/v1/trust-intelligence/org-score
+
+Response:
+{
+  "score": 74,
+  "level": "Moderate",
+  "components": {
+    "vendorTrust":         { "score": 78, "weight": 0.25, "weighted": 19.5 },
+    "riskPosture":         { "score": 70, "weight": 0.25, "weighted": 17.5 },
+    "controlHealth":       { "score": 75, "weight": 0.20, "weighted": 15.0 },
+    "auditReadiness":      { "score": 65, "weight": 0.15, "weighted": 9.75 },
+    "complianceCoverage":  { "score": 80, "weight": 0.15, "weighted": 12.0 }
+  }
+}`;
+
 const INTEGRATION_CATEGORIES = [
   "Identity & Access", "Cloud Infrastructure", "Security", "Source Control", "Project Management", "ITSM", "Endpoint Security", "Communication", "HR & People", "Storage", "Custom",
 ];
@@ -697,6 +916,14 @@ function GettingStartedSection() {
           <p className="docs-hero-body">
             Replace spreadsheets and disconnected tools with a single AI-native platform for vendor governance, compliance, audits, risk, board governance, regulatory intelligence, and more. 32 modules. 259+ tables. Governance built on proof.
           </p>
+          <div style={{ display: "flex", gap: "12px", marginTop: "20px", flexWrap: "wrap" }}>
+            <a href="/docs/getting-started" className="docs-cta-btn-primary">
+              Step-by-Step Guide (9 steps, 30 min) →
+            </a>
+            <a href="/signup" className="docs-cta-btn-secondary">
+              Start Free Trial
+            </a>
+          </div>
         </div>
       </div>
 
@@ -753,6 +980,63 @@ function GettingStartedSection() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div id="gs-trust-score" className="docs-anchor">
+        <h2 className="docs-h2">Trust Score™ Deep Dive</h2>
+        <p className="docs-p">
+          The Vendor Trust Score™ is a 0–100 composite signal computed from 7 weighted components. It updates on every meaningful governance action — document upload, assessment completion, risk change, contract update. A score ≥ 90 is <strong>Trusted</strong>. Below 60 is <strong>High Concern</strong>.
+        </p>
+        <h4 className="docs-h4">Score Levels</h4>
+        <table className="docs-table">
+          <thead><tr><th>Level</th><th>Range</th><th>Meaning</th></tr></thead>
+          <tbody>
+            {[
+              ["Exceptional", "95–100", "Best-in-class governance. All components healthy."],
+              ["Trusted",     "90–94",  "Strong posture. Minor gaps tolerated."],
+              ["Strong",      "80–89",  "Good governance. One or two areas need attention."],
+              ["Moderate",    "70–79",  "Governance present but inconsistent. Prioritise weakest component."],
+              ["Needs Attention","60–69","Material gaps. Remediation plan required."],
+              ["High Concern","0–59",   "Critical governance failure. Escalate immediately."],
+            ].map(([level, range, meaning]) => (
+              <tr key={level}><td><strong>{level}</strong></td><td>{range}</td><td>{meaning}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <h4 className="docs-h4">Components &amp; How to Improve Them</h4>
+        <table className="docs-table">
+          <thead><tr><th>Component</th><th>Weight</th><th>How to improve</th></tr></thead>
+          <tbody>
+            {[
+              ["Evidence",    "20%", "Upload more vendor documents. Keep expiry dates current. Map docs to controls."],
+              ["Risk",        "20%", "Treat open risks. Close critical risks. Remove duplicate risk entries."],
+              ["Compliance",  "15%", "Improve framework readiness. Close gaps. Map evidence to controls."],
+              ["Assessment",  "15%", "Run a fresh security assessment. Score ≥ 80 maximises this component."],
+              ["Contract",    "10%", "Add contract records. Track expiry. Complete open obligations."],
+              ["Operational", "10%", "Complete periodic vendor reviews. Respond to document requests promptly."],
+              ["Freshness",   "10%", "Conduct a review within 30 days. Refresh stale assessments."],
+            ].map(([comp, weight, improve]) => (
+              <tr key={comp}><td><strong>{comp}</strong></td><td>{weight}</td><td>{improve}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <TipCallout text="The Vendor Trust Score™ feeds into the Org Trust Score™ as the Vendor Trust component (25% weight). Improving your bottom 3 vendor scores has the highest leverage on the org-level number." />
+      </div>
+
+      <div id="gs-toe" className="docs-anchor">
+        <h2 className="docs-h2">Trust Operations Engine™</h2>
+        <p className="docs-p">
+          The Trust Operations Engine™ (TOE) is the orchestration layer that connects every governance module into an automated, event-driven platform. It transforms AUDT from a record-keeping system into a proactive governance intelligence platform that closes the loop on every governance signal.
+        </p>
+        <WorkflowDiagram steps={["Event Occurs", "Event Published", "Workflow Triggered", "Approvals Requested", "AI Decision", "Action Taken", "Audit Trail"]} />
+        <h4 className="docs-h4">The Four Layers</h4>
+        <NumberedSteps steps={[
+          "Event Engine — 37 built-in event types. Every vendor action, risk change, evidence expiry, and compliance gap triggers an event automatically.",
+          "Workflow Engine — 6 built-in workflows: Vendor Onboarding, Evidence Expiry Response, Trust Score Drop, Contract Renewal, Vendor Offboarding, Critical Risk Escalation. Plus custom workflows via /operations/workflows.",
+          "Automation Engine — No-code if-this-then-that rules. Connect any event to any action: create risk, assign task, request evidence, send notification, escalate for approval.",
+          "AI Decision Engine — AI generates recommendations with confidence scores and suggested actions. All proposed mutations require human approval at /operations/approvals — no autonomous data changes.",
+        ]} />
+        <TipCallout text="Start with the Vendor Onboarding workflow template at /operations/workflows. It automates document requests, assessment scheduling, and approval routing for every new vendor." />
       </div>
     </section>
   );
@@ -1072,9 +1356,39 @@ function ApiSection() {
         </table>
       </div>
 
+      <div id="api-error-handling" className="docs-anchor">
+        <h2 className="docs-h2">Error Handling</h2>
+        <p className="docs-p">All errors return JSON with an <code className="docs-inline-code">error</code> field. HTTP status codes follow REST conventions.</p>
+        <pre className="docs-code"><code>{ERROR_HANDLING}</code></pre>
+      </div>
+
       <div id="api-curl" className="docs-anchor">
-        <h2 className="docs-h2">Examples</h2>
+        <h2 className="docs-h2">cURL Examples</h2>
         <pre className="docs-code"><code>{CURL_EXAMPLES}</code></pre>
+      </div>
+
+      <div id="api-js" className="docs-anchor">
+        <h2 className="docs-h2">JavaScript / TypeScript</h2>
+        <p className="docs-p">No SDK required — use native <code className="docs-inline-code">fetch</code> or any HTTP client. The API returns JSON on every endpoint.</p>
+        <pre className="docs-code"><code>{JS_EXAMPLES}</code></pre>
+      </div>
+
+      <div id="api-python" className="docs-anchor">
+        <h2 className="docs-h2">Python</h2>
+        <p className="docs-p">Use the <code className="docs-inline-code">requests</code> library. All endpoints return JSON dictionaries matching the TypeScript types.</p>
+        <pre className="docs-code"><code>{PYTHON_EXAMPLES}</code></pre>
+      </div>
+
+      <div id="api-webhooks" className="docs-anchor">
+        <h2 className="docs-h2">Webhooks</h2>
+        <p className="docs-p">Register webhooks at <a href="/trust-api/webhooks" className="docs-route-link">/trust-api/webhooks</a>. AUDT delivers a <code className="docs-inline-code">POST</code> to your endpoint for each subscribed event. Expects a <code className="docs-inline-code">200</code> response within 10 seconds, then retries.</p>
+        <pre className="docs-code"><code>{WEBHOOK_EXAMPLES}</code></pre>
+      </div>
+
+      <div id="api-trust-score-ref" className="docs-anchor">
+        <h2 className="docs-h2">Trust Score API</h2>
+        <p className="docs-p">The Trust Score endpoints return structured breakdowns useful for embedding in external dashboards, SIEM integrations, or BI tools.</p>
+        <pre className="docs-code"><code>{TRUST_SCORE_API}</code></pre>
       </div>
 
       <div id="api-integrations" className="docs-anchor">

@@ -1129,6 +1129,25 @@
 }
 .docs-callout-tip .docs-callout-icon { font-size: 18px; flex-shrink: 0; }
 
+/* Getting started CTA buttons */
+.docs-cta-btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff; font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: opacity 0.15s;
+}
+.docs-cta-btn-primary:hover { opacity: 0.88; }
+.docs-cta-btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(241,245,249,0.75); font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: border-color 0.15s, color 0.15s;
+}
+.docs-cta-btn-secondary:hover { border-color: rgba(255,255,255,0.3); color: #f1f5f9; }
+
 /* Responsive */
 @media (max-width: 700px) {
   .docs-grid-3 { grid-template-columns: 1fr; }

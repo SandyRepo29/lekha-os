@@ -236,6 +236,95 @@ export default function PlatformPage() {
         </div>
       </section>
 
+      {/* ─── 4B. TRUST OPERATIONS ENGINE™ ──────────── */}
+      <section className="section section--alt" id="trust-operations-engine">
+        <div className="container">
+          <div className="section__head reveal">
+            <span className="eyebrow">Trust Operations Engine&#8482;</span>
+            <h2>Governance That Runs 24/7.</h2>
+            <p>
+              Most platforms record what happened. The Trust Operations Engine&#8482; orchestrates what happens next &#8212; connecting every governance event to the right workflow, approval, and AI decision automatically.
+            </p>
+          </div>
+
+          <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "20px", maxWidth: "860px", margin: "0 auto 2.5rem" }}>
+            {([
+              {
+                icon: "&#9889;",
+                title: "Event Engine",
+                desc: "37 built-in event types capture every meaningful governance action &#8212; vendor status changes, evidence expiry, risk score drops, compliance gaps, CAPA breaches, and more.",
+                stat: "37 event types",
+              },
+              {
+                icon: "&#128260;",
+                title: "Workflow Engine",
+                desc: "6 built-in workflow templates plus custom workflows. Vendor Onboarding, Evidence Expiry Response, Trust Score Drop, Contract Renewal, Vendor Offboarding, Critical Risk Escalation.",
+                stat: "6 built-in workflows",
+              },
+              {
+                icon: "&#129302;",
+                title: "Automation Engine",
+                desc: "If-this-then-that governance automation. Define rules that connect any event to any action &#8212; create risk, assign task, request evidence, escalate for approval &#8212; with no code.",
+                stat: "No-code automation",
+              },
+              {
+                icon: "&#10022;",
+                title: "AI Decision Engine",
+                desc: "AI analyses each governance situation, generates recommendations with confidence scores, and queues proposed actions for human approval. Full audit trail on every decision.",
+                stat: "Human-in-the-loop AI",
+              },
+            ] as { icon: string; title: string; desc: string; stat: string }[]).map(({ icon, title, desc, stat }) => (
+              <div key={title} className="reveal" style={{
+                padding: "28px", borderRadius: "16px",
+                background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)",
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+                  <div style={{ fontSize: "28px", flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: icon }} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", gap: "12px" }}>
+                      <div style={{ fontSize: "16px", fontWeight: 800, color: "var(--text)" }}>{title}</div>
+                      <span style={{
+                        fontSize: "10px", fontWeight: 700, letterSpacing: "0.07em",
+                        textTransform: "uppercase" as const,
+                        padding: "3px 10px", borderRadius: "999px",
+                        background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.3)",
+                        color: "rgba(99,102,241,0.9)", whiteSpace: "nowrap" as const,
+                        flexShrink: 0,
+                      }}>{stat}</span>
+                    </div>
+                    <p style={{ fontSize: "13px", color: "var(--text-dim)", lineHeight: 1.65, margin: 0 }} dangerouslySetInnerHTML={{ __html: desc }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="reveal" style={{
+            maxWidth: "860px", margin: "0 auto", padding: "24px 32px",
+            borderRadius: "16px",
+            background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(45,212,255,0.04))",
+            border: "1px solid rgba(99,102,241,0.25)",
+            display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" as const, gap: "16px",
+          }}>
+            <div>
+              <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--text)", marginBottom: "6px" }}>
+                Every signal &#8594; right workflow &#8594; right person &#8594; audit trail.
+              </div>
+              <div style={{ fontSize: "13px", color: "var(--text-dim)" }}>
+                No manual chasing. No missed events. Governance that closes the loop automatically.
+              </div>
+            </div>
+            <a
+              href="mailto:hello@audt.tech?subject=AUDT%20TOE%20Demo"
+              className="btn btn--primary btn--sm"
+              style={{ whiteSpace: "nowrap" as const, flexShrink: 0 }}
+            >
+              See It In Action
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ─── 5. COVERAGE ─────────────────────────────── */}
       <section className="section" id="coverage">
         <div className="container">

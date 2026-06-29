@@ -535,8 +535,8 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Why AUDT</span>
-              <h2>Most Platforms Start With Compliance.<br />We Start With The Vendor.</h2>
-              <p>Compliance is one dimension of vendor governance. AUDT governs the entire vendor lifecycle — from intake to offboarding — with continuous trust measurement at every stage.</p>
+              <h2>Most Platforms Audit Once a Year.<br />We Govern Continuously.</h2>
+              <p>Compliance is one output of governance. The Trust Operations Engine&#8482; connects every vendor action, risk change, and evidence update into an automated, always-on governance layer &#8212; so your team never falls behind.</p>
             </div>
 
             <div className="reveal" style={{
@@ -547,9 +547,9 @@ export default function LandingPage() {
               margin: "0 auto 2.5rem",
             }}>
               {[
-                { icon: "▤", title: "Vendor-First", body: "Governance starts with the vendor, not the framework. Every risk, control, and audit connects back to the vendor it governs." },
-                { icon: "🔄", title: "Lifecycle-Driven", body: "AUDT governs the complete vendor lifecycle. Not just assessments — intake, classification, monitoring, renewal, and offboarding." },
-                { icon: "📡", title: "Continuous", body: "Vendor trust is not a point-in-time score. AUDT continuously monitors vendor signals and updates trust posture in real time." },
+                { icon: "⚡", title: "Event-Driven", body: "37 governance event types. Every vendor action, risk change, and evidence update triggers the right workflow automatically &#8212; no manual coordination." },
+                { icon: "🔄", title: "Workflow Automation", body: "6 built-in workflow templates. Custom automations. Cross-module orchestration connecting vendor, risk, compliance, and audit in a single execution layer." },
+                { icon: "✦", title: "AI Decision Engine", body: "AI recommendations reviewed by humans. Every governance decision carries a confidence score, audit trail, and one-click action &#8212; at the speed of risk." },
               ].map(({ icon, title, body }) => (
                 <div key={title} style={{
                   padding: "28px 24px",
