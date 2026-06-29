@@ -38,7 +38,6 @@ import {
   Terminal,
   FileCode,
 } from "lucide-react";
-import { NotificationBell } from "@/components/notifications/notification-bell";
 import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -48,6 +47,7 @@ type NavItem = {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   soon?: boolean;
+  external?: boolean;
 };
 
 type NavGroup = {
@@ -137,7 +137,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/integration-hub",  label: "Integration Hub™",       icon: Plug },
       { href: "/finance",          label: "Finance Console",        icon: Receipt },
-      { href: "/api/docs/ui",      label: "API Documentation",      icon: FileCode },
+      { href: "/api/docs/ui",      label: "API Documentation",      icon: FileCode, external: true },
       { href: "/settings",         label: "Settings",               icon: Settings },
     ],
   },
@@ -211,22 +211,17 @@ function SidebarGroup({
               <p className="text-[10px] text-[var(--color-ink-faint)] italic">Coming soon</p>
             </div>
           ) : (
-            group.items.map(({ href, label, icon: Icon, soon }) => {
+            group.items.map(({ href, label, icon: Icon, soon, external }) => {
               const active = isActive(href);
-              return (
-                <Link
-                  key={`${href}-${label}`}
-                  href={soon ? "#" : href}
-                  aria-disabled={soon}
-                  onClick={soon ? (e) => e.preventDefault() : undefined}
-                  className={cn(
-                    "group flex items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-[13px] font-medium transition-all",
-                    active
-                      ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-                      : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]",
-                    soon && "cursor-not-allowed opacity-50 hover:bg-transparent hover:text-[var(--color-ink-dim)]"
-                  )}
-                >
+              const itemClass = cn(
+                "group flex items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-[13px] font-medium transition-all",
+                active
+                  ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]",
+                soon && "cursor-not-allowed opacity-50 hover:bg-transparent hover:text-[var(--color-ink-dim)]"
+              );
+              const content = (
+                <>
                   <Icon
                     className={cn(
                       "h-4 w-4 shrink-0 transition-colors",
@@ -244,6 +239,30 @@ function SidebarGroup({
                       Soon
                     </span>
                   )}
+                </>
+              );
+              if (external) {
+                return (
+                  <a
+                    key={`${href}-${label}`}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={itemClass}
+                  >
+                    {content}
+                  </a>
+                );
+              }
+              return (
+                <Link
+                  key={`${href}-${label}`}
+                  href={soon ? "#" : href}
+                  aria-disabled={soon}
+                  onClick={soon ? (e) => e.preventDefault() : undefined}
+                  className={itemClass}
+                >
+                  {content}
                 </Link>
               );
             })
@@ -363,9 +382,6 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="shrink-0 border-t border-[var(--color-line)] px-3 py-3 space-y-0.5">
-        <div className="flex items-center justify-between px-2.5 py-1">
-          <NotificationBell />
-        </div>
         <Link
           href="/help"
           className={cn(
