@@ -666,19 +666,19 @@ export default function LandingPage() {
               maxWidth: "800px",
               margin: "0 auto 3.5rem",
             }}>
-              {(["Security", "Compliance", "Risk", "Monitoring", "Audit Readiness"] as string[]).map((item, i, arr) => (
+              {(["Evidence", "Risk", "Compliance", "Assessment", "Contract", "Operational", "Freshness"] as string[]).map((item, i, arr) => (
                 <span key={item} style={{ display: "contents" }}>
                   <div style={{
-                    padding: "10px 18px",
+                    padding: "8px 14px",
                     borderRadius: "8px",
                     background: "rgba(99,102,241,0.1)",
                     border: "1px solid rgba(99,102,241,0.25)",
-                    fontSize: "13px",
+                    fontSize: "12px",
                     fontWeight: 600,
                     color: "var(--text)",
                   }}>{item}</div>
                   {i < arr.length - 1 && (
-                    <span style={{ color: "var(--blue)", fontWeight: 700, opacity: 0.5, fontSize: "18px" }}>+</span>
+                    <span style={{ color: "var(--blue)", fontWeight: 700, opacity: 0.5, fontSize: "16px" }}>+</span>
                   )}
                 </span>
               ))}
@@ -692,7 +692,7 @@ export default function LandingPage() {
                 fontWeight: 800,
                 color: "var(--text)",
                 letterSpacing: "0.01em",
-              }}>Trust Score™</div>
+              }}>Trust Score&#8482;</div>
             </div>
 
             <div className="trust-scores reveal">
@@ -708,8 +708,8 @@ export default function LandingPage() {
                   </svg>
                   <div className="tscore__val"><span className="score-num" data-score="92">0</span></div>
                 </div>
-                <div className="tscore__label">Security</div>
-                <div className="tscore__sub">↑ 4 pts this month</div>
+                <div className="tscore__label">Evidence</div>
+                <div className="tscore__sub">&#8593; 4 pts this month</div>
               </div>
               <div className="tscore">
                 <div className="tscore__ring">
@@ -725,6 +725,7 @@ export default function LandingPage() {
                 </div>
                 <div className="tscore__label">Compliance</div>
                 <div className="tscore__sub">3 controls need review</div>
+
               </div>
               <div className="tscore tscore--featured">
                 <div className="tscore__ring">
@@ -753,8 +754,8 @@ export default function LandingPage() {
                   </svg>
                   <div className="tscore__val"><span className="score-num" data-score="90">0</span></div>
                 </div>
-                <div className="tscore__label">Audit Readiness</div>
-                <div className="tscore__sub">ISO 27001 — Ready</div>
+                <div className="tscore__label">Risk Posture</div>
+                <div className="tscore__sub">ISO 27001 &#8212; Ready</div>
               </div>
             </div>
 
@@ -974,6 +975,43 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
+
+            {/* Trust Center CTA */}
+            <div className="reveal" style={{ textAlign: "center" as const, marginTop: "3rem" }}>
+              <div style={{
+                display: "inline-flex", flexDirection: "column" as const, alignItems: "center",
+                gap: "16px", padding: "32px 40px",
+                borderRadius: "20px",
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}>
+                <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" as const, justifyContent: "center" }}>
+                  {[
+                    { label: "Security", href: "/trust/architecture" },
+                    { label: "Compliance", href: "/trust/frameworks" },
+                    { label: "Privacy", href: "/trust/privacy" },
+                    { label: "Responsible AI", href: "/trust/ai" },
+                  ].map(({ label, href }) => (
+                    <a key={label} href={href} style={{
+                      fontSize: "12px", fontWeight: 600, color: "rgba(154,160,181,0.8)",
+                      textDecoration: "none", display: "flex", alignItems: "center", gap: "4px",
+                    }}>
+                      <span style={{ color: "#22c55e", fontSize: "8px" }}>&#9679;</span> {label}
+                    </a>
+                  ))}
+                </div>
+                <a href="/trust" style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  padding: "10px 22px", borderRadius: "10px",
+                  background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)",
+                  fontSize: "13px", fontWeight: 700, color: "var(--text)", textDecoration: "none",
+                  transition: "background 0.2s",
+                }}>
+                  Visit Trust Center &#8594;
+                </a>
+              </div>
+            </div>
+
           </div>
         </section>
 
@@ -1141,7 +1179,7 @@ export default function LandingPage() {
                     <span className="pcard__amount">$6,999</span>
                     <span className="pcard__period">/ year</span>
                   </div>
-                  <p className="pcard__tagline">The full Vendor Governance Platform for organizations scaling their trust program.</p>
+                  <p className="pcard__tagline">The complete Governance OS for organisations scaling their trust program.</p>
                 </div>
                 <div className="pcard__divider" />
                 <ul className="pcard__feats">
@@ -1180,6 +1218,49 @@ export default function LandingPage() {
                 <p className="pcard__note">Custom contract · Flexible billing</p>
               </div>
             </div>
+
+            {/* SLA Table */}
+            <div className="reveal" style={{ marginTop: "3rem", overflowX: "auto" }}>
+              <div style={{
+                fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em",
+                textTransform: "uppercase" as const, color: "rgba(154,160,181,0.6)",
+                textAlign: "center" as const, marginBottom: "1rem",
+              }}>
+                Support SLA by Plan
+              </div>
+              <table style={{
+                width: "100%", maxWidth: "700px", margin: "0 auto",
+                borderCollapse: "collapse" as const, fontSize: "13px",
+              }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                    {["Plan", "Support", "Initial Response", "Coverage"].map((h) => (
+                      <th key={h} style={{ padding: "10px 16px", textAlign: "left" as const, fontWeight: 700, color: "rgba(241,245,249,0.7)", fontSize: "12px" }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["Growth", "Email", "Next Business Day", "Business hours"],
+                    ["Business", "Priority Email", "Within 8 Business Hours", "Business hours"],
+                    ["Enterprise", "Dedicated Support", "Within 1 Business Hour", "24 / 5 (P1: 24 / 7)"],
+                  ].map(([plan, support, response, coverage], i) => (
+                    <tr key={plan} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: i === 1 ? "rgba(99,102,241,0.06)" : "transparent" }}>
+                      <td style={{ padding: "10px 16px", fontWeight: 700, color: "var(--text)" }}>{plan}</td>
+                      <td style={{ padding: "10px 16px", color: "rgba(154,160,181,0.8)" }}>{support}</td>
+                      <td style={{ padding: "10px 16px", color: "var(--text)" }}>{response}</td>
+                      <td style={{ padding: "10px 16px", color: "rgba(154,160,181,0.8)" }}>{coverage}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div style={{ textAlign: "center" as const, marginTop: "0.75rem" }}>
+                <a href="/trust/support" style={{ fontSize: "12px", color: "var(--blue)", textDecoration: "none" }}>
+                  Full SLA documentation &#8594;
+                </a>
+              </div>
+            </div>
+
           </div>
         </section>
 
@@ -1195,8 +1276,14 @@ export default function LandingPage() {
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
-              <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial →</a>
+              <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial &#8594;</a>
             </div>
+            <p style={{ fontSize: "11px", color: "rgba(154,160,181,0.5)", marginTop: "1.25rem" }}>
+              By signing up you agree to our{" "}
+              <a href="/trust/terms" style={{ color: "rgba(99,102,241,0.7)", textDecoration: "none" }}>Terms of Service</a>
+              {" "}and{" "}
+              <a href="/trust/privacy" style={{ color: "rgba(99,102,241,0.7)", textDecoration: "none" }}>Privacy Policy</a>.
+            </p>
           </div>
         </section>
 

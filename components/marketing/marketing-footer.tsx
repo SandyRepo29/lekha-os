@@ -31,22 +31,33 @@ export function MarketingFooter() {
           <div className="footer__col">
             <div className="footer__col-head">Resources</div>
             <Link href="/docs">Documentation</Link>
+            <a href="/docs#api">API Reference</a>
+            <Link href="/trust">Trust Center</Link>
+            <Link href="/trust/ai">Responsible AI</Link>
+            <Link href="/trust/contact">Security</Link>
             <a href="/#pricing">Pricing</a>
-            <a href="/#vision">Vision</a>
-            <a href="mailto:hello@audt.tech">Contact</a>
           </div>
           <div className="footer__col">
-            <div className="footer__col-head">Differentiators</div>
-            <a href="/platform#trust-score">Trust Score™</a>
-            <a href="/#copilot">Governance Copilot™</a>
-            <a href="/#agents">AI Agents</a>
-            <a href="/#lifecycle">Vendor Lifecycle</a>
+            <div className="footer__col-head">Legal</div>
+            <Link href="/trust/terms">Terms of Service</Link>
+            <Link href="/trust/privacy">Privacy Policy</Link>
+            <Link href="/trust/dpa">Data Processing Agreement</Link>
+            <Link href="/trust/contact">Responsible Disclosure</Link>
+            <Link href="/trust/support">Support &amp; SLA</Link>
           </div>
         </div>
       </div>
       <div className="container footer__bottom">
         <span>© 2026 AUDT. All rights reserved.</span>
-        <span>audt.tech · Governance Built on Proof.</span>
+        <span className="flex items-center gap-3 flex-wrap">
+          <Link href="/trust/terms" style={{ color: "inherit", opacity: 0.7 }}>Terms</Link>
+          <span style={{ opacity: 0.3 }}>·</span>
+          <Link href="/trust/privacy" style={{ color: "inherit", opacity: 0.7 }}>Privacy</Link>
+          <span style={{ opacity: 0.3 }}>·</span>
+          <Link href="/trust/dpa" style={{ color: "inherit", opacity: 0.7 }}>DPA</Link>
+          <span style={{ opacity: 0.3 }}>·</span>
+          <span>audt.tech · Governance Built on Proof.</span>
+        </span>
       </div>
     </footer>
   );

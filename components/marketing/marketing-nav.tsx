@@ -133,6 +133,7 @@ export function MarketingNav() {
             <Link href="/#solutions">Solutions</Link>
             <Link href="/#why-audt">Why AUDT</Link>
             <Link href="/docs">Docs</Link>
+            <Link href="/trust">Trust Center</Link>
             <Link href="/#pricing">Pricing</Link>
             <a href="mailto:hello@audt.tech">Contact</a>
           </nav>
@@ -186,6 +187,7 @@ export function MarketingNav() {
           <Link href="/#solutions" onClick={close}>Solutions</Link>
           <Link href="/#why-audt" onClick={close}>Why AUDT</Link>
           <Link href="/docs" onClick={close}>Docs</Link>
+          <Link href="/trust" onClick={close}>Trust Center</Link>
           <Link href="/#pricing" onClick={close}>Pricing</Link>
           <a href="mailto:hello@audt.tech" onClick={close}>Contact</a>
           <Link href="/login" onClick={close}>Sign in</Link>

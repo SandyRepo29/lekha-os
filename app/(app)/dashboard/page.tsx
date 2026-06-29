@@ -298,7 +298,7 @@ export default async function DashboardPage() {
           <Link href="/trust-intelligence">
             <Button variant="ghost" size="sm"><TrendingUp className="h-4 w-4" /> Trust Score™</Button>
           </Link>
-          <Link href="/executive-command-center">
+          <Link href="/operations/command-center">
             <Button variant="ghost" size="sm"><Sparkles className="h-4 w-4" /> Executive View</Button>
           </Link>
           <Link href="/vendors/new">
@@ -677,7 +677,7 @@ export default async function DashboardPage() {
               </div>
             )}
             <div className="border-t border-[var(--color-line)] px-4 py-2.5 flex items-center justify-between">
-              <Link href="/executive-command-center" className="flex items-center gap-1 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
+              <Link href="/operations/command-center" className="flex items-center gap-1 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
                 <Sparkles className="h-3.5 w-3.5" /> Full Executive View
               </Link>
               <Link href="/contract-governance/renewals" className="flex items-center gap-1 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">

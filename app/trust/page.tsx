@@ -9,6 +9,9 @@ import {
   FileCheck,
   Activity,
   Mail,
+  FileText,
+  LifeBuoy,
+  Scale,
 } from "lucide-react";
 
 export const metadata = {
@@ -54,10 +57,16 @@ const cards = [
     desc: "Gemini 2.5 Flash, no training on customer data, human-in-the-loop, audit trail.",
   },
   {
+    href: "/trust/support",
+    icon: LifeBuoy,
+    title: "Support & Operations",
+    desc: "Support channels, SLA commitments by plan, severity levels, and incident procedures.",
+  },
+  {
     href: "/trust/contact",
     icon: Mail,
     title: "Security Contact",
-    desc: "Responsible disclosure policy, bug bounty, PGP key, and 24-hour acknowledgement SLA.",
+    desc: "Responsible disclosure policy, PGP key, and 24-hour acknowledgement SLA.",
   },
   {
     href: "https://status.audt.tech",
@@ -71,6 +80,33 @@ const cards = [
     icon: Globe,
     title: "API Security",
     desc: "Bearer auth, bcrypt API keys, rate limiting, and versioned REST endpoints.",
+  },
+];
+
+const legalCards = [
+  {
+    href: "/trust/terms",
+    icon: FileText,
+    title: "Terms of Service",
+    desc: "Service terms, acceptable use, liability, and governing law.",
+  },
+  {
+    href: "/trust/privacy",
+    icon: Eye,
+    title: "Privacy Policy",
+    desc: "Data collection, retention, sub-processors, and your rights.",
+  },
+  {
+    href: "/trust/dpa",
+    icon: Scale,
+    title: "Data Processing Agreement",
+    desc: "Processor obligations, sub-processors, data transfers, and DPDP compliance.",
+  },
+  {
+    href: "/trust/contact",
+    icon: Shield,
+    title: "Responsible Disclosure",
+    desc: "Security vulnerability reporting, scope, and safe harbour commitment.",
   },
 ];
 
@@ -137,8 +173,37 @@ export default function TrustPage() {
         ))}
       </div>
 
+      {/* Legal Section */}
+      <div className="mt-14">
+        <h2 className="mb-2 font-[family-name:var(--font-display)] text-lg font-bold text-[var(--color-ink)]">
+          Legal &amp; Commercial
+        </h2>
+        <p className="mb-6 text-sm text-[var(--color-ink-dim)]">
+          Documentation for enterprise procurement, legal review, and data protection compliance.
+        </p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {legalCards.map(({ href, icon: Icon, title, desc }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 transition hover:bg-white/[0.04] hover:border-[var(--color-blue)]/40"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03] group-hover:border-[var(--color-blue)]/40">
+                <Icon className="h-4 w-4 text-[var(--color-blue)]" />
+              </div>
+              <div>
+                <h3 className="font-[family-name:var(--font-display)] text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-blue)] transition">
+                  {title}
+                </h3>
+                <p className="mt-1 text-xs text-[var(--color-ink-dim)]">{desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Bottom CTA */}
-      <div className="mt-16 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-8 text-center">
+      <div className="mt-14 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-8 text-center">
         <h3 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
           Questions about our security practices?
         </h3>
