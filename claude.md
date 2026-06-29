@@ -2133,6 +2133,8 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 
 | Sprint / Epic | Description | Status |
 |---|---|---|
+| Commercial Readiness Sprint 01 | Legal docs (Terms, Privacy, DPA, SLA), Trust Center visibility, Trust Score fix, navigation integrity, SLA | ✅ Complete (2026-06-28) |
+| Commercial Readiness Sprint 02 | Quick Start guide (`/docs/getting-started`), TOE docs section, API DX (JS/Python/webhooks/error handling), Trust Score deep-dive, guided evaluation journey, marketing terminology | ✅ Complete (2026-06-29) |
 | Epic 04 — Commercial Foundation | Password recovery, plan enforcement, audit logs, API docs, Zod validation, structured logging, soft delete, trust center | ✅ Complete (2026-06-28) |
 | Control Center™ | Control library, Control Health™, testing, AI advisor | ✅ Complete (2026-06-07) |
 | Policy Governance™ | Full policy lifecycle, versioning, attestations, Policy Health™ | ✅ Complete (2026-06-09) |
@@ -2275,6 +2277,8 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **OpenAPI spec is hand-authored in `lib/openapi/spec.ts`** | Not auto-generated from routes. Update it manually when adding new API endpoints. The spec is served as JSON from `/api/docs` (no auth required) and rendered by Swagger UI at `/api/docs/ui`. |
 | **`lib/logger.ts` is Edge Runtime compatible** | Zero external dependencies. Uses `console.log/warn/error` with `JSON.stringify`. Safe to import in `proxy.ts` (Edge middleware). Do NOT add `pino` or any Node.js-only logger — it will break the Edge middleware build. |
 | **Trust Center pages have NO auth** | `app/trust/**` pages must never call `requireUser()`. They are public marketing pages. The layout (`app/trust/layout.tsx`) has no auth check. Do not add `export const dynamic = "force-dynamic"` to these pages. |
+| **`/api/docs/ui` must open in new tab** | `app/api/docs/ui/route.ts` returns raw HTML (Swagger UI). Next.js `<Link>` cannot render it via client-side navigation. The sidebar uses `external: true` on the NavItem which renders `<a target="_blank" rel="noopener noreferrer">` instead of `<Link>`. Never revert this to `<Link>`. |
+| **`backdrop-filter` traps `position:fixed` children** | The topbar `<header>` uses `backdrop-blur-md`. Per CSS spec, `backdrop-filter` creates a containing block for `position:fixed` descendants, constraining them to the header's 64px bounds instead of the viewport. Any overlay/panel rendered inside that `<header>` will be clipped. Pattern: render panels (NotificationPanel, HelpPanel) OUTSIDE the `<header>` tag in Topbar's JSX return — they are sibling elements after `</header>`, not inside it. `NotificationBell` is a controlled component (accepts `open/onOpen/unreadCount` props); state lives in Topbar. |
 
 ---
 
