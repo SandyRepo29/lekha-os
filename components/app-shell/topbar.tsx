@@ -49,20 +49,20 @@ export function Topbar({ email, orgName, fullName }: {
 
   return (
     <>
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-[var(--color-line)] bg-[var(--color-bg)]/80 px-5 backdrop-blur-md">
-      <div className={`flex flex-1 max-w-sm items-center gap-2 rounded-full border bg-white/[0.03] px-3 py-1.5 text-sm transition-colors focus-within:border-[var(--color-blue)]/60 ${looksNL ? "border-[var(--color-blue)]/40" : "border-[var(--color-line)]"}`}>
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-[#E4E8EF] bg-white px-5 shadow-[0_1px_4px_rgba(15,23,42,0.04)]">
+      <div className={`flex flex-1 max-w-sm items-center gap-2 rounded-full border bg-[#F8F9FB] px-3 py-1.5 text-sm transition-colors focus-within:border-[#007A94]/60 ${looksNL ? "border-[#007A94]/40" : "border-[#E4E8EF]"}`}>
         {looksNL
-          ? <Sparkles className="h-4 w-4 shrink-0 text-[var(--color-blue)] animate-pulse" />
-          : <Search className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />}
+          ? <Sparkles className="h-4 w-4 shrink-0 text-[#007A94] animate-pulse" />
+          : <Search className="h-4 w-4 shrink-0 text-[#94A3B8]" />}
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onKeyDown}
           placeholder="Search vendors or ask in plain English…"
-          className="flex-1 bg-transparent text-sm text-[var(--color-ink)] outline-none placeholder:text-[var(--color-ink-faint)]"
+          className="flex-1 bg-transparent text-sm text-[#1E293B] outline-none placeholder:text-[#94A3B8]"
         />
         {query && (
-          <span className={`text-xs ${looksNL ? "text-[var(--color-blue)]" : "text-[var(--color-ink-faint)]"}`}>
+          <span className={`text-xs ${looksNL ? "text-[#007A94]" : "text-[#94A3B8]"}`}>
             {looksNL ? "✦ AI" : "↵"}
           </span>
         )}
@@ -70,13 +70,13 @@ export function Topbar({ email, orgName, fullName }: {
 
       <div className="ml-auto flex items-center gap-3">
         <div className="hidden text-right sm:block">
-          <div className="text-sm font-semibold text-[var(--color-ink)]">{orgName}</div>
-          <div className="text-xs text-[var(--color-ink-faint)]">{email}</div>
+          <div className="text-sm font-semibold text-[#1E293B]">{orgName}</div>
+          <div className="text-xs text-[#94A3B8]">{email}</div>
         </div>
         <NotificationBell open={notifOpen} onOpen={() => setNotifOpen(true)} unreadCount={notifications.filter(n => !n.read).length} />
         <button
           onClick={() => setHelpOpen(true)}
-          className="grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] text-[var(--color-ink-faint)] transition-all hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+          className="grid h-9 w-9 place-items-center rounded-full border border-[#E4E8EF] bg-[#F8F9FB] text-[#64748B] transition-all hover:border-[#007A94]/40 hover:bg-[#EEF2F7] hover:text-[#1E293B]"
           title="Help & docs"
           aria-label="Open help panel"
         >
@@ -84,7 +84,7 @@ export function Topbar({ email, orgName, fullName }: {
         </button>
         <Link
           href="/settings"
-          className="grid h-9 w-9 place-items-center rounded-full grad-brand text-sm font-bold text-white ring-2 ring-transparent transition-all hover:ring-white/30"
+          className="grid h-9 w-9 place-items-center rounded-full grad-brand text-sm font-bold text-white ring-2 ring-transparent transition-all hover:ring-[#007A94]/30"
           title="Settings & profile"
           aria-label="Open settings and profile"
         >

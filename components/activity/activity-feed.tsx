@@ -1,4 +1,4 @@
-import {
+﻿import {
   Building2, Pencil, Plus, Trash2, FileText, RefreshCw,
   Mail, Key, UserX, UserCheck, StickyNote, ArrowRightLeft,
   ClipboardCheck, Shield, Link2, Send,
@@ -69,7 +69,7 @@ export function ActivityFeed({
             {i < items.length - 1 && (
               <div className="absolute left-[17px] top-[34px] bottom-0 w-px bg-[var(--color-line)]" />
             )}
-            <span className={`z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] ${def.color}`}>
+            <span className={`z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-line)] bg-white ${def.color}`}>
               <Icon className="h-4 w-4" />
             </span>
             <div className="min-w-0 pt-1.5">

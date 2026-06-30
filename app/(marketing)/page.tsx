@@ -145,7 +145,7 @@ export default function LandingPage() {
               <div className="hero__cta">
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
                 <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial <span className="arrow">→</span></a>
-                <a href="/platform" className="btn btn--ghost btn--lg" style={{ borderColor: "rgba(99,102,241,0.35)", color: "var(--color-ink-dim,rgba(241,245,249,.65))" }}>Explore Platform</a>
+                <a href="/platform" className="btn btn--ghost btn--lg" style={{ borderColor: "rgba(0,184,217,0.35)", color: "rgba(255,255,255,0.70)" }}>Explore Platform</a>
               </div>
               <div className="hero__trust">
                 <span>Vendor Governance</span>
@@ -276,8 +276,8 @@ export default function LandingPage() {
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "#FFFFFF",
+                border: "1px solid #E4E8EF",
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#f87171", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "8px" }}>
                   <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#f87171", display: "inline-block" }} />
@@ -302,8 +302,8 @@ export default function LandingPage() {
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
-                background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(45,212,255,0.04))",
-                border: "1px solid rgba(99,102,241,0.25)",
+                background: "linear-gradient(135deg, rgba(73,51,214,0.07), rgba(0,184,217,0.05))",
+                border: "1px solid rgba(73,51,214,0.20)",
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "8px" }}>
                   <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#4ade80", display: "inline-block" }} />
@@ -333,8 +333,8 @@ export default function LandingPage() {
               textAlign: "center",
               padding: "28px 32px",
               borderRadius: "16px",
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#FFFFFF",
+              border: "1px solid #E4E8EF",
             }}>
               <p style={{ fontSize: "17px", fontWeight: 700, color: "var(--text)", lineHeight: 1.6, marginBottom: "10px" }}>
                 Governance is no longer an annual exercise.<br />It is a continuous operation.
@@ -387,8 +387,8 @@ export default function LandingPage() {
                       textAlign: "center",
                       padding: "20px 6px 16px",
                       borderRadius: "12px",
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.07)",
+                      background: "#FFFFFF",
+                      border: "1px solid #E4E8EF",
                     }}>
                       <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.08em", color: "var(--blue)", marginBottom: "8px", opacity: 0.8 }}>{step}</div>
                       <div style={{ fontSize: "20px", marginBottom: "6px" }}>{icon}</div>
@@ -554,8 +554,8 @@ export default function LandingPage() {
                 <div key={title} style={{
                   padding: "28px 24px",
                   borderRadius: "16px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E4E8EF",
                   textAlign: "center",
                 }}>
                   <div style={{ fontSize: "26px", marginBottom: "14px" }}>{icon}</div>
@@ -580,7 +580,7 @@ export default function LandingPage() {
 
             <div className="reveal" style={{ overflowX: "auto" }}>
               <div style={{ minWidth: "560px", maxWidth: "860px", margin: "0 auto" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", background: "rgba(255,255,255,0.03)", borderRadius: "12px 12px 0 0", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", background: "#F8F9FB", borderRadius: "12px 12px 0 0", borderBottom: "1px solid #E4E8EF" }}>
                   {[
                     { label: "Capability", color: "var(--text-dim)" },
                     { label: "Compliance Platforms", color: "var(--text-dim)" },
@@ -603,17 +603,17 @@ export default function LandingPage() {
                   ["Workflow Automation",   "Limited",  "Partial",  "Native"],
                   ["Regulatory Intelligence","None",    "Partial",  "Native"],
                 ].map(([label, col1, col2, col3], ri) => (
-                  <div key={label} style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", borderBottom: ri < 6 ? "1px solid rgba(255,255,255,0.05)" : "none", borderRadius: ri === 6 ? "0 0 12px 12px" : undefined }}>
-                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "var(--text)", borderRight: "1px solid rgba(255,255,255,0.05)" }}>{label}</div>
+                  <div key={label} style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", borderBottom: ri < 6 ? "1px solid #EEF2F7" : "none", borderRadius: ri === 6 ? "0 0 12px 12px" : undefined }}>
+                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "var(--text)", borderRight: "1px solid #EEF2F7" }}>{label}</div>
                     {[col1, col2].map((val, ci) => (
-                      <div key={ci} style={{ padding: "14px 20px", fontSize: "13px", color: "var(--text-dim)", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                      <div key={ci} style={{ padding: "14px 20px", fontSize: "13px", color: "var(--text-dim)", textAlign: "center", borderRight: "1px solid #EEF2F7", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
                         <span style={{ color: val === "Strong" ? "#4ade80" : val === "None" || val === "Limited" ? "#f87171" : "#facc15", fontWeight: 700, fontSize: "10px" }}>
                           {val === "Strong" ? "●" : val === "None" ? "○" : "◐"}
                         </span>
                         {val}
                       </div>
                     ))}
-                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "#a5f3a0", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                    <div style={{ padding: "14px 20px", fontSize: "13px", fontWeight: 600, color: "#007A94", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
                       <span style={{ color: "#34d399", fontWeight: 700 }}>✓</span> {col3}
                     </div>
                   </div>
@@ -661,8 +661,8 @@ export default function LandingPage() {
               gap: "8px",
               padding: "28px",
               borderRadius: "16px",
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#FFFFFF",
+              border: "1px solid #E4E8EF",
               maxWidth: "800px",
               margin: "0 auto 3.5rem",
             }}>
@@ -671,8 +671,8 @@ export default function LandingPage() {
                   <div style={{
                     padding: "8px 14px",
                     borderRadius: "8px",
-                    background: "rgba(99,102,241,0.1)",
-                    border: "1px solid rgba(99,102,241,0.25)",
+                    background: "rgba(73,51,214,0.08)",
+                    border: "1px solid rgba(73,51,214,0.20)",
                     fontSize: "12px",
                     fontWeight: 600,
                     color: "var(--text)",
@@ -686,8 +686,8 @@ export default function LandingPage() {
               <div style={{
                 padding: "12px 24px",
                 borderRadius: "10px",
-                background: "linear-gradient(135deg, rgba(99,102,241,0.25), rgba(45,212,255,0.12))",
-                border: "1px solid rgba(99,102,241,0.5)",
+                background: "linear-gradient(135deg, rgba(0,122,148,0.12), rgba(73,51,214,0.10))",
+                border: "1px solid rgba(73,51,214,0.35)",
                 fontSize: "15px",
                 fontWeight: 800,
                 color: "var(--text)",
@@ -699,7 +699,7 @@ export default function LandingPage() {
               <div className="tscore">
                 <div className="tscore__ring">
                   <svg viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="6" />
                     <circle cx="40" cy="40" r="34" fill="none" stroke="url(#ts1)" strokeWidth="6"
                       strokeDasharray="213.6" strokeDashoffset="17" strokeLinecap="round" transform="rotate(-90 40 40)" />
                     <defs><linearGradient id="ts1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -714,7 +714,7 @@ export default function LandingPage() {
               <div className="tscore">
                 <div className="tscore__ring">
                   <svg viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="6" />
                     <circle cx="40" cy="40" r="34" fill="none" stroke="url(#ts2)" strokeWidth="6"
                       strokeDasharray="213.6" strokeDashoffset="26" strokeLinecap="round" transform="rotate(-90 40 40)" />
                     <defs><linearGradient id="ts2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -730,7 +730,7 @@ export default function LandingPage() {
               <div className="tscore tscore--featured">
                 <div className="tscore__ring">
                   <svg viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="6" />
                     <circle cx="40" cy="40" r="34" fill="none" stroke="url(#ts3)" strokeWidth="6"
                       strokeDasharray="213.6" strokeDashoffset="13" strokeLinecap="round" transform="rotate(-90 40 40)" />
                     <defs><linearGradient id="ts3" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -745,7 +745,7 @@ export default function LandingPage() {
               <div className="tscore">
                 <div className="tscore__ring">
                   <svg viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="6" />
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="6" />
                     <circle cx="40" cy="40" r="34" fill="none" stroke="url(#ts4)" strokeWidth="6"
                       strokeDasharray="213.6" strokeDashoffset="21" strokeLinecap="round" transform="rotate(-90 40 40)" />
                     <defs><linearGradient id="ts4" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -917,8 +917,8 @@ export default function LandingPage() {
                 <div key={item} style={{
                   padding: "10px 20px",
                   borderRadius: "999px",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid #E4E8EF",
+                  background: "#F8F9FB",
                   fontSize: "14px",
                   color: "var(--text-dim)",
                   fontWeight: 500,
@@ -965,8 +965,8 @@ export default function LandingPage() {
                 <div key={title} style={{
                   padding: "24px 20px",
                   borderRadius: "14px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E4E8EF",
                   transition: "border-color 0.2s",
                 }}>
                   <div style={{ fontSize: "22px", marginBottom: "12px" }}>{icon}</div>
@@ -982,8 +982,8 @@ export default function LandingPage() {
                 display: "inline-flex", flexDirection: "column" as const, alignItems: "center",
                 gap: "16px", padding: "32px 40px",
                 borderRadius: "20px",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "#FFFFFF",
+                border: "1px solid #E4E8EF",
               }}>
                 <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" as const, justifyContent: "center" }}>
                   {[
@@ -993,7 +993,7 @@ export default function LandingPage() {
                     { label: "Responsible AI", href: "/trust/ai" },
                   ].map(({ label, href }) => (
                     <a key={label} href={href} style={{
-                      fontSize: "12px", fontWeight: 600, color: "rgba(154,160,181,0.8)",
+                      fontSize: "12px", fontWeight: 600, color: "#64748B",
                       textDecoration: "none", display: "flex", alignItems: "center", gap: "4px",
                     }}>
                       <span style={{ color: "#22c55e", fontSize: "8px" }}>&#9679;</span> {label}
@@ -1003,7 +1003,7 @@ export default function LandingPage() {
                 <a href="/trust" style={{
                   display: "inline-flex", alignItems: "center", gap: "6px",
                   padding: "10px 22px", borderRadius: "10px",
-                  background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.4)",
+                  background: "rgba(73,51,214,0.08)", border: "1px solid rgba(73,51,214,0.25)",
                   fontSize: "13px", fontWeight: 700, color: "var(--text)", textDecoration: "none",
                   transition: "background 0.2s",
                 }}>
@@ -1044,8 +1044,8 @@ export default function LandingPage() {
                 <div key={title} style={{
                   padding: "28px 24px",
                   borderRadius: "16px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E4E8EF",
                   textAlign: "center",
                 }}>
                   <div style={{ fontSize: "28px", marginBottom: "16px" }}>{icon}</div>
@@ -1100,8 +1100,8 @@ export default function LandingPage() {
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "#FFFFFF",
+                border: "1px solid #E4E8EF",
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Live Today &#8212; 32 Modules</div>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
@@ -1115,8 +1115,8 @@ export default function LandingPage() {
               <div style={{
                 padding: "2rem",
                 borderRadius: "16px",
-                background: "rgba(99,102,241,0.05)",
-                border: "1px solid rgba(99,102,241,0.2)",
+                background: "rgba(73,51,214,0.05)",
+                border: "1px solid rgba(73,51,214,0.18)",
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--blue)", marginBottom: "1rem" }}>On The Roadmap</div>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px" }}>
@@ -1130,7 +1130,7 @@ export default function LandingPage() {
             </div>
 
             <div className="reveal" style={{ textAlign: "center" }}>
-              <span style={{ fontSize: "1.5rem", fontWeight: 700, background: "linear-gradient(135deg, #818cf8, #2dd4ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span style={{ fontSize: "1.5rem", fontWeight: 700, background: "linear-gradient(120deg, #00B8D9 0%, #4933D6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 One platform. Every vendor. Continuous trust.
               </span>
             </div>
@@ -1233,9 +1233,9 @@ export default function LandingPage() {
                 borderCollapse: "collapse" as const, fontSize: "13px",
               }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                  <tr style={{ borderBottom: "1px solid #E4E8EF" }}>
                     {["Plan", "Support", "Initial Response", "Coverage"].map((h) => (
-                      <th key={h} style={{ padding: "10px 16px", textAlign: "left" as const, fontWeight: 700, color: "rgba(241,245,249,0.7)", fontSize: "12px" }}>{h}</th>
+                      <th key={h} style={{ padding: "10px 16px", textAlign: "left" as const, fontWeight: 700, color: "#64748B", fontSize: "12px" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -1245,11 +1245,11 @@ export default function LandingPage() {
                     ["Business", "Priority Email", "Within 8 Business Hours", "Business hours"],
                     ["Enterprise", "Dedicated Support", "Within 1 Business Hour", "24 / 5 (P1: 24 / 7)"],
                   ].map(([plan, support, response, coverage], i) => (
-                    <tr key={plan} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: i === 1 ? "rgba(99,102,241,0.06)" : "transparent" }}>
+                    <tr key={plan} style={{ borderBottom: "1px solid #EEF2F7", background: i === 1 ? "rgba(73,51,214,0.06)" : "transparent" }}>
                       <td style={{ padding: "10px 16px", fontWeight: 700, color: "var(--text)" }}>{plan}</td>
-                      <td style={{ padding: "10px 16px", color: "rgba(154,160,181,0.8)" }}>{support}</td>
+                      <td style={{ padding: "10px 16px", color: "#64748B" }}>{support}</td>
                       <td style={{ padding: "10px 16px", color: "var(--text)" }}>{response}</td>
-                      <td style={{ padding: "10px 16px", color: "rgba(154,160,181,0.8)" }}>{coverage}</td>
+                      <td style={{ padding: "10px 16px", color: "#64748B" }}>{coverage}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1280,9 +1280,9 @@ export default function LandingPage() {
             </div>
             <p style={{ fontSize: "11px", color: "rgba(154,160,181,0.5)", marginTop: "1.25rem" }}>
               By signing up you agree to our{" "}
-              <a href="/trust/terms" style={{ color: "rgba(99,102,241,0.7)", textDecoration: "none" }}>Terms of Service</a>
+              <a href="/trust/terms" style={{ color: "rgba(0,184,217,0.80)", textDecoration: "none" }}>Terms of Service</a>
               {" "}and{" "}
-              <a href="/trust/privacy" style={{ color: "rgba(99,102,241,0.7)", textDecoration: "none" }}>Privacy Policy</a>.
+              <a href="/trust/privacy" style={{ color: "rgba(0,184,217,0.80)", textDecoration: "none" }}>Privacy Policy</a>.
             </p>
           </div>
         </section>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,13 +21,13 @@ export function NewAssetForm({ assetTypes }: { assetTypes: AssetTypeRow[] }) {
         <p className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-400">{(state as any).error}</p>
       )}
 
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-semibold text-sm">Asset Details</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Name <span className="text-red-400">*</span></label>
-            <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Customer Portal" />
+            <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Customer Portal" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Asset Type</label>
@@ -50,7 +50,7 @@ export function NewAssetForm({ assetTypes }: { assetTypes: AssetTypeRow[] }) {
 
         <div>
           <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Description</label>
-          <textarea name="description" rows={2} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none resize-none" placeholder="Brief description of this asset..." />
+          <textarea name="description" rows={2} className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none resize-none" placeholder="Brief description of this asset..." />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -90,22 +90,22 @@ export function NewAssetForm({ assetTypes }: { assetTypes: AssetTypeRow[] }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Business Unit</label>
-            <input name="businessUnit" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Engineering" />
+            <input name="businessUnit" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Engineering" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Location / Region</label>
-            <input name="location" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="ap-south-1 / Mumbai" />
+            <input name="location" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="ap-south-1 / Mumbai" />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Technology Stack</label>
-            <input name="technologyStack" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Next.js, Supabase, TypeScript" />
+            <input name="technologyStack" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="Next.js, Supabase, TypeScript" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Cloud Provider</label>
-            <input name="cloudProvider" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="AWS / Azure / GCP" />
+            <input name="cloudProvider" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none" placeholder="AWS / Azure / GCP" />
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export function NewAssetForm({ assetTypes }: { assetTypes: AssetTypeRow[] }) {
 
         <div>
           <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Notes</label>
-          <textarea name="notes" rows={2} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none resize-none" placeholder="Additional notes..." />
+          <textarea name="notes" rows={2} className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none resize-none" placeholder="Additional notes..." />
         </div>
       </div>
 
@@ -132,7 +132,7 @@ export function NewAssetForm({ assetTypes }: { assetTypes: AssetTypeRow[] }) {
           {pending ? "Adding…" : "Add Asset"}
         </button>
         <a href="/asset-intelligence/registry"
-          className="rounded-xl border border-[var(--color-line)] px-6 py-2.5 text-sm font-medium hover:bg-white/[0.04] transition-colors">
+          className="rounded-xl border border-[var(--color-line)] px-6 py-2.5 text-sm font-medium hover:bg-[#F8F9FB] transition-colors">
           Cancel
         </a>
       </div>

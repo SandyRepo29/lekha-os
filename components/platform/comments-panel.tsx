@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState, useOptimistic, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,7 @@ function ReactionBar({
               padding: "0.125rem 0.5rem",
               borderRadius: "9999px",
               border: "1px solid var(--color-line)",
-              background: count > 0 ? "rgba(255,255,255,0.06)" : "transparent",
+              background: count > 0 ? "#F0F4F8" : "transparent",
               color: "var(--color-ink-dim)",
               fontSize: "0.75rem",
               cursor: "pointer",
@@ -149,7 +149,7 @@ function CommentItem({
         style={{
           borderRadius: "0.75rem",
           border: "1px solid var(--color-line)",
-          background: "rgba(255,255,255,0.02)",
+          background: "#FFFFFF",
           padding: "0.875rem 1rem",
         }}
       >
@@ -241,7 +241,7 @@ function CommentItem({
               rows={2}
               style={{
                 width: "100%",
-                background: "rgba(255,255,255,0.04)",
+                background: "#F8F9FB",
                 border: "1px solid var(--color-line)",
                 borderRadius: "0.5rem",
                 padding: "0.5rem 0.625rem",
@@ -301,7 +301,7 @@ function CommentItem({
             required
             style={{
               width: "100%",
-              background: "rgba(255,255,255,0.04)",
+              background: "#F8F9FB",
               border: "1px solid var(--color-line)",
               borderRadius: "0.5rem",
               padding: "0.5rem 0.625rem",
@@ -365,7 +365,7 @@ export default function CommentsPanel({
   const rootComments = initialComments.filter((c) => !c.parent_id);
 
   return (
-    <Card style={{ padding: "1.25rem", background: "rgba(255,255,255,0.02)", border: "1px solid var(--color-line)", borderRadius: "1rem" }}>
+    <Card style={{ padding: "1.25rem", background: "#FFFFFF", border: "1px solid var(--color-line)", borderRadius: "1rem" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
         <MessageSquare size={16} style={{ color: "var(--color-blue)" }} />
@@ -391,7 +391,7 @@ export default function CommentsPanel({
             required
             style={{
               width: "100%",
-              background: "rgba(255,255,255,0.04)",
+              background: "#F8F9FB",
               border: "1px solid var(--color-line)",
               borderRadius: "0.625rem",
               padding: "0.625rem 0.75rem",

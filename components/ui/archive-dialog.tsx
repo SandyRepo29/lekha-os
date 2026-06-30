@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 
@@ -65,7 +65,7 @@ export function ArchiveDialog({
               "w-full rounded-xl border p-4 text-left transition-all",
               mode === "archive"
                 ? "border-emerald-500/50 bg-emerald-500/10"
-                : "border-[var(--color-line)] bg-white/[0.02] hover:bg-white/[0.04]",
+                : "border-[var(--color-line)] bg-white hover:bg-[#F8F9FB]",
             ].join(" ")}
           >
             <div className="flex items-start gap-3">
@@ -109,7 +109,7 @@ export function ArchiveDialog({
               "w-full rounded-xl border p-4 text-left transition-all",
               mode === "delete"
                 ? "border-red-500/50 bg-red-500/10"
-                : "border-[var(--color-line)] bg-white/[0.02] hover:bg-white/[0.04]",
+                : "border-[var(--color-line)] bg-white hover:bg-[#F8F9FB]",
             ].join(" ")}
           >
             <div className="flex items-start gap-3">
@@ -156,7 +156,7 @@ export function ArchiveDialog({
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
               placeholder={`Type ${itemName} to confirm`}
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/30"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/30"
             />
           </div>
         )}
@@ -165,7 +165,7 @@ export function ArchiveDialog({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)] transition-colors"
+            className="rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
           >
             Cancel
           </button>

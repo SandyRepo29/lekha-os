@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Vendor Hub&#8482; — AUDT' };
 
@@ -104,12 +104,12 @@ export default async function VendorsPage({
           <p className="text-sm text-[var(--color-ink-dim)]">{total} vendor{total !== 1 ? "s" : ""} &middot; governance workspace</p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/trust-intelligence/vendors" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-intelligence/vendors" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Insights&#8482;
           </Link>
           {!session.demo && session.org && (
-            <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-1">
+            <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white p-1">
               <a href="/reports/compliance" target="_blank" rel="noopener noreferrer"
                 className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-1.5 text-xs")} title="Compliance PDF">
                 <FileText className="h-3.5 w-3.5" /> PDF
@@ -243,7 +243,7 @@ function StatCard({
   const iconCl = accent === "danger" ? "text-red-400/60" : accent === "warn" ? "text-amber-400/60" : accent === "good" ? "text-emerald-400/60" : "text-[var(--color-ink-faint)]";
 
   const inner = (
-    <div className={`rounded-xl border border-l-2 px-4 py-3 transition-colors ${border} ${bar} ${bg} ${href ? "hover:bg-white/[0.04]" : ""}`}>
+    <div className={`rounded-xl border border-l-2 px-4 py-3 transition-colors ${border} ${bar} ${bg} ${href ? "hover:bg-[#F8F9FB]" : ""}`}>
       <div className="flex items-center justify-between gap-1">
         <div className="text-[11px] text-[var(--color-ink-faint)]">{label}</div>
         <Icon className={`h-3.5 w-3.5 shrink-0 ${iconCl}`} />

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { chatAction } from "@/lib/trust-exchange/actions";
@@ -59,7 +59,7 @@ export function TrustExchangeAiChat({ context }: { context: Record<string, unkno
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="block w-full text-left text-sm px-4 py-2.5 rounded-xl bg-white/[0.03] border border-[var(--color-line)] hover:border-[var(--color-blue)]/40 hover:bg-white/[0.05] transition-colors text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"
+                  className="block w-full text-left text-sm px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] hover:border-[var(--color-blue)]/40 hover:bg-[#F8F9FB] transition-colors text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"
                 >
                   {s}
                 </button>
@@ -71,7 +71,7 @@ export function TrustExchangeAiChat({ context }: { context: Record<string, unkno
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]/20" : "bg-white/5"}`}>
                   {m.role === "user" ? <User className="h-3.5 w-3.5 text-[var(--color-blue)]" /> : <Bot className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />}
                 </div>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-white/[0.04] text-[var(--color-ink-dim)]"}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"}`}>
                   {m.text}
                 </div>
               </div>
@@ -82,7 +82,7 @@ export function TrustExchangeAiChat({ context }: { context: Record<string, unkno
               <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Bot className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />
               </div>
-              <div className="bg-white/[0.04] rounded-2xl px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">Analysing…</div>
+              <div className="bg-[#F8F9FB] rounded-2xl px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">Analysing…</div>
             </div>
           )}
           <div ref={bottomRef} />

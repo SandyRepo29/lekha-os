@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -62,7 +62,7 @@ export default async function WatchlistsPage() {
               <Link
                 key={name}
                 href={`/regulatory-intelligence/watchlists/new?name=${encodeURIComponent(name)}`}
-                className="rounded-xl border border-[var(--color-blue)]/20 bg-white/[0.02] px-3 py-2.5 text-xs font-medium hover:bg-[var(--color-blue)]/[0.06] transition-colors"
+                className="rounded-xl border border-[var(--color-blue)]/20 bg-white px-3 py-2.5 text-xs font-medium hover:bg-[var(--color-blue)]/[0.06] transition-colors"
               >
                 + {name}
               </Link>
@@ -89,7 +89,7 @@ export default async function WatchlistsPage() {
               </div>
               {w.description && <p className="mt-2 text-xs text-[var(--color-ink-dim)]">{w.description}</p>}
               <div className="mt-3 flex items-center gap-2 text-[11px] text-[var(--color-ink-faint)]">
-                <span className="rounded-full border border-[var(--color-line)] bg-white/[0.04] px-2 py-0.5">
+                <span className="rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-2 py-0.5">
                   {WATCH_TYPE_LABELS[w.watchType] ?? w.watchType}
                 </span>
                 {w.alertOnChange && (

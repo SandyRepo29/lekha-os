@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Bell, Send, CheckCircle2 } from "lucide-react";
@@ -16,7 +16,7 @@ function Toggle({ name, checked, label, description }: { name: string; checked: 
       </div>
       <div className="relative shrink-0 mt-0.5">
         <input type="checkbox" name={name} value="1" defaultChecked={checked} className="sr-only peer" />
-        <div className="w-10 h-6 rounded-full border border-[var(--color-line-strong)] bg-white/[0.05] peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-all" />
+        <div className="w-10 h-6 rounded-full border border-[var(--color-line-strong)] bg-[#F8F9FB] peer-checked:bg-indigo-600 peer-checked:border-indigo-500 transition-all" />
         <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-white/50 peer-checked:bg-white peer-checked:translate-x-4 transition-all" />
       </div>
     </label>
@@ -57,7 +57,7 @@ export function NotificationForm({ prefs }: { prefs: NotificationPreferences | n
             name="alertDaysBefore"
             defaultValue={defaultDays}
             placeholder="90, 60, 30, 15, 7"
-            className="h-11 w-full rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-4 text-[15px] text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30"
+            className="h-11 w-full rounded-xl border border-[var(--color-line-strong)] bg-white px-4 text-[15px] text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30"
           />
           <p className="mt-1 text-xs text-[var(--color-ink-faint)]">Comma-separated numbers. Default: 90, 60, 30, 15, 7</p>
         </div>
@@ -71,7 +71,7 @@ export function NotificationForm({ prefs }: { prefs: NotificationPreferences | n
             defaultValue={defaultEmails}
             rows={3}
             placeholder="finance@company.com&#10;ciso@company.com"
-            className="w-full rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30 resize-none"
+            className="w-full rounded-xl border border-[var(--color-line-strong)] bg-white px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30 resize-none"
           />
           <p className="mt-1 text-xs text-[var(--color-ink-faint)]">
             One email per line. Org owners and admins are always notified.

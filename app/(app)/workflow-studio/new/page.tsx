@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
@@ -79,7 +79,7 @@ export default async function NewWorkflowPage({
               required
               defaultValue={sp.name ?? ""}
               placeholder="e.g. Vendor Onboarding, Risk Review, Policy Approval"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
             />
           </div>
 
@@ -91,7 +91,7 @@ export default async function NewWorkflowPage({
               rows={3}
               defaultValue={sp.description ?? ""}
               placeholder="What does this workflow do?"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 resize-none"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 resize-none"
             />
           </div>
 

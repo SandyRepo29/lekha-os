@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getPublicRegistry } from "@/lib/services/trust-verification/trust-verification-service";
@@ -28,12 +28,12 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-ink-faint)]" />
           <input placeholder="Search by organization, certificate ID…"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
         </div>
         <form>
           <select name="minScore" defaultValue={params.minScore ?? ""}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => e.target.form?.submit()}
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2.5 text-sm focus:outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2.5 text-sm focus:outline-none">
             <option value="">All scores</option>
             <option value="80">Score ≥ 80</option>
             <option value="85">Score ≥ 85</option>
@@ -58,7 +58,7 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]/50">
               {registry.map((r: { id: string; displayName: string; industry?: string | null; programName: string; verificationLevel: string; trustScore?: number | null; publishedAt: string | Date; expiresAt?: string | Date | null; certificateId: string }) => (
-                <tr key={r.id} className="hover:bg-white/[0.02]">
+                <tr key={r.id} className="hover:bg-white">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />

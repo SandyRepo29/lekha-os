@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -70,7 +70,7 @@ export default async function AgentRegistryPage() {
                 {agents.map(a => {
                   const successRate = a.totalRuns > 0 ? Math.round((a.successRuns / a.totalRuns) * 100) : 0;
                   return (
-                    <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={a.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <div className="font-semibold">{a.name}</div>
                         <div className="mt-0.5 text-[var(--color-ink-faint)] max-w-[200px] truncate">{a.description}</div>

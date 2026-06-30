@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
@@ -56,7 +56,7 @@ export function NewFrameworkForm() {
                 className={`relative rounded-xl border p-3 text-left transition-all ${
                   isSelected
                     ? "border-[var(--color-blue)]/60 bg-[var(--color-blue)]/10 ring-1 ring-[var(--color-blue)]/30"
-                    : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/5"
+                    : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/5"
                 }`}
               >
                 {isSelected && (

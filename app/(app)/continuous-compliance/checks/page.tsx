@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -40,7 +40,7 @@ export default async function ChecksPage({ searchParams }: { searchParams: Promi
             className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors border ${
               category === cat
                 ? "bg-[var(--color-blue)]/10 border-[var(--color-blue)]/40 text-[var(--color-blue)]"
-                : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-white/[0.04]"
+                : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]"
             }`}
           >
             {cat !== "all" && <CategoryIcon category={cat} />}
@@ -55,7 +55,7 @@ export default async function ChecksPage({ searchParams }: { searchParams: Promi
         {filtered.map(check => (
           <div key={check.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
             <div className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-lg">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#F8F9FB] text-lg">
                 <CategoryIcon category={check.category} />
               </span>
               <div className="min-w-0 flex-1">
@@ -92,7 +92,7 @@ export default async function ChecksPage({ searchParams }: { searchParams: Promi
             {Array.isArray(check.frameworks) && (check.frameworks as string[]).length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {(check.frameworks as string[]).slice(0, 3).map((f: string) => (
-                  <span key={f} className="rounded-full bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-[var(--color-ink-faint)]">{f}</span>
+                  <span key={f} className="rounded-full bg-[#F8F9FB] px-1.5 py-0.5 text-[10px] text-[var(--color-ink-faint)]">{f}</span>
                 ))}
               </div>
             )}

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -48,7 +48,7 @@ export default async function SyncsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-ink-dim)]">Connector</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-ink-dim)]">Type</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-ink-dim)]">Status</th>
@@ -63,7 +63,7 @@ export default async function SyncsPage() {
               <tbody className="divide-y divide-[var(--color-line)]">
                 {syncs.map(({ sync, connectorName }) => {
                   return (
-                    <tr key={sync.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={sync.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3 font-medium">{connectorName}</td>
                       <td className="px-4 py-3 text-[var(--color-ink-dim)]">{sync.syncType}</td>
                       <td className="px-4 py-3">

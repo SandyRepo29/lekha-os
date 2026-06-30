@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -83,7 +83,7 @@ export default function RejectPaymentForm({ invoiceId }: Props) {
             setError(null);
           }}
           placeholder="e.g. UTR not found in bank records, amount mismatch..."
-          className="w-full resize-none rounded-xl border border-red-500/30 bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-red-500"
+          className="w-full resize-none rounded-xl border border-red-500/30 bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-red-500"
         />
         {error && (
           <p className="text-xs text-red-400">{error}</p>

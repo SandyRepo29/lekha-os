@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -53,13 +53,13 @@ export default async function AutomationPage() {
         </h3>
         <form action={createRuleAction.bind(null, null)} className="grid grid-cols-2 gap-3">
           <input name="name" required placeholder="Rule name *"
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
           <select name="triggerType"
             className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]">
             {Object.entries(TRIGGER_LABELS).map(([v, l]) => <option key={v} value={v}>IF: {l}</option>)}
           </select>
           <textarea name="description" rows={2} placeholder="Description (optional)"
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
           <button type="submit"
             className="col-span-2 rounded-xl grad-brand py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90">
             Create Rule
@@ -105,7 +105,7 @@ export default async function AutomationPage() {
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-dim)]">Example Rules</h3>
             <div className="grid gap-2 sm:grid-cols-2">
               {EXAMPLE_RULES.map((ex, i) => (
-                <div key={i} className="rounded-xl border border-[var(--color-line)]/50 bg-white/[0.02] p-4">
+                <div key={i} className="rounded-xl border border-[var(--color-line)]/50 bg-white p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="h-4 w-4 text-[var(--color-blue)] opacity-60" />
                     <span className="text-xs font-medium">{ex.name}</span>
@@ -113,7 +113,7 @@ export default async function AutomationPage() {
                   <div className="text-[11px] text-[var(--color-ink-faint)]">Trigger: {TRIGGER_LABELS[ex.trigger]}</div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {ex.actions.map(a => (
-                      <span key={a} className="rounded-full bg-white/[0.06] px-1.5 py-0.5 text-[10px]">{a}</span>
+                      <span key={a} className="rounded-full bg-[#F8F9FB] px-1.5 py-0.5 text-[10px]">{a}</span>
                     ))}
                   </div>
                 </div>

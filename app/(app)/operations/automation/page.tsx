@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAutomationRulesAction, getEventTypesAction } from "@/lib/toe/actions";
@@ -114,7 +114,7 @@ export default async function AutomationPage() {
           <div className="mb-4 flex items-center gap-2">
             <Zap className="h-4 w-4 text-[var(--color-ink-dim)]" />
             <span className="text-sm font-semibold">Paused Rules</span>
-            <span className="ml-auto rounded-full bg-white/[0.05] px-2 py-0.5 text-[11px] text-[var(--color-ink-dim)]">{inactiveRules.length}</span>
+            <span className="ml-auto rounded-full bg-[#F8F9FB] px-2 py-0.5 text-[11px] text-[var(--color-ink-dim)]">{inactiveRules.length}</span>
           </div>
           <div className="space-y-2">
             {inactiveRules.map(rule => (

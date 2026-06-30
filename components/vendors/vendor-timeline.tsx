@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -124,7 +124,7 @@ export function VendorTimeline({ events, showFilters = true }: Props) {
               "rounded-full px-3 py-1 text-xs font-medium transition-colors border",
               filter === ALL_TYPES
                 ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10 text-[var(--color-blue)]"
-                : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-white/[0.04]",
+                : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]",
             ].join(" ")}
           >
             All
@@ -139,7 +139,7 @@ export function VendorTimeline({ events, showFilters = true }: Props) {
                   "rounded-full px-3 py-1 text-xs font-medium transition-colors border",
                   filter === t
                     ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10 text-[var(--color-blue)]"
-                    : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-white/[0.04]",
+                    : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]",
                 ].join(" ")}
               >
                 {label}
@@ -175,7 +175,7 @@ export function VendorTimeline({ events, showFilters = true }: Props) {
                   const fromState = meta.from_state as string | undefined;
 
                   return (
-                    <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3.5 hover:bg-white/[0.04] transition-colors">
+                    <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white p-3.5 hover:bg-[#F8F9FB] transition-colors">
                       <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${iconBg}`}>
                         <Icon className="h-3.5 w-3.5" />
                       </div>

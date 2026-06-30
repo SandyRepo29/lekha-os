@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
@@ -88,7 +88,7 @@ export function HelpDocsClient() {
                       className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[12px] font-medium transition-colors ${
                         active === route
                           ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-                          : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                          : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
                       }`}
                     >
                       <span className="truncate">{m.title}</span>
@@ -104,7 +104,7 @@ export function HelpDocsClient() {
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-6">
         {/* Hero */}
-        <div className="mb-8 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="mb-8 rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl grad-brand shadow-[0_4px_14px_-4px_rgba(99,102,241,.8)]">
               <BookOpen className="h-5 w-5 text-white" />
@@ -125,7 +125,7 @@ export function HelpDocsClient() {
         </div>
 
         {/* Search */}
-        <div className="mb-6 flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2.5 focus-within:border-[var(--color-blue)]/60 transition-colors">
+        <div className="mb-6 flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 focus-within:border-[var(--color-blue)]/60 transition-colors">
           <Search className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
           <input
             value={query}
@@ -170,7 +170,7 @@ export function HelpDocsClient() {
                       <article
                         key={route}
                         id={anchorId}
-                        className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 scroll-mt-6"
+                        className="rounded-2xl border border-[var(--color-line)] bg-white p-5 scroll-mt-6"
                       >
                         {/* Module header */}
                         <div className="mb-3 flex items-start justify-between gap-3">
@@ -186,7 +186,7 @@ export function HelpDocsClient() {
                           </div>
                           <Link
                             href={route}
-                            className="shrink-0 flex items-center gap-1 rounded-lg border border-[var(--color-line)] px-2.5 py-1 text-[12px] font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                            className="shrink-0 flex items-center gap-1 rounded-lg border border-[var(--color-line)] px-2.5 py-1 text-[12px] font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
                           >
                             <ExternalLink className="h-3 w-3" />
                             Open
@@ -225,7 +225,7 @@ export function HelpDocsClient() {
                               {m.tips.map((tip, i) => (
                                 <li
                                   key={i}
-                                  className="flex items-start gap-2 rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-3 py-2"
+                                  className="flex items-start gap-2 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2"
                                 >
                                   <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
                                   <span className="text-[12px] leading-snug text-[var(--color-ink-dim)]">

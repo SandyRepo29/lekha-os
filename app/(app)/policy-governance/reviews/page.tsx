@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { ClipboardCheck } from "lucide-react";
@@ -77,7 +77,7 @@ export default async function PolicyReviewsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Policy</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Reviewer</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Outcome</th>
@@ -91,7 +91,7 @@ export default async function PolicyReviewsPage() {
                   const overdue = isOverdue(review.nextReviewDate);
                   const dueSoon = !overdue && isDueSoon(review.nextReviewDate);
                   return (
-                    <tr key={review.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={review.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <Link href={`/policy-governance/${policyId}?tab=reviews`} className="font-medium hover:text-indigo-400 transition-colors">
                           {policyName ?? "—"}

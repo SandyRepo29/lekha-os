@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
@@ -41,25 +41,25 @@ export function EditControlForm({ control }: { control: ControlWithMeta }) {
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Control ID *</label>
           <input name="controlRef" required defaultValue={control.controlRef}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Name *</label>
           <input name="name" required defaultValue={control.name}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Description</label>
         <textarea name="description" rows={3} defaultValue={control.description ?? ""}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Objective</label>
         <textarea name="objective" rows={2} defaultValue={control.objective ?? ""}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -123,12 +123,12 @@ export function EditControlForm({ control }: { control: ControlWithMeta }) {
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Owner</label>
           <input name="owner" defaultValue={control.owner ?? ""}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Next Review Date</label>
           <input name="nextReviewDate" type="date" defaultValue={control.nextReviewDate ?? ""}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
       </div>
 
@@ -136,12 +136,12 @@ export function EditControlForm({ control }: { control: ControlWithMeta }) {
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Next Test Date</label>
           <input name="nextTestDate" type="date" defaultValue={control.nextTestDate ?? ""}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Last Review Date</label>
           <input name="reviewDate" type="date" defaultValue={control.reviewDate ?? ""}
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, AlertCircle, Clock, User } from "lucide-react";
@@ -129,7 +129,7 @@ export default async function IssueListPage({
                   return (
                     <tr
                       key={issue.id}
-                      className={`hover:bg-white/[0.02] transition-colors ${slaBreach ? "bg-red-500/[0.025]" : ""}`}
+                      className={`hover:bg-white transition-colors ${slaBreach ? "bg-red-500/[0.025]" : ""}`}
                     >
                       <td className="px-4 py-3 max-w-xs">
                         <Link

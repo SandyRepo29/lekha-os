@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Bot, Send, User } from "lucide-react";
@@ -42,7 +42,7 @@ export default function SecAiChat() {
               key={q}
               onClick={() => send(q)}
               data-question={q}
-              className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2.5 text-left text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)] transition-colors"
+              className="rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 text-left text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
             >
               {q}
             </button>
@@ -60,7 +60,7 @@ export default function SecAiChat() {
               <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                 m.role === "user"
                   ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-                  : "bg-white/[0.04] text-[var(--color-ink-dim)]"
+                  : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"
               }`}>
                 {m.content}
               </div>
@@ -71,7 +71,7 @@ export default function SecAiChat() {
               <div className="shrink-0 rounded-full p-1.5 bg-violet-500/20">
                 <Bot className="h-3.5 w-3.5 text-violet-400" />
               </div>
-              <div className="rounded-2xl bg-white/[0.04] px-3.5 py-2.5 text-sm text-[var(--color-ink-dim)]">
+              <div className="rounded-2xl bg-[#F8F9FB] px-3.5 py-2.5 text-sm text-[var(--color-ink-dim)]">
                 <span className="animate-pulse">Analysing…</span>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function SecAiChat() {
           value={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Ask the Security Advisor…"
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-blue)]/50 focus:ring-1 focus:ring-[var(--color-blue)]/20 placeholder:text-[var(--color-ink-muted)]"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-blue)]/50 focus:ring-1 focus:ring-[var(--color-blue)]/20 placeholder:text-[var(--color-ink-muted)]"
         />
         <button
           type="submit"

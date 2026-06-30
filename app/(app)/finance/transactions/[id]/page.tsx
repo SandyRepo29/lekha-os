@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -227,7 +227,7 @@ export default async function TransactionDetailPage({
       </Link>
 
       {/* Transaction header */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-3 flex-wrap">
@@ -262,7 +262,7 @@ export default async function TransactionDetailPage({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
         {/* LEFT — Payment Details */}
         <div className="space-y-6">
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
             <h2 className="text-sm font-semibold text-[var(--color-ink)] mb-4 uppercase tracking-wider">
               Payment Details
             </h2>
@@ -357,7 +357,7 @@ export default async function TransactionDetailPage({
           </div>
 
           {/* Finance Action History */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
             <h2 className="text-sm font-semibold text-[var(--color-ink)] mb-4 uppercase tracking-wider">
               Finance Action History
             </h2>
@@ -400,7 +400,7 @@ export default async function TransactionDetailPage({
         {/* RIGHT — Actions panel + Org context */}
         <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
           {/* Actions panel */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
             <h2 className="text-sm font-semibold text-[var(--color-ink)] mb-4 uppercase tracking-wider">
               Actions
             </h2>
@@ -424,7 +424,7 @@ export default async function TransactionDetailPage({
                 </div>
                 <button
                   disabled
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-[var(--color-ink-dim)] cursor-not-allowed opacity-60"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2.5 text-sm font-medium text-[var(--color-ink-dim)] cursor-not-allowed opacity-60"
                   title="Refund flow not yet implemented"
                 >
                   Issue Refund
@@ -456,7 +456,7 @@ export default async function TransactionDetailPage({
           </div>
 
           {/* Organization context */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
             <h2 className="text-sm font-semibold text-[var(--color-ink)] mb-4 uppercase tracking-wider">
               Organization Context
             </h2>

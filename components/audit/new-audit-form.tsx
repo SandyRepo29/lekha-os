@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { createAuditAction } from "@/lib/audit/actions";
@@ -77,7 +77,7 @@ export function NewAuditForm({
           name="scope"
           rows={2}
           placeholder="Define the audit scope..."
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 
@@ -90,7 +90,7 @@ export function NewAuditForm({
           name="objective"
           rows={2}
           placeholder="State the audit objective..."
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 

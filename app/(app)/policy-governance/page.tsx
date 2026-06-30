@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -106,7 +106,7 @@ export default async function PolicyGovernanceDashboardPage() {
                 <div className={`h-2 w-2 rounded-full ${s.color} shrink-0`} />
                 <span className="flex-1 text-sm text-[var(--color-ink-dim)]">{s.label}</span>
                 <span className="text-sm font-semibold">{s.count}</span>
-                <div className="w-16 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="w-16 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div
                     className={`h-full rounded-full ${s.color}`}
                     style={{ width: metrics.total > 0 ? `${Math.round((s.count / metrics.total) * 100)}%` : "0%" }}
@@ -140,7 +140,7 @@ export default async function PolicyGovernanceDashboardPage() {
                     <span className="text-xs text-[var(--color-ink-dim)]">{r.label}</span>
                     <span className="text-xs font-semibold">{r.count} <span className="text-[var(--color-ink-faint)]">/ {r.total}</span></span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                     <div className={`h-full rounded-full ${r.color}`} style={{ width: `${pct}%` }} />
                   </div>
                 </div>
@@ -169,7 +169,7 @@ export default async function PolicyGovernanceDashboardPage() {
                 <span className="text-xs text-[var(--color-ink-dim)]">Current Contribution</span>
                 <span className="text-xs font-bold text-emerald-400">{currentTrustContrib} / {policyTrustWeight} pts</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                 <div className="h-full rounded-full bg-emerald-500" style={{ width: `${Math.round((currentTrustContrib / policyTrustWeight) * 100)}%` }} />
               </div>
             </div>
@@ -178,7 +178,7 @@ export default async function PolicyGovernanceDashboardPage() {
                 <span className="text-xs text-[var(--color-ink-dim)]">Max Possible</span>
                 <span className="text-xs font-bold text-[var(--color-blue)]">{projectedTrustContrib} pts</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                 <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: "100%" }} />
               </div>
             </div>
@@ -275,7 +275,7 @@ export default async function PolicyGovernanceDashboardPage() {
                 <Link
                   key={p.id}
                   href={`/policy-governance/${p.id}`}
-                  className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] transition-colors"
+                  className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white transition-colors"
                 >
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{p.name}</p>

@@ -22,19 +22,19 @@ export default async function DataAssetsPage() {
       <AssetSubNav />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-blue-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-blue-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Data Assets</p>
           <p className="text-2xl font-bold text-blue-400">{dataAssets.length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-amber-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-amber-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Contains PII</p>
           <p className="text-2xl font-bold text-amber-400">{piiAssets.length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-red-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-red-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Cross-Border</p>
           <p className="text-2xl font-bold text-red-400">{piiAssets.filter((x: any) => x.isCrossB).length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-purple-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-purple-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Sensitive</p>
           <p className="text-2xl font-bold text-purple-400">{piiAssets.filter((x: any) => x.containsSensitive).length}</p>
         </div>
@@ -50,7 +50,7 @@ export default async function DataAssetsPage() {
           <div className="space-y-2">
             {piiAssets.map((a: any) => (
               <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
-                className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
+                className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white transition-colors">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium">{a.name}</p>
@@ -69,7 +69,7 @@ export default async function DataAssetsPage() {
       )}
 
       {/* All Data Assets */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-sm">Data Asset Registry</h2>
           <Link href="/asset-intelligence/registry/new" className="text-xs text-[var(--color-blue)] hover:underline">+ Add Data Asset</Link>
@@ -80,7 +80,7 @@ export default async function DataAssetsPage() {
           <div className="space-y-2">
             {dataAssets.map((a: any) => (
               <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
-                className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
+                className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white transition-colors">
                 <FileText className="h-4 w-4 text-amber-400 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export default async function DataAssetsPage() {
       </div>
 
       {/* DPDP Link */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 flex items-center justify-between">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 flex items-center justify-between">
         <div>
           <h3 className="font-semibold text-sm">DPDP Privacy™ Integration</h3>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Link data assets to consent records, DSRs, and retention policies in DPDP Privacy™.</p>

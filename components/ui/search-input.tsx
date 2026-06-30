@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 import { Search } from 'lucide-react'
@@ -27,7 +27,7 @@ export function SearchInput({ placeholder = 'Search...', paramName = 'search' }:
         defaultValue={searchParams.get(paramName) ?? ''}
         onChange={handleChange}
         placeholder={placeholder}
-        className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] pl-9 pr-4 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)] w-64"
+        className="rounded-xl border border-[var(--color-line)] bg-white pl-9 pr-4 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)] w-64"
       />
     </div>
   )

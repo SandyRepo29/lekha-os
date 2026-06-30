@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Regulatory Intelligence&#8482; — AUDT' };
 
@@ -42,21 +42,21 @@ export default async function RegulatoryIntelligencePage() {
         <div className="flex flex-wrap gap-2">
           <a
             href="/api/v1/regulations/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Regulations CSV
           </a>
           <a
             href="/api/v1/obligations/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Obligations CSV
           </a>
           <Link
             href="/regulatory-intelligence/changes"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors"
           >
             <RefreshCw className="h-4 w-4" /> Monitor
           </Link>
@@ -117,11 +117,11 @@ export default async function RegulatoryIntelligencePage() {
               </div>
               <ReadinessBar score={readiness.score} />
               <div className="grid grid-cols-2 gap-2 text-xs mt-2">
-                <div className="rounded-lg bg-white/[0.04] px-2.5 py-2 flex justify-between">
+                <div className="rounded-lg bg-[#F8F9FB] px-2.5 py-2 flex justify-between">
                   <span className="text-[var(--color-ink-dim)]">Total</span>
                   <span className="font-medium">{readiness.total}</span>
                 </div>
-                <div className="rounded-lg bg-white/[0.04] px-2.5 py-2 flex justify-between">
+                <div className="rounded-lg bg-[#F8F9FB] px-2.5 py-2 flex justify-between">
                   <span className="text-[var(--color-ink-dim)]">Implemented</span>
                   <span className="font-medium text-emerald-400">{readiness.implemented}</span>
                 </div>
@@ -143,7 +143,7 @@ export default async function RegulatoryIntelligencePage() {
           {alerts.length > 0 ? (
             <div className="space-y-2">
               {alerts.slice(0, 4).map(a => (
-                <div key={a.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+                <div key={a.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                   <AlertIcon severity={a.severity} />
                   <div className="min-w-0">
                     <div className="truncate text-xs font-medium">{a.title}</div>
@@ -173,7 +173,7 @@ export default async function RegulatoryIntelligencePage() {
           {tasks.length > 0 ? (
             <div className="space-y-2">
               {tasks.slice(0, 4).map(t => (
-                <div key={t.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+                <div key={t.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                   <ClipboardList className="h-4 w-4 shrink-0 text-violet-400 mt-0.5" />
                   <div className="min-w-0">
                     <div className="truncate text-xs font-medium">{t.title}</div>
@@ -247,7 +247,7 @@ export default async function RegulatoryIntelligencePage() {
             <Link
               key={href}
               href={href}
-              className="flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04] transition-colors"
+              className="flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white p-4 hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04] transition-colors"
             >
               <Icon className="h-5 w-5 text-[var(--color-blue)]" />
               <div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Sparkles, RefreshCw, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
@@ -10,7 +10,7 @@ const PRIORITY_STYLES: Record<string, { badge: string; bar: string }> = {
   critical: { badge: "text-red-400 bg-red-500/10 border-red-500/25",   bar: "bg-red-500" },
   high:     { badge: "text-amber-400 bg-amber-500/10 border-amber-500/25", bar: "bg-amber-500" },
   medium:   { badge: "text-[var(--color-blue)] bg-[var(--color-blue)]/10 border-[var(--color-blue)]/25", bar: "bg-[var(--color-blue)]" },
-  low:      { badge: "text-[var(--color-ink-faint)] bg-white/[0.04] border-[var(--color-line)]", bar: "bg-[var(--color-ink-faint)]" },
+  low:      { badge: "text-[var(--color-ink-faint)] bg-[#F8F9FB] border-[var(--color-line)]", bar: "bg-[var(--color-ink-faint)]" },
 };
 
 interface Props {
@@ -73,7 +73,7 @@ export function AiRecommendedActions({ vendorId, actions, generatedAt, isStale, 
       {open && (
         <div className="space-y-2">
           {pending && (
-            <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 flex items-center gap-2 text-sm text-[var(--color-ink-faint)]">
+            <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 flex items-center gap-2 text-sm text-[var(--color-ink-faint)]">
               <Sparkles className="h-4 w-4 animate-pulse text-[var(--color-blue)]" />
               Building action plan with Gemini…
             </div>
@@ -84,7 +84,7 @@ export function AiRecommendedActions({ vendorId, actions, generatedAt, isStale, 
               {localActions.map((a, i) => {
                 const styles = PRIORITY_STYLES[a.priority] ?? PRIORITY_STYLES.medium;
                 return (
-                  <div key={i} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3.5">
+                  <div key={i} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white p-3.5">
                     <div className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${styles.bar}`} />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -95,7 +95,7 @@ export function AiRecommendedActions({ vendorId, actions, generatedAt, isStale, 
                       </div>
                       <p className="text-xs text-[var(--color-ink-dim)]">{a.reason}</p>
                     </div>
-                    <span className="shrink-0 rounded-lg bg-white/[0.04] px-2 py-1 text-xs font-semibold text-emerald-400">
+                    <span className="shrink-0 rounded-lg bg-[#F8F9FB] px-2 py-1 text-xs font-semibold text-emerald-400">
                       {a.impact}
                     </span>
                   </div>
@@ -105,7 +105,7 @@ export function AiRecommendedActions({ vendorId, actions, generatedAt, isStale, 
           )}
 
           {!pending && (!localActions || localActions.length === 0) && !error && (
-            <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm text-[var(--color-ink-faint)]">
+            <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm text-[var(--color-ink-faint)]">
               {aiEnabled ? "Click Generate to get a prioritised action plan." : "Add GEMINI_API_KEY to enable AI recommendations."}
             </div>
           )}

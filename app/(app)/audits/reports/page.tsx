@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { FileText, Download } from "lucide-react";
@@ -68,7 +68,7 @@ export default async function AuditReportsPage() {
                     href={`/reports/audits/${a.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   >
                     <Download className="h-3.5 w-3.5" /> Full Report PDF
                   </a>
@@ -76,7 +76,7 @@ export default async function AuditReportsPage() {
                     href={`/reports/audits/${a.id}/findings`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   >
                     <Download className="h-3.5 w-3.5" /> Findings PDF
                   </a>
@@ -84,19 +84,19 @@ export default async function AuditReportsPage() {
                     href={`/reports/audits/${a.id}/capas`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   >
                     <Download className="h-3.5 w-3.5" /> CAPAs PDF
                   </a>
                   <a
                     href={`/reports/audits/${a.id}/findings/csv`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   >
                     <Download className="h-3.5 w-3.5" /> Findings CSV
                   </a>
                   <a
                     href={`/reports/audits/${a.id}/capas/csv`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   >
                     <Download className="h-3.5 w-3.5" /> CAPAs CSV
                   </a>

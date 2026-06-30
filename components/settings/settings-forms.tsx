@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { updateProfile, type SettingsState } from "@/lib/settings/actions";
@@ -53,7 +53,7 @@ export function ProfileForm({ profile, email }: { profile: Profile | null; email
           </div>
           <div>
             <Label>Email</Label>
-            <div className="flex h-11 items-center rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink-faint)]">
+            <div className="flex h-11 items-center rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink-faint)]">
               {email}
             </div>
             <p className="mt-1 text-xs text-[var(--color-ink-faint)]">Email cannot be changed here.</p>
@@ -65,7 +65,7 @@ export function ProfileForm({ profile, email }: { profile: Profile | null; email
                 id="timezone"
                 name="timezone"
                 defaultValue={profile?.timezone ?? "Asia/Kolkata"}
-                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
+                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
               >
                 {TIMEZONES.map((tz) => (
                   <option key={tz} value={tz} className="bg-[#0f0f14] text-[var(--color-ink)]">{tz}</option>
@@ -78,7 +78,7 @@ export function ProfileForm({ profile, email }: { profile: Profile | null; email
                 id="language"
                 name="language"
                 defaultValue={profile?.language ?? "en"}
-                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
+                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
               >
                 {LANGUAGES.map((l) => (
                   <option key={l.value} value={l.value} className="bg-[#0f0f14] text-[var(--color-ink)]">{l.label}</option>

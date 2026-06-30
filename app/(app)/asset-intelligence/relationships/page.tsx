@@ -36,15 +36,15 @@ export default async function RelationshipsPage() {
       <AssetSubNav />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-blue-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-blue-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Total Relationships</p>
           <p className="text-2xl font-bold text-blue-400">{relationships.length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-red-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-red-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Critical Links</p>
           <p className="text-2xl font-bold text-red-400">{(relationships as any[]).filter((r: any) => r.isCritical).length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-purple-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-purple-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Assets Mapped</p>
           <p className="text-2xl font-bold text-purple-400">{assets.length}</p>
         </div>
@@ -60,7 +60,7 @@ export default async function RelationshipsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+              <tr className="border-b border-[var(--color-line)] bg-white">
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Source Asset</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Relationship</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Target</th>
@@ -72,7 +72,7 @@ export default async function RelationshipsPage() {
                 const source = assetMap[r.sourceAssetId];
                 const target = assetMap[r.targetAssetId];
                 return (
-                  <tr key={r.id} className="hover:bg-white/[0.02]">
+                  <tr key={r.id} className="hover:bg-white">
                     <td className="px-4 py-3">
                       {source ? (
                         <div>
@@ -113,7 +113,7 @@ export default async function RelationshipsPage() {
       )}
 
       {/* Trust Graph link */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 flex items-center justify-between">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 flex items-center justify-between">
         <div>
           <h3 className="font-semibold text-sm">Trust Graph™ Integration</h3>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Asset nodes and relationships are visible in the full governance Trust Graph™.</p>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
@@ -72,13 +72,13 @@ export default function WebhooksPage() {
         <h2 className="mb-4 font-semibold text-sm">Available Events</h2>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {ALL_EVENTS.map(event => (
-            <div key={event} className="flex items-center gap-2 rounded-xl border border-[var(--color-line)]/50 bg-white/[0.02] px-3 py-2">
+            <div key={event} className="flex items-center gap-2 rounded-xl border border-[var(--color-line)]/50 bg-white px-3 py-2">
               <Zap className="h-3 w-3 shrink-0 text-amber-400" />
               <code className="text-[11px] font-mono text-[var(--color-ink-dim)]">{event}</code>
             </div>
           ))}
         </div>
-        <div className="mt-4 rounded-xl border border-[var(--color-line)]/40 bg-white/[0.02] p-3">
+        <div className="mt-4 rounded-xl border border-[var(--color-line)]/40 bg-white p-3">
           <div className="text-xs font-semibold text-[var(--color-ink-dim)] mb-1">Example Payload</div>
           <pre className="text-[11px] font-mono text-[var(--color-ink-faint)] whitespace-pre-wrap">{`{
   "event": "trust.score.updated",
@@ -101,7 +101,7 @@ export default function WebhooksPage() {
         ) : (
           <div className="space-y-3">
             {webhooks.map(w => (
-              <div key={w.id} className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-4">
+              <div key={w.id} className="rounded-xl border border-[var(--color-line)]/60 bg-white p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
@@ -114,7 +114,7 @@ export default function WebhooksPage() {
                     <code className="mt-1 block text-xs font-mono text-[var(--color-ink-faint)] truncate">{w.url}</code>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {((w.events ?? []) as string[]).map(e => (
-                        <code key={e} className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-ink-dim)]">{e}</code>
+                        <code key={e} className="rounded bg-[#F8F9FB] px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-ink-dim)]">{e}</code>
                       ))}
                     </div>
                     {w.lastTriggeredAt && (
@@ -122,7 +122,7 @@ export default function WebhooksPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => handleToggle(w.id, w.status)} disabled={isPending} className="rounded-lg border border-[var(--color-line)] p-2 hover:bg-white/[0.06] transition-colors">
+                    <button onClick={() => handleToggle(w.id, w.status)} disabled={isPending} className="rounded-lg border border-[var(--color-line)] p-2 hover:bg-[#F8F9FB] transition-colors">
                       {w.status === "active" ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
                     </button>
                     <button onClick={() => handleDelete(w.id)} disabled={isPending} className="rounded-lg border border-[var(--color-line)] p-2 hover:border-red-500/30 hover:text-red-400 transition-colors">
@@ -146,9 +146,9 @@ export default function WebhooksPage() {
             </div>
             <form action={handleCreate} className="space-y-4">
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Webhook Name *</label>
-                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Procurement System Hook" /></div>
+                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Procurement System Hook" /></div>
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Endpoint URL *</label>
-                <input name="url" required type="url" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="https://example.com/webhooks/audt" /></div>
+                <input name="url" required type="url" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="https://example.com/webhooks/audt" /></div>
               <div>
                 <label className="mb-2 block text-xs font-medium text-[var(--color-ink-dim)]">Events to Subscribe ({selectedEvents.length} selected)</label>
                 <div className="grid grid-cols-2 gap-1.5">
@@ -156,7 +156,7 @@ export default function WebhooksPage() {
                     <label key={event} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-2 text-[11px] transition-colors ${
                       selectedEvents.includes(event)
                         ? "border-[var(--color-blue)]/40 bg-[var(--color-blue)]/[0.08] text-[var(--color-blue)]"
-                        : "border-[var(--color-line)]/50 bg-white/[0.02] text-[var(--color-ink-dim)] hover:border-[var(--color-line)]"
+                        : "border-[var(--color-line)]/50 bg-white text-[var(--color-ink-dim)] hover:border-[var(--color-line)]"
                     }`}>
                       <input type="checkbox" className="sr-only" checked={selectedEvents.includes(event)} onChange={() => toggleEvent(event)} />
                       <Zap className="h-3 w-3 shrink-0" />
@@ -166,7 +166,7 @@ export default function WebhooksPage() {
                 </div>
               </div>
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={() => { setShowForm(false); setSelectedEvents([]); }} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-white/[0.04]">Cancel</button>
+                <button type="button" onClick={() => { setShowForm(false); setSelectedEvents([]); }} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-[#F8F9FB]">Cancel</button>
                 <button type="submit" disabled={selectedEvents.length === 0} className="flex-1 rounded-xl grad-brand py-2 text-sm font-semibold text-white disabled:opacity-50">Add Webhook</button>
               </div>
             </form>

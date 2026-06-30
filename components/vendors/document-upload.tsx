@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -86,7 +86,7 @@ export function DocumentUpload({ orgId, vendorId }: { orgId: string; vendorId: s
             ref={fileRef}
             type="file"
             accept=".pdf,.png,.jpg,.jpeg,.webp,.txt"
-            className="h-11 w-full rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-3 py-2 text-sm text-[var(--color-ink-dim)] file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:text-[var(--color-ink)]"
+            className="h-11 w-full rounded-xl border border-[var(--color-line-strong)] bg-white px-3 py-2 text-sm text-[var(--color-ink-dim)] file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:text-[var(--color-ink)]"
           />
         </div>
       </div>

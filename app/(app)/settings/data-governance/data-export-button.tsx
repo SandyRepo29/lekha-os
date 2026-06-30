@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Download, Loader2 } from "lucide-react";
@@ -29,7 +29,7 @@ export function DataExportButton({ orgId, orgName }: { orgId: string; orgName: s
     <button
       onClick={handleExport}
       disabled={loading}
-      className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[#F8F9FB] disabled:cursor-not-allowed disabled:opacity-50"
     >
       {loading ? (
         <Loader2 className="h-4 w-4 animate-spin" />

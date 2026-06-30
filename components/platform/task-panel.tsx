@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -90,7 +90,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
   }
 
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-line)]">
         <h3 className="font-semibold text-[var(--color-ink)] text-sm">
           Tasks <span className="text-[var(--color-ink-dim)] font-normal">({initialTasks.length})</span>
@@ -98,7 +98,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
         {canCreate && (
           <button
             onClick={() => setShowForm((v) => !v)}
-            className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium bg-white/[0.06] hover:bg-white/[0.1] text-[var(--color-ink)] transition-colors"
+            className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium bg-[#F8F9FB] hover:bg-[#EEF2F7] text-[var(--color-ink)] transition-colors"
           >
             <span className="text-base leading-none">+</span> Add task
           </button>
@@ -112,7 +112,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
             setShowForm(false);
             router.refresh();
           }}
-          className="px-5 py-4 border-b border-[var(--color-line)] bg-white/[0.03] space-y-3"
+          className="px-5 py-4 border-b border-[var(--color-line)] bg-white space-y-3"
         >
           <input type="hidden" name="entityType" value={entityType} />
           <input type="hidden" name="entityId" value={entityId} />
@@ -123,7 +123,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
               name="title"
               required
               placeholder="Task title"
-              className="w-full rounded-xl bg-white/[0.06] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="w-full rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
 
@@ -131,7 +131,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
             <select
               name="priority"
               defaultValue="medium"
-              className="rounded-xl bg-white/[0.06] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             >
               <option value="critical">Critical</option>
               <option value="high">High</option>
@@ -141,12 +141,12 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
             <input
               type="date"
               name="dueDate"
-              className="rounded-xl bg-white/[0.06] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
             <input
               name="assignedTo"
               placeholder="Assignee"
-              className="rounded-xl bg-white/[0.06] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
 
@@ -174,7 +174,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
             const overdue = isOverdue(task.due_date) && !completed;
             const soon = isDueSoon(task.due_date) && !completed;
             return (
-              <li key={task.id} className="flex items-start gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors group">
+              <li key={task.id} className="flex items-start gap-3 px-5 py-3 hover:bg-white transition-colors group">
                 <button
                   onClick={() => !completed && handleComplete(task.id)}
                   disabled={completed || isPending}

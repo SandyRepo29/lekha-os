@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Link2, Copy, CheckCheck } from "lucide-react";
@@ -37,7 +37,7 @@ export function PortalLink({ vendorId }: { vendorId: string }) {
         </Button>
       </div>
       {url && (
-        <div className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2.5">
+        <div className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5">
           <span className="flex-1 min-w-0 truncate text-xs text-[var(--color-blue)] font-mono">{url}</span>
           <button onClick={copy} className="shrink-0 text-[var(--color-ink-faint)] hover:text-[var(--color-ink)]">
             {copied ? <CheckCheck className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}

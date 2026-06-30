@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
@@ -59,7 +59,7 @@ export function NewControlForm() {
             name="controlRef"
             required
             placeholder="e.g. CC-001, A.5.1"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
           />
         </div>
 
@@ -71,7 +71,7 @@ export function NewControlForm() {
             name="name"
             required
             placeholder="Short control title"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
           />
         </div>
       </div>
@@ -82,7 +82,7 @@ export function NewControlForm() {
           name="description"
           rows={3}
           placeholder="What does this control do?"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
         />
       </div>
 
@@ -92,7 +92,7 @@ export function NewControlForm() {
           name="objective"
           rows={2}
           placeholder="What risk does this control mitigate?"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
         />
       </div>
 
@@ -180,7 +180,7 @@ export function NewControlForm() {
           <input
             name="owner"
             placeholder="Name or team responsible"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
 
@@ -189,7 +189,7 @@ export function NewControlForm() {
           <input
             name="nextReviewDate"
             type="date"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
       </div>

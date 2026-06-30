@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { PlusCircle, X, Loader2, Webhook } from "lucide-react";
@@ -54,17 +54,17 @@ export function CreateWebhookButton({ className }: { className?: string }) {
           <div className="w-full max-w-md rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold flex items-center gap-2"><Webhook className="h-4 w-4 text-[var(--color-blue)]" /> New Webhook</h2>
-              <button onClick={() => setOpen(false)} className="p-1 rounded-lg hover:bg-white/[0.06] text-[var(--color-ink-faint)]"><X className="h-4 w-4" /></button>
+              <button onClick={() => setOpen(false)} className="p-1 rounded-lg hover:bg-[#F8F9FB] text-[var(--color-ink-faint)]"><X className="h-4 w-4" /></button>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Name *</label>
-                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Slack Governance Alerts" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Slack Governance Alerts" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Direction</label>
-                <select value={direction} onChange={(e) => setDirection(e.target.value as never)} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50">
+                <select value={direction} onChange={(e) => setDirection(e.target.value as never)} className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50">
                   <option value="outbound">Outbound — Push events to external URL</option>
                   <option value="inbound">Inbound — Receive events from external system</option>
                 </select>
@@ -72,14 +72,14 @@ export function CreateWebhookButton({ className }: { className?: string }) {
               {direction === "outbound" && (
                 <div>
                   <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1">Destination URL</label>
-                  <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://hooks.slack.com/..." className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+                  <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://hooks.slack.com/..." className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
                 </div>
               )}
               <div>
                 <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-2">Event Types *</label>
                 <div className="grid grid-cols-2 gap-1.5">
                   {ALL_EVENTS.map((ev) => (
-                    <label key={ev} className="flex items-center gap-2 cursor-pointer rounded-lg p-2 hover:bg-white/[0.04]">
+                    <label key={ev} className="flex items-center gap-2 cursor-pointer rounded-lg p-2 hover:bg-[#F8F9FB]">
                       <input type="checkbox" checked={selectedEvents.includes(ev)} onChange={() => toggle(ev)} className="h-3 w-3 accent-[var(--color-blue)]" />
                       <span className="text-xs text-[var(--color-ink-dim)]">{EVENT_LABELS[ev]}</span>
                     </label>
@@ -91,7 +91,7 @@ export function CreateWebhookButton({ className }: { className?: string }) {
             {error && <p className="mt-3 text-xs text-red-400">{error}</p>}
 
             <div className="flex gap-2 mt-5">
-              <button onClick={() => setOpen(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm font-medium hover:bg-white/[0.04]">Cancel</button>
+              <button onClick={() => setOpen(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm font-medium hover:bg-[#F8F9FB]">Cancel</button>
               <button onClick={handleSubmit} disabled={pending} className="flex-1 rounded-xl bg-[var(--color-blue)] py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
                 {pending && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Create
               </button>

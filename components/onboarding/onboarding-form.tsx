@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -108,7 +108,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
             key={i}
             className={[
               "h-2 rounded-full transition-all duration-300",
-              active ? "w-8 bg-[var(--color-blue)]" : done ? "w-2 bg-[var(--color-blue)]/60" : "w-2 bg-white/[0.12]",
+              active ? "w-8 bg-[var(--color-blue)]" : done ? "w-2 bg-[var(--color-blue)]/60" : "w-2 bg-[#EEF2F7]",
             ].join(" ")}
           />
         );
@@ -143,7 +143,7 @@ function SelectField({
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1.5 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2.5 text-sm text-[var(--color-ink)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+        className="mt-1.5 w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2.5 text-sm text-[var(--color-ink)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
       >
         {placeholder && (
           <option value="" disabled>
@@ -275,7 +275,7 @@ export function OnboardingForm() {
   // Render
   // -------------------------------------------------------------------------
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-7 shadow-xl backdrop-blur-sm">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white p-7 shadow-xl backdrop-blur-sm">
       <StepIndicator current={step} total={3} />
 
       {/* ------------------------------------------------------------------ */}
@@ -374,7 +374,7 @@ export function OnboardingForm() {
                     "flex items-start gap-3 rounded-xl border p-3.5 text-left transition-all duration-150",
                     selected
                       ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10"
-                      : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/50 hover:bg-white/[0.04]",
+                      : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/50 hover:bg-[#F8F9FB]",
                   ].join(" ")}
                 >
                   <span className="mt-0.5 text-xl leading-none">{goal.icon}</span>
@@ -441,7 +441,7 @@ export function OnboardingForm() {
             {invites.map((invite, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-[1fr_1fr_auto] gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3"
+                className="grid grid-cols-[1fr_1fr_auto] gap-2 rounded-xl border border-[var(--color-line)] bg-white p-3"
               >
                 <Input
                   placeholder="Name"
@@ -462,7 +462,7 @@ export function OnboardingForm() {
                     updateInvite(idx, "role", e.target.value as OnboardingInvite["role"])
                   }
                   aria-label="Invite role"
-                  className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-2 py-2 text-sm text-[var(--color-ink)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                  className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-2 py-2 text-sm text-[var(--color-ink)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                 >
                   {ROLES.map((r) => (
                     <option key={r.value} value={r.value} className="bg-[#0f0f1a]">

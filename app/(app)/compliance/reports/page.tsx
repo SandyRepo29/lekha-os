@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { FileText, Download, FileSpreadsheet } from "lucide-react";
@@ -145,7 +145,7 @@ function ReportCard({
         target={isPdf ? "_blank" : undefined}
         rel={isPdf ? "noopener noreferrer" : undefined}
         download={download}
-        className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-[var(--color-ink)] transition-colors hover:bg-white/[0.09] w-fit"
+        className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line-strong)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium text-[var(--color-ink)] transition-colors hover:bg-[#EEF2F7] w-fit"
       >
         <Download className="h-3.5 w-3.5" />
         Download {format}

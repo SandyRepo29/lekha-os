@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -212,7 +212,7 @@ export default async function PublicTrustProfilePage() {
               { label: "Controls Monitored", value: `${automation.monitoringCoverage}%`, icon: CheckCircle2, color: "text-emerald-400" },
               { label: "Workflow Coverage", value: `${Math.max(0, automation.automationPct - 5)}%`, icon: TrendingUp, color: "text-purple-400" },
             ].map(({ label, value, icon: Icon, color }) => (
-              <div key={label} className="bg-white/[0.03] rounded-xl p-3 text-center">
+              <div key={label} className="bg-white rounded-xl p-3 text-center">
                 <Icon className={`h-5 w-5 mx-auto mb-1.5 ${color}`} />
                 <p className="text-lg font-bold">{value}</p>
                 <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>

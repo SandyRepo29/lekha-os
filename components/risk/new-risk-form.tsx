@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ export function NewRiskForm() {
         <input
           name="title"
           required
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20"
           placeholder="e.g. Unauthorised access to customer data"
         />
       </div>
@@ -57,7 +57,7 @@ export function NewRiskForm() {
         <textarea
           name="description"
           rows={3}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 resize-none"
           placeholder="Describe the risk scenario, context, and potential consequences..."
         />
       </div>
@@ -78,7 +78,7 @@ export function NewRiskForm() {
       </div>
 
       {/* Risk Matrix */}
-      <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-4">
+      <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold">Risk Score Matrix</h3>
           <div className="flex items-center gap-2">
@@ -130,18 +130,18 @@ export function NewRiskForm() {
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Target Date</label>
-          <input type="date" name="targetDate" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm focus:outline-none" />
+          <input type="date" name="targetDate" className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm focus:outline-none" />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Identified Date</label>
-          <input type="date" name="identifiedDate" defaultValue={new Date().toISOString().slice(0, 10)} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm focus:outline-none" />
+          <input type="date" name="identifiedDate" defaultValue={new Date().toISOString().slice(0, 10)} className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm focus:outline-none" />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Next Review Date</label>
-          <input type="date" name="nextReviewDate" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm focus:outline-none" />
+          <input type="date" name="nextReviewDate" className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm focus:outline-none" />
         </div>
       </div>
 
@@ -192,7 +192,7 @@ export function AiRiskGenerator({ onGenerated }: { onGenerated: (data: Record<st
         value={observation}
         onChange={(e) => setObservation(e.target.value)}
         rows={2}
-        className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none"
+        className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none"
         placeholder="e.g. Vendor X has not provided updated SOC 2 report for 18 months..."
       />
       {error && <p className="text-xs text-red-400">{error}</p>}

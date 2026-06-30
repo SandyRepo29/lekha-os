@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 // ─── Server page: Pending Verification ───────────────────────────────────────
 // Finance team verifies incoming bank transfers / UPI payments.
@@ -208,7 +208,7 @@ function TransactionCard({ txn }: { txn: PendingTransaction }) {
           {txn.utrReference && (
             <div className="flex items-center gap-2 text-sm">
               <span className="text-[var(--color-ink-dim)]">UTR / Ref:</span>
-              <code className="rounded bg-white/[0.06] px-2 py-0.5 font-mono text-xs text-[var(--color-ink)]">
+              <code className="rounded bg-[#F8F9FB] px-2 py-0.5 font-mono text-xs text-[var(--color-ink)]">
                 {txn.utrReference}
               </code>
             </div>
@@ -227,7 +227,7 @@ function TransactionCard({ txn }: { txn: PendingTransaction }) {
 
           {/* Customer notes */}
           {txn.customerNotes && (
-            <div className="rounded-lg border border-[var(--color-line)] bg-white/[0.02] p-3">
+            <div className="rounded-lg border border-[var(--color-line)] bg-white p-3">
               <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
                 <StickyNote className="h-3 w-3" />
                 Customer Notes
@@ -366,7 +366,7 @@ export default async function PendingPaymentsPage({
       </div>
 
       {/* Filter tabs */}
-      <div className="flex flex-wrap gap-1 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex flex-wrap gap-1 rounded-2xl border border-[var(--color-line)] bg-white p-1">
         {TABS.map((tab) => {
           const count = allTransactions.filter((txn) => {
             switch (tab.id) {
@@ -390,16 +390,16 @@ export default async function PendingPaymentsPage({
               href={`/finance/pending?tab=${tab.id}`}
               className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               }`}
             >
               {tab.label}
               <span
                 className={`ml-1.5 rounded-full px-1.5 py-0.5 text-xs ${
                   isActive
-                    ? "bg-white/[0.12] text-[var(--color-ink)]"
-                    : "bg-white/[0.05] text-[var(--color-ink-dim)]"
+                    ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                    : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"
                 }`}
               >
                 {count}

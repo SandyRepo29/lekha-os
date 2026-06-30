@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMonitoringOverview } from "@/lib/services/security-command-center/security-service";
@@ -45,7 +45,7 @@ export default async function MonitoringPage() {
       {/* Monitor Types */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
         {CHECK_TYPES.map(ct => (
-          <div key={ct.key} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2.5 text-center">
+          <div key={ct.key} className="rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 text-center">
             <Globe className="mx-auto h-4 w-4 text-[var(--color-blue)] mb-1" />
             <div className="text-[11px] font-medium">{ct.label}</div>
           </div>
@@ -55,17 +55,17 @@ export default async function MonitoringPage() {
       {/* Add Asset */}
       <div className="space-y-3">
         <h2 className="font-semibold">Add Monitoring Asset</h2>
-        <form action={addMonitoringAssetAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="flex flex-wrap gap-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+        <form action={addMonitoringAssetAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="flex flex-wrap gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-4">
           <input name="assetValue" placeholder="example.com or IP" required
-            className="flex-1 min-w-[180px] rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="flex-1 min-w-[180px] rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <select name="assetType"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="domain">Domain</option>
             <option value="ssl">SSL Certificate</option>
             <option value="reputation">Reputation</option>
           </select>
           <select name="checkInterval"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="hourly">Hourly</option>

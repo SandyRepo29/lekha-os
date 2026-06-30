@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -106,7 +106,7 @@ export function PolicyDetailActions({ policyId, status }: PolicyDetailActionsPro
       </div>
 
       {showReviewForm && (
-        <form onSubmit={handleAddReview} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-3">
+        <form onSubmit={handleAddReview} className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-3">
           <h4 className="text-sm font-semibold">Add Review</h4>
           <div>
             <label className="mb-1 block text-xs text-[var(--color-ink-dim)]">Outcome</label>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -35,12 +35,12 @@ export function EditRiskForm({ risk }: { risk: RiskWithOwner }) {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Risk Title</label>
-        <input name="title" required defaultValue={risk.title} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+        <input name="title" required defaultValue={risk.title} className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60" />
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Description</label>
-        <textarea name="description" rows={3} defaultValue={risk.description ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
+        <textarea name="description" rows={3} defaultValue={risk.description ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -59,7 +59,7 @@ export function EditRiskForm({ risk }: { risk: RiskWithOwner }) {
       </div>
 
       {/* Risk Matrix */}
-      <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-4">
+      <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold">Risk Score Matrix</h3>
           <div className="flex items-center gap-2">
@@ -92,13 +92,13 @@ export function EditRiskForm({ risk }: { risk: RiskWithOwner }) {
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Target Date</label>
-          <input type="date" name="targetDate" defaultValue={risk.targetDate ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm focus:outline-none" />
+          <input type="date" name="targetDate" defaultValue={risk.targetDate ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm focus:outline-none" />
         </div>
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-[var(--color-ink-dim)]">Next Review Date</label>
-        <input type="date" name="nextReviewDate" defaultValue={risk.nextReviewDate ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm focus:outline-none" />
+        <input type="date" name="nextReviewDate" defaultValue={risk.nextReviewDate ?? ""} className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm focus:outline-none" />
       </div>
 
       <div className="flex justify-end gap-3 pt-2">

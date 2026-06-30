@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { SendHorizonal, Sparkles, Loader2 } from "lucide-react";
@@ -48,7 +48,7 @@ export function RiskAiChat() {
             <button
               key={s}
               onClick={() => send(s)}
-              className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2.5 text-left text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)] transition-colors"
+              className="rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 text-left text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
             >
               {s}
             </button>
@@ -57,14 +57,14 @@ export function RiskAiChat() {
       )}
 
       {messages.length > 0 && (
-        <div className="space-y-3 max-h-96 overflow-y-auto rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+        <div className="space-y-3 max-h-96 overflow-y-auto rounded-xl border border-[var(--color-line)] bg-white p-4">
           {messages.map((m, i) => (
             <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
               <span
                 className={
                   m.role === "user"
                     ? "inline-block rounded-2xl rounded-tr-sm bg-[var(--color-blue)]/20 px-3 py-2 text-sm text-[var(--color-ink)]"
-                    : "inline-block rounded-2xl rounded-tl-sm bg-white/[0.05] px-3 py-2 text-sm text-[var(--color-ink-dim)]"
+                    : "inline-block rounded-2xl rounded-tl-sm bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink-dim)]"
                 }
               >
                 {m.text}
@@ -90,7 +90,7 @@ export function RiskAiChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about risks, mitigations, trends…"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] py-2 pl-9 pr-3 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white py-2 pl-9 pr-3 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
         <Button type="submit" variant="primary" size="sm" disabled={loading || !input.trim()}>

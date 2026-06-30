@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { cn } from "@/lib/utils";
 import { ENTITY_COLORS, ENTITY_LABELS } from "@/lib/services/trust-graph/graph-constants";
@@ -28,7 +28,7 @@ export function GraphStat({
   accent?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4">
+    <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
       <p className="text-xs text-[var(--color-ink-faint)] mb-1">{label}</p>
       <p className={cn("text-2xl font-bold tabular-nums", accent ?? "text-[var(--color-ink)]")}>{value}</p>
       {sub && <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">{sub}</p>}

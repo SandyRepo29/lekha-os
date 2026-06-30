@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -35,7 +35,7 @@ export default async function NewIssuePage() {
             <input
               name="title"
               required
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               placeholder="Brief description of the issue"
             />
           </div>
@@ -45,7 +45,7 @@ export default async function NewIssuePage() {
             <textarea
               name="description"
               rows={4}
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
               placeholder="Detailed description, context, and impact..."
             />
           </div>
@@ -55,7 +55,7 @@ export default async function NewIssuePage() {
               <label className="block text-sm font-medium mb-1.5">Issue Type</label>
               <select
                 name="issueType"
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="custom">Custom</option>
                 <option value="risk">Risk</option>
@@ -75,7 +75,7 @@ export default async function NewIssuePage() {
               <label className="block text-sm font-medium mb-1.5">Source Module</label>
               <select
                 name="sourceModule"
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="">Manual / Other</option>
                 <option value="Risk Lens™">Risk Lens™</option>
@@ -95,7 +95,7 @@ export default async function NewIssuePage() {
               <label className="block text-sm font-medium mb-1.5">Severity</label>
               <select
                 name="severity"
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="medium">Medium</option>
                 <option value="critical">Critical</option>
@@ -109,7 +109,7 @@ export default async function NewIssuePage() {
               <label className="block text-sm font-medium mb-1.5">Priority</label>
               <select
                 name="priority"
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="p3">P3 — Medium</option>
                 <option value="p1">P1 — Critical</option>
@@ -125,7 +125,7 @@ export default async function NewIssuePage() {
             <input
               name="dueDate"
               type="date"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
             />
             <p className="text-xs text-[var(--color-ink-dim)] mt-1">
               Leave blank to auto-set based on severity SLA

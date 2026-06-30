@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { Send, Bot, User, Loader2 } from "lucide-react";
@@ -70,7 +70,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
             <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]" : "bg-white/10"}`}>
               {m.role === "user" ? <User className="h-3.5 w-3.5 text-white" /> : <Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" />}
             </div>
-            <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm ${m.role === "user" ? "bg-[var(--color-blue)] text-white rounded-tr-sm" : "bg-white/[0.06] text-[var(--color-ink)] rounded-tl-sm"}`}>
+            <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm ${m.role === "user" ? "bg-[var(--color-blue)] text-white rounded-tr-sm" : "bg-[#F8F9FB] text-[var(--color-ink)] rounded-tl-sm"}`}>
               <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
             </div>
           </div>
@@ -81,7 +81,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
             <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
               <Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" />
             </div>
-            <div className="bg-white/[0.06] rounded-2xl rounded-tl-sm px-3.5 py-2.5">
+            <div className="bg-[#F8F9FB] rounded-2xl rounded-tl-sm px-3.5 py-2.5">
               <Loader2 className="h-4 w-4 animate-spin text-[var(--color-blue)]" />
             </div>
           </div>
@@ -95,7 +95,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
           placeholder="Ask about your trust network..."
-          className="flex-1 rounded-xl bg-white/[0.04] border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]/50 placeholder:text-[var(--color-ink-faint)]"
+          className="flex-1 rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]/50 placeholder:text-[var(--color-ink-faint)]"
         />
         <Button size="sm" onClick={() => send()} disabled={isPending || !input.trim()} className="rounded-xl px-3">
           <Send className="h-4 w-4" />

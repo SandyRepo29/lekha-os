@@ -152,38 +152,38 @@ export default function GettingStartedPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "var(--color-bg, #070712)",
-      color: "var(--color-ink, #f1f5f9)",
+      background: "var(--color-bg, #F8F9FB)",
+      color: "var(--color-ink, #1E293B)",
       fontFamily: "var(--font-sans, system-ui, sans-serif)",
     }}>
       {/* Header */}
       <header style={{
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
+        borderBottom: "1px solid #E4E8EF",
         padding: "16px 0",
         position: "sticky" as const, top: 0, zIndex: 50,
-        background: "rgba(7,7,18,0.95)", backdropFilter: "blur(12px)",
+        background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)",
       }}>
         <div style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
               <div style={{
                 width: "28px", height: "28px", borderRadius: "7px",
-                background: "linear-gradient(135deg, #6366f1, #2dd4ff)",
+                background: "linear-gradient(120deg, #00B8D9 0%, #4933D6 100%)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: "13px", fontWeight: 900, color: "white",
               }}>A</div>
-              <span style={{ fontSize: "15px", fontWeight: 700, color: "var(--color-ink, #f1f5f9)" }}>AUDT</span>
+              <span style={{ fontSize: "15px", fontWeight: 700, color: "var(--color-ink, #1E293B)" }}>AUDT</span>
             </Link>
-            <span style={{ color: "rgba(255,255,255,0.2)" }}>/</span>
-            <Link href="/docs" style={{ fontSize: "13px", color: "rgba(154,160,181,0.8)", textDecoration: "none" }}>Docs</Link>
-            <span style={{ color: "rgba(255,255,255,0.2)" }}>/</span>
-            <span style={{ fontSize: "13px", color: "rgba(154,160,181,0.8)" }}>Getting Started</span>
+            <span style={{ color: "#CBD5E1" }}>/</span>
+            <Link href="/docs" style={{ fontSize: "13px", color: "#64748B", textDecoration: "none" }}>Docs</Link>
+            <span style={{ color: "#CBD5E1" }}>/</span>
+            <span style={{ fontSize: "13px", color: "#64748B" }}>Getting Started</span>
           </div>
           <Link
             href="/signup"
             style={{
               padding: "8px 18px", borderRadius: "10px",
-              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+              background: "linear-gradient(120deg, #00B8D9 0%, #4933D6 100%)",
               color: "white", fontSize: "13px", fontWeight: 600,
               textDecoration: "none",
             }}
@@ -198,20 +198,20 @@ export default function GettingStartedPage() {
         <div style={{
           display: "inline-flex", alignItems: "center", gap: "8px",
           padding: "5px 14px", borderRadius: "999px",
-          border: "1px solid rgba(99,102,241,0.3)", background: "rgba(99,102,241,0.08)",
+          border: "1px solid rgba(73,51,214,0.20)", background: "rgba(73,51,214,0.07)",
           fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
-          color: "rgba(99,102,241,0.9)", marginBottom: "20px",
+          color: "#4933D6", marginBottom: "20px",
         }}>
           &#9711; Getting Started Guide
         </div>
         <h1 style={{
           fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 900, lineHeight: 1.15,
-          color: "var(--color-ink, #f1f5f9)", marginBottom: "16px",
+          color: "var(--color-ink, #1E293B)", marginBottom: "16px",
           fontFamily: "var(--font-display, system-ui)",
         }}>
           First Governance Workflow<br />in 30 Minutes.
         </h1>
-        <p style={{ fontSize: "16px", color: "rgba(154,160,181,0.85)", maxWidth: "560px", lineHeight: 1.65, marginBottom: "32px" }}>
+        <p style={{ fontSize: "16px", color: "#64748B", maxWidth: "560px", lineHeight: 1.65, marginBottom: "32px" }}>
           Follow these 9 steps to go from a blank workspace to a scored vendor, a compliance framework, and your first Trust Score&#8482;. No prior GRC experience required.
         </p>
 
@@ -220,8 +220,8 @@ export default function GettingStartedPage() {
           {STEPS.map((s) => (
             <div key={s.n} style={{
               padding: "5px 12px", borderRadius: "8px",
-              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-              fontSize: "12px", fontWeight: 600, color: "rgba(154,160,181,0.6)",
+              background: "#F8F9FB", border: "1px solid #E4E8EF",
+              fontSize: "12px", fontWeight: 600, color: "#94A3B8",
             }}>
               {s.n}
             </div>
@@ -233,16 +233,16 @@ export default function GettingStartedPage() {
           {STEPS.map((step, i) => (
             <div key={step.n} id={`step-${step.n}`} style={{
               padding: "32px 36px", borderRadius: "20px",
-              background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)",
+              background: "#FFFFFF", border: "1px solid #E4E8EF",
             }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: "20px" }}>
                 {/* Step number */}
                 <div style={{
                   flexShrink: 0, width: "44px", height: "44px", borderRadius: "12px",
-                  background: "linear-gradient(135deg, rgba(99,102,241,0.3), rgba(45,212,255,0.15))",
-                  border: "1px solid rgba(99,102,241,0.4)",
+                  background: "linear-gradient(135deg, rgba(73,51,214,0.15), rgba(0,184,217,0.08))",
+                  border: "1px solid rgba(73,51,214,0.25)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "13px", fontWeight: 900, color: "rgba(99,102,241,0.9)",
+                  fontSize: "13px", fontWeight: 900, color: "#4933D6",
                   fontFamily: "var(--font-display, system-ui)",
                 }}>
                   {step.n}
@@ -250,41 +250,41 @@ export default function GettingStartedPage() {
                 <div style={{ flex: 1 }}>
                   {/* Header */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px", flexWrap: "wrap", gap: "8px" }}>
-                    <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--color-ink, #f1f5f9)", margin: 0, fontFamily: "var(--font-display, system-ui)" }}>
+                    <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--color-ink, #1E293B)", margin: 0, fontFamily: "var(--font-display, system-ui)" }}>
                       {step.title}
                     </h2>
                     <span style={{
                       fontSize: "11px", fontWeight: 600, padding: "3px 10px",
-                      borderRadius: "999px", background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)", color: "rgba(154,160,181,0.7)",
+                      borderRadius: "999px", background: "#F8F9FB",
+                      border: "1px solid #E4E8EF", color: "#94A3B8",
                     }}>
                       &#9679; {step.time}
                     </span>
                   </div>
 
                   {/* Goal */}
-                  <div style={{ fontSize: "13px", color: "rgba(99,102,241,0.8)", fontWeight: 600, marginBottom: "12px" }}>
+                  <div style={{ fontSize: "13px", color: "#4933D6", fontWeight: 600, marginBottom: "12px" }}>
                     Goal: {step.goal}
                   </div>
 
                   {/* Body */}
-                  <p style={{ fontSize: "14px", color: "rgba(154,160,181,0.8)", lineHeight: 1.7, marginBottom: "20px" }}>
+                  <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.7, marginBottom: "20px" }}>
                     {step.body}
                   </p>
 
                   {/* Actions */}
                   <div style={{ marginBottom: "16px" }}>
-                    <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(154,160,181,0.5)", marginBottom: "10px" }}>
+                    <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#94A3B8", marginBottom: "10px" }}>
                       Steps
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                       {step.actions.map((action, ai) => (
-                        <div key={ai} style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "13px", color: "rgba(154,160,181,0.75)" }}>
+                        <div key={ai} style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "13px", color: "#64748B" }}>
                           <span style={{
                             flexShrink: 0, width: "18px", height: "18px", borderRadius: "5px",
-                            background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)",
+                            background: "rgba(73,51,214,0.08)", border: "1px solid rgba(73,51,214,0.20)",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: "9px", fontWeight: 700, color: "rgba(99,102,241,0.8)",
+                            fontSize: "9px", fontWeight: 700, color: "#4933D6",
                             marginTop: "2px",
                           }}>
                             {ai + 1}
@@ -298,8 +298,8 @@ export default function GettingStartedPage() {
                   {/* Tip */}
                   <div style={{
                     padding: "12px 16px", borderRadius: "10px",
-                    background: "rgba(45,212,255,0.05)", border: "1px solid rgba(45,212,255,0.15)",
-                    fontSize: "12px", color: "rgba(45,212,255,0.75)", lineHeight: 1.6,
+                    background: "rgba(0,184,217,0.06)", border: "1px solid rgba(0,120,148,0.20)",
+                    fontSize: "12px", color: "#007A94", lineHeight: 1.6,
                     display: "flex", gap: "8px", alignItems: "flex-start",
                   }}>
                     <span style={{ flexShrink: 0, fontWeight: 700 }}>&#9432;</span>
@@ -314,21 +314,21 @@ export default function GettingStartedPage() {
         {/* Done banner */}
         <div style={{
           marginTop: "40px", padding: "32px 36px", borderRadius: "20px",
-          background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(45,212,255,0.06))",
-          border: "1px solid rgba(99,102,241,0.3)", textAlign: "center",
+          background: "linear-gradient(135deg, rgba(73,51,214,0.08), rgba(0,184,217,0.05))",
+          border: "1px solid rgba(73,51,214,0.18)", textAlign: "center",
         }}>
           <div style={{ fontSize: "28px", marginBottom: "12px" }}>&#9989;</div>
-          <h2 style={{ fontSize: "20px", fontWeight: 800, color: "var(--color-ink, #f1f5f9)", marginBottom: "8px", fontFamily: "var(--font-display, system-ui)" }}>
+          <h2 style={{ fontSize: "20px", fontWeight: 800, color: "var(--color-ink, #1E293B)", marginBottom: "8px", fontFamily: "var(--font-display, system-ui)" }}>
             You have a working governance program.
           </h2>
-          <p style={{ fontSize: "14px", color: "rgba(154,160,181,0.75)", marginBottom: "0" }}>
+          <p style={{ fontSize: "14px", color: "#64748B", marginBottom: "0" }}>
             One vendor. One framework. One Trust Score&#8482;. This is the foundation. Everything else builds on top.
           </p>
         </div>
 
         {/* Next steps */}
         <div style={{ marginTop: "40px" }}>
-          <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--color-ink, #f1f5f9)", marginBottom: "20px", fontFamily: "var(--font-display, system-ui)" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--color-ink, #1E293B)", marginBottom: "20px", fontFamily: "var(--font-display, system-ui)" }}>
             What to do next
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "16px" }}>
@@ -339,13 +339,13 @@ export default function GettingStartedPage() {
                 style={{
                   display: "flex", flexDirection: "column", gap: "10px",
                   padding: "20px", borderRadius: "14px",
-                  background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)",
+                  background: "#FFFFFF", border: "1px solid #E4E8EF",
                   textDecoration: "none", transition: "border-color 0.2s",
                 }}
               >
                 <div style={{ fontSize: "22px" }}>{icon}</div>
-                <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--color-ink, #f1f5f9)" }}>{title}</div>
-                <div style={{ fontSize: "12px", color: "rgba(154,160,181,0.65)", lineHeight: 1.6 }}>{desc}</div>
+                <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--color-ink, #1E293B)" }}>{title}</div>
+                <div style={{ fontSize: "12px", color: "#64748B", lineHeight: 1.6 }}>{desc}</div>
               </Link>
             ))}
           </div>
@@ -353,15 +353,15 @@ export default function GettingStartedPage() {
 
         {/* Footer nav */}
         <div style={{
-          marginTop: "48px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.08)",
+          marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #E4E8EF",
           display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px",
         }}>
-          <Link href="/docs" style={{ fontSize: "13px", color: "rgba(154,160,181,0.6)", textDecoration: "none" }}>
+          <Link href="/docs" style={{ fontSize: "13px", color: "#94A3B8", textDecoration: "none" }}>
             &#8592; Back to Documentation
           </Link>
           <Link href="/signup" style={{
             padding: "10px 24px", borderRadius: "12px",
-            background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+            background: "linear-gradient(120deg, #00B8D9 0%, #4933D6 100%)",
             color: "white", fontSize: "14px", fontWeight: 600, textDecoration: "none",
           }}>
             Start Free &#8594;

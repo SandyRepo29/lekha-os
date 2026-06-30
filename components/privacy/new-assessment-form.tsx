@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ export function NewAssessmentForm() {
           name="title"
           required
           placeholder="e.g. PIA for Customer Analytics Platform"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
         />
       </div>
 
@@ -40,7 +40,7 @@ export function NewAssessmentForm() {
           name="scope"
           rows={2}
           placeholder="Describe the processing activity or system in scope"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
         />
       </div>
 
@@ -64,7 +64,7 @@ export function NewAssessmentForm() {
           <input
             name="purpose"
             placeholder="e.g. Personalised product recommendations"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ export function NewAssessmentForm() {
         <input
           name="dataTypes"
           placeholder="e.g. Name, email, purchase history, location data"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
         />
       </div>
 

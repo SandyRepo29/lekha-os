@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -58,11 +58,11 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
         <h3 className="font-semibold text-sm">Basic Information</h3>
         <div>
           <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Agent Name *</label>
-          <input name="name" required placeholder="e.g. My Risk Sentinel" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50" />
+          <input name="name" required placeholder="e.g. My Risk Sentinel" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50" />
         </div>
         <div>
           <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Description</label>
-          <input name="description" placeholder="What does this agent do?" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50" />
+          <input name="description" placeholder="What does this agent do?" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50" />
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
               className={`rounded-xl border p-3 text-left transition-colors ${
                 selectedType === t.value
                   ? "border-[var(--color-blue)]/50 bg-[var(--color-blue)]/[0.08]"
-                  : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/30"
+                  : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/30"
               }`}
             >
               <div className="font-medium text-xs">{t.label}</div>
@@ -103,7 +103,7 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
                 className={`w-full rounded-xl border p-3 text-left transition-colors ${
                   selectedMode === m.value
                     ? "border-[var(--color-blue)]/50 bg-[var(--color-blue)]/[0.08]"
-                    : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/30"
+                    : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/30"
                 }`}
               >
                 <div className="font-medium text-xs">{m.label}</div>
@@ -125,7 +125,7 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
                 className={`w-full rounded-xl border p-3 text-left transition-colors ${
                   selectedTrigger === t.value
                     ? "border-[var(--color-blue)]/50 bg-[var(--color-blue)]/[0.08]"
-                    : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/30"
+                    : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/30"
                 }`}
               >
                 <div className="font-medium text-xs">{t.label}</div>
@@ -140,7 +140,7 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
       {selectedTrigger === "scheduled" && (
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <h3 className="mb-3 font-semibold text-sm">Schedule</h3>
-          <select name="schedule" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:border-[var(--color-blue)]/50">
+          <select name="schedule" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:border-[var(--color-blue)]/50">
             <option value="every_15min">Every 15 minutes</option>
             <option value="every_hour">Every hour</option>
             <option value="every_6h">Every 6 hours</option>
@@ -163,7 +163,7 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
               className={`rounded-xl border p-3 text-left transition-colors ${
                 selectedApproval === m.value
                   ? "border-[var(--color-blue)]/50 bg-[var(--color-blue)]/[0.08]"
-                  : "border-[var(--color-line)] bg-white/[0.02] hover:border-[var(--color-blue)]/30"
+                  : "border-[var(--color-line)] bg-white hover:border-[var(--color-blue)]/30"
               }`}
             >
               <div className="font-medium text-xs">{m.label}</div>
@@ -181,13 +181,13 @@ export function AgentStudioForm({ agentTypes, executionModes, triggerTypes, appr
           name="prompt"
           rows={5}
           placeholder="e.g. Monitor all open risks every 6 hours. Flag any critical risks that have been open for more than 30 days without a treatment plan. Escalate vendors with trust score below 60 for immediate review..."
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-3 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-3 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50 resize-none"
         />
       </div>
 
       {/* Submit */}
       <div className="flex items-center justify-end gap-3">
-        <a href="/agents/registry" className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-5 py-2.5 text-sm font-medium hover:bg-white/[0.07] transition-colors">
+        <a href="/agents/registry" className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-5 py-2.5 text-sm font-medium hover:bg-[#F8F9FB] transition-colors">
           Cancel
         </a>
         <button

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import {
@@ -144,7 +144,7 @@ export default async function WorkflowTriggersPage() {
         ].map((s) => (
           <Card
             key={s.label}
-            className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4"
+            className="rounded-2xl border border-[var(--color-line)] bg-white p-4"
           >
             <p className="text-xs text-[var(--color-ink-dim)]">{s.label}</p>
             <p className="mt-1 text-2xl font-bold text-[var(--color-ink)]">{s.value}</p>
@@ -159,7 +159,7 @@ export default async function WorkflowTriggersPage() {
         </h2>
 
         {triggers.length === 0 ? (
-          <Card className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-10 text-center">
+          <Card className="rounded-2xl border border-[var(--color-line)] bg-white p-10 text-center">
             <Zap className="mx-auto h-8 w-8 text-[var(--color-ink-dim)] mb-3" />
             <p className="text-sm font-medium text-[var(--color-ink)]">No triggers yet</p>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)]">
@@ -178,7 +178,7 @@ export default async function WorkflowTriggersPage() {
             {triggers.map((trigger) => (
               <Card
                 key={trigger.id}
-                className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4"
+                className="rounded-2xl border border-[var(--color-line)] bg-white p-4"
               >
                 <div className="flex items-start justify-between gap-4">
                   {/* Left: info */}
@@ -192,7 +192,7 @@ export default async function WorkflowTriggersPage() {
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
                           trigger.is_active
                             ? "bg-emerald-500/10 text-emerald-400"
-                            : "bg-white/[0.05] text-[var(--color-ink-dim)]"
+                            : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"
                         }`}
                       >
                         {trigger.is_active ? (
@@ -212,12 +212,12 @@ export default async function WorkflowTriggersPage() {
 
                     <div className="flex items-center gap-2 flex-wrap">
                       {/* Trigger event badge */}
-                      <span className="inline-flex items-center gap-1 rounded-md border border-[var(--color-line)] bg-white/[0.03] px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
+                      <span className="inline-flex items-center gap-1 rounded-md border border-[var(--color-line)] bg-white px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
                         <Zap className="h-3 w-3 text-[var(--color-blue)]" />
                         {eventLabel(trigger.trigger_event)}
                       </span>
                       {/* Entity scope chip */}
-                      <span className="inline-flex items-center rounded-md border border-[var(--color-line)] bg-white/[0.03] px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
+                      <span className="inline-flex items-center rounded-md border border-[var(--color-line)] bg-white px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
                         {entityLabel(trigger.trigger_entity_type)}
                       </span>
                       {/* Run count */}
@@ -236,7 +236,7 @@ export default async function WorkflowTriggersPage() {
                     <div className="flex items-center gap-1 shrink-0">
                       <a
                         href={`/platform/workflows/${trigger.id}/toggle`}
-                        className="inline-flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                        className="inline-flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                         title={trigger.is_active ? "Pause trigger" : "Activate trigger"}
                       >
                         {trigger.is_active ? (
@@ -270,13 +270,13 @@ export default async function WorkflowTriggersPage() {
         </h2>
 
         {recentRuns.length === 0 ? (
-          <Card className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6 text-center">
+          <Card className="rounded-2xl border border-[var(--color-line)] bg-white p-6 text-center">
             <p className="text-sm text-[var(--color-ink-dim)]">
               No runs recorded yet. Triggers will log executions here.
             </p>
           </Card>
         ) : (
-          <Card className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+          <Card className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -297,7 +297,7 @@ export default async function WorkflowTriggersPage() {
                   {recentRuns.map((run) => (
                     <tr
                       key={run.id}
-                      className="hover:bg-white/[0.02] transition-colors"
+                      className="hover:bg-white transition-colors"
                     >
                       <td className="px-4 py-2.5 text-xs font-medium text-[var(--color-ink)]">
                         {triggerNameMap[run.trigger_id] ?? run.trigger_id.slice(0, 8)}

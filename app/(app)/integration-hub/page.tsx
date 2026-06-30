@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Integration Hub&#8482; — AUDT' };
 
@@ -48,7 +48,7 @@ export default async function IntegrationHubDashboard() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/integration-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/integration-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Integration Advisor&#8482;
           </Link>
@@ -113,7 +113,7 @@ export default async function IntegrationHubDashboard() {
               <Link
                 key={slug}
                 href={`/integration-hub/marketplace`}
-                className="flex items-center gap-2 rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:bg-white/[0.04] transition-colors"
+                className="flex items-center gap-2 rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:bg-[#F8F9FB] transition-colors"
               >
                 <span className="h-2 w-2 rounded-full bg-[var(--color-blue)]/40" />
                 {slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -145,7 +145,7 @@ export default async function IntegrationHubDashboard() {
               {connections.map(({ instance, connector }) => (
                 <Card key={instance.id} className="p-4 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-8 w-8 rounded-lg bg-white/[0.08] flex items-center justify-center text-xs font-bold text-[var(--color-blue)] shrink-0">
+                    <div className="h-8 w-8 rounded-lg bg-[#EEF2F7] flex items-center justify-center text-xs font-bold text-[var(--color-blue)] shrink-0">
                       {connector.name.charAt(0)}
                     </div>
                     <div className="min-w-0">

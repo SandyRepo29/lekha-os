@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { usePathname } from "next/navigation";
 import { X, CheckCircle2, Lightbulb, ExternalLink } from "lucide-react";
@@ -77,7 +77,7 @@ export function HelpPanel({ open, onClose }: HelpPanelProps) {
           </div>
           <button
             onClick={onClose}
-            className="ml-2 shrink-0 rounded-md p-1 text-[var(--color-ink-faint)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+            className="ml-2 shrink-0 rounded-md p-1 text-[var(--color-ink-faint)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
             aria-label="Close help panel"
           >
             <X className="h-4 w-4" />
@@ -120,7 +120,7 @@ export function HelpPanel({ open, onClose }: HelpPanelProps) {
             </h3>
             <ul className="space-y-2">
               {tips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-2 rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-3 py-2">
+                <li key={i} className="flex items-start gap-2 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2">
                   <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
                   <span className="text-[12px] leading-snug text-[var(--color-ink-dim)]">
                     {tip}
@@ -135,7 +135,7 @@ export function HelpPanel({ open, onClose }: HelpPanelProps) {
         <div className="shrink-0 border-t border-[var(--color-line)] px-4 py-3">
           <a
             href={`/help${route ? "#" + route.replace(/^\//, "") : ""}`}
-            className="flex items-center justify-center gap-2 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-[13px] font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+            className="flex items-center justify-center gap-2 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-[13px] font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
           >
             <ExternalLink className="h-3.5 w-3.5" />
             View full docs

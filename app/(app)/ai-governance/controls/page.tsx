@@ -67,7 +67,7 @@ export default async function AiControlsPage() {
           </thead>
           <tbody className="divide-y divide-[var(--color-line)]">
             {controls.map((c) => (
-              <tr key={c.id} className="hover:bg-white/[0.02]">
+              <tr key={c.id} className="hover:bg-white">
                 <td className="px-4 py-3">
                   <div className="font-medium">{c.name}</div>
                   {c.description && <div className="text-xs text-[var(--color-ink-dim)]">{c.description.slice(0, 60)}</div>}

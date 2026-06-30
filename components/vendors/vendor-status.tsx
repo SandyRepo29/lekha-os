@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -7,7 +7,7 @@ import { updateVendorStatus } from "@/lib/vendors/actions";
 const STATUS_OPTIONS = [
   { value: "active",   label: "Active",   color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
   { value: "pending",  label: "Pending",  color: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
-  { value: "inactive", label: "Inactive", color: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]" },
+  { value: "inactive", label: "Inactive", color: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
 ] as const;
 
 export function VendorStatus({ vendorId, current }: { vendorId: string; current: string }) {
@@ -46,7 +46,7 @@ export function VendorStatus({ vendorId, current }: { vendorId: string; current:
               <button
                 key={o.value}
                 onClick={() => choose(o.value)}
-                className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors hover:bg-white/[0.05] ${o.value === status ? "font-semibold text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}
+                className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors hover:bg-[#F8F9FB] ${o.value === status ? "font-semibold text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}
               >
                 <span className={`h-2 w-2 rounded-full ${o.value === "active" ? "bg-emerald-400" : o.value === "pending" ? "bg-[var(--color-blue)]" : "bg-[var(--color-ink-faint)]"}`} />
                 {o.label}

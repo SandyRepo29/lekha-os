@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
@@ -114,7 +114,7 @@ export default async function TrustTrendsPage() {
               return (
                 <div key={s.id} className="flex items-center gap-4 px-5 py-3">
                   <span className="shrink-0 w-28 text-xs text-[var(--color-ink-dim)]">{fmtDate(s.snapshotDate)}</span>
-                  <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="flex-1 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                     <div className={`h-full rounded-full ${sb(score)}`} style={{ width: `${score}%` }} />
                   </div>
                   <span className={`w-8 text-right text-sm font-bold ${sc(score)}`}>{score}</span>

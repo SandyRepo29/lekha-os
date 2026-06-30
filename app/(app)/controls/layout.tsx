@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,7 +17,7 @@ export default function ControlsLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 border-b border-b-[var(--color-line)]">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white p-1 border-b border-b-[var(--color-line)]">
         {NAV.map(({ href, label }) => {
           const exact = href === "/controls";
           const isCurrent = exact
@@ -31,8 +31,8 @@ export default function ControlsLayout({ children }: { children: React.ReactNode
               className={cn(
                 "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
                 isCurrent
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               )}
             >
               {label}

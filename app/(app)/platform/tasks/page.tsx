@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getOrgTasks, getTaskDashboard } from "@/lib/services/platform/task-service";
@@ -70,7 +70,7 @@ function entityChip(entityType?: string | null) {
     ai_system: "AI System",
   };
   return (
-    <span className="inline-flex items-center rounded-md bg-white/[0.06] px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
+    <span className="inline-flex items-center rounded-md bg-[#F8F9FB] px-2 py-0.5 text-xs text-[var(--color-ink-dim)]">
       {labels[entityType] ?? entityType}
     </span>
   );
@@ -212,11 +212,11 @@ export default async function TaskHubPage({ searchParams }: Props) {
 
       {/* Stats Strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card className="border-l-2 border-l-indigo-500 bg-white/[0.03] p-4">
+        <Card className="border-l-2 border-l-indigo-500 bg-white p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Total</p>
           <p className="mt-1 text-2xl font-bold text-[var(--color-ink)]">{dashboard.total}</p>
         </Card>
-        <Card className="border-l-2 border-l-blue-500 bg-white/[0.03] p-4">
+        <Card className="border-l-2 border-l-blue-500 bg-white p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Open</p>
           <p className="mt-1 text-2xl font-bold text-[var(--color-ink)]">{dashboard.open}</p>
         </Card>
@@ -224,7 +224,7 @@ export default async function TaskHubPage({ searchParams }: Props) {
           <p className="text-xs text-red-400">Overdue</p>
           <p className="mt-1 text-2xl font-bold text-red-400">{dashboard.overdue}</p>
         </Card>
-        <Card className="border-l-2 border-l-green-500 bg-white/[0.03] p-4">
+        <Card className="border-l-2 border-l-green-500 bg-white p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Completed Today</p>
           <p className="mt-1 text-2xl font-bold text-green-400">{dashboard.completedToday}</p>
         </Card>
@@ -241,7 +241,7 @@ export default async function TaskHubPage({ searchParams }: Props) {
               className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
                 active
                   ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-300"
-                  : "border-[var(--color-line)] bg-white/[0.03] text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+                  : "border-[var(--color-line)] bg-white text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               }`}
             >
               {chip.label}
@@ -251,7 +251,7 @@ export default async function TaskHubPage({ searchParams }: Props) {
       </div>
 
       {/* Tasks Table */}
-      <Card className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white/[0.02]">
+      <Card className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white">
         {tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
             <CheckSquare className="h-10 w-10 text-[var(--color-ink-dim)]" />
@@ -289,7 +289,7 @@ export default async function TaskHubPage({ searchParams }: Props) {
               return (
                 <div
                   key={task.id}
-                  className={`grid grid-cols-1 gap-3 px-4 py-3 transition hover:bg-white/[0.02] sm:grid-cols-[auto_1fr_auto_auto_auto_auto_auto] sm:items-center sm:gap-4 ${
+                  className={`grid grid-cols-1 gap-3 px-4 py-3 transition hover:bg-white sm:grid-cols-[auto_1fr_auto_auto_auto_auto_auto] sm:items-center sm:gap-4 ${
                     overdue ? "bg-red-500/[0.04]" : ""
                   }`}
                 >

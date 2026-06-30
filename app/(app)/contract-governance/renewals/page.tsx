@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { RefreshCw, Building2, CheckCircle2 } from "lucide-react";
@@ -156,7 +156,7 @@ export default async function RenewalsPage() {
                   const { rec, confidence, trustImpact } = getRenewalIntelligence(c.status, days, c.autoRenewal);
 
                   return (
-                    <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={c.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <Link href={`/contract-governance/${c.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                           {c.title}

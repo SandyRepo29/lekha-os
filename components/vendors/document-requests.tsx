@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ const STATUS_COLORS: Record<string, string> = {
   submitted:  "text-amber-400 border-amber-500/30 bg-amber-500/10",
   approved:   "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
   rejected:   "text-red-400 border-red-500/30 bg-red-500/10",
-  expired:    "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+  expired:    "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
 };
 
 function RequestRow({ req, vendorId }: { req: DocumentRequest; vendorId: string }) {
@@ -52,7 +52,7 @@ function RequestRow({ req, vendorId }: { req: DocumentRequest; vendorId: string 
               <div className="absolute right-0 top-8 z-20 min-w-[120px] rounded-xl border border-[var(--color-line-strong)] bg-[#0d0f1a] shadow-xl overflow-hidden">
                 {nextStatuses.map((s) => (
                   <button key={s} onClick={() => { setOpen(false); start(async () => { await updateRequestStatus(req.id, vendorId, s); router.refresh(); }); }}
-                    className="w-full text-left px-3 py-2.5 text-sm capitalize text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)] transition-colors">
+                    className="w-full text-left px-3 py-2.5 text-sm capitalize text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
                     Mark {s}
                   </button>
                 ))}

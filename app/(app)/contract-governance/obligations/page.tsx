@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { CheckCircle2, AlertTriangle, Clock } from "lucide-react";
@@ -111,7 +111,7 @@ export default async function ObligationsPage({
                   return (
                     <tr
                       key={o.id}
-                      className={`hover:bg-white/[0.02] transition-colors ${isOverdue ? "bg-red-500/[0.03]" : isDueSoon ? "bg-amber-500/[0.03]" : ""}`}
+                      className={`hover:bg-white transition-colors ${isOverdue ? "bg-red-500/[0.03]" : isDueSoon ? "bg-amber-500/[0.03]" : ""}`}
                     >
                       <td className="px-4 py-3">
                         <p className={`font-medium ${isOverdue ? "text-red-400" : ""}`}>{o.title}</p>

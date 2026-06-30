@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { BarChart3, TrendingUp, Award } from "lucide-react";
@@ -96,7 +96,7 @@ export default async function TrustBenchmarkingPage() {
                     </span>
                   </div>
                 </div>
-                <div className="relative h-3 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="relative h-3 rounded-full bg-[#F8F9FB] overflow-hidden">
                   {/* Industry avg marker */}
                   <div className="absolute top-0 h-full w-0.5 bg-white/20" style={{ left: `${b.avg}%` }} />
                   {/* Top 25% marker */}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { createFindingAction, generateFindingFromObservationAction } from "@/lib/audit/actions";
@@ -48,7 +48,7 @@ export function NewFindingForm({ auditId }: { auditId: string }) {
           placeholder="Describe your observation and let AI structure it as a finding..."
           value={observation}
           onChange={(e) => setObservation(e.target.value)}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
         <Button
           type="button"
@@ -90,7 +90,7 @@ export function NewFindingForm({ auditId }: { auditId: string }) {
           rows={3}
           defaultValue={aiFields?.description ?? ""}
           key={`desc-${aiFields?.description}`}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 
@@ -101,7 +101,7 @@ export function NewFindingForm({ auditId }: { auditId: string }) {
           rows={2}
           defaultValue={aiFields?.recommendation ?? ""}
           key={`rec-${aiFields?.recommendation}`}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 

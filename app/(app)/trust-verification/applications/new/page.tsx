@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
@@ -27,7 +27,7 @@ export default async function NewApplicationPage({ searchParams }: { searchParam
         <div>
           <label className="mb-1.5 block text-sm font-medium">Verification Program</label>
           <select name="programId" defaultValue={searchParams.programId ?? ""} required
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2.5 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none">
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2.5 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none">
             <option value="" disabled>Select a program…</option>
             {builtinPrograms.map((p: any) => (
               <option key={p.id} value={p.id}>{p.name} — min. Trust Score {p.minTrustScore}</option>
@@ -38,12 +38,12 @@ export default async function NewApplicationPage({ searchParams }: { searchParam
         <div>
           <label className="mb-1.5 block text-sm font-medium">Current Trust Score (optional)</label>
           <input type="number" name="trustScore" min="0" max="100" placeholder="e.g. 87"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2.5 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2.5 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none" />
           <p className="mt-1 text-xs text-[var(--color-ink-faint)]">Leave blank and it will be computed from your current governance data.</p>
         </div>
 
         {/* Program previews */}
-        <div className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-4">
+        <div className="rounded-xl border border-[var(--color-line)]/60 bg-white p-4">
           <div className="text-xs font-medium text-[var(--color-ink-dim)] uppercase tracking-wide mb-3">What happens after you apply</div>
           <div className="space-y-2">
             {[

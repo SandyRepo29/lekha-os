@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,7 @@ const NAV_ITEMS = [
 export function AssetSubNav() {
   const pathname = usePathname();
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 flex gap-1 flex-wrap">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white p-1 flex gap-1 flex-wrap">
       {NAV_ITEMS.map(({ href, label }) => {
         const active = pathname === href || (href !== "/asset-intelligence" && pathname.startsWith(href));
         return (
@@ -27,8 +27,8 @@ export function AssetSubNav() {
             className={cn(
               "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-white/[0.08] text-[var(--color-ink)]"
-                : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
             )}>
             {label}
           </Link>

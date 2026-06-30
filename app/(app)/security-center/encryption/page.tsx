@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getEncryptionOverview } from "@/lib/services/security-command-center/security-service";
@@ -52,19 +52,19 @@ export default async function EncryptionPage() {
       <div className="space-y-3">
         <h2 className="font-semibold flex items-center gap-2"><KeyRound className="h-4 w-4 text-[var(--color-blue)]" /> Customer Managed Keys (Enterprise)</h2>
 
-        <form action={addEncryptionProviderAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="grid grid-cols-2 gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 sm:grid-cols-3">
+        <form action={addEncryptionProviderAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="grid grid-cols-2 gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-4 sm:grid-cols-3">
           <input name="name" placeholder="Provider name" required
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <select name="providerType"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="aws_kms">AWS KMS</option>
             <option value="azure_key_vault">Azure Key Vault</option>
             <option value="google_kms">Google KMS</option>
           </select>
           <input name="awsRegion" placeholder="AWS region (e.g. ap-south-1)"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <input name="awsKeyId" placeholder="AWS Key ID / ARN"
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <button type="submit" className="rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow">
             Add Provider
           </button>

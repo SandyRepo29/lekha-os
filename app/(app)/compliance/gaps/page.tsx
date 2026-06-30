@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { AlertTriangle, CheckCircle2, RefreshCw } from "lucide-react";
@@ -173,7 +173,7 @@ export default async function GapsPage({
                     <div className="min-w-0 flex-1 space-y-1">
                       <p className="text-sm text-[var(--color-ink)]">{gap.description}</p>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-2 py-0.5 text-[10px] text-[var(--color-ink-faint)]">
+                        <span className="rounded-full border border-[var(--color-line)] bg-white px-2 py-0.5 text-[10px] text-[var(--color-ink-faint)]">
                           {GAP_TYPE_LABELS[gap.gapType] ?? gap.gapType}
                         </span>
                         {gap.isAiDetected && (

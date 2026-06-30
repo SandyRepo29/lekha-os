@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Sparkles, FileSignature, TrendingUp, AlertTriangle, RefreshCw, BarChart2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -105,7 +105,7 @@ export default async function ContractIntelligencePage() {
                       {c.health.overall} &middot; {CONTRACT_HEALTH_LABELS[c.health.level]}
                     </span>
                   </div>
-                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                     <div
                       className={`h-full rounded-full transition-all ${
                         c.health.overall >= 70 ? "bg-emerald-500" :
@@ -138,7 +138,7 @@ export default async function ContractIntelligencePage() {
               .map((c) => {
                 const days = daysUntil(c.expiryDate);
                 return (
-                  <div key={c.id} className="flex items-center justify-between rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-4 py-2.5">
+                  <div key={c.id} className="flex items-center justify-between rounded-lg border border-[var(--color-line)] bg-white px-4 py-2.5">
                     <span className="text-sm text-[var(--color-ink)]">{c.title}</span>
                     <span className={`text-xs font-medium ${days !== null && days < 0 ? "text-red-400" : days !== null && days <= 30 ? "text-red-400" : "text-amber-400"}`}>
                       {days !== null && days < 0 ? `${Math.abs(days)}d expired` : `${days}d remaining`}

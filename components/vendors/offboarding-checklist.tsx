@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { CheckCircle2, Circle, AlertTriangle, Clock } from "lucide-react";
@@ -105,7 +105,7 @@ function StepItem({ vendorId, step, row, isNext, canEdit }: StepItemProps) {
               <input
                 name="notes"
                 placeholder="Optional notes…"
-                className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
               />
               <Button type="submit" size="sm" disabled={pending}>
                 {pending ? "Saving…" : "Mark complete"}
@@ -155,7 +155,7 @@ export function OffboardingChecklist({ vendorId, checklist, targetDate, canEdit 
           </span>
         </div>
 
-        <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.08]">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-[#EEF2F7]">
           <div
             className={`h-full rounded-full transition-all duration-500 ${allDone ? "bg-emerald-500" : "bg-[var(--color-blue)]"}`}
             style={{ width: `${pct}%` }}

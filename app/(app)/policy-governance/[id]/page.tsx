@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -262,7 +262,7 @@ export default async function PolicyDetailPage({
           ) : (
             <div className="space-y-2">
               {policy.linkedRisks.map((r) => (
-                <Link key={r.id} href={`/risks/${r.id}`} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
+                <Link key={r.id} href={`/risks/${r.id}`} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] p-3 hover:bg-white transition-colors">
                   <span className="text-sm font-medium">{r.title}</span>
                   <span className="text-xs text-[var(--color-ink-dim)] capitalize">{r.status}</span>
                 </Link>

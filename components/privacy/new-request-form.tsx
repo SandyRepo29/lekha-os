@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
@@ -54,7 +54,7 @@ export function NewRequestForm() {
             name="subjectName"
             required
             placeholder="Data subject's full name"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
 
@@ -67,7 +67,7 @@ export function NewRequestForm() {
             type="email"
             required
             placeholder="subject@example.com"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
       </div>
@@ -78,7 +78,7 @@ export function NewRequestForm() {
           name="description"
           rows={3}
           placeholder="Describe the request in detail..."
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
         />
       </div>
 

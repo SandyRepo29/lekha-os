@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Governance Benchmarking&#8482; — AUDT' };
 
@@ -75,18 +75,18 @@ export default async function BenchmarkingDashboard() {
         <div className="flex gap-2">
           <a
             href="/api/v1/benchmarking/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Benchmark CSV
           </a>
-          <Link href="/benchmarking/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/benchmarking/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Benchmark Analyst&#8482;
           </Link>
           <Link
             href="/benchmarking/rankings"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-white/[0.04] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-[#F8F9FB] transition-colors"
           >
             <Award className="h-4 w-4" /> Rankings
           </Link>

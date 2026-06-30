@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -21,7 +21,7 @@ const NODE_TYPE_COLORS: Record<string, string> = {
   approval:      "bg-violet-500/20 text-violet-400",
   condition:     "bg-amber-500/20 text-amber-400",
   decision:      "bg-orange-500/20 text-orange-400",
-  wait:          "bg-white/[0.06] text-[var(--color-ink-dim)]",
+  wait:          "bg-[#F8F9FB] text-[var(--color-ink-dim)]",
   notification:  "bg-indigo-500/20 text-indigo-400",
   webhook:       "bg-teal-500/20 text-teal-400",
   create_record: "bg-cyan-500/20 text-cyan-400",
@@ -152,7 +152,7 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
               {wf.nodes.map((node, i) => (
                 <div key={node.id} className="flex items-center gap-3">
                   <span className="text-xs text-[var(--color-ink-faint)] w-5 text-right">{i + 1}</span>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${NODE_TYPE_COLORS[node.nodeType] ?? "bg-white/[0.06] text-[var(--color-ink-dim)]"}`}>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${NODE_TYPE_COLORS[node.nodeType] ?? "bg-[#F8F9FB] text-[var(--color-ink-dim)]"}`}>
                     {node.nodeType.replace(/_/g, " ")}
                   </span>
                   <span className="text-sm">{node.label}</span>

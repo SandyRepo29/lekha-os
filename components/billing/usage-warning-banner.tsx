@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
@@ -39,7 +39,7 @@ export function UsageWarningBanner({ warnings }: UsageWarningBannerProps) {
           </p>
           <Link
             href="/settings/billing"
-            className="shrink-0 rounded-lg border border-current px-3 py-1 text-xs font-medium hover:bg-white/[0.06] transition-colors"
+            className="shrink-0 rounded-lg border border-current px-3 py-1 text-xs font-medium hover:bg-[#F8F9FB] transition-colors"
           >
             Upgrade Plan
           </Link>

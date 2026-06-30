@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
@@ -90,7 +90,7 @@ export default async function BenchmarkAiPage() {
               </div>
               <div className="space-y-3">
                 {plan.map((item, i) => (
-                  <div key={i} className="flex gap-3 p-3 rounded-lg bg-white/[0.03] border border-[var(--color-line)]">
+                  <div key={i} className="flex gap-3 p-3 rounded-lg bg-white border border-[var(--color-line)]">
                     <div className="flex-shrink-0 text-sm font-bold text-[var(--color-ink-faint)] w-5">{i + 1}.</div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-[var(--color-blue)] font-semibold mb-1">

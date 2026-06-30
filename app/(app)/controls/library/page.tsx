@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, Shield, Search } from "lucide-react";
@@ -72,7 +72,7 @@ export default async function ControlLibraryPage({
             name="q"
             defaultValue={params.q}
             placeholder="Search controls…"
-            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[var(--color-line)] bg-white/[0.03] text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[var(--color-line)] bg-white text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
         <select
@@ -130,7 +130,7 @@ export default async function ControlLibraryPage({
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {controls.map((c) => (
-                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={c.id} className="hover:bg-white transition-colors group">
                     <td className="px-4 py-3">
                       <Link href={`/controls/${c.id}`} className="font-mono text-xs text-[var(--color-blue)] hover:underline">
                         {c.controlRef}

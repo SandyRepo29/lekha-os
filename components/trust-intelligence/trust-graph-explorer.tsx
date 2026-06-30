@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, useCallback, useTransition } from "react";
 import type { GraphNode, GraphEdge } from "@/lib/db/schema";
@@ -201,7 +201,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
           <button
             onClick={() => setFilterType(null)}
             className={cn("rounded-full px-3 py-1 text-xs font-medium transition-colors",
-              filterType === null ? "bg-white/[0.1] text-[var(--color-ink)]" : "text-[var(--color-ink-dim)] hover:bg-white/[0.05]")}
+              filterType === null ? "bg-[#EEF2F7] text-[var(--color-ink)]" : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]")}
           >
             All
           </button>
@@ -212,7 +212,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 key={type}
                 onClick={() => setFilterType(t => t === type ? null : type)}
                 className={cn("rounded-full px-3 py-1 text-xs font-medium transition-colors border",
-                  filterType === type ? "text-white" : "text-[var(--color-ink-dim)] hover:bg-white/[0.05]")}
+                  filterType === type ? "text-white" : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]")}
                 style={filterType === type ? { backgroundColor: color?.fill, borderColor: color?.stroke } : { borderColor: "transparent" }}
               >
                 {ENTITY_LABELS[type] ?? type}
@@ -221,9 +221,9 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
           })}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setScale(s => Math.min(2, s + 0.2))} className="rounded-lg border border-[var(--color-line)] p-1.5 hover:bg-white/[0.05]"><ZoomIn className="h-3.5 w-3.5" /></button>
-          <button onClick={() => setScale(s => Math.max(0.3, s - 0.2))} className="rounded-lg border border-[var(--color-line)] p-1.5 hover:bg-white/[0.05]"><ZoomOut className="h-3.5 w-3.5" /></button>
-          <button onClick={() => { setScale(1); setPan({ x: 0, y: 0 }); }} className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-xs hover:bg-white/[0.05]">Reset</button>
+          <button onClick={() => setScale(s => Math.min(2, s + 0.2))} className="rounded-lg border border-[var(--color-line)] p-1.5 hover:bg-[#F8F9FB]"><ZoomIn className="h-3.5 w-3.5" /></button>
+          <button onClick={() => setScale(s => Math.max(0.3, s - 0.2))} className="rounded-lg border border-[var(--color-line)] p-1.5 hover:bg-[#F8F9FB]"><ZoomOut className="h-3.5 w-3.5" /></button>
+          <button onClick={() => { setScale(1); setPan({ x: 0, y: 0 }); }} className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-xs hover:bg-[#F8F9FB]">Reset</button>
           <button
             onClick={onBuildGraph}
             disabled={building}
@@ -263,7 +263,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                   </radialGradient>
                 ))}
                 <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-                  <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.2)" />
+                  <polygon points="0 0, 8 3, 0 6" fill="rgba(30,41,59,0.25)" />
                 </marker>
               </defs>
 
@@ -360,12 +360,12 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 <EntityTypeBadge type={selectedNode.entityType} />
                 <p className="mt-2 font-semibold text-[var(--color-ink)] text-sm leading-snug">{selectedNode.name}</p>
               </div>
-              <button onClick={() => setSelectedNode(null)} className="shrink-0 rounded-lg p-1 hover:bg-white/[0.06]"><X className="h-3.5 w-3.5" /></button>
+              <button onClick={() => setSelectedNode(null)} className="shrink-0 rounded-lg p-1 hover:bg-[#F8F9FB]"><X className="h-3.5 w-3.5" /></button>
             </div>
 
             {/* Metadata */}
             {Object.entries(selectedNode.metadata as Record<string, string | number | boolean | null>).filter(([, v]) => v != null && v !== "").length > 0 && (
-              <div className="rounded-xl bg-white/[0.03] p-3 space-y-1.5">
+              <div className="rounded-xl bg-white p-3 space-y-1.5">
                 {Object.entries(selectedNode.metadata as Record<string, string | number | boolean | null>).map(([k, v]) => {
                   if (v == null || v === "") return null;
                   return (
@@ -384,7 +384,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 onClick={handleRootCause}
                 disabled={isPending}
                 className={cn("flex flex-col items-center gap-1 rounded-xl border p-3 text-xs font-medium transition-colors",
-                  analysisTab === "root-cause" ? "border-purple-500/40 bg-purple-500/10 text-purple-300" : "border-[var(--color-line)] hover:bg-white/[0.04] text-[var(--color-ink-dim)]")}
+                  analysisTab === "root-cause" ? "border-purple-500/40 bg-purple-500/10 text-purple-300" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
               >
                 <GitBranch className="h-4 w-4" />
                 Root Cause
@@ -393,7 +393,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 onClick={handleImpact}
                 disabled={isPending}
                 className={cn("flex flex-col items-center gap-1 rounded-xl border p-3 text-xs font-medium transition-colors",
-                  analysisTab === "impact" ? "border-orange-500/40 bg-orange-500/10 text-orange-300" : "border-[var(--color-line)] hover:bg-white/[0.04] text-[var(--color-ink-dim)]")}
+                  analysisTab === "impact" ? "border-orange-500/40 bg-orange-500/10 text-orange-300" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
               >
                 <Zap className="h-4 w-4" />
                 Impact
@@ -414,7 +414,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                   <div className="space-y-2">
                     <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Upstream Causes</p>
                     {rootCause.causes.map((c: any, i: number) => (
-                      <div key={i} className="rounded-xl bg-white/[0.03] p-2.5 space-y-1">
+                      <div key={i} className="rounded-xl bg-white p-2.5 space-y-1">
                         <div className="flex items-center justify-between gap-1">
                           <EntityTypeBadge type={c.entityType} />
                           <ImpactSeverityBadge severity={c.impact} />
@@ -436,7 +436,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                   <div className="space-y-2">
                     <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-ink-faint)]">Downstream Impact</p>
                     {impact.impacts.map((imp: any, i: number) => (
-                      <div key={i} className="rounded-xl bg-white/[0.03] p-2.5 space-y-1">
+                      <div key={i} className="rounded-xl bg-white p-2.5 space-y-1">
                         <div className="flex items-center justify-between gap-1">
                           <EntityTypeBadge type={imp.entityType} />
                           <ImpactSeverityBadge severity={imp.severity} />
@@ -452,7 +452,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
 
             {/* Hint */}
             {analysisTab === "none" && (
-              <div className="flex items-start gap-2 rounded-xl bg-white/[0.02] p-3 text-[11px] text-[var(--color-ink-faint)]">
+              <div className="flex items-start gap-2 rounded-xl bg-white p-3 text-[11px] text-[var(--color-ink-faint)]">
                 <Info className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                 <span>Use Root Cause™ to trace upstream causes or Impact™ to see downstream effects.</span>
               </div>

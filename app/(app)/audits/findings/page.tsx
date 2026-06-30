@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
@@ -89,7 +89,7 @@ export default async function AllFindingsPage({
               <Link
                 key={f.id}
                 href={`/audits/${f.auditId}/findings`}
-                className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.02] transition-colors"
+                className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white transition-colors"
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{f.title}</p>

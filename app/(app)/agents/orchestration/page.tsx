@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { GitBranch, ArrowDown, CheckCircle, Shield, Eye, Lightbulb, Zap, Bot } from "lucide-react";
@@ -121,7 +121,7 @@ export default async function OrchestrationPage() {
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium border ${
                   p.status === "active"
                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                    : "bg-white/[0.06] text-[var(--color-ink-faint)] border-[var(--color-line)]"
+                    : "bg-[#F8F9FB] text-[var(--color-ink-faint)] border-[var(--color-line)]"
                 }`}>
                   {p.status}
                 </span>
@@ -160,7 +160,7 @@ export default async function OrchestrationPage() {
           {SWEEP_STEPS.map((step, idx) => (
             <div key={step.step}>
               <div className={`rounded-xl border p-4 flex items-start gap-4 ${step.border} ${step.bg}`}>
-                <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.06] border border-white/[0.08]`}>
+                <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#F8F9FB] border border-[#E4E8EF]`}>
                   <step.icon className={`h-4 w-4 ${step.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">

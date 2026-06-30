@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export function AIGovStat({
   const bg      = ACCENT_BG[accent];
 
   const inner = (
-    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white/[0.03] transition-colors")}>
+    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white transition-colors")}>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
       <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">
         {value}

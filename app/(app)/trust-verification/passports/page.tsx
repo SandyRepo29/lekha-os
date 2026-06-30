@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -43,7 +43,7 @@ export default async function PassportsPage() {
             { label: "Active Badges",        value: activeBadges.length, icon: ShieldCheck, color: "text-emerald-400" },
             { label: "Registry Entries",     value: registry.length,     icon: Globe,       color: "text-[var(--color-blue)]" },
           ].map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="rounded-xl bg-white/[0.06] p-3 text-center">
+            <div key={label} className="rounded-xl bg-[#F8F9FB] p-3 text-center">
               <Icon className={`mx-auto mb-1 h-4 w-4 ${color}`} />
               <div className="text-lg font-bold">{value}</div>
               <div className="text-[11px] text-[var(--color-ink-dim)]">{label}</div>
@@ -56,7 +56,7 @@ export default async function PassportsPage() {
           <div className="space-y-2 mb-4">
             <div className="text-xs font-medium text-[var(--color-ink-dim)] uppercase tracking-wide">Certificates</div>
             {activeCerts.map((cert: any) => (
-              <div key={cert.id} className="flex items-center justify-between rounded-xl bg-white/[0.06] px-3 py-2.5">
+              <div key={cert.id} className="flex items-center justify-between rounded-xl bg-[#F8F9FB] px-3 py-2.5">
                 <div className="flex items-center gap-2">
                   <Award className="h-4 w-4 text-[var(--color-blue)]" />
                   <div>
@@ -108,7 +108,7 @@ export default async function PassportsPage() {
           <h3 className="font-semibold text-sm mb-4">Certificate History</h3>
           <div className="space-y-2">
             {passport!.allCerts.map((cert: any) => (
-              <div key={cert.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+              <div key={cert.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                 <div className="font-mono text-xs font-medium">{cert.certificateNumber}</div>
                 <div className="text-xs text-[var(--color-ink-dim)]">{new Date(cert.issuedAt).toLocaleDateString()} — {new Date(cert.expiresAt).toLocaleDateString()}</div>
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${

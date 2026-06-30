@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -39,7 +39,7 @@ export function ConfirmDialog({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)] transition-colors"
+            className="rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
           >
             Cancel
           </button>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAiSecurityOverview } from "@/lib/services/security-command-center/security-service";
@@ -52,7 +52,7 @@ export default async function AiSecurityPage() {
       </div>
 
       {/* AI Advisor */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <div className="flex items-center gap-2">
           <Bot className="h-5 w-5 text-violet-400" />
           <h2 className="font-semibold">AI Security Advisor™</h2>

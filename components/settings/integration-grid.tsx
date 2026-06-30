@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
@@ -178,7 +178,7 @@ function IntegrationCard({
       {showConnect && (
         <ConnectModal provider={integration.provider} config={config} onClose={() => setShowConnect(false)} />
       )}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-3">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-4 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <span className="text-2xl">{config.icon}</span>
@@ -187,7 +187,7 @@ function IntegrationCard({
               <div className="text-xs text-[var(--color-ink-faint)]">{config.description}</div>
             </div>
           </div>
-          <span className={cn("shrink-0 rounded-full border px-2 py-0.5 text-xs font-semibold", isConnected ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400" : "border-[var(--color-line)] bg-white/[0.02] text-[var(--color-ink-faint)]")}>
+          <span className={cn("shrink-0 rounded-full border px-2 py-0.5 text-xs font-semibold", isConnected ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400" : "border-[var(--color-line)] bg-white text-[var(--color-ink-faint)]")}>
             {isConnected ? "Connected" : "Not connected"}
           </span>
         </div>

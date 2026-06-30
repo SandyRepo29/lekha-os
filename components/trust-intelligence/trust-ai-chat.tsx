@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { Send, Bot, User, Loader2 } from "lucide-react";
@@ -56,7 +56,7 @@ export function TrustAIChat() {
               <button
                 key={s}
                 onClick={() => send(s)}
-                className="block w-full text-left rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)] transition-colors"
+                className="block w-full text-left rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
               >
                 {s}
               </button>
@@ -70,7 +70,7 @@ export function TrustAIChat() {
               className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
                 m.role === "user"
                   ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]"
-                  : "bg-white/[0.04] text-[var(--color-ink-dim)]"
+                  : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"
               }`}
             >
               {m.content}
@@ -81,7 +81,7 @@ export function TrustAIChat() {
         {isPending && (
           <div className="flex gap-2">
             <Bot className="h-4 w-4 mt-0.5 shrink-0 text-[var(--color-blue)]" />
-            <div className="flex items-center gap-1.5 rounded-2xl bg-white/[0.04] px-3 py-2">
+            <div className="flex items-center gap-1.5 rounded-2xl bg-[#F8F9FB] px-3 py-2">
               <Loader2 className="h-3.5 w-3.5 animate-spin text-[var(--color-ink-faint)]" />
               <span className="text-xs text-[var(--color-ink-faint)]">Thinking…</span>
             </div>
@@ -97,7 +97,7 @@ export function TrustAIChat() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send(input)}
           placeholder="Ask about governance, risks, controls…"
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50"
         />
         <Button
           variant="primary"

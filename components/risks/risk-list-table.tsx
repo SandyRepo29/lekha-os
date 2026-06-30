@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Download, Archive, ArrowUp, ArrowDown, ArrowUpDown, CheckSquare2, Square } from "lucide-react";
@@ -109,7 +109,7 @@ export function RiskListTable({
 
   return (
     <>
-      <div className="overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+      <div className="overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--color-line)]">
@@ -142,7 +142,7 @@ export function RiskListTable({
               const due = r.targetDate ? isOverdue(r.targetDate) : false;
               const isSel = isSelected(r.id);
               return (
-                <tr key={r.id} className={`hover:bg-white/[0.02] transition-colors ${isSel ? "bg-[var(--color-blue)]/[0.04]" : ""}`}>
+                <tr key={r.id} className={`hover:bg-white transition-colors ${isSel ? "bg-[var(--color-blue)]/[0.04]" : ""}`}>
                   <td className="px-4 py-3">
                     <button onClick={() => toggleItem(r.id)} className="grid place-items-center text-[var(--color-ink-faint)] hover:text-[var(--color-ink)] transition-colors">
                       {isSel ? <CheckSquare2 className="h-4 w-4 text-[var(--color-blue)]" /> : <Square className="h-4 w-4" />}

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -180,7 +180,7 @@ export default async function DpdpPrivacyDashboardPage() {
                   <Link
                     key={req.id}
                     href="/dpdp-privacy/requests"
-                    className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] transition-colors"
+                    className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white transition-colors"
                   >
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{req.subjectName}</p>

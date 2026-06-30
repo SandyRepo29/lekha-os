@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, ShieldCheck } from "lucide-react";
@@ -98,7 +98,7 @@ export default async function FrameworksPage() {
               return (
                 <div
                   key={fw.id}
-                  className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
+                  className="grid grid-cols-[1fr_120px_80px_80px_80px_100px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white"
                 >
                   <div>
                     <Link

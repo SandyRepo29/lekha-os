@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { updateOrgProfile, updateOrgBranding, type SettingsState } from "@/lib/settings/actions";
@@ -69,7 +69,7 @@ export function OrgProfileForm({
                 name="industry"
                 defaultValue={org?.industry ?? ""}
                 disabled={!canEdit}
-                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
+                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
               >
                 {INDUSTRIES.map((i) => (
                   <option key={i.value} value={i.value} className="bg-[#0f0f14]">{i.label}</option>
@@ -83,7 +83,7 @@ export function OrgProfileForm({
                 name="companySize"
                 defaultValue={org?.companySize ?? ""}
                 disabled={!canEdit}
-                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
+                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
               >
                 {COMPANY_SIZES.map((s) => (
                   <option key={s.value} value={s.value} className="bg-[#0f0f14]">{s.label}</option>
@@ -111,7 +111,7 @@ export function OrgProfileForm({
                 name="timezone"
                 defaultValue={org?.timezone ?? "Asia/Kolkata"}
                 disabled={!canEdit}
-                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
+                className="flex h-11 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50"
               >
                 {TIMEZONES.map((tz) => (
                   <option key={tz} value={tz} className="bg-[#0f0f14]">{tz}</option>
@@ -201,7 +201,7 @@ export function BrandingForm({
               disabled={!canEdit}
               rows={2}
               placeholder="Confidential — for internal use only."
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50 resize-none"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50 resize-none"
             />
           </div>
           <div>
@@ -213,7 +213,7 @@ export function BrandingForm({
               disabled={!canEdit}
               rows={3}
               placeholder="Lekha OS | Your GRC Operating System&#10;lekha-os.vercel.app"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50 resize-none"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40 disabled:opacity-50 resize-none"
             />
             <p className="mt-1 text-xs text-[var(--color-ink-faint)]">Used in expiry alerts and weekly digest emails.</p>
           </div>

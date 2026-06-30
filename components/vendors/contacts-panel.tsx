@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -57,7 +57,7 @@ export function ContactsPanel({ vendorId, contacts, canEdit }: Props) {
           {canEdit && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+              className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
             >
               {showForm ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
               {showForm ? "Cancel" : "Add contact"}
@@ -76,7 +76,7 @@ export function ContactsPanel({ vendorId, contacts, canEdit }: Props) {
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Name *</label>
                   <input name="name" required placeholder="Jane Smith"
-                    className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
+                    className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Role</label>
@@ -90,22 +90,22 @@ export function ContactsPanel({ vendorId, contacts, canEdit }: Props) {
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Email</label>
                   <input name="email" type="email" placeholder="jane@vendor.com"
-                    className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
+                    className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Phone</label>
                   <input name="phone" type="tel" placeholder="+91 98765 43210"
-                    className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
+                    className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Title / Position</label>
                   <input name="title" placeholder="Head of Security"
-                    className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
+                    className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Department</label>
                   <input name="department" placeholder="Engineering"
-                    className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
+                    className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]" />
                 </div>
               </div>
 

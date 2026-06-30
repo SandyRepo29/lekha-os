@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Audit Management&#8482; — AUDT' };
 
@@ -119,7 +119,7 @@ export default async function AuditsDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/audits/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/audits/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Auditor&#8482;
           </Link>
@@ -149,7 +149,7 @@ export default async function AuditsDashboardPage() {
       <div className="grid gap-6 lg:grid-cols-2">
 
         {/* Audit Pipeline™ */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-[var(--color-blue)]" />
@@ -161,7 +161,7 @@ export default async function AuditsDashboardPage() {
             {pipelineStages.map(({ label, count, color, href }) => (
               <Link key={label} href={href} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <span className="w-20 text-xs text-[var(--color-ink-dim)]">{label}</span>
-                <div className="flex-1 h-2 overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="flex-1 h-2 overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className="h-full rounded-full bg-[var(--color-blue)] transition-all"
                     style={{ width: metrics.total ? `${Math.round((count / metrics.total) * 100)}%` : "0%" }} />
                 </div>
@@ -182,7 +182,7 @@ export default async function AuditsDashboardPage() {
         </div>
 
         {/* Evidence Requests™ */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileSearch className="h-4 w-4 text-amber-400" />
@@ -218,7 +218,7 @@ export default async function AuditsDashboardPage() {
       <div className="grid gap-6 lg:grid-cols-2">
 
         {/* Findings by Severity */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-orange-400" />
@@ -235,7 +235,7 @@ export default async function AuditsDashboardPage() {
             ].map(({ label, value, color, bg }) => (
               <div key={label} className="flex items-center gap-3">
                 <span className="w-14 text-xs text-[var(--color-ink-dim)]">{label}</span>
-                <div className="flex-1 h-2 overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="flex-1 h-2 overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className={`h-full rounded-full ${bg} transition-all`}
                     style={{ width: totalFindings ? `${Math.round((value / totalFindings) * 100)}%` : "0%" }} />
                 </div>
@@ -250,7 +250,7 @@ export default async function AuditsDashboardPage() {
         </div>
 
         {/* CAPA Health™ */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-400" />
@@ -277,7 +277,7 @@ export default async function AuditsDashboardPage() {
                 <span className="text-[var(--color-ink-dim)]">Completion rate</span>
                 <span className="font-semibold">{Math.round((completedCapas / capaTotal) * 100)}%</span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                 <div className="h-full rounded-full bg-emerald-500"
                   style={{ width: `${Math.round((completedCapas / capaTotal) * 100)}%` }} />
               </div>
@@ -316,7 +316,7 @@ export default async function AuditsDashboardPage() {
               <div className="divide-y divide-[var(--color-line)]">
                 {recentAudits.map((a) => (
                   <Link key={a.id} href={`/audits/${a.id}`}
-                    className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.02] transition-colors">
+                    className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white transition-colors">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium">{a.name}</p>
                       <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
@@ -342,7 +342,7 @@ export default async function AuditsDashboardPage() {
         <div className="space-y-4">
 
           {/* Audit Intelligence™ */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Brain className="h-4 w-4 text-[var(--color-blue)]" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Intelligence&#8482;</h2>
@@ -369,7 +369,7 @@ export default async function AuditsDashboardPage() {
           </div>
 
           {/* Trust Impact™ */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Target className="h-4 w-4 text-purple-400" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact&#8482;</h2>
@@ -381,7 +381,7 @@ export default async function AuditsDashboardPage() {
                   <span className="text-[var(--color-ink-dim)]">Current contribution</span>
                   <span className="font-bold text-purple-400">{currentTrustContrib}/15 pts</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className="h-full rounded-full bg-purple-500" style={{ width: `${(currentTrustContrib / 15) * 100}%` }} />
                 </div>
               </div>
@@ -390,7 +390,7 @@ export default async function AuditsDashboardPage() {
                   <span className="text-[var(--color-ink-dim)]">Projected (all closed)</span>
                   <span className="font-bold text-emerald-400">15/15 pts</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className="h-full rounded-full bg-emerald-500" style={{ width: "100%" }} />
                 </div>
               </div>
@@ -403,7 +403,7 @@ export default async function AuditsDashboardPage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />

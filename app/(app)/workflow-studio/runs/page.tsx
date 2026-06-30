@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { AlertCircle, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -79,7 +79,7 @@ export default async function WorkflowRunsPage({
               {runs.map((run) => (
                 <tr
                   key={run.id}
-                  className={`border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
+                  className={`border-b border-[var(--color-line)]/50 hover:bg-white ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
                 >
                   <td className="px-5 py-3 font-medium">
                     <Link href={`/workflow-studio/${run.workflowId}`} className="hover:text-[var(--color-blue)] transition-colors">

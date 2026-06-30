@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -229,7 +229,7 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {tests.map((t) => (
-                  <tr key={t.id} className="hover:bg-white/[0.02]">
+                  <tr key={t.id} className="hover:bg-white">
                     <td className="py-3 pr-4 font-mono text-xs text-[var(--color-ink-dim)]">{t.testDate}</td>
                     <td className="py-3 pr-4"><TestResultBadge result={t.result} /></td>
                     <td className="py-3 pr-4 text-xs">{t.testerFullName ?? t.testerName ?? "—"}</td>
@@ -245,22 +245,22 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
       </Section>
 
       {/* Connected Entities */}
-      <section className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 space-y-4">
+      <section className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">Connected Entities</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Link href="/compliance/frameworks" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/compliance/frameworks" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedFrameworkCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedFrameworkCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Frameworks</div>
           </Link>
-          <Link href="/risks/list" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/risks/list" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${inputs.totalRisks > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalRisks}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Risks</div>
           </Link>
-          <Link href={`/controls/${id}`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href={`/controls/${id}`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${inputs.totalTests > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalTests}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Tests Recorded</div>
           </Link>
-          <Link href="/compliance/evidence" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/compliance/evidence" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${inputs.totalEvidenceCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{inputs.totalEvidenceCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Evidence</div>
           </Link>

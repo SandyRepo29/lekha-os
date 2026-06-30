@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Sparkles, Plus, CheckCircle2, Loader2, ChevronDown } from "lucide-react";
@@ -63,7 +63,7 @@ export function RiskDetailActions({
         {open && (
           <div className="absolute right-0 top-full z-20 mt-1 min-w-[160px] rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] py-1 shadow-xl">
             {transitions.map((t) => (
-              <button key={t.status} onClick={() => handleStatus(t.status)} className="w-full px-4 py-2 text-left text-sm hover:bg-white/[0.04] transition-colors">
+              <button key={t.status} onClick={() => handleStatus(t.status)} className="w-full px-4 py-2 text-left text-sm hover:bg-[#F8F9FB] transition-colors">
                 {t.label}
               </button>
             ))}
@@ -137,8 +137,8 @@ export function AddTreatmentAction({ riskId }: { riskId: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2">
-      <input name="action" required autoFocus placeholder="Action description…" className="flex-1 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60" />
-      <input name="targetDate" type="date" className="rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-2 py-1.5 text-sm outline-none" />
+      <input name="action" required autoFocus placeholder="Action description…" className="flex-1 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60" />
+      <input name="targetDate" type="date" className="rounded-lg border border-[var(--color-line)] bg-white px-2 py-1.5 text-sm outline-none" />
       <Button type="submit" variant="primary" size="sm" disabled={pending}>
         {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Add"}
       </Button>
@@ -192,14 +192,14 @@ export function AddReviewAction({ riskId }: { riskId: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-wrap gap-2">
-      <input name="reviewDate" type="date" required defaultValue={new Date().toISOString().slice(0, 10)} className="rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-2 py-1.5 text-sm outline-none" />
+      <input name="reviewDate" type="date" required defaultValue={new Date().toISOString().slice(0, 10)} className="rounded-lg border border-[var(--color-line)] bg-white px-2 py-1.5 text-sm outline-none" />
       <select name="outcome" className="rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-2)] px-2 py-1.5 text-sm outline-none">
         <option value="no_change">No Change</option>
         <option value="score_updated">Score Updated</option>
         <option value="status_changed">Status Changed</option>
         <option value="closed">Closed</option>
       </select>
-      <input name="notes" placeholder="Notes…" className="flex-1 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none" />
+      <input name="notes" placeholder="Notes…" className="flex-1 rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none" />
       <Button type="submit" variant="primary" size="sm" disabled={pending}>
         {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save"}
       </Button>

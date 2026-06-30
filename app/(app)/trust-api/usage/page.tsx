@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -85,7 +85,7 @@ export default async function UsagePage() {
                       <code className="font-mono text-[var(--color-ink-dim)] truncate max-w-[70%]">{ep.endpoint}</code>
                       <span className="text-[var(--color-ink-faint)]">{ep.cnt} ({pct}%)</span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-white/[0.08]">
+                    <div className="h-1.5 rounded-full bg-[#EEF2F7]">
                       <div className="h-full rounded-full bg-[var(--color-blue)]/60" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
@@ -120,7 +120,7 @@ export default async function UsagePage() {
               color: "text-violet-400",
             },
           ].map(({ label, value, status, color }) => (
-            <div key={label} className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-4">
+            <div key={label} className="rounded-xl border border-[var(--color-line)]/60 bg-white p-4">
               <div className="text-xs text-[var(--color-ink-dim)]">{label}</div>
               <div className={`mt-1 text-2xl font-bold ${color}`}>{value}</div>
               <div className={`mt-0.5 text-xs ${color}`}>{status}</div>

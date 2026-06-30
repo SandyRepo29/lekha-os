@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Dashboard — AUDT' };
 
@@ -91,7 +91,7 @@ function HealthCard({ label, value, color, href, alert }: {
   return (
     <Link href={href}>
       <div className={cn(
-        "rounded-xl border border-l-2 px-4 py-4 transition-colors hover:bg-white/[0.04] cursor-pointer",
+        "rounded-xl border border-l-2 px-4 py-4 transition-colors hover:bg-[#F8F9FB] cursor-pointer",
         "border-[var(--color-line)]", c.border, alert ? c.bg : ""
       )}>
         <div className={cn("font-[family-name:var(--font-display)] text-2xl font-extrabold", c.text)}>
@@ -324,7 +324,7 @@ export default async function DashboardPage() {
             {empty ? "Add vendors to begin" : `${orgScore} / 100`}
           </div>
           <Link href="/trust-intelligence"
-            className="mt-4 flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.08] hover:text-[var(--color-ink)]">
+            className="mt-4 flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-[#EEF2F7] hover:text-[var(--color-ink)]">
             View Trust Breakdown <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
@@ -347,7 +347,7 @@ export default async function DashboardPage() {
             return (
               <Link key={c.label} href={c.href}>
                 <div className={cn(
-                  "rounded-xl border border-l-2 px-4 py-4 transition-colors hover:bg-white/[0.04] cursor-pointer",
+                  "rounded-xl border border-l-2 px-4 py-4 transition-colors hover:bg-[#F8F9FB] cursor-pointer",
                   "border-[var(--color-line)]", accentBorder(c.score), accentBg(c.score)
                 )}>
                   <div className="mb-2 flex items-center gap-1.5">
@@ -376,7 +376,7 @@ export default async function DashboardPage() {
         <div className="grid gap-4 lg:grid-cols-2">
 
           {/* Left: Key metrics */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-4 flex items-center gap-2">
               <div className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--color-blue)]/10">
                 <Target className="h-4 w-4 text-[var(--color-blue)]" />
@@ -396,7 +396,7 @@ export default async function DashboardPage() {
               ].map(({ label, value, danger }) => (
                 <div key={label} className={cn(
                   "rounded-lg border px-3 py-2.5",
-                  danger ? "border-red-500/20 bg-red-500/[0.04]" : "border-[var(--color-line)] bg-white/[0.02]"
+                  danger ? "border-red-500/20 bg-red-500/[0.04]" : "border-[var(--color-line)] bg-white"
                 )}>
                   <div className="text-[10px] text-[var(--color-ink-faint)]">{label}</div>
                   <div className={cn("mt-0.5 text-sm font-bold leading-snug", danger ? "text-red-400" : "text-[var(--color-ink)]")}>
@@ -432,8 +432,8 @@ export default async function DashboardPage() {
               <div className="space-y-3">
                 {topRecommendations.map((rec, i) => (
                   <Link key={rec.id} href={`/vendors/${rec.id}`}
-                    className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-3.5 transition-colors hover:bg-white/[0.06]">
-                    <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-xs font-bold text-[var(--color-ink-dim)]">
+                    className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white p-3.5 transition-colors hover:bg-[#F8F9FB]">
+                    <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#F8F9FB] text-xs font-bold text-[var(--color-ink-dim)]">
                       {rec.name[0].toUpperCase()}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -458,7 +458,7 @@ export default async function DashboardPage() {
       {/* ── Row 4: Vendor Lifecycle ───────────────────────────────────────── */}
       <div>
         <SectionLabel>Vendor Lifecycle</SectionLabel>
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
 
           {/* Bottleneck callout */}
           {awaitingAssessment > 0 && (
@@ -488,7 +488,7 @@ export default async function DashboardPage() {
                 <div key={step.stage} className="flex shrink-0 items-center">
                   <Link href={step.href}
                     className={cn(
-                      "flex flex-col items-center gap-1 rounded-xl border px-5 py-4 text-center transition-colors hover:bg-white/[0.04] min-w-[100px]",
+                      "flex flex-col items-center gap-1 rounded-xl border px-5 py-4 text-center transition-colors hover:bg-[#F8F9FB] min-w-[100px]",
                       active ? "border-[var(--color-blue)]/30 bg-[var(--color-blue)]/[0.05]" : "border-[var(--color-line)] opacity-40"
                     )}>
                     <div className={cn("font-[family-name:var(--font-display)] text-2xl font-extrabold",
@@ -568,7 +568,7 @@ export default async function DashboardPage() {
                     const action = vendorAction(v);
                     return (
                       <Link key={v.id} href={`/vendors/${v.id}`}
-                        className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-white/[0.03]">
+                        className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-white">
                         <div className="min-w-0">
                           <div className="truncate text-sm font-semibold text-[var(--color-ink)]">{v.name}</div>
                           <div className="mt-0.5 truncate text-[10px] text-[var(--color-ink-faint)]">
@@ -614,7 +614,7 @@ export default async function DashboardPage() {
         {/* Trust Distribution */}
         <div>
           <SectionLabel>Vendor Trust Distribution</SectionLabel>
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             {metrics.totalVendors === 0 ? (
               <p className="py-6 text-center text-sm text-[var(--color-ink-dim)]">No vendors to display.</p>
             ) : (
@@ -622,7 +622,7 @@ export default async function DashboardPage() {
                 {trustBuckets.map((b) => (
                   <div key={b.label} className="flex items-center gap-3">
                     <span className={cn("w-24 shrink-0 text-xs font-medium", b.text)}>{b.label}</span>
-                    <div className="flex-1 h-5 rounded-lg bg-white/[0.04] overflow-hidden">
+                    <div className="flex-1 h-5 rounded-lg bg-[#F8F9FB] overflow-hidden">
                       {b.count > 0 && (
                         <div className={cn("h-full rounded-lg", b.color, "transition-all")}
                           style={{ width: `${(b.count / maxBucket) * 100}%` }} />
@@ -645,7 +645,7 @@ export default async function DashboardPage() {
         {/* Upcoming Decisions */}
         <div>
           <SectionLabel>Upcoming Decisions</SectionLabel>
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
             {upcomingDecisions.length === 0 ? (
               <div className="flex flex-col items-center gap-2 py-10 text-center">
                 <CheckCircle2 className="h-8 w-8 text-emerald-400/60" />

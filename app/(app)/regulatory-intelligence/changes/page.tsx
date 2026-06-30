@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -62,7 +62,7 @@ export default async function RegChangesPage() {
           </div>
           <div className="space-y-2">
             {alerts.slice(0, 3).map(a => (
-              <div key={a.id} className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-white/[0.02] px-3 py-2.5">
+              <div key={a.id} className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-white px-3 py-2.5">
                 <AlertIcon severity={a.severity} />
                 <div className="min-w-0 flex-1">
                   <div className="text-xs font-medium">{a.title}</div>
@@ -92,7 +92,7 @@ export default async function RegChangesPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]/40">
                 {changes.map(c => (
-                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={c.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-semibold max-w-[240px]">{c.title}</div>
                       {c.description && (

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getTrustCenterOverview } from "@/lib/services/security-command-center/security-service";
@@ -37,7 +37,7 @@ export default async function TrustCenterPage() {
       {/* Feature Grid */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {FEATURES.map(({ icon: Icon, label, desc }) => (
-          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+          <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-white p-4">
             <Icon className="h-5 w-5 text-[var(--color-blue)] mb-2" />
             <div className="text-sm font-semibold">{label}</div>
             <div className="mt-1 text-[11px] text-[var(--color-ink-dim)]">{desc}</div>
@@ -46,15 +46,15 @@ export default async function TrustCenterPage() {
       </div>
 
       {/* Configure Form */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-semibold">Configure Trust Center</h2>
         <form action={updateTrustCenterAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="grid gap-3 sm:grid-cols-2">
           <input name="title" defaultValue={config?.title ?? ""} placeholder="Trust Center title (e.g. Acme Security)"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <input name="securityEmail" defaultValue={config?.securityEmail ?? ""} placeholder="security@yourcompany.com"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <input name="tagline" defaultValue={config?.tagline ?? ""} placeholder="Tagline (e.g. Security you can verify)"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <div className="flex gap-3">
             <label className="flex items-center gap-2 text-sm cursor-pointer">
               <input type="hidden" name="showTrustScore" value="false" />
@@ -74,7 +74,7 @@ export default async function TrustCenterPage() {
           </div>
           <textarea name="description" defaultValue={config?.description ?? ""} placeholder="Description for visitors"
             rows={3}
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50 resize-none" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50 resize-none" />
           <div className="col-span-2 flex items-center justify-between">
             <label className="flex items-center gap-2 text-sm cursor-pointer">
               <input type="hidden" name="enabled" value="false" />

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -47,11 +47,11 @@ export default async function TrustExchangeDashboard() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/trust-exchange/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-exchange/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Trust Analyst&#8482;
           </Link>
-          <Link href="/trust-exchange/directory" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-exchange/directory" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-[#F8F9FB] transition-colors">
             <Globe className="h-4 w-4" /> Vendor Directory
           </Link>
           <Link href="/trust-exchange/my-profile" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-blue)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">
@@ -119,7 +119,7 @@ export default async function TrustExchangeDashboard() {
           { href: "/trust-exchange/ai", icon: Zap, title: "AI Trust Analyst™", desc: "Ask about your trust posture", color: "text-[var(--color-blue)]" },
         ].map(({ href, icon: Icon, title, desc, color }) => (
           <Link key={href} href={href}>
-            <Card className="p-5 hover:border-[var(--color-blue)]/40 hover:bg-white/[0.02] transition-colors cursor-pointer h-full">
+            <Card className="p-5 hover:border-[var(--color-blue)]/40 hover:bg-white transition-colors cursor-pointer h-full">
               <Icon className={`h-7 w-7 mb-3 ${color}`} />
               <p className="font-semibold text-sm">{title}</p>
               <p className="text-xs text-[var(--color-ink-dim)] mt-1">{desc}</p>

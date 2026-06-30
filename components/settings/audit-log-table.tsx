@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -156,7 +156,7 @@ export function AuditLogTable({
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={log.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3 text-xs text-[var(--color-ink-faint)] whitespace-nowrap">
                       {formatDate(log.createdAt)}
                     </td>

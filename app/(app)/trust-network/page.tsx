@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -39,7 +39,7 @@ export default async function TrustNetworkDashboard() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/trust-network/directory" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-network/directory" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-line)] text-sm font-semibold hover:bg-[#F8F9FB] transition-colors">
             <Globe className="h-4 w-4" /> Network Directory
           </Link>
           <Link href="/trust-network/profile" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-blue)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">
@@ -214,7 +214,7 @@ export default async function TrustNetworkDashboard() {
               { href: "/trust-network/ai", icon: Zap, title: "AI Network Advisor™", desc: "Strategy & recommendations", color: "text-[var(--color-blue)]" },
             ].map(({ href, icon: Icon, title, desc, color }) => (
               <Link key={href} href={href}>
-                <Card className="px-4 py-3 flex items-center gap-3 hover:border-[var(--color-blue)]/40 hover:bg-white/[0.02] transition-colors cursor-pointer">
+                <Card className="px-4 py-3 flex items-center gap-3 hover:border-[var(--color-blue)]/40 hover:bg-white transition-colors cursor-pointer">
                   <Icon className={`h-5 w-5 flex-shrink-0 ${color}`} />
                   <div className="min-w-0">
                     <p className="text-sm font-semibold truncate">{title}</p>

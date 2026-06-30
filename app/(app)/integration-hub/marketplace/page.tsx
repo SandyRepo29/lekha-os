@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -94,7 +94,7 @@ export default async function MarketplacePage() {
                     </span>
                   )}
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-xl bg-white/[0.08] flex items-center justify-center text-base font-bold text-[var(--color-blue)] shrink-0">
+                    <div className="h-10 w-10 rounded-xl bg-[#EEF2F7] flex items-center justify-center text-base font-bold text-[var(--color-blue)] shrink-0">
                       {connector.name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">

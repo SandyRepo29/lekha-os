@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Sparkles, Send, Loader2 } from "lucide-react";
@@ -39,7 +39,7 @@ export function ContractAiChat() {
         Contract Governance Copilot™
       </h2>
 
-      <div className="rounded-xl bg-white/[0.02] border border-[var(--color-line)] p-4 h-72 overflow-y-auto space-y-4 mb-4">
+      <div className="rounded-xl bg-white border border-[var(--color-line)] p-4 h-72 overflow-y-auto space-y-4 mb-4">
         {messages.length === 0 && (
           <p className="text-sm text-[var(--color-ink-dim)] text-center mt-16">
             Ask about expiring contracts, obligations, renewal risks, or portfolio health

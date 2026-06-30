@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -69,7 +69,7 @@ export default async function ApiCatalogPage() {
             <div key={p.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#F8F9FB]">
                     <Icon className="h-5 w-5 text-[var(--color-blue)]" />
                   </span>
                   <div>
@@ -93,7 +93,7 @@ export default async function ApiCatalogPage() {
 
               <div className="mt-4 space-y-1.5">
                 {endpoints.map((ep, i) => (
-                  <code key={i} className="flex items-center gap-2 rounded-lg bg-white/[0.04] px-3 py-1.5 text-[11px] font-mono text-[var(--color-ink-dim)]">
+                  <code key={i} className="flex items-center gap-2 rounded-lg bg-[#F8F9FB] px-3 py-1.5 text-[11px] font-mono text-[var(--color-ink-dim)]">
                     <span className="text-emerald-400 font-semibold">GET</span> {ep}
                   </code>
                 ))}

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -78,7 +78,7 @@ export default async function DeveloperPortalPage() {
         <h2 className="mb-4 font-semibold">Quickstart</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {QUICKSTART.map(({ step, title, desc, href }) => (
-            <div key={step} className="relative rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-4">
+            <div key={step} className="relative rounded-xl border border-[var(--color-line)]/60 bg-white p-4">
               <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-blue)]/20 text-xs font-bold text-[var(--color-blue)]">{step}</div>
               <div className="font-medium text-sm">{title}</div>
               <p className="mt-1 text-xs text-[var(--color-ink-dim)]">{desc}</p>
@@ -101,7 +101,7 @@ export default async function DeveloperPortalPage() {
           </div>
           <div className="space-y-2">
             {ENDPOINTS.map(({ method, path, desc }) => (
-              <div key={path} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/40 bg-white/[0.02] px-3 py-2.5">
+              <div key={path} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/40 bg-white px-3 py-2.5">
                 <span className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold ${
                   method === "GET" ? "bg-emerald-500/15 text-emerald-400" : "bg-blue-500/15 text-blue-400"
                 }`}>{method}</span>
@@ -113,7 +113,7 @@ export default async function DeveloperPortalPage() {
             ))}
           </div>
 
-          <div className="mt-4 rounded-xl border border-[var(--color-line)]/40 bg-white/[0.02] p-3">
+          <div className="mt-4 rounded-xl border border-[var(--color-line)]/40 bg-white p-3">
             <div className="text-xs font-semibold text-[var(--color-ink-dim)]">Authentication</div>
             <code className="mt-1 block text-[11px] font-mono text-[var(--color-blue)]">
               Authorization: Bearer tap_your_key_here
@@ -156,7 +156,7 @@ export default async function DeveloperPortalPage() {
             { lang: "Go",         status: "Phase 2", color: "text-cyan-400" },
             { lang: "C#",         status: "Phase 2", color: "text-violet-400" },
           ].map(({ lang, status, color }) => (
-            <div key={lang} className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-3 text-center">
+            <div key={lang} className="rounded-xl border border-[var(--color-line)]/60 bg-white p-3 text-center">
               <div className={`font-semibold text-sm ${color}`}>{lang}</div>
               <div className="mt-1 text-[10px] text-[var(--color-ink-faint)]">{status}</div>
             </div>
@@ -169,7 +169,7 @@ export default async function DeveloperPortalPage() {
         <h2 className="mb-4 font-semibold">Partner Integration Examples</h2>
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9">
           {["SAP Ariba", "Coupa", "ServiceNow", "Jira", "Salesforce", "Microsoft", "Google", "Oracle", "Workday"].map(name => (
-            <div key={name} className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-2 py-3 text-center text-[11px] font-medium text-[var(--color-ink-dim)]">
+            <div key={name} className="rounded-xl border border-[var(--color-line)]/60 bg-white px-2 py-3 text-center text-[11px] font-medium text-[var(--color-ink-dim)]">
               {name}
             </div>
           ))}

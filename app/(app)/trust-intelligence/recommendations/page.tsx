@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Zap, ArrowRight } from "lucide-react";
@@ -52,7 +52,7 @@ export default async function RecommendationsPage() {
             const trustImpactPts = rec.impact * 2;
 
             return (
-              <Card key={rec.id} className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60 hover:bg-white/[0.02] transition-colors">
+              <Card key={rec.id} className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60 hover:bg-white transition-colors">
                 {/* Header row */}
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2">

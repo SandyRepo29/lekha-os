@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
@@ -56,7 +56,7 @@ function PlainKeyModal({ plainKey, onClose }: { plainKey: string; onClose: () =>
             <p className="text-xs text-[var(--color-ink-faint)]">Copy this key now — it won&apos;t be shown again.</p>
           </div>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-3 font-mono text-sm">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 font-mono text-sm">
           <div className="flex items-center gap-2">
             <span className={cn("flex-1 break-all text-[var(--color-ink)]", !visible && "blur-sm select-none")}>
               {plainKey}

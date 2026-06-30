@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Clock, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -40,7 +40,7 @@ export default async function RetentionPage() {
               name="name"
               required
               placeholder="e.g. Customer Data Retention"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
           <div>
@@ -62,7 +62,7 @@ export default async function RetentionPage() {
               min={1}
               required
               placeholder="e.g. 730"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
           <div>
@@ -70,7 +70,7 @@ export default async function RetentionPage() {
             <input
               name="legalBasis"
               placeholder="e.g. Contractual obligation, statutory requirement"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
           <div>
@@ -121,7 +121,7 @@ export default async function RetentionPage() {
                 {policies.map((p) => (
                   <tr
                     key={p.id}
-                    className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
+                    className="border-b border-[var(--color-line)]/50 hover:bg-white transition-colors"
                   >
                     <td className="px-4 py-3 font-medium">{p.name}</td>
                     <td className="px-4 py-3 capitalize text-[var(--color-ink-dim)]">

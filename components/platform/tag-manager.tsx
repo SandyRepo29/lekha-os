@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -153,7 +153,7 @@ export function TagManager({ entityType, entityId, orgTags, entityTags, canEdit 
                   </div>
                   <button
                     onClick={() => setCreating(true)}
-                    className="mt-2 w-full rounded-lg py-1.5 text-xs font-medium transition-colors hover:bg-white/[0.06]"
+                    className="mt-2 w-full rounded-lg py-1.5 text-xs font-medium transition-colors hover:bg-[#F8F9FB]"
                     style={{ color: "var(--color-ink-dim)" }}
                   >
                     &#43; Create new tag
@@ -200,7 +200,7 @@ export function TagManager({ entityType, entityId, orgTags, entityTags, canEdit 
                     </button>
                     <button
                       onClick={() => setCreating(false)}
-                      className="flex-1 rounded-lg py-1.5 text-xs font-medium transition-colors hover:bg-white/[0.06]"
+                      className="flex-1 rounded-lg py-1.5 text-xs font-medium transition-colors hover:bg-[#F8F9FB]"
                       style={{ color: "var(--color-ink-dim)" }}
                     >
                       Cancel

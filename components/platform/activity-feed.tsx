@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -117,7 +117,7 @@ function EntityBadge({ entityType }: { entityType: string }) {
   const Icon = getEntityIcon(entityType);
   const label = entityType.charAt(0).toUpperCase() + entityType.slice(1);
   return (
-    <span className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium border border-[var(--color-line)] bg-white/[0.04] text-[var(--color-ink-dim)]">
+    <span className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium border border-[var(--color-line)] bg-[#F8F9FB] text-[var(--color-ink-dim)]">
       <Icon className="h-2.5 w-2.5" />
       {label}
     </span>
@@ -206,7 +206,7 @@ export function ActivityFeed({ activities, showFilters = false, entityType, titl
   const hasMore = filtered.length > PAGE_SIZE && !showAll;
 
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <h3 className="font-[family-name:var(--font-display)] text-sm font-semibold text-[var(--color-ink)] flex items-center gap-2">
           <Activity className="h-4 w-4 text-[var(--color-ink-dim)]" />
@@ -229,7 +229,7 @@ export function ActivityFeed({ activities, showFilters = false, entityType, titl
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search events..."
-              className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] py-2 pl-8 pr-3 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)] transition-colors"
+              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] py-2 pl-8 pr-3 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)] transition-colors"
             />
           </div>
           <div className="mb-4 flex flex-wrap gap-1.5">
@@ -239,8 +239,8 @@ export function ActivityFeed({ activities, showFilters = false, entityType, titl
                 onClick={() => setActiveFilter(f)}
                 className={`rounded-xl px-3 py-1 text-xs font-medium transition-colors ${
                   activeFilter === f
-                    ? "bg-white/[0.08] text-[var(--color-ink)]"
-                    : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                    ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                    : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
                 }`}
               >
                 {f}
@@ -252,7 +252,7 @@ export function ActivityFeed({ activities, showFilters = false, entityType, titl
 
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.04]">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F8F9FB]">
             <Calendar className="h-6 w-6 text-[var(--color-ink-dim)]" />
           </div>
           <p className="text-sm font-medium text-[var(--color-ink)]">No activity yet</p>
@@ -281,7 +281,7 @@ export function ActivityFeed({ activities, showFilters = false, entityType, titl
           {hasMore && (
             <button
               onClick={() => setShowAll(true)}
-              className="mt-2 w-full rounded-xl border border-[var(--color-line)] bg-white/[0.02] py-2 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)] transition-colors flex items-center justify-center gap-1.5"
+              className="mt-2 w-full rounded-xl border border-[var(--color-line)] bg-white py-2 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors flex items-center justify-center gap-1.5"
             >
               Show {filtered.length - PAGE_SIZE} more events
               <ChevronRight className="h-3.5 w-3.5" />

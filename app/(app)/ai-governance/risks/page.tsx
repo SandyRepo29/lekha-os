@@ -62,7 +62,7 @@ export default async function AiRisksPage() {
           </thead>
           <tbody className="divide-y divide-[var(--color-line)]">
             {risks.map((r) => (
-              <tr key={r.id} className="hover:bg-white/[0.02]">
+              <tr key={r.id} className="hover:bg-white">
                 <td className="px-4 py-3">
                   <div className="font-medium">{r.title}</div>
                   {r.description && <div className="text-xs text-[var(--color-ink-dim)]">{r.description.slice(0, 60)}</div>}

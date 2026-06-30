@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -61,7 +61,7 @@ export default function VerifyPaymentForm({ invoiceId }: Props) {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="e.g. UTR confirmed via bank statement..."
-          className="w-full resize-none rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-full resize-none rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
 

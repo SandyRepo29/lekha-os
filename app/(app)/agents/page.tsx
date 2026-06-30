@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Governance Agent Framework&#8482; — AUDT' };
 
@@ -123,7 +123,7 @@ export default async function AgentsPage() {
           {obs.length > 0 ? (
             <div className="space-y-2">
               {obs.slice(0, 5).map(o => (
-                <div key={o.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+                <div key={o.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                   <AlertTriangle className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${
                     o.severity === "critical" ? "text-red-400" :
                     o.severity === "high" ? "text-orange-400" : "text-amber-400"

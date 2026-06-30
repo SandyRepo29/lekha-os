@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ export function RecommendationActions({ recId }: { recId: string }) {
       <button
         onClick={reject}
         disabled={pending}
-        className="flex items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-colors disabled:opacity-50"
+        className="flex items-center gap-1.5 rounded-lg bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-colors disabled:opacity-50"
       >
         <XCircle className="h-3.5 w-3.5" /> Dismiss
       </button>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Users } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -32,7 +32,7 @@ export default async function TeamPage() {
             { label: "Active", value: active.length },
             { label: "Inactive", value: inactive.length },
           ].map(({ label, value }) => (
-            <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-center">
+            <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-white p-4 text-center">
               <div className="text-2xl font-bold text-[var(--color-ink)]">{value}</div>
               <div className="mt-0.5 text-xs text-[var(--color-ink-faint)]">{label}</div>
             </div>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -92,8 +92,8 @@ export default async function VerificationDetailPage({ params }: { params: Promi
             <form action={async (fd: FormData) => { "use server"; await submitEvidenceAction(null, fd); }} className="mb-4 flex gap-2">
               <input type="hidden" name="verificationId" value={v.id} />
               <input name="title" placeholder="Evidence title…" required
-                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
-              <select name="evidenceType" className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none">
+                className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
+              <select name="evidenceType" className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none">
                 {["policy","control_test","audit_report","risk_register","vendor_assessment","compliance_report","custom"].map(t => (
                   <option key={t} value={t}>{t.replace(/_/g," ")}</option>
                 ))}
@@ -106,7 +106,7 @@ export default async function VerificationDetailPage({ params }: { params: Promi
             {evidence.length > 0 ? (
               <div className="space-y-2">
                 {evidence.map((ev: any) => (
-                  <div key={ev.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+                  <div key={ev.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                     <div>
                       <div className="text-sm font-medium">{ev.title}</div>
                       <div className="text-[11px] text-[var(--color-ink-faint)] mt-0.5">{ev.evidenceType.replace(/_/g," ")} · {new Date(ev.submittedAt).toLocaleDateString()}</div>
@@ -126,7 +126,7 @@ export default async function VerificationDetailPage({ params }: { params: Promi
             {reviews.length > 0 ? (
               <div className="space-y-3">
                 {reviews.map((r: any) => (
-                  <div key={r.id} className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] p-3">
+                  <div key={r.id} className="rounded-xl border border-[var(--color-line)]/60 bg-white p-3">
                     <div className="flex items-center justify-between mb-1">
                       <div className="text-sm font-medium capitalize">{r.reviewType.replace(/_/g," ")} Review</div>
                       <StatusBadge status={r.status} />
@@ -152,7 +152,7 @@ export default async function VerificationDetailPage({ params }: { params: Promi
               </h3>
               <form action={async (fd: FormData) => { "use server"; await makeDecisionAction(null, fd); }} className="space-y-3">
                 <input type="hidden" name="verificationId" value={v.id} />
-                <select name="decision" required className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none">
+                <select name="decision" required className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none">
                   <option value="">Select decision…</option>
                   <option value="approved">Approved</option>
                   <option value="conditionally_approved">Conditionally Approved</option>
@@ -160,7 +160,7 @@ export default async function VerificationDetailPage({ params }: { params: Promi
                   <option value="suspended">Suspended</option>
                 </select>
                 <textarea name="rationale" placeholder="Decision rationale…" rows={3}
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--color-blue)]/50" />
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--color-blue)]/50" />
                 <button type="submit" className="w-full rounded-xl grad-brand py-2 text-sm font-semibold text-white hover:opacity-90">
                   Submit Decision
                 </button>

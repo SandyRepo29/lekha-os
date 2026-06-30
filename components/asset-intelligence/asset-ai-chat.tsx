@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { chatAction } from "@/lib/asset-intelligence/actions";
@@ -39,7 +39,7 @@ export function AssetAiChat({ context }: { context: { totalAssets: number; criti
   }
 
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] flex flex-col" style={{ height: "420px" }}>
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white flex flex-col" style={{ height: "420px" }}>
       <div className="flex items-center gap-2 border-b border-[var(--color-line)] px-4 py-3">
         <Brain className="h-4 w-4 text-[var(--color-blue)]" />
         <span className="text-sm font-medium">AI Asset Advisor™</span>
@@ -50,14 +50,14 @@ export function AssetAiChat({ context }: { context: { totalAssets: number; criti
         )}
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${m.role === "user" ? "bg-[var(--color-blue)] text-white" : "bg-white/[0.06] text-[var(--color-ink)]"}`}>
+            <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${m.role === "user" ? "bg-[var(--color-blue)] text-white" : "bg-[#F8F9FB] text-[var(--color-ink)]"}`}>
               {m.content}
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl bg-white/[0.06] px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">Thinking…</div>
+            <div className="rounded-2xl bg-[#F8F9FB] px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">Thinking…</div>
           </div>
         )}
         <div ref={bottomRef} />
@@ -68,7 +68,7 @@ export function AssetAiChat({ context }: { context: { totalAssets: number; criti
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send())}
           placeholder="Ask about assets, dependencies, PII…"
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)] outline-none"
         />
         <button onClick={send} disabled={!input.trim() || loading}
           className="rounded-xl bg-[var(--color-blue)] px-4 py-2 text-white hover:opacity-90 disabled:opacity-40 transition-opacity">

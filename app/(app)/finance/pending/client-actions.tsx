@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 // ─── Client components for Pending Verification page ─────────────────────────
 // VerifyButton, RejectButton, AddNotesButton
@@ -167,7 +167,7 @@ export function RejectButton({
             onChange={(e) => setReason(e.target.value)}
             placeholder="e.g. UTR not found in bank statement, amount mismatch..."
             rows={3}
-            className="w-full resize-none rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:border-red-500/50 focus:outline-none"
+            className="w-full resize-none rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:border-red-500/50 focus:outline-none"
           />
           {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
           <div className="mt-2 flex justify-end gap-2">
@@ -233,7 +233,7 @@ export function AddNotesButton({ transactionId }: { transactionId: string }) {
     <div className="flex flex-col items-end gap-2">
       <button
         onClick={handleToggle}
-        className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-white/[0.04] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+        className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
         title="Add internal note"
       >
         <StickyNote className="h-4 w-4" />
@@ -256,7 +256,7 @@ export function AddNotesButton({ transactionId }: { transactionId: string }) {
             onChange={(e) => setNote(e.target.value)}
             placeholder="e.g. Checked bank statement — transfer visible, pending 2-day settlement..."
             rows={3}
-            className="w-full resize-none rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:border-[var(--color-blue)]/50 focus:outline-none"
+            className="w-full resize-none rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:border-[var(--color-blue)]/50 focus:outline-none"
           />
           {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
           <div className="mt-2 flex justify-end gap-2">

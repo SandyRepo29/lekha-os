@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -58,13 +58,13 @@ export function AiSummary({
       </div>
 
       {pending && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm text-[var(--color-ink-faint)]">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm text-[var(--color-ink-faint)]">
           Analysing vendor data…
         </div>
       )}
 
       {!pending && summary && (
-        <p className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink-dim)]">
+        <p className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm leading-relaxed text-[var(--color-ink-dim)]">
           {summary}
         </p>
       )}

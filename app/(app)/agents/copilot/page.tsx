@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { Bot } from "lucide-react";
@@ -39,7 +39,7 @@ export default async function CopilotPage() {
           { icon: "📋", title: "Action Planning",  desc: "Get a prioritized list of what to fix this week" },
           { icon: "📊", title: "Posture Summary",  desc: "Understand compliance, vendor trust, and control health at a glance" },
         ].map(c => (
-          <div key={c.title} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-3">
+          <div key={c.title} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white p-3">
             <span className="text-base leading-none mt-0.5">{c.icon}</span>
             <div>
               <div className="text-xs font-semibold">{c.title}</div>

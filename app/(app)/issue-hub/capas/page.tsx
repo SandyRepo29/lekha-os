@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Shield, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
@@ -155,7 +155,7 @@ export default async function IssueHubCapasPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {capas.map((capa) => (
-                  <tr key={capa.id} className={`hover:bg-white/[0.02] ${isOverdue(capa.dueDate) && capa.status !== "completed" ? "bg-red-500/5" : ""}`}>
+                  <tr key={capa.id} className={`hover:bg-white ${isOverdue(capa.dueDate) && capa.status !== "completed" ? "bg-red-500/5" : ""}`}>
                     <td className="px-5 py-3">
                       <p className="font-medium">{capa.title}</p>
                       {capa.description && (

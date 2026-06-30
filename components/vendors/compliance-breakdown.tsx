@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle, AlertTriangle, Circle } from "lucide-react";
+﻿import { CheckCircle2, XCircle, AlertTriangle, Circle } from "lucide-react";
 import type { VendorDocument } from "@/lib/db/schema";
 import { DOCS_TO_SCORE_90, DOCUMENT_TYPES } from "@/lib/constants/vendor-options";
 import { computeScore, type DocCounts, type Risk } from "@/lib/services/scoring";
@@ -125,7 +125,7 @@ export function ComplianceBreakdown({ risk, currentScore, docs }: Props) {
       </div>
 
       {/* Scoring formula */}
-      <div className="rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-xs text-[var(--color-ink-faint)]">
+      <div className="rounded-lg border border-[var(--color-line)] bg-white px-4 py-3 text-xs text-[var(--color-ink-faint)]">
         <span className="font-semibold text-[var(--color-ink-dim)]">How it's calculated: </span>
         Risk base ({riskBase(risk)}) + valid docs (×5, max +40) − expiring (×10) − expired (×20)
       </div>

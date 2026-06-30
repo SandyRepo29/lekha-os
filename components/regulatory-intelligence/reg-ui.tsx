@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +21,7 @@ const NAV_ITEMS = [
 export function RegSubNav() {
   const pathname = usePathname();
   return (
-    <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 scrollbar-thin">
+    <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white p-1 scrollbar-thin">
       {NAV_ITEMS.map(({ href, label }) => {
         const active =
           href === "/regulatory-intelligence"
@@ -34,8 +34,8 @@ export function RegSubNav() {
             className={cn(
               "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-white/[0.08] text-[var(--color-ink)]"
-                : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
             )}
           >
             {label}
@@ -178,7 +178,7 @@ export function AlertIcon({ severity }: { severity: string }) {
 export function ReadinessBar({ score }: { score: number }) {
   const color = score >= 80 ? "bg-emerald-500" : score >= 60 ? "bg-amber-500" : score >= 40 ? "bg-orange-500" : "bg-red-500";
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.08]">
+    <div className="h-2 w-full overflow-hidden rounded-full bg-[#EEF2F7]">
       <div className={cn("h-full rounded-full transition-all", color)} style={{ width: `${score}%` }} />
     </div>
   );

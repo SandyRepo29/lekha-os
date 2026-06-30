@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { TrendingUp, BarChart2, Calendar, ArrowRight } from "lucide-react";
@@ -148,7 +148,7 @@ export default async function GovernanceTrendsPage() {
                 </thead>
                 <tbody className="divide-y divide-[var(--color-line)]">
                   {[...points].reverse().slice(0, 30).map((p) => (
-                    <tr key={p.date} className="hover:bg-white/[0.02]">
+                    <tr key={p.date} className="hover:bg-white">
                       <td className="py-2 pr-4 text-[var(--color-ink-dim)] font-mono">{p.date}</td>
                       <td className="py-2 pr-3 text-right font-semibold text-[var(--color-ink)]">{p.orgTrust}</td>
                       <td className="py-2 pr-3 text-right text-[var(--color-ink-dim)]">{p.vendorTrust}</td>
@@ -176,22 +176,22 @@ export default async function GovernanceTrendsPage() {
 
             {/* Forecast stat boxes */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Current</p>
                 <p className="text-2xl font-bold text-[var(--color-ink)]">{currentTrust}</p>
                 <p className="text-xs text-[var(--color-ink-faint)] mt-1">score</p>
               </div>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">30 Days</p>
                 <p className={`text-2xl font-bold ${projColor(proj30, currentTrust)}`}>{proj30}</p>
                 <p className="text-xs text-[var(--color-ink-faint)] mt-1">projected</p>
               </div>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">90 Days</p>
                 <p className={`text-2xl font-bold ${projColor(proj90, currentTrust)}`}>{proj90}</p>
                 <p className="text-xs text-[var(--color-ink-faint)] mt-1">projected</p>
               </div>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">180 Days</p>
                 <p className={`text-2xl font-bold ${projColor(proj180, currentTrust)}`}>{proj180}</p>
                 <p className="text-xs text-[var(--color-ink-faint)] mt-1">projected</p>
@@ -249,7 +249,7 @@ export default async function GovernanceTrendsPage() {
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-[var(--color-ink-faint)]">Current score:</span>
-              <span className="rounded-md bg-white/[0.06] border border-[var(--color-line)] px-2 py-0.5 text-sm font-bold text-[var(--color-ink)]">
+              <span className="rounded-md bg-[#F8F9FB] border border-[var(--color-line)] px-2 py-0.5 text-sm font-bold text-[var(--color-ink)]">
                 {currentTrust}
               </span>
             </div>
@@ -258,7 +258,7 @@ export default async function GovernanceTrendsPage() {
               {RECOVERY_ACTIONS.map(({ action, impact, effort, href }) => (
                 <div
                   key={action}
-                  className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3"
+                  className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3"
                 >
                   <span className="flex-1 text-sm text-[var(--color-ink)] min-w-[160px]">{action}</span>
                   <span className="rounded-md bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-xs font-semibold text-emerald-400">
@@ -277,7 +277,7 @@ export default async function GovernanceTrendsPage() {
               ))}
             </div>
 
-            <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-4">
+            <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
               <p className="text-xs text-[var(--color-ink-faint)] mb-3 font-medium uppercase tracking-wide">
                 Projected Trust after all actions
               </p>

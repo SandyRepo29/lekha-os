@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Contract Governance&#8482; — AUDT' };
 
@@ -63,19 +63,19 @@ export default async function ContractGovernanceDashboardPage() {
         <div className="flex items-center gap-2">
           <a
             href="/api/v1/contracts/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Contracts CSV
           </a>
           <a
             href="/api/v1/contracts/obligations/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Obligations CSV
           </a>
-          <Link href="/contract-governance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/contract-governance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             Contract Intelligence&#8482;
           </Link>
@@ -170,7 +170,7 @@ export default async function ContractGovernanceDashboardPage() {
                   <Link
                     key={c.id}
                     href={`/contract-governance/${c.id}`}
-                    className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] transition-colors"
+                    className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white transition-colors"
                   >
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{c.title}</p>

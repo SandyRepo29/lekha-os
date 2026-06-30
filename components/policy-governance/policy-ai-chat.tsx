@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { chatAction } from "@/lib/policy-governance/actions";
@@ -66,7 +66,7 @@ export function PolicyAiChat() {
               "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm",
               m.role === "user"
                 ? "bg-indigo-500/20 text-[var(--color-ink)]"
-                : "bg-white/[0.04] text-[var(--color-ink)]"
+                : "bg-[#F8F9FB] text-[var(--color-ink)]"
             )}>
               <p className="whitespace-pre-wrap">{m.content}</p>
             </div>
@@ -77,7 +77,7 @@ export function PolicyAiChat() {
             <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
               <Bot className="h-4 w-4" />
             </div>
-            <div className="rounded-2xl bg-white/[0.04] px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">
+            <div className="rounded-2xl bg-[#F8F9FB] px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">
               Thinking…
             </div>
           </div>

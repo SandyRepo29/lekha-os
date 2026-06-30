@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+﻿import type { LucideIcon } from "lucide-react";
 
 interface Props {
   icon: LucideIcon;
@@ -11,7 +11,7 @@ interface Props {
 export function EmptyState({ icon: Icon, title, description, action }: Props) {
   return (
     <div className="flex flex-col items-center gap-3 px-5 py-14 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.04] text-[var(--color-ink-faint)]">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F8F9FB] text-[var(--color-ink-faint)]">
         <Icon className="h-7 w-7" />
       </div>
       <div>

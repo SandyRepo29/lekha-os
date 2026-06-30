@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData, computeSecurityReadiness } from "@/lib/services/security-command-center/security-service";
@@ -41,11 +41,11 @@ export default async function SecurityReportsPage() {
 
       {/* Enterprise Readiness Score */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <ReadinessRing score={readiness.score} level={readiness.level} />
           <p className="mt-3 text-center text-xs text-[var(--color-ink-dim)]">Security Readiness Score™</p>
         </div>
-        <div className="lg:col-span-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-3">
+        <div className="lg:col-span-2 rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-3">
           <h2 className="font-semibold text-sm">Enterprise Readiness Checklist</h2>
           <p className="text-xs text-[var(--color-ink-dim)]">{metCount}/{CRITERIA.length} criteria met</p>
           <div className="space-y-2">
@@ -66,7 +66,7 @@ export default async function SecurityReportsPage() {
         <h2 className="font-semibold">Security Reports</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {REPORTS.map(({ icon: Icon, title, desc, href }) => (
-            <div key={title} className="flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+            <div key={title} className="flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-4">
               <div className="flex items-start gap-3">
                 <Icon className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
                 <div>
@@ -76,7 +76,7 @@ export default async function SecurityReportsPage() {
               </div>
               <a
                 href={href}
-                className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-2 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.04] transition-colors mt-auto"
+                className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-2 text-xs font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors mt-auto"
               >
                 <Download className="h-3.5 w-3.5" /> Export PDF / CSV
               </a>

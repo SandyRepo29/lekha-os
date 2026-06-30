@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export function PolicyStat({
   const bg      = ACCENT_BG[accent];
 
   const inner = (
-    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white/[0.03] transition-colors")}>
+    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white transition-colors")}>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
       <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">
         {value}
@@ -75,7 +75,7 @@ export function PolicyFilterChip({
         "rounded-full px-3 py-1 text-xs font-medium transition-colors",
         active
           ? "bg-[var(--color-blue)]/20 text-[var(--color-blue)]"
-          : "bg-white/[0.04] text-[var(--color-ink-dim)] hover:bg-white/[0.07]"
+          : "bg-[#F8F9FB] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]"
       )}
     >
       {label}

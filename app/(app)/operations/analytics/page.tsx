@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getWorkflowAnalyticsAction, getWorkflowInstancesAction } from "@/lib/toe/actions";
@@ -92,7 +92,7 @@ export default async function AnalyticsPage() {
                         <span className="capitalize text-[var(--color-ink-dim)]">{status.replace(/_/g, " ")}</span>
                         <span className="text-[var(--color-ink)]">{n} <span className="text-[var(--color-ink-dim)]">({pct}%)</span></span>
                       </div>
-                      <div className="h-2 rounded-full bg-white/[0.05]">
+                      <div className="h-2 rounded-full bg-[#F8F9FB]">
                         <div className={`h-full rounded-full ${barColor}`} style={{ width: `${pct}%` }} />
                       </div>
                     </div>

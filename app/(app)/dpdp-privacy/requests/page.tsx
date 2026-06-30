@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, FileSearch, AlertTriangle } from "lucide-react";
@@ -117,7 +117,7 @@ export default async function RequestsPage({
           <Link
             key={f.label}
             href={f.href}
-            className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1 text-xs hover:bg-white/[0.07] transition-colors"
+            className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1 text-xs hover:bg-[#F8F9FB] transition-colors"
           >
             {f.label}
           </Link>
@@ -156,7 +156,7 @@ export default async function RequestsPage({
                   return (
                     <tr
                       key={req.id}
-                      className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-[var(--color-line)]/50 hover:bg-white transition-colors"
                     >
                       <td className="px-4 py-3">
                         <p className="font-medium">{req.subjectName}</p>

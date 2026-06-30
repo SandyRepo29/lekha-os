@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getFinanceDashboardAction } from "@/lib/billing/actions";
@@ -42,7 +42,7 @@ function fmtActionLabel(action: string): string {
 
 function ActionBadge({ action }: { action: string }) {
   const label = fmtActionLabel(action);
-  let cls = "text-[var(--color-ink-dim)] bg-white/[0.06]";
+  let cls = "text-[var(--color-ink-dim)] bg-[#F8F9FB]";
   if (action.includes("verified") || action.includes("paid")) {
     cls = "text-emerald-400 bg-emerald-400/10";
   } else if (action.includes("rejected") || action.includes("cancelled")) {
@@ -111,7 +111,7 @@ export default async function FinanceConsolePage() {
       {/* ── Stats strip ──────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {/* Pending Verification */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 border-l-2 border-l-amber-500">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 border-l-2 border-l-amber-500">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-dim)]">
             Pending Verification
           </p>
@@ -120,7 +120,7 @@ export default async function FinanceConsolePage() {
         </div>
 
         {/* Invoices This Month */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 border-l-2 border-l-[var(--color-line)]">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 border-l-2 border-l-[var(--color-line)]">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-dim)]">
             Invoices This Month
           </p>
@@ -131,7 +131,7 @@ export default async function FinanceConsolePage() {
         </div>
 
         {/* Revenue This Month */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 border-l-2 border-l-emerald-500">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 border-l-2 border-l-emerald-500">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-dim)]">
             Revenue This Month
           </p>
@@ -142,7 +142,7 @@ export default async function FinanceConsolePage() {
         </div>
 
         {/* Active Subscriptions */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 border-l-2 border-l-[var(--color-blue)]">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 border-l-2 border-l-[var(--color-blue)]">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-dim)]">
             Active Subscriptions
           </p>
@@ -154,7 +154,7 @@ export default async function FinanceConsolePage() {
       </div>
 
       {/* ── Pending Transactions ─────────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white">
         <div className="flex items-center justify-between border-b border-[var(--color-line)] px-5 py-4">
           <div>
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">
@@ -217,7 +217,7 @@ export default async function FinanceConsolePage() {
       </div>
 
       {/* ── Recent Finance Actions ───────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white">
         <div className="border-b border-[var(--color-line)] px-5 py-4">
           <h2 className="text-sm font-semibold text-[var(--color-ink)]">
             Recent Finance Actions
@@ -271,7 +271,7 @@ export default async function FinanceConsolePage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <Link
             href="/finance/pending"
-            className="group rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 hover:bg-white/[0.06] transition-colors"
+            className="group rounded-2xl border border-[var(--color-line)] bg-white p-5 hover:bg-[#F8F9FB] transition-colors"
           >
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 text-lg">
               &#9201;
@@ -286,7 +286,7 @@ export default async function FinanceConsolePage() {
 
           <Link
             href="/finance/invoices"
-            className="group rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 hover:bg-white/[0.06] transition-colors"
+            className="group rounded-2xl border border-[var(--color-line)] bg-white p-5 hover:bg-[#F8F9FB] transition-colors"
           >
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-blue)]/10 text-[var(--color-blue)] text-lg">
               &#128196;
@@ -301,7 +301,7 @@ export default async function FinanceConsolePage() {
 
           <Link
             href="/finance/transactions"
-            className="group rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 hover:bg-white/[0.06] transition-colors"
+            className="group rounded-2xl border border-[var(--color-line)] bg-white p-5 hover:bg-[#F8F9FB] transition-colors"
           >
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 text-lg">
               &#128179;
@@ -316,7 +316,7 @@ export default async function FinanceConsolePage() {
 
           <Link
             href="/finance/reports"
-            className="group rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 hover:bg-white/[0.06] transition-colors"
+            className="group rounded-2xl border border-[var(--color-line)] bg-white p-5 hover:bg-[#F8F9FB] transition-colors"
           >
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 text-lg">
               &#128202;

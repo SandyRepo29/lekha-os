@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -80,7 +80,7 @@ export default async function WorkforcePage() {
               <div key={ev.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
-                    <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
+                    <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#F8F9FB]">
                       <Icon className="h-4 w-4 text-[var(--color-blue)]" />
                     </span>
                     <div>

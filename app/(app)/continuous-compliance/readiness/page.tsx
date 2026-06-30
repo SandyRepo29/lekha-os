@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -70,15 +70,15 @@ export default async function ReadinessPage() {
               </div>
               <HealthBar score={f.readinessScore} />
               <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[10px]">
-                <div className="rounded-lg bg-white/[0.04] py-1.5">
+                <div className="rounded-lg bg-[#F8F9FB] py-1.5">
                   <div className="font-semibold text-xs">{f.passingChecks}/{f.totalChecks}</div>
                   <div className="text-[var(--color-ink-faint)]">Checks</div>
                 </div>
-                <div className="rounded-lg bg-white/[0.04] py-1.5">
+                <div className="rounded-lg bg-[#F8F9FB] py-1.5">
                   <div className="font-semibold text-xs">{f.passingControls}/{f.totalControls}</div>
                   <div className="text-[var(--color-ink-faint)]">Controls</div>
                 </div>
-                <div className="rounded-lg bg-white/[0.04] py-1.5">
+                <div className="rounded-lg bg-[#F8F9FB] py-1.5">
                   <div className="font-semibold text-xs">{f.evidenceCoverage}%</div>
                   <div className="text-[var(--color-ink-faint)]">Evidence</div>
                 </div>
@@ -101,7 +101,7 @@ export default async function ReadinessPage() {
             Run compliance checks to auto-populate readiness scores.
           </p>
           <Link href="/continuous-compliance/checks"
-            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium hover:bg-white/[0.04]">
+            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
             Go to Checks →
           </Link>
         </div>

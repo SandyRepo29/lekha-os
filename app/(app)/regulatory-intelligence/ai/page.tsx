@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";
@@ -49,7 +49,7 @@ export default async function RegAiAdvisorPage() {
         <div className="mb-3 flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-[var(--color-blue)]" />
           <span className="text-sm font-semibold text-[var(--color-blue)]">Regulatory Executive Summary</span>
-          <span className="ml-auto text-[10px] text-[var(--color-ink-faint)] rounded-full border border-[var(--color-line)] bg-white/[0.04] px-2 py-0.5">Cached 24h</span>
+          <span className="ml-auto text-[10px] text-[var(--color-ink-faint)] rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-2 py-0.5">Cached 24h</span>
         </div>
         <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{summary}</p>
       </div>
@@ -68,7 +68,7 @@ export default async function RegAiAdvisorPage() {
           ].map(q => (
             <div
               key={q}
-              className="cursor-pointer rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2.5 text-xs text-[var(--color-ink-dim)] hover:border-[var(--color-blue)]/30 hover:bg-[var(--color-blue)]/[0.04] hover:text-[var(--color-ink)] transition-colors reg-ai-question"
+              className="cursor-pointer rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 text-xs text-[var(--color-ink-dim)] hover:border-[var(--color-blue)]/30 hover:bg-[var(--color-blue)]/[0.04] hover:text-[var(--color-ink)] transition-colors reg-ai-question"
               data-question={q}
             >
               {q}

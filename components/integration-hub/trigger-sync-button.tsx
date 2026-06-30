@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition } from "react";
 import { RefreshCw } from "lucide-react";
@@ -17,7 +17,7 @@ export function TriggerSyncButton({ instanceId }: { instanceId: string }) {
         await triggerSyncAction(instanceId);
         router.refresh();
       })}
-      className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors disabled:opacity-50"
+      className="p-1.5 rounded-lg hover:bg-[#F8F9FB] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors disabled:opacity-50"
     >
       <RefreshCw className={`h-4 w-4 ${pending ? "animate-spin" : ""}`} />
     </button>

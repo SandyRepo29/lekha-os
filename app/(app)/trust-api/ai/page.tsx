@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -73,7 +73,7 @@ export default function TrustApiAiPage() {
           <button
             onClick={handleGenerateSummary}
             disabled={isPending}
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-medium hover:bg-white/[0.07] disabled:opacity-50 transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB] disabled:opacity-50 transition-colors"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${isPending ? "animate-spin" : ""}`} />
             {summary ? "Regenerate" : "Generate"}
@@ -83,7 +83,7 @@ export default function TrustApiAiPage() {
         {summary ? (
           <div className="space-y-4">
             <p className="text-sm text-[var(--color-ink-dim)]">{summary.summary}</p>
-            <div className="rounded-xl border border-[var(--color-line)]/50 bg-white/[0.02] p-3">
+            <div className="rounded-xl border border-[var(--color-line)]/50 bg-white p-3">
               <div className="text-xs font-semibold text-[var(--color-ink-dim)] mb-1">Integration Health</div>
               <p className="text-sm">{summary.integrationHealth}</p>
             </div>
@@ -195,7 +195,7 @@ export default function TrustApiAiPage() {
           ) : (
             messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-white/[0.06] text-[var(--color-ink-dim)]"}`}>
+                <div className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"}`}>
                   {m.content}
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default function TrustApiAiPage() {
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleChat(); } }}
             placeholder="Ask about API integration, authentication, or webhook strategy…"
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-blue)]/50"
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-blue)]/50"
           />
           <button onClick={handleChat} disabled={isPending || !input.trim()} className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
             <Send className="h-4 w-4" />

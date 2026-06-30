@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,7 @@ export function NewAssetForm() {
             name="name"
             required
             placeholder="e.g. Customer Contact Database"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
 
@@ -51,7 +51,7 @@ export function NewAssetForm() {
           <input
             name="department"
             placeholder="e.g. Marketing, HR, Finance"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
       </div>
@@ -62,7 +62,7 @@ export function NewAssetForm() {
           name="description"
           rows={2}
           placeholder="What personal data does this asset contain?"
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none"
         />
       </div>
 
@@ -102,7 +102,7 @@ export function NewAssetForm() {
           <input
             name="purpose"
             placeholder="e.g. Customer communication, payroll processing"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
 
@@ -111,7 +111,7 @@ export function NewAssetForm() {
           <input
             name="storageLocation"
             placeholder="e.g. AWS Mumbai, on-premise server"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
       </div>
@@ -124,7 +124,7 @@ export function NewAssetForm() {
             type="number"
             min={1}
             placeholder="e.g. 365"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
 
@@ -134,7 +134,7 @@ export function NewAssetForm() {
               type="checkbox"
               name="crossBorder"
               value="true"
-              className="h-4 w-4 rounded border-[var(--color-line)] bg-white/[0.04] accent-indigo-500"
+              className="h-4 w-4 rounded border-[var(--color-line)] bg-[#F8F9FB] accent-indigo-500"
             />
             <span className="text-sm">Cross-border transfer involved</span>
           </label>

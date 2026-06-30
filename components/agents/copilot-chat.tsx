@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { copilotChatAction } from "@/lib/agents/actions";
@@ -44,7 +44,7 @@ export function CopilotChat({ examplePrompts }: { examplePrompts: string[] }) {
         {messages.map((m, i) => (
           <div key={i} className={`flex items-start gap-3 ${m.role === "user" ? "flex-row-reverse" : ""}`}>
             <div className={`grid h-7 w-7 shrink-0 place-items-center rounded-xl ${
-              m.role === "assistant" ? "grad-brand" : "bg-white/[0.08] border border-[var(--color-line)]"
+              m.role === "assistant" ? "grad-brand" : "bg-[#EEF2F7] border border-[var(--color-line)]"
             }`}>
               {m.role === "assistant"
                 ? <Bot className="h-4 w-4 text-white" />
@@ -53,7 +53,7 @@ export function CopilotChat({ examplePrompts }: { examplePrompts: string[] }) {
             </div>
             <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
               m.role === "assistant"
-                ? "bg-white/[0.04] border border-[var(--color-line)]"
+                ? "bg-[#F8F9FB] border border-[var(--color-line)]"
                 : "bg-[var(--color-blue)]/[0.12] border border-[var(--color-blue)]/20"
             }`}>
               {m.content}
@@ -65,7 +65,7 @@ export function CopilotChat({ examplePrompts }: { examplePrompts: string[] }) {
             <div className="grid h-7 w-7 shrink-0 place-items-center rounded-xl grad-brand">
               <Loader2 className="h-4 w-4 text-white animate-spin" />
             </div>
-            <div className="rounded-2xl bg-white/[0.04] border border-[var(--color-line)] px-4 py-3">
+            <div className="rounded-2xl bg-[#F8F9FB] border border-[var(--color-line)] px-4 py-3">
               <span className="text-xs text-[var(--color-ink-faint)] animate-pulse">Thinking…</span>
             </div>
           </div>
@@ -81,7 +81,7 @@ export function CopilotChat({ examplePrompts }: { examplePrompts: string[] }) {
               key={p}
               onClick={() => send(p)}
               disabled={pending}
-              className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:border-[var(--color-blue)]/40 hover:text-[var(--color-blue)] transition-colors disabled:opacity-50"
+              className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:border-[var(--color-blue)]/40 hover:text-[var(--color-blue)] transition-colors disabled:opacity-50"
             >
               {p}
             </button>
@@ -98,7 +98,7 @@ export function CopilotChat({ examplePrompts }: { examplePrompts: string[] }) {
           onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
           placeholder="Ask about risks, vendors, compliance, controls…"
           disabled={pending}
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50 disabled:opacity-50"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50 disabled:opacity-50"
         />
         <button
           onClick={() => send()}

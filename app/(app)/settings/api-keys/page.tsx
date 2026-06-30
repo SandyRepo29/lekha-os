@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Key } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
@@ -32,7 +32,7 @@ export default async function ApiKeysPage() {
 
         <ApiKeyManager keys={keys} canManage={canManage} isDemoMode={session.demo} />
 
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-xs text-[var(--color-ink-faint)] space-y-1.5">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-xs text-[var(--color-ink-faint)] space-y-1.5">
           <p><strong className="text-[var(--color-ink)]">Security notes:</strong></p>
           <p>· Keys are shown only once at creation. Store them in a secret manager immediately.</p>
           <p>· Rotate keys regularly. Revoked keys cannot be restored.</p>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -43,15 +43,15 @@ export default async function TrainingPage() {
         </h3>
         <form action={createTrainingAction.bind(null, null)} className="grid grid-cols-2 gap-3">
           <input name="title" required placeholder="Campaign title *"
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
           <select name="trainingType"
             className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]">
             {Object.entries(TRAINING_TYPES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
           <input name="dueDate" type="date"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
           <textarea name="description" rows={2} placeholder="Description (optional)"
-            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="col-span-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
           <button type="submit"
             className="col-span-2 rounded-xl grad-brand py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90">
             Create Campaign

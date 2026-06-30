@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { Button } from "@/components/ui/button";
@@ -65,7 +65,7 @@ export function PrivacyAiChat() {
                 <button
                   key={suggestion}
                   type="button"
-                  className="text-left rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.05] transition-colors"
+                  className="text-left rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] transition-colors"
                   onClick={() => {
                     setInput(suggestion);
                   }}
@@ -95,13 +95,13 @@ export function PrivacyAiChat() {
                 "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm",
                 msg.role === "user"
                   ? "bg-indigo-600/30 text-[var(--color-ink)]"
-                  : "bg-white/[0.05] text-[var(--color-ink)]"
+                  : "bg-[#F8F9FB] text-[var(--color-ink)]"
               )}
             >
               <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
             </div>
             {msg.role === "user" && (
-              <div className="w-7 h-7 flex-shrink-0 rounded-xl bg-white/[0.06] flex items-center justify-center mt-0.5">
+              <div className="w-7 h-7 flex-shrink-0 rounded-xl bg-[#F8F9FB] flex items-center justify-center mt-0.5">
                 <User className="h-4 w-4 text-[var(--color-ink-dim)]" />
               </div>
             )}
@@ -113,7 +113,7 @@ export function PrivacyAiChat() {
             <div className="w-7 h-7 flex-shrink-0 rounded-xl bg-indigo-500/20 flex items-center justify-center">
               <Bot className="h-4 w-4 text-indigo-400" />
             </div>
-            <div className="bg-white/[0.05] rounded-2xl px-4 py-2.5">
+            <div className="bg-[#F8F9FB] rounded-2xl px-4 py-2.5">
               <div className="flex gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:-0.3s]" />
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:-0.15s]" />
@@ -140,7 +140,7 @@ export function PrivacyAiChat() {
               }
             }}
             placeholder="Ask about DPDP compliance, DSRs, consent management..."
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             disabled={isPending}
           />
           <Button onClick={handleSend} disabled={isPending || !input.trim()} size="sm">

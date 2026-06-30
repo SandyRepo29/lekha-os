@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Beaker, Plus } from "lucide-react";
@@ -66,7 +66,7 @@ export default async function TestingPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {tests.map((t) => (
-                  <tr key={t.id} className="hover:bg-white/[0.02]">
+                  <tr key={t.id} className="hover:bg-white">
                     <td className="px-4 py-3 font-mono text-xs text-[var(--color-ink-dim)]">{t.testDate}</td>
                     <td className="px-4 py-3">
                       <Link href={`/controls/${t.controlId}`} className="hover:text-[var(--color-blue)] transition-colors">

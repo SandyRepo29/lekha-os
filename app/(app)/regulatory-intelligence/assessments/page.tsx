@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -61,7 +61,7 @@ export default async function AssessmentsPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]/40">
                 {assessments.map(a => (
-                  <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={a.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-semibold max-w-[220px]">{a.title}</div>
                       {a.summary && <div className="mt-0.5 text-[var(--color-ink-faint)] max-w-[220px] truncate">{a.summary}</div>}

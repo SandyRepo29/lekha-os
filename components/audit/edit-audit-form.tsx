@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { updateAuditAction, deleteAuditAction } from "@/lib/audit/actions";
@@ -73,7 +73,7 @@ export function EditAuditForm({
         <label className="text-sm font-medium" htmlFor="scope">Scope</label>
         <textarea
           id="scope" name="scope" rows={2} defaultValue={audit.scope ?? ""}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 
@@ -81,7 +81,7 @@ export function EditAuditForm({
         <label className="text-sm font-medium" htmlFor="objective">Objective</label>
         <textarea
           id="objective" name="objective" rows={2} defaultValue={audit.objective ?? ""}
-          className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
+          className="w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]/50 resize-none"
         />
       </div>
 

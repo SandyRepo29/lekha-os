@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -39,7 +39,7 @@ const STATUS_LABELS: Record<InvoiceStatus, string> = {
 };
 
 const STATUS_BADGE_CLASSES: Record<InvoiceStatus, string> = {
-  draft: "bg-white/[0.06] text-[var(--color-ink-dim)] border border-white/[0.08]",
+  draft: "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[#E4E8EF]",
   issued: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
   awaiting_payment: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
   pending_verification: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
@@ -228,7 +228,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function SummaryStat({ label, value, accent }: { label: string; value: string; accent?: string }) {
   return (
-    <div className={`rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 flex flex-col gap-1 border-l-2 ${accent ?? "border-l-[var(--color-line)]"}`}>
+    <div className={`rounded-xl border border-[var(--color-line)] bg-white p-4 flex flex-col gap-1 border-l-2 ${accent ?? "border-l-[var(--color-line)]"}`}>
       <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
       <p className="text-lg font-semibold text-[var(--color-ink)]">{value}</p>
     </div>
@@ -321,8 +321,8 @@ export default async function InvoicesPage({
             href={qs({ status: "all", page: "1" })}
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
               statusFilter === "all"
-                ? "bg-white/[0.08] text-[var(--color-ink)]"
-                : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
             }`}
           >
             All
@@ -333,8 +333,8 @@ export default async function InvoicesPage({
               href={qs({ status: s, page: "1" })}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 statusFilter === s
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               }`}
             >
               {STATUS_LABELS[s]}
@@ -352,18 +352,18 @@ export default async function InvoicesPage({
             type="month"
             name="month"
             defaultValue={month}
-            className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
           <button
             type="submit"
-            className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+            className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
           >
             Filter
           </button>
           {month && (
             <Link
               href={qs({ month: "", page: "1" })}
-              className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+              className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
             >
               Clear
             </Link>
@@ -389,19 +389,19 @@ export default async function InvoicesPage({
               name="search"
               defaultValue={search}
               placeholder="Invoice # or org name&#8230;"
-              className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] pl-8 pr-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500 w-52"
+              className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] pl-8 pr-3 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-indigo-500 w-52"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+            className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
           >
             Search
           </button>
           {search && (
             <Link
               href={qs({ search: "", page: "1" })}
-              className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors"
+              className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors"
             >
               Clear
             </Link>
@@ -410,7 +410,7 @@ export default async function InvoicesPage({
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
         {rows.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <svg className="w-10 h-10 text-[var(--color-ink-dim)] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -427,7 +427,7 @@ export default async function InvoicesPage({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-ink-dim)] whitespace-nowrap">Invoice #</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-ink-dim)]">Organization</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-ink-dim)]">Plan</th>
@@ -442,7 +442,7 @@ export default async function InvoicesPage({
                 {rows.map((row) => {
                   const overdue = isOverdue(row.dueAt, row.status);
                   return (
-                    <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={row.id} className="hover:bg-white transition-colors">
                       {/* Invoice # */}
                       <td className="px-4 py-3 whitespace-nowrap">
                         <Link
@@ -497,7 +497,7 @@ export default async function InvoicesPage({
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             href={`/finance/invoices/${row.id}`}
-                            className="rounded-lg px-2.5 py-1 text-xs font-medium text-[var(--color-ink-dim)] border border-[var(--color-line)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                            className="rounded-lg px-2.5 py-1 text-xs font-medium text-[var(--color-ink-dim)] border border-[var(--color-line)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                           >
                             View
                           </Link>
@@ -516,7 +516,7 @@ export default async function InvoicesPage({
                               href={row.pdfUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="rounded-lg px-2.5 py-1 text-xs font-medium text-[var(--color-ink-dim)] border border-[var(--color-line)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                              className="rounded-lg px-2.5 py-1 text-xs font-medium text-[var(--color-ink-dim)] border border-[var(--color-line)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                             >
                               PDF
                             </a>
@@ -549,7 +549,7 @@ export default async function InvoicesPage({
             {page > 1 && (
               <Link
                 href={qs({ page: String(page - 1) })}
-                className="rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-3 py-1.5 hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
               >
                 &#8592; Previous
               </Link>
@@ -573,7 +573,7 @@ export default async function InvoicesPage({
                   className={`rounded-lg border px-3 py-1.5 transition-colors ${
                     p === page
                       ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-400"
-                      : "border-[var(--color-line)] bg-white/[0.02] hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+                      : "border-[var(--color-line)] bg-white hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
                   }`}
                 >
                   {p}
@@ -583,7 +583,7 @@ export default async function InvoicesPage({
             {page < totalPages && (
               <Link
                 href={qs({ page: String(page + 1) })}
-                className="rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-3 py-1.5 hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
               >
                 Next &#8594;
               </Link>

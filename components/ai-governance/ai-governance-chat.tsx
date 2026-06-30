@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { Send, Sparkles, User } from "lucide-react";
@@ -73,7 +73,7 @@ export function AiGovernanceChat({ aiEnabled }: { aiEnabled: boolean }) {
                   <button
                     key={q}
                     onClick={() => send(q)}
-                    className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] transition-colors hover:border-violet-500/40 hover:bg-violet-500/5 hover:text-[var(--color-ink)]"
+                    className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] transition-colors hover:border-violet-500/40 hover:bg-violet-500/5 hover:text-[var(--color-ink)]"
                   >
                     {q}
                   </button>
@@ -103,7 +103,7 @@ export function AiGovernanceChat({ aiEnabled }: { aiEnabled: boolean }) {
               className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-violet-500/10 text-[var(--color-ink)]"
-                  : "border border-[var(--color-line)] bg-white/[0.02] text-[var(--color-ink-dim)]"
+                  : "border border-[var(--color-line)] bg-white text-[var(--color-ink-dim)]"
               }`}
             >
               {msg.text}
@@ -116,7 +116,7 @@ export function AiGovernanceChat({ aiEnabled }: { aiEnabled: boolean }) {
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-violet-500/10">
               <Sparkles className="h-4 w-4 animate-pulse text-violet-400" />
             </div>
-            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white px-4 py-3">
               <div className="flex gap-1">
                 <span className="h-2 w-2 animate-bounce rounded-full bg-violet-400/40 [animation-delay:0ms]" />
                 <span className="h-2 w-2 animate-bounce rounded-full bg-violet-400/40 [animation-delay:150ms]" />
@@ -153,7 +153,7 @@ export function AiGovernanceChat({ aiEnabled }: { aiEnabled: boolean }) {
                 ? "Ask about AI systems, risks, controls, regulatory readiness…"
                 : "GEMINI_API_KEY required"
             }
-            className="flex-1 rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-violet-500/30 disabled:opacity-50"
+            className="flex-1 rounded-xl border border-[var(--color-line-strong)] bg-white px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-violet-500/30 disabled:opacity-50"
           />
           <Button
             type="submit"

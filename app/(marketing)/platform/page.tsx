@@ -77,15 +77,15 @@ export default function PlatformPage() {
                   display: "flex", alignItems: "center", gap: "16px",
                   padding: "16px 22px", borderRadius: "12px",
                   background: hi
-                    ? "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(45,212,255,0.07))"
+                    ? "linear-gradient(135deg, rgba(73,51,214,0.10), rgba(0,184,217,0.06))"
                     : lo
-                    ? "linear-gradient(135deg, rgba(45,212,255,0.1), rgba(99,102,241,0.05))"
-                    : "rgba(255,255,255,0.03)",
+                    ? "linear-gradient(135deg, rgba(0,184,217,0.08), rgba(73,51,214,0.05))"
+                    : "#FFFFFF",
                   border: hi
-                    ? "1px solid rgba(99,102,241,0.5)"
+                    ? "1px solid rgba(73,51,214,0.30)"
                     : lo
-                    ? "1px solid rgba(45,212,255,0.4)"
-                    : "1px solid rgba(255,255,255,0.07)",
+                    ? "1px solid rgba(0,184,217,0.30)"
+                    : "1px solid #E4E8EF",
                 }}>
                   <div style={{ fontSize: "20px", flexShrink: 0 }}>{icon}</div>
                   <div style={{ flex: 1 }}>
@@ -96,7 +96,7 @@ export default function PlatformPage() {
                     <span style={{
                       fontSize: "10px", fontWeight: 700, letterSpacing: "0.08em",
                       textTransform: "uppercase" as const,
-                      color: hi ? "rgba(99,102,241,0.9)" : "rgba(45,212,255,0.7)",
+                      color: hi ? "#4933D6" : "#007A94",
                     }}>
                       {hi ? "Core" : "Outcome"}
                     </span>
@@ -104,7 +104,7 @@ export default function PlatformPage() {
                 </div>
                 {i < arr.length - 1 && (
                   <div style={{ display: "flex", justifyContent: "center", padding: "3px 0" }}>
-                    <div style={{ width: "1px", height: "20px", background: "linear-gradient(to bottom, rgba(99,102,241,0.4), rgba(99,102,241,0.1))" }} />
+                    <div style={{ width: "1px", height: "20px", background: "linear-gradient(to bottom, rgba(73,51,214,0.25), rgba(73,51,214,0.06))" }} />
                   </div>
                 )}
               </div>
@@ -130,8 +130,8 @@ export default function PlatformPage() {
                     flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
                     textAlign: "center", padding: "18px 6px 14px",
                     borderRadius: "10px",
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "#FFFFFF",
+                    border: "1px solid #E4E8EF",
                   }}>
                     <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.08em", color: "var(--blue)", marginBottom: "6px", opacity: 0.8 }}>
                       {String(i + 1).padStart(2, "0")}
@@ -195,7 +195,7 @@ export default function PlatformPage() {
             ]).map(({ id, icon, n, title, desc, outcomes, modules }) => (
               <div key={id} id={id} className="reveal" style={{
                 padding: "28px 32px", borderRadius: "18px",
-                background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)",
+                background: "#FFFFFF", border: "1px solid #E4E8EF",
                 display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem", alignItems: "start",
               }}>
                 <div>
@@ -224,7 +224,7 @@ export default function PlatformPage() {
                     {modules.map((m) => (
                       <span key={m} style={{
                         padding: "4px 10px", borderRadius: "999px",
-                        background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                        background: "#F8F9FB", border: "1px solid #E4E8EF",
                         fontSize: "11px", color: "var(--text-dim)", fontWeight: 500, whiteSpace: "nowrap",
                       }}>{m}</span>
                     ))}
@@ -276,7 +276,7 @@ export default function PlatformPage() {
             ] as { icon: string; title: string; desc: string; stat: string }[]).map(({ icon, title, desc, stat }) => (
               <div key={title} className="reveal" style={{
                 padding: "28px", borderRadius: "16px",
-                background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)",
+                background: "#FFFFFF", border: "1px solid #E4E8EF",
               }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
                   <div style={{ fontSize: "28px", flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: icon }} />
@@ -287,8 +287,8 @@ export default function PlatformPage() {
                         fontSize: "10px", fontWeight: 700, letterSpacing: "0.07em",
                         textTransform: "uppercase" as const,
                         padding: "3px 10px", borderRadius: "999px",
-                        background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.3)",
-                        color: "rgba(99,102,241,0.9)", whiteSpace: "nowrap" as const,
+                        background: "rgba(73,51,214,0.08)", border: "1px solid rgba(73,51,214,0.20)",
+                        color: "#4933D6", whiteSpace: "nowrap" as const,
                         flexShrink: 0,
                       }}>{stat}</span>
                     </div>
@@ -302,8 +302,8 @@ export default function PlatformPage() {
           <div className="reveal" style={{
             maxWidth: "860px", margin: "0 auto", padding: "24px 32px",
             borderRadius: "16px",
-            background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(45,212,255,0.04))",
-            border: "1px solid rgba(99,102,241,0.25)",
+            background: "linear-gradient(135deg, rgba(73,51,214,0.06), rgba(0,184,217,0.04))",
+            border: "1px solid rgba(73,51,214,0.18)",
             display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" as const, gap: "16px",
           }}>
             <div>
@@ -337,7 +337,7 @@ export default function PlatformPage() {
             {["Vendor Governance","Trust Operations","Risk Management","Compliance Management","Audit Management","Policy Governance","Privacy & DPDP","Contract Governance","Asset Intelligence","AI Governance","Regulatory Intelligence","Trust Verification","Executive Reporting","Continuous Monitoring"].map((item) => (
               <div key={item} style={{
                 padding: "10px 20px", borderRadius: "999px",
-                border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)",
+                border: "1px solid #E4E8EF", background: "#F8F9FB",
                 fontSize: "14px", color: "var(--text-dim)", fontWeight: 500,
               }}>{item}</div>
             ))}
@@ -359,14 +359,14 @@ export default function PlatformPage() {
           <div className="reveal" style={{
             display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "10px",
             padding: "28px", borderRadius: "16px",
-            background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)",
+            background: "#FFFFFF", border: "1px solid #E4E8EF",
             maxWidth: "780px", margin: "0 auto 3rem",
           }}>
             {["Evidence (20%)","Risk (20%)","Compliance (15%)","Assessment (15%)","Contract (10%)","Operational (10%)","Freshness (10%)"].map((item, i, arr) => (
               <span key={item} style={{ display: "contents" }}>
                 <div style={{
                   padding: "10px 18px", borderRadius: "8px",
-                  background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)",
+                  background: "rgba(73,51,214,0.07)", border: "1px solid rgba(73,51,214,0.18)",
                   fontSize: "13px", fontWeight: 600, color: "var(--text)",
                 }}>{item}</div>
                 {i < arr.length - 1 && <span style={{ color: "var(--blue)", fontWeight: 700, opacity: 0.5, fontSize: "18px" }}>+</span>}
@@ -375,8 +375,8 @@ export default function PlatformPage() {
             <span style={{ color: "var(--blue)", fontWeight: 700, fontSize: "22px", margin: "0 6px" }}>=</span>
             <div style={{
               padding: "12px 24px", borderRadius: "10px",
-              background: "linear-gradient(135deg, rgba(99,102,241,0.25), rgba(45,212,255,0.12))",
-              border: "1px solid rgba(99,102,241,0.5)",
+              background: "linear-gradient(135deg, rgba(73,51,214,0.15), rgba(0,184,217,0.10))",
+              border: "1px solid rgba(73,51,214,0.35)",
               fontSize: "15px", fontWeight: 800, color: "var(--text)",
             }}>Trust Score™</div>
           </div>
@@ -389,7 +389,7 @@ export default function PlatformPage() {
             ].map(({ label, icon }) => (
               <div key={label} style={{
                 padding: "20px 16px", borderRadius: "12px", textAlign: "center",
-                background: "rgba(99,102,241,0.07)", border: "1px solid rgba(99,102,241,0.2)",
+                background: "rgba(73,51,214,0.06)", border: "1px solid rgba(73,51,214,0.15)",
               }}>
                 <div style={{ fontSize: "22px", marginBottom: "8px" }}>{icon}</div>
                 <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-dim)", lineHeight: 1.4 }}>{label}</div>
@@ -455,7 +455,7 @@ export default function PlatformPage() {
             ].map(({ icon, title, desc }) => (
               <div key={title} style={{
                 padding: "24px 20px", borderRadius: "14px",
-                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
+                background: "#FFFFFF", border: "1px solid #E4E8EF",
               }}>
                 <div style={{ fontSize: "22px", marginBottom: "12px" }}>{icon}</div>
                 <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>{title}</div>
@@ -475,8 +475,8 @@ export default function PlatformPage() {
             <p>Most platforms solve one governance problem. AUDT governs the complete vendor lifecycle while continuously measuring trust.</p>
           </div>
           <div className="reveal" style={{ overflowX: "auto" }}>
-            <div style={{ minWidth: "440px", maxWidth: "640px", margin: "0 auto", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.08)", overflow: "hidden" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", background: "rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ minWidth: "440px", maxWidth: "640px", margin: "0 auto", borderRadius: "14px", border: "1px solid #E4E8EF", overflow: "hidden" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", background: "#F8F9FB", borderBottom: "1px solid #E4E8EF" }}>
                 <div style={{ padding: "14px 24px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--text-dim)", textAlign: "center" as const }}>Traditional Platforms</div>
                 <div style={{ padding: "14px 24px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--blue)", textAlign: "center" as const }}>AUDT</div>
               </div>
@@ -490,13 +490,13 @@ export default function PlatformPage() {
               ].map(([left, right], ri, arr) => (
                 <div key={left} style={{
                   display: "grid", gridTemplateColumns: "1fr 1fr",
-                  borderBottom: ri < arr.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                  borderBottom: ri < arr.length - 1 ? "1px solid #EEF2F7" : "none",
                 }}>
-                  <div style={{ padding: "13px 24px", fontSize: "13px", color: "var(--text-dim)", textAlign: "center" as const, borderRight: "1px solid rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                  <div style={{ padding: "13px 24px", fontSize: "13px", color: "var(--text-dim)", textAlign: "center" as const, borderRight: "1px solid #EEF2F7", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                     <span style={{ color: "#f87171", fontSize: "10px" }}>✕</span>{left}
                   </div>
-                  <div style={{ padding: "13px 24px", fontSize: "13px", fontWeight: 600, color: "#a5f3a0", textAlign: "center" as const, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                    <span style={{ color: "#34d399", fontSize: "10px" }}>✓</span>{right}
+                  <div style={{ padding: "13px 24px", fontSize: "13px", fontWeight: 600, color: "#007A94", textAlign: "center" as const, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                    <span style={{ color: "#0BA87A", fontSize: "10px" }}>✓</span>{right}
                   </div>
                 </div>
               ))}

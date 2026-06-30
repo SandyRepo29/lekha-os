@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -61,7 +61,7 @@ export default async function VendorTrustPage() {
             <div className="space-y-2">
               {metrics.top10.map((v, i) => (
                 <Link key={v.id} href={`/vendors/${v.id}`}>
-                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white transition-colors">
                     <span className="text-xs text-[var(--color-ink-faint)] w-4">{i + 1}</span>
                     <span className="flex-1 text-sm text-[var(--color-ink)]">{v.name}</span>
                     <OrgTrustBadge score={v.trustScore} />
@@ -80,7 +80,7 @@ export default async function VendorTrustPage() {
             <div className="space-y-2">
               {metrics.bottom10.map((v, i) => (
                 <Link key={v.id} href={`/vendors/${v.id}`}>
-                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white transition-colors">
                     <span className="text-xs text-[var(--color-ink-faint)] w-4">{i + 1}</span>
                     <span className="flex-1 text-sm text-[var(--color-ink)]">{v.name}</span>
                     <OrgTrustBadge score={v.trustScore} />
@@ -106,7 +106,7 @@ export default async function VendorTrustPage() {
                 <div className="space-y-1.5">
                   {highPerformers.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white/[0.03] transition-colors">
+                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
                         <span className="text-emerald-400 text-xs">&#8593;</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
@@ -126,7 +126,7 @@ export default async function VendorTrustPage() {
                 <div className="space-y-1.5">
                   {atRisk.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white/[0.03] transition-colors">
+                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
                         <span className="text-red-400 text-xs">&#8595;</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
@@ -146,7 +146,7 @@ export default async function VendorTrustPage() {
                 <div className="space-y-1.5">
                   {watchList.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white/[0.03] transition-colors">
+                      <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
                         <span className="text-yellow-400 text-xs">&#8594;</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
@@ -212,7 +212,7 @@ export default async function VendorTrustPage() {
           <div className="space-y-1">
             {metrics.allScored.map((v, i) => (
               <Link key={v.id} href={`/vendors/${v.id}`}>
-                <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/[0.03] transition-colors">
+                <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white transition-colors">
                   <span className="text-xs text-[var(--color-ink-faint)] w-6 text-right">{i + 1}</span>
                   <span className="flex-1 text-sm text-[var(--color-ink)]">{v.name}</span>
                   <div className="w-40">

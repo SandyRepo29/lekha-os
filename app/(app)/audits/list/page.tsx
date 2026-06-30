@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { ClipboardCheck, Plus, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
@@ -168,7 +168,7 @@ export default async function AuditListPage({
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {filtered.map((a) => (
-                  <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={a.id} className="hover:bg-white transition-colors">
                     <td className="px-5 py-3">
                       <Link href={`/audits/${a.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors line-clamp-1">
                         {a.name}

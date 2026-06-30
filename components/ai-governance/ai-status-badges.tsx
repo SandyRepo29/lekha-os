@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * Shared badge components for the AI Governance™ module.
@@ -20,7 +20,7 @@ const AI_SYSTEM_TYPE: Record<string, { label: string; cls: string }> = {
 export function AiSystemTypeBadge({ type }: { type: string }) {
   const { label, cls } = AI_SYSTEM_TYPE[type] ?? {
     label: type,
-    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   };
   return (
     <span
@@ -44,7 +44,7 @@ const AI_RISK_LEVEL: Record<string, { label: string; cls: string }> = {
 export function AiRiskLevelBadge({ level }: { level: string }) {
   const { label, cls } = AI_RISK_LEVEL[level] ?? {
     label: level,
-    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   };
   return (
     <span
@@ -62,13 +62,13 @@ const AI_APPROVAL_STATUS: Record<string, { label: string; cls: string }> = {
   pending:         { label: "Pending",         cls: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
   under_review:    { label: "Under Review",    cls: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
   rejected:        { label: "Rejected",        cls: "text-red-400 border-red-500/30 bg-red-500/10" },
-  decommissioned:  { label: "Decommissioned",  cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]" },
+  decommissioned:  { label: "Decommissioned",  cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
 };
 
 export function AiApprovalStatusBadge({ status }: { status: string }) {
   const { label, cls } = AI_APPROVAL_STATUS[status] ?? {
     label: status,
-    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   };
   return (
     <span
@@ -93,7 +93,7 @@ const AI_TRUST_LEVEL: Record<string, { label: string; cls: string }> = {
 export function AiTrustLevelBadge({ level }: { level: string }) {
   const { label, cls } = AI_TRUST_LEVEL[level] ?? {
     label: level,
-    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   };
   return (
     <span
@@ -118,7 +118,7 @@ const AI_INCIDENT_SEVERITY: Record<string, { label: string; cls: string }> = {
 export function AiIncidentSeverityBadge({ severity }: { severity: string }) {
   const { label, cls } = AI_INCIDENT_SEVERITY[severity] ?? {
     label: severity,
-    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   };
   return (
     <span

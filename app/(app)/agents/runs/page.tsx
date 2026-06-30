@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -60,7 +60,7 @@ export default async function AgentRunsPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]/40">
                 {runs.map(r => (
-                  <tr key={r.id} className="hover:bg-white/[0.02]">
+                  <tr key={r.id} className="hover:bg-white">
                     <td className="px-4 py-3 font-semibold">{r.agentName}</td>
                     <td className="px-4 py-3"><RunStatusBadge status={r.status} /></td>
                     <td className="px-4 py-3 text-[var(--color-ink-faint)]">{fmtDate(r.startedAt)}</td>

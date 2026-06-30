@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Shared UI helpers for the Compliance module.
  * Extracts the repeated local components from individual pages:
  *   - ComplianceStat  (was StatChip / MiniStat / SummaryCard / GapStat)
@@ -129,7 +129,7 @@ export function CoverageBar({
       <span className={`${labelWidth} shrink-0 text-xs text-[var(--color-ink-faint)]`}>
         {label}
       </span>
-      <div className="h-1.5 flex-1 rounded-full bg-white/[0.06]">
+      <div className="h-1.5 flex-1 rounded-full bg-[#F8F9FB]">
         <div
           className={`h-1.5 rounded-full transition-all ${fill}`}
           style={{ width: `${value}%` }}

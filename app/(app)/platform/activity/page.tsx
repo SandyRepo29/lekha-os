@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import {
@@ -120,8 +120,8 @@ export default async function PlatformActivityPage({ searchParams }: Props) {
               className={[
                 "px-3 py-1.5 rounded-xl text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]",
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]",
               ].join(" ")}
             >
               {et.label}

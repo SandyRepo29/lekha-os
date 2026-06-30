@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Issue &#38; Remediation Hub&#8482; — AUDT' };
 
@@ -118,12 +118,12 @@ export default async function IssueHubDashboardPage() {
         <div className="flex items-center gap-2">
           <a
             href="/api/v1/issues/export/csv"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
           >
             <Download className="h-3.5 w-3.5" />
             Export Issues CSV
           </a>
-          <Link href="/issue-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/issue-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Advisor&#8482;
           </Link>
@@ -164,7 +164,7 @@ export default async function IssueHubDashboardPage() {
                     <span className="w-24 text-xs text-[var(--color-ink-dim)] shrink-0">
                       {sourceLabels[src] ?? src}
                     </span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="flex-1 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                       <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${Math.round((cnt / maxSrc) * 100)}%` }} />
                     </div>
                     <span className="text-sm font-bold w-8 text-right">{cnt}</span>
@@ -190,7 +190,7 @@ export default async function IssueHubDashboardPage() {
             {pipeline.map((stage) => (
               <div key={stage.label} className="flex items-center gap-3">
                 <span className="w-24 text-xs text-[var(--color-ink-dim)] shrink-0">{stage.label}</span>
-                <div className="flex-1 h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className={`h-full rounded-full ${stage.color}`} style={{ width: `${Math.round((stage.count / pipelineTotal) * 100)}%` }} />
                 </div>
                 <span className="text-sm font-bold w-6 text-right">{stage.count}</span>
@@ -268,7 +268,7 @@ export default async function IssueHubDashboardPage() {
                   {currentTrust}%
                 </span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                 <div className={`h-full rounded-full ${currentTrust >= 80 ? "bg-emerald-500" : currentTrust >= 60 ? "bg-amber-500" : "bg-red-500"}`} style={{ width: `${currentTrust}%` }} />
               </div>
             </div>
@@ -277,7 +277,7 @@ export default async function IssueHubDashboardPage() {
                 <span className="text-xs text-[var(--color-ink-dim)]">After Closure</span>
                 <span className="text-xs font-bold text-emerald-400">{projectedTrust}%</span>
               </div>
-              <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                 <div className="h-full rounded-full bg-emerald-500" style={{ width: `${projectedTrust}%` }} />
               </div>
             </div>
@@ -311,7 +311,7 @@ export default async function IssueHubDashboardPage() {
                 <Link
                   key={issue.id}
                   href={`/issue-hub/${issue.id}`}
-                  className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] transition-colors"
+                  className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white transition-colors"
                 >
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{issue.title}</p>

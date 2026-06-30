@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
@@ -82,8 +82,8 @@ function NotificationRow({
   const content = (
     <div
       className={`group flex gap-3 rounded-xl p-3 transition-colors ${
-        item.read ? "bg-transparent" : "bg-white/[0.04]"
-      } hover:bg-white/[0.06]`}
+        item.read ? "bg-transparent" : "bg-[#F8F9FB]"
+      } hover:bg-[#F8F9FB]`}
     >
       <div className="mt-0.5">{typeIcon(item.type)}</div>
       <div className="min-w-0 flex-1">
@@ -105,7 +105,7 @@ function NotificationRow({
           {item.body}
         </p>
         <div className="mt-2 flex items-center justify-between gap-2">
-          <span className="rounded-md border border-[var(--color-line)] bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium text-[var(--color-ink-dim)]">
+          <span className="rounded-md border border-[var(--color-line)] bg-[#F8F9FB] px-2 py-0.5 text-[10px] font-medium text-[var(--color-ink-dim)]">
             {item.module}
           </span>
           {!item.read && (
@@ -219,7 +219,7 @@ export function NotificationPanel({
             {hasUnread && (
               <button
                 onClick={onMarkAllRead}
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               >
                 <CheckCheck size={13} />
                 Mark all read
@@ -227,7 +227,7 @@ export function NotificationPanel({
             )}
             <button
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               aria-label="Close notifications"
             >
               <X size={16} />
@@ -238,7 +238,7 @@ export function NotificationPanel({
         <div className="flex-1 overflow-y-auto px-3 py-3">
           {!hasAny ? (
             <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white">
                 <Bell size={24} className="text-[var(--color-ink-dim)]" />
               </div>
               <p className="text-sm font-medium text-[var(--color-ink)]">

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Shield, CheckCircle2, XCircle } from "lucide-react";
@@ -73,7 +73,7 @@ export default async function ExceptionsPage() {
                   const status = e.status as string;
                   const isPending = status === "pending";
                   return (
-                    <tr key={e.id as string} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={e.id as string} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/issue-hub/${e.issue_id as string}`}

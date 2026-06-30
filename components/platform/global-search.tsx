@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback, useTransition, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -178,7 +178,7 @@ function GlobalSearchInner() {
             className="flex flex-1 items-center gap-3 rounded-2xl border px-4 py-3"
             style={{
               borderColor: "var(--color-line)",
-              background: "rgba(255,255,255,0.04)",
+              background: "#F8F9FB",
             }}
           >
             <Search size={20} style={{ color: "var(--color-ink-dim)" }} className="shrink-0" />
@@ -204,7 +204,7 @@ function GlobalSearchInner() {
             <button
               onClick={handleSaveSearch}
               disabled={savingSearch}
-              className="flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition hover:bg-white/[0.06]"
+              className="flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition hover:bg-[#F8F9FB]"
               style={{ borderColor: "var(--color-line)", color: "var(--color-ink-dim)" }}
             >
               <Bookmark size={15} />
@@ -222,7 +222,7 @@ function GlobalSearchInner() {
               className="shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition"
               style={
                 activeFilter === f.value
-                  ? { background: "rgba(255,255,255,0.08)", color: "var(--color-ink)" }
+                  ? { background: "#EEF2F7", color: "var(--color-ink)" }
                   : { color: "var(--color-ink-dim)" }
               }
             >
@@ -245,7 +245,7 @@ function GlobalSearchInner() {
                     <li key={i}>
                       <button
                         onClick={() => handleRecentClick(q)}
-                        className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition hover:bg-white/[0.04]"
+                        className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition hover:bg-[#F8F9FB]"
                         style={{ color: "var(--color-ink)" }}
                       >
                         <Clock size={14} style={{ color: "var(--color-ink-dim)" }} />
@@ -267,7 +267,7 @@ function GlobalSearchInner() {
                     <li key={s.id}>
                       <button
                         onClick={() => handleRecentClick(s.query)}
-                        className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition hover:bg-white/[0.04]"
+                        className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition hover:bg-[#F8F9FB]"
                         style={{ color: "var(--color-ink)" }}
                       >
                         <Bookmark size={14} style={{ color: "var(--color-ink-dim)" }} />
@@ -303,19 +303,19 @@ function GlobalSearchInner() {
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--color-ink-dim)" }}>
                   <Filter size={12} />
                   {type.replace("_", " ")}
-                  <span className="ml-1 rounded-full px-2 py-0.5 text-xs" style={{ background: "rgba(255,255,255,0.06)" }}>
+                  <span className="ml-1 rounded-full px-2 py-0.5 text-xs" style={{ background: "#F0F4F8" }}>
                     {items.length}
                   </span>
                 </div>
                 <ul
                   className="overflow-hidden rounded-2xl border"
-                  style={{ borderColor: "var(--color-line)", background: "rgba(255,255,255,0.02)" }}
+                  style={{ borderColor: "var(--color-line)", background: "#FFFFFF" }}
                 >
                   {items.map((result, idx) => (
                     <li key={result.id}>
                       <button
                         onClick={() => handleResultClick(result)}
-                        className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-white/[0.04]"
+                        className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-[#F8F9FB]"
                         style={{
                           borderTop: idx > 0 ? "1px solid var(--color-line)" : undefined,
                         }}

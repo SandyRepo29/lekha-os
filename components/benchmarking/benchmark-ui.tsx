@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { BenchmarkMaturityLevel, BenchmarkRankingLabel } from "@/lib/services/benchmarking-score";
@@ -46,7 +46,7 @@ export function BenchmarkStat({
   const bg      = ACCENT_BG[accent];
 
   const inner = (
-    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white/[0.03] transition-colors")}>
+    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white transition-colors")}>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
       <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">
         {value}
@@ -104,7 +104,7 @@ export function MaturityBadge({
 // ---- PercentileBadge ----
 
 function percentileAccent(pct: number | null): { text: string; bg: string; border: string } {
-  if (pct === null) return { text: "text-[var(--color-ink-dim)]", bg: "bg-white/[0.04]", border: "border-[var(--color-line)]" };
+  if (pct === null) return { text: "text-[var(--color-ink-dim)]", bg: "bg-[#F8F9FB]", border: "border-[var(--color-line)]" };
   if (pct >= 90) return { text: "text-purple-400",  bg: "bg-purple-500/10",  border: "border-purple-500/20" };
   if (pct >= 75) return { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" };
   if (pct >= 50) return { text: "text-blue-400",    bg: "bg-blue-500/10",    border: "border-blue-500/20" };

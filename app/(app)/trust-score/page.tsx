@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Bot, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
@@ -139,7 +139,7 @@ export default async function TrustScoreOverviewPage() {
           </p>
           <div className="relative mb-3">
             <svg viewBox="0 0 120 120" className="w-32 h-32">
-              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="10" />
               <circle
                 cx="60" cy="60" r="52" fill="none"
                 stroke={level === "trusted" ? "#10b981" : level === "healthy" ? "#3b82f6" : level === "needs_attention" ? "#f59e0b" : level === "at_risk" ? "#f97316" : "#ef4444"}
@@ -148,18 +148,18 @@ export default async function TrustScoreOverviewPage() {
                 transform="rotate(-90 60 60)"
               />
               <text x="60" y="56" textAnchor="middle" className="fill-current" style={{ fontSize: 28, fontWeight: 700, fill: "currentColor" }}>{score}</text>
-              <text x="60" y="72" textAnchor="middle" style={{ fontSize: 11, fill: "rgba(255,255,255,0.5)" }}>/100</text>
+              <text x="60" y="72" textAnchor="middle" style={{ fontSize: 11, fill: "#94A3B8" }}>/100</text>
             </svg>
           </div>
           <span className={`rounded-full border px-3 py-1 text-sm font-semibold ${levelBg}`}>{levelLabel}</span>
           <div className="mt-4 grid grid-cols-2 gap-3 w-full text-center text-xs">
-            <div className="rounded-xl bg-white/[0.04] p-2">
+            <div className="rounded-xl bg-[#F8F9FB] p-2">
               <p className={`text-base font-bold ${trend30 >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                 {trend30 > 0 ? "+" : ""}{trend30}
               </p>
               <p className="text-[var(--color-ink-faint)]">30d Change</p>
             </div>
-            <div className="rounded-xl bg-white/[0.04] p-2">
+            <div className="rounded-xl bg-[#F8F9FB] p-2">
               <p className={`text-base font-bold ${trend90 >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                 {trend90 > 0 ? "+" : ""}{trend90}
               </p>
@@ -207,7 +207,7 @@ export default async function TrustScoreOverviewPage() {
               const ranges = { trusted:"90–100", healthy:"75–89", needs_attention:"60–74", at_risk:"40–59", critical:"0–39" };
               const isActive = lvl === level;
               return (
-                <div key={lvl} className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isActive ? `${PLATFORM_TRUST_LEVEL_BG[lvl]} border font-semibold` : "bg-white/[0.02]"}`}>
+                <div key={lvl} className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isActive ? `${PLATFORM_TRUST_LEVEL_BG[lvl]} border font-semibold` : "bg-white"}`}>
                   <span className={`text-xs ${isActive ? "" : "text-[var(--color-ink-dim)]"}`}>{labels[lvl]}</span>
                   <span className={`text-xs tabular-nums ${isActive ? "" : "text-[var(--color-ink-faint)]"}`}>{ranges[lvl]}</span>
                 </div>
@@ -247,7 +247,7 @@ export default async function TrustScoreOverviewPage() {
                     </span>
                     <span className={`font-semibold ${scoreColor(val)}`}>{val}</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                     <div className={`h-full rounded-full ${scoreBar(val)}`} style={{ width: `${val}%` }} />
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default async function TrustScoreOverviewPage() {
             </div>
             <div className="space-y-2">
               {TRUST_EVENTS.map((e) => (
-                <div key={e.label} className="flex items-center justify-between rounded-xl bg-white/[0.02] px-3 py-2">
+                <div key={e.label} className="flex items-center justify-between rounded-xl bg-white px-3 py-2">
                   <span className="text-xs text-[var(--color-ink-dim)]">{e.label}</span>
                   <span className={`text-xs font-bold ${e.color}`}>
                     Trust {e.delta > 0 ? `+${e.delta}` : e.delta}
@@ -326,7 +326,7 @@ export default async function TrustScoreOverviewPage() {
                 return (
                   <div key={s.id} className="flex items-center gap-3">
                     <span className="w-20 text-[11px] text-[var(--color-ink-faint)] shrink-0">{fmtDate(s.snapshotDate)}</span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="flex-1 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                       <div className={`h-full rounded-full ${scoreBar(s.orgTrustScore ?? score)}`} style={{ width: `${s.orgTrustScore ?? score}%` }} />
                     </div>
                     <span className={`w-8 text-right text-xs font-bold ${scoreColor(s.orgTrustScore ?? score)}`}>{s.orgTrustScore ?? score}</span>
@@ -347,7 +347,7 @@ export default async function TrustScoreOverviewPage() {
               ].map((e) => (
                 <div key={e.label} className="flex items-center gap-3">
                   <span className="w-20 text-[11px] text-[var(--color-ink-faint)] shrink-0">{e.label}</span>
-                  <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="flex-1 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                     <div className={`h-full rounded-full ${scoreBar(e.score)}`} style={{ width: `${e.score}%` }} />
                   </div>
                   <span className={`w-8 text-right text-xs font-bold ${scoreColor(e.score)}`}>{e.score}</span>
@@ -385,7 +385,7 @@ export default async function TrustScoreOverviewPage() {
                   ].map((f) => (
                     <div key={f.label} className="flex items-center gap-4">
                       <div className="w-20 text-xs text-[var(--color-ink-dim)]">{f.label}</div>
-                      <div className="flex-1 h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                      <div className="flex-1 h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                         <div className={`h-full rounded-full ${scoreBar(f.val)}`} style={{ width: `${f.val}%` }} />
                       </div>
                       <span className={`w-10 text-right text-sm font-bold ${scoreColor(f.val)}`}>{f.val}</span>

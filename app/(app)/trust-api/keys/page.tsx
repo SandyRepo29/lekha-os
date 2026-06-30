@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 export const dynamic = "force-dynamic";
 
@@ -68,7 +68,7 @@ export default function ApiKeysPage() {
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Manage registered clients and their Trust API access credentials.</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => setShowClientForm(true)} className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors">
+          <button onClick={() => setShowClientForm(true)} className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors">
             <Plus className="h-4 w-4" /> New Client
           </button>
           <button onClick={() => setShowKeyForm(true)} className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90">
@@ -88,7 +88,7 @@ export default function ApiKeysPage() {
           </div>
           <div className="flex items-center gap-2 rounded-xl bg-black/20 px-4 py-3">
             <code className="flex-1 text-sm font-mono text-emerald-400 break-all">{newKey}</code>
-            <button onClick={copyKey} className="shrink-0 rounded-lg border border-[var(--color-line)] p-2 hover:bg-white/[0.06]">
+            <button onClick={copyKey} className="shrink-0 rounded-lg border border-[var(--color-line)] p-2 hover:bg-[#F8F9FB]">
               {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
             </button>
           </div>
@@ -113,7 +113,7 @@ export default function ApiKeysPage() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm">{k.name}</span>
-                    <code className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-ink-faint)]">{k.keyPrefix}…</code>
+                    <code className="rounded bg-[#F8F9FB] px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-ink-faint)]">{k.keyPrefix}…</code>
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[var(--color-ink-faint)]">
                     <span>{k.plan} plan</span>
@@ -171,7 +171,7 @@ export default function ApiKeysPage() {
             </div>
             <form action={handleCreateClient} className="space-y-4">
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Client Name *</label>
-                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Procurement Portal" /></div>
+                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Procurement Portal" /></div>
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Client Type</label>
                 <select name="clientType" className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm outline-none">
                   {["application","partner","internal","vendor","auditor","custom"].map(t => <option key={t} value={t}>{t}</option>)}
@@ -181,9 +181,9 @@ export default function ApiKeysPage() {
                   {["free","growth","business","enterprise"].map(p => <option key={p} value={p}>{p}</option>)}
                 </select></div>
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Contact Email</label>
-                <input name="contactEmail" type="email" className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="dev@example.com" /></div>
+                <input name="contactEmail" type="email" className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="dev@example.com" /></div>
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={() => setShowClientForm(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-white/[0.04]">Cancel</button>
+                <button type="button" onClick={() => setShowClientForm(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-[#F8F9FB]">Cancel</button>
                 <button type="submit" className="flex-1 rounded-xl grad-brand py-2 text-sm font-semibold text-white">Register</button>
               </div>
             </form>
@@ -201,7 +201,7 @@ export default function ApiKeysPage() {
             </div>
             <form action={handleIssueKey} className="space-y-4">
               <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Key Name *</label>
-                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Production Key" /></div>
+                <input name="name" required className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" placeholder="Production Key" /></div>
               {clients.length > 0 && (
                 <div><label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Assign to Client (optional)</label>
                   <select name="clientId" className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm outline-none">
@@ -219,7 +219,7 @@ export default function ApiKeysPage() {
                   <option value="read_write">read_write</option>
                 </select></div>
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={() => setShowKeyForm(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-white/[0.04]">Cancel</button>
+                <button type="button" onClick={() => setShowKeyForm(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm hover:bg-[#F8F9FB]">Cancel</button>
                 <button type="submit" className="flex-1 rounded-xl grad-brand py-2 text-sm font-semibold text-white">Issue Key</button>
               </div>
             </form>

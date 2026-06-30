@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { STANDARD_QUESTIONS, groupByCategory } from "@/lib/constants/assessment-questions";
@@ -10,7 +10,7 @@ const ANSWER_OPTIONS = [
   { value: "yes",     label: "Yes",     color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/[0.08]" },
   { value: "partial", label: "Partial", color: "text-amber-400 border-amber-500/30 bg-amber-500/[0.08]" },
   { value: "no",      label: "No",      color: "text-red-400 border-red-500/30 bg-red-500/[0.08]" },
-  { value: "na",      label: "N/A",     color: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.03]" },
+  { value: "na",      label: "N/A",     color: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white" },
 ];
 
 type Props = {
@@ -31,8 +31,8 @@ export function AssessmentForm({ assessmentId, vendorId, existingResponses, acti
       <input type="hidden" name="vendorId" value={vendorId} />
 
       {Array.from(groups.entries()).map(([category, questions]) => (
-        <div key={category} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-[var(--color-line)] bg-white/[0.02]">
+        <div key={category} className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-[var(--color-line)] bg-white">
             <h3 className="font-semibold text-sm text-[var(--color-ink)]">{category}</h3>
           </div>
           <div className="divide-y divide-[var(--color-line)]">

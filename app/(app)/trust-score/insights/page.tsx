@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Sparkles, AlertTriangle, TrendingUp, Brain } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -75,7 +75,7 @@ export default async function TrustInsightsPage({
         <h2 className="font-semibold mb-4 text-sm">Trust Intelligence&#8482;</h2>
         <div className="space-y-3">
           {staticInsights.map((insight, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-xl bg-white/[0.02] border border-[var(--color-line)] p-3">
+            <div key={i} className="flex items-start gap-3 rounded-xl bg-white border border-[var(--color-line)] p-3">
               <insight.icon className={`mt-0.5 h-4 w-4 shrink-0 ${insight.color}`} />
               <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed" dangerouslySetInnerHTML={{ __html: insight.text }} />
             </div>
@@ -99,7 +99,7 @@ export default async function TrustInsightsPage({
             { label: "30 Days", val: Math.min(100, Math.max(0, (snap?.orgTrustScore ?? 80) - 2)) },
             { label: "90 Days", val: Math.min(100, Math.max(0, (snap?.orgTrustScore ?? 80) - 5)) },
           ].map((f) => (
-            <div key={f.label} className="rounded-xl bg-white/[0.03] border border-[var(--color-line)] p-3">
+            <div key={f.label} className="rounded-xl bg-white border border-[var(--color-line)] p-3">
               <p className="text-lg font-bold">{f.val}</p>
               <p className="text-xs text-[var(--color-ink-faint)]">{f.label}</p>
             </div>
@@ -116,7 +116,7 @@ export default async function TrustInsightsPage({
         <div className="mb-3 flex flex-wrap gap-2">
           {SAMPLE_QUESTIONS.map((q) => (
             <a key={q} href={`?q=${encodeURIComponent(q)}`}
-              className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.07] hover:text-[var(--color-ink)] transition-colors">
+              className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
               {q}
             </a>
           ))}
@@ -124,7 +124,7 @@ export default async function TrustInsightsPage({
         <form className="flex gap-2">
           <input name="q" defaultValue={sp.q}
             placeholder="Why did trust decrease? How can we reach Trusted?"
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50" />
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50" />
           <Button type="submit" size="sm"><Sparkles className="h-4 w-4" /> Ask</Button>
         </form>
         {chatResponse && (

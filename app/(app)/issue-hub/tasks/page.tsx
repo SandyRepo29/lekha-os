@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { CheckCircle2, Clock, User } from "lucide-react";
@@ -75,7 +75,7 @@ export default async function TasksPage() {
                   return (
                     <tr
                       key={task.id}
-                      className={`hover:bg-white/[0.02] transition-colors ${overdueTsk ? "bg-red-500/[0.025]" : ""}`}
+                      className={`hover:bg-white transition-colors ${overdueTsk ? "bg-red-500/[0.025]" : ""}`}
                     >
                       <td className="px-4 py-3">
                         <p className={`font-medium ${task.status === "completed" ? "line-through text-[var(--color-ink-dim)]" : ""}`}>

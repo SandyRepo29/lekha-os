@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { GitBranch, ArrowRight } from "lucide-react";
@@ -87,7 +87,7 @@ export default async function WorkflowTemplatesPage() {
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {group.items.map((tpl) => (
-              <Card key={tpl.name} className="p-5 flex flex-col gap-3 hover:bg-white/[0.03] transition-colors">
+              <Card key={tpl.name} className="p-5 flex flex-col gap-3 hover:bg-white transition-colors">
                 <div className="flex items-start gap-3">
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${group.color}`}>
                     <GitBranch className="h-4 w-4" />

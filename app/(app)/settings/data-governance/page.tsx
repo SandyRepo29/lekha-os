@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import {
   Database,
@@ -36,7 +36,7 @@ function StatCard({
   value: string | number;
 }) {
   return (
-    <div className="flex flex-col gap-1 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+    <div className="flex flex-col gap-1 rounded-2xl border border-[var(--color-line)] bg-white p-4">
       <div className="flex items-center gap-2 text-[var(--color-ink-faint)]">
         <Icon className="h-4 w-4" />
         <span className="text-xs font-medium uppercase tracking-widest">{label}</span>

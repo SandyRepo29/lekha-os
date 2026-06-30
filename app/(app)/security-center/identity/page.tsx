@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMfaOverview, getSsoOverview } from "@/lib/services/security-command-center/security-service";
@@ -37,7 +37,7 @@ export default async function IdentityPage() {
       </div>
 
       {/* MFA Settings Panel */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 space-y-4">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-red-400" />
@@ -140,7 +140,7 @@ export default async function IdentityPage() {
       </div>
 
       {/* SCIM Note */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <h2 className="font-semibold text-sm mb-2">SCIM Provisioning</h2>
         <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed">
           SCIM 2.0 provisioning automates user lifecycle management — create, update, and deactivate users from your Identity Provider. Available on Enterprise plan.

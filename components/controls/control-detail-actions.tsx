@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useTransition, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -79,7 +79,7 @@ export function AddTestForm({ controlId }: { controlId: string }) {
   return (
     <form
       action={action}
-      className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-4 mt-4"
+      className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-4 mt-4"
     >
       <input type="hidden" name="controlId" value={controlId} />
       {state?.error && (
@@ -93,7 +93,7 @@ export function AddTestForm({ controlId }: { controlId: string }) {
             type="date"
             required
             defaultValue={new Date().toISOString().slice(0, 10)}
-            className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
         <div>
@@ -117,7 +117,7 @@ export function AddTestForm({ controlId }: { controlId: string }) {
           <input
             name="testerName"
             placeholder="Who ran the test?"
-            className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
         <div>
@@ -125,7 +125,7 @@ export function AddTestForm({ controlId }: { controlId: string }) {
           <input
             name="method"
             placeholder="How was it tested?"
-            className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
+            className="w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60"
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ export function AddTestForm({ controlId }: { controlId: string }) {
         <textarea
           name="comments"
           rows={2}
-          className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-blue)]/60 resize-none"
         />
       </div>
       <div className="flex gap-2 justify-end">

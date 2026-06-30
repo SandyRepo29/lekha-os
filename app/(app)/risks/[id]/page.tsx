@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -112,17 +112,17 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
 
             {/* Score matrix */}
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Impact</p>
                 <p className="font-[family-name:var(--font-display)] text-xl font-bold">{risk.impact}</p>
                 <p className="text-xs text-[var(--color-ink-faint)]">/ 5</p>
               </div>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Likelihood</p>
                 <p className="font-[family-name:var(--font-display)] text-xl font-bold">{risk.likelihood}</p>
                 <p className="text-xs text-[var(--color-ink-faint)]">/ 5</p>
               </div>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 text-center">
                 <p className="text-xs text-[var(--color-ink-faint)] mb-1">Inherent Score</p>
                 <p className={cn("font-[family-name:var(--font-display)] text-xl font-bold")} style={{ color: inherent.color }}>
                   {inherent.score}
@@ -151,7 +151,7 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
             ) : (
               <div className="space-y-2">
                 {risk.treatments.map((t) => (
-                  <div key={t.id} className="flex items-start justify-between gap-3 rounded-lg border border-[var(--color-line)] bg-white/[0.02] p-3">
+                  <div key={t.id} className="flex items-start justify-between gap-3 rounded-lg border border-[var(--color-line)] bg-white p-3">
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium">{t.action}</p>
                       {t.description && <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{t.description}</p>}
@@ -184,10 +184,10 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
             ) : (
               <div className="space-y-2">
                 {risk.reviews.map((r) => (
-                  <div key={r.id} className="rounded-lg border border-[var(--color-line)] bg-white/[0.02] p-3">
+                  <div key={r.id} className="rounded-lg border border-[var(--color-line)] bg-white p-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium text-[var(--color-ink-dim)]">{formatDate(r.reviewDate)}</span>
-                      <span className="rounded-full bg-white/[0.05] px-2 py-0.5 text-xs capitalize">{r.outcome.replace(/_/g, " ")}</span>
+                      <span className="rounded-full bg-[#F8F9FB] px-2 py-0.5 text-xs capitalize">{r.outcome.replace(/_/g, " ")}</span>
                     </div>
                     {r.notes && <p className="mt-1 text-xs text-[var(--color-ink-faint)]">{r.notes}</p>}
                   </div>
@@ -221,22 +221,22 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Connected Entities */}
-      <section className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 space-y-4">
+      <section className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">Connected Entities</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Link href="/vendors" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/vendors" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedVendorCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedVendorCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Vendors</div>
           </Link>
-          <Link href="/controls/library" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/controls/library" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedControlCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedControlCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Controls</div>
           </Link>
-          <Link href="/audits/findings" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/audits/findings" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedFindingCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedFindingCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Findings</div>
           </Link>
-          <Link href="/compliance/policies" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href="/compliance/policies" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedPolicyCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedPolicyCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Policies</div>
           </Link>

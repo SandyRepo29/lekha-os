@@ -21,25 +21,25 @@ export default async function AlertsPage() {
       <AssetSubNav />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-red-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-red-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Open Alerts</p>
           <p className="text-2xl font-bold text-red-400">{open.length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-orange-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-orange-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Critical / High</p>
           <p className="text-2xl font-bold text-orange-400">{(open as any[]).filter((a: any) => ["critical","high"].includes(a.severity)).length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-emerald-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-emerald-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Resolved</p>
           <p className="text-2xl font-bold text-emerald-400">{resolved.length}</p>
         </div>
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] border-l-2 border-l-slate-400 p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-slate-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Total</p>
           <p className="text-2xl font-bold text-slate-400">{open.length + resolved.length}</p>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <h2 className="font-semibold text-sm mb-4">Open Alerts</h2>
         {open.length === 0 ? (
           <p className="text-sm text-[var(--color-ink-dim)] text-center py-8">No open alerts — all assets are in good governance health.</p>
@@ -63,7 +63,7 @@ export default async function AlertsPage() {
       </div>
 
       {resolved.length > 0 && (
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <h2 className="font-semibold text-sm mb-4 text-[var(--color-ink-dim)]">Recently Resolved</h2>
           <div className="space-y-2">
             {(resolved as any[]).slice(0, 10).map((al: any) => (

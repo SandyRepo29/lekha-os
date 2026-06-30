@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getMonitoringData } from "@/lib/services/trust-verification/trust-verification-service";
@@ -77,7 +77,7 @@ export default async function MonitoringPage() {
             { rule: "privacy_incident",             label: "Privacy Incident",                   desc: "Alert on unresolved privacy incident",             active: true },
             { rule: "ai_incident_critical",         label: "AI Critical Incident",               desc: "Alert on unresolved critical AI incident",         active: true },
           ].map(r => (
-            <div key={r.rule} className="flex items-center gap-4 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+            <div key={r.rule} className="flex items-center gap-4 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
               <div className={`h-2 w-2 rounded-full shrink-0 ${r.active ? "bg-emerald-400" : "bg-[var(--color-ink-faint)]"}`} />
               <div className="flex-1">
                 <div className="text-sm font-medium">{r.label}</div>
@@ -97,7 +97,7 @@ export default async function MonitoringPage() {
         {events.length > 0 ? (
           <div className="space-y-2">
             {events.map((ev: any) => (
-              <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+              <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                 <Activity className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${EVENT_COLORS[ev.eventType] ?? "text-[var(--color-ink-faint)]"}`} />
                 <div className="min-w-0 flex-1">
                   <div className="text-xs font-medium font-mono">{ev.eventType}</div>

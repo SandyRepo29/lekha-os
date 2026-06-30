@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { ShieldCheck, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
@@ -79,7 +79,7 @@ export default async function ComplianceControlsPage() {
               </thead>
               <tbody>
                 {allControls.map((c) => (
-                  <tr key={c.id} className="border-b border-[var(--color-line)] last:border-0 hover:bg-white/[0.02] transition-colors">
+                  <tr key={c.id} className="border-b border-[var(--color-line)] last:border-0 hover:bg-white transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="font-medium">{c.name}</div>
                     </td>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getSessionOverview } from "@/lib/services/security-command-center/security-service";
@@ -44,7 +44,7 @@ export default async function SessionsPage() {
             const first = userSessions[0];
             return (
               <div key={uid} className="rounded-2xl border border-[var(--color-line)] overflow-hidden">
-                <div className="flex items-center justify-between bg-white/[0.02] px-4 py-3 border-b border-[var(--color-line)]">
+                <div className="flex items-center justify-between bg-white px-4 py-3 border-b border-[var(--color-line)]">
                   <div>
                     <div className="text-sm font-semibold">{String(first.full_name ?? "Unknown")}</div>
                     <div className="text-xs text-[var(--color-ink-dim)]">{String(first.email ?? "")} · {userSessions.length} session(s)</div>

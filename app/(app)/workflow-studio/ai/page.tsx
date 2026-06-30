@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Sparkles, AlertCircle, GitBranch, TrendingUp, MessageSquare } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -63,7 +63,7 @@ export default async function WorkflowAIPage({
             { label: "Approvals", value: metrics.pendingApprovals },
             { label: "Automation Rate", value: `${metrics.automationRate}%` },
           ].map(({ label, value }) => (
-            <div key={label} className="rounded-xl bg-white/[0.04] p-3 text-center">
+            <div key={label} className="rounded-xl bg-[#F8F9FB] p-3 text-center">
               <p className="text-lg font-bold">{value}</p>
               <p className="text-xs text-[var(--color-ink-dim)]">{label}</p>
             </div>
@@ -100,7 +100,7 @@ export default async function WorkflowAIPage({
             rows={3}
             defaultValue={sp.generatePrompt ?? ""}
             placeholder='e.g. "Create a vendor onboarding workflow requiring Legal, Security and Privacy approval"'
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 resize-none"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 resize-none"
           />
           <Button type="submit" size="sm"><Sparkles className="h-4 w-4" /> Generate Workflow</Button>
         </form>
@@ -138,7 +138,7 @@ export default async function WorkflowAIPage({
             name="question"
             defaultValue={sp.question ?? ""}
             placeholder="Ask about your workflows: Which fail most? How can we improve throughput?"
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
           />
           <Button type="submit" size="sm"><Sparkles className="h-4 w-4" /> Ask</Button>
         </form>

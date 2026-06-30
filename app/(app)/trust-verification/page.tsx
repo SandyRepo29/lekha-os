@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -47,13 +47,13 @@ export default async function TrustVerificationPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/trust-verification/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-verification/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Verification Advisor&#8482;
           </Link>
           <Link
             href="/trust-verification/registry"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors"
           >
             <Globe className="h-4 w-4" /> Registry
           </Link>
@@ -87,7 +87,7 @@ export default async function TrustVerificationPage() {
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
               Beyond measuring governance — AUDT now <strong>verifies</strong>, <strong>certifies</strong>, and <strong>publishes</strong> trust.
               Organizations can apply for AUDT Verified™, Trusted Vendor™, Privacy Ready™, AI Governed™ and more.
-              Every certificate is publicly verifiable at <code className="rounded bg-white/[0.08] px-1 py-0.5 text-[11px]">audt.tech/verify/[ID]</code>
+              Every certificate is publicly verifiable at <code className="rounded bg-[#EEF2F7] px-1 py-0.5 text-[11px]">audt.tech/verify/[ID]</code>
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {["AUDT Verified™","Trusted Vendor™","Privacy Ready™","AI Governed™","Enterprise Ready™"].map(b => (
@@ -108,7 +108,7 @@ export default async function TrustVerificationPage() {
               href={href}
               className="group flex items-start gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04]"
             >
-              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
+              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#F8F9FB]">
                 <Icon className="h-5 w-5 text-[var(--color-blue)]" />
               </span>
               <div className="min-w-0 flex-1">
@@ -134,7 +134,7 @@ export default async function TrustVerificationPage() {
             <div className="space-y-2">
               {m!.recentApplications.map((v: any) => (
                 <Link key={v.id} href={`/trust-verification/applications/${v.id}`}
-                  className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5 hover:bg-white/[0.04]">
+                  className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5 hover:bg-[#F8F9FB]">
                   <div>
                     <div className="text-sm font-medium">{(v as any).programName ?? "Verification"}</div>
                     <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Applied {new Date(v.appliedAt).toLocaleDateString()}</div>
@@ -161,7 +161,7 @@ export default async function TrustVerificationPage() {
           {events.length > 0 ? (
             <div className="space-y-2">
               {events.slice(0, 6).map((ev: any) => (
-                <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+                <div key={ev.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                   <Activity className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-blue)]" />
                   <div>
                     <div className="text-xs font-medium font-mono">{ev.eventType}</div>

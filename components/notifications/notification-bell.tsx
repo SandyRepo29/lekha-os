@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Bell } from "lucide-react";
 
@@ -14,7 +14,7 @@ export function NotificationBell({ open: _open, onOpen, unreadCount }: Props) {
   return (
     <button
       onClick={onOpen}
-      className="relative flex h-9 w-9 items-center justify-center rounded-xl text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+      className="relative flex h-9 w-9 items-center justify-center rounded-xl text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
       aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
     >
       <Bell size={18} strokeWidth={1.75} />

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAllOrgSettings } from "@/lib/services/platform/platform-settings-service";
@@ -194,7 +194,7 @@ export default async function PlatformSettingsPage() {
           <span>/</span>
           <span className="text-[var(--color-ink)]">Settings</span>
         </div>
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-8 text-center">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-8 text-center">
           <Shield className="h-8 w-8 text-[var(--color-ink-dim)] mx-auto mb-3" />
           <p className="text-[var(--color-ink)] font-medium">Admin access required</p>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
@@ -223,7 +223,7 @@ export default async function PlatformSettingsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-white/[0.06] p-2">
+        <div className="rounded-xl bg-[#F8F9FB] p-2">
           <Settings className="h-5 w-5 text-[var(--color-blue)]" />
         </div>
         <div>
@@ -247,7 +247,7 @@ export default async function PlatformSettingsPage() {
         return (
           <Card
             key={cat.prefix}
-            className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden"
+            className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden"
           >
             {/* Group header */}
             <div className="flex items-center gap-2 px-5 py-4 border-b border-[var(--color-line)]">
@@ -320,7 +320,7 @@ export default async function PlatformSettingsPage() {
       })}
 
       {/* Info callout */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] px-5 py-4 flex items-start gap-3">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white px-5 py-4 flex items-start gap-3">
         <Shield className="h-4 w-4 text-[var(--color-ink-dim)] mt-0.5 shrink-0" />
         <p className="text-xs text-[var(--color-ink-dim)]">
           Settings marked <span className="text-blue-400 font-medium">custom</span> override the

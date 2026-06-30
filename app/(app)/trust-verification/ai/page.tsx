@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
@@ -50,7 +50,7 @@ export default async function TrustVerificationAiPage() {
         {capabilities.map(({ icon: Icon, label, desc }) => (
           <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
             <div className="flex items-start gap-3">
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#F8F9FB]">
                 <Icon className="h-4 w-4 text-[var(--color-blue)]" />
               </span>
               <div>

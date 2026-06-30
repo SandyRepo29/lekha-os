@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -55,7 +55,7 @@ export default async function RegLibraryPage({ searchParams }: { searchParams: P
         <h3 className="mb-3 text-sm font-semibold">By Category</h3>
         <div className="flex flex-wrap gap-2">
           {Object.entries(byCategory).map(([cat, cnt]) => (
-            <div key={cat} className="flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5">
+            <div key={cat} className="flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white px-3 py-1.5">
               <CategoryBadge category={cat} />
               <span className="text-xs font-medium">{cnt}</span>
             </div>
@@ -80,7 +80,7 @@ export default async function RegLibraryPage({ searchParams }: { searchParams: P
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]/40">
                 {regs.map(r => (
-                  <tr key={r.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={r.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-semibold">{r.shortName ?? r.name}</div>
                       <div className="mt-0.5 text-[var(--color-ink-faint)] max-w-[220px] truncate">{r.name}</div>

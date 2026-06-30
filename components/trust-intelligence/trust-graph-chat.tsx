@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { graphChatAction } from "@/lib/trust-graph/actions";
@@ -29,7 +29,7 @@ export function TrustGraphChat() {
   };
 
   return (
-    <div className="flex flex-col rounded-2xl border border-[var(--color-line)] bg-white/[0.02]" style={{ height: 420 }}>
+    <div className="flex flex-col rounded-2xl border border-[var(--color-line)] bg-white" style={{ height: 420 }}>
       <div className="flex items-center gap-2 border-b border-[var(--color-line)] px-4 py-3">
         <Bot className="h-4 w-4 text-[var(--color-blue)]" />
         <span className="text-sm font-semibold">Governance Reasoner™</span>
@@ -39,16 +39,16 @@ export function TrustGraphChat() {
         {messages.map((m, i) => (
           <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             {m.role === "model" && <div className="h-6 w-6 shrink-0 rounded-full bg-[var(--color-blue)]/20 flex items-center justify-center mt-0.5"><Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" /></div>}
-            <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-white/[0.04] text-[var(--color-ink-dim)]"}`}>
+            <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"}`}>
               {m.text}
             </div>
-            {m.role === "user" && <div className="h-6 w-6 shrink-0 rounded-full bg-white/[0.08] flex items-center justify-center mt-0.5"><User className="h-3.5 w-3.5" /></div>}
+            {m.role === "user" && <div className="h-6 w-6 shrink-0 rounded-full bg-[#EEF2F7] flex items-center justify-center mt-0.5"><User className="h-3.5 w-3.5" /></div>}
           </div>
         ))}
         {isPending && (
           <div className="flex gap-2 justify-start">
             <div className="h-6 w-6 shrink-0 rounded-full bg-[var(--color-blue)]/20 flex items-center justify-center"><Loader2 className="h-3.5 w-3.5 text-[var(--color-blue)] animate-spin" /></div>
-            <div className="rounded-2xl bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink-faint)]">Thinking…</div>
+            <div className="rounded-2xl bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink-faint)]">Thinking…</div>
           </div>
         )}
         <div ref={bottomRef} />
@@ -59,7 +59,7 @@ export function TrustGraphChat() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send())}
           placeholder="Why did trust drop? Which controls are critical?…"
-          className="flex-1 rounded-xl bg-white/[0.05] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50"
+          className="flex-1 rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:border-[var(--color-blue)]/50"
         />
         <button
           onClick={send}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { RefreshCw, ShieldCheck, CheckCircle, AlertTriangle } from "lucide-react";
@@ -162,7 +162,7 @@ export function AiTrustScoreWidget({ systemId, systemName }: AiTrustScoreWidgetP
         <>
           {/* Overall score ring + level */}
           <div className="flex items-center gap-4">
-            <div className="relative grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+            <div className="relative grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white">
               <span className="font-[family-name:var(--font-display)] text-3xl font-bold text-[var(--color-ink)]">
                 {breakdown.overall}
               </span>

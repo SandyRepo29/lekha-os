@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -24,12 +24,12 @@ export default async function NewAccessReviewPage() {
         <div>
           <label className="mb-1.5 block text-xs font-medium">Campaign Name *</label>
           <input name="name" required placeholder="e.g. Q2 2026 Privileged Access Review"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
         </div>
         <div>
           <label className="mb-1.5 block text-xs font-medium">Description</label>
           <textarea name="description" rows={2} placeholder="Campaign scope and objectives"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
@@ -58,12 +58,12 @@ export default async function NewAccessReviewPage() {
         <div>
           <label className="mb-1.5 block text-xs font-medium">Due Date</label>
           <input name="dueDate" type="date"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
         </div>
         <div>
           <label className="mb-1.5 block text-xs font-medium">Scope</label>
           <textarea name="scope" rows={2} placeholder="e.g. All admin accounts, privileged roles, and production system access"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-blue)]" />
         </div>
         <button type="submit"
           className="w-full rounded-xl grad-brand py-2.5 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90">

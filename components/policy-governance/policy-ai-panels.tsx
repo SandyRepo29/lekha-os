@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { draftPolicyAction, generateGapAnalysisAction, generateExecutiveSummaryAction } from "@/lib/policy-governance/actions";
@@ -72,7 +72,7 @@ function DraftPanel() {
       {error && <p className="text-sm text-red-400">{error}</p>}
 
       {draft && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 max-h-96 overflow-y-auto">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 max-h-96 overflow-y-auto">
           <pre className="text-xs text-[var(--color-ink)] whitespace-pre-wrap font-sans">{draft}</pre>
         </div>
       )}
@@ -158,7 +158,7 @@ function ExecutiveSummaryPanel() {
       </Button>
       {error && <p className="text-sm text-red-400">{error}</p>}
       {summary && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
           <p className="text-sm text-[var(--color-ink)] whitespace-pre-wrap">{summary}</p>
         </div>
       )}

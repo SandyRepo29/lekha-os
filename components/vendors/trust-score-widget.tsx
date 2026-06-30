@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -83,7 +83,7 @@ export function TrustScoreWidget({ vendorId, trustScore, breakdown, narrative, a
       ) : (
         <>
           <div className="flex items-center gap-4">
-            <div className="relative grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white/[0.03]">
+            <div className="relative grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white">
               <span className="font-[family-name:var(--font-display)] text-3xl font-bold">{trustScore}</span>
             </div>
             <div>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -156,7 +156,7 @@ export default async function IssueDetailPage({
             </h2>
             <div className="space-y-2 mb-4">
               {issue.tasks.map((task) => (
-                <div key={task.id} className="flex items-center justify-between gap-3 rounded-xl p-2 bg-white/[0.02]">
+                <div key={task.id} className="flex items-center justify-between gap-3 rounded-xl p-2 bg-white">
                   <div className="min-w-0 flex items-center gap-2">
                     <TaskStatusBadge status={task.status} />
                     <div className="min-w-0">
@@ -188,7 +188,7 @@ export default async function IssueDetailPage({
               <input
                 name="title"
                 placeholder="Add a task..."
-                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-indigo-500/50"
+                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-indigo-500/50"
               />
               <Button type="submit" size="sm" variant="outline">Add</Button>
             </form>
@@ -202,7 +202,7 @@ export default async function IssueDetailPage({
             </h2>
             <div className="space-y-3 mb-4">
               {issue.comments.map((c) => (
-                <div key={c.id} className="rounded-xl p-3 bg-white/[0.02]">
+                <div key={c.id} className="rounded-xl p-3 bg-white">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-medium">{c.authorName ?? "Unknown"}</span>
                     <span className="text-xs text-[var(--color-ink-dim)]">{formatDate(c.createdAt)}</span>
@@ -218,7 +218,7 @@ export default async function IssueDetailPage({
               <input
                 name="content"
                 placeholder="Add a comment..."
-                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-sm outline-none focus:border-indigo-500/50"
+                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-1.5 text-sm outline-none focus:border-indigo-500/50"
               />
               <Button type="submit" size="sm" variant="outline">Post</Button>
             </form>
@@ -233,7 +233,7 @@ export default async function IssueDetailPage({
               </h2>
               <div className="space-y-2">
                 {issue.exceptions.map((exc) => (
-                  <div key={exc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
+                  <div key={exc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white">
                     <div className="flex items-center gap-2 mb-1">
                       <ExceptionStatusBadge status={exc.status} />
                       {exc.approverName && <span>Approver: {exc.approverName}</span>}
@@ -257,7 +257,7 @@ export default async function IssueDetailPage({
               </h2>
               <div className="space-y-2">
                 {issue.escalations.map((esc) => (
-                  <div key={esc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white/[0.02]">
+                  <div key={esc.id} className="text-xs text-[var(--color-ink-dim)] rounded-xl p-2 bg-white">
                     <p className="font-medium text-orange-400">→ {esc.escalatedTo.replace(/_/g, " ")}</p>
                     <p className="mt-0.5">{esc.reason}</p>
                     <p className="mt-1">{formatDate(esc.createdAt)}</p>
@@ -330,7 +330,7 @@ export default async function IssueDetailPage({
               <select
                 name="status"
                 defaultValue={issue.status}
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="open">Open</option>
                 <option value="assigned">Assigned</option>
@@ -346,7 +346,7 @@ export default async function IssueDetailPage({
                 name="resolutionNotes"
                 rows={2}
                 placeholder="Resolution notes (optional)..."
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
               />
               <Button type="submit" size="sm" className="w-full">Update Status</Button>
             </form>
@@ -360,7 +360,7 @@ export default async function IssueDetailPage({
             <form action={handleEscalate} className="space-y-3">
               <select
                 name="escalatedTo"
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
               >
                 <option value="manager">Manager</option>
                 <option value="department_head">Department Head</option>
@@ -372,7 +372,7 @@ export default async function IssueDetailPage({
                 rows={2}
                 required
                 placeholder="Reason for escalation..."
-                className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
+                className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
               />
               <Button type="submit" size="sm" variant="outline" className="w-full text-orange-400 border-orange-500/30">
                 Escalate Issue

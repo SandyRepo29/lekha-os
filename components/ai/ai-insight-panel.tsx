@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Sparkles, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
@@ -76,7 +76,7 @@ export function AiInsightPanel({
 
       {/* Content area */}
       {open && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
           {pending && (
             <div className="flex items-center gap-2 text-sm text-[var(--color-ink-faint)]">
               <Sparkles className="h-4 w-4 animate-pulse text-[var(--color-blue)]" />

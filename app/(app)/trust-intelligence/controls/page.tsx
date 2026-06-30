@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -35,7 +35,7 @@ export default async function ControlHealthPage() {
           <div className="space-y-2">
             {metrics.weakControls.map((c) => (
               <Link key={c.id} href={`/controls/${c.id}`}>
-                <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/[0.03] transition-colors">
+                <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white transition-colors">
                   <span className="flex-1 text-sm text-[var(--color-ink)]">{c.name}</span>
                   <div className="w-32">
                     <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">

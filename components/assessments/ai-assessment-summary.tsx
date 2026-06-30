@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Sparkles, RefreshCw } from "lucide-react";
@@ -54,14 +54,14 @@ export function AiAssessmentSummary({ assessmentId, vendorId, summary, summaryAt
       </div>
 
       {pending && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-5 text-center">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-5 text-center">
           <Sparkles className="h-5 w-5 text-[var(--color-blue)] animate-pulse mx-auto mb-2" />
           <p className="text-sm text-[var(--color-ink-faint)]">Analysing assessment responses…</p>
         </div>
       )}
 
       {!pending && text && (
-        <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-4">
+        <div className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-4">
           <p className="text-sm leading-relaxed text-[var(--color-ink-dim)] whitespace-pre-line">{text}</p>
         </div>
       )}

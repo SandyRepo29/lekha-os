@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import {
@@ -446,7 +446,7 @@ export function VendorDetailTabs({
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
                       <Link href="/audits/new"
-                        className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-xs font-medium text-[var(--color-ink)] hover:bg-white/[0.08] transition-colors">
+                        className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-xs font-medium text-[var(--color-ink)] hover:bg-[#EEF2F7] transition-colors">
                         <ClipboardCheck className="h-3.5 w-3.5" /> Create audit
                       </Link>
                       <Link href="/audits"
@@ -584,7 +584,7 @@ export function VendorDetailTabs({
                     { label: "Contract Intelligence™", href: "/contract-governance/ai", desc: "AI analysis & executive summary" },
                   ].map((l) => (
                     <Link key={l.href} href={l.href}
-                      className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 hover:bg-white/[0.05] transition-colors">
+                      className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 hover:bg-[#F8F9FB] transition-colors">
                       <p className="text-xs font-semibold text-[var(--color-ink)]">{l.label}</p>
                       <p className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">{l.desc}</p>
                     </Link>
@@ -609,7 +609,7 @@ export function VendorDetailTabs({
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
                       <Link href="/security-center"
-                        className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-xs font-medium text-[var(--color-ink)] hover:bg-white/[0.08] transition-colors">
+                        className="flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-xs font-medium text-[var(--color-ink)] hover:bg-[#EEF2F7] transition-colors">
                         <Monitor className="h-3.5 w-3.5" /> Open Security Monitoring
                       </Link>
                     </div>
@@ -708,19 +708,19 @@ export function VendorDetailTabs({
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
                 <Link href={`/vendors/${vendor.id}/lifecycle`}
-                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
                   <Activity className="h-5 w-5 text-indigo-400" />
                   <span className="text-sm font-semibold text-[var(--color-ink)]">Lifecycle</span>
                   <span className="text-xs text-[var(--color-ink-faint)]">View and transition lifecycle states</span>
                 </Link>
                 <Link href={`/vendors/${vendor.id}/renewal`}
-                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
                   <Monitor className="h-5 w-5 text-emerald-400" />
                   <span className="text-sm font-semibold text-[var(--color-ink)]">Renewal</span>
                   <span className="text-xs text-[var(--color-ink-faint)]">AI renewal assessment and decisions</span>
                 </Link>
                 <Link href={`/vendors/${vendor.id}/offboarding`}
-                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+                  className="group flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
                   <AlertTriangle className="h-5 w-5 text-red-400" />
                   <span className="text-sm font-semibold text-[var(--color-ink)]">Offboarding</span>
                   <span className="text-xs text-[var(--color-ink-faint)]">9-step offboarding checklist</span>
@@ -732,12 +732,12 @@ export function VendorDetailTabs({
           {/* ──── CONTACTS TAB ──── */}
           {activeTab === "contacts" && (
             <div className="space-y-4">
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
                 <p className="text-sm text-[var(--color-ink-faint)]">
                   Manage vendor contacts across all relationship types &#8212; primary, security, legal, finance, and more.
                 </p>
                 <Link href={`/vendors/${vendor.id}/contacts`}
-                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors">
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors">
                   Manage contacts <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
@@ -747,12 +747,12 @@ export function VendorDetailTabs({
           {/* ──── TIMELINE TAB ──── */}
           {activeTab === "timeline" && (
             <div className="space-y-4">
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
                 <p className="text-sm text-[var(--color-ink-faint)]">
                   Complete chronological history of all governance events for this vendor.
                 </p>
                 <Link href={`/vendors/${vendor.id}/timeline`}
-                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-white/[0.08] hover:text-[var(--color-ink)] transition-colors">
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors">
                   View full timeline <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
@@ -800,7 +800,7 @@ function ModuleLink({ href, icon: Icon, label, color }: {
   const c = MODULE_COLORS[color] ?? MODULE_COLORS.indigo;
   return (
     <Link href={href}
-      className="group flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-3 transition-all hover:bg-white/[0.05] hover:border-white/10">
+      className="group flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-white px-3 py-3 transition-all hover:bg-[#F8F9FB] hover:border-white/10">
       <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors", c.bg, c.hover)}>
         <Icon className={cn("h-4 w-4", c.icon)} />
       </div>

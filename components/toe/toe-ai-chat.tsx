@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { chatAction } from "@/lib/toe/actions";
@@ -56,7 +56,7 @@ export function ToeAiChat() {
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors text-left"
+                  className="rounded-xl border border-[var(--color-line)] bg-white px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors text-left"
                 >
                   {s}
                 </button>
@@ -77,7 +77,7 @@ export function ToeAiChat() {
             <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
               m.role === "user"
                 ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-                : "bg-white/[0.04] text-[var(--color-ink-dim)]"
+                : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"
             }`}>
               {m.content}
             </div>
@@ -88,7 +88,7 @@ export function ToeAiChat() {
             <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-500/20">
               <Bot className="h-3.5 w-3.5 text-purple-400" />
             </div>
-            <div className="rounded-2xl bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink-dim)]">
+            <div className="rounded-2xl bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink-dim)]">
               <span className="animate-pulse">Thinking&#8230;</span>
             </div>
           </div>
@@ -103,7 +103,7 @@ export function ToeAiChat() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && send(input)}
           placeholder="Ask about workflows, approvals, automation&#8230;"
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)]"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)]"
         />
         <button
           onClick={() => send(input)}

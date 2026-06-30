@@ -45,7 +45,7 @@ export function OrgTrustScoreRing({ score, size = 120 }: { score: number; size?:
   return (
     <div className="relative inline-flex flex-col items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={8} />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth={8} />
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"

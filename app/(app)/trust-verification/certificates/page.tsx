@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -57,10 +57,10 @@ export default async function CertificatesPage() {
 
                 <div className="flex gap-2">
                   <a href={cert.publicUrl} target="_blank" rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white/[0.04] py-1.5 text-xs font-medium hover:bg-white/[0.07]">
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
                     <ExternalLink className="h-3 w-3" /> Verify
                   </a>
-                  <button className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-medium hover:bg-white/[0.07]">
+                  <button className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
                     <QrCode className="h-3.5 w-3.5" />
                   </button>
                 </div>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -121,7 +121,7 @@ export default async function ContinuousCompliancePage() {
         <div className="flex gap-2">
           <Link
             href="/continuous-compliance/checks"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors"
           >
             <RefreshCw className="h-4 w-4" /> Run Checks
           </Link>
@@ -166,7 +166,7 @@ export default async function ContinuousCompliancePage() {
                   <span className="text-[11px] text-[var(--color-ink-dim)]">{c.label} <span className="text-[var(--color-ink-faint)]">({c.weight}%)</span></span>
                   <span className={`text-[11px] font-semibold ${scoreColor(c.score)}`}>{c.score}%</span>
                 </div>
-                <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-1 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className={`h-full rounded-full ${scoreBar(c.score)}`} style={{ width: `${c.score}%` }} />
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default async function ContinuousCompliancePage() {
               <span className="text-xs text-[var(--color-ink-dim)]">Today</span>
               <span className={`text-lg font-bold ${scoreColor(complianceScore)}`}>{complianceScore}%</span>
             </div>
-            <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-3 flex items-center justify-between">
+            <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 flex items-center justify-between">
               <span className="text-xs font-semibold">Drift</span>
               <div className="flex items-center gap-1.5">
                 {drift >= 0 ? (
@@ -296,7 +296,7 @@ export default async function ContinuousCompliancePage() {
               <span className="text-[var(--color-ink-dim)]">Coverage</span>
               <span className={`font-semibold ${scoreColor(controlCoverage)}`}>{controlCoverage}%</span>
             </div>
-            <div className="mt-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+            <div className="mt-1 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
               <div className={`h-full rounded-full ${scoreBar(controlCoverage)}`} style={{ width: `${controlCoverage}%` }} />
             </div>
           </div>
@@ -396,7 +396,7 @@ export default async function ContinuousCompliancePage() {
                   <span className="text-[var(--color-ink-dim)]">{r.label}</span>
                   <span className={`font-semibold ${scoreColor(r.pct)}`}>{r.pct}%</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className={`h-full rounded-full ${scoreBar(r.pct)}`} style={{ width: `${r.pct}%` }} />
                 </div>
               </div>
@@ -447,7 +447,7 @@ export default async function ContinuousCompliancePage() {
           {signals.length > 0 ? (
             <div className="space-y-2">
               {signals.slice(0, 5).map((s) => (
-                <div key={s.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2">
+                <div key={s.id} className="flex items-start gap-2 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2">
                   <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
                   <div className="min-w-0">
                     <p className="truncate text-xs font-medium">{s.title}</p>

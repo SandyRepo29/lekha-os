@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Globe, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -84,7 +84,7 @@ export default async function TransfersPage() {
                 {transfers.map((t) => (
                   <tr
                     key={t.id}
-                    className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
+                    className="border-b border-[var(--color-line)]/50 hover:bg-white transition-colors"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">

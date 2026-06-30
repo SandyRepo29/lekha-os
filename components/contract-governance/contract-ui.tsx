@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export function ContractStat({
   const bg      = ACCENT_BG[accent];
 
   const inner = (
-    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white/[0.03] transition-colors")}>
+    <Card className={cn("border-l-2 px-4 py-3", border, leftBar, bg, href && "hover:bg-white transition-colors")}>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
       <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold">
         {value}
@@ -75,7 +75,7 @@ export function ContractFilterChip({
         "rounded-full px-3 py-1 text-xs font-medium transition-colors",
         active
           ? "bg-[var(--color-blue)]/20 text-[var(--color-blue)]"
-          : "bg-white/[0.04] text-[var(--color-ink-dim)] hover:bg-white/[0.07]"
+          : "bg-[#F8F9FB] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]"
       )}
     >
       {label}
@@ -86,7 +86,7 @@ export function ContractFilterChip({
 // ---- Contract status badge ----
 
 const STATUS_STYLES: Record<string, string> = {
-  draft:        "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+  draft:        "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
   review:       "text-amber-400 border-amber-500/30 bg-amber-500/10",
   negotiation:  "text-orange-400 border-orange-500/30 bg-orange-500/10",
   active:       "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
@@ -94,11 +94,11 @@ const STATUS_STYLES: Record<string, string> = {
   expired:      "text-red-400 border-red-500/30 bg-red-500/10",
   renewed:      "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10",
   terminated:   "text-red-400 border-red-500/30 bg-red-500/10",
-  archived:     "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+  archived:     "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
 };
 
 export function ContractStatusBadge({ status }: { status: string }) {
-  const styles = STATUS_STYLES[status] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]";
+  const styles = STATUS_STYLES[status] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]";
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium", styles)}>
       {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -113,11 +113,11 @@ const OBLIGATION_STATUS_STYLES: Record<string, string> = {
   in_progress: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10",
   completed:   "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
   overdue:     "text-red-400 border-red-500/30 bg-red-500/10",
-  waived:      "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]",
+  waived:      "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
 };
 
 export function ObligationStatusBadge({ status }: { status: string }) {
-  const styles = OBLIGATION_STATUS_STYLES[status] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]";
+  const styles = OBLIGATION_STATUS_STYLES[status] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]";
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium whitespace-nowrap", styles)}>
       {status.replace("_", " ")}
@@ -135,7 +135,7 @@ const CLAUSE_RISK_STYLES: Record<string, string> = {
 };
 
 export function ClauseRiskBadge({ level }: { level: string }) {
-  const styles = CLAUSE_RISK_STYLES[level] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white/[0.04]";
+  const styles = CLAUSE_RISK_STYLES[level] ?? "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]";
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium", styles)}>
       {level}

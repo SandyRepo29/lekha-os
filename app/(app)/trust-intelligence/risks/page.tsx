@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
@@ -40,7 +40,7 @@ export default async function RiskInsightsPage() {
             <div className="space-y-2">
               {metrics.topRisks.map((r) => (
                 <Link key={r.id} href={`/risks/${r.id}`}>
-                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white transition-colors">
                     <span className="flex-1 text-sm text-[var(--color-ink)]">{r.title}</span>
                     <RiskCategoryBadge category={r.category} />
                     <RiskScoreBadge score={r.inherentScore} />

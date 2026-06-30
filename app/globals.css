@@ -1,36 +1,44 @@
 @import "tailwindcss";
 
 /* ============================================================
-   LEKHA OS — Design system (Tailwind v4 theme)
+   AUDT — Trust Workspace™ v1.1  (Tailwind v4 @theme block)
+   Light workspace · Graphite sidebar · Cyan + Violet brand
    ============================================================ */
 @theme {
-  /* Brand palette */
-  --color-bg: #06070d;
-  --color-bg-2: #0a0c16;
-  --color-surface: #0d0f1a;
-  --color-indigo: #4f46e5;
-  --color-indigo-deep: #3730a3;
-  --color-purple: #7c3aed;
-  --color-blue: #2dd4ff;
-  --color-blue-deep: #0ea5e9;
+  /* ─── Light workspace surfaces ─────────────────────────── */
+  --color-bg:           #F8F9FB;
+  --color-bg-2:         #FFFFFF;
+  --color-surface:      #FFFFFF;
+  --color-divider:      #EEF2F7;
 
-  --color-ink: #e8eaf2;
-  --color-ink-dim: #9aa0b5;
-  --color-ink-faint: #646a82;
+  /* ─── Trust Cyan (WCAG AA 4.9:1 on white) ──────────────── */
+  --color-blue:         #007A94;
+  --color-blue-deep:    #005F7A;
 
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-strong: rgba(255, 255, 255, 0.14);
+  /* ─── Intelligence Violet (WCAG AAA 7.7:1 on white) ────── */
+  --color-indigo:       #4933D6;
+  --color-indigo-deep:  #3520B0;
+  --color-purple:       #4933D6;
 
-  /* Fonts */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Sora", "Inter", sans-serif;
+  /* ─── Text scale ─────────────────────────────────────────── */
+  --color-ink:          #1E293B;
+  --color-ink-dim:      #64748B;
+  --color-ink-faint:    #94A3B8;
 
-  /* Radii */
-  --radius-card: 18px;
+  /* ─── Borders / lines on light surfaces ─────────────────── */
+  --color-line:         rgba(30,41,59,0.10);
+  --color-line-strong:  rgba(30,41,59,0.18);
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  --font-sans:          "Inter", system-ui, -apple-system, sans-serif;
+  --font-display:       "Manrope", "Inter", sans-serif;
+
+  /* ─── Layout ─────────────────────────────────────────────── */
+  --radius-card:        12px;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
@@ -44,19 +52,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Shared gradient helpers used across app + marketing */
+/* Brand gradient — Cyan → Violet */
 .grad-brand {
-  background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 45%, #2dd4ff 110%);
+  background: linear-gradient(120deg, #007A94 0%, #4933D6 100%);
 }
+
+/* Gradient text */
 .grad-text {
-  background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 45%, #2dd4ff 110%);
+  background: linear-gradient(120deg, #00B8D9 0%, #4933D6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
-/* Thin scrollbar for app surfaces */
-.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-.scroll-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 8px; }
+/* Thin scrollbar — adapted for light surfaces */
+.scroll-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: rgba(30,41,59,.12); border-radius: 6px; }
 .scroll-thin::-webkit-scrollbar-track { background: transparent; }

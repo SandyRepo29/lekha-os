@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { AlertCircle, Plus, CheckCircle2, Filter } from "lucide-react";
@@ -115,7 +115,7 @@ export default async function FindingsPage({
                 {auditFindings.slice(0, 20).map((f) => {
                   const impact = f.severity === "critical" ? -10 : f.severity === "high" ? -5 : f.severity === "medium" ? -2 : -1;
                   return (
-                    <tr key={f.id} className="hover:bg-white/[0.02]">
+                    <tr key={f.id} className="hover:bg-white">
                       <td className="px-5 py-3">
                         <Link href={`/audits/${f.auditId}/findings`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                           {f.title}
@@ -174,7 +174,7 @@ export default async function FindingsPage({
                 {issues.slice(0, 20).map((issue) => {
                   const impact = issue.severity === "critical" ? -10 : issue.severity === "high" ? -5 : issue.severity === "medium" ? -2 : -1;
                   return (
-                    <tr key={issue.id} className="hover:bg-white/[0.02]">
+                    <tr key={issue.id} className="hover:bg-white">
                       <td className="px-5 py-3">
                         <Link href={`/issue-hub/${issue.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                           {issue.title}

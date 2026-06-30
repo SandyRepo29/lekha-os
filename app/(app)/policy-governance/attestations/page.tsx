@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Users } from "lucide-react";
@@ -57,7 +57,7 @@ export default async function PolicyAttestationsPage({
             <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
           ))}
         </select>
-        <button type="submit" className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-4 py-2 text-sm hover:bg-white/[0.04]">
+        <button type="submit" className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-4 py-2 text-sm hover:bg-[#F8F9FB]">
           Filter
         </button>
       </form>
@@ -71,7 +71,7 @@ export default async function PolicyAttestationsPage({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Policy</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">User</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Status</th>
@@ -82,7 +82,7 @@ export default async function PolicyAttestationsPage({
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {attestations.map(({ attestation, userName, userEmail, policyName }) => (
-                  <tr key={attestation.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={attestation.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3">
                       <Link href={`/policy-governance/${attestation.policyId}?tab=attestations`} className="font-medium hover:text-indigo-400 transition-colors">
                         {policyName ?? "—"}

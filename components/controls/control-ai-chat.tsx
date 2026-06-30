@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, Bot, User } from "lucide-react";
@@ -76,7 +76,7 @@ export function ControlAiChat() {
               className={`max-w-[80%] rounded-xl px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed ${
                 m.role === "user"
                   ? "bg-[var(--color-blue)]/20 text-white border border-[var(--color-blue)]/20"
-                  : "bg-white/[0.04] text-[var(--color-ink)] border border-[var(--color-line)]"
+                  : "bg-[#F8F9FB] text-[var(--color-ink)] border border-[var(--color-line)]"
               }`}
             >
               {m.text}
@@ -111,7 +111,7 @@ export function ControlAiChat() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about your controls…"
             disabled={loading}
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 disabled:opacity-50"
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-sm outline-none focus:border-[var(--color-blue)]/60 focus:ring-1 focus:ring-[var(--color-blue)]/20 disabled:opacity-50"
           />
           <button
             type="submit"

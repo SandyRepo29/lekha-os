@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getPendingActionsAction } from "@/lib/agents/actions";
@@ -86,7 +86,7 @@ export default async function AgentActionsPage() {
                 </thead>
                 <tbody className="divide-y divide-[var(--color-line)]/40">
                   {actions.map(a => (
-                    <tr key={a.id} className="hover:bg-white/[0.02]">
+                    <tr key={a.id} className="hover:bg-white">
                       <td className="px-4 py-3 font-medium max-w-[240px] truncate">{a.title}</td>
                       <td className="px-4 py-3 text-[var(--color-ink-dim)]">{a.agentName}</td>
                       <td className="px-4 py-3 text-[var(--color-ink-faint)]">{a.targetModule}</td>

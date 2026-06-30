@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { AlertCircle, Plus, GitBranch, Zap, Play } from "lucide-react";
@@ -89,7 +89,7 @@ export default async function WorkflowLibraryPage({
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {workflows.map((wf) => (
             <Link key={wf.id} href={`/workflow-studio/${wf.id}`}>
-              <Card className="p-5 hover:bg-white/[0.03] transition-colors h-full flex flex-col gap-3">
+              <Card className="p-5 hover:bg-white transition-colors h-full flex flex-col gap-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
                     <GitBranch className="h-4 w-4" />

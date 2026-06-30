@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,7 @@ const NAV_ITEMS = [
 export function SecSubNav() {
   const pathname = usePathname();
   return (
-    <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1 scrollbar-thin">
+    <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white p-1 scrollbar-thin">
       {NAV_ITEMS.map(({ href, label }) => {
         const active =
           href === "/security-center"
@@ -36,8 +36,8 @@ export function SecSubNav() {
             className={cn(
               "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-white/[0.08] text-[var(--color-ink)]"
-                : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
             )}
           >
             {label}
@@ -85,7 +85,7 @@ export function ReadinessRing({ score, level }: { score: number; level: string }
     <div className="flex flex-col items-center gap-2">
       <div className="relative h-28 w-28">
         <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
+          <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="8" />
           <circle cx="50" cy="50" r={r} fill="none" stroke={color} strokeWidth="8"
             strokeDasharray={`${dash} ${c}`} strokeLinecap="round" />
         </svg>
@@ -157,7 +157,7 @@ const PROVIDER_LABELS: Record<string, string> = {
 
 export function ProviderBadge({ type }: { type: string }) {
   return (
-    <span className="rounded-full border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-0.5 text-[11px] font-medium text-[var(--color-ink-dim)]">
+    <span className="rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-0.5 text-[11px] font-medium text-[var(--color-ink-dim)]">
       {PROVIDER_LABELS[type] ?? type}
     </span>
   );
@@ -173,7 +173,7 @@ export function MfaCoverageBar({ percent }: { percent: number }) {
         <span>MFA Coverage</span>
         <span className="font-semibold">{percent}%</span>
       </div>
-      <div className="h-2 w-full rounded-full bg-white/[0.06]">
+      <div className="h-2 w-full rounded-full bg-[#F8F9FB]">
         <div className={cn("h-full rounded-full transition-all", color)} style={{ width: `${percent}%` }} />
       </div>
     </div>
@@ -184,7 +184,7 @@ export function MfaCoverageBar({ percent }: { percent: number }) {
 
 export function FeatureRow({ label, status, href }: { label: string; status: boolean; href: string }) {
   return (
-    <Link href={href} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 hover:bg-white/[0.04] transition-colors">
+    <Link href={href} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 hover:bg-[#F8F9FB] transition-colors">
       <span className="text-sm font-medium">{label}</span>
       {status
         ? <span className="flex items-center gap-1.5 text-xs text-emerald-400"><CheckCircle className="h-4 w-4" /> Active</span>

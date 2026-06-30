@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, FileSignature, Building2, Calendar } from "lucide-react";
@@ -115,7 +115,7 @@ export default async function ContractLibraryPage({
                 {contracts.map((c) => {
                   const days = daysUntil(c.expiryDate);
                   return (
-                    <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={c.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <Link href={`/contract-governance/${c.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                           {c.title}
@@ -149,7 +149,7 @@ export default async function ContractLibraryPage({
                       </td>
                       <td className="px-4 py-3">
                         {c.trustScore !== null && c.trustScore !== undefined ? (
-                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full bg-white/[0.06] ${scoreTextColor(c.trustScore)}`}>
+                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full bg-[#F8F9FB] ${scoreTextColor(c.trustScore)}`}>
                             {c.trustScore}/100
                           </span>
                         ) : (

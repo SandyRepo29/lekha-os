@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -56,7 +56,7 @@ function ReviewRow({ review, vendorId }: { review: VendorReview; vendorId: strin
               <div className="absolute right-0 top-8 z-20 min-w-[150px] rounded-xl border border-[var(--color-line-strong)] bg-[#0d0f1a] shadow-xl overflow-hidden">
                 {nextStatuses.map((s) => (
                   <button key={s} onClick={() => { setOpen(false); start(async () => { await changeReviewStatus(review.id, vendorId, s); router.refresh(); }); }}
-                    className="w-full text-left px-3 py-2.5 text-sm capitalize text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)]">
+                    className="w-full text-left px-3 py-2.5 text-sm capitalize text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]">
                     {s.replace("_", " ")}
                   </button>
                 ))}

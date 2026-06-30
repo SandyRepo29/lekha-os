@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -10,11 +10,11 @@ const buttonVariants = cva(
         primary:
           "grad-brand text-white shadow-[0_8px_30px_-8px_rgba(99,102,241,0.7)] hover:-translate-y-0.5 hover:shadow-[0_16px_44px_-10px_rgba(99,102,241,0.85)]",
         ghost:
-          "border border-[var(--color-line-strong)] bg-white/[0.04] text-[var(--color-ink)] hover:bg-white/[0.09] hover:-translate-y-0.5",
+          "border border-[var(--color-line-strong)] bg-[#F8F9FB] text-[var(--color-ink)] hover:bg-[#EEF2F7] hover:-translate-y-0.5",
         outline:
-          "border border-[var(--color-line-strong)] text-[var(--color-ink)] hover:bg-white/[0.05]",
+          "border border-[var(--color-line-strong)] text-[var(--color-ink)] hover:bg-[#F8F9FB]",
         subtle:
-          "bg-white/[0.04] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.08]",
+          "bg-[#F8F9FB] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#EEF2F7]",
         danger:
           "bg-red-500/90 text-white hover:bg-red-500",
       },

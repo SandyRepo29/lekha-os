@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Risk Lens&#8482; — AUDT' };
 
@@ -51,7 +51,7 @@ export default async function RisksDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/risks/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/risks/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Risk Officer&#8482;
           </Link>
@@ -141,7 +141,7 @@ export default async function RisksDashboardPage() {
                       <span className="w-32 shrink-0 text-xs text-[var(--color-ink-dim)] group-hover:text-[var(--color-ink)] transition-colors">
                         {RISK_CATEGORY_LABELS[cat] ?? cat}
                       </span>
-                      <div className="flex-1 rounded-full bg-white/[0.05] h-2 overflow-hidden">
+                      <div className="flex-1 rounded-full bg-[#F8F9FB] h-2 overflow-hidden">
                         <div className="h-full rounded-full bg-[var(--color-blue)]/60" style={{ width: `${pct}%` }} />
                       </div>
                       <span className="w-8 text-right text-xs text-[var(--color-ink-dim)]">{cnt}</span>
@@ -165,7 +165,7 @@ export default async function RisksDashboardPage() {
               <Link
                 key={r.id}
                 href={`/risks/${r.id}`}
-                className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white/[0.02] transition-colors"
+                className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-white transition-colors"
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{r.title}</p>
@@ -207,7 +207,7 @@ export default async function RisksDashboardPage() {
       )}
 
       {/* Recent Activity */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />

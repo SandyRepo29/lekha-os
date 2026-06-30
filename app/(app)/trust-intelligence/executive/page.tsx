@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Sparkles, Bot } from "lucide-react";
@@ -206,7 +206,7 @@ export default async function ExecutiveViewPage() {
         <div className="grid gap-3 sm:grid-cols-2">
           {keyQuestions.map((q) => (
             <Link key={q.question} href={q.href}>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 hover:bg-white/[0.04] transition-colors h-full">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-3 hover:bg-[#F8F9FB] transition-colors h-full">
                 <p className="text-xs font-semibold text-[var(--color-ink)] mb-1">{q.question}</p>
                 <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed">{q.answer}</p>
               </div>

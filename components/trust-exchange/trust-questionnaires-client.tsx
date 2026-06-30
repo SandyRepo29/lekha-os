@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
@@ -78,7 +78,7 @@ export function TrustQuestionnairesClient({
             return (
               <Card key={q.id} className="overflow-hidden">
                 <div
-                  className="p-4 flex items-center gap-4 cursor-pointer hover:bg-white/[0.02]"
+                  className="p-4 flex items-center gap-4 cursor-pointer hover:bg-white"
                   onClick={() => setExpanded(isExpanded ? null : q.id)}
                 >
                   <div className="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center flex-shrink-0">

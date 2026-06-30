@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Plug, X, Loader2 } from "lucide-react";
@@ -70,7 +70,7 @@ export function ConnectButton({ registryId, connectorName, authFields, instanceI
               <h2 className="text-base font-bold flex items-center gap-2">
                 <Plug className="h-4 w-4 text-[var(--color-blue)]" /> Connect {connectorName}
               </h2>
-              <button onClick={() => setOpen(false)} className="p-1 rounded-lg hover:bg-white/[0.06] text-[var(--color-ink-faint)]">
+              <button onClick={() => setOpen(false)} className="p-1 rounded-lg hover:bg-[#F8F9FB] text-[var(--color-ink-faint)]">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -87,7 +87,7 @@ export function ConnectButton({ registryId, connectorName, authFields, instanceI
                       placeholder={`Enter ${field.label}`}
                       value={fields[field.key] ?? ""}
                       onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
-                      className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50 resize-none font-mono text-xs"
+                      className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50 resize-none font-mono text-xs"
                     />
                   ) : (
                     <input
@@ -95,7 +95,7 @@ export function ConnectButton({ registryId, connectorName, authFields, instanceI
                       placeholder={`Enter ${field.label}`}
                       value={fields[field.key] ?? ""}
                       onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
-                      className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50"
+                      className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50"
                     />
                   )}
                 </div>
@@ -106,7 +106,7 @@ export function ConnectButton({ registryId, connectorName, authFields, instanceI
                 <select
                   value={fields._syncFrequency ?? "daily"}
                   onChange={(e) => setFields((f) => ({ ...f, _syncFrequency: e.target.value }))}
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50"
                 >
                   <option value="real_time">Real-time</option>
                   <option value="fifteen_minutes">Every 15 minutes</option>
@@ -121,7 +121,7 @@ export function ConnectButton({ registryId, connectorName, authFields, instanceI
             {error && <p className="mt-3 text-xs text-red-400">{error}</p>}
 
             <div className="flex gap-2 mt-5">
-              <button onClick={() => setOpen(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm font-medium hover:bg-white/[0.04] transition-colors">
+              <button onClick={() => setOpen(false)} className="flex-1 rounded-xl border border-[var(--color-line)] py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors">
                 Cancel
               </button>
               <button

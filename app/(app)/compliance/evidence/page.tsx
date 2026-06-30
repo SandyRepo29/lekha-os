@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, FileSearch, Download } from "lucide-react";
@@ -138,7 +138,7 @@ export default async function EvidencePage({
                 {enriched.map((ev) => (
                   <tr
                     key={ev.id}
-                    className="border-b border-[var(--color-line)] transition-colors last:border-0 hover:bg-white/[0.02]"
+                    className="border-b border-[var(--color-line)] transition-colors last:border-0 hover:bg-white"
                   >
                     <td className="px-5 py-3.5">
                       <Link

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { findAllExternalUsers } from "@/lib/repositories/auditor-collaboration-repo";
@@ -110,7 +110,7 @@ export default async function ExternalUsersPage() {
       ) : (
         <div className="rounded-xl border border-[var(--color-line)] overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-white/[0.03] text-xs text-[var(--color-ink-dim)]">
+            <thead className="bg-white text-xs text-[var(--color-ink-dim)]">
               <tr>
                 <th className="px-4 py-3 text-left">Name</th>
                 <th className="px-4 py-3 text-left">Type</th>
@@ -122,7 +122,7 @@ export default async function ExternalUsersPage() {
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]">
               {users.map(u => (
-                <tr key={u.id} className="hover:bg-white/[0.02]">
+                <tr key={u.id} className="hover:bg-white">
                   <td className="px-4 py-3">
                     <div className="font-medium">{u.fullName}</div>
                     <div className="text-xs text-[var(--color-ink-dim)]">{u.email}</div>

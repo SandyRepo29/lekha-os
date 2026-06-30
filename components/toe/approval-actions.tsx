@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ export function ResolveApprovalButtons({ approvalId }: { approvalId: string }) {
             value={notes}
             onChange={e => setNotes(e.target.value)}
             placeholder="Rejection reason (optional)"
-            className="flex-1 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-red-500/50"
+            className="flex-1 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-1.5 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-red-500/50"
           />
           <button
             onClick={() => resolve("rejected")}

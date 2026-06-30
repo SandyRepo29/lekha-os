@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -38,7 +38,7 @@ export default async function SignalsPage() {
         {open.length > 0 ? (
           <div className="space-y-2">
             {open.map(s => (
-              <div key={s.id} className="flex items-start justify-between gap-4 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-4 py-3">
+              <div key={s.id} className="flex items-start justify-between gap-4 rounded-xl border border-[var(--color-line)]/60 bg-white px-4 py-3">
                 <div className="flex items-start gap-3">
                   <Activity className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                   <div>

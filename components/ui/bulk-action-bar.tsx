@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 
@@ -51,7 +51,7 @@ export function BulkActionBar({
                 className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-opacity disabled:cursor-not-allowed disabled:opacity-40 ${
                   action.danger
                     ? "bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30"
-                    : "bg-white/[0.08] text-[var(--color-ink)] hover:bg-white/[0.12] border border-[var(--color-line)]"
+                    : "bg-[#EEF2F7] text-[var(--color-ink)] hover:bg-[#EEF2F7] border border-[var(--color-line)]"
                 }`}
               >
                 {action.icon && <span className="shrink-0">{action.icon}</span>}

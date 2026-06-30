@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 
@@ -72,7 +72,7 @@ export function PlatformActivityWidget({
 
   return (
     <div
-      className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 flex flex-col gap-3"
+      className="rounded-2xl border border-[var(--color-line)] bg-white p-4 flex flex-col gap-3"
     >
       <p className="text-sm font-semibold text-[var(--color-ink)]">{title}</p>
 

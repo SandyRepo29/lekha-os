@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -122,7 +122,7 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery, canEdit = false,
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex flex-1 min-w-[200px] items-center gap-2 rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-3 py-2">
+        <div className="flex flex-1 min-w-[200px] items-center gap-2 rounded-xl border border-[var(--color-line-strong)] bg-white px-3 py-2">
           <Search className="h-4 w-4 shrink-0 text-[var(--color-ink-faint)]" />
           <input value={query} onChange={(e) => setQuery(e.target.value)}
             placeholder="Search vendors..."
@@ -152,7 +152,7 @@ export function VendorFilters({ vendors, nlFilters, rawNlQuery, canEdit = false,
         </button>
 
         {active && (
-          <button onClick={clearAll} className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
+          <button onClick={clearAll} className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors">
             <X className="h-3.5 w-3.5" /> Clear
           </button>
         )}

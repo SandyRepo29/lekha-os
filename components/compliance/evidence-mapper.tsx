@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -96,7 +96,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
           placeholder="Search controls…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="h-8 w-44 rounded-lg border border-[var(--color-line)] bg-white/[0.03] px-3 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+          className="h-8 w-44 rounded-lg border border-[var(--color-line)] bg-white px-3 text-xs text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
         />
       </div>
 
@@ -121,7 +121,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
             {/* Framework header */}
             <button
               type="button"
-              className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-white/[0.02] transition-colors"
+              className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-white transition-colors"
               onClick={() => toggleFramework(fw.id)}
             >
               <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
                       key={control.id}
                       className={cn(
                         "flex items-center gap-3 px-4 py-2.5 transition-colors",
-                        isMapped ? "bg-emerald-500/[0.03]" : "hover:bg-white/[0.02]"
+                        isMapped ? "bg-emerald-500/[0.03]" : "hover:bg-white"
                       )}
                     >
                       {/* Checkbox */}

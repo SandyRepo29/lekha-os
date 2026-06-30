@@ -48,7 +48,7 @@ export default async function AiInventoryPage() {
           </thead>
           <tbody className="divide-y divide-[var(--color-line)]">
             {systems.map((s) => (
-              <tr key={s.id} className="hover:bg-white/[0.02] transition-colors">
+              <tr key={s.id} className="hover:bg-white transition-colors">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <Bot className="h-4 w-4 text-[var(--color-blue)]" />

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Sparkles, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -73,19 +73,19 @@ export default async function IssueAiPage({
           </div>
         )}
         <div className="mt-4 grid grid-cols-4 gap-3 text-center">
-          <div className="rounded-xl bg-white/[0.03] p-3">
+          <div className="rounded-xl bg-white p-3">
             <p className="text-xl font-bold">{metrics.total}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Total</p>
           </div>
-          <div className="rounded-xl bg-white/[0.03] p-3">
+          <div className="rounded-xl bg-white p-3">
             <p className="text-xl font-bold text-yellow-400">{metrics.open}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Open</p>
           </div>
-          <div className="rounded-xl bg-white/[0.03] p-3">
+          <div className="rounded-xl bg-white p-3">
             <p className="text-xl font-bold text-red-400">{metrics.critical}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Critical</p>
           </div>
-          <div className="rounded-xl bg-white/[0.03] p-3">
+          <div className="rounded-xl bg-white p-3">
             <p className="text-xl font-bold">{metrics.slaCompliance}%</p>
             <p className="text-xs text-[var(--color-ink-dim)]">SLA</p>
           </div>
@@ -107,7 +107,7 @@ export default async function IssueAiPage({
             rows={3}
             defaultValue={sp.observation}
             placeholder="E.g. We noticed that our encryption keys have not been rotated in 18 months and there is no documented rotation policy..."
-            className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50 resize-none"
           />
           <Button type="submit" size="sm">
             <Sparkles className="h-4 w-4" /> Generate Issue
@@ -174,7 +174,7 @@ export default async function IssueAiPage({
             name="q"
             defaultValue={sp.q}
             placeholder="Which issues are overdue? What is our SLA compliance rate?"
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50"
           />
           <Button type="submit" size="sm">
             <Sparkles className="h-4 w-4" /> Ask

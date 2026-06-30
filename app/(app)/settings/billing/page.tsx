@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import {
   CreditCard,
@@ -329,7 +329,7 @@ export default async function BillingPage() {
 
       {/* ── Suspended / expired banner ── */}
       {isSuspended && (
-        <div className="flex items-start gap-3 rounded-2xl border border-white/20 bg-white/[0.03] p-4">
+        <div className="flex items-start gap-3 rounded-2xl border border-white/20 bg-white p-4">
           <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
           <div className="flex-1">
             <p className="text-sm font-semibold text-[var(--color-ink)]">
@@ -418,7 +418,7 @@ export default async function BillingPage() {
               ).map((f) => (
                 <span
                   key={f}
-                  className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-2.5 py-0.5 text-xs text-[var(--color-ink-dim)]"
+                  className="rounded-full border border-[var(--color-line)] bg-white px-2.5 py-0.5 text-xs text-[var(--color-ink-dim)]"
                   dangerouslySetInnerHTML={{ __html: f }}
                 />
               ))}
@@ -676,7 +676,7 @@ export default async function BillingPage() {
               <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-faint)]">
                 AUDT Bank Account
               </p>
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 text-sm">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 text-sm">
                 {bankDetails ? (() => {
                   const bd = bankDetails as Record<string, unknown>;
                   return (
@@ -715,7 +715,7 @@ export default async function BillingPage() {
             </div>
 
             {/* How to pay accordion (details element — no JS needed) */}
-            <details className="group rounded-xl border border-[var(--color-line)] bg-white/[0.02]">
+            <details className="group rounded-xl border border-[var(--color-line)] bg-white">
               <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-medium text-[var(--color-ink)]">
                 How to pay
                 <ChevronDown className="h-4 w-4 text-[var(--color-ink-faint)] transition-transform group-open:rotate-180" />

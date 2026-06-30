@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useCallback, DragEvent, ChangeEvent } from "react";
 import { parseCSV, validateCSVHeaders } from "@/lib/utils/csv-parser";
@@ -147,7 +147,7 @@ export function ImportModal({
           </div>
           <button
             onClick={handleClose}
-            className="rounded-lg p-1.5 text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+            className="rounded-lg p-1.5 text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -169,7 +169,7 @@ export function ImportModal({
                   "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-12 text-center transition-colors",
                   dragging
                     ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10"
-                    : "border-[var(--color-line)] hover:border-[var(--color-blue)]/60 hover:bg-white/[0.02]",
+                    : "border-[var(--color-line)] hover:border-[var(--color-blue)]/60 hover:bg-white",
                 ].join(" ")}
               >
                 <svg className="mb-3 h-10 w-10 text-[var(--color-ink-dim)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -195,7 +195,7 @@ export function ImportModal({
                 </p>
               )}
 
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-2">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-dim)]">
                   Expected columns
                 </p>
@@ -211,7 +211,7 @@ export function ImportModal({
                   {optionalColumns.map((c) => (
                     <span
                       key={c}
-                      className="rounded-md bg-white/[0.06] px-2 py-0.5 text-xs font-medium text-[var(--color-ink-dim)]"
+                      className="rounded-md bg-[#F8F9FB] px-2 py-0.5 text-xs font-medium text-[var(--color-ink-dim)]"
                     >
                       {c}
                     </span>
@@ -268,7 +268,7 @@ export function ImportModal({
               <div className="rounded-xl border border-[var(--color-line)] overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
-                    <thead className="bg-white/[0.04]">
+                    <thead className="bg-[#F8F9FB]">
                       <tr>
                         {allColumns
                           .filter((c) => parsed.headers.map((h) => h.toLowerCase()).includes(c.toLowerCase()))
@@ -287,7 +287,7 @@ export function ImportModal({
                     </thead>
                     <tbody className="divide-y divide-[var(--color-line)]">
                       {previewRows.map((row, i) => (
-                        <tr key={i} className="hover:bg-white/[0.02]">
+                        <tr key={i} className="hover:bg-white">
                           {allColumns
                             .filter((c) => parsed.headers.map((h) => h.toLowerCase()).includes(c.toLowerCase()))
                             .map((col) => {
@@ -318,7 +318,7 @@ export function ImportModal({
               <div className="flex items-center justify-between">
                 <button
                   onClick={reset}
-                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                 >
                   Back
                 </button>
@@ -335,7 +335,7 @@ export function ImportModal({
 
           {step === "confirm" && parsed && (
             <div className="space-y-5">
-              <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-5 space-y-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-white p-5 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)]/15">
                     <svg className="h-5 w-5 text-[var(--color-blue)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -348,11 +348,11 @@ export function ImportModal({
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+                  <div className="rounded-lg bg-[#F8F9FB] px-4 py-3 text-center">
                     <p className="text-2xl font-bold text-[var(--color-ink)]">{totalRows}</p>
                     <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">rows will be imported</p>
                   </div>
-                  <div className="rounded-lg bg-white/[0.04] px-4 py-3 text-center">
+                  <div className="rounded-lg bg-[#F8F9FB] px-4 py-3 text-center">
                     <p className="text-2xl font-bold text-[var(--color-ink)]">{parsed.headers.length}</p>
                     <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">columns detected</p>
                   </div>
@@ -365,7 +365,7 @@ export function ImportModal({
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setStep("preview")}
-                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                 >
                   Back
                 </button>
@@ -416,7 +416,7 @@ export function ImportModal({
               )}
 
               {result.errors.length > 0 && (
-                <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 space-y-2">
+                <div className="rounded-xl border border-[var(--color-line)] bg-white p-4 space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-dim)]">
                     Errors ({result.errors.length})
                   </p>
@@ -434,7 +434,7 @@ export function ImportModal({
               <div className="flex items-center justify-between">
                 <button
                   onClick={reset}
-                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors"
+                  className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
                 >
                   Import more
                 </button>

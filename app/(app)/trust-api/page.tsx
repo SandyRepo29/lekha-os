@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -46,13 +46,13 @@ export default async function TrustApiPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/trust-api/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/trust-api/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI API Builder&#8482;
           </Link>
           <Link
             href="/trust-api/portal"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors"
           >
             <BookOpen className="h-4 w-4" /> Docs
           </Link>
@@ -83,7 +83,7 @@ export default async function TrustApiPage() {
               href={href}
               className="group flex items-start gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.04]"
             >
-              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06]">
+              <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#F8F9FB]">
                 <Icon className="h-5 w-5 text-[var(--color-blue)]" />
               </span>
               <div className="min-w-0 flex-1">
@@ -107,7 +107,7 @@ export default async function TrustApiPage() {
           </div>
           <div className="space-y-2">
             {products.slice(0, 6).map(p => (
-              <div key={p.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+              <div key={p.id} className="flex items-center justify-between rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                 <div>
                   <div className="text-sm font-medium">{p.name}</div>
                   <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{p.rateLimitPerDay.toLocaleString()} req/day · {p.tier}</div>
@@ -135,7 +135,7 @@ export default async function TrustApiPage() {
           </div>
           <div className="space-y-2">
             {EVENTS.map(event => (
-              <div key={event} className="flex items-center gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2.5">
+              <div key={event} className="flex items-center gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                 <Zap className="h-3.5 w-3.5 shrink-0 text-amber-400" />
                 <code className="text-xs font-mono text-[var(--color-ink-dim)]">{event}</code>
               </div>

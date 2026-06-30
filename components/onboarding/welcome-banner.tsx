@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -107,7 +107,7 @@ export function WelcomeBanner() {
       <button
         onClick={dismiss}
         aria-label="Dismiss welcome banner"
-        className="shrink-0 rounded-lg p-1.5 text-[var(--color-ink-faint)] transition-colors hover:bg-white/[0.08] hover:text-[var(--color-ink)]"
+        className="shrink-0 rounded-lg p-1.5 text-[var(--color-ink-faint)] transition-colors hover:bg-[#EEF2F7] hover:text-[var(--color-ink)]"
       >
         <X className="h-4 w-4" />
       </button>

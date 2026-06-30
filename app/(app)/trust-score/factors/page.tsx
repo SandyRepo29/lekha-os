@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -96,7 +96,7 @@ export default async function TrustFactorsPage() {
                   <p className="text-[11px] text-[var(--color-ink-faint)]">+{contribution} pts</p>
                 </div>
               </div>
-              <div className="mb-3 h-2 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="mb-3 h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                 <div className={`h-full rounded-full ${scoreBar(val)}`} style={{ width: `${val}%` }} />
               </div>
               <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed mb-3">{detail.description}</p>
@@ -113,7 +113,7 @@ export default async function TrustFactorsPage() {
         <h3 className="text-sm font-semibold mb-3">Trust Score&#8482; Formula</h3>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {(Object.entries(PLATFORM_TRUST_WEIGHTS) as [keyof typeof PLATFORM_TRUST_WEIGHTS, number][]).map(([k, w]) => (
-            <div key={k} className="rounded-xl bg-white/[0.03] border border-[var(--color-line)] p-3 text-center">
+            <div key={k} className="rounded-xl bg-white border border-[var(--color-line)] p-3 text-center">
               <p className="text-xs text-[var(--color-ink-dim)] mb-1">{PLATFORM_TRUST_LABELS[k]}</p>
               <p className="text-base font-bold">{Math.round(w * 100)}%</p>
             </div>

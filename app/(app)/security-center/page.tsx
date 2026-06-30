@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Security Command Center&#8482; — AUDT' };
 
@@ -52,7 +52,7 @@ export default async function SecurityCommandCenterPage() {
       {/* Top Strip: Readiness Ring + KPIs */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         {/* Readiness Ring */}
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6 lg:col-span-1">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-line)] bg-white p-6 lg:col-span-1">
           <ReadinessRing score={readiness.score} level={readiness.level} />
           <p className="mt-3 text-center text-xs text-[var(--color-ink-dim)]">Security Readiness Score™</p>
         </div>
@@ -118,7 +118,7 @@ export default async function SecurityCommandCenterPage() {
           </div>
           <div className="space-y-2">
             {alerts.slice(0, 5).map((a) => (
-              <div key={String(a.id)} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+              <div key={String(a.id)} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <div className="min-w-0">
                   <div className="text-sm font-medium truncate">{String(a.title)}</div>
                   <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{String(a.vendor_name ?? "Unknown vendor")}</div>
@@ -139,7 +139,7 @@ export default async function SecurityCommandCenterPage() {
           <Link
             key={href}
             href={href}
-            className="flex flex-col gap-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.05] transition-colors"
+            className="flex flex-col gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors"
           >
             <Icon className="h-5 w-5 text-red-400" />
             <div>

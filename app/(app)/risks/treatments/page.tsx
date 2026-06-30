@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Shield } from "lucide-react";
@@ -56,7 +56,7 @@ export default async function RiskTreatmentsPage() {
                   const overdue = isOverdue(t.targetDate) && t.status !== "completed";
                   const soon = isDueSoon(t.targetDate);
                   return (
-                    <tr key={t.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={t.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <p className="font-medium line-clamp-1">{t.action}</p>
                         {t.description && <p className="text-xs text-[var(--color-ink-faint)] line-clamp-1">{t.description}</p>}
@@ -75,7 +75,7 @@ export default async function RiskTreatmentsPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-20 rounded-full bg-white/[0.05]">
+                          <div className="h-1.5 w-20 rounded-full bg-[#F8F9FB]">
                             <div className="h-full rounded-full bg-[var(--color-blue)]/60" style={{ width: `${t.progressPercent}%` }} />
                           </div>
                           <span className="text-xs text-[var(--color-ink-faint)]">{t.progressPercent}%</span>

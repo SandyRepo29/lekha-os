@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardDataAction } from "@/lib/agents/actions";
@@ -94,10 +94,10 @@ export default async function AgentAnalyticsPage() {
             { label: "Recommendations Issued",  value: m?.totalRecommendations ?? 4, bar: 45 },
             { label: "Actions Executed",        value: m?.totalActions ?? 2, bar: 18 },
           ].map(item => (
-            <div key={item.label} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+            <div key={item.label} className="rounded-xl border border-[var(--color-line)] bg-white p-4">
               <div className="text-2xl font-bold text-[var(--color-blue)]">{item.value}</div>
               <div className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{item.label}</div>
-              <div className="mt-3 h-1.5 rounded-full bg-white/[0.06]">
+              <div className="mt-3 h-1.5 rounded-full bg-[#F8F9FB]">
                 <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${item.bar}%` }} />
               </div>
             </div>
@@ -128,7 +128,7 @@ export default async function AgentAnalyticsPage() {
                 { name: "Policy Enforcer™",     runs: 45,  success: 100, obs: 0, actions: 0, dur: "8s" },
                 { name: "Audit Prep Agent™",    runs: 12,  success: 92,  obs: 2, actions: 1, dur: "3m 20s" },
               ].map(row => (
-                <tr key={row.name} className="hover:bg-white/[0.02]">
+                <tr key={row.name} className="hover:bg-white">
                   <td className="py-2 font-medium">{row.name}</td>
                   <td className="py-2 text-[var(--color-ink-dim)]">{row.runs}</td>
                   <td className="py-2"><span className={row.success >= 95 ? "text-emerald-400" : row.success >= 80 ? "text-amber-400" : "text-red-400"}>{row.success}%</span></td>

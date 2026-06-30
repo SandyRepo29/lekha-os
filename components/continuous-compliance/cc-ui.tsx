@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +20,7 @@ export function CcSubNav() {
   const path = usePathname();
   return (
     <div className="border-b border-[var(--color-line)] pb-1">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white p-1">
         {SUB_NAV.map(n => {
           const active = n.href === "/continuous-compliance"
             ? path === n.href
@@ -30,8 +30,8 @@ export function CcSubNav() {
               className={cn(
                 "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               )}>
               {n.label}
             </Link>
@@ -48,7 +48,7 @@ const accentMap: Record<Accent, { border: string; bg: string; text: string }> = 
   good:    { border: "border-l-emerald-500",  bg: "bg-emerald-500/[0.06]",  text: "text-emerald-400" },
   warn:    { border: "border-l-amber-500",    bg: "bg-amber-500/[0.06]",    text: "text-amber-400" },
   danger:  { border: "border-l-red-500",      bg: "bg-red-500/[0.06]",      text: "text-red-400" },
-  neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white/[0.03]", text: "text-[var(--color-ink)]" },
+  neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white", text: "text-[var(--color-ink)]" },
   blue:    { border: "border-l-[var(--color-blue)]", bg: "bg-[var(--color-blue)]/[0.06]", text: "text-[var(--color-blue)]" },
 };
 
@@ -76,7 +76,7 @@ const RESULT_STYLES: Record<string, string> = {
   pass:               "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   fail:               "bg-red-500/10 text-red-400 border border-red-500/20",
   warning:            "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  unknown:            "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  unknown:            "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
   exception_approved: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
 };
 
@@ -85,16 +85,16 @@ const SEVERITY_STYLES: Record<string, string> = {
   high:     "bg-orange-500/10 text-orange-400 border border-orange-500/20",
   medium:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
   low:      "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  info:     "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  info:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const STATUS_STYLES: Record<string, string> = {
   active:    "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  draft:     "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  draft:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
   completed: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
   cancelled: "bg-red-500/10 text-red-400 border border-red-500/20",
   overdue:   "bg-red-500/10 text-red-400 border border-red-500/20",
-  inactive:  "bg-white/[0.06] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  inactive:  "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
   approved:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   pending:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
   rejected:  "bg-red-500/10 text-red-400 border border-red-500/20",
@@ -146,7 +146,7 @@ export function HealthBar({ score, size = "md" }: { score: number; size?: "sm" |
   const color = score >= 90 ? "bg-emerald-500" : score >= 75 ? "bg-blue-500" : score >= 60 ? "bg-amber-500" : score >= 40 ? "bg-orange-500" : "bg-red-500";
   const h = size === "sm" ? "h-1.5" : "h-2";
   return (
-    <div className={cn("w-full rounded-full bg-white/[0.08]", h)}>
+    <div className={cn("w-full rounded-full bg-[#EEF2F7]", h)}>
       <div className={cn("rounded-full transition-all", color, h)} style={{ width: `${Math.min(score, 100)}%` }} />
     </div>
   );

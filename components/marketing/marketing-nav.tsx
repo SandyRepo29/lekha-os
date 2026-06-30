@@ -40,13 +40,12 @@ export function MarketingNav() {
           left: 50%;
           transform: translateX(-50%);
           width: 270px;
-          background: rgba(8,8,18,0.97);
-          border: 1px solid rgba(255,255,255,0.12);
+          background: #FFFFFF;
+          border: 1px solid #E4E8EF;
           border-radius: 14px;
           padding: 8px;
-          backdrop-filter: blur(24px);
           z-index: 200;
-          box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+          box-shadow: 0 8px 32px rgba(30,41,59,0.12), 0 2px 8px rgba(30,41,59,0.06);
           animation: dropIn .15s ease;
         }
         @keyframes dropIn {
@@ -58,19 +57,21 @@ export function MarketingNav() {
           padding: 10px 14px; border-radius: 9px;
           text-decoration: none; transition: background .12s;
         }
-        .ndrop-item:hover { background: rgba(255,255,255,0.07); }
-        .ndrop-label { font-size: 13px; font-weight: 600; color: #f1f5f9; }
-        .ndrop-desc  { font-size: 11px; color: rgba(241,245,249,0.5); }
-        .ndrop-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 4px 6px; }
+        .ndrop-item:hover { background: #F8F9FB; }
+        .ndrop-label { font-size: 13px; font-weight: 600; color: #1E293B; }
+        .ndrop-desc  { font-size: 11px; color: #64748B; }
+        .ndrop-divider { height: 1px; background: #E4E8EF; margin: 4px 6px; }
         .ndrop-section { font-size: 10px; font-weight: 700; letter-spacing: .09em;
-          text-transform: uppercase; color: #6366f1; padding: 6px 14px 4px; }
+          text-transform: uppercase; color: #007A94; padding: 6px 14px 4px; }
         .ndrop-btn {
           display: flex; align-items: center; gap: 5px; cursor: pointer;
-          font-size: 14px; color: var(--text-dim); font-weight: 400;
+          font-size: 14px; color: rgba(255,255,255,0.80); font-weight: 400;
           background: none; border: none; padding: 0; font-family: inherit;
           transition: color .2s;
         }
-        .ndrop-btn:hover { color: var(--text); }
+        .ndrop-btn:hover { color: rgba(255,255,255,1); }
+        .nav.scrolled .ndrop-btn { color: #64748B; }
+        .nav.scrolled .ndrop-btn:hover { color: #1E293B; }
         .ndrop-btn::after {
           content: "";
           width: 5px; height: 5px;
@@ -161,10 +162,10 @@ export function MarketingNav() {
           <button
             onClick={() => setMobilePlatOpen((o) => !o)}
             style={{
-              background: "none", border: "none", color: "rgba(154,160,181,1)",
+              background: "none", border: "none", color: "#64748B",
               font: "inherit", cursor: "pointer", textAlign: "left",
               display: "flex", justifyContent: "space-between", width: "100%",
-              padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.08)",
+              padding: "12px 0", borderBottom: "1px solid #EEF2F7",
               alignItems: "center",
             }}
           >
@@ -178,7 +179,7 @@ export function MarketingNav() {
                   key={item.href}
                   href={item.href}
                   onClick={close}
-                  style={{ padding: "10px 0", fontSize: "13px", color: "rgba(154,160,181,0.85)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+                  style={{ padding: "10px 0", fontSize: "13px", color: "#64748B", borderBottom: "1px solid #EEF2F7" }}
                 >
                   {item.label}
                 </a>

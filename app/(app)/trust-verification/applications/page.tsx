@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -60,7 +60,7 @@ export default async function ApplicationsPage() {
                 appliedAt: string | Date;
                 expiresAt?: string | Date | null;
               }) => (
-                <tr key={v.id} className="hover:bg-white/[0.02]">
+                <tr key={v.id} className="hover:bg-white">
                   <td className="px-4 py-3">
                     <div className="font-medium">{v.programName ?? "Unknown Program"}</div>
                     <div className="text-xs text-[var(--color-ink-faint)]">
@@ -72,7 +72,7 @@ export default async function ApplicationsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-16 rounded-full bg-white/[0.08]">
+                      <div className="h-1.5 w-16 rounded-full bg-[#EEF2F7]">
                         <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${v.readinessScore ?? 0}%` }} />
                       </div>
                       <span className="text-xs text-[var(--color-ink-dim)]">{v.readinessScore ?? "—"}</span>
@@ -85,7 +85,7 @@ export default async function ApplicationsPage() {
                   <td className="px-4 py-3"><VerificationStatusBadge status={v.status} /></td>
                   <td className="px-4 py-3">
                     <Link href={`/trust-verification/applications/${v.id}`}
-                      className="flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1 text-xs font-medium hover:bg-white/[0.07]">
+                      className="flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-1 text-xs font-medium hover:bg-[#F8F9FB]">
                       <Eye className="h-3 w-3" /> View
                     </Link>
                   </td>

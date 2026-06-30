@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ export function UpdateObligationStatusButton({ obligationId, currentStatus }: { 
           router.refresh();
         })
       }
-      className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium hover:bg-white/[0.07] transition-colors disabled:opacity-50"
+      className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-1 text-[11px] font-medium hover:bg-[#F8F9FB] transition-colors disabled:opacity-50"
     >
       {pending ? "Updating…" : label}
     </button>

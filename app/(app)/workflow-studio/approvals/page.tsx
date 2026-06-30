@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { AlertCircle, ThumbsUp, ThumbsDown, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -122,7 +122,7 @@ export default async function ApprovalsPage() {
                 return (
                   <tr
                     key={a.id}
-                    className={`border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] ${overdue ? "bg-red-500/[0.02]" : ""}`}
+                    className={`border-b border-[var(--color-line)]/50 hover:bg-white ${overdue ? "bg-red-500/[0.02]" : ""}`}
                   >
                     <td className="px-5 py-3 font-medium">{a.workflowName}</td>
                     <td className="px-5 py-3 text-[var(--color-ink-dim)]">{a.approverName ?? "—"}</td>

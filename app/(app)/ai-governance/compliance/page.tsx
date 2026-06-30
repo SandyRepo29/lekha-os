@@ -61,7 +61,7 @@ export default async function AiCompliancePage() {
                   <span>Readiness</span>
                   <span className="font-mono">{score.toFixed(0)}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-2 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className="h-full rounded-full bg-[var(--color-blue)] transition-all" style={{ width: `${score}%` }} />
                 </div>
               </div>

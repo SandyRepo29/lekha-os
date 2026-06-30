@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Evidence Vault&#8482; — AUDT' };
 
@@ -76,7 +76,7 @@ export default async function ComplianceDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/compliance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04] transition-colors">
+          <Link href="/compliance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
             AI Compliance Officer&#8482;
           </Link>
@@ -170,7 +170,7 @@ export default async function ComplianceDashboardPage() {
           {/* Evidence Health Widget + Audit Readiness side-by-side */}
           <div className="grid gap-4 lg:grid-cols-2">
             {/* Evidence Health Widget */}
-            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
               <div className="mb-4 flex items-center gap-2">
                 <FileSearch className="h-4 w-4 text-[var(--color-blue)]" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Health</h2>
@@ -190,7 +190,7 @@ export default async function ComplianceDashboardPage() {
                       {totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%
                     </span>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                     <div
                       className="h-full rounded-full bg-emerald-500"
                       style={{ width: `${totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%` }}
@@ -202,7 +202,7 @@ export default async function ComplianceDashboardPage() {
             </div>
 
             {/* Audit Readiness Widget */}
-            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
               <div className="mb-4 flex items-center gap-2">
                 <BookCheck className="h-4 w-4 text-emerald-400" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Readiness</h2>
@@ -215,7 +215,7 @@ export default async function ComplianceDashboardPage() {
                     <div key={name} className="flex items-center justify-between gap-3">
                       <span className="min-w-0 flex-1 truncate text-xs text-[var(--color-ink-dim)]">{name}</span>
                       <div className="flex shrink-0 items-center gap-2">
-                        <div className="h-1.5 w-20 overflow-hidden rounded-full bg-white/[0.06]">
+                        <div className="h-1.5 w-20 overflow-hidden rounded-full bg-[#F8F9FB]">
                           <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${score}%` }} />
                         </div>
                         <span className={`text-xs font-semibold ${color}`}>{status}</span>
@@ -229,7 +229,7 @@ export default async function ComplianceDashboardPage() {
 
           {/* Evidence Intelligence Widget */}
           {totalEvidence > 0 && (
-            <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
               <div className="mb-3 flex items-center gap-2">
                 <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Intelligence&#8482;</h2>
@@ -261,7 +261,7 @@ export default async function ComplianceDashboardPage() {
                 const score = fw.readiness?.overallScore ?? 0;
                 return (
                   <Link key={fw.id} href={`/compliance/frameworks/${fw.id}`}>
-                    <Card className="cursor-pointer p-5 transition-colors hover:border-[var(--color-line-strong)] hover:bg-white/[0.05]">
+                    <Card className="cursor-pointer p-5 transition-colors hover:border-[var(--color-line-strong)] hover:bg-[#F8F9FB]">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">

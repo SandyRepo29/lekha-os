@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAccessControl } from "@/lib/services/security-command-center/security-service";
@@ -44,13 +44,13 @@ export default async function AccessControlPage() {
         </div>
 
         {/* Add Rule Form */}
-        <form action={addIpRuleAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="flex flex-wrap gap-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+        <form action={addIpRuleAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="flex flex-wrap gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-4">
           <input name="cidrRange" placeholder="192.168.1.0/24" required
-            className="flex-1 min-w-[160px] rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="flex-1 min-w-[160px] rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <input name="description" placeholder="Description (e.g. Office network)" required
-            className="flex-1 min-w-[200px] rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="flex-1 min-w-[200px] rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <select name="appliesTo"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="all">All Resources</option>
             <option value="login">Login Only</option>
             <option value="api">API Access</option>
@@ -93,7 +93,7 @@ export default async function AccessControlPage() {
         <h2 className="font-semibold flex items-center gap-2"><Lock className="h-4 w-4 text-[var(--color-blue)]" /> Fine-Grained Permissions Reference</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {Object.entries(permsByModule).map(([mod, perms]) => (
-            <div key={mod} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+            <div key={mod} className="rounded-2xl border border-[var(--color-line)] bg-white p-4">
               <div className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-dim)] mb-3 capitalize">{mod}</div>
               <div className="space-y-1.5">
                 {perms.map(p => (

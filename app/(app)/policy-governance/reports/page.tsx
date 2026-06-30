@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Download, FileText, Shield, GitBranch } from "lucide-react";
@@ -64,7 +64,7 @@ export default async function PolicyReportsPage() {
             </div>
             <div className="flex items-center justify-between mt-auto pt-2 border-t border-[var(--color-line)]">
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-white/[0.06] rounded-full px-2 py-0.5 text-[var(--color-ink-dim)]">{r.format}</span>
+                <span className="text-xs bg-[#F8F9FB] rounded-full px-2 py-0.5 text-[var(--color-ink-dim)]">{r.format}</span>
                 {r.count !== null && (
                   <span className="text-xs text-[var(--color-ink-faint)]">{r.count} {r.label}</span>
                 )}

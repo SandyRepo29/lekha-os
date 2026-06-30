@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Hash, Globe, Building2, Tag } from "lucide-react";
@@ -62,7 +62,7 @@ export function DocumentMetadata({ extracted, issuedOn, expiresOn }: Props) {
 
       {/* Rich metadata — expanded */}
       {open && hasRich && (
-        <div className="mt-2 space-y-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.02] p-2.5">
+        <div className="mt-2 space-y-1.5 rounded-lg border border-[var(--color-line)] bg-white p-2.5">
           {meta.standardVersion && (
             <MetaRow icon={Tag} label="Version" value={meta.standardVersion} />
           )}

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Network, CheckCircle2, AlertTriangle } from "lucide-react";
@@ -89,7 +89,7 @@ export default async function VendorCompliancePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24">
-                      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                      <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                         <div className="h-full rounded-full bg-red-500" style={{ width: `${v.trustScore}%` }} />
                       </div>
                     </div>
@@ -123,7 +123,7 @@ export default async function VendorCompliancePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24">
-                      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                      <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                         <div className="h-full rounded-full bg-amber-500" style={{ width: `${v.trustScore}%` }} />
                       </div>
                     </div>
@@ -162,7 +162,7 @@ export default async function VendorCompliancePage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {compliant.map((v) => (
-                  <tr key={v.id} className="hover:bg-white/[0.02]">
+                  <tr key={v.id} className="hover:bg-white">
                     <td className="px-5 py-3">
                       <Link href={`/vendors/${v.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                         {v.name}
@@ -170,7 +170,7 @@ export default async function VendorCompliancePage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                        <div className="w-20 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                           <div className="h-full rounded-full bg-emerald-500" style={{ width: `${v.trustScore}%` }} />
                         </div>
                         <span className={`text-sm font-bold ${scoreColor(v.trustScore)}`}>{v.trustScore}</span>

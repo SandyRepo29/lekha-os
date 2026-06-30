@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -60,7 +60,7 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
                 <div className={[
                   "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium border transition-all",
                   isCurrent ? "border-transparent text-white shadow-sm" : "",
-                  isPast    ? "border-[var(--color-line)] text-[var(--color-ink-faint)] bg-white/[0.04]" : "",
+                  isPast    ? "border-[var(--color-line)] text-[var(--color-ink-faint)] bg-[#F8F9FB]" : "",
                   isFuture  ? "border-[var(--color-line)] text-[var(--color-ink-faint)] opacity-40" : "",
                 ].join(" ")}
                   style={isCurrent ? { backgroundColor: VENDOR_STATE_COLORS[s] } : {}}
@@ -96,7 +96,7 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
                   "rounded-lg border px-3 py-2 text-xs font-medium transition-all",
                   selectedTransition === t
                     ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10 text-[var(--color-blue)]"
-                    : "border-[var(--color-line)] bg-white/[0.02] text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:text-[var(--color-ink)]",
+                    : "border-[var(--color-line)] bg-white text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]",
                 ].join(" ")}
               >
                 {TRANSITION_LABELS[`${currentState}->${t}`] ?? VENDOR_STATE_LABELS[t]}
@@ -117,7 +117,7 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder={`Reason for transitioning to ${VENDOR_STATE_LABELS[selectedTransition]}…`}
-                  className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                  className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                 />
               </div>
               <div className="flex items-center gap-2">

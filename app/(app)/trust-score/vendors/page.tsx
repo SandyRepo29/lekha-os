@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { TrendingUp, TrendingDown, Building2 } from "lucide-react";
@@ -76,7 +76,7 @@ export default async function VendorTrustPage() {
                 <span className="text-xs text-[var(--color-ink-faint)] w-4">#{i + 1}</span>
                 <Building2 className="h-4 w-4 shrink-0 text-[var(--color-ink-dim)]" />
                 <Link href={`/vendors/${v.id}`} className="flex-1 text-sm font-medium hover:text-[var(--color-blue)] transition-colors truncate">{v.name}</Link>
-                <div className="w-20 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="w-20 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className={`h-full rounded-full ${sb(v.trustScore ?? 0)}`} style={{ width: `${v.trustScore ?? 0}%` }} />
                 </div>
                 <span className={`text-sm font-bold w-8 text-right ${sc(v.trustScore ?? 0)}`}>{v.trustScore ?? 0}</span>
@@ -99,7 +99,7 @@ export default async function VendorTrustPage() {
                 <span className="text-xs text-[var(--color-ink-faint)] w-4">#{i + 1}</span>
                 <Building2 className="h-4 w-4 shrink-0 text-[var(--color-ink-dim)]" />
                 <Link href={`/vendors/${v.id}`} className="flex-1 text-sm font-medium hover:text-[var(--color-blue)] transition-colors truncate">{v.name}</Link>
-                <div className="w-20 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="w-20 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                   <div className={`h-full rounded-full ${sb(v.trustScore ?? 0)}`} style={{ width: `${v.trustScore ?? 0}%` }} />
                 </div>
                 <span className={`text-sm font-bold w-8 text-right ${sc(v.trustScore ?? 0)}`}>{v.trustScore ?? 0}</span>
@@ -130,7 +130,7 @@ export default async function VendorTrustPage() {
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]">
               {scored.slice(0, 15).map((v) => (
-                <tr key={v.id} className="hover:bg-white/[0.02]">
+                <tr key={v.id} className="hover:bg-white">
                   <td className="px-5 py-3">
                     <Link href={`/vendors/${v.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors truncate max-w-[160px] block">{v.name}</Link>
                   </td>
@@ -170,13 +170,13 @@ export default async function VendorTrustPage() {
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]">
               {scored.map((v) => (
-                <tr key={v.id} className="hover:bg-white/[0.02]">
+                <tr key={v.id} className="hover:bg-white">
                   <td className="px-5 py-3">
                     <Link href={`/vendors/${v.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">{v.name}</Link>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-16 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                      <div className="w-16 h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                         <div className={`h-full rounded-full ${sb(v.trustScore ?? 0)}`} style={{ width: `${v.trustScore ?? 0}%` }} />
                       </div>
                       <span className={`text-sm font-bold ${sc(v.trustScore ?? 0)}`}>{v.trustScore ?? 0}</span>

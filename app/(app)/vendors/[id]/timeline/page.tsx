@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -50,7 +50,7 @@ export default async function VendorTimelinePage({ params }: Props) {
 
       <div className="flex items-center gap-3">
         <Link href={`/vendors/${id}`}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-line)] hover:bg-white/[0.04] transition-colors">
+          className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-line)] hover:bg-[#F8F9FB] transition-colors">
           <ArrowLeft className="h-4 w-4 text-[var(--color-ink-faint)]" />
         </Link>
         <div>

@@ -72,7 +72,7 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
         <div className="rounded-2xl border border-[var(--color-line)] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+              <tr className="border-b border-[var(--color-line)] bg-white">
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Asset</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Type</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Environment</th>
@@ -84,7 +84,7 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
             </thead>
             <tbody className="divide-y divide-[var(--color-line)]">
               {assetList.map((a) => (
-                <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
+                <tr key={a.id} className="hover:bg-white transition-colors">
                   <td className="px-4 py-3">
                     <Link href={`/asset-intelligence/registry/${a.id}`} className="font-medium hover:text-[var(--color-blue)] transition-colors">
                       {a.name}

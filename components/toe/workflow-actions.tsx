@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -57,7 +57,7 @@ export function CreateWorkflowButton() {
       className="flex items-center gap-2"
     >
       <input name="name" placeholder="Workflow name" required autoFocus
-        className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)]"
+        className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:border-[var(--color-blue)]"
       />
       <button type="submit" disabled={pending}
         className="rounded-xl bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40 transition-opacity"

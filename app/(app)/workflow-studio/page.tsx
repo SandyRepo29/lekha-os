@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -93,7 +93,7 @@ export default async function WorkflowStudioDashboardPage() {
             {metrics.recentRuns.map((run) => (
               <div
                 key={run.id}
-                className={`flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03] ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
+                className={`flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white ${run.status === "failed" ? "bg-red-500/[0.03]" : ""}`}
               >
                 <div className="min-w-0">
                   <p className="text-sm font-medium truncate">{run.workflowName}</p>

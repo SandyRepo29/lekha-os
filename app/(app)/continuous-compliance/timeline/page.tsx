@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Clock, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -113,7 +113,7 @@ export default async function ComplianceTimelinePage() {
                     {fmtDate(h.createdAt)}
                   </div>
                   <div className="flex-1">
-                    <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-1.5 rounded-full bg-[#F8F9FB] overflow-hidden">
                       <div className={`h-full rounded-full ${scoreBar(h.score)}`} style={{ width: `${h.score}%` }} />
                     </div>
                   </div>

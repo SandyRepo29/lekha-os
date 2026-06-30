@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Card } from "@/components/ui/card";
@@ -131,7 +131,7 @@ export function PrivacyScoreWidget({ initialScore, initialBreakdown }: Props) {
                       </span>
                       <span className="text-xs font-semibold">{value}</span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-white/[0.06]">
+                    <div className="h-1.5 rounded-full bg-[#F8F9FB]">
                       <div
                         className="h-1.5 rounded-full bg-indigo-500"
                         style={{ width: `${value}%` }}

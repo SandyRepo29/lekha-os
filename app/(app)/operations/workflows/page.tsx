@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -120,7 +120,7 @@ export default async function WorkflowsPage() {
         <div className="mb-4 flex items-center gap-2">
           <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />
           <span className="text-sm font-semibold">Workflow Runs</span>
-          <span className="ml-auto rounded-full bg-white/[0.05] px-2 py-0.5 text-[11px] text-[var(--color-ink-dim)]">{instances.length}</span>
+          <span className="ml-auto rounded-full bg-[#F8F9FB] px-2 py-0.5 text-[11px] text-[var(--color-ink-dim)]">{instances.length}</span>
         </div>
         {instances.length === 0
           ? <p className="text-sm text-[var(--color-ink-dim)]">No workflow runs yet. Start a workflow using the &#9654; button above.</p>

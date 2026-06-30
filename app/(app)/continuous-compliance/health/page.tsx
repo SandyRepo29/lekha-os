@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -34,7 +34,7 @@ export default async function ComplianceHealthPage() {
         </div>
         <form action={async () => { "use server"; await computeHealthAction(); }}>
           <button type="submit"
-            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2 text-sm font-medium hover:bg-white/[0.07] transition-colors">
+            className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2 text-sm font-medium hover:bg-[#F8F9FB] transition-colors">
             <RefreshCw className="h-4 w-4" /> Recompute
           </button>
         </form>
@@ -90,7 +90,7 @@ export default async function ComplianceHealthPage() {
               <h3 className="mb-4 font-semibold text-sm">Health History (30 days)</h3>
               <div className="space-y-1.5 max-h-64 overflow-y-auto">
                 {history.slice().reverse().map(h => (
-                  <div key={h.id} className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/[0.03]">
+                  <div key={h.id} className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-white">
                     <span className="w-28 text-[11px] text-[var(--color-ink-faint)]">{new Date(h.snapshotAt).toLocaleDateString()}</span>
                     <div className="flex-1">
                       <HealthBar score={h.score} size="sm" />

@@ -185,19 +185,19 @@ function SidebarGroup({
         onClick={onToggle}
         aria-label={`${collapsed ? "Expand" : "Collapse"} ${group.label}`}
         aria-expanded={!collapsed}
-        className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.04] group"
+        className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.06] group"
       >
         {collapsed ? (
-          <ChevronRight className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)]" />
+          <ChevronRight className="h-3 w-3 shrink-0 text-white/25" />
         ) : (
-          <ChevronDown className="h-3 w-3 shrink-0 text-[var(--color-ink-faint)]" />
+          <ChevronDown className="h-3 w-3 shrink-0 text-white/25" />
         )}
         <span
           className={cn(
             "text-[10px] font-semibold uppercase tracking-widest transition-colors",
             hasActiveChild
-              ? "text-[var(--color-blue)]/80"
-              : "text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-dim)]"
+              ? "text-[#00B8D9]/80"
+              : "text-white/30 group-hover:text-white/50"
           )}
         >
           {group.label}
@@ -207,8 +207,8 @@ function SidebarGroup({
       {!collapsed && (
         <div className="mt-0.5 flex flex-col gap-0.5">
           {group.items.length === 0 ? (
-            <div className="mx-2 mb-1 rounded-md border border-dashed border-[var(--color-line)] px-3 py-2">
-              <p className="text-[10px] text-[var(--color-ink-faint)] italic">Coming soon</p>
+            <div className="mx-2 mb-1 rounded-md border border-dashed border-white/[0.08] px-3 py-2">
+              <p className="text-[10px] text-white/30 italic">Coming soon</p>
             </div>
           ) : (
             group.items.map(({ href, label, icon: Icon, soon, external }) => {
@@ -216,9 +216,9 @@ function SidebarGroup({
               const itemClass = cn(
                 "group flex items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-[13px] font-medium transition-all",
                 active
-                  ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]",
-                soon && "cursor-not-allowed opacity-50 hover:bg-transparent hover:text-[var(--color-ink-dim)]"
+                  ? "bg-[#00B8D9]/[0.12] text-white"
+                  : "text-white/55 hover:bg-white/[0.06] hover:text-white",
+                soon && "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-white/55"
               );
               const content = (
                 <>
@@ -226,16 +226,16 @@ function SidebarGroup({
                     className={cn(
                       "h-4 w-4 shrink-0 transition-colors",
                       active
-                        ? "text-[var(--color-blue)]"
-                        : "text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-dim)]"
+                        ? "text-[#00B8D9]"
+                        : "text-white/35 group-hover:text-white/70"
                     )}
                   />
                   <span className="flex-1 truncate">{label}</span>
                   {active && (
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-blue)]" />
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#00B8D9]" />
                   )}
                   {soon && (
-                    <span className="shrink-0 rounded-full bg-white/[0.06] px-1.5 py-0.5 text-[9px] font-medium text-[var(--color-ink-faint)]">
+                    <span className="shrink-0 rounded-full bg-white/[0.06] px-1.5 py-0.5 text-[9px] font-medium text-white/30">
                       Soon
                     </span>
                   )}
@@ -299,23 +299,23 @@ export function Sidebar() {
   const isCollapsed = (key: string) => mounted && !!collapsed[key];
 
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r border-[var(--color-line)] bg-[var(--color-bg-2)]/60 md:flex">
+    <aside className="hidden w-60 shrink-0 flex-col border-r border-white/[0.06] bg-[#1B1F27] md:flex">
 
       {/* Logo */}
       <Link
         href="/dashboard"
-        className="flex h-14 shrink-0 items-center gap-2.5 border-b border-[var(--color-line)] px-5"
+        className="flex h-14 shrink-0 items-center gap-2.5 border-b border-white/[0.06] px-5"
       >
-        <span className="grid h-7 w-7 place-items-center rounded-[8px] grad-brand shadow-[0_4px_14px_-4px_rgba(99,102,241,.8)]">
+        <span className="grid h-7 w-7 place-items-center rounded-[8px] bg-[#007A94] shadow-[0_4px_14px_-4px_rgba(0,122,148,.7)]">
           <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#fff]" />
         </span>
-        <span className="font-[family-name:var(--font-display)] text-[15px] font-extrabold tracking-wide">
-          AU<span className="text-[var(--color-blue)]">DT</span>
+        <span className="font-[family-name:var(--font-display)] text-[15px] font-extrabold tracking-wide text-white">
+          AU<span className="text-[#00B8D9]">DT</span>
         </span>
       </Link>
 
       {/* Scrollable nav */}
-      <nav className="flex flex-1 flex-col overflow-y-auto px-3 py-3 scrollbar-thin">
+      <nav className="flex flex-1 flex-col overflow-y-auto px-3 py-3 scroll-thin">
 
         {/* Dashboard */}
         <Link
@@ -323,21 +323,21 @@ export function Sidebar() {
           className={cn(
             "group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all",
             isActive("/dashboard")
-              ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-              : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+              ? "bg-[#00B8D9]/[0.12] text-white"
+              : "text-white/55 hover:bg-white/[0.06] hover:text-white"
           )}
         >
           <LayoutDashboard
             className={cn(
               "h-4 w-4 shrink-0 transition-colors",
               isActive("/dashboard")
-                ? "text-[var(--color-blue)]"
-                : "text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-dim)]"
+                ? "text-[#00B8D9]"
+                : "text-white/35 group-hover:text-white/70"
             )}
           />
           <span className="flex-1 truncate">Dashboard</span>
           {isActive("/dashboard") && (
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-blue)]" />
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#00B8D9]" />
           )}
         </Link>
 
@@ -347,21 +347,21 @@ export function Sidebar() {
           className={cn(
             "group mt-1 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-all",
             isActive("/executive-command-center")
-              ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-              : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+              ? "bg-[#00B8D9]/[0.12] text-white"
+              : "text-white/55 hover:bg-white/[0.06] hover:text-white"
           )}
         >
           <Star
             className={cn(
               "h-4 w-4 shrink-0 transition-colors",
               isActive("/executive-command-center")
-                ? "text-[var(--color-blue)]"
-                : "text-[var(--color-ink-faint)] group-hover:text-[var(--color-ink-dim)]"
+                ? "text-[#00B8D9]"
+                : "text-white/35 group-hover:text-white/70"
             )}
           />
           <span className="flex-1 truncate">Executive Center</span>
           {isActive("/executive-command-center") && (
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-blue)]" />
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#00B8D9]" />
           )}
         </Link>
 
@@ -381,20 +381,20 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="shrink-0 border-t border-[var(--color-line)] px-3 py-3 space-y-0.5">
+      <div className="shrink-0 border-t border-white/[0.06] px-3 py-3 space-y-0.5">
         <Link
           href="/help"
           className={cn(
             "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
             pathname.startsWith("/help")
-              ? "bg-[var(--color-blue)]/10 text-[var(--color-ink)]"
-              : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+              ? "bg-[#00B8D9]/[0.12] text-white"
+              : "text-white/55 hover:bg-white/[0.06] hover:text-white"
           )}
         >
           <HelpCircle
             className={cn(
               "h-4 w-4 shrink-0",
-              pathname.startsWith("/help") ? "text-[var(--color-blue)]" : "text-[var(--color-ink-faint)]"
+              pathname.startsWith("/help") ? "text-[#00B8D9]" : "text-white/35"
             )}
           />
           <span>Help &amp; Docs</span>

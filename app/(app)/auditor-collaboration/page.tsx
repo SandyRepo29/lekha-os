@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Auditor Collaboration&#8482; — AUDT' };
 
@@ -62,7 +62,7 @@ export default async function AuditorCollaborationPage() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {NAV.map(({ href, icon: Icon, label, desc }) => (
           <Link key={href} href={href}
-            className="group flex items-center gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-white/[0.02]">
+            className="group flex items-center gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 transition-colors hover:border-[var(--color-blue)]/40 hover:bg-white">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-blue)]/10">
               <Icon className="h-5 w-5 text-[var(--color-blue)]" />
             </div>

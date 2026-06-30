@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getRenewals } from "@/lib/services/trust-verification/trust-verification-service";
@@ -77,7 +77,7 @@ export default async function RenewalsPage() {
               {renewals.map((r: any) => {
                 const soon = isDueSoon(r.renewalDueDate);
                 return (
-                  <tr key={r.id} className="hover:bg-white/[0.02]">
+                  <tr key={r.id} className="hover:bg-white">
                     <td className="px-4 py-3">
                       <div className={`font-medium ${soon && r.status === "upcoming" ? "text-amber-400" : ""}`}>
                         {r.renewalDueDate}

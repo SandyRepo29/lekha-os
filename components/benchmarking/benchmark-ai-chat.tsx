@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
@@ -82,7 +82,7 @@ export function BenchmarkAiChat({ context }: Props) {
                 className={`max-w-[80%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
                   m.role === "user"
                     ? "bg-[var(--color-blue)] text-white"
-                    : "bg-white/[0.04] text-[var(--color-ink)]"
+                    : "bg-[#F8F9FB] text-[var(--color-ink)]"
                 }`}
               >
                 {m.text}
@@ -99,7 +99,7 @@ export function BenchmarkAiChat({ context }: Props) {
               <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[var(--color-blue)]/20 flex items-center justify-center">
                 <Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" />
               </div>
-              <div className="bg-white/[0.04] rounded-xl px-3.5 py-2.5">
+              <div className="bg-[#F8F9FB] rounded-xl px-3.5 py-2.5">
                 <Loader2 className="h-4 w-4 animate-spin text-[var(--color-ink-dim)]" />
               </div>
             </div>

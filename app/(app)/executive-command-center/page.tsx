@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -76,7 +76,7 @@ function Card({ children, highlight = false, className }: {
 }) {
   return (
     <div className={cn(
-      "rounded-2xl border bg-white/[0.02] p-5",
+      "rounded-2xl border bg-white p-5",
       highlight ? "border-indigo-500/30 shadow-[0_0_24px_rgba(99,102,241,0.06)]" : "border-[var(--color-line)]",
       className,
     )}>
@@ -91,13 +91,13 @@ function ScoreRing({ score, size = 110 }: { score: number; size?: number }) {
   const color = score >= 90 ? "#34d399" : score >= 80 ? "#38bdf8" : score >= 70 ? "#fbbf24" : score >= 60 ? "#fb923c" : "#f87171";
   return (
     <svg width={size} height={size} viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(30,41,59,0.12)" strokeWidth="8" />
       <circle cx="50" cy="50" r={r} fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
         strokeDasharray={`${dash} ${circ}`} transform="rotate(-90 50 50)"
         style={{ filter: `drop-shadow(0 0 8px ${color}70)` }} />
       <text x="50" y="47" textAnchor="middle" dominantBaseline="middle" fill={color} fontSize="20" fontWeight="800"
         fontFamily="var(--font-display)">{score}</text>
-      <text x="50" y="63" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="7" fontWeight="600">/ 100</text>
+      <text x="50" y="63" textAnchor="middle" fill="#94A3B8" fontSize="7" fontWeight="600">/ 100</text>
     </svg>
   );
 }
@@ -123,7 +123,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
         <span className="text-[var(--color-ink-dim)]">{label}</span>
         <span className="font-medium text-[var(--color-ink)]">{score}</span>
       </div>
-      <div className="h-1.5 w-full rounded-full bg-white/[0.06]">
+      <div className="h-1.5 w-full rounded-full bg-[#F8F9FB]">
         <div className={cn("h-full rounded-full", barColor(score))} style={{ width: `${score}%` }} />
       </div>
     </div>
@@ -376,13 +376,13 @@ export default async function ExecutiveCommandCenterPage({
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Executive Command Center</h1>
           <p className="mt-0.5 text-sm text-[var(--color-ink-faint)]">{roleLabel[activeRole]} &mdash; Decision intelligence for leadership</p>
         </div>
-        <div className="flex items-center gap-1 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+        <div className="flex items-center gap-1 rounded-2xl border border-[var(--color-line)] bg-white p-1">
           {ROLES.map((r) => (
             <Link key={r.value} href={`/executive-command-center?role=${r.value}`} title={r.desc}
               className={cn("shrink-0 rounded-xl px-3 py-1.5 text-xs font-medium transition-colors",
                 activeRole === r.value
                   ? "bg-indigo-500/20 text-indigo-300 shadow-sm"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               )}>
               {r.label}
             </Link>
@@ -394,10 +394,10 @@ export default async function ExecutiveCommandCenterPage({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {roleKpis.map(({ label, value, sub, danger, warn, href }) => (
           <Link key={label} href={href}
-            className={cn("rounded-2xl border p-4 transition-colors hover:bg-white/[0.04]",
+            className={cn("rounded-2xl border p-4 transition-colors hover:bg-[#F8F9FB]",
               danger ? "border-l-2 border-red-500/40 bg-red-500/[0.04]"
             : warn   ? "border-l-2 border-amber-500/40 bg-amber-500/[0.04]"
-            :          "border-[var(--color-line)] bg-white/[0.02]"
+            :          "border-[var(--color-line)] bg-white"
             )}>
             <div className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">{label}</div>
             <div className={cn("mt-1 font-[family-name:var(--font-display)] text-2xl font-bold",
@@ -409,7 +409,7 @@ export default async function ExecutiveCommandCenterPage({
 
       {/* ROW 1: Org Trust Score */}
       <section className={cn("rounded-2xl border p-6", hi(activeRole,"trust")
-        ? "border-indigo-500/30 bg-indigo-500/[0.03]" : "border-[var(--color-line)] bg-white/[0.02]")}>
+        ? "border-indigo-500/30 bg-indigo-500/[0.03]" : "border-[var(--color-line)] bg-white")}>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
           <div className="flex shrink-0 items-center gap-5">
             <ScoreRing score={orgScore} size={120} />
@@ -442,7 +442,7 @@ export default async function ExecutiveCommandCenterPage({
               { label: "Frameworks",    value: frameworkCount, danger: false },
               { label: "Avg Readiness", value: `${avgReadiness}%`, danger: avgReadiness < 60 },
             ].map(({ label, value, danger }) => (
-              <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2">
+              <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white px-3 py-2">
                 <div className="text-[10px] text-[var(--color-ink-faint)]">{label}</div>
                 <div className={cn("text-lg font-bold", danger ? "text-red-400" : "text-[var(--color-ink)]")}>{value}</div>
               </div>
@@ -454,7 +454,7 @@ export default async function ExecutiveCommandCenterPage({
       {/* ROW 2: Executive Briefing */}
       <section className={cn("rounded-2xl border p-6", hi(activeRole,"briefing")
         ? "border-indigo-500/30 bg-gradient-to-br from-indigo-500/[0.06] to-purple-500/[0.03]"
-        : "border-[var(--color-line)] bg-white/[0.02]")}>
+        : "border-[var(--color-line)] bg-white")}>
         <div className="mb-4 flex items-center gap-3">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-indigo-500/15">
             <BookOpen className="h-4 w-4 text-indigo-400" />
@@ -478,7 +478,7 @@ export default async function ExecutiveCommandCenterPage({
               </div>
             ))}
           </div>
-          <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] p-4">
+          <div className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] p-4">
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">Top Priority Vendor</div>
             {topDecisionVendor ? (
               <div className="space-y-3">
@@ -497,7 +497,7 @@ export default async function ExecutiveCommandCenterPage({
                     View Vendor
                   </Link>
                   <Link href="/trust-intelligence/recommendations"
-                    className="rounded-lg bg-white/[0.05] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.08] transition-colors">
+                    className="rounded-lg bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] transition-colors">
                     Recommendations
                   </Link>
                 </div>
@@ -532,7 +532,7 @@ export default async function ExecutiveCommandCenterPage({
               "Summarize our top compliance gaps.",
             ].map((q) => (
               <Link key={q} href="/trust-intelligence/executive"
-                className="flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]">
+                className="flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]">
                 <ArrowRight className="h-3 w-3 shrink-0 text-indigo-400" />
                 {q}
               </Link>
@@ -561,7 +561,7 @@ export default async function ExecutiveCommandCenterPage({
                 { label: "Audit/Renew",   value: reviewDueVendors,accent: reviewDueVendors > 0 ? "text-amber-400" : "text-[var(--color-ink)]", border: "" },
                 { label: "Avg Score",     value: vendorMetrics?.complianceScore ?? 0, accent: (vendorMetrics?.complianceScore ?? 0) >= 70 ? "text-emerald-400" : "text-amber-400", border: "" },
               ].map(({ label, value, accent, border }) => (
-                <div key={label} className={cn("rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-3", border)}>
+                <div key={label} className={cn("rounded-xl border border-[var(--color-line)] bg-white px-3 py-3", border)}>
                   <div className="text-[10px] text-[var(--color-ink-faint)]">{label}</div>
                   <div className={cn("mt-1 font-[family-name:var(--font-display)] text-xl font-bold", accent)}>{value}</div>
                 </div>
@@ -582,7 +582,7 @@ export default async function ExecutiveCommandCenterPage({
                   return (
                     <div key={s.label} className="flex flex-col items-center gap-1">
                       <div className="text-[10px] font-bold text-[var(--color-ink)]">{s.count}</div>
-                      <div className="w-full rounded-md bg-white/[0.04]" style={{ height: "52px" }}>
+                      <div className="w-full rounded-md bg-[#F8F9FB]" style={{ height: "52px" }}>
                         <div className={cn("w-full rounded-md", col)} style={{ height: `${heightPct}%`, marginTop: `${100 - heightPct}%` }} />
                       </div>
                       <div className="text-center text-[8px] leading-tight text-[var(--color-ink-faint)]">{s.label}</div>
@@ -624,7 +624,7 @@ export default async function ExecutiveCommandCenterPage({
                 <div key={label} className={cn("rounded-xl border px-4 py-3",
                   danger ? "border-red-500/20 bg-red-500/[0.04] border-l-2 border-l-red-500/60"
                 : warn   ? "border-amber-500/20 bg-amber-500/[0.04] border-l-2 border-l-amber-500/60"
-                :          "border-[var(--color-line)] bg-white/[0.03]")}>
+                :          "border-[var(--color-line)] bg-white")}>
                   <div className="text-xs text-[var(--color-ink-faint)]">{label}</div>
                   <div className={cn("mt-1 font-[family-name:var(--font-display)] text-2xl font-bold",
                     danger ? "text-red-400" : warn ? "text-amber-400" : "text-[var(--color-ink)]")}>{value}</div>
@@ -669,7 +669,7 @@ export default async function ExecutiveCommandCenterPage({
                 { label: "Open Findings",     value: openFindings,                       good: openFindings === 0 },
               ].map(({ label, value, good }) => (
                 <div key={label} className={cn("rounded-xl border px-3 py-2.5",
-                  good ? "border-[var(--color-line)] bg-white/[0.02]"
+                  good ? "border-[var(--color-line)] bg-white"
                        : "border-red-500/20 bg-red-500/[0.03] border-l-2 border-l-red-500/50")}>
                   <div className="text-[10px] text-[var(--color-ink-faint)]">{label}</div>
                   <div className={cn("mt-0.5 font-[family-name:var(--font-display)] text-lg font-bold",
@@ -687,7 +687,7 @@ export default async function ExecutiveCommandCenterPage({
                   return (
                     <div key={f.frameworkId ?? i} className="flex items-center gap-3">
                       <span className="w-24 shrink-0 truncate text-xs text-[var(--color-ink-dim)]">Framework {i + 1}</span>
-                      <div className="flex-1 h-1.5 rounded-full bg-white/[0.06]">
+                      <div className="flex-1 h-1.5 rounded-full bg-[#F8F9FB]">
                         <div className={cn("h-full rounded-full", f.overallScore >= 70 ? "bg-emerald-500/60" : "bg-amber-500/60")}
                           style={{ width: `${f.overallScore}%` }} />
                       </div>
@@ -732,7 +732,7 @@ export default async function ExecutiveCommandCenterPage({
                 {trustBuckets.map((b) => (
                   <div key={b.label} className="flex items-center gap-3">
                     <span className={cn("w-32 shrink-0 text-xs font-medium", b.text)}>{b.label}</span>
-                    <div className="flex-1 h-4 rounded-md bg-white/[0.04] overflow-hidden">
+                    <div className="flex-1 h-4 rounded-md bg-[#F8F9FB] overflow-hidden">
                       {b.count > 0 && <div className={cn("h-full rounded-md", b.color)} style={{ width: `${(b.count / maxBucket) * 100}%` }} />}
                     </div>
                     <span className="w-6 shrink-0 text-right text-xs font-bold">{b.count}</span>
@@ -813,7 +813,7 @@ export default async function ExecutiveCommandCenterPage({
                           <span className="truncate text-xs font-medium group-hover:text-indigo-400 transition-colors">{v.name}</span>
                           <span className={cn("ml-2 shrink-0 text-xs font-bold", v.risk === "critical" ? "text-red-400" : "text-amber-400")}>{v.pct}%</span>
                         </div>
-                        <div className="h-1.5 rounded-full bg-white/[0.06]">
+                        <div className="h-1.5 rounded-full bg-[#F8F9FB]">
                           <div className={cn("h-full rounded-full", v.risk === "critical" ? "bg-red-500/60" : "bg-amber-500/60")}
                             style={{ width: `${v.pct}%` }} />
                         </div>
@@ -884,7 +884,7 @@ export default async function ExecutiveCommandCenterPage({
             { label: "Vendor Trust Report", desc: "Portfolio trust analysis",  icon: Building2,      formats: "PDF / XLSX"        },
           ].map((r) => (
             <Link key={r.label} href="/executive-reporting/board-reports"
-              className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 transition-colors hover:bg-white/[0.05]">
+              className="rounded-xl border border-[var(--color-line)] bg-white p-4 transition-colors hover:bg-[#F8F9FB]">
               <r.icon className="h-5 w-5 text-[var(--color-ink-faint)]" />
               <div className="mt-2 text-xs font-semibold">{r.label}</div>
               <div className="mt-0.5 text-[10px] text-[var(--color-ink-faint)]">{r.desc}</div>
@@ -900,7 +900,7 @@ export default async function ExecutiveCommandCenterPage({
             { label: "Trust Intelligence",   href: "/trust-intelligence",             icon: Activity     },
           ].map((l) => (
             <Link key={l.label} href={l.href}
-              className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-2 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.05] hover:text-[var(--color-ink)]">
+              className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] bg-white px-4 py-2 text-xs text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]">
               <l.icon className="h-3.5 w-3.5" />{l.label}
             </Link>
           ))}
@@ -922,7 +922,7 @@ export default async function ExecutiveCommandCenterPage({
               <div key={group} className={cn("rounded-2xl border p-4 space-y-2",
                 group === "critical" ? "border-red-500/20 bg-red-500/[0.03]"
               : group === "high"     ? "border-amber-500/20 bg-amber-500/[0.03]"
-              :                        "border-[var(--color-line)] bg-white/[0.02]")}>
+              :                        "border-[var(--color-line)] bg-white")}>
                 <div className="flex items-center gap-2 mb-3">
                   <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide", color.badge)}>
                     {color.label}
@@ -931,7 +931,7 @@ export default async function ExecutiveCommandCenterPage({
                 </div>
                 {items.map(({ label, count, icon: Icon, href }) => (
                   <Link key={label} href={href}
-                    className="flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2.5 transition-colors hover:bg-white/[0.05]">
+                    className="flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2.5 transition-colors hover:bg-[#F8F9FB]">
                     <Icon className={cn("h-3.5 w-3.5 shrink-0", color.icon)} />
                     <span className="flex-1 text-xs text-[var(--color-ink-dim)]">{label}</span>
                     <span className={cn("text-sm font-bold", color.icon)}>{count}</span>

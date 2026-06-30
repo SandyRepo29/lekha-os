@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ export function Tabs({ tabs, defaultTab, children, className }: TabsProps) {
   return (
     <div className={cn("space-y-5", className)}>
       {/* Tab bar */}
-      <div role="tablist" className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div role="tablist" className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -33,8 +33,8 @@ export function Tabs({ tabs, defaultTab, children, className }: TabsProps) {
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-all",
               active === tab.id
-                ? "bg-white/[0.08] text-[var(--color-ink)] shadow-sm"
-                : "text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+                ? "bg-[#EEF2F7] text-[var(--color-ink)] shadow-sm"
+                : "text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
             )}
           >
             {tab.label}

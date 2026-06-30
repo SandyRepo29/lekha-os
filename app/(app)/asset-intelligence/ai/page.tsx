@@ -34,7 +34,7 @@ export default async function AssetAiPage() {
       <AssetSubNav />
 
       {/* Advisory Summary */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
         <div className="flex items-center gap-3 mb-4">
           <span className="grid h-8 w-8 place-items-center rounded-xl bg-[var(--color-blue)]/10">
             <Brain className="h-4 w-4 text-[var(--color-blue)]" />
@@ -54,7 +54,7 @@ export default async function AssetAiPage() {
       </div>
 
       {/* Suggested Questions */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <h2 className="font-semibold text-sm mb-3">Suggested Questions</h2>
         <div className="flex flex-wrap gap-2">
           {[

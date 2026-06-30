@@ -61,7 +61,7 @@ export default async function AiGovernancePage() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {NAV.map(({ href, icon: Icon, label, desc }) => (
           <Link key={href} href={href}
-            className="group flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 hover:border-[var(--color-blue)]/40 hover:bg-white/[0.03] transition-colors">
+            className="group flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-4 hover:border-[var(--color-blue)]/40 hover:bg-white transition-colors">
             <div className="rounded-lg bg-[var(--color-blue)]/10 p-2">
               <Icon className="h-5 w-5 text-[var(--color-blue)]" />
             </div>

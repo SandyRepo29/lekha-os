@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Trust Intelligence&#8482; — AUDT' };
 
@@ -287,7 +287,7 @@ export default async function TrustIntelligencePage() {
         )}
 
         {/* Summary */}
-        <div className="rounded-lg bg-white/[0.03] border border-[var(--color-line)] px-3 py-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-ink-dim)]">
+        <div className="rounded-lg bg-white border border-[var(--color-line)] px-3 py-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-ink-dim)]">
           <span>Score explained:</span>
           <span className="text-emerald-400 font-medium">+{positiveSum} positive</span>
           <span className="text-red-400 font-medium">{negativeSum} negative</span>
@@ -381,7 +381,7 @@ export default async function TrustIntelligencePage() {
           { href: "/trust-intelligence/risks", label: "Risk Insights" },
         ].map(({ href, label }) => (
           <Link key={href} href={href}>
-            <Card className="p-4 hover:bg-white/[0.04] transition-colors cursor-pointer flex items-center justify-between">
+            <Card className="p-4 hover:bg-[#F8F9FB] transition-colors cursor-pointer flex items-center justify-between">
               <span className="text-sm font-medium text-[var(--color-ink)]">{label}</span>
               <span className="text-[var(--color-blue)] text-sm">&#8594;</span>
             </Card>
@@ -423,7 +423,7 @@ export default async function TrustIntelligencePage() {
             </p>
           </div>
           {!hasEnoughHistory && (
-            <span className="rounded-full bg-white/[0.06] border border-[var(--color-line)] text-[var(--color-ink-faint)] px-3 py-1 text-xs">
+            <span className="rounded-full bg-[#F8F9FB] border border-[var(--color-line)] text-[var(--color-ink-faint)] px-3 py-1 text-xs">
               Run daily snapshots to track momentum
             </span>
           )}
@@ -433,7 +433,7 @@ export default async function TrustIntelligencePage() {
           {momentumRows.map((row) => (
             <div
               key={row.key}
-              className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] p-3 flex items-center justify-between gap-2"
+              className="rounded-xl border border-[var(--color-line)] bg-white p-3 flex items-center justify-between gap-2"
             >
               <span className="text-sm text-[var(--color-ink-dim)] truncate">{row.label}</span>
               <div className="flex items-center gap-2 shrink-0">
@@ -443,7 +443,7 @@ export default async function TrustIntelligencePage() {
                   </span>
                 )}
                 {row.dir === "stable" && (
-                  <span className="rounded-full bg-white/[0.08] text-[var(--color-ink-faint)] border border-[var(--color-line)] px-2 py-0.5 text-xs font-semibold flex items-center gap-1">
+                  <span className="rounded-full bg-[#EEF2F7] text-[var(--color-ink-faint)] border border-[var(--color-line)] px-2 py-0.5 text-xs font-semibold flex items-center gap-1">
                     &#8594; Stable
                   </span>
                 )}

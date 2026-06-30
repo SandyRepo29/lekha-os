@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -221,10 +221,10 @@ export function OnboardingChecklist() {
   const isAllComplete = doneCount === total;
 
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
       <button
         onClick={toggleCollapsed}
-        className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-white/[0.03]"
+        className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-white"
       >
         <div className="flex items-center gap-3">
           <span className="text-base leading-none">&#10003;</span>
@@ -249,7 +249,7 @@ export function OnboardingChecklist() {
         )}
       </button>
 
-      <div className="h-1 w-full bg-white/[0.06]">
+      <div className="h-1 w-full bg-[#F8F9FB]">
         <div
           className="h-full rounded-full bg-[var(--color-blue)] transition-all duration-500"
           style={{ width: `${percent}%` }}
@@ -263,7 +263,7 @@ export function OnboardingChecklist() {
               {goals.map((goal) => (
                 <span
                   key={goal}
-                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${GOAL_CHIP_COLORS[goal] ?? "bg-white/[0.06] text-[var(--color-ink-dim)] border-[var(--color-line)]"}`}
+                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${GOAL_CHIP_COLORS[goal] ?? "bg-[#F8F9FB] text-[var(--color-ink-dim)] border-[var(--color-line)]"}`}
                 >
                   {GOAL_LABELS[goal] ?? goal}
                 </span>
@@ -279,7 +279,7 @@ export function OnboardingChecklist() {
               </p>
               <button
                 onClick={dismissAll}
-                className="mt-1 rounded-lg border border-[var(--color-line)] px-4 py-2 text-xs font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-ink)]"
+                className="mt-1 rounded-lg border border-[var(--color-line)] px-4 py-2 text-xs font-medium text-[var(--color-ink-dim)] transition-colors hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               >
                 Dismiss checklist
               </button>
@@ -305,7 +305,7 @@ export function OnboardingChecklist() {
                       {done && <Check className="h-3 w-3 text-emerald-400" strokeWidth={3} />}
                     </button>
 
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.04]">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F8F9FB]">
                       <Icon className={`h-3.5 w-3.5 ${done ? "text-[var(--color-ink-faint)]" : "text-[var(--color-blue)]"}`} />
                     </div>
 
@@ -323,7 +323,7 @@ export function OnboardingChecklist() {
                       <button
                         onClick={() => router.push(href)}
                         aria-label={`Go to ${title}`}
-                        className="shrink-0 rounded-lg p-1.5 text-[var(--color-ink-faint)] transition-colors hover:bg-white/[0.08] hover:text-[var(--color-blue)]"
+                        className="shrink-0 rounded-lg p-1.5 text-[var(--color-ink-faint)] transition-colors hover:bg-[#EEF2F7] hover:text-[var(--color-blue)]"
                       >
                         <ArrowRight className="h-3.5 w-3.5" />
                       </button>

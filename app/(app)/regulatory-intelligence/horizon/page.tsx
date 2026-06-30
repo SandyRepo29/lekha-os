@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -50,14 +50,14 @@ export default async function ComplianceHorizonPage() {
         <h3 className="mb-3 font-semibold text-sm">Your Regulatory Landscape</h3>
         <div className="flex flex-wrap gap-2">
           {regs.slice(0, 12).map(r => (
-            <div key={r.id} className="flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-2.5 py-1">
+            <div key={r.id} className="flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-white px-2.5 py-1">
               <Globe className="h-3 w-3 text-[var(--color-ink-faint)]" />
               <span className="text-xs font-medium">{r.shortName ?? r.name}</span>
               <CategoryBadge category={r.category} />
             </div>
           ))}
           {regs.length > 12 && (
-            <div className="flex items-center rounded-full border border-[var(--color-line)] bg-white/[0.03] px-2.5 py-1">
+            <div className="flex items-center rounded-full border border-[var(--color-line)] bg-white px-2.5 py-1">
               <span className="text-xs text-[var(--color-ink-dim)]">+{regs.length - 12} more</span>
             </div>
           )}

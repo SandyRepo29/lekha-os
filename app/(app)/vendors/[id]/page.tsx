@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -95,7 +95,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
       <Card className="p-5">
         <div className="flex flex-wrap items-start gap-5">
           {/* Avatar */}
-          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white/[0.06] font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink-dim)]">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#F8F9FB] font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink-dim)]">
             {vendor.name[0].toUpperCase()}
           </div>
 
@@ -184,7 +184,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
 
         {/* Notes (inline, no separate card) */}
         {vendor.notes && (
-          <p className="mt-4 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 text-sm text-[var(--color-ink-dim)] leading-relaxed">
+          <p className="mt-4 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm text-[var(--color-ink-dim)] leading-relaxed">
             {vendor.notes}
           </p>
         )}
@@ -214,22 +214,22 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
       />
 
       {/* Connected Entities */}
-      <section className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-5 space-y-4">
+      <section className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">Connected Entities</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Link href={`/risks/list`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href={`/risks/list`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${vendorRisks.length > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{vendorRisks.length}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Risks</div>
           </Link>
-          <Link href={`/contract-governance/library`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href={`/contract-governance/library`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${vendorContracts.length > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{vendorContracts.length}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Contracts</div>
           </Link>
-          <Link href={`/asset-intelligence/registry`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href={`/asset-intelligence/registry`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedAssetCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedAssetCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Assets</div>
           </Link>
-          <Link href={`/vendors/${vendor.id}`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.04] transition-colors">
+          <Link href={`/vendors/${vendor.id}`} className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${assessments.length > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{assessments.length}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Assessments</div>
           </Link>

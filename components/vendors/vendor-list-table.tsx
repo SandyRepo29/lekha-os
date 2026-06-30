@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import {
@@ -215,7 +215,7 @@ export function VendorListTable({
                   </button>
 
                   <Link href={`/vendors/${v.id}`} className="flex items-center gap-3 min-w-0">
-                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.06] font-[family-name:var(--font-display)] text-sm font-bold text-[var(--color-ink-dim)]">
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#F8F9FB] font-[family-name:var(--font-display)] text-sm font-bold text-[var(--color-ink-dim)]">
                       {v.name[0].toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -267,15 +267,15 @@ export function VendorListTable({
 
                   <div className="hidden lg:flex items-center justify-end gap-0.5">
                     <Link href={`/vendors/${v.id}`} title="View"
-                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors">
+                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
                       <Eye className="h-3.5 w-3.5" />
                     </Link>
                     <Link href={`/risks/list?vendorId=${v.id}`} title="Risks"
-                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors">
+                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
                       <BarChart2 className="h-3.5 w-3.5" />
                     </Link>
                     <a href={`/vendors/${v.id}/executive-report`} target="_blank" rel="noopener noreferrer" title="Executive Report"
-                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-white/[0.06] hover:text-[var(--color-ink)] transition-colors">
+                      className="rounded-lg p-1.5 text-[var(--color-ink-faint)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
                       <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                   </div>

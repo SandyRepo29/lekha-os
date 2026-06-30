@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 export const metadata = { title: 'Asset Intelligence&#8482; — AUDT' };
 
@@ -57,7 +57,7 @@ export default async function AssetIntelligencePage() {
       <div className="flex items-center gap-2">
         <a
           href="/api/v1/assets/export/csv"
-          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-white/[0.04]"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB]"
         >
           <Download className="h-3.5 w-3.5" />
           Export Assets CSV
@@ -93,7 +93,7 @@ export default async function AssetIntelligencePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Recent Assets */}
-        <div className="lg:col-span-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="lg:col-span-2 rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-sm">Critical &amp; Recent Assets</h2>
             <Link href="/asset-intelligence/registry" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
@@ -109,7 +109,7 @@ export default async function AssetIntelligencePage() {
                 const Icon = TYPE_ICONS[a.assetType] ?? Monitor;
                 return (
                   <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
-                    className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white/[0.03] transition-colors">
+                    className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white transition-colors">
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--color-blue)]/10">
                       <Icon className="h-4 w-4 text-[var(--color-blue)]" />
                     </span>
@@ -134,7 +134,7 @@ export default async function AssetIntelligencePage() {
         {/* Right column */}
         <div className="space-y-4">
           {/* Asset Risk Insights */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <h2 className="font-semibold text-sm mb-3 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />
               Asset Risk Insights
@@ -155,7 +155,7 @@ export default async function AssetIntelligencePage() {
           </div>
 
           {/* Open Alerts */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold text-sm">Open Alerts</h2>
               <Link href="/asset-intelligence/alerts" className="text-xs text-[var(--color-blue)] hover:underline">All &#8594;</Link>
@@ -181,7 +181,7 @@ export default async function AssetIntelligencePage() {
 
       {/* By Type + By Criticality */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <h2 className="font-semibold text-sm mb-3 flex items-center gap-2">
             <Activity className="h-4 w-4 text-[var(--color-blue)]" /> Assets by Type
           </h2>
@@ -199,7 +199,7 @@ export default async function AssetIntelligencePage() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <h2 className="font-semibold text-sm mb-3 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-amber-400" /> Assets by Criticality
           </h2>
@@ -231,7 +231,7 @@ export default async function AssetIntelligencePage() {
             { href: "/asset-intelligence/ai",              icon: Brain,         label: "Asset Copilot&#8482;",      desc: "AI-powered insights"  },
           ].map(({ href, icon: Icon, label, desc }) => (
             <Link key={href} href={href}
-              className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-colors">
+              className="rounded-2xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
               <Icon className="h-5 w-5 text-[var(--color-blue)] mb-2" />
               <p className="text-sm font-medium leading-tight" dangerouslySetInnerHTML={{ __html: label }} />
               <p className="text-xs text-[var(--color-ink-dim)] mt-0.5" dangerouslySetInnerHTML={{ __html: desc }} />

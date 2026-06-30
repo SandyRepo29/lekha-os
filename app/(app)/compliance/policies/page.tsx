@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, FileText } from "lucide-react";
@@ -97,7 +97,7 @@ export default async function PoliciesPage() {
               return (
                 <div
                   key={p.id}
-                  className="grid grid-cols-[1fr_160px_80px_100px_120px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
+                  className="grid grid-cols-[1fr_160px_80px_100px_120px_40px] items-center gap-4 px-5 py-4 transition-colors hover:bg-white"
                 >
                   <div>
                     <Link

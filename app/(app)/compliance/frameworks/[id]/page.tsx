@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -182,7 +182,7 @@ export default async function FrameworkDetailPage({
                   {controls.map((control) => (
                     <tr
                       key={control.id}
-                      className="border-b border-[var(--color-line)] transition-colors last:border-0 hover:bg-white/[0.02]"
+                      className="border-b border-[var(--color-line)] transition-colors last:border-0 hover:bg-white"
                     >
                       <td className="px-5 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
                         {control.controlRef}

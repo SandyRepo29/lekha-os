@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -62,7 +62,7 @@ export function PortalUpload({ orgId, vendorId, token }: { orgId: string; vendor
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 space-y-4">
+    <form onSubmit={onSubmit} className="rounded-xl border border-white/10 bg-white p-5 space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="block text-xs font-medium text-white/60 mb-1.5">Document type *</label>
@@ -78,7 +78,7 @@ export function PortalUpload({ orgId, vendorId, token }: { orgId: string; vendor
         <div>
           <label className="block text-xs font-medium text-white/60 mb-1.5">File (PDF, PNG, JPG) *</label>
           <input ref={fileRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt"
-            className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white/60 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:text-white/80" />
+            className="h-11 w-full rounded-xl border border-white/10 bg-white px-3 py-2 text-sm text-white/60 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:text-white/80" />
         </div>
       </div>
       {error && <p className="text-xs text-red-400">{error}</p>}

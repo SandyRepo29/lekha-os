@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ export function PrivacyStat({
         border,
         leftBar,
         bg,
-        href && "hover:bg-white/[0.03] transition-colors"
+        href && "hover:bg-white transition-colors"
       )}
     >
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
@@ -83,7 +83,7 @@ export function PrivacyFilterChip({
         "rounded-full px-3 py-1 text-xs font-medium transition-colors",
         active
           ? "bg-[var(--color-blue)]/20 text-[var(--color-blue)]"
-          : "bg-white/[0.04] text-[var(--color-ink-dim)] hover:bg-white/[0.07]"
+          : "bg-[#F8F9FB] text-[var(--color-ink-dim)] hover:bg-[#F8F9FB]"
       )}
     >
       {label}

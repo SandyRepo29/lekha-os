@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { FileText, Plus, Search } from "lucide-react";
@@ -108,7 +108,7 @@ export default async function PolicyLibraryPage({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Policy Name</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Type</th>
                   <th className="px-4 py-3 text-left font-medium text-[var(--color-ink-dim)]">Owner</th>
@@ -120,7 +120,7 @@ export default async function PolicyLibraryPage({
               </thead>
               <tbody className="divide-y divide-[var(--color-line)]">
                 {policies.map((p) => (
-                  <tr key={p.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={p.id} className="hover:bg-white transition-colors">
                     <td className="px-4 py-3">
                       <Link href={`/policy-governance/${p.id}`} className="font-medium hover:text-indigo-400 transition-colors">
                         {p.name}

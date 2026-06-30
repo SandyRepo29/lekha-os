@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -65,7 +65,7 @@ export default async function ProgramsPage() {
                     <span>Controls ≥ {p.minControlHealth}%</span>
                   </div>
                   <Link href={`/trust-verification/applications/new?programId=${p.id}`}
-                    className="flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium hover:bg-white/[0.07]">
+                    className="flex items-center gap-1 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-2.5 py-1 text-[11px] font-medium hover:bg-[#F8F9FB]">
                     Apply <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -79,7 +79,7 @@ export default async function ProgramsPage() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-[var(--color-ink-dim)] uppercase tracking-wider">Custom Programs</h2>
-          <button className="flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-medium hover:bg-white/[0.07]">
+          <button className="flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
             <Plus className="h-3.5 w-3.5" /> Create Program
           </button>
         </div>

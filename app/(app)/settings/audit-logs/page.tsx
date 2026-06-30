@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Shield } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
@@ -64,7 +64,7 @@ export default async function AuditLogsPage({
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Audit Logs</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">Complete activity trail for {session.orgName}.</p>
         </div>
-        <div className="flex items-center gap-2 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] px-3 py-2">
+        <div className="flex items-center gap-2 rounded-2xl border border-[var(--color-line)] bg-white px-3 py-2">
           <Shield className="h-4 w-4 text-[var(--color-blue)]" />
           <span className="text-sm font-semibold text-[var(--color-ink)]">{total.toLocaleString()}</span>
           <span className="text-sm text-[var(--color-ink-faint)]">events</span>

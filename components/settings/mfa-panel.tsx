@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useTransition } from "react";
 import { Shield, ShieldCheck, ShieldOff, Copy, RefreshCw, Smartphone } from "lucide-react";
@@ -118,7 +118,7 @@ export function MfaPanel() {
         {/* IDLE — not enrolled */}
         {step === "idle" && (
           <>
-            <div className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+            <div className="flex items-start gap-3 rounded-xl border border-[var(--color-line)] bg-white p-4">
               <ShieldOff className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
               <div>
                 <p className="text-sm font-medium text-[var(--color-ink)]">MFA not enabled</p>
@@ -154,7 +154,7 @@ export function MfaPanel() {
                 onChange={e => setConfirmCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 placeholder="6-digit code"
                 maxLength={6}
-                className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-4 py-2.5 text-center font-mono text-lg tracking-widest text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
+                className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-2.5 text-center font-mono text-lg tracking-widest text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/40"
               />
               <button
                 onClick={confirmEnrollment}
@@ -181,7 +181,7 @@ export function MfaPanel() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               {recoveryCodes.map((c, i) => (
-                <code key={i} className="rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-center text-sm font-mono text-[var(--color-ink)]">
+                <code key={i} className="rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-center text-sm font-mono text-[var(--color-ink)]">
                   {c}
                 </code>
               ))}
@@ -255,7 +255,7 @@ export function MfaPanel() {
               { name: "Microsoft Authenticator", icon: <Smartphone className="h-5 w-5" /> },
               { name: "Authy / 1Password", icon: <Smartphone className="h-5 w-5" /> },
             ].map((app) => (
-              <div key={app.name} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3 text-center">
+              <div key={app.name} className="rounded-xl border border-[var(--color-line)] bg-white p-3 text-center">
                 <div className="flex justify-center text-[var(--color-ink-faint)]">{app.icon}</div>
                 <div className="mt-1 text-xs text-[var(--color-ink-faint)]">{app.name}</div>
               </div>

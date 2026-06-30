@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,7 @@ export function AgentSubNav() {
   const path = usePathname();
   return (
     <div className="border-b border-[var(--color-line)] pb-1">
-      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-white p-1">
         {AGENT_SUB_NAV.map(n => {
           const active = n.href === "/agents"
             ? path === n.href
@@ -33,8 +33,8 @@ export function AgentSubNav() {
               className={cn(
                 "shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-white/[0.08] text-[var(--color-ink)]"
-                  : "text-[var(--color-ink-dim)] hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+                  ? "bg-[#EEF2F7] text-[var(--color-ink)]"
+                  : "text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)]"
               )}>
               {n.label}
             </Link>
@@ -53,7 +53,7 @@ const ACCENT: Record<Accent, { border: string; bg: string; text: string }> = {
   good:    { border: "border-l-emerald-500",  bg: "bg-emerald-500/[0.06]",  text: "text-emerald-400" },
   warn:    { border: "border-l-amber-500",    bg: "bg-amber-500/[0.06]",    text: "text-amber-400" },
   danger:  { border: "border-l-red-500",      bg: "bg-red-500/[0.06]",      text: "text-red-400" },
-  neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white/[0.03]", text: "text-[var(--color-ink)]" },
+  neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white", text: "text-[var(--color-ink)]" },
   blue:    { border: "border-l-[var(--color-blue)]", bg: "bg-[var(--color-blue)]/[0.06]", text: "text-[var(--color-blue)]" },
   purple:  { border: "border-l-purple-500",   bg: "bg-purple-500/[0.06]",   text: "text-purple-400" },
 };
@@ -83,7 +83,7 @@ export function AgentStat({
 const AGENT_STATUS: Record<string, string> = {
   active:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   paused:  "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  idle:    "bg-white/[0.06] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  idle:    "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
   error:   "bg-red-500/10 text-red-400 border border-red-500/20",
   draft:   "bg-purple-500/10 text-purple-400 border border-purple-500/20",
 };
@@ -92,7 +92,7 @@ const RUN_STATUS: Record<string, string> = {
   running:   "bg-blue-500/10 text-blue-400 border border-blue-500/20",
   completed: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   failed:    "bg-red-500/10 text-red-400 border border-red-500/20",
-  cancelled: "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  cancelled: "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
   success:   "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
 };
 
@@ -101,14 +101,14 @@ const SEVERITY_STYLES: Record<string, string> = {
   high:     "bg-orange-500/10 text-orange-400 border border-orange-500/20",
   medium:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
   low:      "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  info:     "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  info:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const OBS_STATUS: Record<string, string> = {
   new:       "bg-amber-500/10 text-amber-400 border border-amber-500/20",
   reviewed:  "bg-blue-500/10 text-blue-400 border border-blue-500/20",
   actioned:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  dismissed: "bg-white/[0.06] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  dismissed: "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const PRIORITY_STYLES: Record<string, string> = {
@@ -129,7 +129,7 @@ const ACTION_STATUS: Record<string, string> = {
 const EXEC_MODE: Record<string, string> = {
   autonomous:    "bg-purple-500/10 text-purple-400 border border-purple-500/20",
   supervised:    "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  advisory:      "bg-white/[0.06] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  advisory:      "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
   semi_autonomous: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
 };
 
@@ -160,7 +160,7 @@ export function ConfidenceRing({ value }: { value: number }) {
   return (
     <div className="relative flex h-12 w-12 items-center justify-center">
       <svg className="-rotate-90" width={44} height={44} viewBox="0 0 44 44">
-        <circle cx={22} cy={22} r={r} stroke="rgba(255,255,255,0.07)" strokeWidth={3} fill="none" />
+        <circle cx={22} cy={22} r={r} stroke="rgba(30,41,59,0.12)" strokeWidth={3} fill="none" />
         <circle cx={22} cy={22} r={r} stroke={color} strokeWidth={3} fill="none"
           strokeDasharray={`${dash} ${circ}`} strokeLinecap="round" />
       </svg>

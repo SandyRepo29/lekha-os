@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Network, Shield, GitBranch, FileText, AlertTriangle } from "lucide-react";
@@ -93,7 +93,7 @@ export default async function PolicyMappingsPage() {
         ) : (
           <div className="divide-y divide-[var(--color-line)]">
             {activePolicies.map((policy) => (
-              <div key={policy.id} className="flex items-center gap-4 px-5 py-3 hover:bg-white/[0.02]">
+              <div key={policy.id} className="flex items-center gap-4 px-5 py-3 hover:bg-white">
                 <div className="flex-1 min-w-0">
                   <Link
                     href={`/policy-governance/${policy.id}`}
@@ -154,7 +154,7 @@ export default async function PolicyMappingsPage() {
           </h2>
           <div className="space-y-2">
             {unmapped.map((policy) => (
-              <div key={policy.id} className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white/[0.03]">
+              <div key={policy.id} className="flex items-center justify-between gap-3 rounded-xl p-2 hover:bg-white">
                 <div className="min-w-0">
                   <Link
                     href={`/policy-governance/${policy.id}`}

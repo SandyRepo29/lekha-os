@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getOrgTags } from "@/lib/services/platform/tag-service";
@@ -44,7 +44,7 @@ export default async function TagsPage() {
 
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-white/[0.06] p-2">
+        <div className="rounded-xl bg-[#F8F9FB] p-2">
           <Tag className="h-5 w-5 text-[var(--color-blue)]" />
         </div>
         <div>
@@ -59,7 +59,7 @@ export default async function TagsPage() {
 
       {/* Create tag form — admin/owner only */}
       {canManage && (
-        <Card className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden">
+        <Card className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden">
           <div className="flex items-center gap-2 px-5 py-4 border-b border-[var(--color-line)]">
             <Plus className="h-4 w-4 text-[var(--color-blue)]" />
             <span className="text-sm font-semibold text-[var(--color-ink)]">
@@ -83,7 +83,7 @@ export default async function TagsPage() {
                   required
                   maxLength={50}
                   placeholder="e.g. Critical, SOC 2, Vendor A"
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                 />
               </div>
 
@@ -101,7 +101,7 @@ export default async function TagsPage() {
                   type="text"
                   maxLength={200}
                   placeholder="Optional description"
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                 />
               </div>
             </div>
@@ -143,7 +143,7 @@ export default async function TagsPage() {
 
       {/* Tags grid */}
       {tags.length === 0 ? (
-        <Card className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-12 text-center">
+        <Card className="rounded-2xl border border-[var(--color-line)] bg-white p-12 text-center">
           <Tag className="h-8 w-8 text-[var(--color-ink-dim)] mx-auto mb-3" />
           <p className="text-sm font-medium text-[var(--color-ink)]">No tags yet</p>
           <p className="text-xs text-[var(--color-ink-dim)] mt-1">
@@ -157,7 +157,7 @@ export default async function TagsPage() {
           {tags.map((tag) => (
             <Card
               key={tag.id}
-              className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] overflow-hidden"
+              className="rounded-2xl border border-[var(--color-line)] bg-white overflow-hidden"
             >
               {/* Tag header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-line)]">
@@ -219,7 +219,7 @@ export default async function TagsPage() {
                   </summary>
                   <form
                     action={boundUpdate}
-                    className="px-4 py-3 border-t border-[var(--color-line)] space-y-3 bg-white/[0.02]"
+                    className="px-4 py-3 border-t border-[var(--color-line)] space-y-3 bg-white"
                   >
                     <input type="hidden" name="tagId" value={tag.id} />
 
@@ -232,7 +232,7 @@ export default async function TagsPage() {
                         type="text"
                         defaultValue={tag.name}
                         maxLength={50}
-                        className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                        className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                       />
                     </div>
 
@@ -245,7 +245,7 @@ export default async function TagsPage() {
                         type="text"
                         defaultValue={tag.description ?? ""}
                         maxLength={200}
-                        className="w-full rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
+                        className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs text-[var(--color-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)]"
                       />
                     </div>
 
@@ -273,7 +273,7 @@ export default async function TagsPage() {
                     <div className="flex justify-end">
                       <button
                         type="submit"
-                        className="inline-flex items-center gap-1 rounded-xl bg-white/[0.06] border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:bg-white/[0.1] transition-colors"
+                        className="inline-flex items-center gap-1 rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:bg-[#EEF2F7] transition-colors"
                       >
                         Save changes
                       </button>

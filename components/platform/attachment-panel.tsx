@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -101,7 +101,7 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
   }
 
   return (
-    <Card className="bg-white/[0.03] border border-[var(--color-line)] rounded-2xl p-5 space-y-4">
+    <Card className="bg-white border border-[var(--color-line)] rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Paperclip className="w-4 h-4 text-[var(--color-ink-dim)]" />
@@ -135,7 +135,7 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
             border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors
             ${isDragging
               ? "border-[var(--color-blue)] bg-[var(--color-blue)]/10"
-              : "border-[var(--color-line)] hover:border-[var(--color-blue)]/50 hover:bg-white/[0.02]"}
+              : "border-[var(--color-line)] hover:border-[var(--color-blue)]/50 hover:bg-white"}
           `}
         >
           {uploading ? (
@@ -173,7 +173,7 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
           {attachments.map((a) => (
             <li
               key={a.id}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-[var(--color-line)] hover:bg-white/[0.05] transition-colors"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border border-[var(--color-line)] hover:bg-[#F8F9FB] transition-colors"
             >
               <FileIcon contentType={a.content_type} />
 
@@ -182,7 +182,7 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
                   <span className="text-sm font-medium text-[var(--color-ink)] truncate max-w-[180px]">
                     {a.file_name}
                   </span>
-                  <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] text-[var(--color-ink-dim)] border border-[var(--color-line)] shrink-0">
+                  <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)] shrink-0">
                     v{a.version}
                   </span>
                 </div>
@@ -205,7 +205,7 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={() => window.open(`/api/platform/attachments/${a.id}/download`, "_blank")}
-                  className="p-1.5 rounded-lg hover:bg-white/[0.08] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-[#EEF2F7] text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
                   title="Download"
                 >
                   <Download className="w-3.5 h-3.5" />

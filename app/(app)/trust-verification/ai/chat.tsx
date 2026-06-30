@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { chatAction } from "@/lib/trust-verification/actions";
@@ -36,7 +36,7 @@ export default function TrustVerificationChat({ context }: { context: Record<str
         <div className="grid grid-cols-2 gap-2">
           {STARTERS.map(s => (
             <button key={s} onClick={() => setInput(s)}
-              className="rounded-xl border border-[var(--color-line)]/60 bg-white/[0.02] px-3 py-2 text-xs text-left text-[var(--color-ink-dim)] hover:bg-white/[0.05] hover:border-[var(--color-blue)]/30 transition-colors">
+              className="rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2 text-xs text-left text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:border-[var(--color-blue)]/30 transition-colors">
               {s}
             </button>
           ))}
@@ -51,7 +51,7 @@ export default function TrustVerificationChat({ context }: { context: Record<str
                 {m.role === "user" ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
               </span>
               <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs leading-relaxed ${
-                m.role === "user" ? "bg-[var(--color-blue)]/15 text-right" : "bg-white/[0.05]"
+                m.role === "user" ? "bg-[var(--color-blue)]/15 text-right" : "bg-[#F8F9FB]"
               }`}>
                 {m.content}
               </div>
@@ -62,7 +62,7 @@ export default function TrustVerificationChat({ context }: { context: Record<str
               <span className="grid h-6 w-6 place-items-center rounded-full bg-violet-600 text-white">
                 <Bot className="h-3 w-3" />
               </span>
-              <div className="rounded-2xl bg-white/[0.05] px-3 py-2 text-xs text-[var(--color-ink-faint)]">Thinking…</div>
+              <div className="rounded-2xl bg-[#F8F9FB] px-3 py-2 text-xs text-[var(--color-ink-faint)]">Thinking…</div>
             </div>
           )}
         </div>
@@ -74,7 +74,7 @@ export default function TrustVerificationChat({ context }: { context: Record<str
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && send()}
           placeholder="Ask about verification eligibility, evidence, certificates…"
-          className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none"
+          className="flex-1 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:border-[var(--color-blue)]/50 focus:outline-none"
         />
         <button onClick={send} disabled={!input.trim() || isPending}
           className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--color-blue)]/20 text-[var(--color-blue)] disabled:opacity-40 hover:bg-[var(--color-blue)]/30 transition-colors">

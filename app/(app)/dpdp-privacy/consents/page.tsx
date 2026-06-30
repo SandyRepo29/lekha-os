@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Plus, UserCheck } from "lucide-react";
@@ -104,7 +104,7 @@ export default async function ConsentsPage({
                 ? "/dpdp-privacy/consents"
                 : `/dpdp-privacy/consents?status=${s}`
             }
-            className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1 text-xs capitalize hover:bg-white/[0.07] transition-colors"
+            className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1 text-xs capitalize hover:bg-[#F8F9FB] transition-colors"
           >
             {s === "all" ? "All" : s}
           </Link>
@@ -137,7 +137,7 @@ export default async function ConsentsPage({
                   return (
                     <tr
                       key={c.id}
-                      className="border-b border-[var(--color-line)]/50 hover:bg-white/[0.02] transition-colors"
+                      className="border-b border-[var(--color-line)]/50 hover:bg-white transition-colors"
                     >
                       <td className="px-4 py-3">
                         <p className="font-medium">{c.subjectName ?? c.subjectId}</p>

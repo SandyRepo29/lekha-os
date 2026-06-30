@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -46,7 +46,7 @@ export function VendorNotes({ vendorId, notes }: { vendorId: string; notes: stri
             onChange={(e) => setValue(e.target.value)}
             rows={4}
             placeholder="Add internal notes about this vendor — risk context, relationship history, action items…"
-            className="w-full rounded-xl border border-[var(--color-line-strong)] bg-white/[0.03] px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30 resize-none"
+            className="w-full rounded-xl border border-[var(--color-line-strong)] bg-white px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30 resize-none"
           />
           <div className="flex gap-2">
             <Button size="sm" variant="primary" onClick={save} disabled={pending}>

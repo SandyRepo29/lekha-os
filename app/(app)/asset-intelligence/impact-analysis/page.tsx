@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -92,7 +92,7 @@ export default async function ImpactAnalysisPage() {
           { label: "Regulated Data Assets",      value: piiAssets.length,        color: "text-amber-400"  },
           { label: "Total Asset Dependencies",   value: relationships.length,    color: "text-blue-400"   },
         ].map(({ label, value, color }) => (
-          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4">
+          <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white p-4">
             <p className="text-xs text-[var(--color-ink-dim)] mb-1">{label}</p>
             <p className={`text-2xl font-bold ${color}`}>{value}</p>
           </div>
@@ -100,7 +100,7 @@ export default async function ImpactAnalysisPage() {
       </div>
 
       {/* Vendor Failure Scenarios */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="h-4 w-4 text-red-400" />
           <h2 className="font-semibold text-sm">Vendor Failure Impact Scenarios</h2>
@@ -138,7 +138,7 @@ export default async function ImpactAnalysisPage() {
                   <div className="flex flex-wrap gap-2">
                     {scenario.assets.map((a: any) => (
                       <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white/[0.02] px-2.5 py-1 text-xs hover:bg-white/[0.05] transition-colors">
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-white px-2.5 py-1 text-xs hover:bg-[#F8F9FB] transition-colors">
                         <AssetTypeBadge type={a.assetType} />
                         <span className="font-medium">{a.name}</span>
                         <CriticalityBadge level={a.criticality} />
@@ -153,7 +153,7 @@ export default async function ImpactAnalysisPage() {
       </div>
 
       {/* Critical Asset Failure Scenarios */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
           <AlertTriangle className="h-4 w-4 text-orange-400" />
           <h2 className="font-semibold text-sm">Critical Asset Failure Scenarios</h2>
@@ -213,7 +213,7 @@ export default async function ImpactAnalysisPage() {
       </div>
 
       {/* Regulated Data Exposure Scenarios */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="h-4 w-4 text-amber-400" />
           <h2 className="font-semibold text-sm">Regulated Data Exposure Scenarios</h2>
@@ -228,7 +228,7 @@ export default async function ImpactAnalysisPage() {
           <div className="overflow-hidden rounded-xl border border-[var(--color-line)]">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.02]">
+                <tr className="border-b border-[var(--color-line)] bg-white">
                   <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Asset</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Type</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-[var(--color-ink-dim)]">Data Class</th>
@@ -243,7 +243,7 @@ export default async function ImpactAnalysisPage() {
                     asset.criticality === "critical" ? "high" :
                     asset.criticality === "high" ? "medium" : "low";
                   return (
-                    <tr key={asset.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={asset.id} className="hover:bg-white transition-colors">
                       <td className="px-4 py-3">
                         <Link href={`/asset-intelligence/registry/${asset.id}`}
                           className="font-medium hover:text-[var(--color-blue)] transition-colors">
@@ -302,7 +302,7 @@ export default async function ImpactAnalysisPage() {
             cta:   "Control Library",
           },
         ].map(({ icon: Icon, color, title, desc, href, cta }) => (
-          <div key={title} className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5">
+          <div key={title} className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <Icon className={`h-5 w-5 ${color} mb-3`} />
             <p className="font-semibold text-sm mb-1">{title}</p>
             <p className="text-xs text-[var(--color-ink-dim)] mb-3">{desc}</p>

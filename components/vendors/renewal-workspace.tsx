@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, ChevronRight, Zap } from "lucide-react";
@@ -133,7 +133,7 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
             <div className="mb-3">
               <label className="mb-1 block text-xs font-medium text-[var(--color-ink-dim)]">Notes (optional)</label>
               <textarea name="notes" rows={2} placeholder="Any context for this renewal assessment..."
-                className="w-full rounded-lg border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)] resize-none" />
+                className="w-full rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--color-blue)] resize-none" />
             </div>
             <Button type="submit" disabled={startPending}>
               {startPending ? "Running assessment…" : "Run Renewal Assessment"}
@@ -153,7 +153,7 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">AI Recommendation</span>
                 {latestAssessment?.confidence_score && (
-                  <span className="rounded-full bg-white/[0.06] border border-[var(--color-line)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-ink-dim)]">
+                  <span className="rounded-full bg-[#F8F9FB] border border-[var(--color-line)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-ink-dim)]">
                     {latestAssessment.confidence_score}% confidence
                   </span>
                 )}
@@ -188,7 +188,7 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
               )}
 
               {latestAssessment?.ai_rationale && (
-                <div className="mt-3 rounded-lg bg-white/[0.04] border border-[var(--color-line)] p-3">
+                <div className="mt-3 rounded-lg bg-[#F8F9FB] border border-[var(--color-line)] p-3">
                   <p className="text-xs font-semibold text-[var(--color-ink-dim)] mb-1">AI Analysis</p>
                   <p className="text-xs text-[var(--color-ink-faint)] leading-relaxed">{latestAssessment.ai_rationale}</p>
                 </div>
@@ -217,7 +217,7 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
                   onClick={() => setSelectedDecision(selectedDecision === r ? null : r)}
                   className={[
                     "flex items-center gap-2.5 rounded-xl border p-3 text-left transition-all",
-                    selectedDecision === r ? `${cfg.borderColor} ${cfg.bgColor}` : "border-[var(--color-line)] bg-white/[0.02] hover:bg-white/[0.04]",
+                    selectedDecision === r ? `${cfg.borderColor} ${cfg.bgColor}` : "border-[var(--color-line)] bg-white hover:bg-[#F8F9FB]",
                   ].join(" ")}
                 >
                   <cfg.Icon className={`h-4 w-4 shrink-0 ${cfg.color}`} />

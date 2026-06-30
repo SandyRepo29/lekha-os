@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Bot, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -71,7 +71,7 @@ export default async function TrustAiPage({
       {/* Capabilities */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {CAPABILITIES.map((c) => (
-          <div key={c.title} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-3">
+          <div key={c.title} className="rounded-xl border border-[var(--color-line)] bg-white p-3">
             <p className="text-xs font-semibold mb-1">{c.title}</p>
             <p className="text-[11px] text-[var(--color-ink-faint)] leading-relaxed">{c.desc}</p>
           </div>
@@ -88,15 +88,15 @@ export default async function TrustAiPage({
           <>
             <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{summary}</p>
             <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-xl bg-white/[0.03] p-3">
+              <div className="rounded-xl bg-white p-3">
                 <p className="text-lg font-bold">{orgScore}</p>
                 <p className="text-xs text-[var(--color-ink-dim)]">Trust Score&#8482;</p>
               </div>
-              <div className="rounded-xl bg-white/[0.03] p-3">
+              <div className="rounded-xl bg-white p-3">
                 <p className="text-lg font-bold">{vendorScore}</p>
                 <p className="text-xs text-[var(--color-ink-dim)]">Vendor Trust</p>
               </div>
-              <div className="rounded-xl bg-white/[0.03] p-3">
+              <div className="rounded-xl bg-white p-3">
                 <p className="text-lg font-bold">{ctrlScore}</p>
                 <p className="text-xs text-[var(--color-ink-dim)]">Control Health</p>
               </div>
@@ -127,7 +127,7 @@ export default async function TrustAiPage({
         <div className="mb-3 flex flex-wrap gap-2">
           {SUGGESTED_QUESTIONS.map((q) => (
             <a key={q} href={`?q=${encodeURIComponent(q)}`}
-              className="rounded-full border border-[var(--color-line)] bg-white/[0.03] px-3 py-1 text-xs text-[var(--color-ink-dim)] hover:bg-white/[0.07] hover:text-[var(--color-ink)] transition-colors">
+              className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1 text-xs text-[var(--color-ink-dim)] hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors">
               {q}
             </a>
           ))}
@@ -135,7 +135,7 @@ export default async function TrustAiPage({
         <form className="flex gap-2">
           <input name="q" defaultValue={sp.q}
             placeholder="Why did trust decrease? How do we reach Trusted status?"
-            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-indigo-500/50" />
+            className="flex-1 rounded-xl border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500/50" />
           <Button type="submit" size="sm"><Bot className="h-4 w-4" /> Ask</Button>
         </form>
         {chatResponse && (

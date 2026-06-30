@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getEvidenceSecurityOverview } from "@/lib/services/security-command-center/security-service";
@@ -54,24 +54,24 @@ export default async function EvidenceSecurityPage() {
       {/* Create Share Form */}
       <div className="space-y-3">
         <h2 className="font-semibold">Create Secure Evidence Share</h2>
-        <form action={createEvidenceShareAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="grid grid-cols-2 gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-4 sm:grid-cols-3">
+        <form action={createEvidenceShareAction.bind(null, undefined) as unknown as (fd: FormData) => void} className="grid grid-cols-2 gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-4 sm:grid-cols-3">
           <input name="recipientEmail" placeholder="Recipient email" type="email"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <input name="recipientName" placeholder="Recipient name"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none focus:border-[var(--color-blue)]/50" />
           <select name="accessLevel"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="view_only">View Only</option>
             <option value="download">Allow Download</option>
           </select>
           <select name="expiryDays"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="1">Expires in 1 day</option>
             <option value="7">Expires in 7 days</option>
             <option value="30">Expires in 30 days</option>
           </select>
           <select name="watermark"
-            className="rounded-xl border border-[var(--color-line)] bg-white/[0.04] px-3 py-2 text-sm outline-none">
+            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm outline-none">
             <option value="true">Watermark: On</option>
             <option value="false">Watermark: Off</option>
           </select>
