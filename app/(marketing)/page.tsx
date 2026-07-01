@@ -130,22 +130,20 @@ export default function LandingPage() {
             <div className="hero__copy reveal">
               <div className="badge">
                 <span className="badge__pulse" />
-                AI-Native Trust, Risk &amp; Compliance Platform · audt.tech
+                AI-Native Governance OS · Built for CISOs, CROs &amp; Compliance Teams
               </div>
               <h1 className="hero__title">
-                Governance Built on Proof.<br />
                 <span className="grad-text">Trust Every Decision.</span>
               </h1>
               <p className="hero__sub">
-                AUDT is the Governance OS for modern organizations &#8212; replacing spreadsheets and disconnected tools with a single AI-native platform.
+                AUDT replaces spreadsheets and disconnected GRC tools with a single AI-native platform &#8212; built on proof, not promises.
               </p>
               <p style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-dim)", maxWidth: "520px", marginBottom: "28px", lineHeight: 1.7 }}>
-                32 modules. Vendor governance, risk, compliance, audits, regulatory intelligence, AI governance, and continuous monitoring &#8212; unified in one platform with a shared intelligence layer.
+                Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance &#8212; unified with a shared intelligence layer that learns across every module.
               </p>
               <div className="hero__cta">
-                <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
-                <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial <span className="arrow">→</span></a>
-                <a href="/platform" className="btn btn--ghost btn--lg" style={{ borderColor: "rgba(0,184,217,0.35)", color: "rgba(255,255,255,0.70)" }}>Explore Platform</a>
+                <a href="/signup" className="btn btn--primary btn--lg">Start Free Trial <span className="arrow">&#8594;</span></a>
+                <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost btn--lg">Book a Demo</a>
               </div>
               <div className="hero__trust">
                 <span>Vendor Governance</span>
