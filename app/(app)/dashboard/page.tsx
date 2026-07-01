@@ -7,6 +7,7 @@ import {
   Building2, AlertTriangle, Sparkles, ArrowRight, Plus, ShieldCheck,
   ClipboardCheck, Clock, TrendingUp, Activity, XCircle, ChevronRight,
   Target, Shield, Zap, FileSignature, CheckCircle2,
+  BarChart2, GitMerge, Scale, Bot, Globe, Search,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -338,6 +339,24 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* ── Module Quick Access ──────────────────────────────────────────── */}
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+        {[
+          { label: "Risk",         href: "/risks",                    icon: AlertTriangle, color: "text-red-400"     },
+          { label: "Compliance",   href: "/compliance",               icon: ShieldCheck,   color: "text-emerald-400" },
+          { label: "Audits",       href: "/audits",                   icon: ClipboardCheck, color: "text-sky-400"   },
+          { label: "Regulatory",   href: "/regulatory-intelligence",  icon: Scale,         color: "text-violet-400"  },
+          { label: "AI Governance",href: "/ai-governance",            icon: Bot,           color: "text-indigo-400"  },
+          { label: "Trust Intel",  href: "/trust-intelligence",       icon: BarChart2,     color: "text-amber-400"   },
+        ].map(({ label, href, icon: Icon, color }) => (
+          <Link key={href} href={href}
+            className="flex flex-col items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-white px-3 py-3 text-center transition hover:bg-[#F8F9FB] hover:border-[var(--color-blue)]/30">
+            <Icon className={`h-4 w-4 ${color}`} />
+            <span className="text-[11px] font-medium text-[var(--color-ink-dim)] whitespace-nowrap">{label}</span>
+          </Link>
+        ))}
+      </div>
+
       {/* ── Row 2: Actionable Status Cards ───────────────────────────────── */}
       <div>
         <SectionLabel>Governance Status</SectionLabel>
@@ -530,7 +549,7 @@ export default async function DashboardPage() {
         <div>
           <div className="mb-3 flex items-center justify-between">
             <div className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">
-              Vendors Requiring Attention
+              Governance Actions
             </div>
             {!empty && (
               <Link href="/vendors" className="flex items-center gap-1 text-xs text-[var(--color-blue)] hover:underline">
@@ -538,7 +557,7 @@ export default async function DashboardPage() {
               </Link>
             )}
           </div>
-          <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white/[0.01]">
+          <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white">
             {vendorsNeedingAction.length === 0 ? (
               <div className="flex flex-col items-center gap-2 py-10 text-center">
                 <CheckCircle2 className="h-8 w-8 text-emerald-400/60" />
@@ -591,7 +610,7 @@ export default async function DashboardPage() {
         {/* Recent Governance Activity */}
         <div>
           <SectionLabel>Recent Governance Activity</SectionLabel>
-          <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white/[0.01]">
+          <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white">
             {activity.length > 0 ? (
               <div className="px-5 py-3">
                 <ActivityFeed items={activity} />
