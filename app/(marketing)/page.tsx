@@ -234,10 +234,10 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">The Problem</span>
-              <h2>Vendor Risk Is The New Business Risk.</h2>
+              <h2>Your Governance Stack Is Failing You.</h2>
               <p>
-                Organizations depend on hundreds of vendors, SaaS applications, and AI providers.
-                Yet vendor governance is still fragmented across spreadsheets, questionnaires, and disconnected tools.
+                Organizations run compliance, risk, vendor governance, and audits across spreadsheets, point tools, and disconnected systems.
+                The result: blind spots, audit chaos, and decisions made without proof.
               </p>
             </div>
             <div className="pain-grid">
@@ -246,7 +246,7 @@ export default function LandingPage() {
               <div className="pain reveal" data-delay="120"><span className="pain__icon">◎</span>Audit chaos</div>
               <div className="pain reveal"><span className="pain__icon">📋</span>Compliance gaps</div>
               <div className="pain reveal" data-delay="60"><span className="pain__icon">⚠</span>Risk blind spots</div>
-              <div className="pain reveal" data-delay="120"><span className="pain__icon">🔄</span>Weak renewal decisions</div>
+              <div className="pain reveal" data-delay="120"><span className="pain__icon">◱</span>No single source of truth</div>
             </div>
           </div>
         </section>
@@ -260,7 +260,7 @@ export default function LandingPage() {
             <div className="section__head reveal">
               <span className="eyebrow">Why Now</span>
               <h2>Why Governance Must Become Continuous.</h2>
-              <p>The way organizations govern vendors has fundamentally changed. Annual processes no longer match the pace of modern vendor risk.</p>
+              <p>The threat surface has changed. Annual GRC processes no longer match the pace of modern risk, regulation, and AI adoption.</p>
             </div>
 
             <div className="reveal" style={{
@@ -309,12 +309,12 @@ export default function LandingPage() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: "12px" }}>
                   {[
-                    "Hundreds of SaaS vendors",
-                    "AI providers to govern",
-                    "Third-party risk exposure",
-                    "Continuous compliance",
-                    "Continuous monitoring",
-                    "Continuous audits",
+                    "Hundreds of SaaS vendors to govern",
+                    "AI systems with new regulatory risk",
+                    "Real-time third-party breaches",
+                    "Board-level accountability for risk",
+                    "Regulators moving faster than teams",
+                    "Continuous audit expectations",
                   ].map((item) => (
                     <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "14px", color: "var(--text-dim)" }}>
                       <span style={{ color: "#4ade80", fontWeight: 700, fontSize: "11px", flexShrink: 0 }}>✓</span>
