@@ -57,7 +57,7 @@ export default async function AutomationPage() {
       </div>
 
       {/* Create rule */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-4 flex items-center gap-2">
           <Plus className="h-4 w-4 text-[var(--color-blue)]" />
           <span className="text-sm font-semibold">Create Automation Rule</span>
@@ -66,7 +66,7 @@ export default async function AutomationPage() {
       </div>
 
       {/* Active Rules */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-4 flex items-center gap-2">
           <Zap className="h-4 w-4 text-emerald-400" />
           <span className="text-sm font-semibold">Active Rules</span>
@@ -110,7 +110,7 @@ export default async function AutomationPage() {
 
       {/* Inactive Rules */}
       {inactiveRules.length > 0 && (
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <Zap className="h-4 w-4 text-[var(--color-ink-dim)]" />
             <span className="text-sm font-semibold">Paused Rules</span>

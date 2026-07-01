@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getOrgEventsAction, getEventTypesAction } from "@/lib/toe/actions";
@@ -44,7 +44,7 @@ export default async function EventsPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
         {/* Event stream */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <Activity className="h-4 w-4 text-[var(--color-blue)]" />
             <span className="text-sm font-semibold">Event Stream</span>
@@ -86,7 +86,7 @@ export default async function EventsPage() {
 
         {/* Event Catalogue */}
         <div className="space-y-4">
-          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-4">
             <div className="mb-3 text-sm font-semibold">Event Catalogue</div>
             <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed">
               {typeCatalogue.length} built-in event types across all governance modules. Subscribe to events to trigger automations.
@@ -94,7 +94,7 @@ export default async function EventsPage() {
           </div>
 
           {Object.entries(moduleGroups).map(([mod, types]) => (
-            <div key={mod} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4">
+            <div key={mod} className="rounded-2xl border border-[var(--color-line)] bg-white p-4">
               <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-dim)]">{mod.replace(/_/g, " ")}</div>
               <div className="space-y-1.5">
                 {types.map(t => (

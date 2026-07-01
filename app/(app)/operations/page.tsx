@@ -90,7 +90,7 @@ export default async function OperationsHubPage() {
 
       {/* AI Advisory */}
       {advisory && (
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-3 flex items-center gap-2">
             <Bot className="h-4 w-4 text-purple-400" />
             <span className="text-sm font-semibold">Operations Advisory</span>
@@ -102,13 +102,13 @@ export default async function OperationsHubPage() {
 
       {/* Module nav grid */}
       <div>
-        <h2 className="mb-3 text-sm font-semibold text-[var(--color-ink-dim)]">Operations Modules</h2>
+        <div className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-faint)]">Operations Modules</div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {MODULE_NAV.map(({ href, icon: Icon, label, desc }) => (
             <Link
               key={href}
               href={href}
-              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4 hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.03] transition-colors"
+              className="group rounded-2xl border border-[var(--color-line)] bg-white p-4 hover:border-[var(--color-blue)]/40 hover:bg-[var(--color-blue)]/[0.03] transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--color-blue)]/10">
@@ -127,7 +127,7 @@ export default async function OperationsHubPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Events */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2"><Activity className="h-4 w-4 text-[var(--color-blue)]" /> Recent Events</h3>
             <Link href="/operations/events" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
@@ -146,7 +146,7 @@ export default async function OperationsHubPage() {
         </div>
 
         {/* Pending Approvals */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2"><CheckSquare className="h-4 w-4 text-amber-400" /> Pending Approvals</h3>
             <Link href="/operations/approvals" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
@@ -168,7 +168,7 @@ export default async function OperationsHubPage() {
         </div>
 
         {/* Active Workflows */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2"><GitBranch className="h-4 w-4 text-[var(--color-blue)]" /> Active Workflows</h3>
             <Link href="/operations/workflows" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
@@ -199,7 +199,7 @@ export default async function OperationsHubPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {(d?.openDecisions ?? []).map(dec => (
-              <div key={dec.id} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/40 p-3">
+              <div key={dec.id} className="rounded-xl border border-[var(--color-line)] bg-white p-3">
                 <div className="mb-1 flex items-center justify-between gap-1">
                   <PriorityBadge priority={dec.priority} />
                   <span className="text-[11px] text-[var(--color-ink-dim)]">{dec.confidence}% confidence</span>

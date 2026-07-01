@@ -38,7 +38,7 @@ export default async function ApprovalsPage() {
       </div>
 
       {/* Pending */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-4 flex items-center gap-2">
           <CheckSquare className="h-4 w-4 text-amber-400" />
           <span className="text-sm font-semibold">Awaiting Decision</span>
@@ -77,7 +77,7 @@ export default async function ApprovalsPage() {
 
       {/* Resolved */}
       {resolved.length > 0 && (
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <CheckSquare className="h-4 w-4 text-[var(--color-ink-dim)]" />
             <span className="text-sm font-semibold">Recently Resolved</span>

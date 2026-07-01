@@ -53,27 +53,27 @@ export default async function AnalyticsPage() {
 
       {/* Summary Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-xl border border-l-2 border-[var(--color-line)] border-l-[var(--color-blue)] bg-[var(--color-bg-2)]/60 p-4">
-          <div className="text-2xl font-bold text-[var(--color-blue)]">{totalRuns}</div>
+        <div className="rounded-xl border border-l-2 border-[var(--color-line)] border-l-[var(--color-blue)] bg-white p-4">
+          <div className="text-2xl font-extrabold text-[var(--color-blue)]">{totalRuns}</div>
           <div className="text-xs text-[var(--color-ink-dim)]">Total Runs</div>
         </div>
-        <div className="rounded-xl border border-l-2 border-[var(--color-line)] border-l-emerald-500 bg-[var(--color-bg-2)]/60 p-4">
-          <div className="text-2xl font-bold text-emerald-400">{completedRuns}</div>
+        <div className="rounded-xl border border-l-2 border-[var(--color-line)] border-l-emerald-500 bg-white p-4">
+          <div className="text-2xl font-extrabold text-emerald-400">{completedRuns}</div>
           <div className="text-xs text-[var(--color-ink-dim)]">Completed</div>
         </div>
-        <div className={`rounded-xl border border-l-2 border-[var(--color-line)] ${failedRuns > 0 ? "border-l-red-500" : "border-l-[var(--color-line)]"} bg-[var(--color-bg-2)]/60 p-4`}>
-          <div className={`text-2xl font-bold ${failedRuns > 0 ? "text-red-400" : "text-[var(--color-ink)]"}`}>{failedRuns}</div>
+        <div className={`rounded-xl border border-l-2 border-[var(--color-line)] ${failedRuns > 0 ? "border-l-red-500" : "border-l-[var(--color-line)]"} bg-white p-4`}>
+          <div className={`text-2xl font-extrabold ${failedRuns > 0 ? "text-red-400" : "text-[var(--color-ink)]"}`}>{failedRuns}</div>
           <div className="text-xs text-[var(--color-ink-dim)]">Failed</div>
         </div>
-        <div className={`rounded-xl border border-l-2 border-[var(--color-line)] ${successRate >= 90 ? "border-l-emerald-500" : successRate >= 70 ? "border-l-amber-500" : "border-l-red-500"} bg-[var(--color-bg-2)]/60 p-4`}>
-          <div className={`text-2xl font-bold ${successRate >= 90 ? "text-emerald-400" : successRate >= 70 ? "text-amber-400" : "text-red-400"}`}>{successRate}%</div>
+        <div className={`rounded-xl border border-l-2 border-[var(--color-line)] ${successRate >= 90 ? "border-l-emerald-500" : successRate >= 70 ? "border-l-amber-500" : "border-l-red-500"} bg-white p-4`}>
+          <div className={`text-2xl font-extrabold ${successRate >= 90 ? "text-emerald-400" : successRate >= 70 ? "text-amber-400" : "text-red-400"}`}>{successRate}%</div>
           <div className="text-xs text-[var(--color-ink-dim)]">Success Rate</div>
         </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* By Status */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
             <span className="text-sm font-semibold">Runs by Status</span>
@@ -104,7 +104,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* By Workflow */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-purple-400" />
             <span className="text-sm font-semibold">By Workflow</span>
@@ -137,7 +137,7 @@ export default async function AnalyticsPage() {
 
       {/* Stored analytics */}
       {analytics.length > 0 && (
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />
             <span className="text-sm font-semibold">Historical Analytics</span>

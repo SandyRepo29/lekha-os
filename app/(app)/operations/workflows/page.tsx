@@ -45,7 +45,7 @@ export default async function WorkflowsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Workflow Templates */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-[var(--color-blue)]" />
             <span className="text-sm font-semibold">Built-in Templates</span>
@@ -76,7 +76,7 @@ export default async function WorkflowsPage() {
         </div>
 
         {/* Org Workflows */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-purple-400" />
             <span className="text-sm font-semibold">Custom Workflows</span>
@@ -116,7 +116,7 @@ export default async function WorkflowsPage() {
       </div>
 
       {/* Workflow Instances */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-4 flex items-center gap-2">
           <Clock className="h-4 w-4 text-[var(--color-ink-dim)]" />
           <span className="text-sm font-semibold">Workflow Runs</span>

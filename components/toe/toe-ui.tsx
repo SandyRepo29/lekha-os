@@ -55,11 +55,11 @@ const ACCENT: Record<Accent, string> = {
 
 const ACCENT_TEXT: Record<Accent, string> = {
   neutral: "text-[var(--color-ink)]",
-  good:    "text-emerald-400",
-  warn:    "text-amber-400",
-  danger:  "text-red-400",
+  good:    "text-emerald-600",
+  warn:    "text-amber-600",
+  danger:  "text-red-600",
   blue:    "text-[var(--color-blue)]",
-  purple:  "text-purple-400",
+  purple:  "text-purple-600",
 };
 
 export function ToeStat({
@@ -68,8 +68,8 @@ export function ToeStat({
   label: string; value: string | number; accent?: Accent; href?: string;
 }) {
   const content = (
-    <div className={`rounded-xl border border-l-2 ${ACCENT[accent]} border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4`}>
-      <div className={`text-2xl font-bold ${ACCENT_TEXT[accent]}`}>{value}</div>
+    <div className={`rounded-xl border border-l-2 ${ACCENT[accent]} border-[var(--color-line)] bg-white p-4`}>
+      <div className={`text-2xl font-extrabold ${ACCENT_TEXT[accent]}`}>{value}</div>
       <div className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{label}</div>
     </div>
   );
@@ -80,15 +80,15 @@ export function ToeStat({
 
 export function InstanceStatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    pending:          "bg-slate-500/20 text-slate-300",
-    running:          "bg-blue-500/20 text-blue-300",
-    waiting_approval: "bg-amber-500/20 text-amber-300",
-    completed:        "bg-emerald-500/20 text-emerald-300",
-    failed:           "bg-red-500/20 text-red-300",
-    cancelled:        "bg-slate-600/20 text-slate-400",
+    pending:          "bg-slate-100 text-slate-600",
+    running:          "bg-blue-100 text-blue-700",
+    waiting_approval: "bg-amber-100 text-amber-700",
+    completed:        "bg-emerald-100 text-emerald-700",
+    failed:           "bg-red-100 text-red-700",
+    cancelled:        "bg-slate-100 text-slate-500",
   };
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? "bg-slate-500/20 text-slate-300"}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? "bg-slate-100 text-slate-600"}`}>
       {status.replace(/_/g, " ")}
     </span>
   );
@@ -96,14 +96,14 @@ export function InstanceStatusBadge({ status }: { status: string }) {
 
 export function ApprovalStatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    pending:   "bg-amber-500/20 text-amber-300",
-    approved:  "bg-emerald-500/20 text-emerald-300",
-    rejected:  "bg-red-500/20 text-red-300",
-    escalated: "bg-purple-500/20 text-purple-300",
-    expired:   "bg-slate-500/20 text-slate-400",
+    pending:   "bg-amber-100 text-amber-700",
+    approved:  "bg-emerald-100 text-emerald-700",
+    rejected:  "bg-red-100 text-red-700",
+    escalated: "bg-purple-100 text-purple-700",
+    expired:   "bg-slate-100 text-slate-500",
   };
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? "bg-slate-500/20 text-slate-300"}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? "bg-slate-100 text-slate-600"}`}>
       {status}
     </span>
   );
@@ -111,14 +111,14 @@ export function ApprovalStatusBadge({ status }: { status: string }) {
 
 export function EventSeverityBadge({ severity }: { severity: string }) {
   const map: Record<string, string> = {
-    critical: "bg-red-500/20 text-red-300",
-    high:     "bg-orange-500/20 text-orange-300",
-    medium:   "bg-amber-500/20 text-amber-300",
-    low:      "bg-blue-500/20 text-blue-300",
-    info:     "bg-slate-500/20 text-slate-400",
+    critical: "bg-red-100 text-red-700",
+    high:     "bg-orange-100 text-orange-700",
+    medium:   "bg-amber-100 text-amber-700",
+    low:      "bg-blue-100 text-blue-700",
+    info:     "bg-slate-100 text-slate-600",
   };
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[severity] ?? "bg-slate-500/20 text-slate-300"}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[severity] ?? "bg-slate-100 text-slate-600"}`}>
       {severity}
     </span>
   );
@@ -126,13 +126,13 @@ export function EventSeverityBadge({ severity }: { severity: string }) {
 
 export function PriorityBadge({ priority }: { priority: string }) {
   const map: Record<string, string> = {
-    critical: "bg-red-500/20 text-red-300",
-    high:     "bg-orange-500/20 text-orange-300",
-    medium:   "bg-amber-500/20 text-amber-300",
-    low:      "bg-blue-500/20 text-blue-300",
+    critical: "bg-red-100 text-red-700",
+    high:     "bg-orange-100 text-orange-700",
+    medium:   "bg-amber-100 text-amber-700",
+    low:      "bg-blue-100 text-blue-700",
   };
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[priority] ?? "bg-slate-500/20 text-slate-300"}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${map[priority] ?? "bg-slate-100 text-slate-600"}`}>
       {priority}
     </span>
   );

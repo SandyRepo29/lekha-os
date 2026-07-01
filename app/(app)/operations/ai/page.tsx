@@ -57,7 +57,7 @@ export default async function AiEnginePage() {
         {/* Decisions Panel */}
         <div className="space-y-4">
           {/* Pending */}
-          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-4 flex items-center gap-2">
               <Bot className="h-4 w-4 text-purple-400" />
               <span className="text-sm font-semibold">Open Recommendations</span>
@@ -108,7 +108,7 @@ export default async function AiEnginePage() {
 
           {/* Accepted/Dismissed summary */}
           {(accepted.length > 0 || dismissed.length > 0) && (
-            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-white p-4">
               <div className="flex items-center gap-4 text-xs text-[var(--color-ink-dim)]">
                 <span className="text-emerald-400 font-medium">{accepted.length} accepted</span>
                 <span>{dismissed.length} dismissed</span>
