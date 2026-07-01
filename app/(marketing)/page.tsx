@@ -351,8 +351,8 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Vendor Lifecycle</span>
-              <h2>Manage The Entire Vendor Lifecycle.</h2>
-              <p>AUDT governs every stage of the vendor relationship — from discovery through offboarding.</p>
+              <h2>Every Stage. Every Vendor. No Gaps.</h2>
+              <p>Most platforms pick one stage. AUDT governs the complete vendor lifecycle &#8212; from discovery to offboarding &#8212; with AI at every step.</p>
             </div>
 
             <div className="reveal" style={{ overflowX: "auto", paddingBottom: "8px" }}>
@@ -401,12 +401,6 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="reveal" style={{ textAlign: "center", marginTop: "2.5rem" }}>
-              <p style={{ fontSize: "15px", color: "var(--text-dim)", lineHeight: 1.7, maxWidth: "480px", margin: "0 auto" }}>
-                Most platforms focus on one stage.<br />
-                <strong style={{ color: "var(--text)" }}>AUDT manages the complete lifecycle.</strong>
-              </p>
-            </div>
           </div>
         </section>
 
@@ -417,8 +411,8 @@ export default function LandingPage() {
           <div className="container">
             <div className="section__head reveal">
               <span className="eyebrow">Platform Overview</span>
-              <h2>One Platform. Four Pillars.</h2>
-              <p>Every dimension of vendor governance, integrated into a single platform.</p>
+              <h2>One Platform. Every Governance Need.</h2>
+              <p>Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance &#8212; unified with a shared intelligence layer.</p>
             </div>
             <div className="pillars">
               <article className="pillar pillar--live reveal">
