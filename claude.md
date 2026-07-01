@@ -66,7 +66,7 @@ Replaces spreadsheets and disconnected tools with a single AI-native platform fo
 | PDF | `@react-pdf/renderer` |
 | Security | AES-256-GCM (Node.js `crypto`) · bcryptjs |
 | Testing | Vitest 4 + RTL 16 + Playwright 1.60 |
-| UI | Tailwind v4 · dark glassmorphism · deep indigo/purple/electric-blue |
+| UI | Tailwind v4 · **light theme** (Trust Workspace v1.1, 2026-06-30) · sidebar stays dark graphite (#1B1F27) · brand palette: Trust Violet (#4933D6) + Trust Cyan (#007A94) |
 
 ---
 
@@ -2133,6 +2133,7 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 
 | Sprint / Epic | Description | Status |
 |---|---|---|
+| Trust Workspace v1.1 | Global light theme sweep (340+ files) — replaced dark glassmorphism with solid light equivalents; SVG ring tracks, inline rgba panels, marketing pages converted to Trust Violet/Cyan palette; sidebar intentionally kept dark | ✅ Complete (2026-06-30) |
 | Commercial Readiness Sprint 01 | Legal docs (Terms, Privacy, DPA, SLA), Trust Center visibility, Trust Score fix, navigation integrity, SLA | ✅ Complete (2026-06-28) |
 | Commercial Readiness Sprint 02 | Quick Start guide (`/docs/getting-started`), TOE docs section, API DX (JS/Python/webhooks/error handling), Trust Score deep-dive, guided evaluation journey, marketing terminology | ✅ Complete (2026-06-29) |
 | Epic 04 — Commercial Foundation | Password recovery, plan enforcement, audit logs, API docs, Zod validation, structured logging, soft delete, trust center | ✅ Complete (2026-06-28) |
@@ -2257,6 +2258,7 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Epic 1 — Timeline events use `db.execute(sql\`...\`)` pattern** | `vendor_timeline` table is not in `lib/db/schema.ts`. All timeline repo functions use raw SQL. Same pattern as Security Command Center tables. |
 | **Epic 1 — Renewal `getRenewalAssessments()` normalizes DB column names** | The DB stores `confidence_pct` and `ai_analysis`, but the component expects `confidence_score` and `ai_rationale`. The service function maps these on read. Do not change the DB column names. |
 | **Epic 1 — Migration 0036 must be applied before any lifecycle features work** | Run `node scripts/apply-sql.mjs supabase/migrations/0036_vendor_lifecycle.sql` on a fresh DB. The `vendor_state` enum and all 10 new tables must exist before lifecycle service functions are called. |
+| **Trust Workspace v1.1 — light theme (2026-06-30)** | App shell is now light. Do NOT add `bg-white/[0.02–0.12]`, `border-white/[0.05–0.15]`, or `text-white/[0.4–0.95]` Tailwind classes to new pages — use solid equivalents (`bg-white`, `bg-[#F8F9FB]`, `bg-[#EEF2F7]`, `border-[var(--color-line)]`). SVG ring tracks use `rgba(30,41,59,0.12)` (not `rgba(255,255,255,0.05)`). **Exceptions (intentionally dark):** `sidebar.tsx` (graphite #1B1F27) and `marketing-nav.tsx` hero nav (`rgba(255,255,255,0.80)` — dark hero bg). Marketing page brand palette: Trust Violet `#4933D6` + Trust Cyan `#007A94`. |
 | **publishActivity() is fire-and-forget** | Never await publishActivity in a request path that can't afford extra latency. It catches all errors internally. Use it liberally in services. |
 | **platform_settings defaults merge** | getSetting() merges org overrides with DEFAULTS map in platform-settings-service.ts. Never store sensitive values (keys, passwords) in platform_settings — use integrations table with encryption instead. |
 | **search_suggestions must be rebuilt** | After bulk data import or migration, call searchService.rebuildSearchIndex(orgId) to populate search_suggestions. New entities added via services are NOT auto-indexed — add publishActivity + upsertSearchSuggestion calls to service create functions as follow-up work. |
