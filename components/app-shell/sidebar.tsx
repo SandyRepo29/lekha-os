@@ -82,15 +82,21 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    key: "trust-operations",
-    label: "Trust Operations",
+    key: "core-grc",
+    label: "Core GRC",
     items: [
-      { href: "/compliance",            label: "Evidence Vault™",   icon: ShieldCheck },
-      { href: "/workflow-studio",       label: "Workflow Studio™",  icon: GitBranch },
-      { href: "/issue-hub",             label: "Issue & Remediation Hub™", icon: Target },
-      { href: "/trust-exchange",        label: "Trust Exchange™",          icon: Network },
-      { href: "/trust-network",         label: "Trust Network™",           icon: Network },
-      { href: "/auditor-collaboration", label: "Auditor Workspace™",       icon: Users2 },
+      { href: "/compliance",      label: "Evidence Vault™",          icon: ShieldCheck },
+      { href: "/workflow-studio", label: "Workflow Studio™",         icon: GitBranch },
+      { href: "/issue-hub",       label: "Issue & Remediation Hub™", icon: Target },
+    ],
+  },
+  {
+    key: "trust-network",
+    label: "Trust Network",
+    items: [
+      { href: "/trust-exchange",        label: "Trust Exchange™",    icon: Network },
+      { href: "/trust-network",         label: "Trust Network™",     icon: Network },
+      { href: "/auditor-collaboration", label: "Auditor Workspace™", icon: Users2 },
     ],
   },
   {
