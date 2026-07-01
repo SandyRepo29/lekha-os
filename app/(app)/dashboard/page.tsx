@@ -378,7 +378,7 @@ export default async function DashboardPage() {
                   </div>
                   <div className={cn("mt-1 text-xs font-semibold", st.color)}>{st.label}</div>
                   <div className="mt-0.5 text-[11px] text-[var(--color-ink-faint)]">{c.sub}</div>
-                  <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                  <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#EEF2F7]">
                     <div className="h-full rounded-full transition-all duration-700"
                       style={{ width: `${c.score}%`, background: scoreBarGradient(c.score) }} />
                   </div>
