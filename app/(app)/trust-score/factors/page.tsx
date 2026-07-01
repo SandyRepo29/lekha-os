@@ -63,14 +63,14 @@ export default async function TrustFactorsPage() {
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Factors</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          8-component breakdown of your organizational Trust Score&#8482; &#8212; each factor explained and linked to its source module.
+          8-component breakdown of your organizational Trust Score™ — each factor explained and linked to its source module.
         </p>
       </div>
 
       {/* Score summary */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 flex items-center justify-between">
         <div>
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Composite Trust Score&#8482;</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Composite Trust Score™</p>
           <p className={`text-4xl font-bold ${scoreColor(breakdown.score)}`}>{breakdown.score}<span className="text-lg text-[var(--color-ink-faint)] ml-1">/ 100</span></p>
         </div>
         <span className={`rounded-full border px-4 py-1.5 text-sm font-semibold ${PLATFORM_TRUST_LEVEL_BG[breakdown.level]}`}>
@@ -89,7 +89,7 @@ export default async function TrustFactorsPage() {
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div>
                   <p className="font-semibold text-sm">{PLATFORM_TRUST_LABELS[key]}</p>
-                  <p className="text-xs text-[var(--color-ink-faint)]">{weight}% of Trust Score&#8482;</p>
+                  <p className="text-xs text-[var(--color-ink-faint)]">{weight}% of Trust Score™</p>
                 </div>
                 <div className="text-right">
                   <p className={`text-2xl font-bold ${scoreColor(val)}`}>{val}</p>
@@ -101,7 +101,7 @@ export default async function TrustFactorsPage() {
               </div>
               <p className="text-xs text-[var(--color-ink-dim)] leading-relaxed mb-3">{detail.description}</p>
               <Link href={detail.link} className="text-xs font-medium text-[var(--color-blue)] hover:underline">
-                Open {detail.linkLabel} &#8594;
+                Open {detail.linkLabel} →
               </Link>
             </div>
           );
@@ -110,7 +110,7 @@ export default async function TrustFactorsPage() {
 
       {/* Formula explainer */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
-        <h3 className="text-sm font-semibold mb-3">Trust Score&#8482; Formula</h3>
+        <h3 className="text-sm font-semibold mb-3">Trust Score™ Formula</h3>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {(Object.entries(PLATFORM_TRUST_WEIGHTS) as [keyof typeof PLATFORM_TRUST_WEIGHTS, number][]).map(([k, w]) => (
             <div key={k} className="rounded-xl bg-white border border-[var(--color-line)] p-3 text-center">

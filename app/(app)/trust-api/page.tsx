@@ -48,7 +48,7 @@ export default async function TrustApiPage() {
         <div className="flex gap-2">
           <Link href="/trust-api/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI API Builder&#8482;
+            AI API Builder™
           </Link>
           <Link
             href="/trust-api/portal"

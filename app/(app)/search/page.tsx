@@ -1,11 +1,11 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import GlobalSearch from "@/components/platform/global-search";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Search &#8212; AUDT",
+  title: "Search — AUDT",
 };
 
 export default async function SearchPage({

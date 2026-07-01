@@ -1,4 +1,4 @@
-export const metadata = { title: "Trust Operations Engine&#8482; &#8212; AUDT" };
+﻿export const metadata = { title: "Trust Operations Engine™ — AUDT" };
 
 export default function OperationsLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

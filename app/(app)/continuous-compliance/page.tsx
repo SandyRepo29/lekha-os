@@ -112,7 +112,7 @@ export default async function ContinuousCompliancePage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Continuous Compliance&#8482;
+            Continuous Compliance™
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Not audit readiness. Continuous readiness.
@@ -129,14 +129,14 @@ export default async function ContinuousCompliancePage() {
             href="/continuous-compliance/ai"
             className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
           >
-            <Bot className="h-4 w-4" /> Compliance Copilot&#8482;
+            <Bot className="h-4 w-4" /> Compliance Copilot™
           </Link>
         </div>
       </div>
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <CcStat label="Compliance Score&#8482;" value={complianceScore}     accent={complianceScore >= 80 ? "good" : complianceScore >= 65 ? "warn" : "danger"} />
+        <CcStat label="Compliance Score™" value={complianceScore}     accent={complianceScore >= 80 ? "good" : complianceScore >= 65 ? "warn" : "danger"} />
         <CcStat label="Total Checks"            value={m?.totalChecks ?? 0}  accent="neutral" href="/continuous-compliance/checks" />
         <CcStat label="Passing"                 value={m?.passingChecks ?? 0} accent="good"   href="/continuous-compliance/checks" />
         <CcStat label="Failing"                 value={m?.failingChecks ?? 0} accent={(m?.failingChecks ?? 0) > 0 ? "danger" : "neutral"} />
@@ -150,7 +150,7 @@ export default async function ContinuousCompliancePage() {
         {/* Compliance Score™ */}
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold">Compliance Score&#8482;</h3>
+            <h3 className="text-sm font-semibold">Compliance Score™</h3>
             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${complianceScore >= 80 ? "bg-emerald-500/10 text-emerald-400" : complianceScore >= 65 ? "bg-amber-500/10 text-amber-400" : "bg-red-500/10 text-red-400"}`}>
               {scoreLabel(complianceScore)}
             </span>
@@ -178,7 +178,7 @@ export default async function ContinuousCompliancePage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold">Framework Health</h3>
-            <Link href="/continuous-compliance/readiness" className="text-xs text-[var(--color-blue)] hover:underline">All &#8594;</Link>
+            <Link href="/continuous-compliance/readiness" className="text-xs text-[var(--color-blue)] hover:underline">All →</Link>
           </div>
           {frameworks.length > 0 ? (
             <div className="space-y-3">
@@ -228,8 +228,8 @@ export default async function ContinuousCompliancePage() {
         {/* Compliance Drift™ */}
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-semibold">Compliance Drift&#8482;</h3>
-            <Link href="/continuous-compliance/timeline" className="text-xs text-[var(--color-blue)] hover:underline">Timeline &#8594;</Link>
+            <h3 className="text-sm font-semibold">Compliance Drift™</h3>
+            <Link href="/continuous-compliance/timeline" className="text-xs text-[var(--color-blue)] hover:underline">Timeline →</Link>
           </div>
           <p className="text-xs text-[var(--color-ink-dim)] mb-4 leading-relaxed">
             Difference between your last audit posture and today&#8217;s real-time compliance.
@@ -273,9 +273,9 @@ export default async function ContinuousCompliancePage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <Shield className="h-4 w-4 text-indigo-400" />
-              Control Monitoring&#8482;
+              Control Monitoring™
             </h3>
-            <Link href="/continuous-compliance/checks" className="text-xs text-[var(--color-blue)] hover:underline">Details &#8594;</Link>
+            <Link href="/continuous-compliance/checks" className="text-xs text-[var(--color-blue)] hover:underline">Details →</Link>
           </div>
           <div className="space-y-2.5">
             {[
@@ -307,9 +307,9 @@ export default async function ContinuousCompliancePage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <Activity className="h-4 w-4 text-purple-400" />
-              Evidence Monitoring&#8482;
+              Evidence Monitoring™
             </h3>
-            <Link href="/continuous-compliance/health" className="text-xs text-[var(--color-blue)] hover:underline">Details &#8594;</Link>
+            <Link href="/continuous-compliance/health" className="text-xs text-[var(--color-blue)] hover:underline">Details →</Link>
           </div>
           {/* Evidence status from signals — evidence-related signals are expiry/missing */}
           {(() => {
@@ -347,15 +347,15 @@ export default async function ContinuousCompliancePage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <Network className="h-4 w-4 text-blue-400" />
-              Vendor Compliance&#8482;
+              Vendor Compliance™
             </h3>
-            <Link href="/continuous-compliance/vendor-compliance" className="text-xs text-[var(--color-blue)] hover:underline">Details &#8594;</Link>
+            <Link href="/continuous-compliance/vendor-compliance" className="text-xs text-[var(--color-blue)] hover:underline">Details →</Link>
           </div>
           <div className="space-y-2.5">
             {[
               { label: "Avg Vendor Trust Score", value: `${vendorM?.avgScore ?? 0}%`, color: scoreColor(vendorM?.avgScore ?? 0) },
               { label: "Compliant (&#8805;80)",       value: vendCompliant,                color: "text-emerald-400" },
-              { label: "At Risk (60&#8211;79)",        value: vendAtRisk,                   color: "text-amber-400" },
+              { label: "At Risk (60–79)",        value: vendAtRisk,                   color: "text-amber-400" },
               { label: "Non-Compliant (&lt;60)",  value: vendNonComp,                  color: vendNonComp > 0 ? "text-red-400" : "text-emerald-400" },
             ].map((r) => (
               <div key={r.label} className="flex items-center justify-between">
@@ -380,7 +380,7 @@ export default async function ContinuousCompliancePage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
-            Compliance Coverage&#8482;
+            Compliance Coverage™
           </h3>
           <div className="space-y-3">
             {[
@@ -409,9 +409,9 @@ export default async function ContinuousCompliancePage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />
-              Compliance Findings&#8482;
+              Compliance Findings™
             </h3>
-            <Link href="/issue-hub/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/issue-hub/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="space-y-3">
             {[
@@ -440,9 +440,9 @@ export default async function ContinuousCompliancePage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <Clock className="h-4 w-4 text-red-400" />
-              Compliance Alerts&#8482;
+              Compliance Alerts™
             </h3>
-            <Link href="/continuous-compliance/signals" className="text-xs text-[var(--color-blue)] hover:underline">All &#8594;</Link>
+            <Link href="/continuous-compliance/signals" className="text-xs text-[var(--color-blue)] hover:underline">All →</Link>
           </div>
           {signals.length > 0 ? (
             <div className="space-y-2">

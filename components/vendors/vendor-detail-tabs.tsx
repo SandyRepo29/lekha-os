@@ -489,7 +489,7 @@ export function VendorDetailTabs({
                     <div className="flex items-center gap-3">
                       <Link href="/contract-governance/ai"
                         className="text-xs font-medium text-purple-400 hover:underline transition-colors">
-                        Contract Intelligence&#8482;
+                        Contract Intelligence™
                       </Link>
                       <Link href="/contract-governance/new"
                         className="text-xs font-medium text-[var(--color-blue)] hover:underline transition-colors">
@@ -699,7 +699,7 @@ export function VendorDetailTabs({
             <div className="space-y-4">
               <div className="rounded-xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/5 p-4">
                 <p className="text-sm text-[var(--color-blue)]">
-                  Manage the full vendor relationship lifecycle &#8212; transitions, approvals, and history.
+                  Manage the full vendor relationship lifecycle — transitions, approvals, and history.
                 </p>
                 <Link href={`/vendors/${vendor.id}/lifecycle`}
                   className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-blue)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 transition-opacity">
@@ -734,7 +734,7 @@ export function VendorDetailTabs({
             <div className="space-y-4">
               <div className="rounded-xl border border-[var(--color-line)] bg-white p-4">
                 <p className="text-sm text-[var(--color-ink-faint)]">
-                  Manage vendor contacts across all relationship types &#8212; primary, security, legal, finance, and more.
+                  Manage vendor contacts across all relationship types — primary, security, legal, finance, and more.
                 </p>
                 <Link href={`/vendors/${vendor.id}/contacts`}
                   className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-dim)] hover:bg-[#EEF2F7] hover:text-[var(--color-ink)] transition-colors">

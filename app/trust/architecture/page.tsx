@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Server, Shield, Users, Lock, Globe, Key, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Security Architecture &#8212; AUDT Trust Center",
+  title: "Security Architecture — AUDT Trust Center",
   description: "How AUDT isolates tenants, protects data, and enforces zero-trust at every layer.",
 };
 
@@ -54,7 +54,7 @@ export default function ArchitecturePage() {
         Security Architecture
       </h1>
       <p className="mb-10 text-[var(--color-ink-dim)]">
-        AUDT is built as a multi-tenant SaaS platform with defense-in-depth &#8212; every layer is independently
+        AUDT is built as a multi-tenant SaaS platform with defense-in-depth — every layer is independently
         secured so a failure at one layer does not compromise the platform.
       </p>
 
@@ -79,10 +79,10 @@ export default function ArchitecturePage() {
             data residency to support DPDP Act 2023 compliance requirements out of the box.
           </p>
           <div className="space-y-2 pt-2">
-            <Row label="Database" value="Supabase Postgres &#8212; ap-south-1 (Mumbai, India)" />
-            <Row label="Compute" value="Vercel &#8212; bom1 region (Mumbai, India)" />
-            <Row label="File storage" value="Supabase Storage &#8212; ap-south-1 (Mumbai)" />
-            <Row label="AI processing" value="Google Gemini API &#8212; requests do not persist customer data" />
+            <Row label="Database" value="Supabase Postgres — ap-south-1 (Mumbai, India)" />
+            <Row label="Compute" value="Vercel — bom1 region (Mumbai, India)" />
+            <Row label="File storage" value="Supabase Storage — ap-south-1 (Mumbai)" />
+            <Row label="AI processing" value="Google Gemini API — requests do not persist customer data" />
             <Row label="Regulatory alignment" value="DPDP Act 2023, RBI CSF, SEBI CSCRF" />
           </div>
         </Section>
@@ -95,10 +95,10 @@ export default function ArchitecturePage() {
           <div className="space-y-1.5 pt-2">
             {[
               ["Transport layer", "Next.js App Router pages, server actions, REST handlers"],
-              ["Auth layer", "requireUser() for pages &#8212; validateApiKey() for API v1"],
-              ["Business logic layer", "lib/services/* &#8212; zero next/* imports, framework-agnostic TypeScript"],
-              ["Data access layer", "lib/repositories/* &#8212; Drizzle ORM, optional transaction executor"],
-              ["Infrastructure layer", "lib/providers/* &#8212; only place SDK imports are allowed"],
+              ["Auth layer", "requireUser() for pages — validateApiKey() for API v1"],
+              ["Business logic layer", "lib/services/* — zero next/* imports, framework-agnostic TypeScript"],
+              ["Data access layer", "lib/repositories/* — Drizzle ORM, optional transaction executor"],
+              ["Infrastructure layer", "lib/providers/* — only place SDK imports are allowed"],
             ].map(([layer, desc]) => (
               <div key={layer} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-2.5">
                 <span className="text-xs font-semibold text-[var(--color-blue)]" dangerouslySetInnerHTML={{ __html: layer }} />
@@ -110,16 +110,16 @@ export default function ArchitecturePage() {
 
         <Section id="auth" icon={Users} title="Zero-Trust Authentication">
           <p className="text-sm text-[var(--color-ink-dim)]">
-            Authentication is layered &#8212; Supabase Auth manages identity, AUDT adds session records,
+            Authentication is layered — Supabase Auth manages identity, AUDT adds session records,
             device trust, and enterprise enforcement on top.
           </p>
           <div className="space-y-2 pt-2">
             <Row label="Identity provider" value="Supabase Auth (email + magic link + OAuth ready)" />
-            <Row label="RBAC" value="7 roles: owner &#183; admin &#183; member &#183; viewer &#183; compliance_manager &#183; security_manager &#183; procurement_manager" />
-            <Row label="MFA" value="TOTP (RFC 6238) &#8212; enrollment, recovery codes, org-level enforcement" />
-            <Row label="Session records" value="AUDT user_sessions table &#8212; idle timeout, absolute timeout, concurrent session limits" />
-            <Row label="Device trust" value="djb2 device fingerprint &#8212; 30-day trusted device registry" />
-            <Row label="Enterprise SSO" value="Entra ID, Okta, Google Workspace, SAML 2.0, OIDC &#8212; JIT provisioning" />
+            <Row label="RBAC" value="7 roles: owner · admin · member · viewer · compliance_manager · security_manager · procurement_manager" />
+            <Row label="MFA" value="TOTP (RFC 6238) — enrollment, recovery codes, org-level enforcement" />
+            <Row label="Session records" value="AUDT user_sessions table — idle timeout, absolute timeout, concurrent session limits" />
+            <Row label="Device trust" value="djb2 device fingerprint — 30-day trusted device registry" />
+            <Row label="Enterprise SSO" value="Entra ID, Okta, Google Workspace, SAML 2.0, OIDC — JIT provisioning" />
           </div>
         </Section>
 
@@ -129,8 +129,8 @@ export default function ArchitecturePage() {
             Supabase JWT. This enables fine-grained session control independent of the auth provider.
           </p>
           <div className="space-y-2 pt-2">
-            <Row label="Session cookie" value="audt-sid &#8212; httpOnly, 8-hour max age, SameSite=Lax" />
-            <Row label="MFA cookie" value="audt-mfa &#8212; httpOnly, set after TOTP verification" />
+            <Row label="Session cookie" value="audt-sid — httpOnly, 8-hour max age, SameSite=Lax" />
+            <Row label="MFA cookie" value="audt-mfa — httpOnly, set after TOTP verification" />
             <Row label="Idle timeout" value="Configurable per org (default 60 minutes)" />
             <Row label="Absolute timeout" value="Configurable per org (default 8 hours)" />
             <Row label="Max concurrent" value="Configurable per org (default 5 sessions)" />
@@ -144,11 +144,11 @@ export default function ArchitecturePage() {
             and in-process rate limiting.
           </p>
           <div className="space-y-2 pt-2">
-            <Row label="API key format" value="Cryptographically random &#8212; stored as bcrypt hash, shown once" />
-            <Row label="Permissions" value="read_only or read_write &#8212; enforced per endpoint" />
-            <Row label="Rate limiting" value="In-memory sliding window &#8212; 100 / 300 / 1000 req per 60 seconds" />
-            <Row label="Auth validation" value="bcrypt compare on every request &#8212; intentionally ~100 ms" />
-            <Row label="TLS enforcement" value="ssl:&quot;require&quot; &#8212; all DB connections, all API calls" />
+            <Row label="API key format" value="Cryptographically random — stored as bcrypt hash, shown once" />
+            <Row label="Permissions" value="read_only or read_write — enforced per endpoint" />
+            <Row label="Rate limiting" value="In-memory sliding window — 100 / 300 / 1000 req per 60 seconds" />
+            <Row label="Auth validation" value="bcrypt compare on every request — intentionally ~100 ms" />
+            <Row label="TLS enforcement" value="ssl:&quot;require&quot; — all DB connections, all API calls" />
             <Row label="HSTS" value="max-age=31536000; includeSubDomains; preload" />
           </div>
         </Section>

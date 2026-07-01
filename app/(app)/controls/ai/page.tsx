@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Bot, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -14,7 +14,7 @@ export default async function ControlAiPage() {
   if (session.demo || !session.org) {
     return (
       <Card className="p-6">
-        <p className="text-sm text-[var(--color-ink-dim)]">Connect Supabase to use Control Copilot&#8482;.</p>
+        <p className="text-sm text-[var(--color-ink-dim)]">Connect Supabase to use Control Copilot™.</p>
       </Card>
     );
   }
@@ -34,7 +34,7 @@ export default async function ControlAiPage() {
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Bot className="h-5 w-5 text-[var(--color-blue)]" />
-          Control Copilot&#8482;
+          Control Copilot™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           AI-powered analysis of your control library, health posture, and governance connections
@@ -86,7 +86,7 @@ export default async function ControlAiPage() {
         <div className="p-4 border-b border-[var(--color-line)]">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Bot className="h-4 w-4 text-[var(--color-blue)]" />
-            Control Copilot&#8482; Chat
+            Control Copilot™ Chat
           </h2>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
             Ask about your controls, health, coverage, and improvements

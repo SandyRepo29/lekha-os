@@ -52,9 +52,9 @@ export default async function TrustTrendsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Trends&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Trends™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          Historical Trust Score&#8482; &#8212; track organizational trust improvement over time.
+          Historical Trust Score™ — track organizational trust improvement over time.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export default async function TrustTrendsPage() {
         <Card className="p-5">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-[var(--color-blue)]" />
-            Trust Score&#8482; &#8212; Monthly View
+            Trust Score™ — Monthly View
           </h3>
           <div className="flex items-end gap-3 h-32">
             {monthly.map((m, i) => (
@@ -97,7 +97,7 @@ export default async function TrustTrendsPage() {
       {/* Snapshot log */}
       <Card className="overflow-hidden">
         <div className="p-5 border-b border-[var(--color-line)] flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Trust Score&#8482; History</h3>
+          <h3 className="text-sm font-semibold">Trust Score™ History</h3>
           <span className="text-xs text-[var(--color-ink-faint)]">{sorted.length} snapshots</span>
         </div>
         {sorted.length === 0 ? (

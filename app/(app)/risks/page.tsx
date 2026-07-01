@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Risk Lens&#8482; — AUDT' };
+export const metadata = { title: 'Risk Lens™ — AUDT' };
 
 import Link from "next/link";
 import { AlertTriangle, Plus, Sparkles, Clock } from "lucide-react";
@@ -53,7 +53,7 @@ export default async function RisksDashboardPage() {
         <div className="flex items-center gap-2">
           <Link href="/risks/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Risk Officer&#8482;
+            AI Risk Officer™
           </Link>
           <RiskImportButton />
           <Link href="/risks/new">
@@ -191,7 +191,7 @@ export default async function RisksDashboardPage() {
           <EmptyState
             icon={AlertTriangle}
             title="No risks logged yet"
-            description="Risk Lens&#8482; is your central register for operational, cyber, compliance and vendor risks. Log your first risk to start building your governance posture."
+            description="Risk Lens™ is your central register for operational, cyber, compliance and vendor risks. Log your first risk to start building your governance posture."
             action={
               <div className="flex flex-col items-center gap-2">
                 <Link href="/risks/new">
@@ -199,7 +199,7 @@ export default async function RisksDashboardPage() {
                     <Plus className="h-4 w-4" /> Log your first risk
                   </Button>
                 </Link>
-                <p className="text-xs text-[var(--color-ink-faint)]">5&#215;5 heat map &#183; AI risk narratives &#183; Treatment tracking</p>
+                <p className="text-xs text-[var(--color-ink-faint)]">5&#215;5 heat map · AI risk narratives · Treatment tracking</p>
               </div>
             }
           />
@@ -214,7 +214,7 @@ export default async function RisksDashboardPage() {
             <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Recent Activity</h2>
           </div>
           <Link href="/settings/audit-logs" className="text-xs text-[var(--color-blue)] hover:underline">
-            View all &#8594;
+            View all →
           </Link>
         </div>
         <ActivityFeed items={recentActivity} emptyMessage="No risk activity yet." />

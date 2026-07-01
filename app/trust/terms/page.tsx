@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { FileText } from "lucide-react";
 
 export const metadata = {
@@ -47,8 +47,8 @@ export default function TermsPage() {
             infrastructure located in India (Mumbai, ap-south-1 region).
           </p>
           <p className="mt-3">
-            The Service includes, but is not limited to: Vendor Hub&#8482;, Evidence Vault&#8482;, Risk Lens&#8482;,
-            Control Center&#8482;, Trust Intelligence&#8482;, Trust Score&#8482;, Governance Copilot&#8482;,
+            The Service includes, but is not limited to: Vendor Hub™, Evidence Vault™, Risk Lens™,
+            Control Center™, Trust Intelligence™, Trust Score™, Governance Copilot™,
             and all other modules described in the platform documentation.
           </p>
         </section>
@@ -222,7 +222,7 @@ export default function TermsPage() {
         </section>
 
         <div className="border-t border-[var(--color-line)] pt-8 flex flex-wrap gap-4 text-xs">
-          <Link href="/trust" className="text-[var(--color-blue)] hover:underline">&#8592; Trust Center</Link>
+          <Link href="/trust" className="text-[var(--color-blue)] hover:underline">← Trust Center</Link>
           <Link href="/trust/dpa" className="text-[var(--color-blue)] hover:underline">Data Processing Agreement</Link>
           <Link href="/trust/privacy" className="text-[var(--color-blue)] hover:underline">Privacy Practices</Link>
           <Link href="/trust/contact" className="text-[var(--color-blue)] hover:underline">Security Contact</Link>

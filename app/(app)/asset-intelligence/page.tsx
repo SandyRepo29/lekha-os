@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Asset Intelligence&#8482; — AUDT' };
+export const metadata = { title: 'Asset Intelligence™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -43,11 +43,11 @@ export default async function AssetIntelligencePage() {
       {/* Heading */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Asset Intelligence™</h1>
           <span className="text-xs text-[var(--color-ink-dim)] border border-[var(--color-line)] rounded px-2 py-0.5">REST API available</span>
         </div>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">
-          Business Asset Intelligence &amp; Dependency Mapping &#8212; understand how vendors, assets, data, controls, and risks connect across your organization.
+          Business Asset Intelligence &amp; Dependency Mapping — understand how vendors, assets, data, controls, and risks connect across your organization.
         </p>
       </div>
 
@@ -74,7 +74,7 @@ export default async function AssetIntelligencePage() {
               Add assets to the registry to enable Trust Mapping, PII tracking, and dependency analysis.
             </p>
             <Link href="/asset-intelligence/registry/new" className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[var(--color-blue)] px-4 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity">
-              Add your first asset &#8594;
+              Add your first asset →
             </Link>
           </div>
         </div>
@@ -96,12 +96,12 @@ export default async function AssetIntelligencePage() {
         <div className="lg:col-span-2 rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-sm">Critical &amp; Recent Assets</h2>
-            <Link href="/asset-intelligence/registry" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/asset-intelligence/registry" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           {recentAssets.length === 0 ? (
             <p className="text-sm text-[var(--color-ink-dim)] py-8 text-center">
               No assets yet.{" "}
-              <Link href="/asset-intelligence/registry/new" className="text-[var(--color-blue)] hover:underline">Add your first asset &#8594;</Link>
+              <Link href="/asset-intelligence/registry/new" className="text-[var(--color-blue)] hover:underline">Add your first asset →</Link>
             </p>
           ) : (
             <div className="space-y-2">
@@ -117,7 +117,7 @@ export default async function AssetIntelligencePage() {
                       <p className="text-sm font-medium truncate">{a.name}</p>
                       <p className="text-xs text-[var(--color-ink-dim)] truncate">
                         {a.businessUnit ?? a.category ?? a.assetType}
-                        {a.containsPii && <span className="ml-1.5 text-amber-400">&#183; PII</span>}
+                        {a.containsPii && <span className="ml-1.5 text-amber-400">· PII</span>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -158,7 +158,7 @@ export default async function AssetIntelligencePage() {
           <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold text-sm">Open Alerts</h2>
-              <Link href="/asset-intelligence/alerts" className="text-xs text-[var(--color-blue)] hover:underline">All &#8594;</Link>
+              <Link href="/asset-intelligence/alerts" className="text-xs text-[var(--color-blue)] hover:underline">All →</Link>
             </div>
             {alerts.length === 0 ? (
               <p className="text-xs text-[var(--color-ink-dim)]">No open alerts</p>
@@ -220,15 +220,15 @@ export default async function AssetIntelligencePage() {
 
       {/* Module Nav Grid */}
       <div>
-        <h2 className="font-semibold text-sm mb-3">Asset Intelligence&#8482; Modules</h2>
+        <h2 className="font-semibold text-sm mb-3">Asset Intelligence™ Modules</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { href: "/asset-intelligence/registry",        icon: Monitor,       label: "Asset Registry&#8482;",     desc: "Full inventory"       },
-            { href: "/asset-intelligence/data-assets",     icon: FileText,      label: "Data Asset Catalog&#8482;", desc: "PII &amp; data maps"  },
-            { href: "/asset-intelligence/relationships",   icon: GitBranch,     label: "Relationships&#8482;",      desc: "Dependency graph"     },
-            { href: "/asset-intelligence/impact-analysis", icon: AlertTriangle, label: "Impact Analysis&#8482;",    desc: "Failure scenarios"    },
-            { href: "/asset-intelligence/alerts",          icon: Shield,        label: "Asset Alerts&#8482;",       desc: "Governance alerts"    },
-            { href: "/asset-intelligence/ai",              icon: Brain,         label: "Asset Copilot&#8482;",      desc: "AI-powered insights"  },
+            { href: "/asset-intelligence/registry",        icon: Monitor,       label: "Asset Registry™",     desc: "Full inventory"       },
+            { href: "/asset-intelligence/data-assets",     icon: FileText,      label: "Data Asset Catalog™", desc: "PII &amp; data maps"  },
+            { href: "/asset-intelligence/relationships",   icon: GitBranch,     label: "Relationships™",      desc: "Dependency graph"     },
+            { href: "/asset-intelligence/impact-analysis", icon: AlertTriangle, label: "Impact Analysis™",    desc: "Failure scenarios"    },
+            { href: "/asset-intelligence/alerts",          icon: Shield,        label: "Asset Alerts™",       desc: "Governance alerts"    },
+            { href: "/asset-intelligence/ai",              icon: Brain,         label: "Asset Copilot™",      desc: "AI-powered insights"  },
           ].map(({ href, icon: Icon, label, desc }) => (
             <Link key={href} href={href}
               className="rounded-2xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
@@ -242,9 +242,9 @@ export default async function AssetIntelligencePage() {
 
       {/* Repositioned Banner */}
       <div className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/[0.04] p-5">
-        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Business Asset Intelligence &#8212; The Governance Dependency Layer</h3>
+        <h3 className="font-semibold text-sm mb-1 text-[var(--color-blue)]">Business Asset Intelligence — The Governance Dependency Layer</h3>
         <p className="text-xs text-[var(--color-ink-dim)] max-w-2xl">
-          Asset Intelligence&#8482; answers the governance questions that matter: Which assets support your business? Which vendors are they exposed to?
+          Asset Intelligence™ answers the governance questions that matter: Which assets support your business? Which vendors are they exposed to?
           Which data do they contain? What controls protect them? And what is the blast radius if a vendor fails or a critical asset goes down?
         </p>
       </div>

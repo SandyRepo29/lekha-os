@@ -44,7 +44,7 @@ export default async function VendorLifecyclePage({ params }: Props) {
     <div className="p-6 space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-[var(--color-ink-faint)]">
-        <Link href="/vendors" className="hover:text-[var(--color-ink)]">Vendor Hub&#8482;</Link>
+        <Link href="/vendors" className="hover:text-[var(--color-ink)]">Vendor Hub™</Link>
         <span>/</span>
         <Link href={`/vendors/${id}`} className="hover:text-[var(--color-ink)]">{vendor.name}</Link>
         <span>/</span>
@@ -61,7 +61,7 @@ export default async function VendorLifecyclePage({ params }: Props) {
             Vendor Lifecycle
           </h1>
           <p className="text-sm text-[var(--color-ink-faint)]">
-            {vendor.name} &#8212; current state: <LifecycleBadge state={currentState as VendorState} size="sm" />
+            {vendor.name} — current state: <LifecycleBadge state={currentState as VendorState} size="sm" />
           </p>
         </div>
       </div>

@@ -6,33 +6,33 @@ import { X, ArrowRight } from "lucide-react";
 
 const GOAL_MESSAGES: Record<string, { text: string; cta: string; href: string }> = {
   soc2: {
-    text: "Your SOC 2 journey starts here. Begin with the Evidence Vault&#8482;.",
-    cta: "Start with Evidence Vault&#8482;",
+    text: "Your SOC 2 journey starts here. Begin with the Evidence Vault™.",
+    cta: "Start with Evidence Vault™",
     href: "/compliance",
   },
   dpdp: {
-    text: "Your DPDP Privacy compliance journey starts here. Begin with the Evidence Vault&#8482;.",
-    cta: "Start with Evidence Vault&#8482;",
+    text: "Your DPDP Privacy compliance journey starts here. Begin with the Evidence Vault™.",
+    cta: "Start with Evidence Vault™",
     href: "/compliance",
   },
   audit: {
-    text: "Your Audit Readiness journey starts here. Begin with the Evidence Vault&#8482;.",
-    cta: "Start with Evidence Vault&#8482;",
+    text: "Your Audit Readiness journey starts here. Begin with the Evidence Vault™.",
+    cta: "Start with Evidence Vault™",
     href: "/compliance",
   },
   vendor_risk: {
-    text: "Your Vendor Risk program starts here. Add your first supplier to Vendor Hub&#8482;.",
-    cta: "Start with Vendor Hub&#8482;",
+    text: "Your Vendor Risk program starts here. Add your first supplier to Vendor Hub™.",
+    cta: "Start with Vendor Hub™",
     href: "/vendors",
   },
   ai_governance: {
     text: "Your AI Governance program starts here. Inventory your AI systems.",
-    cta: "Start with AI Governance&#8482;",
+    cta: "Start with AI Governance™",
     href: "/ai-governance",
   },
   executive_reporting: {
     text: "Your executive visibility journey starts here. Explore your governance analytics.",
-    cta: "Start with Executive Reporting&#8482;",
+    cta: "Start with Executive Reporting™",
     href: "/executive-reporting",
   },
 };

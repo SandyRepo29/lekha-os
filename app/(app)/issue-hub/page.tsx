@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Issue &#38; Remediation Hub&#8482; — AUDT' };
+export const metadata = { title: 'Issue &#38; Remediation Hub™ — AUDT' };
 
 import Link from "next/link";
 import {
@@ -17,7 +17,7 @@ import * as capaRepo from "@/lib/repositories/corrective-action-repo";
 import { IssueStat, IssueSeverityBadge, IssueStatusBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -28,7 +28,7 @@ export default async function IssueHubDashboardPage() {
     return (
       <Card className="p-8 text-center">
         <AlertCircle className="h-10 w-10 mx-auto mb-3 text-[var(--color-ink-dim)]" />
-        <p className="font-semibold">Governance Remediation Platform&#8482;</p>
+        <p className="font-semibold">Governance Remediation Platform™</p>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">Connect Supabase to track governance findings.</p>
       </Card>
     );
@@ -109,7 +109,7 @@ export default async function IssueHubDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Governance Remediation Platform&#8482;
+            Governance Remediation Platform™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
             Identify &#8901; Assign &#8901; Remediate &#8901; Validate &#8901; Close
@@ -125,7 +125,7 @@ export default async function IssueHubDashboardPage() {
           </a>
           <Link href="/issue-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Advisor&#8482;
+            AI Advisor™
           </Link>
           <Link href="/issue-hub/new">
             <Button><Plus className="h-4 w-4" /> New Issue</Button>
@@ -150,7 +150,7 @@ export default async function IssueHubDashboardPage() {
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Network className="h-4 w-4 text-[var(--color-blue)]" />
-            Finding Sources&#8482;
+            Finding Sources™
           </h2>
           <p className="text-xs text-[var(--color-ink-dim)] mb-3">Where findings originate across the platform</p>
           {topSources.length === 0 ? (
@@ -175,7 +175,7 @@ export default async function IssueHubDashboardPage() {
           )}
           <div className="mt-4 pt-4 border-t border-[var(--color-line)]">
             <Link href="/issue-hub/findings" className="text-xs text-[var(--color-blue)] hover:underline">
-              View all findings &#8594;
+              View all findings →
             </Link>
           </div>
         </Card>
@@ -184,7 +184,7 @@ export default async function IssueHubDashboardPage() {
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <ArrowRight className="h-4 w-4 text-purple-400" />
-            Governance Remediation Pipeline&#8482;
+            Governance Remediation Pipeline™
           </h2>
           <div className="space-y-2.5">
             {pipeline.map((stage) => (
@@ -199,7 +199,7 @@ export default async function IssueHubDashboardPage() {
           </div>
           <div className="mt-4 pt-4 border-t border-[var(--color-line)]">
             <Link href="/issue-hub/list" className="text-xs text-[var(--color-blue)] hover:underline">
-              Manage issues &#8594;
+              Manage issues →
             </Link>
           </div>
         </Card>
@@ -255,10 +255,10 @@ export default async function IssueHubDashboardPage() {
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <TrendingDown className="h-4 w-4 text-red-400" />
-            Trust Impact&#8482;
+            Trust Impact™
           </h2>
           <p className="text-xs text-[var(--color-ink-dim)] mb-4 leading-relaxed">
-            Open findings reduce your Org Trust Score&#8482;. Closing them restores trust.
+            Open findings reduce your Org Trust Score™. Closing them restores trust.
           </p>
           <div className="space-y-3">
             <div>
@@ -316,7 +316,7 @@ export default async function IssueHubDashboardPage() {
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{issue.title}</p>
                     <p className="text-xs text-[var(--color-ink-dim)]">
-                      {issue.assigneeName ?? issue.ownerName ?? "Unassigned"} &#183; Due {formatDate(issue.dueDate)}
+                      {issue.assigneeName ?? issue.ownerName ?? "Unassigned"} · Due {formatDate(issue.dueDate)}
                     </p>
                   </div>
                   <IssueSeverityBadge severity={issue.severity} />
@@ -326,7 +326,7 @@ export default async function IssueHubDashboardPage() {
           )}
           <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
             <Link href="/issue-hub/list" className="text-xs text-[var(--color-blue)] hover:opacity-80">
-              View all issues &#8594;
+              View all issues →
             </Link>
           </div>
         </Card>
@@ -335,7 +335,7 @@ export default async function IssueHubDashboardPage() {
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Brain className="h-4 w-4 text-purple-400" />
-            Findings Intelligence&#8482;
+            Findings Intelligence™
           </h2>
           <div className="space-y-4">
             {topTypes.length > 0 && (
@@ -381,7 +381,7 @@ export default async function IssueHubDashboardPage() {
           </div>
           <div className="mt-4 pt-4 border-t border-[var(--color-line)]">
             <Link href="/issue-hub/ai" className="text-xs text-[var(--color-blue)] hover:underline">
-              Ask Findings Copilot&#8482; &#8594;
+              Ask Findings Copilot™ →
             </Link>
           </div>
         </Card>
@@ -404,7 +404,7 @@ export default async function IssueHubDashboardPage() {
             <Button variant="outline" size="sm"><CheckCircle2 className="h-4 w-4" /> All Tasks</Button>
           </Link>
           <Link href="/issue-hub/ai">
-            <Button variant="outline" size="sm"><Sparkles className="h-4 w-4" /> Findings Copilot&#8482;</Button>
+            <Button variant="outline" size="sm"><Sparkles className="h-4 w-4" /> Findings Copilot™</Button>
           </Link>
         </div>
       </Card>

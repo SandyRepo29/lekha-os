@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Governance Agent Framework&#8482; — AUDT' };
+export const metadata = { title: 'Governance Agent Framework™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -34,11 +34,11 @@ export default async function AgentsPage() {
       {/* Header */}
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Agent Framework&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Agent Framework™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">AI agents that continuously monitor, reason, and act across your entire governance posture.</p>
         </div>
         <Link href="/agents/copilot" className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity">
-          <Cpu className="h-4 w-4" /> Governance Copilot&#8482; &#8594;
+          <Cpu className="h-4 w-4" /> Governance Copilot™ →
         </Link>
       </div>
 
@@ -78,7 +78,7 @@ export default async function AgentsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Recent Agent Runs</h3>
-            <Link href="/agents/runs" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all &#8594;</Link>
+            <Link href="/agents/runs" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all →</Link>
           </div>
           {runs.length > 0 ? (
             <div className="overflow-x-auto">
@@ -118,7 +118,7 @@ export default async function AgentsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Recent Observations</h3>
-            <Link href="/agents/observations" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all &#8594;</Link>
+            <Link href="/agents/observations" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all →</Link>
           </div>
           {obs.length > 0 ? (
             <div className="space-y-2">

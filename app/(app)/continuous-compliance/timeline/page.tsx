@@ -19,7 +19,7 @@ function scoreBar(s: number) {
 }
 
 function fmtDate(d: string | Date | null | undefined) {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -43,9 +43,9 @@ export default async function ComplianceTimelinePage() {
       <CcSubNav />
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Timeline&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Timeline™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          90-day history of your compliance posture &#8212; see how governance improved or drifted over time
+          90-day history of your compliance posture — see how governance improved or drifted over time
         </p>
       </div>
 

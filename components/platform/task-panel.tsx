@@ -213,7 +213,7 @@ export function TaskPanel({ entityType, entityId, entityName, tasks: initialTask
                     )}
                     {task.assigned_to_name && (
                       <span className="text-[11px] text-[var(--color-ink-dim)]">
-                        &#8594; {task.assigned_to_name}
+                        → {task.assigned_to_name}
                       </span>
                     )}
                   </div>

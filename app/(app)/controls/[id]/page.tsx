@@ -268,7 +268,7 @@ export default async function ControlDetailPage({ params }: { params: Promise<{ 
         <p className="text-xs text-[var(--color-ink-dim)]">
           View the full dependency map in{" "}
           <Link href="/trust-intelligence/trust-graph" className="text-[var(--color-blue)] hover:underline">
-            Trust Graph&#8482;
+            Trust Graph™
           </Link>
         </p>
       </section>

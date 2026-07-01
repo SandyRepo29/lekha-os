@@ -62,7 +62,7 @@ export default async function ContractIntelligencePage() {
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-purple-400" />
-          Contract Intelligence&#8482;
+          Contract Intelligence™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           AI-powered contract analysis, renewal recommendations, and governance insights

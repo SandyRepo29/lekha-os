@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -70,9 +70,9 @@ export default async function CommandCenterPage() {
 
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Command Center&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Command Center™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
-            Mission control for trust operations &#8212; real-time visibility across every governance activity.
+            Mission control for trust operations — real-time visibility across every governance activity.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -106,13 +106,13 @@ export default async function CommandCenterPage() {
       {/* Platform Health Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
         {[
-          { label: "Active Vendors",    value: cs?.activeVendors ?? "&#8212;",    href: "/vendors",                   color: "text-[var(--color-blue)]" },
-          { label: "Open Risks",        value: cs?.openRisks ?? "&#8212;",        href: "/risks",                     color: (cs?.openRisks ?? 0) > 10 ? "text-amber-400" : "text-[var(--color-ink)]" },
-          { label: "Weak Controls",     value: cs?.weakControls ?? "&#8212;",     href: "/controls",                  color: (cs?.weakControls ?? 0) > 0 ? "text-amber-400" : "text-emerald-400" },
-          { label: "Active Audits",     value: cs?.activeAudits ?? "&#8212;",     href: "/audits",                    color: "text-[var(--color-ink)]" },
-          { label: "Expired Evidence",  value: cs?.expiredEvidence ?? "&#8212;",  href: "/compliance/evidence",       color: (cs?.expiredEvidence ?? 0) > 0 ? "text-red-400" : "text-emerald-400" },
-          { label: "Overdue CAPAs",     value: cs?.overdueCapas ?? "&#8212;",     href: "/audits/capas",              color: (cs?.overdueCapas ?? 0) > 0 ? "text-red-400" : "text-emerald-400" },
-          { label: "Expiring Contracts",value: cs?.expiringContracts ?? "&#8212;",href: "/contract-governance/renewals", color: (cs?.expiringContracts ?? 0) > 0 ? "text-amber-400" : "text-[var(--color-ink)]" },
+          { label: "Active Vendors",    value: cs?.activeVendors ?? "—",    href: "/vendors",                   color: "text-[var(--color-blue)]" },
+          { label: "Open Risks",        value: cs?.openRisks ?? "—",        href: "/risks",                     color: (cs?.openRisks ?? 0) > 10 ? "text-amber-400" : "text-[var(--color-ink)]" },
+          { label: "Weak Controls",     value: cs?.weakControls ?? "—",     href: "/controls",                  color: (cs?.weakControls ?? 0) > 0 ? "text-amber-400" : "text-emerald-400" },
+          { label: "Active Audits",     value: cs?.activeAudits ?? "—",     href: "/audits",                    color: "text-[var(--color-ink)]" },
+          { label: "Expired Evidence",  value: cs?.expiredEvidence ?? "—",  href: "/compliance/evidence",       color: (cs?.expiredEvidence ?? 0) > 0 ? "text-red-400" : "text-emerald-400" },
+          { label: "Overdue CAPAs",     value: cs?.overdueCapas ?? "—",     href: "/audits/capas",              color: (cs?.overdueCapas ?? 0) > 0 ? "text-red-400" : "text-emerald-400" },
+          { label: "Expiring Contracts",value: cs?.expiringContracts ?? "—",href: "/contract-governance/renewals", color: (cs?.expiringContracts ?? 0) > 0 ? "text-amber-400" : "text-[var(--color-ink)]" },
         ].map(({ label, value, href, color }) => (
           <Link key={label} href={href}
             className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-3 hover:border-[var(--color-blue)]/30 transition-colors"

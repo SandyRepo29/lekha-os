@@ -176,7 +176,7 @@ export function MfaPanel() {
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">
               <p className="text-sm font-semibold text-amber-400">Save your recovery codes now</p>
               <p className="mt-1 text-xs text-amber-400/80">
-                Each code can only be used once. Store them somewhere safe &#8212; you cannot view them again.
+                Each code can only be used once. Store them somewhere safe — you cannot view them again.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -199,7 +199,7 @@ export function MfaPanel() {
                   onClick={finishSetup}
                   className="ml-auto rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:opacity-90"
                 >
-                  Done &#8212; I&#8217;ve saved these
+                  Done — I&#8217;ve saved these
                 </button>
               )}
               {step === "regen" && (

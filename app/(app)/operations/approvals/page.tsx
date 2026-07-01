@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getApprovalsAction } from "@/lib/toe/actions";
@@ -25,7 +25,7 @@ export default async function ApprovalsPage() {
 
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Unified Approval Queue&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Unified Approval Queue™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             All governance approval requests across every module in one place.
           </p>
@@ -87,7 +87,7 @@ export default async function ApprovalsPage() {
               <div key={a.id} className="flex items-center justify-between gap-3 py-3">
                 <div>
                   <div className="text-sm font-medium">{a.title}</div>
-                  <div className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{a.request_type} &#183; {fmtDt(a.created_at)}</div>
+                  <div className="mt-0.5 text-xs text-[var(--color-ink-dim)]">{a.request_type} · {fmtDt(a.created_at)}</div>
                   {a.notes && <div className="mt-1 text-xs italic text-[var(--color-ink-dim)]">&#8220;{a.notes}&#8221;</div>}
                 </div>
                 <ApprovalStatusBadge status={a.status} />

@@ -306,7 +306,7 @@ export default async function WorkflowTriggersPage() {
                         {eventLabel(run.event)}
                       </td>
                       <td className="px-4 py-2.5 text-xs text-[var(--color-ink-dim)]">
-                        {run.entity_type ? entityLabel(run.entity_type) : "&#8212;"}
+                        {run.entity_type ? entityLabel(run.entity_type) : "—"}
                       </td>
                       <td className="px-4 py-2.5">
                         <StatusBadge status={run.status} />

@@ -12,7 +12,7 @@ const NAV = [
   { href: "/trust-score/insights",     label: "Trust Insights" },
   { href: "/trust-score/benchmarking", label: "Benchmarking" },
   { href: "/trust-score/reports",      label: "Reports" },
-  { href: "/trust-score/ai",           label: "Trust Copilot&#8482;" },
+  { href: "/trust-score/ai",           label: "Trust Copilot™" },
 ];
 
 export default function TrustScoreLayout({ children }: { children: React.ReactNode }) {

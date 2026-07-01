@@ -160,7 +160,7 @@ export function RiskListTable({
                     <RiskStatusBadge status={r.status ?? "identified"} />
                   </td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                    {r.ownerName ?? "&#8212;"}
+                    {r.ownerName ?? "—"}
                   </td>
                   <td className="px-4 py-3 text-center text-xs text-[var(--color-ink-dim)]">
                     {r.impact} &#215; {r.likelihood}
@@ -169,7 +169,7 @@ export function RiskListTable({
                     <RiskScoreBadge score={r.inherentScore ?? 0} />
                   </td>
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">
-                    {TREATMENT_STRATEGY_LABELS[r.treatmentStrategy ?? ""] ?? "&#8212;"}
+                    {TREATMENT_STRATEGY_LABELS[r.treatmentStrategy ?? ""] ?? "—"}
                   </td>
                   <td className={`px-4 py-3 text-xs ${due ? "text-red-400" : "text-[var(--color-ink-dim)]"}`}>
                     {formatDate(r.targetDate)}

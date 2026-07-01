@@ -49,7 +49,7 @@ export default async function TrustVerificationPage() {
         <div className="flex gap-2">
           <Link href="/trust-verification/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Verification Advisor&#8482;
+            AI Verification Advisor™
           </Link>
           <Link
             href="/trust-verification/registry"
@@ -155,7 +155,7 @@ export default async function TrustVerificationPage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-sm">Verification Events</h3>
             <div className="flex items-center gap-3">
-              <Link href="/trust-verification/monitoring" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+              <Link href="/trust-verification/monitoring" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
             </div>
           </div>
           {events.length > 0 ? (

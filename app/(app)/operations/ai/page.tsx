@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getAiDecisionsAction, generateAdvisoryAction, generateRecommendationsAction } from "@/lib/toe/actions";
@@ -33,9 +33,9 @@ export default async function AiEnginePage() {
 
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Decision Engine&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">AI Decision Engine™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
-            AI-assisted governance &#8212; recommendations, risk signals, and operational guidance embedded into your workflows.
+            AI-assisted governance — recommendations, risk signals, and operational guidance embedded into your workflows.
           </p>
         </div>
         <GenerateRecommendationsButton />
@@ -119,7 +119,7 @@ export default async function AiEnginePage() {
 
         {/* AI Chat */}
         <div>
-          <div className="mb-3 text-sm font-semibold">Operations Copilot&#8482;</div>
+          <div className="mb-3 text-sm font-semibold">Operations Copilot™</div>
           <ToeAiChat />
         </div>
       </div>

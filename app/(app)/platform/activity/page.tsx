@@ -53,7 +53,7 @@ export default async function PlatformActivityPage({ searchParams }: Props) {
   const byType = stats.byEntityType as Record<string, number>;
   const topEntityType = Object.entries(byType).sort(
     (a, b) => (b[1] as number) - (a[1] as number)
-  )[0]?.[0] ?? "&#8212;";
+  )[0]?.[0] ?? "—";
 
   const activeUsers = stats.recentActors.length;
 
@@ -93,7 +93,7 @@ export default async function PlatformActivityPage({ searchParams }: Props) {
         <Card className="p-4 border-l-2 border-violet-500 bg-violet-500/5">
           <p className="text-xs text-[var(--color-ink-dim)] mb-1">Top Entity Type</p>
           <p className="text-2xl font-bold text-[var(--color-ink)] capitalize">
-            {topEntityType !== "&#8212;" ? topEntityType : "—"}
+            {topEntityType !== "—" ? topEntityType : "—"}
           </p>
         </Card>
         <Card className="p-4 border-l-2 border-emerald-500 bg-emerald-500/5">

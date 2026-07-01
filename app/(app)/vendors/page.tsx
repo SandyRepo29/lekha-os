@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Vendor Hub&#8482; — AUDT' };
+export const metadata = { title: 'Vendor Hub™ — AUDT' };
 
 import Link from "next/link";
 import { Plus, Building2, Download, FileText, AlertTriangle, TrendingUp, ClipboardCheck, Sparkles } from "lucide-react";
@@ -100,13 +100,13 @@ export default async function VendorsPage({
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Hub&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Hub™</h1>
           <p className="text-sm text-[var(--color-ink-dim)]">{total} vendor{total !== 1 ? "s" : ""} &middot; governance workspace</p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/trust-intelligence/vendors" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Insights&#8482;
+            AI Insights™
           </Link>
           {!session.demo && session.org && (
             <div className="flex items-center gap-1 rounded-xl border border-[var(--color-line)] bg-white p-1">

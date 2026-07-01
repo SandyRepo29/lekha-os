@@ -45,7 +45,7 @@ export default async function AnalyticsPage() {
       <ToeSubNav />
 
       <div className="pt-2">
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Workflow Analytics&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Workflow Analytics™</h1>
         <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
           Performance metrics, SLA compliance, and operational bottleneck analysis.
         </p>
@@ -171,7 +171,7 @@ export default async function AnalyticsPage() {
                       </span>
                     </td>
                     <td className="py-2.5 text-[var(--color-ink-dim)]">
-                      {row.avg_duration_ms > 0 ? `${Math.round(row.avg_duration_ms / 1000)}s` : "&#8212;"}
+                      {row.avg_duration_ms > 0 ? `${Math.round(row.avg_duration_ms / 1000)}s` : "—"}
                     </td>
                   </tr>
                 ))}

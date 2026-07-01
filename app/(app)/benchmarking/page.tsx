@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Governance Benchmarking&#8482; — AUDT' };
+export const metadata = { title: 'Governance Benchmarking™ — AUDT' };
 
 import Link from "next/link";
 import { BarChart3, TrendingUp, Award, Zap, ArrowUpRight, ArrowDownRight, Sparkles, Download } from "lucide-react";
@@ -67,7 +67,7 @@ export default async function BenchmarkingDashboard() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Benchmarking&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Governance Benchmarking™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
             Compare your governance posture against industry peers and discover your competitive position.
           </p>
@@ -82,7 +82,7 @@ export default async function BenchmarkingDashboard() {
           </a>
           <Link href="/benchmarking/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Benchmark Analyst&#8482;
+            AI Benchmark Analyst™
           </Link>
           <Link
             href="/benchmarking/rankings"
@@ -163,8 +163,8 @@ export default async function BenchmarkingDashboard() {
           {/* Category scores grid */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-semibold">Benchmark Scorecards&#8482;</h2>
-              <Link href="/benchmarking/rankings" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+              <h2 className="text-base font-semibold">Benchmark Scorecards™</h2>
+              <Link href="/benchmarking/rankings" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
             </div>
             <div className="grid md:grid-cols-2 gap-3">
               {scores.map((score) => {

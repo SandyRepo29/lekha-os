@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import {
   Shield,
   Lock,
@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Trust Center &#8212; AUDT",
+  title: "Trust Center — AUDT",
   description: "Security, compliance, and data protection at AUDT. Governance Built on Proof.",
 };
 

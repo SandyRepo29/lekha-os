@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Brain } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,7 @@ export default async function PolicyAiPage() {
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={Brain} title="Policy Copilot&#8482;" description="Connect Supabase to use AI features." />
+        <EmptyState icon={Brain} title="Policy Copilot™" description="Connect Supabase to use AI features." />
       </Card>
     );
   }
@@ -21,7 +21,7 @@ export default async function PolicyAiPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Policy Copilot&#8482;</h2>
+        <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Policy Copilot™</h2>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           Draft policies, detect gaps, and get governance recommendations
         </p>

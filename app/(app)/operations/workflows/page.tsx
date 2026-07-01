@@ -35,7 +35,7 @@ export default async function WorkflowsPage() {
 
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Workflow Orchestration Engine&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Workflow Orchestration Engine™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Multi-step governance workflows connecting every module into complete business processes.
           </p>
@@ -102,7 +102,7 @@ export default async function WorkflowsPage() {
                           <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${
                             wf.status === 'active' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-500/20 text-slate-400'
                           }`}>{wf.status}</span>
-                          <span className="text-[11px] text-[var(--color-ink-dim)]">v{wf.version} &#183; {(wf.steps as unknown[]).length} steps</span>
+                          <span className="text-[11px] text-[var(--color-ink-dim)]">v{wf.version} · {(wf.steps as unknown[]).length} steps</span>
                         </div>
                       </div>
                       <StartWorkflowButton workflowId={wf.id} name={wf.name} />
@@ -142,10 +142,10 @@ export default async function WorkflowsPage() {
                       <td className="py-2.5 pr-4 font-medium">{inst.workflow_name}</td>
                       <td className="py-2.5 pr-4"><InstanceStatusBadge status={inst.status} /></td>
                       <td className="py-2.5 pr-4 text-[var(--color-ink-dim)]">
-                        {inst.total_steps > 0 ? `${inst.current_step}/${inst.total_steps}` : "&#8212;"}
+                        {inst.total_steps > 0 ? `${inst.current_step}/${inst.total_steps}` : "—"}
                       </td>
                       <td className="py-2.5 pr-4 text-[var(--color-ink-dim)]">{fmtDt(inst.started_at)}</td>
-                      <td className="py-2.5 text-[var(--color-ink-dim)]">{inst.completed_at ? fmtDt(inst.completed_at) : "&#8212;"}</td>
+                      <td className="py-2.5 text-[var(--color-ink-dim)]">{inst.completed_at ? fmtDt(inst.completed_at) : "—"}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -91,8 +91,8 @@ function StepItem({ vendorId, step, row, isNext, canEdit }: StepItemProps) {
 
           {done && row && (
             <p className="mt-1.5 text-[10px] text-[var(--color-ink-faint)]">
-              Completed by {row.completed_by ?? "Unknown"} &#183; {row.completed_at ? new Date(row.completed_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}
-              {row.notes && <span className="ml-1 italic">&#8212; {row.notes}</span>}
+              Completed by {row.completed_by ?? "Unknown"} · {row.completed_at ? new Date(row.completed_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}
+              {row.notes && <span className="ml-1 italic">— {row.notes}</span>}
             </p>
           )}
 
@@ -170,7 +170,7 @@ export function OffboardingChecklist({ vendorId, checklist, targetDate, canEdit 
           <div className="mt-3 flex items-center gap-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-3">
             <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
             <p className="text-sm font-medium text-emerald-400">
-              Offboarding complete &#8212; vendor has been offboarded.
+              Offboarding complete — vendor has been offboarded.
             </p>
           </div>
         )}

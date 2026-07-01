@@ -8,7 +8,7 @@ import * as capaRepo from "@/lib/repositories/corrective-action-repo";
 import { CapaStatusBadge } from "@/components/audit/audit-status-badge";
 
 function formatDate(d: string | Date | null | undefined) {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -24,7 +24,7 @@ export default async function IssueHubCapasPage() {
     return (
       <Card className="p-8 text-center">
         <Shield className="h-10 w-10 mx-auto mb-3 text-[var(--color-ink-dim)]" />
-        <p className="font-semibold">CAPA Management&#8482;</p>
+        <p className="font-semibold">CAPA Management™</p>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">Connect Supabase to manage corrective actions.</p>
       </Card>
     );
@@ -50,7 +50,7 @@ export default async function IssueHubCapasPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">CAPA Management&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">CAPA Management™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           Corrective and Preventive Actions across all audit findings
         </p>
@@ -95,7 +95,7 @@ export default async function IssueHubCapasPage() {
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
             <Clock className="h-4 w-4 text-indigo-400" />
-            CAPA Health&#8482;
+            CAPA Health™
           </h2>
           <div className="space-y-3">
             {[
@@ -134,7 +134,7 @@ export default async function IssueHubCapasPage() {
         <div className="p-5 border-b border-[var(--color-line)] flex items-center justify-between">
           <h2 className="text-sm font-semibold">All CAPAs</h2>
           <Link href="/audits/capas" className="text-xs text-[var(--color-blue)] hover:underline">
-            Open in Audit Management &#8594;
+            Open in Audit Management →
           </Link>
         </div>
         {capas.length === 0 ? (
@@ -173,7 +173,7 @@ export default async function IssueHubCapasPage() {
                       {capa.completedAt ? (
                         <span className="text-xs text-emerald-400">{formatDate(capa.completedAt)}</span>
                       ) : (
-                        <span className="text-xs text-[var(--color-ink-faint)]">&#8212;</span>
+                        <span className="text-xs text-[var(--color-ink-faint)]">—</span>
                       )}
                     </td>
                   </tr>

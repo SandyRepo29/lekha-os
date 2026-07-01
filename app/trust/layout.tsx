@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Shield } from "lucide-react";
 
 export const metadata = {
-  title: "Trust Center &#8212; AUDT",
+  title: "Trust Center — AUDT",
   description: "Security, compliance, and data protection at AUDT.",
 };
 
@@ -34,16 +34,16 @@ export default function TrustLayout({ children }: { children: React.ReactNode })
       {/* Footer */}
       <footer className="border-t border-[var(--color-line)] py-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-6 text-center text-sm text-[var(--color-ink-dim)] sm:flex-row sm:justify-between sm:text-left">
-          <span>&#169; 2026 AUDT. Governance Built on Proof.</span>
+          <span>© 2026 AUDT. Governance Built on Proof.</span>
           <div className="flex items-center gap-4">
             <Link href="/trust/terms" className="hover:text-[var(--color-ink)] transition">Terms</Link>
-            <span className="opacity-30">&#183;</span>
+            <span className="opacity-30">·</span>
             <Link href="/trust/dpa" className="hover:text-[var(--color-ink)] transition">DPA</Link>
-            <span className="opacity-30">&#183;</span>
+            <span className="opacity-30">·</span>
             <Link href="/trust/privacy" className="hover:text-[var(--color-ink)] transition">Privacy</Link>
-            <span className="opacity-30">&#183;</span>
+            <span className="opacity-30">·</span>
             <Link href="/trust" className="hover:text-[var(--color-ink)] transition">Trust Center</Link>
-            <span className="opacity-30">&#183;</span>
+            <span className="opacity-30">·</span>
             <a href="mailto:security@audt.tech" className="hover:text-[var(--color-ink)] transition">security@audt.tech</a>
           </div>
         </div>

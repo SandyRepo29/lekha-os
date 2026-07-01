@@ -14,7 +14,7 @@ export default async function PolicyMappingsPage() {
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={Network} title="Policy Mapping Engine&#8482;" description="Connect Supabase to view policy mappings." />
+        <EmptyState icon={Network} title="Policy Mapping Engine™" description="Connect Supabase to view policy mappings." />
       </Card>
     );
   }
@@ -35,7 +35,7 @@ export default async function PolicyMappingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-          Policy Mapping Engine&#8482;
+          Policy Mapping Engine™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
           View how policies connect to controls, frameworks, and other governance entities
@@ -79,7 +79,7 @@ export default async function PolicyMappingsPage() {
         <div className="p-5 border-b border-[var(--color-line)]">
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Network className="h-4 w-4 text-indigo-400" />
-            Policy &#8212; Entity Mapping
+            Policy — Entity Mapping
           </h2>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
             All active policies with their linked controls and frameworks
@@ -165,7 +165,7 @@ export default async function PolicyMappingsPage() {
                   <PolicyStatusBadge status={policy.status} className="mt-0.5" />
                 </div>
                 <Link href={`/policy-governance/${policy.id}`}>
-                  <span className="text-xs text-[var(--color-blue)] hover:underline">Add mappings &#8594;</span>
+                  <span className="text-xs text-[var(--color-blue)] hover:underline">Add mappings →</span>
                 </Link>
               </div>
             ))}

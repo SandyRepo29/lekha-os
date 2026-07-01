@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { RefreshCw } from "lucide-react";
 
@@ -33,7 +33,7 @@ export function CacheIndicator({
   return (
     <span className={`flex items-center gap-1.5 text-xs text-[var(--color-ink-dim)] ${className}`}>
       <span>AI analysis</span>
-      <span className="opacity-40">&#183;</span>
+      <span className="opacity-40">·</span>
       {generatedAt === null ? (
         <span>Generating&#8230;</span>
       ) : (
@@ -41,7 +41,7 @@ export function CacheIndicator({
       )}
       {onRefresh && (
         <>
-          <span className="opacity-40">&#183;</span>
+          <span className="opacity-40">·</span>
           <button
             type="button"
             onClick={onRefresh}

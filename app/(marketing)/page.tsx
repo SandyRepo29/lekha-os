@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect } from "react";
 
@@ -136,13 +136,13 @@ export default function LandingPage() {
                 <span className="grad-text">Trust Every Decision.</span>
               </h1>
               <p className="hero__sub">
-                AUDT replaces spreadsheets and disconnected GRC tools with a single AI-native platform &#8212; built on proof, not promises.
+                AUDT replaces spreadsheets and disconnected GRC tools with a single AI-native platform — built on proof, not promises.
               </p>
               <p style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-dim)", maxWidth: "520px", marginBottom: "28px", lineHeight: 1.7 }}>
-                Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance &#8212; unified with a shared intelligence layer that learns across every module.
+                Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance — unified with a shared intelligence layer that learns across every module.
               </p>
               <div className="hero__cta">
-                <a href="/signup" className="btn btn--primary btn--lg">Start Free Trial <span className="arrow">&#8594;</span></a>
+                <a href="/signup" className="btn btn--primary btn--lg">Start Free Trial <span className="arrow">→</span></a>
                 <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--ghost btn--lg">Book a Demo</a>
               </div>
               <div className="hero__trust">
@@ -352,7 +352,7 @@ export default function LandingPage() {
             <div className="section__head reveal">
               <span className="eyebrow">Vendor Lifecycle</span>
               <h2>Every Stage. Every Vendor. No Gaps.</h2>
-              <p>Most platforms pick one stage. AUDT governs the complete vendor lifecycle &#8212; from discovery to offboarding &#8212; with AI at every step.</p>
+              <p>Most platforms pick one stage. AUDT governs the complete vendor lifecycle — from discovery to offboarding — with AI at every step.</p>
             </div>
 
             <div className="reveal" style={{ overflowX: "auto", paddingBottom: "8px" }}>
@@ -412,7 +412,7 @@ export default function LandingPage() {
             <div className="section__head reveal">
               <span className="eyebrow">Platform Overview</span>
               <h2>One Platform. Every Governance Need.</h2>
-              <p>Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance &#8212; unified with a shared intelligence layer.</p>
+              <p>Vendor governance, risk, compliance, audits, regulatory intelligence, and AI governance — unified with a shared intelligence layer.</p>
             </div>
             <div className="pillars">
               <article className="pillar pillar--live reveal">
@@ -539,9 +539,9 @@ export default function LandingPage() {
               margin: "0 auto 3rem",
             }}>
               {[
-                { icon: "⚡", title: "Event-Driven", body: "37 governance event types. Every vendor action, risk change, and evidence update triggers the right workflow automatically &#8212; no manual coordination." },
+                { icon: "⚡", title: "Event-Driven", body: "37 governance event types. Every vendor action, risk change, and evidence update triggers the right workflow automatically — no manual coordination." },
                 { icon: "🔄", title: "Workflow Automation", body: "6 built-in workflow templates. Custom automations. Cross-module orchestration connecting vendor, risk, compliance, and audit in a single execution layer." },
-                { icon: "✦", title: "AI Decision Engine", body: "AI recommendations reviewed by humans. Every governance decision carries a confidence score, audit trail, and one-click action &#8212; at the speed of risk." },
+                { icon: "✦", title: "AI Decision Engine", body: "AI recommendations reviewed by humans. Every governance decision carries a confidence score, audit trail, and one-click action — at the speed of risk." },
               ].map(({ icon, title, body }) => (
                 <div key={title} style={{
                   padding: "28px 24px",
@@ -670,7 +670,7 @@ export default function LandingPage() {
                 fontWeight: 800,
                 color: "var(--text)",
                 letterSpacing: "0.01em",
-              }}>Trust Score&#8482;</div>
+              }}>Trust Score™</div>
             </div>
 
             <div className="trust-scores reveal">
@@ -687,7 +687,7 @@ export default function LandingPage() {
                   <div className="tscore__val"><span className="score-num" data-score="92">0</span></div>
                 </div>
                 <div className="tscore__label">Evidence</div>
-                <div className="tscore__sub">&#8593; 4 pts this month</div>
+                <div className="tscore__sub">↑ 4 pts this month</div>
               </div>
               <div className="tscore">
                 <div className="tscore__ring">
@@ -733,7 +733,7 @@ export default function LandingPage() {
                   <div className="tscore__val"><span className="score-num" data-score="90">0</span></div>
                 </div>
                 <div className="tscore__label">Risk Posture</div>
-                <div className="tscore__sub">ISO 27001 &#8212; Ready</div>
+                <div className="tscore__sub">ISO 27001 — Ready</div>
               </div>
             </div>
 
@@ -749,8 +749,8 @@ export default function LandingPage() {
               <span className="eyebrow">Governance AI</span>
               <h2>AI That Answers. AI That Acts.</h2>
               <p>
-                The Governance Copilot&#8482; answers questions about your live governance data in plain English.
-                AI Agents monitor continuously and surface observations, recommendations, and actions &#8212; with human approval always in the loop.
+                The Governance Copilot™ answers questions about your live governance data in plain English.
+                AI Agents monitor continuously and surface observations, recommendations, and actions — with human approval always in the loop.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "1.5rem" }}>
                 {[
@@ -769,10 +769,10 @@ export default function LandingPage() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "2rem" }}>
                 {[
-                  { icon: "▤", name: "Vendor Agent&#8482;", desc: "Monitors trust scores &amp; requests evidence" },
-                  { icon: "◷", name: "Evidence Agent&#8482;", desc: "Collects evidence &amp; tracks control coverage" },
-                  { icon: "⚠", name: "Risk Agent&#8482;", desc: "Detects emerging risks &amp; escalates critical issues" },
-                  { icon: "◎", name: "Audit Agent&#8482;", desc: "Prepares audit rooms &amp; identifies evidence gaps" },
+                  { icon: "▤", name: "Vendor Agent™", desc: "Monitors trust scores &amp; requests evidence" },
+                  { icon: "◷", name: "Evidence Agent™", desc: "Collects evidence &amp; tracks control coverage" },
+                  { icon: "⚠", name: "Risk Agent™", desc: "Detects emerging risks &amp; escalates critical issues" },
+                  { icon: "◎", name: "Audit Agent™", desc: "Prepares audit rooms &amp; identifies evidence gaps" },
                 ].map(({ icon, name, desc }) => (
                   <div key={name} style={{ padding: "14px 16px", borderRadius: "12px", background: "#F8F9FB", border: "1px solid #E4E8EF" }}>
                     <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--text)", marginBottom: "4px" }}>
@@ -790,13 +790,13 @@ export default function LandingPage() {
                 <span className="chat__dot" style={{ background: "#ff5f57" }} />
                 <span className="chat__dot" style={{ background: "#febc2e" }} />
                 <span className="chat__dot" style={{ background: "#28c840" }} />
-                <span className="chat__title">✦ Governance Copilot&#8482;</span>
+                <span className="chat__title">✦ Governance Copilot™</span>
               </div>
               <div className="chat__body">
                 <div className="chat__q">Which vendors need attention this week?</div>
                 <div className="chat__a">4 vendors have declining trust scores. 2 require document refresh. 1 vendor assessment expires in 14 days. 1 contract renewal is overdue.</div>
                 <div className="chat__q">Are we audit ready for ISO 27001?</div>
-                <div className="chat__a">Audit readiness is 92%. 3 evidence gaps remain across 2 vendor controls. Evidence Vault&#8482; is current for 171 of 174 controls.</div>
+                <div className="chat__a">Audit readiness is 92%. 3 evidence gaps remain across 2 vendor controls. Evidence Vault™ is current for 171 of 174 controls.</div>
                 <div className="chat__q">Generate vendor risk board report.</div>
                 <div className="chat__a">Board report prepared: Vendor Risk Summary · Trust Score Trends · Compliance Status · Renewal Pipeline · Executive Recommendations.</div>
               </div>
@@ -827,7 +827,7 @@ export default function LandingPage() {
             }}>
               {[
                 { icon: "🔗", title: "Connected Data Model",      desc: "Every vendor, risk, control, evidence, and audit is linked. Changes propagate across modules automatically — no manual reconciliation." },
-                { icon: "✦",  title: "Shared AI Layer",           desc: "The Governance Copilot&#8482; and AI Agents operate on your complete governance graph — not isolated module data." },
+                { icon: "✦",  title: "Shared AI Layer",           desc: "The Governance Copilot™ and AI Agents operate on your complete governance graph — not isolated module data." },
                 { icon: "📡", title: "Continuous Signal Engine",  desc: "Trust scores, compliance readiness, and risk posture update in real time as vendor data changes." },
                 { icon: "◎",  title: "Audit-Ready Always",        desc: "Maintain audit-ready evidence, controls, and documentation 365 days a year — not just before audit season." },
                 { icon: "◻",  title: "Policy &amp; Control Management", desc: "Manage policies, controls, and frameworks with version history and attestation workflows." },
@@ -896,7 +896,7 @@ export default function LandingPage() {
                   background: "rgba(73,51,214,0.08)", border: "1px solid rgba(73,51,214,0.25)",
                   fontSize: "13px", fontWeight: 700, color: "var(--text)", textDecoration: "none",
                 }}>
-                  Visit Trust Center &#8594;
+                  Visit Trust Center →
                 </a>
               </div>
             </div>
@@ -925,9 +925,9 @@ export default function LandingPage() {
               background: "#FFFFFF",
               border: "1px solid #E4E8EF",
             }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Live Today &#8212; 32 Modules</div>
+              <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#4ade80", marginBottom: "1rem" }}>Live Today — 32 Modules</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                {["Vendor Governance + Lifecycle", "Risk, Compliance &amp; Audit", "Trust Intelligence + Monitoring", "AI Governance + Regulatory Intel", "Trust Network + Verification", "Security Command Center&#8482;", "Governance Agent Framework&#8482;", "Trust Operations Engine&#8482;"].map((item) => (
+                {["Vendor Governance + Lifecycle", "Risk, Compliance &amp; Audit", "Trust Intelligence + Monitoring", "AI Governance + Regulatory Intel", "Trust Network + Verification", "Security Command Center™", "Governance Agent Framework™", "Trust Operations Engine™"].map((item) => (
                   <div key={item} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13px", color: "var(--text-dim)" }}>
                     <span style={{ color: "#4ade80", fontSize: "10px", flexShrink: 0 }}>●</span><span dangerouslySetInnerHTML={{ __html: item }} />
                   </div>
@@ -1062,7 +1062,7 @@ export default function LandingPage() {
               </table>
               <div style={{ textAlign: "center" as const, marginTop: "0.75rem" }}>
                 <a href="/trust/support" style={{ fontSize: "12px", color: "var(--blue)", textDecoration: "none" }}>
-                  Full SLA documentation &#8594;
+                  Full SLA documentation →
                 </a>
               </div>
             </div>
@@ -1082,7 +1082,7 @@ export default function LandingPage() {
             </p>
             <div className="cta-final__btns">
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
-              <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial &#8594;</a>
+              <a href="/signup" className="btn btn--ghost btn--lg">Start Free Trial →</a>
             </div>
             <p style={{ fontSize: "11px", color: "rgba(154,160,181,0.5)", marginTop: "1.25rem" }}>
               By signing up you agree to our{" "}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -42,7 +42,7 @@ export default function PlatformPage() {
               <span className="grad-text">OS for Modern Teams.</span>
             </h1>
             <p className="hero__sub" style={{ margin: "0 auto 34px" }}>
-              32 modules. One platform. Vendor governance, risk, compliance, audits, regulatory intelligence, AI governance, and continuous monitoring &#8212; unified through a shared intelligence layer.
+              32 modules. One platform. Vendor governance, risk, compliance, audits, regulatory intelligence, AI governance, and continuous monitoring — unified through a shared intelligence layer.
             </p>
             <div className="hero__cta" style={{ justifyContent: "center" }}>
               <a href="mailto:hello@audt.tech?subject=AUDT%20Demo%20Request" className="btn btn--primary btn--lg">Book Demo</a>
@@ -59,7 +59,7 @@ export default function PlatformPage() {
             <span className="eyebrow">Architecture</span>
             <h2>Built For Complete Governance.</h2>
             <p>
-              AUDT connects every governance domain into a single intelligent platform &#8212; from vendor management through regulatory intelligence, all sharing one data model and AI layer.
+              AUDT connects every governance domain into a single intelligent platform — from vendor management through regulatory intelligence, all sharing one data model and AI layer.
             </p>
           </div>
 
@@ -240,10 +240,10 @@ export default function PlatformPage() {
       <section className="section section--alt" id="trust-operations-engine">
         <div className="container">
           <div className="section__head reveal">
-            <span className="eyebrow">Trust Operations Engine&#8482;</span>
+            <span className="eyebrow">Trust Operations Engine™</span>
             <h2>Governance That Runs 24/7.</h2>
             <p>
-              Most platforms record what happened. The Trust Operations Engine&#8482; orchestrates what happens next &#8212; connecting every governance event to the right workflow, approval, and AI decision automatically.
+              Most platforms record what happened. The Trust Operations Engine™ orchestrates what happens next — connecting every governance event to the right workflow, approval, and AI decision automatically.
             </p>
           </div>
 
@@ -252,7 +252,7 @@ export default function PlatformPage() {
               {
                 icon: "&#9889;",
                 title: "Event Engine",
-                desc: "37 built-in event types capture every meaningful governance action &#8212; vendor status changes, evidence expiry, risk score drops, compliance gaps, CAPA breaches, and more.",
+                desc: "37 built-in event types capture every meaningful governance action — vendor status changes, evidence expiry, risk score drops, compliance gaps, CAPA breaches, and more.",
                 stat: "37 event types",
               },
               {
@@ -264,7 +264,7 @@ export default function PlatformPage() {
               {
                 icon: "&#129302;",
                 title: "Automation Engine",
-                desc: "If-this-then-that governance automation. Define rules that connect any event to any action &#8212; create risk, assign task, request evidence, escalate for approval &#8212; with no code.",
+                desc: "If-this-then-that governance automation. Define rules that connect any event to any action — create risk, assign task, request evidence, escalate for approval — with no code.",
                 stat: "No-code automation",
               },
               {
@@ -308,7 +308,7 @@ export default function PlatformPage() {
           }}>
             <div>
               <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--text)", marginBottom: "6px" }}>
-                Every signal &#8594; right workflow &#8594; right person &#8594; audit trail.
+                Every signal → right workflow → right person → audit trail.
               </div>
               <div style={{ fontSize: "13px", color: "var(--text-dim)" }}>
                 No manual chasing. No missed events. Governance that closes the loop automatically.

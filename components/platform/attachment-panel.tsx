@@ -188,11 +188,11 @@ export function AttachmentPanel({ entityType, entityId, entityName, attachments,
                 </div>
                 <div className="flex items-center gap-2 mt-0.5 text-[11px] text-[var(--color-ink-dim)]">
                   <span>{formatBytes(a.file_size)}</span>
-                  <span>&#8212;</span>
+                  <span>—</span>
                   <span>{formatDate(a.created_at)}</span>
                   {a.uploaded_by_name && (
                     <>
-                      <span>&#8212;</span>
+                      <span>—</span>
                       <span>{a.uploaded_by_name}</span>
                     </>
                   )}

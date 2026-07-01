@@ -59,7 +59,7 @@ export default async function ComplianceControlsPage() {
             <ShieldCheck className="mx-auto mb-3 h-10 w-10 text-[var(--color-ink-faint)]" />
             <p className="text-sm text-[var(--color-ink-dim)]">No controls yet. Add a compliance framework to get started.</p>
             <Link href="/compliance/frameworks/new" className="mt-3 inline-block text-xs text-[var(--color-blue)] hover:underline">
-              Add framework &#8594;
+              Add framework →
             </Link>
           </div>
         </Card>

@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+﻿import { NextRequest } from "next/server";
 import { requireUser } from "@/lib/auth/session";
 import { ok, err } from "@/lib/api/response";
 import { findAlerts } from "@/lib/repositories/governance-alerts-repo";
@@ -10,13 +10,13 @@ function severityToType(severity: string): "alert" | "warning" | "info" | "succe
 }
 
 function alertToModule(alertType: string): string {
-  if (alertType.startsWith("vendor")) return "Vendor Hub&#8482;";
-  if (alertType.startsWith("risk") || alertType.startsWith("open_critical")) return "Risk Lens&#8482;";
-  if (alertType.startsWith("control")) return "Control Center&#8482;";
-  if (alertType.startsWith("evidence") || alertType.startsWith("expir")) return "Evidence Vault&#8482;";
-  if (alertType.startsWith("capa") || alertType.startsWith("overdue")) return "Audit Management&#8482;";
-  if (alertType.startsWith("issue")) return "Issue Hub&#8482;";
-  return "Trust Intelligence&#8482;";
+  if (alertType.startsWith("vendor")) return "Vendor Hub™";
+  if (alertType.startsWith("risk") || alertType.startsWith("open_critical")) return "Risk Lens™";
+  if (alertType.startsWith("control")) return "Control Center™";
+  if (alertType.startsWith("evidence") || alertType.startsWith("expir")) return "Evidence Vault™";
+  if (alertType.startsWith("capa") || alertType.startsWith("overdue")) return "Audit Management™";
+  if (alertType.startsWith("issue")) return "Issue Hub™";
+  return "Trust Intelligence™";
 }
 
 function alertToHref(alertType: string, entityType?: string | null): string {

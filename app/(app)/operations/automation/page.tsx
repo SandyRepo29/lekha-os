@@ -44,7 +44,7 @@ export default async function AutomationPage() {
 
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Automation Engine&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Automation Engine™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             Event-driven automation rules. When a governance event occurs, automatically trigger actions.
           </p>
@@ -94,7 +94,7 @@ export default async function AutomationPage() {
                     </div>
                     <div className="mt-1 text-[11px] text-[var(--color-ink-dim)]">
                       Ran {rule.run_count} times
-                      {rule.last_run_at && ` &#183; last ${new Date(rule.last_run_at).toLocaleDateString()}`}
+                      {rule.last_run_at && ` · last ${new Date(rule.last_run_at).toLocaleDateString()}`}
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -121,7 +121,7 @@ export default async function AutomationPage() {
               <div key={rule.id} className="flex items-center justify-between gap-3 rounded-xl border border-[var(--color-line)] p-3 opacity-60">
                 <div>
                   <div className="text-sm font-medium">{rule.name}</div>
-                  <div className="mt-0.5 text-[11px] text-[var(--color-ink-dim)] font-mono">{rule.trigger_event} &#8594; {ACTION_LABELS[rule.action_type] ?? rule.action_type}</div>
+                  <div className="mt-0.5 text-[11px] text-[var(--color-ink-dim)] font-mono">{rule.trigger_event} → {ACTION_LABELS[rule.action_type] ?? rule.action_type}</div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ToggleRuleButton ruleId={rule.id} active={rule.active} />

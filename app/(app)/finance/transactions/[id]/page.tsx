@@ -25,7 +25,7 @@ type FinanceAction = {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function fmtDate(d: Date | string | null | undefined): string {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -284,7 +284,7 @@ export default async function TransactionDetailPage({
 
               <DetailRow label="Payment Method">
                 <span className="capitalize">
-                  {invoice.paymentMethod?.replace(/_/g, " ") ?? "&#8212;"}
+                  {invoice.paymentMethod?.replace(/_/g, " ") ?? "—"}
                 </span>
               </DetailRow>
 

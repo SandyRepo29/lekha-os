@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { FileText, Download, ExternalLink } from "lucide-react";
@@ -6,13 +6,13 @@ import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 
 const REPORTS = [
-  { title: "Executive Trust Report",   description: "Board-ready executive summary of organizational Trust Score&#8482;, trend, factors, and benchmarking.", href: "/trust-score/insights",          type: "live" as const },
+  { title: "Executive Trust Report",   description: "Board-ready executive summary of organizational Trust Score™, trend, factors, and benchmarking.", href: "/trust-score/insights",          type: "live" as const },
   { title: "Vendor Trust Report",      description: "Full vendor trust portfolio with scores, heatmap, and ranking by trust level.", href: "/trust-score/vendors",           type: "live" as const },
-  { title: "Trust Trend Report",       description: "30, 90, and 365-day Trust Score&#8482; history with monthly sparkline and drift analysis.", href: "/trust-score/trends",            type: "live" as const },
+  { title: "Trust Trend Report",       description: "30, 90, and 365-day Trust Score™ history with monthly sparkline and drift analysis.", href: "/trust-score/trends",            type: "live" as const },
   { title: "Trust Benchmark Report",   description: "Industry peer comparison across 5 sectors with percentile ranking and maturity classification.", href: "/trust-score/benchmarking",       type: "live" as const },
   { title: "Trust Forecast Report",    description: "30 and 90-day predictive trust trajectory based on current governance velocity.", href: "/trust-score",                   type: "live" as const },
-  { title: "Trust Factor Report",      description: "Detailed breakdown of all 8 Trust Score&#8482; components with source module links and contribution analysis.", href: "/trust-score/factors",           type: "live" as const },
-  { title: "Board Trust Summary",      description: "AI-narrated board governance summary including Trust Score&#8482;, benchmark position, and top risks.", href: "/executive-reporting/board-reports", type: "pdf" as const },
+  { title: "Trust Factor Report",      description: "Detailed breakdown of all 8 Trust Score™ components with source module links and contribution analysis.", href: "/trust-score/factors",           type: "live" as const },
+  { title: "Board Trust Summary",      description: "AI-narrated board governance summary including Trust Score™, benchmark position, and top risks.", href: "/executive-reporting/board-reports", type: "pdf" as const },
   { title: "Compliance Executive PDF", description: "AI-narrated executive compliance summary across all active frameworks.", href: "/reports/compliance/executive",  type: "pdf" as const },
   { title: "Vendor Trust CSV",         description: "Download all vendor trust scores with component breakdown.", href: "/vendors/export",                type: "csv" as const },
   { title: "Risk Register CSV",        description: "Download all open risks with trust impact scores.", href: "/reports/risks/csv",             type: "csv" as const },
@@ -33,7 +33,7 @@ export default async function TrustReportsPage() {
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Reports</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          Export and access all Trust Score&#8482; intelligence &#8212; board summaries, benchmarks, and data exports.
+          Export and access all Trust Score™ intelligence — board summaries, benchmarks, and data exports.
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

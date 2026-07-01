@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Shield, CheckCircle, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Data Protection &#8212; AUDT Trust Center",
+  title: "Data Protection — AUDT Trust Center",
   description: "Row-Level Security, tenant isolation, India data residency, and your rights over your data.",
 };
 
@@ -43,16 +43,16 @@ export default function DataProtectionPage() {
       <div className="space-y-6">
         <Card title="India Data Residency">
           <p className="text-sm text-[var(--color-ink-dim)] mb-4">
-            All customer data &#8212; primary database, file storage, and compute &#8212; is located in India.
+            All customer data — primary database, file storage, and compute — is located in India.
             This directly supports compliance with India&#8217;s DPDP Act 2023, RBI Circular on IT Governance,
             and SEBI CSCRF requirements for data localisation.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              ["Database", "Supabase Postgres &#8212; AWS ap-south-1 (Mumbai)"],
-              ["File storage", "Supabase Storage &#8212; AWS ap-south-1 (Mumbai)"],
+              ["Database", "Supabase Postgres — AWS ap-south-1 (Mumbai)"],
+              ["File storage", "Supabase Storage — AWS ap-south-1 (Mumbai)"],
               ["Application compute", "Vercel bom1 region (Mumbai)"],
-              ["AI processing", "Gemini API &#8212; data not retained by Google"],
+              ["AI processing", "Gemini API — data not retained by Google"],
             ].map(([label, value]) => (
               <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <div className="text-xs font-medium text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: label }} />
@@ -70,11 +70,11 @@ export default function DataProtectionPage() {
           </p>
           <ul className="space-y-2">
             {[
-              "RLS enabled on all 259+ tables &#8212; without exception",
+              "RLS enabled on all 259+ tables — without exception",
               "Custom PL/pgSQL helpers: is_org_member() and has_org_role() on every policy",
               "Junction tables validated via EXISTS subqueries, not joins",
               "Global catalogue rows (frameworks, regulations) use OR organization_id IS NULL",
-              "Enforced at PostgreSQL level &#8212; cannot be bypassed from application code",
+              "Enforced at PostgreSQL level — cannot be bypassed from application code",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-dim)]">
                 <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
@@ -93,9 +93,9 @@ export default function DataProtectionPage() {
             {[
               "Every row in every table contains an organization_id foreign key",
               "Session validation enforces org membership on every request",
-              "API keys are org-scoped &#8212; no cross-org API access",
-              "File storage paths are tenant-prefixed &#8212; tenant_{org_id}/ prefix on all uploads",
-              "Audit logs are org-scoped &#8212; no audit trail leaks across tenants",
+              "API keys are org-scoped — no cross-org API access",
+              "File storage paths are tenant-prefixed — tenant_{org_id}/ prefix on all uploads",
+              "Audit logs are org-scoped — no audit trail leaks across tenants",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-dim)]">
                 <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
@@ -107,7 +107,7 @@ export default function DataProtectionPage() {
 
         <Card title="DPDP Act 2023 Readiness">
           <p className="text-sm text-[var(--color-ink-dim)] mb-4">
-            AUDT&#8217;s DPDP Privacy&#8482; module is purpose-built for India&#8217;s Digital Personal Data Protection Act 2023.
+            AUDT&#8217;s DPDP Privacy™ module is purpose-built for India&#8217;s Digital Personal Data Protection Act 2023.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
@@ -117,7 +117,7 @@ export default function DataProtectionPage() {
               "Retention policy management",
               "Privacy Impact Assessments",
               "Cross-border transfer documentation",
-              "Privacy Trust Score&#8482; per data asset",
+              "Privacy Trust Score™ per data asset",
               "DPO-ready reporting",
             ].map((item) => (
               <div key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-dim)]">
@@ -134,9 +134,9 @@ export default function DataProtectionPage() {
           </p>
           <ul className="space-y-2">
             {[
-              "Export Tenant Data &#8212; ZIP of all your data as CSVs, available via Settings &#8213; Data Governance",
-              "Data deletion request &#8212; initiated via Settings &#8213; Data Governance, processed within 30 days",
-              "API available &#8212; GET /api/export/tenant-data (session auth)",
+              "Export Tenant Data — ZIP of all your data as CSVs, available via Settings &#8213; Data Governance",
+              "Data deletion request — initiated via Settings &#8213; Data Governance, processed within 30 days",
+              "API available — GET /api/export/tenant-data (session auth)",
               "Audit log of all export and deletion events",
               "On account termination, data is purged from all systems within 90 days",
             ].map((item) => (
@@ -156,9 +156,9 @@ export default function DataProtectionPage() {
             {[
               "Default retention: 90 days for audit logs and governance events",
               "Configurable retention policies per data category",
-              "Automated daily database backups &#8212; encrypted at rest",
+              "Automated daily database backups — encrypted at rest",
               "Point-in-time recovery available on Supabase",
-              "Backups stored in ap-south-1 &#8212; remain within India",
+              "Backups stored in ap-south-1 — remain within India",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-dim)]">
                 <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
@@ -174,7 +174,7 @@ export default function DataProtectionPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

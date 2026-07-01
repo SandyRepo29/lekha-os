@@ -109,7 +109,7 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
               <span className="text-xs text-[var(--color-ink-faint)]">{label}</span>
             </div>
             <span className="text-2xl font-bold text-[var(--color-ink)]">
-              {value ?? "&#8212;"}
+              {value ?? "—"}
             </span>
             <span className="text-xs text-[var(--color-ink-faint)]">{suffix}</span>
           </Card>
@@ -258,11 +258,11 @@ export function RenewalWorkspace({ vendorId, vendorName, currentState, assessmen
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-[var(--color-ink)]">
                       {cfg ? <span className={`font-semibold ${cfg.color}`}>{cfg.label}</span> : "Assessment"}
-                      {a.confidence_score ? ` &#183; ${a.confidence_score}% confidence` : ""}
+                      {a.confidence_score ? ` · ${a.confidence_score}% confidence` : ""}
                     </p>
                     <p className="text-xs text-[var(--color-ink-faint)]">
                       {new Date(a.assessment_date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                      {a.conducted_by ? ` &#183; ${a.conducted_by}` : ""}
+                      {a.conducted_by ? ` · ${a.conducted_by}` : ""}
                     </p>
                   </div>
                   <span className="text-[10px] font-medium uppercase tracking-wider text-[var(--color-ink-faint)]">{a.status}</span>

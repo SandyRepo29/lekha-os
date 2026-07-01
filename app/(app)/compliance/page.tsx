@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Evidence Vault&#8482; — AUDT' };
+export const metadata = { title: 'Evidence Vault™ — AUDT' };
 
 import Link from "next/link";
 import { ShieldCheck, Plus, AlertTriangle, CheckCircle2, FileSearch, BookCheck, BarChart3, Sparkles } from "lucide-react";
@@ -78,7 +78,7 @@ export default async function ComplianceDashboardPage() {
         <div className="flex items-center gap-2">
           <Link href="/compliance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Compliance Officer&#8482;
+            AI Compliance Officer™
           </Link>
           <Link href="/compliance/frameworks/new">
             <Button variant="primary" size="md">
@@ -232,7 +232,7 @@ export default async function ComplianceDashboardPage() {
             <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
               <div className="mb-3 flex items-center gap-2">
                 <BarChart3 className="h-4 w-4 text-[var(--color-blue)]" />
-                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Intelligence&#8482;</h2>
+                <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Intelligence™</h2>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <EvidenceHealthStat label="Total Evidence"    value={totalEvidence} color="text-[var(--color-blue)]" />
@@ -242,7 +242,7 @@ export default async function ComplianceDashboardPage() {
               </div>
               <div className="mt-3 flex gap-2">
                 <Link href="/compliance/evidence" className="text-xs text-[var(--color-blue)] hover:underline">Browse Evidence &rarr;</Link>
-                <span className="text-[var(--color-ink-faint)]">&#183;</span>
+                <span className="text-[var(--color-ink-faint)]">·</span>
                 <Link href="/compliance/controls" className="text-xs text-[var(--color-blue)] hover:underline">View Controls Coverage &rarr;</Link>
               </div>
             </div>

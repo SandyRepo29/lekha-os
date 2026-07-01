@@ -29,33 +29,33 @@ import { getBillingOverview, seedDefaultPlans, ensureStarterSubscription } from 
 const PLAN_HIGHLIGHTS: Record<string, string[]> = {
   Starter: [
     "5 users",
-    "Vendor Hub&#8482; (50 vendors)",
-    "Evidence Vault&#8482;",
+    "Vendor Hub™ (50 vendors)",
+    "Evidence Vault™",
     "Basic compliance frameworks",
     "Community support",
   ],
   Growth: [
     "10 users",
     "All Core GRC modules",
-    "DPDP Privacy&#8482; &amp; Contract Governance&#8482;",
-    "Trust Intelligence&#8482;",
+    "DPDP Privacy™ &amp; Contract Governance™",
+    "Trust Intelligence™",
     "5 compliance frameworks",
-    "Governance Copilot&#8482; AI",
+    "Governance Copilot™ AI",
   ],
   Business: [
     "50 users",
     "All 32 modules",
-    "Governance Agent Framework&#8482;",
-    "Continuous Compliance&#8482;",
-    "Security Command Center&#8482;",
-    "Integration Hub&#8482; (35+ connectors)",
-    "Auditor Collaboration&#8482;",
+    "Governance Agent Framework™",
+    "Continuous Compliance™",
+    "Security Command Center™",
+    "Integration Hub™ (35+ connectors)",
+    "Auditor Collaboration™",
   ],
   Enterprise: [
     "Unlimited users",
     "Customer Managed Encryption",
     "Custom SAML/OIDC SSO",
-    "Dedicated Governance Agents&#8482;",
+    "Dedicated Governance Agents™",
     "Custom frameworks &amp; controls",
     "SLA guarantees",
     "Dedicated success manager",
@@ -208,7 +208,7 @@ function formatAmt(amountCents: number, currency: string): string {
 }
 
 function fmtDate(d: Date | string | null | undefined): string {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -310,7 +310,7 @@ export default async function BillingPage() {
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-semibold text-red-300">
-              Payment overdue &#8212; grace period active
+              Payment overdue — grace period active
             </p>
             <p className="text-xs text-red-400/80">
               Your account access ends{" "}
@@ -435,7 +435,7 @@ export default async function BillingPage() {
             {/* Cancel at period end notice */}
             {subscription?.cancelAtPeriodEnd && periodEnd && (
               <p className="text-xs text-red-400">
-                Cancellation scheduled &#8212; access until {fmtDate(periodEnd)}.
+                Cancellation scheduled — access until {fmtDate(periodEnd)}.
               </p>
             )}
 
@@ -533,7 +533,7 @@ export default async function BillingPage() {
                   {fmtINR(creditBalanceCents)}
                 </p>
                 <p className="text-xs text-emerald-400/70">
-                  in account credits &#8212; applied automatically to your next
+                  in account credits — applied automatically to your next
                   invoice
                 </p>
               </div>
@@ -601,11 +601,11 @@ export default async function BillingPage() {
                         >
                           <td className="py-3">
                             <span className="font-mono text-xs font-medium text-[var(--color-ink)]">
-                              {invNumber || "&#8212;"}
+                              {invNumber || "—"}
                             </span>
                           </td>
                           <td className="py-3 text-xs text-[var(--color-ink-dim)]">
-                            {invDate ? fmtDate(invDate as string) : "&#8212;"}
+                            {invDate ? fmtDate(invDate as string) : "—"}
                           </td>
                           <td className="py-3 font-semibold text-[var(--color-ink)]">
                             {formatAmt(invCents, invCurrency)}
@@ -653,7 +653,7 @@ export default async function BillingPage() {
                   href="/settings/billing/invoices"
                   className="text-xs text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink)]"
                 >
-                  View all invoices &#8594;
+                  View all invoices →
                 </Link>
               </div>
             </CardContent>
@@ -738,7 +738,7 @@ export default async function BillingPage() {
             </details>
 
             <p className="text-xs text-[var(--color-ink-faint)]">
-              Subscription activates within 1&#8211;2 business days of payment
+              Subscription activates within 1–2 business days of payment
               confirmation. For urgent queries contact{" "}
               <a
                 href="mailto:finance@audt.tech"
@@ -785,5 +785,5 @@ const HOW_TO_PAY_STEPS: string[] = [
   `Transfer the <strong>exact invoice amount</strong> to the AUDT bank account above via NEFT / RTGS / IMPS or UPI.`,
   `Use your <strong>invoice number</strong> (e.g. <span class="font-mono text-xs">AUDT-2026-0001</span>) as the payment reference / narration.`,
   `Email your <strong>UTR / transaction ID</strong> to <a href="mailto:finance@audt.tech" class="text-indigo-400 hover:underline">finance@audt.tech</a> along with your invoice number.`,
-  `Our finance team <strong>verifies payment within 1&#8211;2 business days</strong> and activates your subscription.`,
+  `Our finance team <strong>verifies payment within 1–2 business days</strong> and activates your subscription.`,
 ];

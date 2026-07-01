@@ -60,7 +60,7 @@ function ActionBadge({ action }: { action: string }) {
 }
 
 function PaymentMethodBadge({ method }: { method: string | null }) {
-  if (!method) return <span className="text-[var(--color-ink-dim)] text-xs">&#8212;</span>;
+  if (!method) return <span className="text-[var(--color-ink-dim)] text-xs">—</span>;
   const labels: Record<string, string> = {
     bank_transfer: "Bank Transfer",
     upi: "UPI",
@@ -168,7 +168,7 @@ export default async function FinanceConsolePage() {
             href="/finance/pending"
             className="text-xs text-[var(--color-blue)] hover:underline"
           >
-            View All Pending &#8594;
+            View All Pending →
           </Link>
         </div>
 

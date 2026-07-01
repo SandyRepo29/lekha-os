@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Trust Intelligence&#8482; — AUDT' };
+export const metadata = { title: 'Trust Intelligence™ — AUDT' };
 
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
@@ -22,7 +22,7 @@ export default async function TrustIntelligencePage() {
       <Card>
         <EmptyState
           icon={Sparkles}
-          title="Trust Intelligence&#8482;"
+          title="Trust Intelligence™"
           description="Connect Supabase to unlock Organizational Trust Intelligence."
         />
       </Card>
@@ -137,7 +137,7 @@ export default async function TrustIntelligencePage() {
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-[var(--color-blue)]" />
-            Trust Intelligence&#8482;
+            Trust Intelligence™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             Organizational governance command center
@@ -154,7 +154,7 @@ export default async function TrustIntelligencePage() {
           <OrgTrustScoreRing score={score.overall} size={140} />
           <div className="text-center">
             <OrgTrustBadge score={score.overall} />
-            <p className="mt-2 text-xs text-[var(--color-ink-faint)]">Organizational Trust Score&#8482;</p>
+            <p className="mt-2 text-xs text-[var(--color-ink-faint)]">Organizational Trust Score™</p>
           </div>
         </Card>
 
@@ -165,9 +165,9 @@ export default async function TrustIntelligencePage() {
               const momentum = momentumRows.find((m) => m.key === key);
               const trendArrow =
                 momentum?.dir === "improving" ? (
-                  <span className="text-emerald-400 text-xs font-bold" title={`+${momentum.delta} pts`}>&#8593;</span>
+                  <span className="text-emerald-400 text-xs font-bold" title={`+${momentum.delta} pts`}>↑</span>
                 ) : momentum?.dir === "declining" ? (
-                  <span className="text-red-400 text-xs font-bold" title={`${momentum.delta} pts`}>&#8595;</span>
+                  <span className="text-red-400 text-xs font-bold" title={`${momentum.delta} pts`}>↓</span>
                 ) : null;
               return (
                 <div key={key} className="flex items-center gap-2">
@@ -198,7 +198,7 @@ export default async function TrustIntelligencePage() {
       {/* Drivers & Detractors */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
-          <p className="text-sm font-semibold text-emerald-400 mb-3">Trust Drivers&#8482;</p>
+          <p className="text-sm font-semibold text-emerald-400 mb-3">Trust Drivers™</p>
           {score.drivers.length === 0 ? (
             <p className="text-xs text-[var(--color-ink-faint)]">No positive drivers detected yet.</p>
           ) : (
@@ -213,7 +213,7 @@ export default async function TrustIntelligencePage() {
           )}
         </Card>
         <Card className="p-5">
-          <p className="text-sm font-semibold text-red-400 mb-3">Trust Detractors&#8482;</p>
+          <p className="text-sm font-semibold text-red-400 mb-3">Trust Detractors™</p>
           {score.detractors.length === 0 ? (
             <p className="text-xs text-[var(--color-ink-faint)]">No detractors detected.</p>
           ) : (
@@ -232,7 +232,7 @@ export default async function TrustIntelligencePage() {
       {/* ── Trust Explainability™ ─────────────────────────────────────────── */}
       <Card className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 space-y-4">
         <div>
-          <p className="text-sm font-semibold text-[var(--color-ink)]">Trust Explainability&#8482;</p>
+          <p className="text-sm font-semibold text-[var(--color-ink)]">Trust Explainability™</p>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
             How each component is contributing to or hurting your overall score
           </p>
@@ -300,7 +300,7 @@ export default async function TrustIntelligencePage() {
       {/* ── Trust Change Analysis™ ────────────────────────────────────────── */}
       <Card className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 space-y-4">
         <div>
-          <p className="text-sm font-semibold text-[var(--color-ink)]">Trust Change Analysis&#8482;</p>
+          <p className="text-sm font-semibold text-[var(--color-ink)]">Trust Change Analysis™</p>
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
             Score movement over the last 30 days
           </p>
@@ -319,11 +319,11 @@ export default async function TrustIntelligencePage() {
             <>
               <div className="flex items-center gap-1">
                 {scoreDelta > 0 ? (
-                  <span className="text-emerald-400 font-semibold text-lg">&#8593;</span>
+                  <span className="text-emerald-400 font-semibold text-lg">↑</span>
                 ) : scoreDelta < 0 ? (
-                  <span className="text-red-400 font-semibold text-lg">&#8595;</span>
+                  <span className="text-red-400 font-semibold text-lg">↓</span>
                 ) : (
-                  <span className="text-[var(--color-ink-faint)] font-semibold text-lg">&#8594;</span>
+                  <span className="text-[var(--color-ink-faint)] font-semibold text-lg">→</span>
                 )}
                 <span
                   className={`text-sm font-semibold ${
@@ -343,13 +343,13 @@ export default async function TrustIntelligencePage() {
               </div>
             </>
           ) : (
-            <span className="text-xs text-[var(--color-ink-faint)]">No previous snapshot &#8212; take a snapshot daily to track changes</span>
+            <span className="text-xs text-[var(--color-ink-faint)]">No previous snapshot — take a snapshot daily to track changes</span>
           )}
 
           {/* Trend alert chips */}
           {scoreDelta !== null && scoreDelta < -5 && (
             <span className="ml-auto rounded-full bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 text-xs font-semibold">
-              Trust is declining &#8212; immediate action required
+              Trust is declining — immediate action required
             </span>
           )}
           {scoreDelta !== null && scoreDelta > 3 && (
@@ -383,7 +383,7 @@ export default async function TrustIntelligencePage() {
           <Link key={href} href={href}>
             <Card className="p-4 hover:bg-[#F8F9FB] transition-colors cursor-pointer flex items-center justify-between">
               <span className="text-sm font-medium text-[var(--color-ink)]">{label}</span>
-              <span className="text-[var(--color-blue)] text-sm">&#8594;</span>
+              <span className="text-[var(--color-blue)] text-sm">→</span>
             </Card>
           </Link>
         ))}
@@ -417,7 +417,7 @@ export default async function TrustIntelligencePage() {
       <Card className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>
-            <p className="text-sm font-semibold text-[var(--color-ink)]">Governance Momentum&#8482;</p>
+            <p className="text-sm font-semibold text-[var(--color-ink)]">Governance Momentum™</p>
             <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
               Component-level trend direction over the last 30 days
             </p>
@@ -439,17 +439,17 @@ export default async function TrustIntelligencePage() {
               <div className="flex items-center gap-2 shrink-0">
                 {row.dir === "improving" && (
                   <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 text-xs font-semibold flex items-center gap-1">
-                    &#8593; Improving
+                    ↑ Improving
                   </span>
                 )}
                 {row.dir === "stable" && (
                   <span className="rounded-full bg-[#EEF2F7] text-[var(--color-ink-faint)] border border-[var(--color-line)] px-2 py-0.5 text-xs font-semibold flex items-center gap-1">
-                    &#8594; Stable
+                    → Stable
                   </span>
                 )}
                 {row.dir === "declining" && (
                   <span className="rounded-full bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 text-xs font-semibold flex items-center gap-1">
-                    &#8595; Declining
+                    ↓ Declining
                   </span>
                 )}
                 {row.delta !== null && (

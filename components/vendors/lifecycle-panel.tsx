@@ -164,8 +164,8 @@ export function LifecyclePanel({ vendorId, currentState, history, canEdit }: Pro
                     <p className="mt-1 text-xs text-[var(--color-ink-faint)]">{h.transition_reason}</p>
                   )}
                   <p className="mt-1 text-[10px] text-[var(--color-ink-faint)]">
-                    {h.actor_name ?? "System"} &#183; {new Date(h.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                    {h.triggered_by !== "manual" && ` &#183; ${h.triggered_by}`}
+                    {h.actor_name ?? "System"} · {new Date(h.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                    {h.triggered_by !== "manual" && ` · ${h.triggered_by}`}
                   </p>
                 </div>
               </div>

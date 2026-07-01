@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -28,7 +28,7 @@ export default async function AiCompliancePage() {
       <CcSubNav />
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Copilot&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Compliance Copilot™</h1>
         <p className="text-sm text-[var(--color-ink-dim)]">AI-powered continuous compliance analysis, drift detection, and executive reporting</p>
       </div>
 

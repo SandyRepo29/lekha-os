@@ -61,10 +61,10 @@ export default async function TrustAiPage({
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Bot className="h-6 w-6 text-indigo-400" />
-          Trust Copilot&#8482;
+          Trust Copilot™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          AI Trust Advisor&#8482; &#8212; explain scores, predict changes, identify risks, and generate board summaries.
+          AI Trust Advisor™ — explain scores, predict changes, identify risks, and generate board summaries.
         </p>
       </div>
 
@@ -90,7 +90,7 @@ export default async function TrustAiPage({
             <div className="mt-4 grid grid-cols-3 gap-3 text-center">
               <div className="rounded-xl bg-white p-3">
                 <p className="text-lg font-bold">{orgScore}</p>
-                <p className="text-xs text-[var(--color-ink-dim)]">Trust Score&#8482;</p>
+                <p className="text-xs text-[var(--color-ink-dim)]">Trust Score™</p>
               </div>
               <div className="rounded-xl bg-white p-3">
                 <p className="text-lg font-bold">{vendorScore}</p>
@@ -103,7 +103,7 @@ export default async function TrustAiPage({
             </div>
           </>
         ) : (
-          <p className="text-sm text-[var(--color-ink-dim)]">GEMINI_API_KEY not configured &#8212; AI unavailable.</p>
+          <p className="text-sm text-[var(--color-ink-dim)]">GEMINI_API_KEY not configured — AI unavailable.</p>
         )}
       </Card>
 
@@ -122,7 +122,7 @@ export default async function TrustAiPage({
       <Card className="p-6">
         <h2 className="font-semibold mb-3 flex items-center gap-2 text-sm">
           <Bot className="h-4 w-4 text-blue-400" />
-          Trust Copilot&#8482; Chat
+          Trust Copilot™ Chat
         </h2>
         <div className="mb-3 flex flex-wrap gap-2">
           {SUGGESTED_QUESTIONS.map((q) => (
@@ -140,7 +140,7 @@ export default async function TrustAiPage({
         </form>
         {chatResponse && (
           <div className="mt-4 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
-            <p className="text-xs font-medium text-blue-300 mb-1">Trust Copilot&#8482;</p>
+            <p className="text-xs font-medium text-blue-300 mb-1">Trust Copilot™</p>
             <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{chatResponse}</p>
           </div>
         )}

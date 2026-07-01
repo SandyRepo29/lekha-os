@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { FileText, Download, ExternalLink } from "lucide-react";
@@ -21,13 +21,13 @@ const REPORTS = [
   },
   {
     title:       "Vendor Compliance Report",
-    description: "Third-party vendor compliance posture &#8212; trust scores and non-compliant vendor list.",
+    description: "Third-party vendor compliance posture — trust scores and non-compliant vendor list.",
     href:        "/continuous-compliance/vendor-compliance",
     type:        "live",
   },
   {
     title:       "Compliance Timeline",
-    description: "90-day compliance score history &#8212; trend, drift analysis, and snapshot log.",
+    description: "90-day compliance score history — trend, drift analysis, and snapshot log.",
     href:        "/continuous-compliance/timeline",
     type:        "live",
   },
@@ -39,7 +39,7 @@ const REPORTS = [
   },
   {
     title:       "Evidence Health Report",
-    description: "Evidence monitoring status &#8212; current, expiring, and missing evidence items.",
+    description: "Evidence monitoring status — current, expiring, and missing evidence items.",
     href:        "/continuous-compliance/health",
     type:        "live",
   },

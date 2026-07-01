@@ -67,7 +67,7 @@ export default async function ExecutiveViewPage() {
   const q4Answer =
     highRecs.length > 0
       ? highRecs[0].action
-      : "Governance posture is healthy &#8212; maintain current controls";
+      : "Governance posture is healthy — maintain current controls";
 
   const keyQuestions = [
     {
@@ -114,7 +114,7 @@ export default async function ExecutiveViewPage() {
         <Card className="p-6 flex flex-col items-center justify-center gap-3 lg:col-span-1">
           <OrgTrustScoreRing score={score.overall} size={120} />
           <OrgTrustBadge score={score.overall} />
-          <p className="text-[10px] text-[var(--color-ink-faint)] text-center">Organizational Trust Score&#8482;</p>
+          <p className="text-[10px] text-[var(--color-ink-faint)] text-center">Organizational Trust Score™</p>
         </Card>
 
         <Card className="p-6 lg:col-span-4">
@@ -125,7 +125,7 @@ export default async function ExecutiveViewPage() {
           {summary ? (
             <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">{summary}</p>
           ) : (
-            <p className="text-sm text-[var(--color-ink-faint)]">AI summary unavailable &#8212; configure GEMINI_API_KEY to enable.</p>
+            <p className="text-sm text-[var(--color-ink-faint)]">AI summary unavailable — configure GEMINI_API_KEY to enable.</p>
           )}
         </Card>
       </div>
@@ -155,7 +155,7 @@ export default async function ExecutiveViewPage() {
       {/* Drivers / Detractors */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
-          <p className="text-sm font-semibold text-emerald-400 mb-3">Trust Drivers&#8482;</p>
+          <p className="text-sm font-semibold text-emerald-400 mb-3">Trust Drivers™</p>
           {score.drivers.length === 0
             ? <p className="text-xs text-[var(--color-ink-faint)]">No positive drivers detected.</p>
             : <ul className="space-y-1.5">{score.drivers.map((d) => (
@@ -166,7 +166,7 @@ export default async function ExecutiveViewPage() {
           }
         </Card>
         <Card className="p-5">
-          <p className="text-sm font-semibold text-red-400 mb-3">Trust Detractors&#8482;</p>
+          <p className="text-sm font-semibold text-red-400 mb-3">Trust Detractors™</p>
           {score.detractors.length === 0
             ? <p className="text-xs text-[var(--color-ink-faint)]">No detractors detected.</p>
             : <ul className="space-y-1.5">{score.detractors.map((d) => (
@@ -201,7 +201,7 @@ export default async function ExecutiveViewPage() {
       <Card className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60">
         <div className="flex items-center gap-2 mb-4">
           <Bot className="h-4 w-4 text-[var(--color-blue)]" />
-          <p className="text-sm font-semibold">Trust Decision Intelligence&#8482;</p>
+          <p className="text-sm font-semibold">Trust Decision Intelligence™</p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           {keyQuestions.map((q) => (

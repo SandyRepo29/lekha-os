@@ -28,7 +28,7 @@ export default async function VendorCompliancePage() {
         <CcSubNav />
         <Card className="p-8 text-center">
           <Network className="h-10 w-10 mx-auto mb-3 text-[var(--color-ink-dim)]" />
-          <p className="font-semibold">Vendor Compliance&#8482;</p>
+          <p className="font-semibold">Vendor Compliance™</p>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">Connect Supabase to view vendor compliance data.</p>
         </Card>
       </div>
@@ -48,7 +48,7 @@ export default async function VendorCompliancePage() {
       <CcSubNav />
 
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Compliance&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Compliance™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Third-party governance posture and compliance status</p>
       </div>
 
@@ -57,7 +57,7 @@ export default async function VendorCompliancePage() {
         {[
           { label: "Avg Trust Score",   value: `${avgScore}%`,    color: scoreColor(avgScore) },
           { label: "Compliant (&#8805;80)", value: compliant.length,  color: "text-emerald-400" },
-          { label: "At Risk (60&#8211;79)",  value: atRisk.length,     color: "text-amber-400" },
+          { label: "At Risk (60–79)",  value: atRisk.length,     color: "text-amber-400" },
           { label: "Non-Compliant",      value: nonComp.length,    color: nonComp.length > 0 ? "text-red-400" : "text-emerald-400" },
         ].map((s) => (
           <Card key={s.label} className="p-4">
@@ -144,7 +144,7 @@ export default async function VendorCompliancePage() {
             <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             <h2 className="text-sm font-semibold">Compliant Vendors</h2>
           </div>
-          <Link href="/vendors" className="text-xs text-[var(--color-blue)] hover:underline">All Vendors &#8594;</Link>
+          <Link href="/vendors" className="text-xs text-[var(--color-blue)] hover:underline">All Vendors →</Link>
         </div>
         {compliant.length === 0 ? (
           <div className="p-6 text-sm text-[var(--color-ink-dim)]">

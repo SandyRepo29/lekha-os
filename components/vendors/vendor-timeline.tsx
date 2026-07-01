@@ -197,13 +197,13 @@ export function VendorTimeline({ events, showFilters = true }: Props) {
                         {fromState && toState && (
                           <div className="mt-1.5 flex items-center gap-1.5">
                             <LifecycleBadge state={fromState} size="sm" />
-                            <span className="text-[10px] text-[var(--color-ink-faint)]">&#8594;</span>
+                            <span className="text-[10px] text-[var(--color-ink-faint)]">→</span>
                             <LifecycleBadge state={toState} size="sm" />
                           </div>
                         )}
 
                         <p className="mt-1 text-[10px] text-[var(--color-ink-faint)]">
-                          {ev.actor_name ? `${ev.actor_name} &#183; ` : ""}
+                          {ev.actor_name ? `${ev.actor_name} · ` : ""}
                           {new Date(ev.occurred_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
                         </p>
                       </div>

@@ -62,7 +62,7 @@ function fmtCurrency(cents: number, currency = "USD") {
 }
 
 function fmtDate(d: Date | string | null) {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   const date = typeof d === "string" ? new Date(d) : d;
   return date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 }
@@ -455,12 +455,12 @@ export default async function InvoicesPage({
 
                       {/* Organization */}
                       <td className="px-4 py-3 text-[var(--color-ink)] max-w-[160px] truncate">
-                        {row.orgName ?? <span className="text-[var(--color-ink-dim)]">&#8212;</span>}
+                        {row.orgName ?? <span className="text-[var(--color-ink-dim)]">—</span>}
                       </td>
 
                       {/* Plan */}
                       <td className="px-4 py-3 text-[var(--color-ink-dim)] whitespace-nowrap">
-                        {row.planName ?? <span>&#8212;</span>}
+                        {row.planName ?? <span>—</span>}
                       </td>
 
                       {/* Amount */}
@@ -483,7 +483,7 @@ export default async function InvoicesPage({
                             {fmtDate(row.dueAt)}
                           </span>
                         ) : (
-                          <span className="text-xs text-[var(--color-ink-dim)]">&#8212;</span>
+                          <span className="text-xs text-[var(--color-ink-dim)]">—</span>
                         )}
                       </td>
 
@@ -543,7 +543,7 @@ export default async function InvoicesPage({
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-xs text-[var(--color-ink-dim)]">
           <span>
-            Showing {(page - 1) * PAGE_SIZE + 1}&#8211;{Math.min(page * PAGE_SIZE, total)} of {total} invoices
+            Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of {total} invoices
           </span>
           <div className="flex items-center gap-1">
             {page > 1 && (
@@ -551,7 +551,7 @@ export default async function InvoicesPage({
                 href={qs({ page: String(page - 1) })}
                 className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
               >
-                &#8592; Previous
+                ← Previous
               </Link>
             )}
             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
@@ -585,7 +585,7 @@ export default async function InvoicesPage({
                 href={qs({ page: String(page + 1) })}
                 className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-1.5 hover:bg-[#F8F9FB] hover:text-[var(--color-ink)] transition-colors"
               >
-                Next &#8594;
+                Next →
               </Link>
             )}
           </div>

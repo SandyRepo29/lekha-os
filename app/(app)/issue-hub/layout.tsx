@@ -11,7 +11,7 @@ const NAV = [
   { href: "/issue-hub/capas",    label: "CAPAs" },
   { href: "/issue-hub/tasks",    label: "Tasks" },
   { href: "/issue-hub/reports",  label: "Reports" },
-  { href: "/issue-hub/ai",       label: "Findings Copilot&#8482;" },
+  { href: "/issue-hub/ai",       label: "Findings Copilot™" },
 ];
 
 export default function IssueHubLayout({ children }: { children: React.ReactNode }) {

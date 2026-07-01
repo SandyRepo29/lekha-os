@@ -109,7 +109,7 @@ export function PlatformActivityWidget({
           href="/platform/activity"
           className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors mt-1 self-end"
         >
-          View all activity &#8594;
+          View all activity →
         </Link>
       )}
     </div>

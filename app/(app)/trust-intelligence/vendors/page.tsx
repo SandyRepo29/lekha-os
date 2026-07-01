@@ -30,7 +30,7 @@ export default async function VendorTrustPage() {
     <div className="space-y-6">
       <div>
         <h2 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Trust View</h2>
-        <p className="text-sm text-[var(--color-ink-dim)]">Trust Score&#8482; across your vendor portfolio</p>
+        <p className="text-sm text-[var(--color-ink-dim)]">Trust Score™ across your vendor portfolio</p>
       </div>
 
       {/* Summary cards */}
@@ -95,7 +95,7 @@ export default async function VendorTrustPage() {
       {/* Phase 5 — Trust Velocity™ */}
       {metrics.allScored.length > 0 && (
         <Card className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60">
-          <p className="text-sm font-semibold mb-4">Trust Velocity&#8482;</p>
+          <p className="text-sm font-semibold mb-4">Trust Velocity™</p>
           <div className="grid gap-4 sm:grid-cols-3">
             {/* High Performers */}
             <div>
@@ -107,7 +107,7 @@ export default async function VendorTrustPage() {
                   {highPerformers.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
                       <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
-                        <span className="text-emerald-400 text-xs">&#8593;</span>
+                        <span className="text-emerald-400 text-xs">↑</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
                       </div>
@@ -127,7 +127,7 @@ export default async function VendorTrustPage() {
                   {atRisk.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
                       <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
-                        <span className="text-red-400 text-xs">&#8595;</span>
+                        <span className="text-red-400 text-xs">↓</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
                       </div>
@@ -141,13 +141,13 @@ export default async function VendorTrustPage() {
             <div>
               <p className="text-xs font-semibold text-yellow-400 mb-2">Watch List</p>
               {watchList.length === 0 ? (
-                <p className="text-xs text-[var(--color-ink-faint)]">None in 60&#8212;79 range</p>
+                <p className="text-xs text-[var(--color-ink-faint)]">None in 60—79 range</p>
               ) : (
                 <div className="space-y-1.5">
                   {watchList.map((v) => (
                     <Link key={v.id} href={`/vendors/${v.id}`}>
                       <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white transition-colors">
-                        <span className="text-yellow-400 text-xs">&#8594;</span>
+                        <span className="text-yellow-400 text-xs">→</span>
                         <span className="flex-1 text-xs text-[var(--color-ink)] truncate">{v.name}</span>
                         <OrgTrustBadge score={v.trustScore} />
                       </div>
@@ -163,7 +163,7 @@ export default async function VendorTrustPage() {
       {/* Phase 6 — Trust Concentration Analysis™ */}
       {metrics.allScored.length > 0 && (
         <Card className="p-5 rounded-2xl border-[var(--color-line)] bg-[var(--color-bg-2)]/60">
-          <p className="text-sm font-semibold mb-1">Trust Concentration Analysis&#8482;</p>
+          <p className="text-sm font-semibold mb-1">Trust Concentration Analysis™</p>
           <p className="text-xs text-[var(--color-ink-dim)] mb-4">Which vendors create the most trust risk exposure?</p>
           {top5Risk.length === 0 ? (
             <p className="text-xs text-[var(--color-ink-faint)]">No scored vendors yet.</p>
@@ -207,7 +207,7 @@ export default async function VendorTrustPage() {
       <Card className="p-5">
         <p className="text-sm font-semibold mb-4">All Scored Vendors</p>
         {metrics.allScored.length === 0 ? (
-          <p className="text-xs text-[var(--color-ink-faint)]">Run Trust Score&#8482; on vendors to populate this view.</p>
+          <p className="text-xs text-[var(--color-ink-faint)]">Run Trust Score™ on vendors to populate this view.</p>
         ) : (
           <div className="space-y-1">
             {metrics.allScored.map((v, i) => (

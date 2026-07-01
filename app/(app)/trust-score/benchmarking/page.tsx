@@ -41,20 +41,20 @@ export default async function TrustBenchmarkingPage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Benchmarking&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Benchmarking™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-            Compare your Trust Score&#8482; against industry peers and benchmarks.
+            Compare your Trust Score™ against industry peers and benchmarks.
           </p>
         </div>
         <Link href="/benchmarking" className="text-xs text-[var(--color-blue)] hover:underline">
-          Full Governance Benchmarking&#8482; &#8594;
+          Full Governance Benchmarking™ →
         </Link>
       </div>
 
       {/* Headline comparison */}
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="p-5 text-center">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-2">Your Trust Score&#8482;</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mb-2">Your Trust Score™</p>
           <p className={`text-5xl font-bold ${PLATFORM_TRUST_LEVEL_COLORS[level]}`}>{orgScore}</p>
           <span className={`mt-2 inline-block rounded-full border px-3 py-1 text-xs font-semibold ${PLATFORM_TRUST_LEVEL_BG[level]}`}>
             {PLATFORM_TRUST_LEVEL_LABELS[level]}
@@ -121,7 +121,7 @@ export default async function TrustBenchmarkingPage() {
       <Card className="p-5">
         <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
           <Award className="h-4 w-4 text-amber-400" />
-          Trust Maturity Model&#8482;
+          Trust Maturity Model™
         </h3>
         <div className="space-y-2">
           {[
@@ -134,7 +134,7 @@ export default async function TrustBenchmarkingPage() {
             const isActive = m.label === maturityLabel;
             return (
               <div key={m.label} className={`flex items-center justify-between rounded-xl border px-4 py-2.5 ${isActive ? m.bg + " " + m.color : "border-[var(--color-line)] text-[var(--color-ink-dim)]"}`}>
-                <span className={`text-sm font-medium ${isActive ? "font-bold" : ""}`}>{m.label} {isActive && "&#8592; You"}</span>
+                <span className={`text-sm font-medium ${isActive ? "font-bold" : ""}`}>{m.label} {isActive && "← You"}</span>
                 <span className="text-xs tabular-nums">{m.range}</span>
               </div>
             );
@@ -150,14 +150,14 @@ export default async function TrustBenchmarkingPage() {
         </h3>
         <div className="rounded-xl bg-indigo-500/[0.04] border border-indigo-500/20 p-4">
           <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed">
-            Your organization has a Trust Score&#8482; of <strong className={PLATFORM_TRUST_LEVEL_COLORS[level]}>{orgScore} ({PLATFORM_TRUST_LEVEL_LABELS[level]})</strong>,
+            Your organization has a Trust Score™ of <strong className={PLATFORM_TRUST_LEVEL_COLORS[level]}>{orgScore} ({PLATFORM_TRUST_LEVEL_LABELS[level]})</strong>,
             placing you in the <strong>{pct}th percentile</strong> across all industries with an average of {allIndustryAvg}.
             Your governance maturity is classified as <strong>{maturityLabel}</strong>.
           </p>
         </div>
         <div className="mt-3 text-right">
           <Link href="/executive-reporting/board-reports" className="text-xs text-[var(--color-blue)] hover:underline">
-            Generate Board Report &#8594;
+            Generate Board Report →
           </Link>
         </div>
       </Card>

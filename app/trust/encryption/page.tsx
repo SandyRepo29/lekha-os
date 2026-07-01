@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Lock, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Encryption &#8212; AUDT Trust Center",
+  title: "Encryption — AUDT Trust Center",
   description: "How AUDT encrypts data in transit, at rest, and for secrets management.",
 };
 
@@ -53,46 +53,46 @@ export default function EncryptionPage() {
         <EncSection
           title="Data in Transit"
           rows={[
-            ["Protocol", "TLS 1.2 minimum, TLS 1.3 preferred &#8212; enforced on all connections"],
-            ["HSTS", "max-age=31536000; includeSubDomains; preload &#8212; 1-year max age"],
-            ["Certificate", "Vercel-managed SSL &#8212; auto-renewed, OCSP stapling"],
-            ["DB connections", "ssl:&quot;require&quot; &#8212; all PostgreSQL connections use TLS"],
-            ["HTTP headers", "X-Frame-Options: DENY &#183; X-Content-Type-Options: nosniff &#183; Referrer-Policy: strict-origin-when-cross-origin"],
+            ["Protocol", "TLS 1.2 minimum, TLS 1.3 preferred — enforced on all connections"],
+            ["HSTS", "max-age=31536000; includeSubDomains; preload — 1-year max age"],
+            ["Certificate", "Vercel-managed SSL — auto-renewed, OCSP stapling"],
+            ["DB connections", "ssl:&quot;require&quot; — all PostgreSQL connections use TLS"],
+            ["HTTP headers", "X-Frame-Options: DENY · X-Content-Type-Options: nosniff · Referrer-Policy: strict-origin-when-cross-origin"],
             ["CSP", "Content-Security-Policy enforced at Next.js response headers layer"],
           ]}
         />
 
         <EncSection
-          title="Data at Rest &#8212; Integration Configs &amp; Secrets"
+          title="Data at Rest — Integration Configs &amp; Secrets"
           rows={[
-            ["Algorithm", "AES-256-GCM &#8212; authenticated encryption with associated data (AEAD)"],
+            ["Algorithm", "AES-256-GCM — authenticated encryption with associated data (AEAD)"],
             ["Key length", "256-bit encryption key (32 bytes, hex-encoded)"],
-            ["IV / Nonce", "Randomly generated 12-byte IV per encryption operation &#8212; never reused"],
-            ["Auth tag", "128-bit GCM authentication tag &#8212; detects tampering"],
-            ["Key storage", "ENCRYPTION_KEY env var &#8212; set in Vercel, never in source code or DB"],
+            ["IV / Nonce", "Randomly generated 12-byte IV per encryption operation — never reused"],
+            ["Auth tag", "128-bit GCM authentication tag — detects tampering"],
+            ["Key storage", "ENCRYPTION_KEY env var — set in Vercel, never in source code or DB"],
             ["Scope", "All integration credentials, third-party API keys, and webhook secrets"],
-            ["Implementation", "Node.js built-in crypto module &#8212; no third-party crypto libraries"],
+            ["Implementation", "Node.js built-in crypto module — no third-party crypto libraries"],
           ]}
         />
 
         <EncSection
           title="Passwords &amp; API Keys"
           rows={[
-            ["Algorithm", "bcrypt &#8212; adaptive work factor, resistant to GPU cracking"],
-            ["Work factor", "12 rounds for passwords &#183; 10 rounds for API keys"],
-            ["API key display", "Shown once at creation &#8212; only the bcrypt hash is stored"],
-            ["Password history", "Configurable per org &#8212; prevents reuse of recent passwords"],
-            ["TOTP secrets", "AES-256-GCM encrypted before storage &#8212; decrypted only at verify time"],
-            ["Recovery codes", "bcrypt-hashed individually &#8212; single-use, 10 codes per enrollment"],
+            ["Algorithm", "bcrypt — adaptive work factor, resistant to GPU cracking"],
+            ["Work factor", "12 rounds for passwords · 10 rounds for API keys"],
+            ["API key display", "Shown once at creation — only the bcrypt hash is stored"],
+            ["Password history", "Configurable per org — prevents reuse of recent passwords"],
+            ["TOTP secrets", "AES-256-GCM encrypted before storage — decrypted only at verify time"],
+            ["Recovery codes", "bcrypt-hashed individually — single-use, 10 codes per enrollment"],
           ]}
         />
 
         <EncSection
           title="Database Encryption"
           rows={[
-            ["Provider", "Supabase Postgres on AWS RDS &#8212; ap-south-1 (Mumbai)"],
-            ["Encryption at rest", "AWS managed encryption &#8212; AES-256 on EBS volumes"],
-            ["Backups", "Automated daily backups &#8212; encrypted at rest"],
+            ["Provider", "Supabase Postgres on AWS RDS — ap-south-1 (Mumbai)"],
+            ["Encryption at rest", "AWS managed encryption — AES-256 on EBS volumes"],
+            ["Backups", "Automated daily backups — encrypted at rest"],
             ["In-transit", "TLS enforced between app layer and Supabase Supavisor pooler"],
             ["WAL / logs", "Encrypted in transit and at rest on AWS infrastructure"],
           ]}
@@ -101,11 +101,11 @@ export default function EncryptionPage() {
         <EncSection
           title="File Storage Encryption"
           rows={[
-            ["Provider", "Supabase Storage &#8212; ap-south-1 (Mumbai)"],
-            ["Encryption at rest", "AWS S3-managed encryption (SSE-S3) &#8212; AES-256"],
+            ["Provider", "Supabase Storage — ap-south-1 (Mumbai)"],
+            ["Encryption at rest", "AWS S3-managed encryption (SSE-S3) — AES-256"],
             ["Access control", "Tenant-prefixed storage paths + Row-Level Security on storage.objects"],
             ["Signed URLs", "15-minute TTL signed URLs for all file downloads"],
-            ["Buckets", "vendor-documents (legacy) and compliance-documents (current) &#8212; both private"],
+            ["Buckets", "vendor-documents (legacy) and compliance-documents (current) — both private"],
           ]}
         />
 
@@ -113,8 +113,8 @@ export default function EncryptionPage() {
           title="Customer Managed Encryption (Enterprise)"
           rows={[
             ["Status", "Available on Enterprise plan"],
-            ["Providers", "AWS KMS &#183; Azure Key Vault &#183; Google Cloud KMS"],
-            ["Model", "Bring Your Own Key (BYOK) &#8212; AUDT never holds the master key"],
+            ["Providers", "AWS KMS · Azure Key Vault · Google Cloud KMS"],
+            ["Model", "Bring Your Own Key (BYOK) — AUDT never holds the master key"],
             ["Audit log", "Every key usage event recorded in encryption_audit_logs"],
           ]}
         />
@@ -125,7 +125,7 @@ export default function EncryptionPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

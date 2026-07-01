@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Regulatory Intelligence&#8482; — AUDT' };
+export const metadata = { title: 'Regulatory Intelligence™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -31,7 +31,7 @@ export default async function RegulatoryIntelligencePage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-              Regulatory Intelligence&#8482;
+              Regulatory Intelligence™
             </h1>
             <span className="text-xs text-[var(--color-ink-dim)] border border-[var(--color-line)] rounded px-2 py-0.5">REST API available</span>
           </div>
@@ -64,7 +64,7 @@ export default async function RegulatoryIntelligencePage() {
             href="/regulatory-intelligence/ai"
             className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
           >
-            <Bot className="h-4 w-4" /> AI Advisor&#8482;
+            <Bot className="h-4 w-4" /> AI Advisor™
           </Link>
         </div>
       </div>
@@ -168,7 +168,7 @@ export default async function RegulatoryIntelligencePage() {
             <h3 className="font-semibold text-sm flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-violet-400" /> Open Tasks
             </h3>
-            <Link href="/regulatory-intelligence/obligations" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all &#8594;</Link>
+            <Link href="/regulatory-intelligence/obligations" className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">View all →</Link>
           </div>
           {tasks.length > 0 ? (
             <div className="space-y-2">

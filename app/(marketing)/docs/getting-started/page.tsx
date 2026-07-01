@@ -1,7 +1,7 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export const metadata = {
-  title: "Getting Started &#8212; AUDT Documentation",
+  title: "Getting Started — AUDT Documentation",
   description: "Your first governance workflow in 30 minutes. Step-by-step guide to AUDT.",
 };
 
@@ -212,7 +212,7 @@ export default function GettingStartedPage() {
           First Governance Workflow<br />in 30 Minutes.
         </h1>
         <p style={{ fontSize: "16px", color: "#64748B", maxWidth: "560px", lineHeight: 1.65, marginBottom: "32px" }}>
-          Follow these 9 steps to go from a blank workspace to a scored vendor, a compliance framework, and your first Trust Score&#8482;. No prior GRC experience required.
+          Follow these 9 steps to go from a blank workspace to a scored vendor, a compliance framework, and your first Trust Score™. No prior GRC experience required.
         </p>
 
         {/* Progress strip */}
@@ -322,7 +322,7 @@ export default function GettingStartedPage() {
             You have a working governance program.
           </h2>
           <p style={{ fontSize: "14px", color: "#64748B", marginBottom: "0" }}>
-            One vendor. One framework. One Trust Score&#8482;. This is the foundation. Everything else builds on top.
+            One vendor. One framework. One Trust Score™. This is the foundation. Everything else builds on top.
           </p>
         </div>
 
@@ -357,14 +357,14 @@ export default function GettingStartedPage() {
           display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px",
         }}>
           <Link href="/docs" style={{ fontSize: "13px", color: "#94A3B8", textDecoration: "none" }}>
-            &#8592; Back to Documentation
+            ← Back to Documentation
           </Link>
           <Link href="/signup" style={{
             padding: "10px 24px", borderRadius: "12px",
             background: "linear-gradient(120deg, #00B8D9 0%, #4933D6 100%)",
             color: "white", fontSize: "14px", fontWeight: 600, textDecoration: "none",
           }}>
-            Start Free &#8594;
+            Start Free →
           </Link>
         </div>
       </div>

@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Integration Hub&#8482; — AUDT' };
+export const metadata = { title: 'Integration Hub™ — AUDT' };
 
 import Link from "next/link";
 import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, Zap, Activity, Sparkles } from "lucide-react";
@@ -42,7 +42,7 @@ export default async function IntegrationHubDashboard() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Integration Hub&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Integration Hub™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-1">
             Connect your technology ecosystem and automate governance evidence collection.
           </p>
@@ -50,7 +50,7 @@ export default async function IntegrationHubDashboard() {
         <div className="flex items-center gap-2">
           <Link href="/integration-hub/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Integration Advisor&#8482;
+            AI Integration Advisor™
           </Link>
           <Link href="/integration-hub/marketplace" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-blue)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">
             <Plug className="h-4 w-4" /> Add Connector
@@ -128,9 +128,9 @@ export default async function IntegrationHubDashboard() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-semibold flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-400" /> Connected Systems&#8482;
+              <CheckCircle2 className="h-4 w-4 text-green-400" /> Connected Systems™
             </h2>
-            <Link href="/integration-hub/connections" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/integration-hub/connections" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           {connections.length === 0 ? (
             <Card className="p-8 text-center">

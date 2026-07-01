@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -57,7 +57,7 @@ function MfaVerifyForm() {
           <span className="text-2xl font-extrabold tracking-tight text-[var(--color-ink)]">
             AUDT
           </span>
-          <p className="text-sm text-[var(--color-ink-dim)] mt-1">Governance Built on Proof.&#8482;</p>
+          <p className="text-sm text-[var(--color-ink-dim)] mt-1">Governance Built on Proof.™</p>
         </div>
 
         <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.03] p-8">
@@ -120,7 +120,7 @@ function MfaVerifyForm() {
               onClick={() => { setUseRecovery(!useRecovery); setCode(""); setError(null); }}
               className="text-xs text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
             >
-              {useRecovery ? "&#8592; Use authenticator app instead" : "Use a recovery code instead"}
+              {useRecovery ? "← Use authenticator app instead" : "Use a recovery code instead"}
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Audit Management&#8482; — AUDT' };
+export const metadata = { title: 'Audit Management™ — AUDT' };
 
 import Link from "next/link";
 import {
@@ -28,7 +28,7 @@ export default async function AuditsDashboardPage() {
       <Card>
         <EmptyState
           icon={ClipboardCheck}
-          title="Audit Management&#8482;"
+          title="Audit Management™"
           description="Connect Supabase to start planning and executing audits."
         />
       </Card>
@@ -112,16 +112,16 @@ export default async function AuditsDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Audit Management&#8482;
+            Audit Management™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
-            Audit planning, execution, evidence, findings &#8212; CAPA to closure
+            Audit planning, execution, evidence, findings — CAPA to closure
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/audits/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Auditor&#8482;
+            AI Auditor™
           </Link>
           <Link href="/audits/new">
             <Button variant="primary" size="md"><Plus className="h-4 w-4" /> New Audit</Button>
@@ -133,7 +133,7 @@ export default async function AuditsDashboardPage() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <AuditStat label="Total Audits"  value={metrics.total}       href="/audits/list" />
         <div className="rounded-xl border border-[var(--color-line)] border-l-2 border-l-emerald-400/60 bg-emerald-400/[0.04] p-4">
-          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Audit Readiness&#8482;</p>
+          <p className="text-xs text-[var(--color-ink-dim)] mb-1">Audit Readiness™</p>
           <p className={`font-[family-name:var(--font-display)] text-2xl font-bold ${readinessColor}`}>{readinessScore}%</p>
           <p className={`text-xs font-medium mt-0.5 ${readinessColor}`}>{readinessLabel}</p>
         </div>
@@ -153,9 +153,9 @@ export default async function AuditsDashboardPage() {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-[var(--color-blue)]" />
-              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Pipeline&#8482;</h2>
+              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Pipeline™</h2>
             </div>
-            <Link href="/audits/list" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/audits/list" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="space-y-2.5">
             {pipelineStages.map(({ label, count, color, href }) => (
@@ -186,9 +186,9 @@ export default async function AuditsDashboardPage() {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileSearch className="h-4 w-4 text-amber-400" />
-              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Requests&#8482;</h2>
+              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Requests™</h2>
             </div>
-            <Link href="/auditor-collaboration/evidence" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/auditor-collaboration/evidence" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
@@ -207,7 +207,7 @@ export default async function AuditsDashboardPage() {
             <p className="text-xs text-[var(--color-ink-dim)] mt-3">
               No evidence requests yet.{" "}
               <Link href="/auditor-collaboration" className="text-[var(--color-blue)] hover:underline">
-                Set up Auditor Collaboration &#8594;
+                Set up Auditor Collaboration →
               </Link>
             </p>
           )}
@@ -224,7 +224,7 @@ export default async function AuditsDashboardPage() {
               <AlertTriangle className="h-4 w-4 text-orange-400" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Findings by Severity</h2>
             </div>
-            <Link href="/audits/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/audits/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="space-y-3">
             {[
@@ -245,7 +245,7 @@ export default async function AuditsDashboardPage() {
           </div>
           <div className="mt-4 pt-4 border-t border-[var(--color-line)] flex items-center justify-between text-xs text-[var(--color-ink-dim)]">
             <span>{totalFindings} open findings</span>
-            <Link href="/audits/findings?status=closed" className="text-[var(--color-blue)] hover:underline">View closed &#8594;</Link>
+            <Link href="/audits/findings?status=closed" className="text-[var(--color-blue)] hover:underline">View closed →</Link>
           </div>
         </div>
 
@@ -254,9 +254,9 @@ export default async function AuditsDashboardPage() {
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">CAPA Health&#8482;</h2>
+              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">CAPA Health™</h2>
             </div>
-            <Link href="/audits/capas" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+            <Link href="/audits/capas" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -345,7 +345,7 @@ export default async function AuditsDashboardPage() {
           <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Brain className="h-4 w-4 text-[var(--color-blue)]" />
-              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Intelligence&#8482;</h2>
+              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Intelligence™</h2>
             </div>
             <div className="space-y-2.5">
               {[
@@ -363,7 +363,7 @@ export default async function AuditsDashboardPage() {
             </div>
             <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
               <Link href="/audits/ai" className="text-xs text-[var(--color-blue)] hover:underline">
-                Ask Audit Copilot&#8482; &#8594;
+                Ask Audit Copilot™ →
               </Link>
             </div>
           </div>
@@ -372,9 +372,9 @@ export default async function AuditsDashboardPage() {
           <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Target className="h-4 w-4 text-purple-400" />
-              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact&#8482;</h2>
+              <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact™</h2>
             </div>
-            <p className="text-xs text-[var(--color-ink-dim)] mb-3">Audit Readiness feeds 15% of Org Trust Score&#8482;</p>
+            <p className="text-xs text-[var(--color-ink-dim)] mb-3">Audit Readiness feeds 15% of Org Trust Score™</p>
             <div className="space-y-3">
               <div>
                 <div className="mb-1 flex justify-between text-xs">
@@ -410,7 +410,7 @@ export default async function AuditsDashboardPage() {
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Recent Activity</h2>
               </div>
               <Link href="/settings/audit-logs" className="text-xs text-[var(--color-blue)] hover:underline">
-                View all &#8594;
+                View all →
               </Link>
             </div>
             <ActivityFeed items={recentActivity} emptyMessage="No audit activity yet." />

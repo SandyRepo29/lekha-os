@@ -21,7 +21,7 @@ export default async function PolicyGovernanceDashboardPage() {
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={FileText} title="Policy Governance&#8482;" description="Connect Supabase to manage your policy library." />
+        <EmptyState icon={FileText} title="Policy Governance™" description="Connect Supabase to manage your policy library." />
       </Card>
     );
   }
@@ -31,24 +31,24 @@ export default async function PolicyGovernanceDashboardPage() {
     findPoliciesByOrg(session.org.id),
   ]);
 
-  // P1 &#8212; Policy Coverage&#8482;: policies with at least 1 control link
+  // P1 — Policy Coverage™: policies with at least 1 control link
   const policiesWithControls = allPolicies.filter((p) => p.controlCount > 0).length;
   const coveragePct = metrics.total > 0 ? Math.round((policiesWithControls / metrics.total) * 100) : 0;
 
-  // P1 &#8212; Policy Review Compliance&#8482;: non-overdue active policies
+  // P1 — Policy Review Compliance™: non-overdue active policies
   const activePolicies = metrics.total - metrics.retired - metrics.archived;
   const reviewCompliance = activePolicies > 0
     ? Math.round(((activePolicies - metrics.overdue) / activePolicies) * 100)
     : 100;
 
-  // P7 &#8212; Intelligence signals
+  // P7 — Intelligence signals
   const missingOwner = allPolicies.filter((p) => !p.ownerId).length;
   const noControlMapping = allPolicies.filter((p) => p.controlCount === 0 && !["retired", "archived"].includes(p.status)).length;
   const noFrameworkMapping = allPolicies.filter((p) => p.frameworkCount === 0 && !["retired", "archived"].includes(p.status)).length;
   const expiredCount = metrics.expired;
   const lowHealthCount = allPolicies.filter((p) => (p.healthScore ?? 0) > 0 && (p.healthScore ?? 0) < 60).length;
 
-  // P8 &#8212; Trust Impact (policies contribute to Control Health which feeds 20% of Trust Score)
+  // P8 — Trust Impact (policies contribute to Control Health which feeds 20% of Trust Score)
   const policyTrustWeight = 10; // policies contribute ~10% via control coverage proxy
   const currentTrustContrib = Math.round((metrics.attestationRate / 100) * policyTrustWeight);
   const projectedTrustContrib = policyTrustWeight;
@@ -58,9 +58,9 @@ export default async function PolicyGovernanceDashboardPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Policy Governance&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Policy Governance™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-            Governance policy management &#8212; lifecycle, coverage, attestations, and trust impact
+            Governance policy management — lifecycle, coverage, attestations, and trust impact
           </p>
         </div>
         <Link href="/policy-governance/library?new=1">
@@ -68,12 +68,12 @@ export default async function PolicyGovernanceDashboardPage() {
         </Link>
       </div>
 
-      {/* P1 &#8212; KPI row (replaces old avgHealth row) */}
+      {/* P1 — KPI row (replaces old avgHealth row) */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <PolicyStat label="Total Policies" value={metrics.total} accent="neutral" href="/policy-governance/library" />
-        <PolicyStat label="Policy Coverage&#8482;" value={`${coveragePct}%`} accent={coveragePct < 50 ? "danger" : coveragePct < 80 ? "warn" : "good"} sub={`${policiesWithControls} of ${metrics.total} mapped`} />
-        <PolicyStat label="Review Compliance&#8482;" value={`${reviewCompliance}%`} accent={reviewCompliance < 70 ? "danger" : reviewCompliance < 90 ? "warn" : "good"} sub={`${metrics.overdue} overdue`} />
-        <PolicyStat label="Attestation Compliance&#8482;" value={`${metrics.attestationRate}%`} accent={metrics.attestationRate < 50 ? "warn" : "good"} sub="acknowledged" />
+        <PolicyStat label="Policy Coverage™" value={`${coveragePct}%`} accent={coveragePct < 50 ? "danger" : coveragePct < 80 ? "warn" : "good"} sub={`${policiesWithControls} of ${metrics.total} mapped`} />
+        <PolicyStat label="Review Compliance™" value={`${reviewCompliance}%`} accent={reviewCompliance < 70 ? "danger" : reviewCompliance < 90 ? "warn" : "good"} sub={`${metrics.overdue} overdue`} />
+        <PolicyStat label="Attestation Compliance™" value={`${metrics.attestationRate}%`} accent={metrics.attestationRate < 50 ? "warn" : "good"} sub="acknowledged" />
       </div>
 
       {/* Row 2: status counters */}
@@ -87,11 +87,11 @@ export default async function PolicyGovernanceDashboardPage() {
       {/* Row 3: 3-column panel */}
       <div className="grid gap-4 lg:grid-cols-3">
 
-        {/* P4 &#8212; Policy Lifecycle&#8482; */}
+        {/* P4 — Policy Lifecycle™ */}
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-[var(--color-blue)]" />
-            Policy Lifecycle&#8482;
+            Policy Lifecycle™
           </h2>
           <div className="space-y-2.5">
             {[
@@ -120,11 +120,11 @@ export default async function PolicyGovernanceDashboardPage() {
           </div>
         </Card>
 
-        {/* P5 &#8212; Policy Coverage&#8482; widget */}
+        {/* P5 — Policy Coverage™ widget */}
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Network className="h-4 w-4 text-indigo-400" />
-            Policy Coverage&#8482;
+            Policy Coverage™
           </h2>
           <div className="space-y-3">
             {[
@@ -149,19 +149,19 @@ export default async function PolicyGovernanceDashboardPage() {
           </div>
           <div className="mt-4 pt-4 border-t border-[var(--color-line)]">
             <Link href="/policy-governance/mappings" className="text-xs text-[var(--color-blue)] hover:underline">
-              View all mappings &#8594;
+              View all mappings →
             </Link>
           </div>
         </Card>
 
-        {/* P8 &#8212; Trust Impact&#8482; */}
+        {/* P8 — Trust Impact™ */}
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-emerald-400" />
-            Trust Impact&#8482;
+            Trust Impact™
           </h2>
           <p className="text-xs text-[var(--color-ink-dim)] mb-4 leading-relaxed">
-            Policy coverage and attestation compliance contribute to your organization&#8217;s Org Trust Score&#8482; via the Control Health component.
+            Policy coverage and attestation compliance contribute to your organization&#8217;s Org Trust Score™ via the Control Health component.
           </p>
           <div className="space-y-3">
             <div>
@@ -194,11 +194,11 @@ export default async function PolicyGovernanceDashboardPage() {
       {/* Row 4: Intelligence + Weak Policies */}
       <div className="grid gap-4 lg:grid-cols-2">
 
-        {/* P7 &#8212; Policy Intelligence&#8482; */}
+        {/* P7 — Policy Intelligence™ */}
         <Card className="p-5">
           <h2 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Brain className="h-4 w-4 text-purple-400" />
-            Policy Intelligence&#8482;
+            Policy Intelligence™
           </h2>
           <div className="space-y-3">
             {[
@@ -288,7 +288,7 @@ export default async function PolicyGovernanceDashboardPage() {
           )}
           <div className="mt-4 pt-4 border-t border-[var(--color-line)]">
             <Link href="/policy-governance/library" className="text-xs text-[var(--color-blue)] hover:underline">
-              View all policies &#8594;
+              View all policies →
             </Link>
           </div>
         </Card>
@@ -311,7 +311,7 @@ export default async function PolicyGovernanceDashboardPage() {
             <Button variant="outline" size="sm"><Users className="h-4 w-4" /> Attestations</Button>
           </Link>
           <Link href="/policy-governance/ai">
-            <Button variant="outline" size="sm"><Shield className="h-4 w-4" /> Policy Copilot&#8482;</Button>
+            <Button variant="outline" size="sm"><Shield className="h-4 w-4" /> Policy Copilot™</Button>
           </Link>
         </div>
       </Card>

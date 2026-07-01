@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
@@ -44,7 +44,7 @@ export default async function OperationsHubPage() {
       {/* Header */}
       <div className="pt-2 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Operations Engine&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Operations Engine™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
             The orchestration layer connecting every governance capability into one intelligent operating system.
           </p>
@@ -53,7 +53,7 @@ export default async function OperationsHubPage() {
           href="/operations/command-center"
           className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
         >
-          <Terminal className="h-4 w-4" /> Command Center &#8594;
+          <Terminal className="h-4 w-4" /> Command Center →
         </Link>
       </div>
 
@@ -75,9 +75,9 @@ export default async function OperationsHubPage() {
           <div>
             <div className="font-semibold text-sm text-[var(--color-blue)]">Every governance event triggers the next appropriate action</div>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">
-              The Trust Operations Engine connects Vendor Hub&#8482;, Risk Lens&#8482;, Evidence Vault&#8482;, Audit Management&#8482;,
-              Control Center&#8482;, and every other governance module into a unified event-driven platform.
-              Workflows execute automatically, AI recommends next actions, and approvals route to the right people &#8212; without manual handoffs.
+              The Trust Operations Engine connects Vendor Hub™, Risk Lens™, Evidence Vault™, Audit Management™,
+              Control Center™, and every other governance module into a unified event-driven platform.
+              Workflows execute automatically, AI recommends next actions, and approvals route to the right people — without manual handoffs.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {["Event Engine", "Workflow Orchestration", "Automation", "AI Decisions", "Approval Queue", "Cross-Module Intelligence"].map(t => (
@@ -94,7 +94,7 @@ export default async function OperationsHubPage() {
           <div className="mb-3 flex items-center gap-2">
             <Bot className="h-4 w-4 text-purple-400" />
             <span className="text-sm font-semibold">Operations Advisory</span>
-            <span className="ml-auto text-[10px] text-[var(--color-ink-dim)]">AI &#8212; cached 24h</span>
+            <span className="ml-auto text-[10px] text-[var(--color-ink-dim)]">AI — cached 24h</span>
           </div>
           <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed whitespace-pre-wrap">{advisory}</p>
         </div>

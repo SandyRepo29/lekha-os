@@ -30,7 +30,7 @@ export default async function VendorContactsPage({ params }: Props) {
     <div className="p-6 space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-[var(--color-ink-faint)]">
-        <Link href="/vendors" className="hover:text-[var(--color-ink)]">Vendor Hub&#8482;</Link>
+        <Link href="/vendors" className="hover:text-[var(--color-ink)]">Vendor Hub™</Link>
         <span>/</span>
         <Link href={`/vendors/${id}`} className="hover:text-[var(--color-ink)]">{vendor.name}</Link>
         <span>/</span>
@@ -46,7 +46,7 @@ export default async function VendorContactsPage({ params }: Props) {
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
             Vendor Contacts
           </h1>
-          <p className="text-sm text-[var(--color-ink-faint)]">{vendor.name} &#8212; manage contact directory</p>
+          <p className="text-sm text-[var(--color-ink-faint)]">{vendor.name} — manage contact directory</p>
         </div>
       </div>
 

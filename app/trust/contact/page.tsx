@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Mail, Clock, Shield, AlertTriangle, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Security Contact &#8212; AUDT Trust Center",
+  title: "Security Contact — AUDT Trust Center",
   description: "Report vulnerabilities, contact the AUDT security team, and learn about our responsible disclosure policy.",
 };
 
@@ -83,10 +83,10 @@ export default function ContactPage() {
           </div>
           <div className="space-y-3">
             {[
-              { severity: "Critical", sla: "Acknowledge within 4 hours &#183; Initial fix within 24 hours &#183; Full resolution within 7 days", color: "text-red-400 border-red-500/30 bg-red-500/10" },
-              { severity: "High", sla: "Acknowledge within 24 hours &#183; Resolution within 14 days", color: "text-orange-400 border-orange-500/30 bg-orange-500/10" },
-              { severity: "Medium", sla: "Acknowledge within 48 hours &#183; Resolution within 30 days", color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
-              { severity: "Low", sla: "Acknowledge within 72 hours &#183; Resolution within 90 days", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
+              { severity: "Critical", sla: "Acknowledge within 4 hours · Initial fix within 24 hours · Full resolution within 7 days", color: "text-red-400 border-red-500/30 bg-red-500/10" },
+              { severity: "High", sla: "Acknowledge within 24 hours · Resolution within 14 days", color: "text-orange-400 border-orange-500/30 bg-orange-500/10" },
+              { severity: "Medium", sla: "Acknowledge within 48 hours · Resolution within 30 days", color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
+              { severity: "Low", sla: "Acknowledge within 72 hours · Resolution within 90 days", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
             ].map(({ severity, sla, color }) => (
               <div key={severity} className="flex flex-col gap-1 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-center sm:gap-4">
                 <span className={`inline-flex w-fit items-center rounded-full border px-3 py-0.5 text-xs font-semibold ${color}`}>
@@ -118,7 +118,7 @@ export default function ContactPage() {
                   "Encryption implementation",
                   "Authorization bypasses",
                 ].map((item) => (
-                  <li key={item} className="text-sm text-[var(--color-ink-dim)]">&#183; {item}</li>
+                  <li key={item} className="text-sm text-[var(--color-ink-dim)]">· {item}</li>
                 ))}
               </ul>
             </div>
@@ -133,7 +133,7 @@ export default function ContactPage() {
                   "Automated scanning without prior approval",
                   "Issues in client-side libraries not used by AUDT",
                 ].map((item) => (
-                  <li key={item} className="text-sm text-[var(--color-ink-dim)]">&#183; {item}</li>
+                  <li key={item} className="text-sm text-[var(--color-ink-dim)]">· {item}</li>
                 ))}
               </ul>
             </div>
@@ -167,7 +167,7 @@ export default function ContactPage() {
           </h2>
           <p className="text-sm text-[var(--color-ink-dim)] mb-3">
             For sensitive disclosures, you may encrypt your email using our security team&#8217;s PGP key.
-            Key publication is in progress &#8212; email us directly and we will share the key on request.
+            Key publication is in progress — email us directly and we will share the key on request.
           </p>
           <div className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
             Key ID: <span className="text-[var(--color-blue)]">Coming soon</span>
@@ -201,7 +201,7 @@ export default function ContactPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

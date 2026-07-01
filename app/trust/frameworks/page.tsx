@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { FileCheck, CheckCircle, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Compliance Frameworks &#8212; AUDT Trust Center",
+  title: "Compliance Frameworks — AUDT Trust Center",
   description: "Compliance frameworks supported and designed for by the AUDT Governance OS.",
 };
 
@@ -12,7 +12,7 @@ const frameworks = [
     badge: "93 Controls Mapped",
     badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
     description:
-      "The international standard for information security management systems (ISMS). AUDT ships with 93 ISO 27001 controls pre-mapped across Evidence Vault&#8482;, Control Center&#8482;, and Audit Management.",
+      "The international standard for information security management systems (ISMS). AUDT ships with 93 ISO 27001 controls pre-mapped across Evidence Vault™, Control Center™, and Audit Management.",
     capabilities: [
       "Full control library with effectiveness scoring",
       "Evidence mapping and gap analysis",
@@ -25,10 +25,10 @@ const frameworks = [
     badge: "33 Controls Mapped",
     badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
     description:
-      "Service Organization Control 2 &#8212; Trust Services Criteria covering security, availability, processing integrity, confidentiality, and privacy. AUDT maps 33 SOC 2 controls and supports auditor collaboration via Auditor Collaboration&#8482;.",
+      "Service Organization Control 2 — Trust Services Criteria covering security, availability, processing integrity, confidentiality, and privacy. AUDT maps 33 SOC 2 controls and supports auditor collaboration via Auditor Collaboration™.",
     capabilities: [
       "Trust Services Criteria mapping",
-      "Auditor Collaboration&#8482; &#8212; secure audit rooms for external auditors",
+      "Auditor Collaboration™ — secure audit rooms for external auditors",
       "Evidence exchange and evidence request workflow",
       "Control test records and pass/fail history",
     ],
@@ -38,7 +38,7 @@ const frameworks = [
     badge: "18 Controls Mapped",
     badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
     description:
-      "India&#8217;s Digital Personal Data Protection Act 2023. AUDT&#8217;s DPDP Privacy&#8482; module tracks data assets, consent records, data subject requests, retention policies, privacy assessments, and cross-border data transfers.",
+      "India&#8217;s Digital Personal Data Protection Act 2023. AUDT&#8217;s DPDP Privacy™ module tracks data assets, consent records, data subject requests, retention policies, privacy assessments, and cross-border data transfers.",
     capabilities: [
       "Data inventory and classification",
       "Consent management and audit trail",
@@ -65,11 +65,11 @@ const frameworks = [
     badge: "18 Controls Mapped",
     badgeColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
     description:
-      "Health Insurance Portability and Accountability Act &#8212; Administrative, Physical, and Technical Safeguards. AUDT maps 18 HIPAA controls spanning the Security Rule and Privacy Rule.",
+      "Health Insurance Portability and Accountability Act — Administrative, Physical, and Technical Safeguards. AUDT maps 18 HIPAA controls spanning the Security Rule and Privacy Rule.",
     capabilities: [
       "Administrative and technical safeguard controls",
       "Risk analysis and risk management",
-      "Breach notification workflow via Issue Hub&#8482;",
+      "Breach notification workflow via Issue Hub™",
       "BAA-ready audit trail",
     ],
   },
@@ -78,7 +78,7 @@ const frameworks = [
     badge: "Designed for",
     badgeColor: "text-violet-400 border-violet-500/30 bg-violet-500/10",
     description:
-      "General Data Protection Regulation &#8212; EU data protection law. AUDT&#8217;s Privacy module, data subject request workflow, consent management, and data transfer tracking are designed to support GDPR Article 30 Records of Processing Activities (ROPA) and Chapter III data subject rights.",
+      "General Data Protection Regulation — EU data protection law. AUDT&#8217;s Privacy module, data subject request workflow, consent management, and data transfer tracking are designed to support GDPR Article 30 Records of Processing Activities (ROPA) and Chapter III data subject rights.",
     capabilities: [
       "Data processing register",
       "Data subject rights fulfilment",
@@ -91,7 +91,7 @@ const frameworks = [
     badge: "Designed for",
     badgeColor: "text-violet-400 border-violet-500/30 bg-violet-500/10",
     description:
-      "The EU Artificial Intelligence Act &#8212; risk-based AI governance framework. AUDT&#8217;s AI Governance&#8482; module classifies AI systems by risk level, tracks controls, incidents, and compliance records against ISO 42001 and NIST AI RMF alongside EU AI Act requirements.",
+      "The EU Artificial Intelligence Act — risk-based AI governance framework. AUDT&#8217;s AI Governance™ module classifies AI systems by risk level, tracks controls, incidents, and compliance records against ISO 42001 and NIST AI RMF alongside EU AI Act requirements.",
     capabilities: [
       "AI system risk classification",
       "AI control library and testing",
@@ -100,16 +100,16 @@ const frameworks = [
     ],
   },
   {
-    name: "Regulatory Intelligence&#8482;",
+    name: "Regulatory Intelligence™",
     badge: "18 Built-in Regulations",
     badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
     description:
-      "AUDT ships with 18 built-in regulations including GDPR, DPDP, HIPAA, PCI DSS, RBI CSF, SEBI CSCRF, IRDAI ICS, DORA, NIS2, SOX, and more. Regulatory Intelligence&#8482; monitors changes, extracts obligations, and auto-generates compliance alerts.",
+      "AUDT ships with 18 built-in regulations including GDPR, DPDP, HIPAA, PCI DSS, RBI CSF, SEBI CSCRF, IRDAI ICS, DORA, NIS2, SOX, and more. Regulatory Intelligence™ monitors changes, extracts obligations, and auto-generates compliance alerts.",
     capabilities: [
       "18 global regulations pre-loaded",
       "Regulatory change monitor with severity classification",
       "Obligation extraction and tracking",
-      "AI-powered Compliance Horizon&#8482; forecast",
+      "AI-powered Compliance Horizon™ forecast",
     ],
   },
 ];
@@ -175,7 +175,7 @@ export default function FrameworksPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

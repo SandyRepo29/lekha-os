@@ -42,9 +42,9 @@ export default async function VendorTrustPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Trust&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Vendor Trust™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-          Trust scores across your entire vendor portfolio &#8212; identify trusted partners and governance risks.
+          Trust scores across your entire vendor portfolio — identify trusted partners and governance risks.
         </p>
       </div>
 
@@ -115,8 +115,8 @@ export default async function VendorTrustPage() {
       {/* Trust Heatmap™ */}
       <Card className="overflow-hidden">
         <div className="p-5 border-b border-[var(--color-line)]">
-          <h3 className="text-sm font-semibold">Trust Heatmap&#8482;</h3>
-          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Vendor governance portfolio &#8212; trust across all dimensions</p>
+          <h3 className="text-sm font-semibold">Trust Heatmap™</h3>
+          <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Vendor governance portfolio — trust across all dimensions</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -156,7 +156,7 @@ export default async function VendorTrustPage() {
       <Card className="overflow-hidden">
         <div className="p-5 border-b border-[var(--color-line)] flex items-center justify-between">
           <h3 className="text-sm font-semibold">All Vendors</h3>
-          <Link href="/vendors" className="text-xs text-[var(--color-blue)] hover:underline">Open Vendor Hub&#8482; &#8594;</Link>
+          <Link href="/vendors" className="text-xs text-[var(--color-blue)] hover:underline">Open Vendor Hub™ →</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

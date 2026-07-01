@@ -115,17 +115,17 @@ export default async function TrustScoreOverviewPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Trust Score&#8482;
+            Trust Score™
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
-            Universal organizational trust &#8212; continuously measured across every governance signal.
+            Universal organizational trust — continuously measured across every governance signal.
           </p>
         </div>
         <Link
           href="/trust-score/ai"
           className="flex items-center gap-2 rounded-xl grad-brand px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-90 transition-opacity"
         >
-          <Bot className="h-4 w-4" /> Trust Copilot&#8482;
+          <Bot className="h-4 w-4" /> Trust Copilot™
         </Link>
       </div>
 
@@ -135,7 +135,7 @@ export default async function TrustScoreOverviewPage() {
         {/* Primary: Trust Score™ */}
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-6 flex flex-col items-center justify-center text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-ink-dim)] mb-3">
-            Trust Score&#8482;
+            Trust Score™
           </p>
           <div className="relative mb-3">
             <svg viewBox="0 0 120 120" className="w-32 h-32">
@@ -173,9 +173,9 @@ export default async function TrustScoreOverviewPage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-[var(--color-blue)]" />
-              Trust Trend&#8482;
+              Trust Trend™
             </h3>
-            <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">Full History &#8594;</Link>
+            <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">Full History →</Link>
           </div>
           <div className="flex items-end gap-2 h-28">
             {displayMonthly.map((m, i) => (
@@ -232,7 +232,7 @@ export default async function TrustScoreOverviewPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold">Trust Factor Breakdown</h3>
-            <Link href="/trust-score/factors" className="text-xs text-[var(--color-blue)] hover:underline">Details &#8594;</Link>
+            <Link href="/trust-score/factors" className="text-xs text-[var(--color-blue)] hover:underline">Details →</Link>
           </div>
           <div className="space-y-3">
             {(Object.keys(PLATFORM_TRUST_LABELS) as Array<keyof typeof PLATFORM_TRUST_LABELS>).map((key) => {
@@ -262,8 +262,8 @@ export default async function TrustScoreOverviewPage() {
           {/* Trust Events™ */}
           <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-sm font-semibold">Trust Events&#8482;</h3>
-              <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">Timeline &#8594;</Link>
+              <h3 className="text-sm font-semibold">Trust Events™</h3>
+              <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">Timeline →</Link>
             </div>
             <div className="space-y-2">
               {TRUST_EVENTS.map((e) => (
@@ -315,8 +315,8 @@ export default async function TrustScoreOverviewPage() {
         {/* Trust Timeline™ */}
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-semibold">Trust Timeline&#8482;</h3>
-            <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">All &#8594;</Link>
+            <h3 className="text-sm font-semibold">Trust Timeline™</h3>
+            <Link href="/trust-score/trends" className="text-xs text-[var(--color-blue)] hover:underline">All →</Link>
           </div>
           {snapshots.length > 0 ? (
             <div className="space-y-2">
@@ -365,9 +365,9 @@ export default async function TrustScoreOverviewPage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-indigo-400" />
-              Trust Forecast&#8482;
+              Trust Forecast™
             </h3>
-            <Link href="/trust-score/insights" className="text-xs text-[var(--color-blue)] hover:underline">Insights &#8594;</Link>
+            <Link href="/trust-score/insights" className="text-xs text-[var(--color-blue)] hover:underline">Insights →</Link>
           </div>
           {/* Simple linear forecast from 90d trend */}
           {(() => {
@@ -395,8 +395,8 @@ export default async function TrustScoreOverviewPage() {
                 {openCount > 0 && (
                   <div className="mt-4 rounded-xl bg-amber-500/[0.06] border border-amber-500/20 p-3 text-xs text-amber-400 space-y-1">
                     <p className="font-semibold">Forecast risks:</p>
-                    {(findingSev.critical ?? 0) > 0 && <p>&#183; {findingSev.critical} critical finding{(findingSev.critical ?? 0) > 1 ? "s" : ""} unresolved</p>}
-                    {(findingSev.high ?? 0) > 0 && <p>&#183; {findingSev.high} high severity finding{(findingSev.high ?? 0) > 1 ? "s" : ""}</p>}
+                    {(findingSev.critical ?? 0) > 0 && <p>· {findingSev.critical} critical finding{(findingSev.critical ?? 0) > 1 ? "s" : ""} unresolved</p>}
+                    {(findingSev.high ?? 0) > 0 && <p>· {findingSev.high} high severity finding{(findingSev.high ?? 0) > 1 ? "s" : ""}</p>}
                   </div>
                 )}
               </>

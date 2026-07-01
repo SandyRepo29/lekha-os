@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Bot, CheckCircle, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Responsible AI &#8212; AUDT Trust Center",
+  title: "Responsible AI — AUDT Trust Center",
   description: "How AUDT uses AI responsibly — no training on customer data, human-in-the-loop, and full auditability.",
 };
 
@@ -25,7 +25,7 @@ export default function AiPage() {
         </h1>
       </div>
       <p className="mb-10 text-[var(--color-ink-dim)]">
-        AUDT uses AI to help compliance and risk teams work faster &#8212; not to replace human judgement.
+        AUDT uses AI to help compliance and risk teams work faster — not to replace human judgement.
         Every AI output is advisory. Every decision requires a human.
       </p>
 
@@ -39,9 +39,9 @@ export default function AiPage() {
             {[
               ["Model", "Google Gemini 2.5 Flash"],
               ["Provider", "Google AI Studio / Vertex AI"],
-              ["Integration", "@google/genai SDK &#8212; imported only in lib/providers/ai/"],
+              ["Integration", "@google/genai SDK — imported only in lib/providers/ai/"],
               ["Data retention", "Google does not retain prompt data for model training under the AUDT API agreement"],
-              ["Data residency", "Prompts are processed by Google infrastructure &#8212; not stored in AUDT&#8217;s India region"],
+              ["Data residency", "Prompts are processed by Google infrastructure — not stored in AUDT&#8217;s India region"],
             ].map(([label, value]) => (
               <div key={label} className="flex flex-col gap-0.5 sm:flex-row sm:gap-4">
                 <span className="w-36 shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: label }} />
@@ -81,7 +81,7 @@ export default function AiPage() {
             Human-in-the-Loop by Design
           </h2>
           <p className="text-sm text-[var(--color-ink-dim)] mb-4">
-            AI in AUDT generates recommendations, summaries, and draft content. No AI action is autonomous &#8212;
+            AI in AUDT generates recommendations, summaries, and draft content. No AI action is autonomous —
             every AI output requires a human to review, accept, or reject before it takes effect.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -107,16 +107,16 @@ export default function AiPage() {
             AI Audit Trail
           </h2>
           <p className="text-sm text-[var(--color-ink-dim)] mb-4">
-            AUDT&#8217;s Security Command Center&#8482; records every AI prompt with sensitivity classification,
+            AUDT&#8217;s Security Command Center™ records every AI prompt with sensitivity classification,
             PII detection, and user attribution. Enterprise administrators can review all AI interactions.
           </p>
           <ul className="space-y-2">
             {[
               "Every AI prompt is logged with timestamp, user, and module context",
-              "Sensitivity classification: clean &#183; low &#183; medium &#183; high &#183; blocked",
-              "PII detection &#8212; prompts flagged when personal data patterns are detected",
-              "Blocked prompts tracked &#8212; 30-day usage statistics available to admins",
-              "ai_prompt_logs table &#8212; org-scoped, RLS enforced, not accessible cross-tenant",
+              "Sensitivity classification: clean · low · medium · high · blocked",
+              "PII detection — prompts flagged when personal data patterns are detected",
+              "Blocked prompts tracked — 30-day usage statistics available to admins",
+              "ai_prompt_logs table — org-scoped, RLS enforced, not accessible cross-tenant",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-dim)]">
                 <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-400" />
@@ -133,17 +133,17 @@ export default function AiPage() {
           </h2>
           <p className="text-sm text-[var(--color-ink-dim)] mb-4">
             AUDT&#8217;s AI use cases fall in the minimal risk or limited risk tiers under the EU AI Act.
-            AUDT also provides an AI Governance&#8482; module to help customers manage their own AI systems
+            AUDT also provides an AI Governance™ module to help customers manage their own AI systems
             against EU AI Act, ISO 42001, and NIST AI RMF requirements.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              ["Risk classification", "Minimal / limited risk &#8212; all uses are advisory"],
+              ["Risk classification", "Minimal / limited risk — all uses are advisory"],
               ["Transparency", "AI-generated content is clearly labelled in the UI"],
-              ["Human oversight", "No autonomous decisions &#8212; human approval required"],
+              ["Human oversight", "No autonomous decisions — human approval required"],
               ["Accountability", "Full audit trail with user attribution"],
-              ["Model card", "Gemini 2.5 Flash &#8212; Google&#8217;s published model documentation"],
-              ["Customer AI governance", "AI Governance&#8482; module manages customer AI inventories"],
+              ["Model card", "Gemini 2.5 Flash — Google&#8217;s published model documentation"],
+              ["Customer AI governance", "AI Governance™ module manages customer AI inventories"],
             ].map(([label, value]) => (
               <div key={label} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <span className="text-xs font-semibold text-[var(--color-ink)]" dangerouslySetInnerHTML={{ __html: label }} />
@@ -164,10 +164,10 @@ export default function AiPage() {
           </p>
           <div className="space-y-1.5">
             {[
-              ["Executive summaries", "24-hour TTL &#8212; refresh via the Refresh button in the UI"],
-              ["Per-entity narratives", "24-hour TTL &#8212; risk narratives, control summaries"],
-              ["Advisory outputs", "24-hour TTL &#8212; Regulatory Advisor, AI Governance Copilot"],
-              ["Chat responses", "Not cached &#8212; each turn is a live API call"],
+              ["Executive summaries", "24-hour TTL — refresh via the Refresh button in the UI"],
+              ["Per-entity narratives", "24-hour TTL — risk narratives, control summaries"],
+              ["Advisory outputs", "24-hour TTL — Regulatory Advisor, AI Governance Copilot"],
+              ["Chat responses", "Not cached — each turn is a live API call"],
             ].map(([type, policy]) => (
               <div key={type} className="flex flex-col gap-0.5 sm:flex-row sm:gap-4">
                 <span className="w-48 shrink-0 text-xs font-medium text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: type }} />
@@ -183,7 +183,7 @@ export default function AiPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

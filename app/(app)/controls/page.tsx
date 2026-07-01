@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Control Center&#8482; — AUDT' };
+export const metadata = { title: 'Control Center™ — AUDT' };
 
 import Link from "next/link";
 import {
@@ -23,7 +23,7 @@ export default async function ControlsDashboardPage() {
   if (session.demo || !session.org) {
     return (
       <Card>
-        <EmptyState icon={Shield} title="Control Center&#8482;" description="Connect Supabase to manage your control library." />
+        <EmptyState icon={Shield} title="Control Center™" description="Connect Supabase to manage your control library." />
       </Card>
     );
   }
@@ -77,15 +77,15 @@ export default async function ControlsDashboardPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Control Center&#8482;</h1>
+          <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Control Center™</h1>
           <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
-            Governance control intelligence &#8212; evidence &#8594; controls &#8594; risks &#8594; compliance &#8594; trust
+            Governance control intelligence — evidence → controls → risks → compliance → trust
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/controls/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            AI Control Advisor&#8482;
+            AI Control Advisor™
           </Link>
           <Link href="/controls/new">
             <Button><Plus className="h-4 w-4" /> New Control</Button>
@@ -104,12 +104,12 @@ export default async function ControlsDashboardPage() {
       {/* Row 2 — Health + Coverage (renamed P1 + P2) */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <ControlStat
-          label="Control Health&#8482;"
+          label="Control Health™"
           value={`${metrics.avgHealth}/100`}
           accent={metrics.avgHealth >= 80 ? "good" : metrics.avgHealth >= 60 ? "warn" : "danger"}
         />
         <ControlStat
-          label="Control Effectiveness&#8482;"
+          label="Control Effectiveness™"
           value={`${metrics.avgEffectiveness}/100`}
           accent={metrics.avgEffectiveness >= 70 ? "good" : "warn"}
         />
@@ -142,7 +142,7 @@ export default async function ControlsDashboardPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <Brain className="h-4 w-4 text-[var(--color-blue)]" />
-            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Control Intelligence&#8482;</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Control Intelligence™</h2>
           </div>
           <div className="space-y-3">
             {[
@@ -164,10 +164,10 @@ export default async function ControlsDashboardPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center gap-2">
             <Target className="h-4 w-4 text-purple-400" />
-            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact&#8482;</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact™</h2>
           </div>
           <p className="text-xs text-[var(--color-ink-dim)] mb-4">
-            Control Health&#8482; feeds 20% of Vendor Trust Score&#8482;
+            Control Health™ feeds 20% of Vendor Trust Score™
           </p>
           <div className="space-y-4">
             <div>
@@ -189,7 +189,7 @@ export default async function ControlsDashboardPage() {
               </div>
             </div>
             <div className="rounded-xl border border-[var(--color-line)] p-3 text-center">
-              <p className="text-xs text-[var(--color-ink-dim)] mb-1">Avg Control Health&#8482;</p>
+              <p className="text-xs text-[var(--color-ink-dim)] mb-1">Avg Control Health™</p>
               <p className={`text-2xl font-bold ${avgHealth >= 80 ? "text-emerald-400" : avgHealth >= 60 ? "text-amber-400" : "text-red-400"}`}>
                 {avgHealth}
               </p>
@@ -224,7 +224,7 @@ export default async function ControlsDashboardPage() {
           </div>
           <div className="mt-4">
             <Link href="/controls/testing" className="text-xs text-[var(--color-blue)] hover:underline">
-              View test log &#8594;
+              View test log →
             </Link>
           </div>
         </div>
@@ -237,11 +237,11 @@ export default async function ControlsDashboardPage() {
             <AlertTriangle className="h-4 w-4 text-orange-400" />
             <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Weakest Controls</h2>
           </div>
-          <Link href="/controls/library" className="text-xs text-[var(--color-blue)] hover:underline">View all &#8594;</Link>
+          <Link href="/controls/library" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
         </div>
         {topWeak.length === 0 ? (
           <p className="text-sm text-[var(--color-ink-dim)]">
-            {controls.length === 0 ? "No controls yet &#8212; add controls to track health." : "All controls have good health scores."}
+            {controls.length === 0 ? "No controls yet — add controls to track health." : "All controls have good health scores."}
           </p>
         ) : (
           <div className="overflow-x-auto">
@@ -300,7 +300,7 @@ export default async function ControlsDashboardPage() {
       <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="mb-4 flex items-center gap-2">
           <Activity className="h-4 w-4 text-[var(--color-blue)]" />
-          <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Control Relationships&#8482;</h2>
+          <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Control Relationships™</h2>
           <span className="ml-auto text-xs text-[var(--color-ink-dim)]">Every control connects to the governance graph</span>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -360,7 +360,7 @@ export default async function ControlsDashboardPage() {
               { label: "Control Library",      href: "/controls/library",  icon: Shield         },
               { label: "Run Tests",            href: "/controls/testing",  icon: FlaskConical   },
               { label: "AI Reports",           href: "/controls/reports",  icon: BarChart3      },
-              { label: "Control Copilot&#8482;", href: "/controls/ai",    icon: Brain          },
+              { label: "Control Copilot™", href: "/controls/ai",    icon: Brain          },
             ].map(({ label, href, icon: Icon }) => (
               <Link key={href} href={href}
                 className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-2.5 text-xs font-medium hover:bg-[#F8F9FB] transition-colors">
@@ -377,7 +377,7 @@ export default async function ControlsDashboardPage() {
           <EmptyState
             icon={Shield}
             title="No controls yet"
-            description="Add controls to start tracking Control Health&#8482; across your organisation."
+            description="Add controls to start tracking Control Health™ across your organisation."
             action={<Link href="/controls/new"><Button><Plus className="h-4 w-4" /> New Control</Button></Link>}
           />
         </Card>

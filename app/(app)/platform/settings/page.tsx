@@ -28,7 +28,7 @@ const SETTING_DESCRIPTIONS: Record<string, { label: string; description: string;
   },
   "notification.digest.day": {
     label: "Digest Day",
-    description: "Day of the week the weekly digest is delivered (monday &#8211; sunday).",
+    description: "Day of the week the weekly digest is delivered (monday – sunday).",
     type: "string",
   },
   "export.max_rows": {
@@ -52,22 +52,22 @@ const SETTING_DESCRIPTIONS: Record<string, { label: string; description: string;
     type: "number",
   },
   "tasks.default_sla.critical": {
-    label: "Task SLA &#8212; Critical (hours)",
+    label: "Task SLA — Critical (hours)",
     description: "Default SLA window in hours for critical-severity tasks.",
     type: "number",
   },
   "tasks.default_sla.high": {
-    label: "Task SLA &#8212; High (hours)",
+    label: "Task SLA — High (hours)",
     description: "Default SLA window in hours for high-severity tasks.",
     type: "number",
   },
   "tasks.default_sla.medium": {
-    label: "Task SLA &#8212; Medium (hours)",
+    label: "Task SLA — Medium (hours)",
     description: "Default SLA window in hours for medium-severity tasks.",
     type: "number",
   },
   "tasks.default_sla.low": {
-    label: "Task SLA &#8212; Low (hours)",
+    label: "Task SLA — Low (hours)",
     description: "Default SLA window in hours for low-severity tasks.",
     type: "number",
   },
@@ -158,13 +158,13 @@ const CATEGORY_META: {
   },
   {
     prefix: "workflow.",
-    label: "Workflow Studio&#8482;",
+    label: "Workflow Studio™",
     icon: <Zap className="h-4 w-4" />,
     color: "text-yellow-400",
   },
   {
     prefix: "ai.",
-    label: "AI & Governance Copilot&#8482;",
+    label: "AI & Governance Copilot™",
     icon: <Zap className="h-4 w-4" />,
     color: "text-purple-400",
   },

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -17,8 +17,8 @@ export default async function AiAuditorPage() {
       <Card>
         <EmptyState
           icon={Sparkles}
-          title="Audit Copilot&#8482;"
-          description="Connect Supabase to use the Audit Copilot&#8482;."
+          title="Audit Copilot™"
+          description="Connect Supabase to use the Audit Copilot™."
         />
       </Card>
     );
@@ -34,7 +34,7 @@ export default async function AiAuditorPage() {
         </div>
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">
-            Audit Copilot&#8482; Assistant
+            Audit Copilot™ Assistant
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
             {aiEnabled

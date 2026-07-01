@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { FileCheck } from "lucide-react";
 
 export const metadata = {
@@ -220,7 +220,7 @@ export default function DpaPage() {
         </section>
 
         <div className="border-t border-[var(--color-line)] pt-8 flex flex-wrap gap-4 text-xs">
-          <Link href="/trust" className="text-[var(--color-blue)] hover:underline">&#8592; Trust Center</Link>
+          <Link href="/trust" className="text-[var(--color-blue)] hover:underline">← Trust Center</Link>
           <Link href="/trust/terms" className="text-[var(--color-blue)] hover:underline">Terms of Service</Link>
           <Link href="/trust/privacy" className="text-[var(--color-blue)] hover:underline">Privacy Practices</Link>
           <Link href="/trust/architecture" className="text-[var(--color-blue)] hover:underline">Security Architecture</Link>

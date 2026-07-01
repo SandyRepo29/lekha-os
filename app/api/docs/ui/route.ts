@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET /api/docs/ui
  *
  * Renders Swagger UI as a standalone HTML page.
@@ -252,7 +252,7 @@ export async function GET() {
     <div class="audt-sep"></div>
     <div class="audt-badge">API v1.0</div>
     <span class="audt-tagline">Governance Built on Proof.</span>
-    <a class="audt-back" href="/settings/api-keys">&#8592; API Keys</a>
+    <a class="audt-back" href="/settings/api-keys">← API Keys</a>
   </div>
 
   <div id="swagger-ui"></div>

@@ -11,7 +11,7 @@ import { IssueSeverityBadge } from "@/components/issue-hub/issue-ui";
 import { SeverityBadge, FindingStatusBadge } from "@/components/audit/audit-status-badge";
 
 function formatDate(d: string | Date | null | undefined) {
-  if (!d) return "&#8212;";
+  if (!d) return "—";
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -91,7 +91,7 @@ export default async function FindingsPage({
             Audit Findings
           </h2>
           <Link href="/audits/findings" className="text-xs text-[var(--color-blue)] hover:underline">
-            Open in Audit Management &#8594;
+            Open in Audit Management →
           </Link>
         </div>
         {auditFindings.length === 0 ? (
@@ -149,7 +149,7 @@ export default async function FindingsPage({
             Issues Registry
           </h2>
           <Link href="/issue-hub/list" className="text-xs text-[var(--color-blue)] hover:underline">
-            Open in Issues &#8594;
+            Open in Issues →
           </Link>
         </div>
         {issues.length === 0 ? (
@@ -187,7 +187,7 @@ export default async function FindingsPage({
                       </td>
                       <td className="px-4 py-3"><IssueSeverityBadge severity={issue.severity} /></td>
                       <td className="px-4 py-3">
-                        <span className="text-xs text-[var(--color-ink-dim)]">{issue.ownerName ?? "&#8212;"}</span>
+                        <span className="text-xs text-[var(--color-ink-dim)]">{issue.ownerName ?? "—"}</span>
                       </td>
                       <td className="px-4 py-3">
                         <span className="text-xs text-[var(--color-ink-dim)]">{formatDate(issue.dueDate)}</span>

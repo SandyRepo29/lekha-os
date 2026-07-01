@@ -32,7 +32,7 @@ export default async function GovernanceTrendsPage() {
       <Card>
         <EmptyState
           icon={TrendingUp}
-          title="Governance Trends&#8482;"
+          title="Governance Trends™"
           description="Connect Supabase to unlock trend tracking."
         />
       </Card>
@@ -53,7 +53,7 @@ export default async function GovernanceTrendsPage() {
 
   const hasData = points.length > 1;
 
-  // Projected Trust Decay&#8482; calculations
+  // Projected Trust Decay™ calculations
   const currentTrust = m.orgTrust.current;
   const proj30  = Math.max(0, Math.min(100, Math.round(currentTrust + (m.orgTrust.change / 3))));
   const proj90  = Math.max(0, Math.min(100, Math.round(currentTrust + m.orgTrust.change)));
@@ -65,7 +65,7 @@ export default async function GovernanceTrendsPage() {
     return "text-[var(--color-ink-dim)]";
   }
 
-  // Trust Recovery Plan&#8482; &#8212; projected score after all actions
+  // Trust Recovery Plan™ — projected score after all actions
   const totalImpact = RECOVERY_ACTIONS.reduce((s, a) => s + a.impact, 0);
   const projAfterRecovery = Math.min(100, currentTrust + totalImpact);
 
@@ -75,10 +75,10 @@ export default async function GovernanceTrendsPage() {
         <div>
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
             <TrendingUp className="h-6 w-6 text-[var(--color-blue)]" />
-            Governance Trends&#8482;
+            Governance Trends™
           </h1>
           <p className="text-sm text-[var(--color-ink-dim)]">
-            90-day governance posture movement &#8212; {points.length} data point{points.length !== 1 ? "s" : ""}
+            90-day governance posture movement — {points.length} data point{points.length !== 1 ? "s" : ""}
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs text-[var(--color-ink-faint)]">
@@ -163,11 +163,11 @@ export default async function GovernanceTrendsPage() {
             </div>
           </Card>
 
-          {/* Section 1: Projected Trust Decay&#8482; */}
+          {/* Section 1: Projected Trust Decay™ */}
           <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 space-y-5">
             <div>
               <h2 className="font-[family-name:var(--font-display)] text-base font-bold">
-                Projected Trust Decay&#8482;
+                Projected Trust Decay™
               </h2>
               <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                 Extrapolated trajectory based on the current 90-day trend
@@ -230,20 +230,20 @@ export default async function GovernanceTrendsPage() {
                 </ul>
               ) : (
                 <p className="text-sm text-[var(--color-ink-dim)]">
-                  Governance posture is stable &#8212; monitor for changes
+                  Governance posture is stable — monitor for changes
                 </p>
               )}
             </div>
           </div>
 
-          {/* Section 2: Trust Recovery Plan&#8482; */}
+          {/* Section 2: Trust Recovery Plan™ */}
           <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5 space-y-5">
             <div>
               <h2 className="font-[family-name:var(--font-display)] text-base font-bold">
-                Trust Recovery Plan&#8482;
+                Trust Recovery Plan™
               </h2>
               <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
-                Actionable steps to improve your Organizational Trust Score&#8482;
+                Actionable steps to improve your Organizational Trust Score™
               </p>
             </div>
 

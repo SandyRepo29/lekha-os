@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { LifeBuoy, Clock, AlertTriangle, Shield, Activity, MessageSquare } from "lucide-react";
 
 export const metadata = {
@@ -135,7 +135,7 @@ export default function SupportPage() {
       <section className="mb-12">
         <h2 className="mb-2 font-[family-name:var(--font-display)] text-lg font-bold text-[var(--color-ink)]">Support SLA by Plan</h2>
         <p className="mb-6 text-sm text-[var(--color-ink-dim)]">
-          Business hours are 09:00&#8211;18:00 IST, Monday through Friday, excluding Indian public holidays.
+          Business hours are 09:00–18:00 IST, Monday through Friday, excluding Indian public holidays.
         </p>
         <div className="overflow-auto rounded-2xl border border-[var(--color-line)]">
           <table className="w-full text-sm">
@@ -264,7 +264,7 @@ export default function SupportPage() {
 
       {/* Footer links */}
       <div className="border-t border-[var(--color-line)] pt-8 flex flex-wrap gap-4 text-xs text-[var(--color-ink-dim)]">
-        <Link href="/trust" className="text-[var(--color-blue)] hover:underline">&#8592; Trust Center</Link>
+        <Link href="/trust" className="text-[var(--color-blue)] hover:underline">← Trust Center</Link>
         <Link href="/trust/terms" className="hover:text-[var(--color-ink)] transition">Terms of Service</Link>
         <Link href="/trust/dpa" className="hover:text-[var(--color-ink)] transition">Data Processing Agreement</Link>
         <Link href="/trust/contact" className="hover:text-[var(--color-ink)] transition">Security Contact</Link>

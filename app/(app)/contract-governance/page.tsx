@@ -1,6 +1,6 @@
 ﻿export const dynamic = "force-dynamic";
 
-export const metadata = { title: 'Contract Governance&#8482; — AUDT' };
+export const metadata = { title: 'Contract Governance™ — AUDT' };
 
 import Link from "next/link";
 import {
@@ -77,7 +77,7 @@ export default async function ContractGovernanceDashboardPage() {
           </a>
           <Link href="/contract-governance/ai" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-3 py-1.5 text-sm text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] hover:bg-[#F8F9FB] transition-colors">
             <Sparkles className="h-3.5 w-3.5" />
-            Contract Intelligence&#8482;
+            Contract Intelligence™
           </Link>
           <Link href="/contract-governance/new">
             <Button>

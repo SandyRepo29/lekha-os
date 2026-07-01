@@ -41,7 +41,7 @@ const ALL_TASKS = [
   {
     key: "create_risk",
     title: "Create your first risk",
-    desc: "Log a governance risk in Risk Lens&#8482;",
+    desc: "Log a governance risk in Risk Lens™",
     href: "/risks/new",
     Icon: AlertTriangle,
     goals: ["vendor_risk", "audit"],
@@ -67,7 +67,7 @@ const ALL_TASKS = [
   },
   {
     key: "explore_ai_governance",
-    title: "Explore AI Governance&#8482;",
+    title: "Explore AI Governance™",
     desc: "Inventory your AI systems and manage risk",
     href: "/ai-governance",
     Icon: Bot,
@@ -103,8 +103,8 @@ const ALL_TASKS = [
   },
   {
     key: "explore_trust",
-    title: "View your Trust Score&#8482;",
-    desc: "See your Organizational Trust Score&#8482;",
+    title: "View your Trust Score™",
+    desc: "See your Organizational Trust Score™",
     href: "/trust-intelligence",
     Icon: Lock,
     goals: [] as string[],

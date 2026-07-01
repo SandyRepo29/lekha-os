@@ -1,25 +1,25 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Eye, CheckCircle, XCircle, ChevronRight } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy &#8212; AUDT Trust Center",
+  title: "Privacy — AUDT Trust Center",
   description: "What data AUDT collects, what we never do, and your rights over your data.",
 };
 
 export default function PrivacyPage() {
   const weCollect = [
-    "Account information &#8212; name, email address, job title, organization name",
-    "Usage events &#8212; which features are used, page views, action counts (no content)",
-    "Audit logs &#8212; user actions within your org (who did what, when, from which IP)",
-    "Vendor and governance data &#8212; data entered by your team into AUDT modules",
-    "Device signals &#8212; browser type, OS, IP address for session management and security",
-    "Billing information &#8212; invoice details, payment reference numbers (no card data)",
+    "Account information — name, email address, job title, organization name",
+    "Usage events — which features are used, page views, action counts (no content)",
+    "Audit logs — user actions within your org (who did what, when, from which IP)",
+    "Vendor and governance data — data entered by your team into AUDT modules",
+    "Device signals — browser type, OS, IP address for session management and security",
+    "Billing information — invoice details, payment reference numbers (no card data)",
   ];
 
   const weNeverDo = [
-    "We never use your data to train AI models &#8212; zero-day guarantee",
+    "We never use your data to train AI models — zero-day guarantee",
     "We never sell or share your data with third parties without your explicit consent",
-    "We never store payment card numbers &#8212; all billing is handled via bank transfer or invoice",
+    "We never store payment card numbers — all billing is handled via bank transfer or invoice",
     "We never retain data after account deletion beyond legally required minimums",
     "We never access your data except for support tickets you raise or contractual obligations",
     "We never serve advertising based on your governance or compliance data",
@@ -43,7 +43,7 @@ export default function PrivacyPage() {
         </h1>
       </div>
       <p className="mb-10 text-[var(--color-ink-dim)]">
-        Your governance data is yours. AUDT acts as a data processor on your behalf &#8212; we never use
+        Your governance data is yours. AUDT acts as a data processor on your behalf — we never use
         your data for any purpose other than providing you the AUDT platform.
       </p>
 
@@ -88,7 +88,7 @@ export default function PrivacyPage() {
             process your data solely to provide the platform services you&#8217;ve subscribed to.
           </p>
           <p className="text-sm text-[var(--color-ink-dim)]">
-            You can export all your data at any time via Settings &#8212; Data Governance &#8212; Export Tenant Data.
+            You can export all your data at any time via Settings — Data Governance — Export Tenant Data.
             Exported data is provided as a ZIP archive of CSV files covering all modules.
           </p>
         </div>
@@ -103,9 +103,9 @@ export default function PrivacyPage() {
           </p>
           <div className="space-y-2">
             {[
-              ["Supabase", "Database and file storage &#8212; ap-south-1 Mumbai", "India"],
-              ["Vercel", "Application hosting &#8212; bom1 Mumbai region", "India"],
-              ["Google (Gemini)", "AI feature processing &#8212; data not retained for training", "Not retained"],
+              ["Supabase", "Database and file storage — ap-south-1 Mumbai", "India"],
+              ["Vercel", "Application hosting — bom1 Mumbai region", "India"],
+              ["Google (Gemini)", "AI feature processing — data not retained for training", "Not retained"],
               ["Resend", "Transactional email delivery", "EU / India"],
             ].map(([name, purpose, location]) => (
               <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
@@ -127,9 +127,9 @@ export default function PrivacyPage() {
           </p>
           <div className="space-y-2">
             {[
-              ["sb-...-auth-token", "Supabase session token &#8212; required for authentication"],
-              ["audt-sid", "AUDT session record &#8212; enables session management and timeout"],
-              ["audt-mfa", "TOTP verification state &#8212; set after successful MFA verification"],
+              ["sb-...-auth-token", "Supabase session token — required for authentication"],
+              ["audt-sid", "AUDT session record — enables session management and timeout"],
+              ["audt-mfa", "TOTP verification state — set after successful MFA verification"],
             ].map(([name, purpose]) => (
               <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
                 <code className="w-48 shrink-0 text-xs font-mono text-[var(--color-blue)]" dangerouslySetInnerHTML={{ __html: name }} />
@@ -177,7 +177,7 @@ export default function PrivacyPage() {
           href="/trust"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-dim)] transition hover:text-[var(--color-ink)]"
         >
-          &#8592; Back to Trust Center
+          ← Back to Trust Center
         </Link>
       </div>
     </div>

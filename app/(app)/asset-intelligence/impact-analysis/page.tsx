@@ -76,7 +76,7 @@ export default async function ImpactAnalysisPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Impact Analysis&#8482;</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Impact Analysis™</h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-1">
           Understand business impact caused by vendor failure, asset failure, or control failure across your governance landscape.
         </p>
@@ -128,7 +128,7 @@ export default async function ImpactAnalysisPage() {
                       <p className="font-medium text-sm">{scenario.vendorName}</p>
                       <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                         {scenario.assets.length} dependent asset{scenario.assets.length !== 1 ? "s" : ""}
-                        {hasPii && <span className="ml-2 text-amber-400">&#183; Contains PII</span>}
+                        {hasPii && <span className="ml-2 text-amber-400">· Contains PII</span>}
                       </p>
                     </div>
                     <span className={`inline-flex shrink-0 items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize ${IMPACT_STYLES[impact]}`}>
@@ -178,8 +178,8 @@ export default async function ImpactAnalysisPage() {
                       </Link>
                       <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                         {asset.businessUnit ?? asset.assetType}
-                        {asset.containsPii && <span className="ml-2 text-amber-400">&#183; PII</span>}
-                        {asset.containsSensitive && <span className="ml-2 text-orange-400">&#183; Sensitive Data</span>}
+                        {asset.containsPii && <span className="ml-2 text-amber-400">· PII</span>}
+                        {asset.containsSensitive && <span className="ml-2 text-orange-400">· Sensitive Data</span>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -306,7 +306,7 @@ export default async function ImpactAnalysisPage() {
             <Icon className={`h-5 w-5 ${color} mb-3`} />
             <p className="font-semibold text-sm mb-1">{title}</p>
             <p className="text-xs text-[var(--color-ink-dim)] mb-3">{desc}</p>
-            <Link href={href} className="text-xs text-[var(--color-blue)] hover:underline">{cta} &#8594;</Link>
+            <Link href={href} className="text-xs text-[var(--color-blue)] hover:underline">{cta} →</Link>
           </div>
         ))}
       </div>

@@ -22,10 +22,10 @@ export default async function RecommendationsPage() {
       <div>
         <h2 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
           <Zap className="h-5 w-5 text-[var(--color-blue)]" />
-          Decision Recommendations&#8482;
+          Decision Recommendations™
         </h2>
         <p className="text-sm text-[var(--color-ink-dim)]">
-          Prioritized governance actions &#8212; {recs.length} recommendation{recs.length !== 1 ? "s" : ""}
+          Prioritized governance actions — {recs.length} recommendation{recs.length !== 1 ? "s" : ""}
         </p>
       </div>
 

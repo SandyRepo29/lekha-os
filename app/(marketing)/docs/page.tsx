@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import "./docs.css";
@@ -611,7 +611,7 @@ const ENDPOINTS = [
   { method: "GET", path: "/api/v1/public/trust-score", desc: "Real-time org trust score (Trust API Platform™)", perm: "bearer" },
   { method: "GET", path: "/api/v1/public/verification", desc: "Proof-of-governance bundle", perm: "bearer" },
   { method: "GET", path: "/api/v1/public/benchmarking", desc: "Industry benchmark snapshot", perm: "bearer" },
-  { method: "GET", path: "/api/health", desc: "Liveness/readiness probe &#8212; DB + config checks", perm: "public" },
+  { method: "GET", path: "/api/health", desc: "Liveness/readiness probe — DB + config checks", perm: "public" },
   { method: "GET", path: "/api/docs", desc: "OpenAPI 3.1 JSON spec", perm: "public" },
 ];
 
@@ -912,7 +912,7 @@ function GettingStartedSection() {
       <div id="gs-welcome" className="docs-anchor">
         <div className="docs-hero">
           <h1 className="docs-hero-title">Welcome to AUDT</h1>
-          <p className="docs-hero-sub">AI-Native Trust, Risk &amp; Compliance Platform &#8212; Governance OS</p>
+          <p className="docs-hero-sub">AI-Native Trust, Risk &amp; Compliance Platform — Governance OS</p>
           <p className="docs-hero-body">
             Replace spreadsheets and disconnected tools with a single AI-native platform for vendor governance, compliance, audits, risk, board governance, regulatory intelligence, and more. 32 modules. 259+ tables. Governance built on proof.
           </p>
