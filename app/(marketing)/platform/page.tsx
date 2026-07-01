@@ -159,7 +159,7 @@ export default function PlatformPage() {
           <div className="section__head reveal">
             <span className="eyebrow">Platform Pillars</span>
             <h2>Four Integrated Layers.</h2>
-            <p>Every dimension of vendor governance — organized into four connected layers.</p>
+            <p>Every dimension of governance — organized into four connected layers.</p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -174,7 +174,7 @@ export default function PlatformPage() {
               {
                 id: "trust-operations", icon: "🛡", n: "02",
                 title: "Trust Operations",
-                desc: "Operational workflows that validate and improve vendor trust through evidence and assessments.",
+                desc: "Operational workflows that collect evidence, manage assessments, and close remediation loops across vendors, risks, and compliance.",
                 outcomes: ["Standardize assessments", "Collect & manage evidence", "Track remediation", "Reduce manual work"],
                 modules: ["Security Assessments","Questionnaires","Evidence Requests","Evidence Vault™","Remediation","Workflows"],
               },
@@ -442,7 +442,7 @@ export default function PlatformPage() {
           <div className="section__head reveal">
             <span className="eyebrow">Enterprise Readiness</span>
             <h2>Built For Enterprise Governance.</h2>
-            <p>Designed for organizations where vendor governance is a strategic function — not a compliance checkbox.</p>
+            <p>Designed for organizations where governance is a strategic function — not a compliance checkbox.</p>
           </div>
           <div className="reveal" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "16px", maxWidth: "860px", margin: "0 auto" }}>
             {[
@@ -481,7 +481,7 @@ export default function PlatformPage() {
                 <div style={{ padding: "14px 24px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--blue)", textAlign: "center" as const }}>AUDT</div>
               </div>
               {[
-                ["Compliance First",    "Vendor First"],
+                ["Compliance First",    "Governance First"],
                 ["Audit Driven",        "Lifecycle Driven"],
                 ["Point Solutions",     "Unified Platform"],
                 ["Static Reviews",      "Continuous Monitoring"],

@@ -10,7 +10,7 @@ export default function DpaPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <div className="mb-10">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
           <FileCheck className="h-3.5 w-3.5 text-[var(--color-blue)]" />
           Legal
         </div>
@@ -118,7 +118,7 @@ export default function DpaPage() {
           <div className="mt-4 overflow-auto rounded-xl border border-[var(--color-line)]">
             <table className="w-full text-xs">
               <thead>
-                <tr className="border-b border-[var(--color-line)] bg-white/[0.03]">
+                <tr className="border-b border-[var(--color-line)] bg-[#F8F9FB]">
                   <th className="px-4 py-3 text-left font-semibold text-[var(--color-ink)]">Sub-processor</th>
                   <th className="px-4 py-3 text-left font-semibold text-[var(--color-ink)]">Purpose</th>
                   <th className="px-4 py-3 text-left font-semibold text-[var(--color-ink)]">Location</th>

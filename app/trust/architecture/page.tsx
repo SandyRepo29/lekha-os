@@ -15,14 +15,14 @@ function Section({ id, icon: Icon, title, children }: {
   return (
     <section id={id} className="scroll-mt-20">
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Icon className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--color-ink)]">
           {title}
         </h2>
       </div>
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6 space-y-4">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6 space-y-4">
         {children}
       </div>
     </section>
@@ -100,7 +100,7 @@ export default function ArchitecturePage() {
               ["Data access layer", "lib/repositories/* &#8212; Drizzle ORM, optional transaction executor"],
               ["Infrastructure layer", "lib/providers/* &#8212; only place SDK imports are allowed"],
             ].map(([layer, desc]) => (
-              <div key={layer} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-2.5">
+              <div key={layer} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-2.5">
                 <span className="text-xs font-semibold text-[var(--color-blue)]" dangerouslySetInnerHTML={{ __html: layer }} />
                 <p className="text-xs text-[var(--color-ink-dim)] mt-0.5" dangerouslySetInnerHTML={{ __html: desc }} />
               </div>
@@ -157,14 +157,14 @@ export default function ArchitecturePage() {
       <div className="mt-10 flex gap-3">
         <Link
           href="/trust/encryption"
-          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm text-[var(--color-ink-dim)] transition hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm text-[var(--color-ink-dim)] transition hover:bg-[#F0F4F9] hover:text-[var(--color-ink)]"
         >
           Encryption details
           <ChevronRight className="h-3.5 w-3.5" />
         </Link>
         <Link
           href="/trust/data-protection"
-          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm text-[var(--color-ink-dim)] transition hover:bg-white/[0.04] hover:text-[var(--color-ink)]"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] px-4 py-2 text-sm text-[var(--color-ink-dim)] transition hover:bg-[#F0F4F9] hover:text-[var(--color-ink)]"
         >
           Data protection
           <ChevronRight className="h-3.5 w-3.5" />

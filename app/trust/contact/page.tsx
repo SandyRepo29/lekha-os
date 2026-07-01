@@ -17,7 +17,7 @@ export default function ContactPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Mail className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">
@@ -44,7 +44,7 @@ export default function ContactPage() {
 
       <div className="space-y-6">
         {/* Responsible disclosure */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <div className="flex items-center gap-2 mb-3">
             <Shield className="h-5 w-5 text-emerald-400" />
             <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
@@ -74,7 +74,7 @@ export default function ContactPage() {
         </div>
 
         {/* SLA */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <div className="flex items-center gap-2 mb-3">
             <Clock className="h-5 w-5 text-blue-400" />
             <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
@@ -88,7 +88,7 @@ export default function ContactPage() {
               { severity: "Medium", sla: "Acknowledge within 48 hours &#183; Resolution within 30 days", color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
               { severity: "Low", sla: "Acknowledge within 72 hours &#183; Resolution within 90 days", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
             ].map(({ severity, sla, color }) => (
-              <div key={severity} className="flex flex-col gap-1 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 sm:flex-row sm:items-center sm:gap-4">
+              <div key={severity} className="flex flex-col gap-1 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-center sm:gap-4">
                 <span className={`inline-flex w-fit items-center rounded-full border px-3 py-0.5 text-xs font-semibold ${color}`}>
                   {severity}
                 </span>
@@ -99,7 +99,7 @@ export default function ContactPage() {
         </div>
 
         {/* Scope */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="h-5 w-5 text-yellow-400" />
             <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
@@ -141,7 +141,7 @@ export default function ContactPage() {
         </div>
 
         {/* Bug bounty */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Bug Bounty
           </h2>
@@ -161,7 +161,7 @@ export default function ContactPage() {
         </div>
 
         {/* PGP */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             PGP Encryption
           </h2>
@@ -169,7 +169,7 @@ export default function ContactPage() {
             For sensitive disclosures, you may encrypt your email using our security team&#8217;s PGP key.
             Key publication is in progress &#8212; email us directly and we will share the key on request.
           </p>
-          <div className="rounded-xl border border-[var(--color-line)] bg-white/[0.03] px-4 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
+          <div className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-3 font-mono text-xs text-[var(--color-ink-dim)]">
             Key ID: <span className="text-[var(--color-blue)]">Coming soon</span>
             <br />
             Fingerprint: <span className="text-[var(--color-blue)]">Email security@audt.tech to request</span>
@@ -177,7 +177,7 @@ export default function ContactPage() {
         </div>
 
         {/* General contact */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Other Security Inquiries
           </h2>

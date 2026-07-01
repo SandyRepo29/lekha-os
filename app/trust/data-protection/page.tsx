@@ -8,7 +8,7 @@ export const metadata = {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
       <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
         {title}
       </h2>
@@ -28,7 +28,7 @@ export default function DataProtectionPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Shield className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">
@@ -54,7 +54,7 @@ export default function DataProtectionPage() {
               ["Application compute", "Vercel bom1 region (Mumbai)"],
               ["AI processing", "Gemini API &#8212; data not retained by Google"],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+              <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <div className="text-xs font-medium text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: label }} />
                 <div className="text-sm text-[var(--color-ink)] mt-0.5" dangerouslySetInnerHTML={{ __html: value }} />
               </div>

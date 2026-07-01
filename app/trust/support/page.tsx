@@ -70,7 +70,7 @@ export default function SupportPage() {
     <div className="mx-auto max-w-4xl px-6 py-16">
       {/* Hero */}
       <div className="mb-12">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
           <LifeBuoy className="h-3.5 w-3.5 text-[var(--color-blue)]" />
           Support &amp; Operations
         </div>
@@ -116,9 +116,9 @@ export default function SupportPage() {
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 transition hover:bg-white/[0.04] hover:border-[var(--color-blue)]/40"
+              className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-5 transition hover:bg-[#F0F4F9] hover:border-[var(--color-blue)]/40"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03] group-hover:border-[var(--color-blue)]/40">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] group-hover:border-[var(--color-blue)]/40">
                 <Icon className="h-4 w-4 text-[var(--color-blue)]" />
               </div>
               <div>
@@ -140,7 +140,7 @@ export default function SupportPage() {
         <div className="overflow-auto rounded-2xl border border-[var(--color-line)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-line)] bg-white/[0.03]">
+              <tr className="border-b border-[var(--color-line)] bg-[#F8F9FB]">
                 <th className="px-5 py-4 text-left font-semibold text-[var(--color-ink)]">Plan</th>
                 <th className="px-5 py-4 text-left font-semibold text-[var(--color-ink)]">Support Type</th>
                 <th className="px-5 py-4 text-left font-semibold text-[var(--color-ink)]">Initial Response</th>
@@ -160,7 +160,7 @@ export default function SupportPage() {
                         ? "bg-violet-500/15 text-violet-300"
                         : tier.featured
                         ? "bg-[var(--color-blue)]/15 text-[var(--color-blue)]"
-                        : "bg-white/[0.06] text-[var(--color-ink)]"
+                        : "bg-[#E8EDF5] text-[var(--color-ink)]"
                     }`}>
                       {tier.plan}
                     </span>
@@ -190,7 +190,7 @@ export default function SupportPage() {
           {SEVERITY_LEVELS.map((s) => (
             <div
               key={s.level}
-              className="flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white/[0.02] p-4 sm:flex-row sm:items-start sm:gap-4"
+              className="flex flex-col gap-2 rounded-xl border border-[var(--color-line)] bg-white p-4 sm:flex-row sm:items-start sm:gap-4"
             >
               <span className={`inline-flex shrink-0 items-center rounded-lg border px-2.5 py-1 text-xs font-semibold ${s.color}`}>
                 {s.level}
@@ -209,7 +209,7 @@ export default function SupportPage() {
       {/* Enterprise */}
       <section className="mb-12">
         <h2 className="mb-6 font-[family-name:var(--font-display)] text-lg font-bold text-[var(--color-ink)]">Enterprise Support</h2>
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <div className="grid gap-6 sm:grid-cols-2">
             {[
               {
@@ -234,7 +234,7 @@ export default function SupportPage() {
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex gap-3">
-                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--color-line)] bg-white/[0.03]">
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--color-line)] bg-[#F8F9FB]">
                   <Icon className="h-4 w-4 text-[var(--color-blue)]" />
                 </div>
                 <div>

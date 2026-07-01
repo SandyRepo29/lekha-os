@@ -115,7 +115,7 @@ export default function TrustPage() {
     <div className="mx-auto max-w-5xl px-6 py-16">
       {/* Hero */}
       <div className="mb-14 text-center">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
           <Shield className="h-3.5 w-3.5 text-[var(--color-blue)]" />
           Trust &amp; Security Center
         </div>
@@ -137,7 +137,7 @@ export default function TrustPage() {
         {[
           { label: "India Data Residency", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
           { label: "AES-256-GCM Encryption", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
-          { label: "RLS on 259+ Tables", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
+          { label: "Zero-Trust Architecture", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
           { label: "DPDP Ready", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
           { label: "TLS 1.3 + HSTS", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
         ].map((b) => (
@@ -158,9 +158,9 @@ export default function TrustPage() {
             href={href}
             target={external ? "_blank" : undefined}
             rel={external ? "noopener noreferrer" : undefined}
-            className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6 transition hover:bg-white/[0.04] hover:border-[var(--color-blue)]/40"
+            className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-6 transition hover:bg-[#F0F4F9] hover:border-[var(--color-blue)]/40"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03] group-hover:border-[var(--color-blue)]/40">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] group-hover:border-[var(--color-blue)]/40">
               <Icon className="h-5 w-5 text-[var(--color-blue)]" />
             </div>
             <div>
@@ -186,9 +186,9 @@ export default function TrustPage() {
             <Link
               key={href}
               href={href}
-              className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-5 transition hover:bg-white/[0.04] hover:border-[var(--color-blue)]/40"
+              className="group flex flex-col gap-3 rounded-2xl border border-[var(--color-line)] bg-white p-5 transition hover:bg-[#F0F4F9] hover:border-[var(--color-blue)]/40"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03] group-hover:border-[var(--color-blue)]/40">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] group-hover:border-[var(--color-blue)]/40">
                 <Icon className="h-4 w-4 text-[var(--color-blue)]" />
               </div>
               <div>
@@ -203,7 +203,7 @@ export default function TrustPage() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-14 rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-8 text-center">
+      <div className="mt-14 rounded-2xl border border-[var(--color-line)] bg-white p-8 text-center">
         <h3 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)]">
           Questions about our security practices?
         </h3>

@@ -17,7 +17,7 @@ export default function AiPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Bot className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">
@@ -31,7 +31,7 @@ export default function AiPage() {
 
       <div className="space-y-6">
         {/* AI model */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             AI Model &amp; Provider
           </h2>
@@ -76,7 +76,7 @@ export default function AiPage() {
         </div>
 
         {/* Human in the loop */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Human-in-the-Loop by Design
           </h2>
@@ -93,7 +93,7 @@ export default function AiPage() {
               ["Control Narrative", "AI writes; human approves before use in audit evidence"],
               ["Agent Actions", "AI proposes; human must approve via Approval Queue"],
             ].map(([feature, rule]) => (
-              <div key={feature} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+              <div key={feature} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <div className="text-xs font-semibold text-[var(--color-ink)]">{feature}</div>
                 <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{rule}</div>
               </div>
@@ -102,7 +102,7 @@ export default function AiPage() {
         </div>
 
         {/* AI audit trail */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             AI Audit Trail
           </h2>
@@ -127,7 +127,7 @@ export default function AiPage() {
         </div>
 
         {/* EU AI Act */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             EU AI Act Alignment
           </h2>
@@ -145,7 +145,7 @@ export default function AiPage() {
               ["Model card", "Gemini 2.5 Flash &#8212; Google&#8217;s published model documentation"],
               ["Customer AI governance", "AI Governance&#8482; module manages customer AI inventories"],
             ].map(([label, value]) => (
-              <div key={label} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+              <div key={label} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <span className="text-xs font-semibold text-[var(--color-ink)]" dangerouslySetInnerHTML={{ __html: label }} />
                 <span className="text-xs text-[var(--color-ink-dim)] mt-0.5" dangerouslySetInnerHTML={{ __html: value }} />
               </div>
@@ -154,7 +154,7 @@ export default function AiPage() {
         </div>
 
         {/* Caching policy */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             AI Output Caching Policy
           </h2>

@@ -8,7 +8,7 @@ export const metadata = {
 
 function EncSection({ title, rows }: { title: string; rows: [string, string][] }) {
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+    <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
       <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-4">
         {title}
       </h2>
@@ -37,7 +37,7 @@ export default function EncryptionPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Lock className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">

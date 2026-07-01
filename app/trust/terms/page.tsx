@@ -10,7 +10,7 @@ export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <div className="mb-10">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[#F8F9FB] px-4 py-1.5 text-xs font-medium text-[var(--color-ink-dim)]">
           <FileText className="h-3.5 w-3.5 text-[var(--color-blue)]" />
           Legal
         </div>

@@ -35,7 +35,7 @@ export default function PrivacyPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <Eye className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
 
       <div className="space-y-6">
         {/* What we collect */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-4">
             What We Collect
           </h2>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* What we never do */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-4">
             What We Never Do
           </h2>
@@ -79,7 +79,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Customer data ownership */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Customer Data Ownership
           </h2>
@@ -94,7 +94,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Third parties */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Third-Party Sub-Processors
           </h2>
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
               ["Google (Gemini)", "AI feature processing &#8212; data not retained for training", "Not retained"],
               ["Resend", "Transactional email delivery", "EU / India"],
             ].map(([name, purpose, location]) => (
-              <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
+              <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
                 <span className="w-36 shrink-0 text-xs font-semibold text-[var(--color-ink)]" dangerouslySetInnerHTML={{ __html: name }} />
                 <span className="flex-1 text-xs text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: purpose }} />
                 <span className="text-xs text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: location }} />
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Cookies */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Cookies
           </h2>
@@ -131,7 +131,7 @@ export default function PrivacyPage() {
               ["audt-sid", "AUDT session record &#8212; enables session management and timeout"],
               ["audt-mfa", "TOTP verification state &#8212; set after successful MFA verification"],
             ].map(([name, purpose]) => (
-              <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
+              <div key={name} className="flex flex-col gap-0.5 rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4">
                 <code className="w-48 shrink-0 text-xs font-mono text-[var(--color-blue)]" dangerouslySetInnerHTML={{ __html: name }} />
                 <span className="text-xs text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: purpose }} />
               </div>
@@ -140,7 +140,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Rights */}
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-6">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-bold text-[var(--color-ink)] mb-3">
             Your Rights
           </h2>
@@ -156,7 +156,7 @@ export default function PrivacyPage() {
               ["Restriction", "Request limited processing of your data"],
               ["Objection", "Object to certain types of processing"],
             ].map(([right, desc]) => (
-              <div key={right} className="rounded-xl border border-[var(--color-line)] bg-white/[0.02] px-4 py-3">
+              <div key={right} className="rounded-xl border border-[var(--color-line)] bg-white px-4 py-3">
                 <div className="text-xs font-semibold text-[var(--color-ink)]">{right}</div>
                 <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">{desc}</div>
               </div>

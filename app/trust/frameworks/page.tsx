@@ -125,7 +125,7 @@ export default function FrameworksPage() {
       </nav>
 
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-white/[0.03]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[#F8F9FB]">
           <FileCheck className="h-4.5 w-4.5 text-[var(--color-blue)]" />
         </div>
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)]">
@@ -142,7 +142,7 @@ export default function FrameworksPage() {
         {frameworks.map((f) => (
           <div
             key={f.name}
-            className="rounded-2xl border border-[var(--color-line)] bg-white/[0.02] p-6"
+            className="rounded-2xl border border-[var(--color-line)] bg-white p-6"
           >
             <div className="mb-3 flex flex-wrap items-center gap-3">
               <h2
