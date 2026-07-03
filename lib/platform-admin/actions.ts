@@ -254,6 +254,232 @@ export async function createPlatformUserAction(formData: FormData): Promise<{ er
   }
 }
 
+// ── getAllUsers (cross-tenant) ────────────────────────────────────────────────
+
+export async function getAllUsersAction(page = 1, search = "") {
+  const limit = 25;
+  const offset = (page - 1) * limit;
+  try {
+    const rows = await db.execute(sql`
+      SELECT
+        p.id,
+        p.full_name,
+        p.email,
+        m.role,
+        o.name as org_name,
+        m.is_active,
+        m.created_at
+      FROM profiles p
+      JOIN memberships m ON m.user_id = p.id
+      JOIN organizations o ON o.id = m.organization_id
+      WHERE (${search} = '' OR p.full_name ILIKE ${`%${search}%`} OR p.email ILIKE ${`%${search}%`})
+      ORDER BY m.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `);
+    const countResult = await db.execute(sql`
+      SELECT COUNT(*) as total
+      FROM profiles p JOIN memberships m ON m.user_id = p.id
+      WHERE (${search} = '' OR p.full_name ILIKE ${`%${search}%`} OR p.email ILIKE ${`%${search}%`})
+    `);
+    return {
+      data: {
+        users: rows as Array<Record<string, unknown>>,
+        total: Number((countResult[0] as Record<string, unknown>)?.total ?? 0),
+        page,
+        totalPages: Math.ceil(Number((countResult[0] as Record<string, unknown>)?.total ?? 0) / limit),
+      },
+    };
+  } catch { return { data: null }; }
+}
+
+// ── getSubscriptions ──────────────────────────────────────────────────────────
+
+export async function getSubscriptionsAction() {
+  try {
+    const rows = await db.execute(sql`
+      SELECT
+        s.id, s.status, s.trial_ends_at, s.current_period_start, s.current_period_end,
+        s.cancel_at_period_end, s.created_at,
+        o.name as org_name, o.id as org_id,
+        bp.name as plan_name, bp.price_inr_monthly
+      FROM subscriptions s
+      JOIN organizations o ON o.id = s.organization_id
+      LEFT JOIN billing_plans bp ON bp.id = s.plan_id
+      ORDER BY s.created_at DESC
+      LIMIT 100
+    `);
+    const stats = await db.execute(sql`
+      SELECT
+        COUNT(*) FILTER (WHERE status = 'trial')        as trials,
+        COUNT(*) FILTER (WHERE status = 'active')       as active,
+        COUNT(*) FILTER (WHERE status = 'grace_period') as grace,
+        COUNT(*) FILTER (WHERE status = 'suspended')    as suspended,
+        COUNT(*) FILTER (WHERE status = 'expired')      as expired
+      FROM subscriptions
+    `);
+    return { data: { subscriptions: rows as Array<Record<string, unknown>>, stats: stats[0] as Record<string, unknown> } };
+  } catch { return { data: null }; }
+}
+
+// ── getBillingOverview ────────────────────────────────────────────────────────
+
+export async function getBillingOverviewAction() {
+  try {
+    const invoices = await db.execute(sql`
+      SELECT
+        i.id, i.invoice_number, i.status, i.amount_cents, i.currency,
+        i.issued_at, i.due_at,
+        o.name as org_name
+      FROM invoices i
+      JOIN organizations o ON o.id = i.organization_id
+      ORDER BY i.issued_at DESC
+      LIMIT 50
+    `).catch(() => [] as Record<string, unknown>[]);
+
+    const stats = await db.execute(sql`
+      SELECT
+        COUNT(*)                                           as total,
+        COUNT(*) FILTER (WHERE status = 'paid')           as paid,
+        COUNT(*) FILTER (WHERE status = 'pending')        as pending,
+        COUNT(*) FILTER (WHERE status = 'overdue')        as overdue,
+        COALESCE(SUM(amount_cents) FILTER (WHERE status = 'paid'), 0) as revenue_cents
+      FROM invoices
+    `).catch(() => [{ total: 0, paid: 0, pending: 0, overdue: 0, revenue_cents: 0 }] as Record<string, unknown>[]);
+
+    return { data: { invoices: invoices as Array<Record<string, unknown>>, stats: stats[0] as Record<string, unknown> } };
+  } catch { return { data: null }; }
+}
+
+// ── getSystemHealth ───────────────────────────────────────────────────────────
+
+export async function getSystemHealthAction() {
+  try {
+    const start = Date.now();
+    const [orgCount, userCount, vendorCount, evidenceCount] = await Promise.all([
+      db.execute(sql`SELECT COUNT(*) as n FROM organizations`),
+      db.execute(sql`SELECT COUNT(*) as n FROM profiles`),
+      db.execute(sql`SELECT COUNT(*) as n FROM vendors WHERE deleted_at IS NULL`),
+      db.execute(sql`SELECT COUNT(*) as n FROM evidence`),
+    ]);
+    const latency = Date.now() - start;
+
+    const recentActivity = await db.execute(sql`
+      SELECT action, created_at FROM audit_logs ORDER BY created_at DESC LIMIT 5
+    `).catch(() => []);
+
+    return {
+      data: {
+        latencyMs: latency,
+        orgs:     Number((orgCount[0] as Record<string, unknown>).n),
+        users:    Number((userCount[0] as Record<string, unknown>).n),
+        vendors:  Number((vendorCount[0] as Record<string, unknown>).n),
+        evidence: Number((evidenceCount[0] as Record<string, unknown>).n),
+        recentActivity: recentActivity as Array<Record<string, unknown>>,
+        checkedAt: new Date().toISOString(),
+      },
+    };
+  } catch (err) {
+    return { data: null, error: String(err) };
+  }
+}
+
+// ── getAiCenter ───────────────────────────────────────────────────────────────
+
+export async function getAiCenterAction() {
+  try {
+    const [insightsCount, recentInsights] = await Promise.all([
+      db.execute(sql`SELECT COUNT(*) as n FROM ai_compliance_insights`),
+      db.execute(sql`
+        SELECT insight_type, target_id, generated_at
+        FROM ai_compliance_insights
+        ORDER BY generated_at DESC
+        LIMIT 10
+      `),
+    ]);
+
+    const promptLogs = await db.execute(sql`
+      SELECT sensitivity, is_blocked, created_at
+      FROM ai_prompt_logs
+      ORDER BY created_at DESC
+      LIMIT 20
+    `).catch(() => []);
+
+    const promptStats = await db.execute(sql`
+      SELECT
+        COUNT(*)                                       as total,
+        COUNT(*) FILTER (WHERE is_blocked)             as blocked,
+        COUNT(*) FILTER (WHERE sensitivity = 'high')   as high_sensitivity,
+        COUNT(*) FILTER (WHERE created_at > now() - INTERVAL '24 hours') as last_24h
+      FROM ai_prompt_logs
+    `).catch(() => [{ total: 0, blocked: 0, high_sensitivity: 0, last_24h: 0 }]);
+
+    return {
+      data: {
+        totalCachedInsights: Number((insightsCount[0] as Record<string, unknown>).n),
+        recentInsights: recentInsights as Array<Record<string, unknown>>,
+        promptStats: promptStats[0] as Record<string, unknown>,
+        recentPrompts: promptLogs as Array<Record<string, unknown>>,
+      },
+    };
+  } catch { return { data: null }; }
+}
+
+// ── sendPlatformNotification ──────────────────────────────────────────────────
+
+export async function sendNotificationAction(formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session) return { error: "Unauthorized." };
+
+  const title = formData.get("title") as string;
+  const body  = formData.get("body") as string;
+  const severity = (formData.get("severity") as string) ?? "info";
+
+  if (!title || !body) return { error: "Title and body are required." };
+
+  try {
+    await db.execute(sql`
+      INSERT INTO platform_notifications (title, body, severity, sent_by)
+      VALUES (${title}, ${body}, ${severity}, ${session.platformUserId})
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'data_export', 'notification', ${title})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to send notification." }; }
+}
+
+export async function getNotificationsAction() {
+  try {
+    const rows = await db.execute(sql`
+      SELECT n.id, n.title, n.body, n.severity, n.sent_at, pu.name as sent_by_name
+      FROM platform_notifications n
+      LEFT JOIN platform_users pu ON pu.id = n.sent_by
+      ORDER BY n.sent_at DESC
+      LIMIT 30
+    `);
+    return { data: rows as Array<Record<string, unknown>> };
+  } catch { return { data: [] }; }
+}
+
+// ── getSupportTickets ─────────────────────────────────────────────────────────
+
+export async function getSupportTicketsAction() {
+  try {
+    const rows = await db.execute(sql`
+      SELECT
+        t.id, t.title, t.status, t.priority, t.created_at, t.resolved_at,
+        o.name as org_name,
+        pu.name as assigned_to_name
+      FROM platform_support_tickets t
+      LEFT JOIN organizations o ON o.id = t.organization_id
+      LEFT JOIN platform_users pu ON pu.id = t.assigned_to
+      ORDER BY t.created_at DESC
+    `);
+    return { data: rows as Array<Record<string, unknown>> };
+  } catch { return { data: [] }; }
+}
+
 // ── getAuditLogs ─────────────────────────────────────────────────────────────
 
 export async function getPlatformAuditLogsAction(page = 1) {
