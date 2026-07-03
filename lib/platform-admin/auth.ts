@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { sql } from "drizzle-orm";
 
@@ -27,8 +28,6 @@ export const PLATFORM_SID_COOKIE = "audt-platform-sid";
 export async function requirePlatformUser(): Promise<PlatformSession> {
   const session = await getPlatformSession();
   if (!session) {
-    // Throw a redirect-style error that the layout catches
-    const { redirect } = await import("next/navigation");
     redirect("/platform-admin/login");
   }
   return session;
@@ -91,7 +90,6 @@ export async function getPlatformSession(): Promise<PlatformSession | null> {
 
 export function requireRole(session: PlatformSession, ...roles: PlatformRole[]): void {
   if (!roles.includes(session.role)) {
-    const { redirect } = require("next/navigation");
     redirect("/platform-admin?error=forbidden");
   }
 }
