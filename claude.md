@@ -1121,6 +1121,27 @@ GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 /finance/pending                             Pending verification queue — bank transfers awaiting manual confirmation
 /finance/transactions/[id]                   Transaction detail — Verify or Reject with notes
 
+--- Platform Owner Console (internal AUDT staff only — NOT visible to tenants) ---
+/platform-admin/login                        Login page — separate dark auth form (no Supabase)
+/platform-admin                              Dashboard — KPI strip, recent signups, recent audit actions
+/platform-admin/orgs                         Organizations — list with search, member/vendor counts, plan status
+/platform-admin/users                        All Users — cross-tenant user directory (stub)
+/platform-admin/subscriptions                Subscriptions — trial expirations, plan changes (stub)
+/platform-admin/billing                      Billing & Invoices — platform-wide billing (stub)
+/platform-admin/flags                        Feature Flags — live toggles for 15 built-in flags
+/platform-admin/modules                      Module Registry — all 32 modules (stub)
+/platform-admin/templates                    System Templates — vendor templates, frameworks, controls (stub)
+/platform-admin/integrations                 Integration provider catalog (stub)
+/platform-admin/ai                           AI Center — Gemini usage, prompt logs, cost (stub)
+/platform-admin/staff                        Platform Users — internal staff with role/MFA/status
+/platform-admin/security                     Security Center — platform-level security (stub)
+/platform-admin/audit-logs                   Audit Logs — all platform admin actions, paginated
+/platform-admin/notifications                Notifications — send org-targeted or broadcast (stub)
+/platform-admin/support                      Support Console — tickets and org notes (stub)
+/platform-admin/settings                     Platform Settings — global config (stub)
+/platform-admin/health                       System Health — DB, latency, uptime (stub)
+/platform-admin/monitoring                   Monitoring — error rates, alerts (stub)
+
 --- Help & Docs ---
 /help                                        Documentation center — all 32 modules, search, grouped left nav (authenticated)
 
@@ -2153,6 +2174,8 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | Regulatory Intelligence™ | Always-current regulatory tracking — 18 built-in regulations, change monitor, obligations, AI horizon, readiness score | ✅ Complete (2026-06-14) |
 | Asset Intelligence™ | Enterprise Asset Graph & Trust Mapping — 30-asset registry, dependency graph, PII tracking, alerts, AI advisor | ✅ Complete (2026-06-16) |
 | Security Command Center™ | Enterprise security platform — MFA, SSO, sessions, IP allow lists, evidence protection, AI security, CMK, trust center, vendor monitoring | ✅ Complete (2026-06-16) |
+| Navigation V2 | Sidebar restructured into 8 customer-journey groups: Discover · Assess · Govern · Trust Operations Engine™ · Measure · Improve · Reports · Platform | ✅ Complete (2026-07-03) |
+| Platform Owner Console | Separate super-admin at /platform-admin/* — own auth, feature flags, org management, audit logs | ✅ Complete (2026-07-03) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
@@ -2283,6 +2306,13 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Trust Center pages have NO auth** | `app/trust/**` pages must never call `requireUser()`. They are public marketing pages. The layout (`app/trust/layout.tsx`) has no auth check. Do not add `export const dynamic = "force-dynamic"` to these pages. |
 | **`/api/docs/ui` must open in new tab** | `app/api/docs/ui/route.ts` returns raw HTML (Swagger UI). Next.js `<Link>` cannot render it via client-side navigation. The sidebar uses `external: true` on the NavItem which renders `<a target="_blank" rel="noopener noreferrer">` instead of `<Link>`. Never revert this to `<Link>`. |
 | **`backdrop-filter` traps `position:fixed` children** | The topbar `<header>` uses `backdrop-blur-md`. Per CSS spec, `backdrop-filter` creates a containing block for `position:fixed` descendants, constraining them to the header's 64px bounds instead of the viewport. Any overlay/panel rendered inside that `<header>` will be clipped. Pattern: render panels (NotificationPanel, HelpPanel) OUTSIDE the `<header>` tag in Topbar's JSX return — they are sibling elements after `</header>`, not inside it. `NotificationBell` is a controlled component (accepts `open/onOpen/unreadCount` props); state lives in Topbar. |
+| **Platform Owner Console is completely separate from tenant app** | `/platform-admin/*` routes bypass ALL Supabase/tenant auth in `proxy.ts` (first check, before API v1 skip). Auth uses `audt-platform-sid` cookie (NOT `audt-sid`) → `platform_sessions` table (NOT `user_sessions`). `requirePlatformUser()` is in `lib/platform-admin/auth.ts`. Never call `requireUser()` from `lib/auth/session.ts` in platform-admin pages. Never add platform-admin data to tenant-facing DB tables. |
+| **Platform admin DB tables not in `lib/db/schema.ts`** | `platform_users`, `platform_sessions`, `feature_flags`, `tenant_feature_overrides`, `platform_audit_logs`, `system_health_snapshots`, `platform_notifications`, `platform_org_notes`, `platform_support_tickets` are defined only in migration 0042. All queries use raw `db.execute(sql\`...\`)`. Same pattern as Security Command Center tables. |
+| **Feature flags seeded in migration 0042** | 15 built-in feature flags seeded with `enabled = true`. Toggle via `/platform-admin/flags`. Per-org overrides go in `tenant_feature_overrides` (not in `feature_flags` — that table is global). `FlagToggle` client component calls `toggleFeatureFlagAction()` which fires `flag_update` audit log. |
+| **Platform audit log is fire-and-forget** | `platform_audit_logs` writes use `.catch(() => {})`. Never await them in a request path. Unlike tenant `audit()` helper, platform audit requires `platform_user_id` (UUID) + `platform_user_email` both set — both are available from `getPlatformSession()`. |
+| **Navigation V2 sidebar (2026-07-03)** | 8 customer-journey groups: Discover · Assess · Govern · Trust Operations Engine™ · Measure · Improve · Reports · Platform. localStorage key bumped to `audt_sidebar_collapsed_v4`. Dashboard and Executive Center remain as top-level pinned items above the groups. `BadgeCheck` icon imported from lucide-react for Trust Verification™ item. |
+| **Badge colors — light theme** | Status/severity/priority badges must use light-theme styles: `bg-*-100 text-*-700` (e.g. `bg-red-100 text-red-700`). Dark-theme patterns `bg-*-500/20 text-*-300` are invisible/washed-out on white backgrounds. This applies to all module badge components including `components/toe/toe-ui.tsx`. |
+| **HTML entities in JS string literals** | `&#8482;` `&#8212;` etc. only render correctly inside JSX markup (`<span>&#8482;</span>`). In JS string values used as React text nodes (e.g. `label: "Foo&#8482;"`) they render as literal ampersand-hash text. Always use actual Unicode chars in string values: `™` `—` `→` `↑` `↓`. |
 
 ---
 
