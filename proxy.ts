@@ -42,6 +42,11 @@ export async function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-correlation-id", correlationId);
 
+  // 1a. Platform admin routes — own auth system, skip all tenant auth
+  if (pathname.startsWith("/platform-admin")) {
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
+
   // 1. API v1 routes — skip entirely (but forward the correlation header)
   if (pathname.startsWith("/api/v1/")) {
     return NextResponse.next({ request: { headers: requestHeaders } });
