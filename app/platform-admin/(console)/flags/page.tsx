@@ -37,7 +37,7 @@ export default async function FeatureFlagsPage() {
                   {flag.scope as string}
                 </span>
               </div>
-              {flag.description && (
+              {!!flag.description && (
                 <div className="mt-0.5 text-[12px] text-white/35">{flag.description as string}</div>
               )}
             </div>
