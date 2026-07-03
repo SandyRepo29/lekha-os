@@ -37,6 +37,7 @@ import {
   Zap,
   Terminal,
   FileCode,
+  BadgeCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -59,99 +60,116 @@ type NavGroup = {
 // ─── Navigation structure ─────────────────────────────────────────────────────
 
 const navGroups: NavGroup[] = [
+  // ── DISCOVER ──────────────────────────────────────────────────────────────
   {
-    key: "trust-operations-engine",
-    label: "Trust Operations",
-    items: [
-      { href: "/operations",                label: "TOE Dashboard™",      icon: Zap },
-      { href: "/operations/command-center", label: "Command Center™",     icon: Terminal },
-      { href: "/operations/approvals",      label: "Approval Queue™",     icon: Target },
-      { href: "/operations/workflows",      label: "Workflow Engine™",    icon: GitBranch },
-      { href: "/operations/automation",     label: "Automation™",         icon: Cpu },
-      { href: "/operations/events",         label: "Event Log™",          icon: BarChart3 },
-      { href: "/operations/ai",             label: "AI Decision Engine™", icon: Sparkles },
-    ],
-  },
-  {
-    key: "vendor-governance",
-    label: "Vendor Governance",
+    key: "discover",
+    label: "Discover",
     items: [
       { href: "/vendors",             label: "Vendor Hub™",          icon: Building2 },
-      { href: "/contract-governance", label: "Contract Governance™", icon: FileSignature },
       { href: "/asset-intelligence",  label: "Asset Intelligence™",  icon: Layers },
+      { href: "/contract-governance", label: "Contract Governance™", icon: FileSignature },
     ],
   },
+
+  // ── ASSESS ────────────────────────────────────────────────────────────────
   {
-    key: "core-grc",
-    label: "Core GRC",
+    key: "assess",
+    label: "Assess",
     items: [
-      { href: "/compliance",      label: "Evidence Vault™",          icon: ShieldCheck },
-      { href: "/workflow-studio", label: "Workflow Studio™",         icon: GitBranch },
-      { href: "/issue-hub",       label: "Issue & Remediation Hub™", icon: Target },
+      { href: "/compliance",          label: "Evidence Vault™",         icon: ShieldCheck },
+      { href: "/trust-exchange",      label: "Trust Exchange™",         icon: Network },
+      { href: "/trust-network",       label: "Trust Network™",          icon: Network },
+      { href: "/trust-verification",  label: "Trust Verification™",     icon: BadgeCheck },
     ],
   },
+
+  // ── GOVERN ────────────────────────────────────────────────────────────────
   {
-    key: "trust-network",
-    label: "Trust Network",
+    key: "govern",
+    label: "Govern",
     items: [
-      { href: "/trust-exchange",        label: "Trust Exchange™",    icon: Network },
-      { href: "/trust-network",         label: "Trust Network™",     icon: Network },
-      { href: "/auditor-collaboration", label: "Auditor Workspace™", icon: Users2 },
-    ],
-  },
-  {
-    key: "risk-compliance",
-    label: "Risk & Compliance",
-    items: [
-      { href: "/risks",                   label: "Risk Lens™",              icon: AlertTriangle },
-      { href: "/controls",                label: "Control Center™",         icon: Shield },
-      { href: "/audits",                  label: "Audit Management™",  icon: ClipboardCheck },
-      { href: "/policy-governance",       label: "Policy Governance™",      icon: FileText },
-      { href: "/dpdp-privacy",            label: "DPDP Privacy™",           icon: Lock },
-      { href: "/continuous-compliance",   label: "Continuous Compliance™",  icon: Cpu },
+      { href: "/risks",                   label: "Risk Lens™",               icon: AlertTriangle },
+      { href: "/controls",                label: "Control Center™",          icon: Shield },
+      { href: "/audits",                  label: "Audit Management™",        icon: ClipboardCheck },
+      { href: "/policy-governance",       label: "Policy Governance™",       icon: FileText },
+      { href: "/dpdp-privacy",            label: "DPDP Privacy™",            icon: Lock },
+      { href: "/continuous-compliance",   label: "Continuous Compliance™",   icon: Cpu },
       { href: "/security-center",         label: "Security Command Center™", icon: ShieldAlert },
       { href: "/regulatory-intelligence", label: "Regulatory Intelligence™", icon: Scale },
     ],
   },
+
+  // ── TRUST OPERATIONS ENGINE™ ──────────────────────────────────────────────
   {
-    key: "trust-intelligence",
-    label: "Trust Intelligence",
+    key: "trust-operations-engine",
+    label: "Trust Operations Engine™",
     items: [
-      { href: "/trust-score",                 label: "Trust Score™",         icon: TrendingUp },
-      { href: "/trust-intelligence/trends",   label: "Trust Analytics™",     icon: Brain },
-      { href: "/benchmarking",                label: "Benchmarking™",        icon: BarChart3 },
-      { href: "/executive-reporting",         label: "Executive Reporting™", icon: LineChart },
-      { href: "/trust-intelligence/executive", label: "Governance Copilot™", icon: Sparkles },
-      { href: "/ai-governance",               label: "AI Governance™",       icon: Brain },
-      { href: "/agents",                      label: "Governance Agents™",   icon: Bot },
+      { href: "/operations",                label: "TOE Dashboard™",           icon: Zap },
+      { href: "/operations/command-center", label: "Command Center™",          icon: Terminal },
+      { href: "/workflow-studio",           label: "Workflow Studio™",         icon: GitBranch },
+      { href: "/operations/workflows",      label: "Workflow Engine™",         icon: GitBranch },
+      { href: "/operations/approvals",      label: "Approval Queue™",          icon: Target },
+      { href: "/operations/automation",     label: "Automation™",              icon: Cpu },
+      { href: "/issue-hub",                 label: "Issue & Remediation Hub™", icon: Target },
+      { href: "/auditor-collaboration",     label: "Auditor Workspace™",       icon: Users2 },
+      { href: "/operations/events",         label: "Event Log™",               icon: BarChart3 },
+      { href: "/operations/ai",             label: "AI Decision Engine™",      icon: Sparkles },
     ],
   },
+
+  // ── MEASURE ───────────────────────────────────────────────────────────────
+  {
+    key: "measure",
+    label: "Measure",
+    items: [
+      { href: "/trust-score",                  label: "Trust Score™",         icon: TrendingUp },
+      { href: "/trust-intelligence/trends",    label: "Trust Analytics™",     icon: Brain },
+      { href: "/benchmarking",                 label: "Benchmarking™",        icon: BarChart3 },
+      { href: "/executive-reporting",          label: "Executive Reporting™", icon: LineChart },
+    ],
+  },
+
+  // ── IMPROVE ───────────────────────────────────────────────────────────────
+  {
+    key: "improve",
+    label: "Improve",
+    items: [
+      { href: "/trust-intelligence/executive", label: "Governance Copilot™", icon: Sparkles },
+      { href: "/ai-governance",                label: "AI Governance™",       icon: Brain },
+      { href: "/agents",                       label: "Governance Agents™",   icon: Bot },
+    ],
+  },
+
+  // ── REPORTS ───────────────────────────────────────────────────────────────
   {
     key: "reports",
     label: "Reports",
     items: [
-      { href: "/executive-reporting",     label: "Executive Reports",  icon: LineChart },
-      { href: "/audits/reports",          label: "Audit Reports",      icon: ClipboardCheck },
-      { href: "/risks/reports",           label: "Risk Reports",       icon: AlertTriangle },
-      { href: "/compliance/reports",      label: "Compliance Reports", icon: ShieldCheck },
-      { href: "/vendors/export",          label: "Vendor Reports",     icon: Building2 },
+      { href: "/executive-reporting", label: "Executive Reports",  icon: LineChart },
+      { href: "/audits/reports",      label: "Audit Reports",      icon: ClipboardCheck },
+      { href: "/risks/reports",       label: "Risk Reports",       icon: AlertTriangle },
+      { href: "/compliance/reports",  label: "Compliance Reports", icon: ShieldCheck },
+      { href: "/vendors/export",      label: "Vendor Reports",     icon: Building2 },
     ],
   },
+
+  // ── PLATFORM ──────────────────────────────────────────────────────────────
   {
-    key: "administration",
-    label: "Administration",
+    key: "platform",
+    label: "Platform",
     items: [
-      { href: "/integration-hub",  label: "Integration Hub™",       icon: Plug },
-      { href: "/finance",          label: "Finance Console",        icon: Receipt },
-      { href: "/api/docs/ui",      label: "API Documentation",      icon: FileCode, external: true },
-      { href: "/settings",         label: "Settings",               icon: Settings },
+      { href: "/integration-hub", label: "Integration Hub™",    icon: Plug },
+      { href: "/trust-api",       label: "Trust API Platform™", icon: FileCode },
+      { href: "/finance",         label: "Finance Console",     icon: Receipt },
+      { href: "/api/docs/ui",     label: "API Documentation",   icon: FileCode, external: true },
+      { href: "/settings",        label: "Settings",            icon: Settings },
     ],
   },
 ];
 
 // ─── Collapse state helpers ───────────────────────────────────────────────────
 
-const STORAGE_KEY = "audt_sidebar_collapsed_v3";
+const STORAGE_KEY = "audt_sidebar_collapsed_v4";
 
 function readCollapsed(): Record<string, boolean> {
   if (typeof window === "undefined") return {};
