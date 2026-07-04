@@ -302,7 +302,7 @@ export async function getSubscriptionsAction() {
         s.id, s.status, s.trial_ends_at, s.current_period_start, s.current_period_end,
         s.cancel_at_period_end, s.created_at,
         o.name as org_name, o.id as org_id,
-        bp.name as plan_name, bp.price_inr_monthly
+        bp.name as plan_name, bp.price_monthly
       FROM subscriptions s
       JOIN organizations o ON o.id = s.organization_id
       LEFT JOIN billing_plans bp ON bp.id = s.plan_id
