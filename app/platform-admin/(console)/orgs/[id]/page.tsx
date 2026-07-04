@@ -427,7 +427,7 @@ export default async function OrgDetailPage({
                 {[
                   { label: "Plan",         value: (sub.subscription.plan_name as string) || "None" },
                   { label: "Status",       value: (sub.subscription.status as string || "—").replace(/_/g, " ") },
-                  { label: "Trial Ends",   value: fmtDate(sub.subscription.trial_ends_at as string) },
+                  { label: "Grace Period Ends", value: sub.subscription.grace_period_ends_at ? fmtDate(sub.subscription.grace_period_ends_at as string) : "—" },
                   { label: "Period Start", value: fmtDate(sub.subscription.current_period_start as string) },
                   { label: "Period End",   value: fmtDate(sub.subscription.current_period_end as string) },
                 ].map((f) => (
@@ -513,7 +513,7 @@ export default async function OrgDetailPage({
               <div>
                 <h2 className="text-sm font-semibold text-white">Extend Trial</h2>
                 <p className="text-xs text-white/35 mt-0.5">
-                  Current trial ends {fmtDate(sub.subscription?.trial_ends_at as string)}.
+                  Extends the current period end date.
                 </p>
               </div>
               <ExtendTrialButton orgId={id} />
@@ -576,7 +576,7 @@ export default async function OrgDetailPage({
                           {inv.status as string}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-xs text-white/40">{fmtDate(inv.issued_at as string)}</td>
+                      <td className="px-5 py-3 text-xs text-white/40">{fmtDate(inv.created_at as string)}</td>
                       <td className="px-5 py-3 text-xs text-white/40">{fmtDate(inv.due_at as string)}</td>
                       {canEdit && (
                         <td className="px-5 py-3">

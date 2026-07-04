@@ -1070,8 +1070,8 @@ export async function getOrgSubscriptionDetailAction(orgId: string) {
   try {
     const [subRows, planRows, vendorCount, userCount] = await Promise.all([
       db.execute(sql`
-        SELECT s.id, s.status, s.trial_ends_at, s.current_period_start, s.current_period_end,
-               s.cancel_at_period_end, s.created_at, s.plan_id,
+        SELECT s.id, s.status, s.current_period_start, s.current_period_end,
+               s.cancel_at_period_end, s.grace_period_ends_at, s.created_at, s.plan_id,
                bp.name as plan_name, bp.price_monthly, bp.max_users, bp.max_vendors
         FROM subscriptions s
         LEFT JOIN billing_plans bp ON bp.id = s.plan_id
@@ -1096,10 +1096,10 @@ export async function getOrgSubscriptionDetailAction(orgId: string) {
 export async function getOrgInvoicesAction(orgId: string) {
   try {
     const rows = await db.execute(sql`
-      SELECT id, invoice_number, status, amount_cents, currency, issued_at, due_at
+      SELECT id, invoice_number, status, amount_cents, currency, due_at, created_at
       FROM invoices
       WHERE organization_id = ${orgId}
-      ORDER BY issued_at DESC
+      ORDER BY created_at DESC
       LIMIT 50
     `);
     return { data: rows as unknown as Array<Record<string, unknown>> };
