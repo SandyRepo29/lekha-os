@@ -1060,3 +1060,73 @@ export async function updatePlatformUserProfileAction(userId: string, name: stri
     return {};
   } catch { return { error: "Failed to update user. Email may already exist." }; }
 }
+
+// ── org detail — subscription + billing + member management ──────────────────
+
+export async function getOrgSubscriptionDetailAction(orgId: string) {
+  try {
+    const [subRows, planRows, vendorCount, userCount] = await Promise.all([
+      db.execute(sql`
+        SELECT s.id, s.status, s.trial_ends_at, s.current_period_start, s.current_period_end,
+               s.cancel_at_period_end, s.created_at, s.plan_id,
+               bp.name as plan_name, bp.price_monthly, bp.max_users, bp.max_vendors
+        FROM subscriptions s
+        LEFT JOIN billing_plans bp ON bp.id = s.plan_id
+        WHERE s.organization_id = ${orgId}
+        LIMIT 1
+      `),
+      db.execute(sql`SELECT id, name, price_monthly FROM billing_plans ORDER BY price_monthly NULLS FIRST`),
+      db.execute(sql`SELECT COUNT(*) as count FROM vendors WHERE organization_id = ${orgId}`),
+      db.execute(sql`SELECT COUNT(*) as count FROM memberships WHERE organization_id = ${orgId} AND is_active = true`),
+    ]);
+    return {
+      data: {
+        subscription: (subRows[0] as Record<string, unknown>) ?? null,
+        plans: planRows as unknown as Array<Record<string, unknown>>,
+        vendorCount: Number((vendorCount[0] as Record<string, unknown>)?.count ?? 0),
+        userCount: Number((userCount[0] as Record<string, unknown>)?.count ?? 0),
+      },
+    };
+  } catch { return { data: { subscription: null, plans: [], vendorCount: 0, userCount: 0 } }; }
+}
+
+export async function getOrgInvoicesAction(orgId: string) {
+  try {
+    const rows = await db.execute(sql`
+      SELECT id, invoice_number, status, amount_cents, currency, issued_at, due_at
+      FROM invoices
+      WHERE organization_id = ${orgId}
+      ORDER BY issued_at DESC
+      LIMIT 50
+    `);
+    return { data: rows as unknown as Array<Record<string, unknown>> };
+  } catch { return { data: [] as Array<Record<string, unknown>> }; }
+}
+
+export async function removeOrgMemberAction(userId: string, orgId: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`
+      DELETE FROM memberships WHERE user_id = ${userId} AND organization_id = ${orgId} AND role != 'owner'
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'member_removed', 'organization', ${orgId}, ${userId})
+    `).catch(() => {});
+    return {};
+  } catch (e) { return { error: String(e) }; }
+}
+
+export async function changeOrgMemberRoleAction(userId: string, orgId: string, role: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`UPDATE memberships SET role = ${role} WHERE user_id = ${userId} AND organization_id = ${orgId}`);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'role_changed', 'organization', ${orgId}, ${role})
+    `).catch(() => {});
+    return {};
+  } catch (e) { return { error: String(e) }; }
+}
