@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
 import { getBillingOverviewAction } from "@/lib/platform-admin/actions";
 import { Receipt, IndianRupee } from "lucide-react";
+import { MarkPaidButton } from "@/components/platform-admin/invoice-actions";
 
 const STATUS_STYLE: Record<string, string> = {
   paid:    "bg-emerald-500/20 text-emerald-300",
@@ -68,6 +69,7 @@ export default async function BillingPage() {
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Amount</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Status</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Issued</th>
+                <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#30363d]">
@@ -85,6 +87,11 @@ export default async function BillingPage() {
                   </td>
                   <td className="px-5 py-3 text-xs text-white/30">
                     {inv.issued_at ? new Date(inv.issued_at as string).toLocaleDateString() : "—"}
+                  </td>
+                  <td className="px-5 py-3">
+                    {(inv.status === "pending" || inv.status === "overdue") && (
+                      <MarkPaidButton invoiceId={inv.id as string} />
+                    )}
                   </td>
                 </tr>
               ))}

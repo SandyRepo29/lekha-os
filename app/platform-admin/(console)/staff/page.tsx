@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { requirePlatformUser, isOwner } from "@/lib/platform-admin/auth";
 import { getPlatformUsersAction } from "@/lib/platform-admin/actions";
 import { Users, ShieldCheck, Eye, Wrench } from "lucide-react";
+import { StaffStatusButton, RoleSelect } from "@/components/platform-admin/staff-actions";
 
 const ROLE_BADGE: Record<string, { label: string; className: string; icon: React.ComponentType<{ className?: string }> }> = {
   platform_owner:   { label: "Platform Owner",   className: "bg-purple-900/40 text-purple-400", icon: ShieldCheck },
@@ -46,12 +47,15 @@ export default async function PlatformStaffPage() {
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">MFA</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Status</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Last Login</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Role</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#30363d]">
             {(users ?? []).map((u) => {
               const roleMeta = ROLE_BADGE[u.role as string];
               const RoleIcon = roleMeta?.icon ?? Eye;
+              const isSelf = u.id === session.id;
               return (
                 <tr key={u.id as string} className="hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3">
@@ -78,6 +82,12 @@ export default async function PlatformStaffPage() {
                   </td>
                   <td className="px-4 py-3 text-[12px] text-white/35">
                     {fmtDate(u.last_login_at as string | null)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <RoleSelect userId={u.id as string} currentRole={u.role as string} isSelf={isSelf} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <StaffStatusButton userId={u.id as string} isActive={!!(u.is_active)} isSelf={isSelf} />
                   </td>
                 </tr>
               );

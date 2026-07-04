@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
 import { getAllUsersAction } from "@/lib/platform-admin/actions";
 import { Users, Search } from "lucide-react";
+import { MemberStatusButton } from "@/components/platform-admin/member-actions";
 
 const ROLE_STYLE: Record<string, string> = {
   owner:                "bg-violet-500/20 text-violet-300",
@@ -57,11 +58,12 @@ export default async function UsersPage(props: { searchParams: Promise<Record<st
               <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider">Role</th>
               <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider">Status</th>
               <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider">Joined</th>
+              <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#30363d]">
             {users.length === 0 ? (
-              <tr><td colSpan={5} className="px-5 py-10 text-center text-sm text-white/30">No users found.</td></tr>
+              <tr><td colSpan={6} className="px-5 py-10 text-center text-sm text-white/30">No users found.</td></tr>
             ) : users.map((u) => (
               <tr key={`${u.id}-${u.org_name}`} className="hover:bg-white/[0.015] transition-colors">
                 <td className="px-5 py-3">
@@ -82,6 +84,13 @@ export default async function UsersPage(props: { searchParams: Promise<Record<st
                 </td>
                 <td className="px-5 py-3 text-xs text-white/30">
                   {new Date(u.created_at as string).toLocaleDateString()}
+                </td>
+                <td className="px-5 py-3">
+                  <MemberStatusButton
+                    userId={u.id as string}
+                    orgId={u.org_id as string}
+                    isActive={!!(u.is_active)}
+                  />
                 </td>
               </tr>
             ))}

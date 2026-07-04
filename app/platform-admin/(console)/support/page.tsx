@@ -1,8 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
-import { getSupportTicketsAction } from "@/lib/platform-admin/actions";
+import { getSupportTicketsAction, getPlatformUsersAction, createTicketAction } from "@/lib/platform-admin/actions";
 import { HeadphonesIcon } from "lucide-react";
+import { TicketStatusSelect, AssignSelect } from "@/components/platform-admin/ticket-actions";
 
 const STATUS_STYLE: Record<string, string> = {
   open:        "bg-emerald-500/20 text-emerald-300",
@@ -20,8 +21,12 @@ const PRIORITY_STYLE: Record<string, string> = {
 
 export default async function SupportPage() {
   await requirePlatformUser();
-  const { data: tickets } = await getSupportTicketsAction();
+  const [{ data: tickets }, { data: staffUsers }] = await Promise.all([
+    getSupportTicketsAction(),
+    getPlatformUsersAction(),
+  ]);
   const list = (tickets ?? []) as Array<Record<string, unknown>>;
+  const staff = (staffUsers ?? []).map((u) => ({ id: u.id as string, name: u.name as string }));
 
   const open = list.filter((t) => t.status === "open").length;
   const inProg = list.filter((t) => t.status === "in_progress").length;
@@ -46,6 +51,40 @@ export default async function SupportPage() {
         ))}
       </div>
 
+      {/* Create ticket form */}
+      <form action={createTicketAction as unknown as (fd: FormData) => void} className="rounded-xl border border-[#30363d] bg-white/[0.02] p-5 space-y-3">
+        <h2 className="text-sm font-semibold text-white">Create Support Ticket</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <input
+            name="title"
+            required
+            placeholder="Ticket title..."
+            className="rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-[#00B8D9]/50 sm:col-span-2"
+          />
+          <select
+            name="priority"
+            className="rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+        <textarea
+          name="description"
+          placeholder="Description (optional)..."
+          rows={2}
+          className="w-full rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-[#00B8D9]/50"
+        />
+        <button
+          type="submit"
+          className="rounded-lg bg-[#007A94] px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+        >
+          Create Ticket
+        </button>
+      </form>
+
       <div className="rounded-xl border border-[#30363d] overflow-hidden">
         <div className="flex items-center gap-2 border-b border-[#30363d] px-5 py-3 bg-white/[0.02]">
           <HeadphonesIcon className="h-4 w-4 text-white/40" />
@@ -64,7 +103,7 @@ export default async function SupportPage() {
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Organization</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Priority</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Status</th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Assigned To</th>
+                <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Assign To</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Created</th>
               </tr>
             </thead>
@@ -79,11 +118,15 @@ export default async function SupportPage() {
                     </span>
                   </td>
                   <td className="px-5 py-3">
-                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${STATUS_STYLE[t.status as string] ?? "bg-white/5 text-white/40"}`}>
-                      {t.status as string}
-                    </span>
+                    <TicketStatusSelect ticketId={t.id as string} status={t.status as string} />
                   </td>
-                  <td className="px-5 py-3 text-sm text-white/50">{(t.assigned_to_name as string) || "Unassigned"}</td>
+                  <td className="px-5 py-3">
+                    <AssignSelect
+                      ticketId={t.id as string}
+                      currentAssigneeId={(t.assigned_to as string) ?? null}
+                      staff={staff}
+                    />
+                  </td>
                   <td className="px-5 py-3 text-xs text-white/25">{new Date(t.created_at as string).toLocaleDateString()}</td>
                 </tr>
               ))}

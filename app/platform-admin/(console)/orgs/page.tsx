@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
 import { getOrganizationsAction } from "@/lib/platform-admin/actions";
 import { Building2, Users, Package } from "lucide-react";
+import { SuspendOrgButton, AddOrgNoteForm } from "@/components/platform-admin/org-actions";
 
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
@@ -68,6 +69,7 @@ export default async function PlatformOrgsPage({
               <th className="px-4 py-3 text-center font-semibold uppercase tracking-widest">Vendors</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Plan</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Joined</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#30363d]">
@@ -102,6 +104,15 @@ export default async function PlatformOrgsPage({
                   )}
                 </td>
                 <td className="px-4 py-3 text-white/35 text-[12px]">{fmtDate(org.created_at as string)}</td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <SuspendOrgButton
+                      orgId={org.id as string}
+                      suspended={(org.subscription_status as string) === "suspended"}
+                    />
+                    <AddOrgNoteForm orgId={org.id as string} />
+                  </div>
+                </td>
               </tr>
             ))}
             {(d?.orgs ?? []).length === 0 && (
@@ -111,6 +122,7 @@ export default async function PlatformOrgsPage({
                 </td>
               </tr>
             )}
+
           </tbody>
         </table>
       </div>
