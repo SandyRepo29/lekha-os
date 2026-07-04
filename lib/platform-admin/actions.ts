@@ -138,13 +138,16 @@ export async function getOrganizationsAction(page = 1, search = "") {
         o.created_at,
         COUNT(DISTINCT m.user_id) as member_count,
         COUNT(DISTINCT v.id) as vendor_count,
-        s.status as subscription_status
+        s.status as subscription_status,
+        bp.name as plan_name,
+        bp.price_monthly
       FROM organizations o
       LEFT JOIN memberships m ON m.organization_id = o.id
       LEFT JOIN vendors v ON v.organization_id = o.id AND v.deleted_at IS NULL
       LEFT JOIN subscriptions s ON s.organization_id = o.id
+      LEFT JOIN billing_plans bp ON bp.id = s.plan_id
       WHERE (${search} = '' OR o.name ILIKE ${`%${search}%`})
-      GROUP BY o.id, o.name, o.industry, o.created_at, s.status
+      GROUP BY o.id, o.name, o.industry, o.created_at, s.status, bp.name, bp.price_monthly
       ORDER BY o.created_at DESC
       LIMIT ${limit} OFFSET ${offset}
     `);

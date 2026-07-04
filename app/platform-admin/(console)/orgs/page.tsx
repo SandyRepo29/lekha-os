@@ -100,13 +100,25 @@ export default async function PlatformOrgsPage({
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  {org.subscription_status ? (
-                    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium ${STATUS_BADGE[org.subscription_status as string] ?? "bg-slate-800 text-slate-400"}`}>
-                      {(org.subscription_status as string).replace(/_/g, " ")}
-                    </span>
-                  ) : (
-                    <span className="text-white/25 text-[11px]">No plan</span>
-                  )}
+                  <div className="flex flex-col gap-1">
+                    {!!org.plan_name && (
+                      <span className="text-[11px] font-semibold text-white/80">
+                        {org.plan_name as string}
+                        {org.price_monthly ? (
+                          <span className="ml-1 font-normal text-white/40">
+                            ₹{Number(org.price_monthly).toLocaleString("en-IN")}/mo
+                          </span>
+                        ) : null}
+                      </span>
+                    )}
+                    {org.subscription_status ? (
+                      <span className={`inline-flex w-fit rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE[org.subscription_status as string] ?? "bg-slate-800 text-slate-400"}`}>
+                        {(org.subscription_status as string).replace(/_/g, " ")}
+                      </span>
+                    ) : (
+                      <span className="text-white/25 text-[11px]">No plan</span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-white/35 text-[12px]">{fmtDate(org.created_at as string)}</td>
                 <td className="px-4 py-3">
