@@ -29,7 +29,7 @@ export function ChangePlanSelect({
         <option value="">Select plan…</option>
         {plans.map((p) => (
           <option key={p.id as string} value={p.id as string}>
-            {p.name as string}{p.price_monthly ? ` — ₹${p.price_monthly}/mo` : ""}
+            {p.name as string}{p.price_monthly ? ` — $${Number(p.price_monthly).toLocaleString("en-US")}/mo` : ""}
           </option>
         ))}
       </select>
