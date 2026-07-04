@@ -3,7 +3,9 @@ export const dynamic = "force-dynamic";
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
 import { getOrganizationsAction } from "@/lib/platform-admin/actions";
 import { Building2, Users, Package } from "lucide-react";
+import Link from "next/link";
 import { SuspendOrgButton, AddOrgNoteForm } from "@/components/platform-admin/org-actions";
+import { CreateOrgForm } from "@/components/platform-admin/create-org-form";
 
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
@@ -40,6 +42,7 @@ export default async function PlatformOrgsPage({
             {d?.total ?? 0} organizations on the AUDT platform
           </p>
         </div>
+        <CreateOrgForm />
       </div>
 
       {/* Search */}
@@ -80,7 +83,9 @@ export default async function PlatformOrgsPage({
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#00B8D9]/10">
                       <Building2 className="h-3.5 w-3.5 text-[#00B8D9]" />
                     </div>
-                    <span className="font-medium text-white">{org.name as string}</span>
+                    <Link href={`/platform-admin/orgs/${org.id as string}`} className="font-medium text-white hover:text-[#00B8D9] transition-colors">
+                      {org.name as string}
+                    </Link>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-white/50">{(org.industry as string) ?? "—"}</td>

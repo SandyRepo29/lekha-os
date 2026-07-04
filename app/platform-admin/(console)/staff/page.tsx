@@ -4,6 +4,7 @@ import { requirePlatformUser, isOwner } from "@/lib/platform-admin/auth";
 import { getPlatformUsersAction } from "@/lib/platform-admin/actions";
 import { Users, ShieldCheck, Eye, Wrench } from "lucide-react";
 import { StaffStatusButton, RoleSelect } from "@/components/platform-admin/staff-actions";
+import { EditStaffForm } from "@/components/platform-admin/edit-staff-form";
 
 const ROLE_BADGE: Record<string, { label: string; className: string; icon: React.ComponentType<{ className?: string }> }> = {
   platform_owner:   { label: "Platform Owner",   className: "bg-purple-900/40 text-purple-400", icon: ShieldCheck },
@@ -43,12 +44,13 @@ export default async function PlatformStaffPage() {
           <thead>
             <tr className="border-b border-[#30363d] bg-white/[0.02] text-[11px] text-white/30">
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Name</th>
-              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Role</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Role Badge</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">MFA</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Status</th>
               <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Last Login</th>
-              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Role</th>
-              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Actions</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Change Role</th>
+              <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Deactivate</th>
+              {canCreate && <th className="px-4 py-3 text-left font-semibold uppercase tracking-widest">Edit</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-[#30363d]">
@@ -89,6 +91,11 @@ export default async function PlatformStaffPage() {
                   <td className="px-4 py-3">
                     <StaffStatusButton userId={u.id as string} isActive={!!(u.is_active)} isSelf={isSelf} />
                   </td>
+                  {canCreate && (
+                    <td className="px-4 py-3">
+                      <EditStaffForm userId={u.id as string} currentName={u.name as string} currentEmail={u.email as string} />
+                    </td>
+                  )}
                 </tr>
               );
             })}

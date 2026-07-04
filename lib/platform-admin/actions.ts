@@ -750,3 +750,313 @@ export async function assignTicketAction(ticketId: string, assigneeId: string): 
     return {};
   } catch { return { error: "Failed to assign ticket." }; }
 }
+
+// ── createOrg / updateOrg / getOrgDetail ─────────────────────────────────────
+
+export async function createOrgAction(formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  const name = (formData.get("name") as string)?.trim();
+  const industry = (formData.get("industry") as string) || null;
+  const companySize = (formData.get("company_size") as string) || null;
+  if (!name) return { error: "Organization name is required." };
+  try {
+    await db.execute(sql`
+      INSERT INTO organizations (name, industry, company_size)
+      VALUES (${name}, ${industry}, ${companySize})
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'system_config_update', 'organization', ${name})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to create organization. Name may already exist." }; }
+}
+
+export async function updateOrgAction(orgId: string, formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  const name = (formData.get("name") as string)?.trim();
+  const industry = (formData.get("industry") as string) || null;
+  const website = (formData.get("website") as string) || null;
+  const companySize = (formData.get("company_size") as string) || null;
+  if (!name) return { error: "Name is required." };
+  try {
+    await db.execute(sql`
+      UPDATE organizations
+      SET name = ${name}, industry = ${industry}, website = ${website}, company_size = ${companySize}, updated_at = now()
+      WHERE id = ${orgId}
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'org_edit', 'organization', ${orgId}, ${name})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to update organization." }; }
+}
+
+export async function getOrgDetailAction(orgId: string) {
+  try {
+    const [orgRows, memberRows, noteRows, auditRows] = await Promise.all([
+      db.execute(sql`
+        SELECT o.id, o.name, o.industry, o.company_size, o.website, o.created_at,
+               s.status as subscription_status, bp.name as plan_name
+        FROM organizations o
+        LEFT JOIN subscriptions s ON s.organization_id = o.id
+        LEFT JOIN billing_plans bp ON bp.id = s.plan_id
+        WHERE o.id = ${orgId}
+        LIMIT 1
+      `),
+      db.execute(sql`
+        SELECT p.id, p.full_name, p.email, m.role, m.is_active, m.created_at
+        FROM memberships m
+        JOIN profiles p ON p.id = m.user_id
+        WHERE m.organization_id = ${orgId}
+        ORDER BY m.created_at ASC
+      `),
+      db.execute(sql`
+        SELECT n.id, n.note, n.created_at, pu.name as created_by_name
+        FROM platform_org_notes n
+        LEFT JOIN platform_users pu ON pu.id = n.created_by
+        WHERE n.organization_id = ${orgId}
+        ORDER BY n.created_at DESC
+        LIMIT 20
+      `),
+      db.execute(sql`
+        SELECT action, target_type, target_label, created_at, platform_user_email
+        FROM platform_audit_logs
+        WHERE target_id = ${orgId}
+        ORDER BY created_at DESC
+        LIMIT 20
+      `),
+    ]);
+    return {
+      data: {
+        org: (orgRows[0] as Record<string, unknown>) ?? null,
+        members: memberRows as Array<Record<string, unknown>>,
+        notes: noteRows as Array<Record<string, unknown>>,
+        auditLogs: auditRows as Array<Record<string, unknown>>,
+      },
+    };
+  } catch { return { data: null }; }
+}
+
+// ── feature flag CRUD + per-org overrides ─────────────────────────────────────
+
+export async function createFeatureFlagAction(formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role !== "platform_owner") return { error: "Only Platform Owners can create flags." };
+  const key = (formData.get("key") as string)?.trim().toLowerCase().replace(/\s+/g, "_");
+  const name = (formData.get("name") as string)?.trim();
+  const description = (formData.get("description") as string) || null;
+  const scope = (formData.get("scope") as string) || "global";
+  if (!key || !name) return { error: "Key and name are required." };
+  try {
+    await db.execute(sql`
+      INSERT INTO feature_flags (key, name, description, scope, enabled, rollout_pct)
+      VALUES (${key}, ${name}, ${description}, ${scope}, false, 100)
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'flag_update', 'feature_flag', ${key})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to create flag. Key may already exist." }; }
+}
+
+export async function deleteFeatureFlagAction(key: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role !== "platform_owner") return { error: "Only Platform Owners can delete flags." };
+  try {
+    await db.execute(sql`DELETE FROM feature_flags WHERE key = ${key}`);
+    db.execute(sql`DELETE FROM tenant_feature_overrides WHERE flag_key = ${key}`).catch(() => {});
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'flag_update', 'feature_flag', ${`DELETE:${key}`})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to delete flag." }; }
+}
+
+export async function getOrgFlagOverridesAction(flagKey: string) {
+  try {
+    const rows = await db.execute(sql`
+      SELECT tfo.id, tfo.organization_id, tfo.enabled, tfo.reason, tfo.updated_at,
+             o.name as org_name
+      FROM tenant_feature_overrides tfo
+      JOIN organizations o ON o.id = tfo.organization_id
+      WHERE tfo.flag_key = ${flagKey}
+      ORDER BY o.name
+    `);
+    return { data: rows as Array<Record<string, unknown>> };
+  } catch { return { data: [] }; }
+}
+
+export async function setOrgFlagOverrideAction(orgId: string, flagKey: string, enabled: boolean, reason?: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`
+      INSERT INTO tenant_feature_overrides (organization_id, flag_key, enabled, reason, updated_by)
+      VALUES (${orgId}, ${flagKey}, ${enabled}, ${reason ?? null}, ${session.platformUserId})
+      ON CONFLICT (organization_id, flag_key) DO UPDATE
+        SET enabled = ${enabled}, reason = ${reason ?? null}, updated_by = ${session.platformUserId}, updated_at = now()
+    `);
+    return {};
+  } catch { return { error: "Failed to set override." }; }
+}
+
+export async function removeOrgFlagOverrideAction(orgId: string, flagKey: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`
+      DELETE FROM tenant_feature_overrides WHERE organization_id = ${orgId} AND flag_key = ${flagKey}
+    `);
+    return {};
+  } catch { return { error: "Failed to remove override." }; }
+}
+
+export async function getOrgsForSelectAction() {
+  try {
+    const rows = await db.execute(sql`SELECT id, name FROM organizations ORDER BY name LIMIT 200`);
+    return { data: rows as unknown as Array<{ id: string; name: string }> };
+  } catch { return { data: [] }; }
+}
+
+// ── subscription create / cancel ──────────────────────────────────────────────
+
+export async function createSubscriptionAction(formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  const orgId = formData.get("org_id") as string;
+  const planId = formData.get("plan_id") as string;
+  const status = (formData.get("status") as string) || "trial";
+  if (!orgId || !planId) return { error: "Organization and plan are required." };
+  try {
+    await db.execute(sql`
+      INSERT INTO subscriptions (organization_id, plan_id, status, trial_ends_at)
+      VALUES (${orgId}, ${planId}, ${status},
+        CASE WHEN ${status} = 'trial' THEN now() + INTERVAL '14 days' ELSE NULL END)
+      ON CONFLICT (organization_id) DO UPDATE
+        SET plan_id = ${planId}, status = ${status}, updated_at = now()
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id)
+      VALUES (${session.platformUserId}, ${session.email}, 'org_edit', 'subscription', ${orgId})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to create subscription." }; }
+}
+
+export async function cancelSubscriptionAction(orgId: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`
+      UPDATE subscriptions SET status = 'cancelled', cancel_at_period_end = true, updated_at = now()
+      WHERE organization_id = ${orgId}
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id)
+      VALUES (${session.platformUserId}, ${session.email}, 'org_edit', 'subscription_cancel', ${orgId})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to cancel subscription." }; }
+}
+
+export async function getOrgsWithoutSubscriptionAction() {
+  try {
+    const rows = await db.execute(sql`
+      SELECT id, name FROM organizations
+      WHERE id NOT IN (SELECT organization_id FROM subscriptions)
+      ORDER BY name
+    `);
+    return { data: rows as unknown as Array<{ id: string; name: string }> };
+  } catch { return { data: [] }; }
+}
+
+// ── module registry per-org overrides ────────────────────────────────────────
+
+export async function getModuleOverridesAction() {
+  try {
+    const rows = await db.execute(sql`
+      SELECT tfo.flag_key, tfo.organization_id, tfo.enabled, o.name as org_name
+      FROM tenant_feature_overrides tfo
+      JOIN organizations o ON o.id = tfo.organization_id
+      ORDER BY tfo.flag_key, o.name
+    `);
+    return { data: rows as Array<Record<string, unknown>> };
+  } catch { return { data: [] }; }
+}
+
+export async function setModuleOrgOverrideAction(orgId: string, moduleKey: string, enabled: boolean): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  try {
+    await db.execute(sql`
+      INSERT INTO tenant_feature_overrides (organization_id, flag_key, enabled, updated_by)
+      VALUES (${orgId}, ${moduleKey}, ${enabled}, ${session.platformUserId})
+      ON CONFLICT (organization_id, flag_key) DO UPDATE
+        SET enabled = ${enabled}, updated_by = ${session.platformUserId}, updated_at = now()
+    `);
+    return {};
+  } catch { return { error: "Failed to set module override." }; }
+}
+
+// ── vendor type template CRUD ─────────────────────────────────────────────────
+
+export async function createVendorTypeAction(formData: FormData): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  const name = (formData.get("name") as string)?.trim();
+  const description = (formData.get("description") as string) || null;
+  if (!name) return { error: "Name is required." };
+  try {
+    await db.execute(sql`
+      INSERT INTO vendor_types (name, description, is_custom)
+      VALUES (${name}, ${description}, false)
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'system_config_update', 'vendor_type', ${name})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to create template." }; }
+}
+
+export async function updateVendorTypeAction(id: string, name: string, description: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role === "platform_support") return { error: "Insufficient permissions." };
+  if (!name?.trim()) return { error: "Name is required." };
+  try {
+    await db.execute(sql`
+      UPDATE vendor_types SET name = ${name.trim()}, description = ${description || null}
+      WHERE id = ${id}
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'system_config_update', 'vendor_type', ${id}, ${name})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to update template." }; }
+}
+
+// ── update platform user name/email ──────────────────────────────────────────
+
+export async function updatePlatformUserProfileAction(userId: string, name: string, email: string): Promise<{ error?: string }> {
+  const session = await getPlatformSession();
+  if (!session || session.role !== "platform_owner") return { error: "Only Platform Owners can edit staff profiles." };
+  if (!name?.trim() || !email?.trim()) return { error: "Name and email are required." };
+  try {
+    await db.execute(sql`
+      UPDATE platform_users SET name = ${name.trim()}, email = ${email.trim().toLowerCase()}, updated_at = now()
+      WHERE id = ${userId}
+    `);
+    db.execute(sql`
+      INSERT INTO platform_audit_logs (platform_user_id, platform_user_email, action, target_type, target_id, target_label)
+      VALUES (${session.platformUserId}, ${session.email}, 'user_update', 'platform_user', ${userId}, ${name})
+    `).catch(() => {});
+    return {};
+  } catch { return { error: "Failed to update user. Email may already exist." }; }
+}

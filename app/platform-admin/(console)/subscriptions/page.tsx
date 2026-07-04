@@ -1,10 +1,15 @@
 export const dynamic = "force-dynamic";
 
 import { requirePlatformUser } from "@/lib/platform-admin/auth";
-import { getSubscriptionsAction } from "@/lib/platform-admin/actions";
-import { CreditCard } from "lucide-react";
+import {
+  getSubscriptionsAction,
+  getPlansAction,
+  getOrgsWithoutSubscriptionAction,
+  createSubscriptionAction,
+} from "@/lib/platform-admin/actions";
+import { CreditCard, Plus } from "lucide-react";
 import { ExtendTrialButton, ChangePlanSelect } from "@/components/platform-admin/subscription-actions";
-import { getPlansAction } from "@/lib/platform-admin/actions";
+import { CancelSubscriptionButton } from "@/components/platform-admin/cancel-subscription-button";
 
 const STATUS_STYLE: Record<string, string> = {
   trial:        "bg-blue-500/20 text-blue-300",
@@ -17,13 +22,15 @@ const STATUS_STYLE: Record<string, string> = {
 
 export default async function SubscriptionsPage() {
   await requirePlatformUser();
-  const [{ data }, plansResult] = await Promise.all([
+  const [{ data }, plansResult, orgsResult] = await Promise.all([
     getSubscriptionsAction(),
     getPlansAction(),
+    getOrgsWithoutSubscriptionAction(),
   ]);
   const subs = data?.subscriptions ?? [];
   const stats = (data?.stats ?? {}) as Record<string, unknown>;
   const plans = (plansResult.data ?? []) as Array<{ id: string; name: string }>;
+  const orgsWithoutSub = (orgsResult.data ?? []) as Array<{ id: string; name: string }>;
 
   return (
     <div className="space-y-6">
@@ -46,6 +53,38 @@ export default async function SubscriptionsPage() {
           </div>
         ))}
       </div>
+
+      {/* Create subscription */}
+      {orgsWithoutSub.length > 0 && (
+        <details className="group rounded-xl border border-[#30363d] bg-white/[0.02]">
+          <summary className="flex cursor-pointer items-center gap-2 px-5 py-3 text-sm text-white/60 hover:text-white transition-colors list-none">
+            <Plus className="h-4 w-4 text-[#00B8D9]" />
+            <span>Create Subscription for Org</span>
+          </summary>
+          <form
+            action={createSubscriptionAction as unknown as (fd: FormData) => void}
+            className="border-t border-[#30363d] p-5"
+          >
+            <div className="flex flex-wrap gap-3">
+              <select name="org_id" required className="rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white">
+                <option value="">Select organization…</option>
+                {orgsWithoutSub.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
+              </select>
+              <select name="plan_id" required className="rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white">
+                <option value="">Select plan…</option>
+                {plans.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </select>
+              <select name="status" className="rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm text-white">
+                <option value="trial">Trial (14 days)</option>
+                <option value="active">Active</option>
+              </select>
+              <button type="submit" className="rounded-lg bg-[#007A94] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
+                Create
+              </button>
+            </div>
+          </form>
+        </details>
+      )}
 
       <div className="rounded-xl border border-[#30363d] overflow-hidden">
         <div className="flex items-center gap-2 border-b border-[#30363d] px-5 py-3 bg-white/[0.02]">
@@ -85,6 +124,9 @@ export default async function SubscriptionsPage() {
                   <div className="flex items-center gap-2 flex-wrap">
                     {s.status === "trial" && <ExtendTrialButton orgId={s.org_id as string} />}
                     <ChangePlanSelect orgId={s.org_id as string} plans={plans} />
+                    {(s.status === "trial" || s.status === "active" || s.status === "grace_period") && (
+                      <CancelSubscriptionButton orgId={s.org_id as string} orgName={s.org_name as string} />
+                    )}
                   </div>
                 </td>
               </tr>

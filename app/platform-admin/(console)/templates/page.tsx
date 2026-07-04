@@ -4,6 +4,7 @@ import { requirePlatformUser } from "@/lib/platform-admin/auth";
 import { db } from "@/lib/db";
 import { sql } from "drizzle-orm";
 import { LayoutTemplate } from "lucide-react";
+import { EditVendorTypeRow, CreateVendorTypeForm } from "@/components/platform-admin/template-actions";
 
 async function getTemplates() {
   try {
@@ -36,9 +37,12 @@ export default async function TemplatesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold text-white">System Templates</h1>
-        <p className="mt-0.5 text-sm text-white/40">Vendor compliance templates and compliance framework defaults.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-white">System Templates</h1>
+          <p className="mt-0.5 text-sm text-white/40">Vendor compliance templates and compliance framework defaults.</p>
+        </div>
+        <CreateVendorTypeForm />
       </div>
 
       <div>
@@ -54,11 +58,12 @@ export default async function TemplatesPage() {
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Type</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Required Docs</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Description</th>
+                <th className="px-5 py-3 text-left text-xs font-medium text-white/40 uppercase">Edit</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#30363d]">
               {types.length === 0 ? (
-                <tr><td colSpan={4} className="px-5 py-8 text-center text-sm text-white/30">No templates found.</td></tr>
+                <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-white/30">No templates found.</td></tr>
               ) : types.map((t) => (
                 <tr key={t.id as string} className="hover:bg-white/[0.015] transition-colors">
                   <td className="px-5 py-3 text-sm font-medium text-white">{t.name as string}</td>
@@ -69,6 +74,13 @@ export default async function TemplatesPage() {
                   </td>
                   <td className="px-5 py-3 text-sm text-white/60">{String(t.doc_count ?? 0)} docs</td>
                   <td className="px-5 py-3 text-xs text-white/30 max-w-xs truncate">{(t.description as string) || "—"}</td>
+                  <td className="px-5 py-3">
+                    <EditVendorTypeRow
+                      id={t.id as string}
+                      name={t.name as string}
+                      description={(t.description as string) ?? ""}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
