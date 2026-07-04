@@ -106,7 +106,7 @@ export default async function PlatformOrgsPage({
                         {org.plan_name as string}
                         {org.price_monthly ? (
                           <span className="ml-1 font-normal text-white/40">
-                            ₹{Number(org.price_monthly).toLocaleString("en-IN")}/mo
+                            ${Number(org.price_monthly).toLocaleString("en-US")}/mo
                           </span>
                         ) : null}
                       </span>

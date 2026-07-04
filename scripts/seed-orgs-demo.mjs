@@ -74,8 +74,8 @@ const ORGS = [
     periodStart: daysAgo(25),
     periodEnd: daysFromNow(5),
     invoices: [
-      { num: "INV-2026-000101", amount: 69900, status: "paid",    issuedDaysAgo: 55, dueDaysAgo: 25 },
-      { num: "INV-2026-000102", amount: 69900, status: "pending", issuedDaysAgo: 25, dueDaysAgo: -5 },
+      { num: "INV-2026-000101", amount: 58300, status: "paid",    issuedDaysAgo: 55, dueDaysAgo: 25 },
+      { num: "INV-2026-000102", amount: 58300, status: "pending", issuedDaysAgo: 25, dueDaysAgo: -5 },
     ],
     users: [
       { name: "Rajan Mehta",    email: "rajan.mehta@nexusfintech.in",    role: "owner",               dept: "Leadership" },
@@ -114,8 +114,8 @@ const ORGS = [
     periodStart: daysAgo(33),
     periodEnd: daysAgo(3),
     invoices: [
-      { num: "INV-2026-000201", amount: 30000, status: "paid",    issuedDaysAgo: 65, dueDaysAgo: 35 },
-      { num: "INV-2026-000202", amount: 30000, status: "overdue", issuedDaysAgo: 33, dueDaysAgo: 3  },
+      { num: "INV-2026-000201", amount: 25000, status: "paid",    issuedDaysAgo: 65, dueDaysAgo: 35 },
+      { num: "INV-2026-000202", amount: 25000, status: "overdue", issuedDaysAgo: 33, dueDaysAgo: 3  },
     ],
     users: [
       { name: "Vivek Joshi",    email: "vivek.joshi@cloudmind.io",       role: "owner",               dept: "Engineering" },
@@ -134,8 +134,8 @@ const ORGS = [
     periodStart: daysAgo(15),
     periodEnd: daysFromNow(15),
     invoices: [
-      { num: "INV-2026-000301", amount: 69900, status: "paid",    issuedDaysAgo: 45, dueDaysAgo: 15 },
-      { num: "INV-2026-000302", amount: 69900, status: "paid",    issuedDaysAgo: 15, dueDaysAgo: -15},
+      { num: "INV-2026-000301", amount: 58300, status: "paid",    issuedDaysAgo: 45, dueDaysAgo: 15 },
+      { num: "INV-2026-000302", amount: 58300, status: "paid",    issuedDaysAgo: 15, dueDaysAgo: -15},
     ],
     users: [
       { name: "Suresh Patel",   email: "suresh.patel@sigmamfg.co.in",   role: "owner",               dept: "Management" },
@@ -173,8 +173,8 @@ const ORGS = [
     periodStart: daysAgo(60),
     periodEnd: daysAgo(30),
     invoices: [
-      { num: "INV-2026-000401", amount: 30000, status: "paid",    issuedDaysAgo: 90, dueDaysAgo: 60 },
-      { num: "INV-2026-000402", amount: 30000, status: "overdue", issuedDaysAgo: 60, dueDaysAgo: 30 },
+      { num: "INV-2026-000401", amount: 25000, status: "paid",    issuedDaysAgo: 90, dueDaysAgo: 60 },
+      { num: "INV-2026-000402", amount: 25000, status: "overdue", issuedDaysAgo: 60, dueDaysAgo: 30 },
     ],
     users: [
       { name: "Mohan Krishnan", email: "mohan.k@payvault.in",           role: "owner",               dept: "Founders" },
@@ -193,8 +193,8 @@ const ORGS = [
     periodStart: daysAgo(10),
     periodEnd: daysFromNow(20),
     invoices: [
-      { num: "INV-2026-000501", amount: 30000, status: "paid",    issuedDaysAgo: 40, dueDaysAgo: 10 },
-      { num: "INV-2026-000502", amount: 30000, status: "pending", issuedDaysAgo: 10, dueDaysAgo: -20},
+      { num: "INV-2026-000501", amount: 25000, status: "paid",    issuedDaysAgo: 40, dueDaysAgo: 10 },
+      { num: "INV-2026-000502", amount: 25000, status: "pending", issuedDaysAgo: 10, dueDaysAgo: -20},
     ],
     users: [
       { name: "Rohit Agarwal",  email: "rohit.agarwal@eduleap.in",      role: "owner",               dept: "Executive" },
@@ -214,8 +214,8 @@ const ORGS = [
     periodStart: daysAgo(90),
     periodEnd: daysAgo(60),
     invoices: [
-      { num: "INV-2026-000601", amount: 30000, status: "paid",    issuedDaysAgo: 120, dueDaysAgo: 90 },
-      { num: "INV-2026-000602", amount: 30000, status: "void",    issuedDaysAgo: 90,  dueDaysAgo: 60 },
+      { num: "INV-2026-000601", amount: 25000, status: "paid",    issuedDaysAgo: 120, dueDaysAgo: 90 },
+      { num: "INV-2026-000602", amount: 25000, status: "void",    issuedDaysAgo: 90,  dueDaysAgo: 60 },
     ],
     users: [
       { name: "Sanjay Malhotra",email: "sanjay.m@retailpulse.in",       role: "owner",               dept: "Management" },
@@ -250,8 +250,8 @@ const ORGS = [
     periodStart: daysAgo(5),
     periodEnd: daysFromNow(25),
     invoices: [
-      { num: "INV-2026-000701", amount: 120000, status: "paid",    issuedDaysAgo: 35, dueDaysAgo: 5  },
-      { num: "INV-2026-000702", amount: 120000, status: "pending", issuedDaysAgo: 5,  dueDaysAgo: -25},
+      { num: "INV-2026-000701", amount: 99900, status: "paid",    issuedDaysAgo: 35, dueDaysAgo: 5  },
+      { num: "INV-2026-000702", amount: 99900, status: "pending", issuedDaysAgo: 5,  dueDaysAgo: -25},
     ],
     users: [
       { name: "Anand Krishnan", email: "anand.k@datasphere.ai",         role: "owner",               dept: "Executive" },
@@ -367,7 +367,7 @@ for (const org of ORGS) {
       INSERT INTO invoices
         (organization_id, invoice_number, status, amount_cents, currency, due_at, created_at)
       VALUES
-        (${orgId}, ${inv.num}, ${inv.status}, ${inv.amount}, 'INR',
+        (${orgId}, ${inv.num}, ${inv.status}, ${inv.amount}, 'USD',
          ${dueAt.toISOString()}, ${issuedAt.toISOString()})
     `.catch((e) => {
       console.warn(`    ⚠  invoice ${inv.num}: ${e.message.slice(0, 80)}`);
