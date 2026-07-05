@@ -2,7 +2,8 @@
 
 > **End-to-end project brief for any AI session. Read this first.**
 > Rebranded from Lekha OS → AUDT on 2026-06-07. Domain: audt.tech.
-> **🔎 Journey-group audit sweep in progress — current status, all fixes, and the resume point are in §14 (Module Audit & Remediation — Session Log). Next group to audit: Trust Operations Engine.**
+> **🔎 Journey-group audit sweep: see §14 (Module Audit & Remediation — Session Log).**
+> **✅ PRODUCTION-READINESS QA in progress — the standing charter, per-module playbook, and sign-off tracker are in §15 (Platform QA → Production-Readiness — Master Plan & Tracker). Vendor Hub is signed off; resume one-by-one at Asset Intelligence.**
 
 ## Doc Structure — Read Before Every Session
 
@@ -2496,3 +2497,69 @@ Validated live: list/filters/search/pagination · detail + all 13 tabs w/ data �
 **5 bugs found & fixed during sign-off** (commit `e801b3e`): (1) assessment "Complete" never finalized — throwaway FormData; (2) renewal insert malformed `text[]` (JSON `[…]`); (3) offboarding `_at` columns for `final_assessment_done`/`archive_package_generated`; (4) offboarding note-less completion 42P18 untyped NULL; (5) NotificationPanel hydration mismatch (`timeAgo`, global).
 **Not exhaustively tested** (note for later): document upload (real file → AI extraction — hard to drive via preview), doc-request approve/reject, add-review inline form, role-based access (viewer).
 **Open global finding (not Vendor-Hub-specific):** RSC prefetch storm on `/` (`Failed to fetch RSC payload for /`, `ERR_INSUFFICIENT_RESOURCES`) — likely dev/preview artifact; reproduce on prod before fixing. Minor: `DeleteVendor` uses `window.confirm` + hard delete (not the `ArchiveDialog` archive-first convention); create redirects to list not detail.
+
+---
+
+## 15. Platform QA → Production-Readiness — Master Plan & Tracker
+
+> **Standing QA charter. Resume here, one module at a time, until every row below is signed off.** This is the plan agreed 2026-07-05; execution is one-by-one over multiple sessions. Vendor Hub is the reference sign-off (see §14).
+
+### Definition of "signed off"
+A module passes only when ALL of: every route renders (no 500/crash) · every write flow **DB-verified** (not just UI) · validation/negative paths behave · REST API enforces 401 + works · exports generate · AI features respond/degrade gracefully · RBAC gates · no new console/network errors · `npx tsc --noEmit` + `npm run build` green · findings fixed or logged here. **Platform** is prod-ready when all modules pass AND Track B passes AND the 3 prod-blocker env vars are resolved.
+
+### Per-module playbook (repeat each module — proven on Vendor Hub, found 5 bugs)
+Run live, authenticated (`e2e@lekhaos.test` / `E2ETest123!`, org "E2E Workspace"), with rich data seeded into that org (retarget the module's `seed-*.mjs` to "E2E Workspace" like the Vendor Hub pass), verify every mutation in the DB.
+Dimensions: (1) smoke/render all routes · (2) read-with-data (lists/detail/tabs populated) · (3) create · (4) edit/status · (5) delete/archive · (6) every module-specific action (approve/assign/complete/generate/link/run/resolve) · (7) validation/negative · (8) REST API 401+read+write · (9) CSV/PDF exports · (10) AI features · (11) RBAC (viewer can't mutate) · (12) hygiene (console/network/light-theme/mojibake).
+Tooling: preview browser drives UI; DB queries confirm writes; `lk_live_` API key (create in Settings) for `/api/v1/*` Bearer tests. Fix small defects inline + re-verify; commit per group; `tsc`+build before push.
+
+### Track A — module sign-off tracker
+| # | Group | Module | Status |
+|---|---|---|---|
+| 1 | Discover | Vendor Hub™ | ✅ signed off (`e801b3e`, 2026-07-05) |
+| 2 | Discover | Asset Intelligence™ | ⏳ **NEXT** |
+| 3 | Discover | Contract Governance™ | ⏳ pending |
+| 4 | Assess | Evidence Vault™ | ⏳ pending |
+| 5 | Assess | Trust Exchange™ | ⏳ pending |
+| 6 | Assess | Trust Network™ | ⏳ pending |
+| 7 | Assess | Trust Verification™ | ⏳ pending |
+| 8 | Govern | Risk Lens™ | ⏳ pending |
+| 9 | Govern | Control Center™ | ⏳ pending |
+| 10 | Govern | Audit Management | ⏳ pending |
+| 11 | Govern | Policy Governance™ | ⏳ pending |
+| 12 | Govern | DPDP Privacy™ | ⏳ pending |
+| 13 | Govern | Continuous Compliance™ | ⏳ pending |
+| 14 | Govern | Security Command Center™ | ⏳ pending |
+| 15 | Govern | Regulatory Intelligence™ | ⏳ pending |
+| 16 | TOE | Trust Operations Engine™ (`/operations/*`) | ⏳ pending |
+| 17 | Measure | Trust Intelligence™ | ⏳ pending |
+| 18 | Measure | Governance Benchmarking™ | ⏳ pending |
+| 19 | Measure | Executive Reporting™ | ⏳ pending |
+| 20 | Measure | Trust Score™ | ⏳ pending |
+| 21 | Improve | Issue & Remediation Hub™ | ⏳ pending |
+| 22 | Improve | Workflow Studio™ | ⏳ pending |
+| 23 | Improve | Governance Agents™ | ⏳ pending |
+| 24 | Reports/Platform | Integration Hub™ | ⏳ pending |
+| 25 | Reports/Platform | Trust API Platform™ | ⏳ pending |
+| 26 | Reports/Platform | Auditor Collaboration™ | ⏳ pending |
+| 27 | Reports/Platform | Platform Services (`/platform/*`) | ⏳ pending |
+| 28 | Admin | Platform Owner Console (`/platform-admin/*`) | ⏳ pending |
+| 29 | Admin | Finance Console (`/finance/*`) | ⏳ pending |
+
+### Track B — cross-cutting platform validation (run once; all must pass for prod)
+- Auth & session: login/signup/logout · password reset · MFA enroll/verify · session/idle timeout · enterprise auth (IP allow-list, device trust)
+- **RBAC matrix** (all 7 roles × key actions — no escalation)
+- **Multi-tenant RLS isolation** (org A cannot read/write org B via UI or API) — CRITICAL
+- API platform: key issue/rotate/revoke · rate limiting (100/300/1000) · permission scoping · public endpoints
+- **Global defect: RSC prefetch storm on `/`** — reproduce on prod, then fix
+- Hydration/console errors platform-wide
+- Performance: list pagination at scale · N+1 queries · PDF/AI latency · cold start
+- **Prod-blocker env vars:** `SUPABASE_SERVICE_ROLE_KEY` (placeholder → team invite broken) · `RESEND_API_KEY` (email off) · `CRON_SECRET` (cron unprotected)
+- Cron/email/storage: expiry + digest + billing + governance-snapshot crons · Resend send · Supabase storage upload/download/signed-URL
+- Billing/entitlements: plan limits enforced · feature gating post-trial · invoice PDF
+- Data & recovery: soft-delete/restore/trash · tenant export ZIP · data-deletion workflow
+- Health/observability: `/api/health` · structured logging · correlation IDs
+- UX baseline: responsive/mobile · empty/error/demo states · accessibility (light pass)
+
+### Carry-over items to fold into the relevant module/track
+- Dark-badge theme still on TOE/Measure/Improve/Reports/Platform groups (convert during their QA, exclude intentionally-dark pages).
+- Vendor Hub residuals (retest in a follow-up): document upload, doc-request approve/reject, add-review, RBAC.
