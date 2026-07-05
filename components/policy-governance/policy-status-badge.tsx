@@ -3,13 +3,13 @@
 import { cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: "bg-slate-500/20 border-slate-500/30 text-slate-400",
-  review: "bg-yellow-500/20 border-yellow-500/30 text-yellow-400",
-  approved: "bg-blue-500/20 border-blue-500/30 text-blue-400",
-  published: "bg-green-500/20 border-green-500/30 text-green-400",
-  expired: "bg-red-500/20 border-red-500/30 text-red-400",
-  archived: "bg-gray-500/20 border-gray-500/30 text-gray-400",
-  retired: "bg-purple-500/20 border-purple-500/30 text-purple-400",
+  draft: "bg-slate-100 border-slate-200 text-slate-700",
+  review: "bg-yellow-100 border-yellow-200 text-yellow-700",
+  approved: "bg-blue-100 border-blue-200 text-blue-700",
+  published: "bg-green-100 border-green-200 text-green-700",
+  expired: "bg-red-100 border-red-200 text-red-700",
+  archived: "bg-gray-100 border-gray-200 text-gray-700",
+  retired: "bg-purple-100 border-purple-200 text-purple-700",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -28,7 +28,7 @@ interface PolicyStatusBadgeProps {
 }
 
 export function PolicyStatusBadge({ status, className }: PolicyStatusBadgeProps) {
-  const style = STATUS_STYLES[status] ?? "bg-white/5 border-white/10 text-[var(--color-ink-dim)]";
+  const style = STATUS_STYLES[status] ?? "bg-slate-100 border-slate-200 text-[var(--color-ink-dim)]";
   const label = STATUS_LABELS[status] ?? status;
 
   return (
@@ -45,12 +45,12 @@ interface AttestationStatusBadgeProps {
 
 export function AttestationStatusBadge({ status, className }: AttestationStatusBadgeProps) {
   const ATTEST_STYLES: Record<string, string> = {
-    pending: "bg-yellow-500/20 border-yellow-500/30 text-yellow-400",
-    acknowledged: "bg-green-500/20 border-green-500/30 text-green-400",
-    rejected: "bg-red-500/20 border-red-500/30 text-red-400",
-    overdue: "bg-orange-500/20 border-orange-500/30 text-orange-400",
+    pending: "bg-yellow-100 border-yellow-200 text-yellow-700",
+    acknowledged: "bg-green-100 border-green-200 text-green-700",
+    rejected: "bg-red-100 border-red-200 text-red-700",
+    overdue: "bg-orange-100 border-orange-200 text-orange-700",
   };
-  const style = ATTEST_STYLES[status] ?? "bg-white/5 border-white/10 text-[var(--color-ink-dim)]";
+  const style = ATTEST_STYLES[status] ?? "bg-slate-100 border-slate-200 text-[var(--color-ink-dim)]";
   const label = status.charAt(0).toUpperCase() + status.slice(1);
 
   return (

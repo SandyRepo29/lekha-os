@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";

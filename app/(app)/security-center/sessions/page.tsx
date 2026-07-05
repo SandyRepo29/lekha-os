@@ -69,7 +69,7 @@ export default async function SessionsPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <StatusBadge status={!!s.mfa_verified ? "active" : "active"} />
+                        <StatusBadge status={String(s.status ?? "active")} />
                         {!!s.mfa_verified && <span className="text-[10px] text-emerald-400">MFA</span>}
                         <RevokeSessionButton sessionId={String(s.id)} />
                       </div>

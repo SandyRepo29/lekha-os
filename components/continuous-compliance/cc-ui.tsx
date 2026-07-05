@@ -45,9 +45,9 @@ export function CcSubNav() {
 type Accent = "good" | "warn" | "danger" | "neutral" | "blue";
 
 const accentMap: Record<Accent, { border: string; bg: string; text: string }> = {
-  good:    { border: "border-l-emerald-500",  bg: "bg-emerald-500/[0.06]",  text: "text-emerald-400" },
-  warn:    { border: "border-l-amber-500",    bg: "bg-amber-500/[0.06]",    text: "text-amber-400" },
-  danger:  { border: "border-l-red-500",      bg: "bg-red-500/[0.06]",      text: "text-red-400" },
+  good:    { border: "border-l-emerald-500",  bg: "bg-emerald-500/[0.06]",  text: "text-emerald-700" },
+  warn:    { border: "border-l-amber-500",    bg: "bg-amber-500/[0.06]",    text: "text-amber-700" },
+  danger:  { border: "border-l-red-500",      bg: "bg-red-500/[0.06]",      text: "text-red-700" },
   neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white", text: "text-[var(--color-ink)]" },
   blue:    { border: "border-l-[var(--color-blue)]", bg: "bg-[var(--color-blue)]/[0.06]", text: "text-[var(--color-blue)]" },
 };
@@ -73,41 +73,41 @@ export function CcStat({
 }
 
 const RESULT_STYLES: Record<string, string> = {
-  pass:               "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  fail:               "bg-red-500/10 text-red-400 border border-red-500/20",
-  warning:            "bg-amber-500/10 text-amber-400 border border-amber-500/20",
+  pass:               "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  fail:               "bg-red-100 text-red-700 border border-red-200",
+  warning:            "bg-amber-100 text-amber-700 border border-amber-200",
   unknown:            "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
-  exception_approved: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  exception_approved: "bg-purple-100 text-purple-700 border border-purple-200",
 };
 
 const SEVERITY_STYLES: Record<string, string> = {
-  critical: "bg-red-500/10 text-red-400 border border-red-500/20",
-  high:     "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-  medium:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  low:      "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  critical: "bg-red-100 text-red-700 border border-red-200",
+  high:     "bg-orange-100 text-orange-700 border border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border border-amber-200",
+  low:      "bg-blue-100 text-blue-700 border border-blue-200",
   info:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  active:    "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  active:    "bg-emerald-100 text-emerald-700 border border-emerald-200",
   draft:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
-  completed: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  cancelled: "bg-red-500/10 text-red-400 border border-red-500/20",
-  overdue:   "bg-red-500/10 text-red-400 border border-red-500/20",
+  completed: "bg-blue-100 text-blue-700 border border-blue-200",
+  cancelled: "bg-red-100 text-red-700 border border-red-200",
+  overdue:   "bg-red-100 text-red-700 border border-red-200",
   inactive:  "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  approved:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  pending:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  rejected:  "bg-red-500/10 text-red-400 border border-red-500/20",
-  open:      "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  resolved:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  approved:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  pending:   "bg-amber-100 text-amber-700 border border-amber-200",
+  rejected:  "bg-red-100 text-red-700 border border-red-200",
+  open:      "bg-amber-100 text-amber-700 border border-amber-200",
+  resolved:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
 };
 
 const LEVEL_STYLES: Record<string, string> = {
-  excellent:      "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  good:           "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  needs_attention:"bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  at_risk:        "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-  critical:       "bg-red-500/10 text-red-400 border border-red-500/20",
+  excellent:      "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  good:           "bg-blue-100 text-blue-700 border border-blue-200",
+  needs_attention:"bg-amber-100 text-amber-700 border border-amber-200",
+  at_risk:        "bg-orange-100 text-orange-700 border border-orange-200",
+  critical:       "bg-red-100 text-red-700 border border-red-200",
 };
 
 export function CheckResultBadge({ result }: { result: string }) {

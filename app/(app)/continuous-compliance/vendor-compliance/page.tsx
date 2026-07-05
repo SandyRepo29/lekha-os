@@ -56,12 +56,12 @@ export default async function VendorCompliancePage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: "Avg Trust Score",   value: `${avgScore}%`,    color: scoreColor(avgScore) },
-          { label: "Compliant (&#8805;80)", value: compliant.length,  color: "text-emerald-400" },
+          { label: "Compliant (≥80)", value: compliant.length,  color: "text-emerald-400" },
           { label: "At Risk (60–79)",  value: atRisk.length,     color: "text-amber-400" },
           { label: "Non-Compliant",      value: nonComp.length,    color: nonComp.length > 0 ? "text-red-400" : "text-emerald-400" },
         ].map((s) => (
           <Card key={s.label} className="p-4">
-            <p className="text-xs text-[var(--color-ink-dim)] mb-1" dangerouslySetInnerHTML={{ __html: s.label }} />
+            <p className="text-xs text-[var(--color-ink-dim)] mb-1">{s.label}</p>
             <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
           </Card>
         ))}

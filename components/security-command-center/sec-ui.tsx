@@ -54,11 +54,11 @@ type Accent = "neutral" | "good" | "warn" | "danger" | "purple" | "blue";
 
 const ACCENT_MAP: Record<Accent, { bar: string; bg: string; text: string }> = {
   neutral: { bar: "border-l-[var(--color-line)]",  bg: "bg-[var(--color-bg-2)]/60",    text: "text-[var(--color-ink)]" },
-  good:    { bar: "border-l-emerald-500",           bg: "bg-emerald-500/[0.06]",         text: "text-emerald-400" },
-  warn:    { bar: "border-l-amber-500",             bg: "bg-amber-500/[0.06]",           text: "text-amber-400" },
-  danger:  { bar: "border-l-red-500",               bg: "bg-red-500/[0.06]",             text: "text-red-400" },
-  purple:  { bar: "border-l-violet-500",            bg: "bg-violet-500/[0.06]",          text: "text-violet-400" },
-  blue:    { bar: "border-l-blue-500",              bg: "bg-blue-500/[0.06]",            text: "text-blue-400" },
+  good:    { bar: "border-l-emerald-500",           bg: "bg-emerald-500/[0.06]",         text: "text-emerald-700" },
+  warn:    { bar: "border-l-amber-500",             bg: "bg-amber-500/[0.06]",           text: "text-amber-700" },
+  danger:  { bar: "border-l-red-500",               bg: "bg-red-500/[0.06]",             text: "text-red-700" },
+  purple:  { bar: "border-l-violet-500",            bg: "bg-violet-500/[0.06]",          text: "text-violet-700" },
+  blue:    { bar: "border-l-blue-500",              bg: "bg-blue-500/[0.06]",            text: "text-blue-700" },
 };
 
 export function SecStat({
@@ -102,11 +102,11 @@ export function ReadinessRing({ score, level }: { score: number; level: string }
 // ─── Status Badges ────────────────────────────────────────────────────────────
 
 const SEV_STYLES: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-300 border-red-500/30",
-  high:     "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  medium:   "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  low:      "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  info:     "bg-blue-500/20 text-blue-300 border-blue-500/30",
+  critical: "bg-red-100 text-red-700 border-red-200",
+  high:     "bg-orange-100 text-orange-700 border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border-amber-200",
+  low:      "bg-emerald-100 text-emerald-700 border-emerald-200",
+  info:     "bg-blue-100 text-blue-700 border-blue-200",
 };
 
 export function SeverityBadge({ severity }: { severity: string }) {
@@ -118,18 +118,18 @@ export function SeverityBadge({ severity }: { severity: string }) {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  active:         "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  open:           "bg-red-500/20 text-red-300 border-red-500/30",
-  acknowledged:   "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  resolved:       "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  revoked:        "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
-  enabled:        "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  disabled:       "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
-  clean:          "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  low:            "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  medium:         "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  high:           "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  blocked:        "bg-red-500/20 text-red-300 border-red-500/30",
+  active:         "bg-emerald-100 text-emerald-700 border-emerald-200",
+  open:           "bg-red-100 text-red-700 border-red-200",
+  acknowledged:   "bg-amber-100 text-amber-700 border-amber-200",
+  resolved:       "bg-emerald-100 text-emerald-700 border-emerald-200",
+  revoked:        "bg-zinc-100 text-zinc-700 border-zinc-200",
+  enabled:        "bg-emerald-100 text-emerald-700 border-emerald-200",
+  disabled:       "bg-zinc-100 text-zinc-700 border-zinc-200",
+  clean:          "bg-emerald-100 text-emerald-700 border-emerald-200",
+  low:            "bg-blue-100 text-blue-700 border-blue-200",
+  medium:         "bg-amber-100 text-amber-700 border-amber-200",
+  high:           "bg-orange-100 text-orange-700 border-orange-200",
+  blocked:        "bg-red-100 text-red-700 border-red-200",
 };
 
 export function StatusBadge({ status }: { status: string }) {
@@ -187,7 +187,7 @@ export function FeatureRow({ label, status, href }: { label: string; status: boo
     <Link href={href} className="flex items-center justify-between rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 hover:bg-[#F8F9FB] transition-colors">
       <span className="text-sm font-medium">{label}</span>
       {status
-        ? <span className="flex items-center gap-1.5 text-xs text-emerald-400"><CheckCircle className="h-4 w-4" /> Active</span>
+        ? <span className="flex items-center gap-1.5 text-xs text-emerald-700"><CheckCircle className="h-4 w-4" /> Active</span>
         : <span className="flex items-center gap-1.5 text-xs text-[var(--color-ink-dim)]"><XCircle className="h-4 w-4" /> Not configured</span>
       }
     </Link>
@@ -197,9 +197,9 @@ export function FeatureRow({ label, status, href }: { label: string; status: boo
 // ─── Enforcement Badge ────────────────────────────────────────────────────────
 
 const ENFORCEMENT_STYLES: Record<string, string> = {
-  optional:        "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
-  required_admins: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  required_all:    "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+  optional:        "bg-zinc-100 text-zinc-700 border-zinc-200",
+  required_admins: "bg-amber-100 text-amber-700 border-amber-200",
+  required_all:    "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
 const ENFORCEMENT_LABELS: Record<string, string> = {

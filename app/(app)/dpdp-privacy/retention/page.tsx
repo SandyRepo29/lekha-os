@@ -2,10 +2,10 @@
 
 import { Clock, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listRetentionPolicies } from "@/lib/services/privacy/privacy-service";
+import { NewRetentionForm } from "@/components/privacy/new-retention-form";
 
 export default async function RetentionPage() {
   const session = await requireUser();
@@ -33,67 +33,7 @@ export default async function RetentionPage() {
         <h2 className="font-semibold mb-4 flex items-center gap-2">
           <Plus className="h-4 w-4 text-indigo-400" /> Add Retention Policy
         </h2>
-        <form action="/api/v1/privacy/retention" method="POST" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div>
-            <label className="block text-xs font-medium mb-1.5">Policy Name</label>
-            <input
-              name="name"
-              required
-              placeholder="e.g. Customer Data Retention"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1.5">Data Category</label>
-            <select
-              name="dataCategory"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            >
-              {["customer", "employee", "vendor", "marketing", "financial", "health", "biometric", "custom"].map((c) => (
-                <option key={c} value={c} className="capitalize">{c}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1.5">Retention Days</label>
-            <input
-              name="retentionDays"
-              type="number"
-              min={1}
-              required
-              placeholder="e.g. 730"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1.5">Legal Basis</label>
-            <input
-              name="legalBasis"
-              placeholder="e.g. Contractual obligation, statutory requirement"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium mb-1.5">Action on Expiry</label>
-            <select
-              name="actionOnExpiry"
-              className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            >
-              <option value="delete">Delete</option>
-              <option value="anonymize">Anonymize</option>
-              <option value="archive">Archive</option>
-              <option value="review">Flag for Review</option>
-            </select>
-          </div>
-          <div className="flex items-end">
-            <Button type="submit" className="w-full">
-              <Plus className="h-4 w-4" /> Add Policy
-            </Button>
-          </div>
-        </form>
-        <p className="text-xs text-[var(--color-ink-dim)] mt-3">
-          Note: Saving requires the retention policy API endpoint. Use the server action for form submissions.
-        </p>
+        <NewRetentionForm />
       </Card>
 
       {/* Policies list */}

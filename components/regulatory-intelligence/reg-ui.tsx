@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -52,10 +52,10 @@ type Accent = "neutral" | "good" | "warn" | "danger" | "purple";
 
 const ACCENT_MAP: Record<Accent, { bar: string; bg: string; text: string }> = {
   neutral: { bar: "border-l-[var(--color-line)]",  bg: "bg-[var(--color-bg-2)]/60",       text: "text-[var(--color-ink)]" },
-  good:    { bar: "border-l-emerald-500",           bg: "bg-emerald-500/[0.06]",            text: "text-emerald-400" },
-  warn:    { bar: "border-l-amber-500",             bg: "bg-amber-500/[0.06]",              text: "text-amber-400" },
-  danger:  { bar: "border-l-red-500",               bg: "bg-red-500/[0.06]",               text: "text-red-400" },
-  purple:  { bar: "border-l-violet-500",            bg: "bg-violet-500/[0.06]",            text: "text-violet-400" },
+  good:    { bar: "border-l-emerald-500",           bg: "bg-emerald-500/[0.06]",            text: "text-emerald-700" },
+  warn:    { bar: "border-l-amber-500",             bg: "bg-amber-500/[0.06]",              text: "text-amber-700" },
+  danger:  { bar: "border-l-red-500",               bg: "bg-red-500/[0.06]",               text: "text-red-700" },
+  purple:  { bar: "border-l-violet-500",            bg: "bg-violet-500/[0.06]",            text: "text-violet-700" },
 };
 
 export function RegStat({
@@ -74,104 +74,104 @@ export function RegStat({
 // ─── Status Badges ────────────────────────────────────────────────────────────
 
 const SEVERITY_STYLES: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-300 border-red-500/30",
-  high:     "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  medium:   "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  low:      "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+  critical: "bg-red-100 text-red-700 border-red-200",
+  high:     "bg-orange-100 text-orange-700 border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border-amber-200",
+  low:      "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
 export function SeverityBadge({ severity }: { severity: string }) {
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
-      SEVERITY_STYLES[severity] ?? "bg-white/10 text-[var(--color-ink-dim)] border-[var(--color-line)]")}>
+      SEVERITY_STYLES[severity] ?? "bg-slate-100 text-[var(--color-ink-dim)] border-[var(--color-line)]")}>
       {severity}
     </span>
   );
 }
 
 const CHANGE_STATUS_STYLES: Record<string, string> = {
-  new:          "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  under_review: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  assessed:     "bg-violet-500/20 text-violet-300 border-violet-500/30",
-  actioned:     "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  closed:       "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]",
+  new:          "bg-blue-100 text-blue-700 border-blue-200",
+  under_review: "bg-amber-100 text-amber-700 border-amber-200",
+  assessed:     "bg-violet-100 text-violet-700 border-violet-200",
+  actioned:     "bg-emerald-100 text-emerald-700 border-emerald-200",
+  closed:       "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]",
 };
 
 export function ChangeStatusBadge({ status }: { status: string }) {
   const label = status.replace(/_/g, " ");
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize",
-      CHANGE_STATUS_STYLES[status] ?? "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
+      CHANGE_STATUS_STYLES[status] ?? "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
       {label}
     </span>
   );
 }
 
 const OBL_STATUS_STYLES: Record<string, string> = {
-  not_started: "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]",
-  planned:     "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  in_progress: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  implemented: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  validated:   "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  exception:   "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  retired:     "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]",
+  not_started: "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]",
+  planned:     "bg-blue-100 text-blue-700 border-blue-200",
+  in_progress: "bg-amber-100 text-amber-700 border-amber-200",
+  implemented: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  validated:   "bg-teal-100 text-teal-700 border-teal-200",
+  exception:   "bg-orange-100 text-orange-700 border-orange-200",
+  retired:     "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]",
 };
 
 export function ObligationStatusBadge({ status }: { status: string }) {
   const label = status.replace(/_/g, " ");
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize",
-      OBL_STATUS_STYLES[status] ?? "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
+      OBL_STATUS_STYLES[status] ?? "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
       {label}
     </span>
   );
 }
 
 const PRIORITY_STYLES: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-300 border-red-500/30",
-  high:     "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  medium:   "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  low:      "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+  critical: "bg-red-100 text-red-700 border-red-200",
+  high:     "bg-orange-100 text-orange-700 border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border-amber-200",
+  low:      "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
 export function PriorityBadge({ priority }: { priority: string }) {
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize",
-      PRIORITY_STYLES[priority] ?? "bg-white/10 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
+      PRIORITY_STYLES[priority] ?? "bg-slate-100 text-[var(--color-ink-faint)] border-[var(--color-line)]")}>
       {priority}
     </span>
   );
 }
 
 const CAT_STYLES: Record<string, string> = {
-  privacy:           "bg-violet-500/20 text-violet-300 border-violet-500/30",
-  security:          "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  ai_governance:     "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-  financial:         "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  operational_risk:  "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  third_party_risk:  "bg-rose-500/20 text-rose-300 border-rose-500/30",
-  cloud_security:    "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-  business_continuity: "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  audit:             "bg-slate-500/20 text-slate-300 border-slate-500/30",
-  industry_specific: "bg-lime-500/20 text-lime-300 border-lime-500/30",
-  custom:            "bg-white/10 text-[var(--color-ink-dim)] border-[var(--color-line)]",
+  privacy:           "bg-violet-100 text-violet-700 border-violet-200",
+  security:          "bg-blue-100 text-blue-700 border-blue-200",
+  ai_governance:     "bg-indigo-100 text-indigo-700 border-indigo-200",
+  financial:         "bg-amber-100 text-amber-700 border-amber-200",
+  operational_risk:  "bg-orange-100 text-orange-700 border-orange-200",
+  third_party_risk:  "bg-rose-100 text-rose-700 border-rose-200",
+  cloud_security:    "bg-cyan-100 text-cyan-700 border-cyan-200",
+  business_continuity: "bg-teal-100 text-teal-700 border-teal-200",
+  audit:             "bg-slate-100 text-slate-700 border-slate-200",
+  industry_specific: "bg-lime-100 text-lime-700 border-lime-200",
+  custom:            "bg-slate-100 text-[var(--color-ink-dim)] border-[var(--color-line)]",
 };
 
 export function CategoryBadge({ category }: { category: string }) {
   const label = category.replace(/_/g, " ");
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize",
-      CAT_STYLES[category] ?? "bg-white/10 text-[var(--color-ink-dim)] border-[var(--color-line)]")}>
+      CAT_STYLES[category] ?? "bg-slate-100 text-[var(--color-ink-dim)] border-[var(--color-line)]")}>
       {label}
     </span>
   );
 }
 
 export function AlertIcon({ severity }: { severity: string }) {
-  if (severity === "critical") return <XCircle className="h-4 w-4 text-red-400 shrink-0" />;
-  if (severity === "high") return <AlertTriangle className="h-4 w-4 text-orange-400 shrink-0" />;
-  if (severity === "medium") return <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />;
-  if (severity === "low") return <Info className="h-4 w-4 text-blue-400 shrink-0" />;
+  if (severity === "critical") return <XCircle className="h-4 w-4 text-red-700 shrink-0" />;
+  if (severity === "high") return <AlertTriangle className="h-4 w-4 text-orange-700 shrink-0" />;
+  if (severity === "medium") return <AlertCircle className="h-4 w-4 text-amber-700 shrink-0" />;
+  if (severity === "low") return <Info className="h-4 w-4 text-blue-700 shrink-0" />;
   return <Info className="h-4 w-4 text-[var(--color-ink-faint)] shrink-0" />;
 }
 
@@ -185,9 +185,9 @@ export function ReadinessBar({ score }: { score: number }) {
 }
 
 export function ReadinessLabel({ score }: { score: number }) {
-  if (score >= 80) return <span className="text-xs font-semibold text-emerald-400">Excellent</span>;
-  if (score >= 60) return <span className="text-xs font-semibold text-amber-400">Good</span>;
-  if (score >= 40) return <span className="text-xs font-semibold text-orange-400">Needs Attention</span>;
-  if (score >= 20) return <span className="text-xs font-semibold text-red-400">At Risk</span>;
+  if (score >= 80) return <span className="text-xs font-semibold text-emerald-700">Excellent</span>;
+  if (score >= 60) return <span className="text-xs font-semibold text-amber-700">Good</span>;
+  if (score >= 40) return <span className="text-xs font-semibold text-orange-700">Needs Attention</span>;
+  if (score >= 20) return <span className="text-xs font-semibold text-red-700">At Risk</span>;
   return <span className="text-xs font-semibold text-red-500">Critical</span>;
 }

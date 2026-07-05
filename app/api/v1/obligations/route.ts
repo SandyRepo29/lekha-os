@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as Record<string, unknown>;
     if (!body.title) return withRateLimitHeaders(err("title is required.", 400), rl);
 
-    const result = await svc.createObligation(ctx.orgId, ctx.orgId, {
+    const result = await svc.createObligation(ctx.orgId, null, {
       title: String(body.title),
       description: body.description ? String(body.description) : undefined,
       priority: body.priority ? String(body.priority) : undefined,

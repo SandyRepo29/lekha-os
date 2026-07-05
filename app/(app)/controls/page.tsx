@@ -365,7 +365,7 @@ export default async function ControlsDashboardPage() {
               <Link key={href} href={href}
                 className="flex items-center gap-2 rounded-xl border border-[var(--color-line)] px-3 py-2.5 text-xs font-medium hover:bg-[#F8F9FB] transition-colors">
                 <Icon className="h-3.5 w-3.5 text-[var(--color-blue)]" />
-                <span dangerouslySetInnerHTML={{ __html: label }} />
+                <span>{label}</span>
               </Link>
             ))}
           </div>

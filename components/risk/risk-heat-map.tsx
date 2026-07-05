@@ -38,7 +38,7 @@ export function RiskHeatMap({ risks }: { risks: HeatMapRisk[] }) {
                     <div
                       key={`${impact}-${likelihood}`}
                       className={cn(
-                        "relative flex min-h-[56px] cursor-default flex-col items-center justify-center rounded-lg border border-white/5 p-1 transition-all",
+                        "group relative flex min-h-[56px] cursor-default flex-col items-center justify-center rounded-lg border border-white/5 p-1 transition-all",
                         colorClass,
                         cellRisks.length > 0 && "cursor-pointer hover:ring-1 hover:ring-white/20"
                       )}

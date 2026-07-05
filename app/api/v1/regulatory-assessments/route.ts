@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as Record<string, unknown>;
     if (!body.title) return withRateLimitHeaders(err("title is required.", 400), rl);
 
-    const result = await svc.createAssessment(ctx.orgId, ctx.orgId, {
+    const result = await svc.createAssessment(ctx.orgId, null, {
       title: String(body.title),
       changeId: body.changeId ? String(body.changeId) : undefined,
       regulationId: body.regulationId ? String(body.regulationId) : undefined,

@@ -2,7 +2,7 @@
 import { sql, eq, and, desc, count } from "drizzle-orm";
 import { pgTable, uuid, text, boolean, integer, timestamp, pgEnum, jsonb } from "drizzle-orm/pg-core";
 
-// â”€â”€â”€ Inline table defs (migration 0033) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Inline table defs (migration 0033) ──────────────────────────────────────
 
 export const mfaEnforcementEnum = pgEnum("mfa_enforcement_enum", ["optional", "required_admins", "required_all"]);
 export const sessionStatusEnum   = pgEnum("session_status_enum",   ["active", "expired", "revoked"]);
@@ -307,7 +307,7 @@ export const vendorMonitoringAlerts = pgTable("vendor_monitoring_alerts", {
   createdAt:      timestamp("created_at").notNull().defaultNow(),
 });
 
-// â”€â”€â”€ Dashboard metrics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Dashboard metrics ────────────────────────────────────────────────────────
 
 export async function getDashboardMetrics(orgId: string) {
   const [mfaRow, ssoRow, sessionRow, ipRow, promptRow, shareRow, monRow] = await Promise.all([
@@ -366,7 +366,7 @@ export async function getDashboardMetrics(orgId: string) {
   };
 }
 
-// â”€â”€â”€ MFA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── MFA ─────────────────────────────────────────────────────────────────────
 
 export async function getMfaSettings(orgId: string) {
   const rows = await db.select().from(securityMfaSettings)
@@ -404,7 +404,7 @@ export async function getMfaUserStatus(orgId: string) {
   `);
 }
 
-// â”€â”€â”€ SSO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── SSO ─────────────────────────────────────────────────────────────────────
 
 export async function getSsoProviders(orgId: string) {
   return db.select().from(ssoProviders)
@@ -445,7 +445,7 @@ export async function deleteSsoProvider(orgId: string, id: string) {
     .where(and(eq(ssoProviders.id, id), eq(ssoProviders.organizationId, orgId)));
 }
 
-// â”€â”€â”€ Sessions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Sessions ────────────────────────────────────────────────────────────────
 
 export async function getActiveSessions(orgId: string, userId?: string) {
   return db.execute(sql`
@@ -473,7 +473,7 @@ export async function revokeAllSessions(orgId: string, userId: string, revokedBy
     ));
 }
 
-// â”€â”€â”€ IP Allow Lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── IP Allow Lists ───────────────────────────────────────────────────────────
 
 export async function getIpAllowlists(orgId: string) {
   return db.select().from(ipAllowlists)
@@ -503,7 +503,7 @@ export async function toggleIpAllowlist(orgId: string, id: string, enabled: bool
     .where(and(eq(ipAllowlists.id, id), eq(ipAllowlists.organizationId, orgId)));
 }
 
-// â”€â”€â”€ Permissions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Permissions ──────────────────────────────────────────────────────────────
 
 export async function getAllPermissions() {
   return db.select().from(securityPermissions)
@@ -523,7 +523,7 @@ export async function upsertRolePermission(orgId: string, role: string, permissi
   `);
 }
 
-// â”€â”€â”€ Evidence Shares â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Evidence Shares ─────────────────────────────────────────────────────────
 
 export async function getEvidenceShares(orgId: string) {
   return db.execute(sql`
@@ -567,7 +567,7 @@ export async function getEvidenceAccessLogs(orgId: string, limit = 50) {
   `);
 }
 
-// â”€â”€â”€ AI Prompt Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── AI Prompt Logs ───────────────────────────────────────────────────────────
 
 export async function getPromptLogs(orgId: string, filters?: { sensitive?: boolean; limit?: number }) {
   const q = filters?.sensitive ? sql`AND sensitivity != 'clean'` : sql``;
@@ -613,7 +613,7 @@ export async function insertPromptLog(data: {
   });
 }
 
-// â”€â”€â”€ Encryption â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Encryption ───────────────────────────────────────────────────────────────
 
 export async function getEncryptionProviders(orgId: string) {
   return db.select().from(encryptionProviders)
@@ -653,7 +653,7 @@ export async function getEncryptionAuditLog(orgId: string, limit = 30) {
   `);
 }
 
-// â”€â”€â”€ Trust Center â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Trust Center ─────────────────────────────────────────────────────────────
 
 export async function getTrustCenterConfig(orgId: string) {
   const rows = await db.select().from(trustCenterConfig)
@@ -686,7 +686,7 @@ export async function getTrustCenterDocuments(orgId: string) {
     .orderBy(trustCenterDocuments.displayOrder);
 }
 
-// â”€â”€â”€ Vendor Monitoring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Vendor Monitoring ────────────────────────────────────────────────────────
 
 export async function getMonitoringAssets(orgId: string) {
   return db.execute(sql`

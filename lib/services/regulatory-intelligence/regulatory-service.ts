@@ -119,7 +119,7 @@ export async function getObligationById(orgId: string, id: string) {
   return { ...ob, mappings };
 }
 
-export async function createObligation(orgId: string, userId: string, data: {
+export async function createObligation(orgId: string, userId: string | null, data: {
   title: string; description?: string; requirement?: string; obligationRef?: string;
   category?: string; priority?: string; regulationId?: string; ownerId?: string;
   businessUnit?: string; reviewDate?: string; dueDate?: string; evidenceRequirements?: string;
@@ -168,7 +168,7 @@ export async function getAssessmentById(orgId: string, id: string) {
   return { ...assessment, impacts };
 }
 
-export async function createAssessment(orgId: string, userId: string, data: {
+export async function createAssessment(orgId: string, userId: string | null, data: {
   title: string; changeId?: string; regulationId?: string; impactLevel?: string;
   summary?: string; ownerId?: string; dueDate?: string;
 }) {

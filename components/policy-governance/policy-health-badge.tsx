@@ -12,7 +12,7 @@ interface PolicyHealthBadgeProps {
 export function PolicyHealthBadge({ score, className, showScore = true }: PolicyHealthBadgeProps) {
   if (score === null || score === undefined) {
     return (
-      <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium bg-white/5 border-white/10 text-[var(--color-ink-dim)]", className)}>
+      <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium bg-slate-100 border-slate-200 text-[var(--color-ink-dim)]", className)}>
         Not scored
       </span>
     );

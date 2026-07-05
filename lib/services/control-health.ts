@@ -79,21 +79,21 @@ export const HEALTH_LEVEL_LABELS: Record<ControlHealthLevel, string> = {
 };
 
 export const HEALTH_LEVEL_COLORS: Record<ControlHealthLevel, string> = {
-  exceptional: "text-emerald-400",
-  healthy: "text-green-400",
-  strong: "text-blue-400",
-  moderate: "text-yellow-400",
-  needs_attention: "text-orange-400",
-  critical: "text-red-400",
+  exceptional: "text-emerald-700",
+  healthy: "text-green-700",
+  strong: "text-blue-700",
+  moderate: "text-yellow-700",
+  needs_attention: "text-orange-700",
+  critical: "text-red-700",
 };
 
 export const HEALTH_LEVEL_BG: Record<ControlHealthLevel, string> = {
-  exceptional: "bg-emerald-500/20 border-emerald-500/30",
-  healthy: "bg-green-500/20 border-green-500/30",
-  strong: "bg-blue-500/20 border-blue-500/30",
-  moderate: "bg-yellow-500/20 border-yellow-500/30",
-  needs_attention: "bg-orange-500/20 border-orange-500/30",
-  critical: "bg-red-500/20 border-red-500/30",
+  exceptional: "bg-emerald-100 border-emerald-200",
+  healthy: "bg-green-100 border-green-200",
+  strong: "bg-blue-100 border-blue-200",
+  moderate: "bg-yellow-100 border-yellow-200",
+  needs_attention: "bg-orange-100 border-orange-200",
+  critical: "bg-red-100 border-red-200",
 };
 
 export function getHealthLevel(score: number): ControlHealthLevel {

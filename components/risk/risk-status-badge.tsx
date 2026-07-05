@@ -4,14 +4,14 @@ import { computeRiskScore, scoreToLevel, type RiskScoreLevel } from "@/lib/servi
 // ---- Risk Status Badge ----
 
 const statusStyles: Record<string, string> = {
-  identified: "bg-blue-500/15 text-blue-300 border border-blue-500/25",
-  under_assessment: "bg-purple-500/15 text-purple-300 border border-purple-500/25",
-  open: "bg-amber-500/15 text-amber-300 border border-amber-500/25",
-  mitigating: "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25",
-  accepted: "bg-slate-500/15 text-slate-300 border border-slate-500/25",
-  transferred: "bg-cyan-500/15 text-cyan-300 border border-cyan-500/25",
-  closed: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/25",
-  archived: "bg-zinc-500/15 text-zinc-400 border border-zinc-500/25",
+  identified: "bg-blue-100 text-blue-700 border border-blue-200",
+  under_assessment: "bg-purple-100 text-purple-700 border border-purple-200",
+  open: "bg-amber-100 text-amber-700 border border-amber-200",
+  mitigating: "bg-indigo-100 text-indigo-700 border border-indigo-200",
+  accepted: "bg-slate-100 text-slate-700 border border-slate-200",
+  transferred: "bg-cyan-100 text-cyan-700 border border-cyan-200",
+  closed: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  archived: "bg-zinc-100 text-zinc-700 border border-zinc-200",
 };
 
 const statusLabels: Record<string, string> = {
@@ -27,7 +27,7 @@ const statusLabels: Record<string, string> = {
 
 export function RiskStatusBadge({ status }: { status: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", statusStyles[status] ?? "bg-zinc-500/15 text-zinc-400")}>
+    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", statusStyles[status] ?? "bg-zinc-100 text-zinc-700")}>
       {statusLabels[status] ?? status}
     </span>
   );
@@ -36,11 +36,11 @@ export function RiskStatusBadge({ status }: { status: string }) {
 // ---- Risk Score Level Badge ----
 
 const levelStyles: Record<RiskScoreLevel, string> = {
-  low: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/25",
-  moderate: "bg-lime-500/15 text-lime-300 border border-lime-500/25",
-  high: "bg-amber-500/15 text-amber-300 border border-amber-500/25",
-  critical: "bg-red-500/15 text-red-400 border border-red-500/25",
-  severe: "bg-purple-600/15 text-purple-300 border border-purple-500/25",
+  low: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  moderate: "bg-lime-100 text-lime-700 border border-lime-200",
+  high: "bg-amber-100 text-amber-700 border border-amber-200",
+  critical: "bg-red-100 text-red-700 border border-red-200",
+  severe: "bg-purple-100 text-purple-700 border border-purple-200",
 };
 
 const levelLabels: Record<RiskScoreLevel, string> = {
@@ -72,19 +72,19 @@ export function RiskLevelBadge({ level }: { level: RiskScoreLevel }) {
 // ---- Category Badge ----
 
 const categoryColors: Record<string, string> = {
-  operational: "bg-slate-500/15 text-slate-300",
-  cyber_security: "bg-red-500/15 text-red-300",
-  compliance: "bg-indigo-500/15 text-indigo-300",
-  vendor: "bg-blue-500/15 text-blue-300",
-  privacy: "bg-purple-500/15 text-purple-300",
-  financial: "bg-emerald-500/15 text-emerald-300",
-  legal: "bg-amber-500/15 text-amber-300",
-  strategic: "bg-cyan-500/15 text-cyan-300",
-  technology: "bg-violet-500/15 text-violet-300",
-  business_continuity: "bg-orange-500/15 text-orange-300",
-  third_party: "bg-sky-500/15 text-sky-300",
-  regulatory: "bg-rose-500/15 text-rose-300",
-  custom: "bg-zinc-500/15 text-zinc-300",
+  operational: "bg-slate-100 text-slate-700",
+  cyber_security: "bg-red-100 text-red-700",
+  compliance: "bg-indigo-100 text-indigo-700",
+  vendor: "bg-blue-100 text-blue-700",
+  privacy: "bg-purple-100 text-purple-700",
+  financial: "bg-emerald-100 text-emerald-700",
+  legal: "bg-amber-100 text-amber-700",
+  strategic: "bg-cyan-100 text-cyan-700",
+  technology: "bg-violet-100 text-violet-700",
+  business_continuity: "bg-orange-100 text-orange-700",
+  third_party: "bg-sky-100 text-sky-700",
+  regulatory: "bg-rose-100 text-rose-700",
+  custom: "bg-zinc-100 text-zinc-700",
 };
 
 const categoryLabels: Record<string, string> = {
@@ -105,7 +105,7 @@ const categoryLabels: Record<string, string> = {
 
 export function RiskCategoryBadge({ category }: { category: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", categoryColors[category] ?? "bg-zinc-500/15 text-zinc-300")}>
+    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", categoryColors[category] ?? "bg-zinc-100 text-zinc-700")}>
       {categoryLabels[category] ?? category}
     </span>
   );
@@ -114,16 +114,16 @@ export function RiskCategoryBadge({ category }: { category: string }) {
 // ---- Treatment Status Badge ----
 
 const treatmentStatusStyles: Record<string, string> = {
-  open: "bg-amber-500/15 text-amber-300",
-  in_progress: "bg-blue-500/15 text-blue-300",
-  completed: "bg-emerald-500/15 text-emerald-300",
-  cancelled: "bg-zinc-500/15 text-zinc-400",
+  open: "bg-amber-100 text-amber-700",
+  in_progress: "bg-blue-100 text-blue-700",
+  completed: "bg-emerald-100 text-emerald-700",
+  cancelled: "bg-zinc-100 text-zinc-700",
 };
 
 export function TreatmentStatusBadge({ status }: { status: string }) {
   const labels: Record<string, string> = { open: "Open", in_progress: "In Progress", completed: "Completed", cancelled: "Cancelled" };
   return (
-    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", treatmentStatusStyles[status] ?? "bg-zinc-500/15 text-zinc-400")}>
+    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", treatmentStatusStyles[status] ?? "bg-zinc-100 text-zinc-700")}>
       {labels[status] ?? status}
     </span>
   );

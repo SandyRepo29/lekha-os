@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils";
 // ─── Sensitivity Badge ────────────────────────────────────────────────────────
 
 const SENSITIVITY_STYLES: Record<string, string> = {
-  low: "bg-green-500/20 text-green-300 border-green-500/30",
-  medium: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  high: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  critical: "bg-red-500/20 text-red-300 border-red-500/30",
+  low: "bg-green-100 text-green-700 border-green-200",
+  medium: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  high: "bg-orange-100 text-orange-700 border-orange-200",
+  critical: "bg-red-100 text-red-700 border-red-200",
 };
 
 const SENSITIVITY_LABELS: Record<string, string> = {
@@ -40,11 +40,11 @@ export function SensitivityBadge({
 // ─── Privacy Request Status Badge ────────────────────────────────────────────
 
 const REQUEST_STATUS_STYLES: Record<string, string> = {
-  submitted: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  assigned: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-  investigating: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  completed: "bg-green-500/20 text-green-300 border-green-500/30",
-  closed: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  submitted: "bg-blue-100 text-blue-700 border-blue-200",
+  assigned: "bg-indigo-100 text-indigo-700 border-indigo-200",
+  investigating: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  completed: "bg-green-100 text-green-700 border-green-200",
+  closed: "bg-slate-100 text-slate-700 border-slate-200",
 };
 
 const REQUEST_STATUS_LABELS: Record<string, string> = {
@@ -79,12 +79,12 @@ export function PrivacyRequestStatusBadge({
 // ─── Privacy Request Type Badge ───────────────────────────────────────────────
 
 const REQUEST_TYPE_STYLES: Record<string, string> = {
-  access: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  correction: "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  deletion: "bg-red-500/20 text-red-300 border-red-500/30",
-  portability: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-  consent_withdrawal: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  grievance: "bg-pink-500/20 text-pink-300 border-pink-500/30",
+  access: "bg-blue-100 text-blue-700 border-blue-200",
+  correction: "bg-teal-100 text-teal-700 border-teal-200",
+  deletion: "bg-red-100 text-red-700 border-red-200",
+  portability: "bg-purple-100 text-purple-700 border-purple-200",
+  consent_withdrawal: "bg-orange-100 text-orange-700 border-orange-200",
+  grievance: "bg-pink-100 text-pink-700 border-pink-200",
 };
 
 const REQUEST_TYPE_LABELS: Record<string, string> = {
@@ -103,7 +103,7 @@ export function PrivacyRequestTypeBadge({
   type: string;
   className?: string;
 }) {
-  const styles = REQUEST_TYPE_STYLES[type] ?? "bg-slate-500/20 text-slate-300 border-slate-500/30";
+  const styles = REQUEST_TYPE_STYLES[type] ?? "bg-slate-100 text-slate-700 border-slate-200";
   return (
     <span
       className={cn(
@@ -120,11 +120,11 @@ export function PrivacyRequestTypeBadge({
 // ─── Consent Status Badge ─────────────────────────────────────────────────────
 
 const CONSENT_STATUS_STYLES: Record<string, string> = {
-  granted: "bg-green-500/20 text-green-300 border-green-500/30",
-  withdrawn: "bg-red-500/20 text-red-300 border-red-500/30",
-  expired: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  pending: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  rejected: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  granted: "bg-green-100 text-green-700 border-green-200",
+  withdrawn: "bg-red-100 text-red-700 border-red-200",
+  expired: "bg-orange-100 text-orange-700 border-orange-200",
+  pending: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  rejected: "bg-slate-100 text-slate-700 border-slate-200",
 };
 
 const CONSENT_STATUS_LABELS: Record<string, string> = {
@@ -159,11 +159,11 @@ export function ConsentStatusBadge({
 // ─── Transfer Status Badge ────────────────────────────────────────────────────
 
 const TRANSFER_STATUS_STYLES: Record<string, string> = {
-  active: "bg-green-500/20 text-green-300 border-green-500/30",
-  pending_approval: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  approved: "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  rejected: "bg-red-500/20 text-red-300 border-red-500/30",
-  suspended: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  active: "bg-green-100 text-green-700 border-green-200",
+  pending_approval: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  approved: "bg-teal-100 text-teal-700 border-teal-200",
+  rejected: "bg-red-100 text-red-700 border-red-200",
+  suspended: "bg-slate-100 text-slate-700 border-slate-200",
 };
 
 const TRANSFER_STATUS_LABELS: Record<string, string> = {
@@ -199,10 +199,10 @@ export function TransferStatusBadge({
 // ─── Privacy Risk Level Badge ─────────────────────────────────────────────────
 
 const RISK_LEVEL_STYLES: Record<string, string> = {
-  low: "bg-green-500/20 text-green-300 border-green-500/30",
-  medium: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  high: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  critical: "bg-red-500/20 text-red-300 border-red-500/30",
+  low: "bg-green-100 text-green-700 border-green-200",
+  medium: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  high: "bg-orange-100 text-orange-700 border-orange-200",
+  critical: "bg-red-100 text-red-700 border-red-200",
 };
 
 export function PrivacyRiskLevelBadge({
@@ -229,10 +229,10 @@ export function PrivacyRiskLevelBadge({
 // ─── Data Asset Status Badge ──────────────────────────────────────────────────
 
 const ASSET_STATUS_STYLES: Record<string, string> = {
-  active: "bg-green-500/20 text-green-300 border-green-500/30",
-  inactive: "bg-slate-500/20 text-slate-300 border-slate-500/30",
-  archived: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-  under_review: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+  active: "bg-green-100 text-green-700 border-green-200",
+  inactive: "bg-slate-100 text-slate-700 border-slate-200",
+  archived: "bg-gray-100 text-gray-700 border-gray-200",
+  under_review: "bg-yellow-100 text-yellow-700 border-yellow-200",
 };
 
 const ASSET_STATUS_LABELS: Record<string, string> = {
@@ -266,11 +266,11 @@ export function AssetStatusBadge({
 // ─── Assessment Status Badge ──────────────────────────────────────────────────
 
 const ASSESSMENT_STATUS_STYLES: Record<string, string> = {
-  draft: "bg-slate-500/20 text-slate-300 border-slate-500/30",
-  in_progress: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  completed: "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  approved: "bg-green-500/20 text-green-300 border-green-500/30",
-  archived: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  draft: "bg-slate-100 text-slate-700 border-slate-200",
+  in_progress: "bg-blue-100 text-blue-700 border-blue-200",
+  completed: "bg-teal-100 text-teal-700 border-teal-200",
+  approved: "bg-green-100 text-green-700 border-green-200",
+  archived: "bg-gray-100 text-gray-700 border-gray-200",
 };
 
 const ASSESSMENT_STATUS_LABELS: Record<string, string> = {

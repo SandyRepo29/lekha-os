@@ -842,6 +842,8 @@ Never call `request.json()` after `parseBody` — the stream is consumed.
 /risks/ai                                    AI Risk Officer (executive report + chat)
 /reports/risks/csv                           Risks CSV export
 /reports/risks/treatments/csv               Treatments CSV export
+/reports/risks/register                      Risk Register PDF (all risks · scores · owners)
+/reports/risks/executive                     Executive Risk Report PDF (metrics · top risks · AI summary)
 
 --- Control Center™ ---
 /controls                                    Dashboard (metrics + weakest controls)
@@ -1088,10 +1090,19 @@ POST /api/v1/agent-actions/[id]/reject       Reject agent action (read_write key
 --- Regulatory Intelligence™ ---
 /regulatory-intelligence                     Hub (KPI strip + recent changes + open alerts + compliance horizon + module nav)
 /regulatory-intelligence/library            Regulation Library™ (filterable list of 18 built-in + org regulations)
+/regulatory-intelligence/library/new        Add Regulation form
 /regulatory-intelligence/changes            Change Monitor™ (filterable changes list + status advancement)
+/regulatory-intelligence/changes/new        Log Regulatory Change form
 /regulatory-intelligence/obligations        Obligations™ (obligation registry + status tracker + obligation actions)
+/regulatory-intelligence/obligations/new    Add Obligation form
 /regulatory-intelligence/assessments        Impact Assessments™ (assessment list + create)
+/regulatory-intelligence/assessments/new    New Impact Assessment form
 /regulatory-intelligence/watchlists         Watchlists™ (create watchlists for regulations + suggested starters)
+/regulatory-intelligence/watchlists/new     New Watchlist form (supports ?name= prefill)
+(all /new pages use the shared components/regulatory-intelligence/reg-new-form.tsx driven by each create*Action)
+GET /api/v1/policies/export/csv              Policies CSV export (session auth)
+GET /api/v1/policies/mappings/controls/csv   Policy↔Control mappings CSV (session auth)
+GET /api/v1/policies/mappings/frameworks/csv Policy↔Framework mappings CSV (session auth)
 /regulatory-intelligence/horizon            Compliance Horizon™ (4-panel AI forecast: emerging risks · deadlines · trends · recommendations)
 /regulatory-intelligence/ai                 AI Regulatory Advisor™ (cached summary + suggested questions + NL chat)
 GET /api/v1/regulations                     Paginated regulation list (?category=, ?page=, ?pageSize=)
@@ -2333,6 +2344,8 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Contract Governance shared date utils** | `formatDate()` / `daysUntil()` live in `lib/contract-governance/date-utils.ts` — imported by all 6 contract pages (dashboard, library, obligations, renewals, [id], ai). Do NOT re-inline these; import from the shared module. |
 | **Asset Intelligence has NO edit page** | `asset-intelligence/registry/[id]` (detail) and `registry/new` (create) exist; there is no `registry/[id]/edit` route. `updateAssetAction` exists in `lib/asset-intelligence/actions.ts` but no edit UI is wired — don't link to a non-existent edit page. |
 | **`frameworks` has no soft-delete** | Migration 0041 added `deleted_at` to vendors/risks/controls/evidence/policies/contracts/assessments — NOT `frameworks`. Framework deletion is a hard delete; `framework-repo` correctly does not filter `deletedAt` (there is no such column). |
+| **Govern badges are light-theme (2026-07-05)** | Badge style maps across all 8 Govern modules were converted dark→light: `bg-*-500/{op} → bg-*-100`, `text-*-{300\|400} → text-*-700`, `border-*-*/{op} → border-*-200`, `bg-white/* → bg-slate-100`. Files: risk/control/audit/policy status badges, privacy-badges, cc-ui, sec-ui, reg-ui, PLUS the `HEALTH_LEVEL_COLORS/BG` maps in `lib/services/control-health.ts` and `lib/services/policy-health.ts` (health badges read colors from the service, not the component). New badges must use `bg-*-100 text-*-700 border-*-200`, never `bg-*-500/20 text-*-300`. |
+| **API-key-created records have no user** | `ApiKeyContext` is `{ orgId, keyId }` — there is NO userId. Service create fns whose 2nd param maps to a `created_by uuid REFERENCES profiles(id)` must be passed `null` from `/api/v1/*` routes, NOT `orgId` (orgId is not a profile id → FK violation → 500). `createObligation`/`createAssessment` in regulatory-service accept `userId: string \| null` for this reason. |
 
 ---
 

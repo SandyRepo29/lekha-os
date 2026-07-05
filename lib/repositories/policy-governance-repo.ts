@@ -62,6 +62,37 @@ export type PolicyHealthInputsRaw = {
   openFindingCount: number;
 };
 
+/** All policy↔control links across an org, with names, for reporting. */
+export async function getPolicyControlMappingsByOrg(orgId: string) {
+  return db
+    .select({
+      policyName: policies.name,
+      controlRef: controls.controlRef,
+      controlName: controls.name,
+      controlStatus: controls.status,
+    })
+    .from(policyControls)
+    .innerJoin(policies, eq(policyControls.policyId, policies.id))
+    .innerJoin(controls, eq(policyControls.controlId, controls.id))
+    .where(eq(policies.organizationId, orgId))
+    .orderBy(policies.name);
+}
+
+/** All policy↔framework links across an org, with names, for reporting. */
+export async function getPolicyFrameworkMappingsByOrg(orgId: string) {
+  return db
+    .select({
+      policyName: policies.name,
+      frameworkName: frameworks.name,
+      frameworkStatus: frameworks.status,
+    })
+    .from(policyFrameworks)
+    .innerJoin(policies, eq(policyFrameworks.policyId, policies.id))
+    .innerJoin(frameworks, eq(policyFrameworks.frameworkId, frameworks.id))
+    .where(eq(policies.organizationId, orgId))
+    .orderBy(policies.name);
+}
+
 /** All policies for an org. */
 export async function findPoliciesByOrg(
   orgId: string,

@@ -281,12 +281,12 @@ export default async function ContinuousCompliancePage() {
             {[
               { label: "Total Controls",   value: controlM?.total ?? 0,        color: "text-[var(--color-ink)]" },
               { label: "Implemented",      value: controlM?.implemented ?? 0,   color: "text-blue-400" },
-              { label: "Healthy (&#8805;80)",  value: controlM?.healthy ?? 0,       color: "text-emerald-400" },
-              { label: "Weak (&lt;60)",       value: controlM?.weak ?? 0,          color: "text-amber-400" },
+              { label: "Healthy (≥80)",  value: controlM?.healthy ?? 0,       color: "text-emerald-400" },
+              { label: "Weak (<60)",       value: controlM?.weak ?? 0,          color: "text-amber-400" },
               { label: "Overdue Tests",    value: controlM?.overdueTests ?? 0,  color: controlM && controlM.overdueTests > 0 ? "text-red-400" : "text-emerald-400" },
             ].map((r) => (
               <div key={r.label} className="flex items-center justify-between">
-                <span className="text-xs text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: r.label }} />
+                <span className="text-xs text-[var(--color-ink-dim)]">{r.label}</span>
                 <span className={`text-sm font-bold ${r.color}`}>{r.value}</span>
               </div>
             ))}
@@ -354,12 +354,12 @@ export default async function ContinuousCompliancePage() {
           <div className="space-y-2.5">
             {[
               { label: "Avg Vendor Trust Score", value: `${vendorM?.avgScore ?? 0}%`, color: scoreColor(vendorM?.avgScore ?? 0) },
-              { label: "Compliant (&#8805;80)",       value: vendCompliant,                color: "text-emerald-400" },
+              { label: "Compliant (≥80)",       value: vendCompliant,                color: "text-emerald-400" },
               { label: "At Risk (60–79)",        value: vendAtRisk,                   color: "text-amber-400" },
-              { label: "Non-Compliant (&lt;60)",  value: vendNonComp,                  color: vendNonComp > 0 ? "text-red-400" : "text-emerald-400" },
+              { label: "Non-Compliant (<60)",  value: vendNonComp,                  color: vendNonComp > 0 ? "text-red-400" : "text-emerald-400" },
             ].map((r) => (
               <div key={r.label} className="flex items-center justify-between">
-                <span className="text-xs text-[var(--color-ink-dim)]" dangerouslySetInnerHTML={{ __html: r.label }} />
+                <span className="text-xs text-[var(--color-ink-dim)]">{r.label}</span>
                 <span className={`text-sm font-bold ${r.color}`}>{r.value}</span>
               </div>
             ))}

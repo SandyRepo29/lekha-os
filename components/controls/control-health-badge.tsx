@@ -9,7 +9,7 @@ interface Props {
 export function ControlHealthBadge({ score, showScore = true, size = "sm" }: Props) {
   if (score === null) {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border bg-white/5 border-white/10 text-white/40">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border bg-slate-100 border-slate-200 text-slate-600">
         Not computed
       </span>
     );

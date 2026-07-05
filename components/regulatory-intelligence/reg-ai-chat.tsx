@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { chatAction } from "@/lib/regulatory-intelligence/actions";
