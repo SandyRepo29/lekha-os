@@ -1106,14 +1106,18 @@ GET /api/v1/regulatory-readiness            Readiness score + metrics
 /asset-intelligence                          Hub (KPI strip: total/active/critical/PII/alerts · recent assets · by-type chart · open alerts · module nav)
 /asset-intelligence/registry                Asset Registry™ (filterable list by type/criticality/status/environment + create)
 /asset-intelligence/registry/new           Add asset form (all fields: name, type, criticality, env, data class, PII flags, stack, cloud, notes)
+/asset-intelligence/registry/[id]          Asset detail — overview, Asset Trust Score™ breakdown, relationships, review history, linked-entity counts
 /asset-intelligence/data-assets            Data Asset Catalog™ (PII assets warning panel + data asset registry + DPDP link)
 /asset-intelligence/relationships          Asset Relationships™ (dependency table with relationship type labels + Trust Graph link)
+/asset-intelligence/impact-analysis        Impact Analysis™ (vendor failure scenarios · critical assets exposed · PII exposure scenarios)
 /asset-intelligence/alerts                 Asset Alerts™ (open/resolved with ResolveAlertButton + severity badges)
 /asset-intelligence/ai                     AI Asset Advisor™ (advisory summary + suggested questions + AssetAiChat NL chat)
 GET /api/v1/assets                          Asset list (?type=, ?criticality=, ?status=, ?environment=)
 POST /api/v1/assets                         Create asset (read_write key)
 GET /api/v1/notifications                   Governance alerts for notification bell — top 20 open (session auth)
 GET /api/v1/contracts/export/csv            Contracts CSV export (session auth)
+GET /api/v1/contracts/renewals/export/csv   Renewals CSV — expiry, notice period, action deadline (session auth)
+GET /api/v1/contracts/clauses/export/csv    Clause Risk CSV — risk level + AI analysis per clause (session auth)
 GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 
 --- Finance Console (admin-only) ---
@@ -2324,6 +2328,11 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Platform admin org detail tabs use `?tab=` query param** | `/platform-admin/orgs/[id]` reads `searchParams.tab` to show Overview/Users/Subscription/Billing tabs. Server-side tab switch — not client-side state. Clicking tab links appends `?tab=subscription` etc. to the URL. |
 | **Badge colors — light theme** | Status/severity/priority badges must use light-theme styles: `bg-*-100 text-*-700` (e.g. `bg-red-100 text-red-700`). Dark-theme patterns `bg-*-500/20 text-*-300` are invisible/washed-out on white backgrounds. This applies to all module badge components including `components/toe/toe-ui.tsx`. |
 | **HTML entities in JS string literals** | `&#8482;` `&#8212;` etc. only render correctly inside JSX markup (`<span>&#8482;</span>`). In JS string values used as React text nodes (e.g. `label: "Foo&#8482;"`) they render as literal ampersand-hash text. Always use actual Unicode chars in string values: `™` `—` `→` `↑` `↓`. |
+| **HTML entities in JSX ARE fine** | The inverse of the above, to stop false-positive "bugs": `&middot;` `&#8230;` `&rarr;` inside JSX **text** (`<span>a &middot; b</span>`) or a JSX **attribute string literal** (`placeholder="Search…&#8230;"`) are decoded normally by React — NOT bugs. Only entities inside JS string VALUES rendered as `{x}` render literally. |
+| **Vendor detail tabs are split** | `components/vendors/vendor-detail-tabs.tsx` is now a thin ~110-line orchestrator (tab list + `<Tabs>` render-prop). All 13 tab bodies + shared helpers live in `components/vendors/vendor-detail-tab-panels.tsx`, each a `*Panel(props: VendorTabProps)` component. `VendorTabProps` is the shared prop type (exported from the panels file). Add/edit a tab in the panels file; wire it in the orchestrator. |
+| **Contract Governance shared date utils** | `formatDate()` / `daysUntil()` live in `lib/contract-governance/date-utils.ts` — imported by all 6 contract pages (dashboard, library, obligations, renewals, [id], ai). Do NOT re-inline these; import from the shared module. |
+| **Asset Intelligence has NO edit page** | `asset-intelligence/registry/[id]` (detail) and `registry/new` (create) exist; there is no `registry/[id]/edit` route. `updateAssetAction` exists in `lib/asset-intelligence/actions.ts` but no edit UI is wired — don't link to a non-existent edit page. |
+| **`frameworks` has no soft-delete** | Migration 0041 added `deleted_at` to vendors/risks/controls/evidence/policies/contracts/assessments — NOT `frameworks`. Framework deletion is a hard delete; `framework-repo` correctly does not filter `deletedAt` (there is no such column). |
 
 ---
 
