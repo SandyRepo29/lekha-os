@@ -2,6 +2,7 @@
 
 > **End-to-end project brief for any AI session. Read this first.**
 > Rebranded from Lekha OS → AUDT on 2026-06-07. Domain: audt.tech.
+> **🔎 Journey-group audit sweep in progress — current status, all fixes, and the resume point are in §14 (Module Audit & Remediation — Session Log). Next group to audit: Trust Operations Engine.**
 
 ## Doc Structure — Read Before Every Session
 
@@ -2440,3 +2441,49 @@ NEXT_PUBLIC_SITE_URL="https://lekha-os.vercel.app"
 ```
 
 See `.env.example` for full documentation.
+
+---
+
+## 14. Module Audit & Remediation — Session Log (2026-07-05)
+
+> **Pick-up point for resuming the journey-group audit sweep.** The app is being audited group-by-group (per the sidebar `groups` array in `components/app-shell/sidebar.tsx`). Loop for each group: audit (parallel Explore agents) → **verify every finding against source/migrations** (agents produce false positives — never fix on an agent's word alone) → fix confirmed bugs + cleanup → `npx tsc --noEmit` AND `npm run build` (both must exit 0) → commit + push to `main` (auto-deploys to Vercel).
+
+### Progress
+| Journey group | Modules | Status |
+|---|---|---|
+| **Discover** | Vendor Hub™ · Asset Intelligence™ · Contract Governance™ | ✅ audited + fixed + deployed |
+| **Assess** | Evidence Vault™ · Trust Exchange™ · Trust Network™ · Trust Verification™ | ✅ audited + fixed + deployed (badges fully swept) |
+| **Govern** | Risk Lens™ · Control Center™ · Audit Mgmt · Policy Gov™ · DPDP Privacy™ · Continuous Compliance™ · Security Command Center™ · Regulatory Intelligence™ | ✅ audited + fixed + deployed |
+| **Trust Operations Engine** | `/operations/*` | ⏳ **NOT audited — resume here next** |
+| **Measure** | Trust Intelligence™ · Benchmarking™ · Executive Reporting™ · Trust Score™ | ⏳ not audited |
+| **Improve** | Issue & Remediation Hub™ · Workflow Studio™ · Governance Agents™ | ⏳ not audited |
+| **Reports / Platform** | Integration Hub™ · Trust API™ · Auditor Collaboration™ · Trust API Platform™ · `/platform/*` | ⏳ not audited |
+
+### Commits (this sweep)
+- `305dda1` — Discover fixes + Assess bugs/cleanup + vendor-detail-tabs split
+- `d3287e9` — docs (routes + §11 caveats)
+- `2e481d7` — Govern confirmed bugs + Govern badge sweep + hygiene
+- `60e7226` — Assess badge sweep completion + Trust Network counterpart name
+
+### Fixed — confirmed bugs (all 404s / broken behavior)
+**Discover:** Asset Intelligence missing `registry/[id]` detail page (9+ links 404'd) · mojibake arrows · dangerouslySetInnerHTML removed · Contract Governance `renewals/export/csv` + `clauses/export/csv` routes (were 404) + `getClausesByOrg` query · Vendor Hub `approval-service` dynamic `require()` → top-level import.
+**Assess:** Trust Exchange `questionnaires/[id]` answer page (was 404) + 4 dead repo exports removed · Trust Verification `force-dynamic` on public `verify/[id]` + 2 dead stub buttons removed · Trust Network fabricated ±5 automation metric removed + relationships now show counterpart org name (not raw `targetOrgId`) + UI configs aligned to pg enums · Evidence Vault date-format dedup.
+**Govern:** Security Center session badge always "active" → real `s.status` · Regulatory API `createObligation/Assessment(orgId, orgId)` FK-violated `profiles(id)` → pass `null` · Policy 3 missing CSV routes + 2 repo queries · DPDP retention form (404 POST) → client form via `createRetentionPolicyAction` · Risk Lens 2 missing PDF reports (`register` + `executive`) + templates + heat-map tooltip (`group` class) · Regulatory 5 missing `/new` form pages via shared `reg-new-form`.
+
+### Fixed — cross-cutting cleanup
+- **Light-theme badge sweep** across **Discover + Assess + Govern** — see the "Badges are light-theme" caveat in §11. Scripted regex transform (`bg-*-500/xx → bg-*-100`, `text-*-{300|400} → text-*-700`, `border-*-*/xx → border-*-200`, `bg-white/xx → bg-slate-100`) + `HEALTH_LEVEL_COLORS/BG` in `control-health.ts` + `policy-health.ts`. **EXCEPTION: `app/verify/[id]` is intentionally dark — never convert.** Groups TOE/Measure/Improve/Reports/Platform still use dark badges.
+- Stripped UTF-8 BOM from ~24 files (regulatory, policy, trust-network) · fixed mojibake in `security-command-center-repo` comments · deduped date helpers into `lib/contract-governance/date-utils.ts` · replaced `dangerouslySetInnerHTML` static labels (asset, continuous-compliance, controls).
+
+### Deferred / known gaps inside "done" groups (NOT bugs — intentional skips or future features)
+- **Regulatory:** 7 thin service exports (`getObligationById`, `getAssessmentById`, `getUpdates`, `getSources`, `updateObligation`, `updateRegulation`, `acknowledgeAlert`) kept as scaffolding for future detail/feed pages; unwired AI (`extractObligations`, `suggestControlMappings`); no `regulatory-tasks` UI.
+- **Continuous Compliance:** no detail pages for access-reviews/attestations/training `[id]`; `upsertReadiness` uses `onConflictDoNothing` (never updates existing snapshot).
+- **Risk Lens:** bulk-action buttons are stubs (`risk-list-table` alert "in the next update").
+- **DPDP:** no PIA edit interface (create + view only).
+- **Trust Verification:** the local `StatusBadge` in `applications/[id]` is intentionally kept — it handles evidence/review statuses (`accepted`, `requires_update`) the shared `VerificationStatusBadge` lacks; do NOT naively dedupe.
+- **Trust Exchange ↔ Trust Network:** genuine directory/profile duplication (both read `trust_profiles`); a merge/differentiate product decision is pending.
+
+### Audit methodology (repeat for remaining groups)
+1. Launch one Explore agent per module IN PARALLEL with false-positive calibration baked into the prompt: (a) HTML entities in JSX **text/attributes** are decoded by React — NOT bugs; only flag entities inside JS string **values** rendered as `{x}`; (b) many table columns live only in `supabase/migrations/*`, NOT `schema.ts` — verify there before claiming "missing column".
+2. **Verify every agent finding against source** before fixing. False positives discarded this sweep: vendor `lifecycle_state` "missing" (exists in migration 0036); `frameworks` soft-delete "missing" (frameworks has no `deleted_at`); CC "incomplete AI functions" (agent read-limit artifacts); Control Center client `layout.tsx` `force-dynamic` (client layouts don't need it).
+3. Batch-verify the highest-impact class — "report/export page links to a route that doesn't exist" (404s) — with Glob + Grep; this recurred in Contract, Policy, Risk, DPDP, Regulatory.
+4. Badge sweep is scripted but MUST first `grep -rlE 'bg-\[#0|bg-black'` to exclude intentionally-dark pages (e.g. `app/verify/[id]`).
