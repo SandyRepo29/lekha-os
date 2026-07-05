@@ -54,7 +54,7 @@ export default async function RelationshipsPage() {
         <div className="rounded-2xl border border-[var(--color-line)] p-12 text-center">
           <GitBranch className="h-8 w-8 text-[var(--color-ink-dim)] mx-auto mb-3" />
           <p className="text-sm text-[var(--color-ink-dim)]">No relationships mapped yet. Add assets first, then map their dependencies.</p>
-          <Link href="/asset-intelligence/registry" className="mt-3 inline-flex text-sm text-[var(--color-blue)] hover:underline">Go to Asset Registry â†’</Link>
+          <Link href="/asset-intelligence/registry" className="mt-3 inline-flex text-sm text-[var(--color-blue)] hover:underline">Go to Asset Registry →</Link>
         </div>
       ) : (
         <div className="rounded-2xl border border-[var(--color-line)] overflow-hidden">
@@ -119,7 +119,7 @@ export default async function RelationshipsPage() {
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Asset nodes and relationships are visible in the full governance Trust Graph™.</p>
         </div>
         <Link href="/trust-intelligence/trust-graph" className="rounded-xl border border-[var(--color-blue)]/30 px-4 py-2 text-sm text-[var(--color-blue)] hover:bg-[var(--color-blue)]/10 transition-colors">
-          Open Trust Graph â†’
+          Open Trust Graph →
         </Link>
       </div>
     </div>

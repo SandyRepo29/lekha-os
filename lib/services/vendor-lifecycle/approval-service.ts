@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { DomainError } from "@/lib/services/errors";
 import * as approvalRepo from "@/lib/repositories/approval-repo";
@@ -136,7 +137,7 @@ export async function recordDecision(params: {
   // Advance to next step (sequential)
   await db.execute(
     // raw sql is fine here — no ORM table for this
-    require("drizzle-orm").sql`
+    sql`
       UPDATE approval_instances SET current_step = current_step + 1
       WHERE id = ${params.instanceId} AND organization_id = ${params.orgId}`
   );

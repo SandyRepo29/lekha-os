@@ -224,7 +224,7 @@ export default async function AssetIntelligencePage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
             { href: "/asset-intelligence/registry",        icon: Monitor,       label: "Asset Registry™",     desc: "Full inventory"       },
-            { href: "/asset-intelligence/data-assets",     icon: FileText,      label: "Data Asset Catalog™", desc: "PII &amp; data maps"  },
+            { href: "/asset-intelligence/data-assets",     icon: FileText,      label: "Data Asset Catalog™", desc: "PII & data maps"      },
             { href: "/asset-intelligence/relationships",   icon: GitBranch,     label: "Relationships™",      desc: "Dependency graph"     },
             { href: "/asset-intelligence/impact-analysis", icon: AlertTriangle, label: "Impact Analysis™",    desc: "Failure scenarios"    },
             { href: "/asset-intelligence/alerts",          icon: Shield,        label: "Asset Alerts™",       desc: "Governance alerts"    },
@@ -233,8 +233,8 @@ export default async function AssetIntelligencePage() {
             <Link key={href} href={href}
               className="rounded-2xl border border-[var(--color-line)] bg-white p-4 hover:bg-[#F8F9FB] transition-colors">
               <Icon className="h-5 w-5 text-[var(--color-blue)] mb-2" />
-              <p className="text-sm font-medium leading-tight" dangerouslySetInnerHTML={{ __html: label }} />
-              <p className="text-xs text-[var(--color-ink-dim)] mt-0.5" dangerouslySetInnerHTML={{ __html: desc }} />
+              <p className="text-sm font-medium leading-tight">{label}</p>
+              <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">{desc}</p>
             </Link>
           ))}
         </div>

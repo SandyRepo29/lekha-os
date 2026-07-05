@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getCertificates } from "@/lib/services/trust-verification/trust-verification-service";
-import { Award, CheckCircle, ExternalLink, QrCode, ShieldCheck } from "lucide-react";
+import { Award, CheckCircle, ExternalLink, ShieldCheck } from "lucide-react";
 import { CertificateStatusBadge } from "@/components/trust-verification/verification-ui";
 
 export default async function CertificatesPage() {
@@ -60,9 +60,6 @@ export default async function CertificatesPage() {
                     className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
                     <ExternalLink className="h-3 w-3" /> Verify
                   </a>
-                  <button className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
-                    <QrCode className="h-3.5 w-3.5" />
-                  </button>
                 </div>
               </div>
             );

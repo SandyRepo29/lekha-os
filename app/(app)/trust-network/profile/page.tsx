@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import {
@@ -201,9 +201,8 @@ export default async function PublicTrustProfilePage() {
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <ScoreBar label="Evidence Automation" value={automation.automationPct + 5} color="bg-blue-400" />
+            <ScoreBar label="Evidence Automation" value={automation.automationPct} color="bg-blue-400" />
             <ScoreBar label="Continuous Monitoring" value={automation.monitoringCoverage} color="bg-emerald-400" />
-            <ScoreBar label="Workflow Automation" value={Math.max(0, automation.automationPct - 5)} color="bg-pink-400" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[

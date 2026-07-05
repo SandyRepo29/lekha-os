@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import {
-  Globe, Shield, Star, Users, MessageSquare, CheckCircle2,
-  Activity, TrendingUp, Award, Zap,
+  Globe, Shield, Users, MessageSquare, CheckCircle2,
+  Activity, Award, Zap,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
@@ -15,12 +15,9 @@ const ACTIVITY_CONFIG: Record<string, { icon: React.ElementType; color: string; 
   document_shared:       { icon: Shield,       color: "text-indigo-400", label: "Document Shared" },
   document_verified:     { icon: CheckCircle2, color: "text-green-400",  label: "Document Verified" },
   badge_issued:          { icon: Award,        color: "text-yellow-400", label: "Badge Issued" },
-  badge_revoked:         { icon: Award,        color: "text-red-400",    label: "Badge Revoked" },
   relationship_created:  { icon: Users,        color: "text-purple-400", label: "Relationship Created" },
   questionnaire_answered:{ icon: MessageSquare,color: "text-pink-400",   label: "Questionnaire Answered" },
   verification_requested:{ icon: Shield,       color: "text-orange-400", label: "Verification Requested" },
-  trust_score_increased: { icon: TrendingUp,   color: "text-green-400",  label: "Trust Score Increased" },
-  certification_added:   { icon: Star,         color: "text-yellow-400", label: "Certification Added" },
 };
 
 function activityDate(d: Date | string) {

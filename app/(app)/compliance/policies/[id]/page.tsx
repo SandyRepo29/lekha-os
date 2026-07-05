@@ -8,6 +8,7 @@ import { requireUser } from "@/lib/auth/session";
 import { getPolicy } from "@/lib/services/compliance/policy-service";
 import { PolicyStatusBadge } from "@/components/compliance/policy-status-badge";
 import { PolicyWorkflowButtons, DeletePolicy } from "@/components/compliance/policy-actions";
+import { formatDate } from "@/components/compliance/compliance-ui";
 
 export default async function PolicyDetailPage({
   params,
@@ -21,10 +22,7 @@ export default async function PolicyDetailPage({
   const policy = await getPolicy(session.org.id, id);
   if (!policy) notFound();
 
-  const fmt = (d: string | null) =>
-    d
-      ? new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
-      : "—";
+  const fmt = (d: string | null) => (d ? formatDate(d) : "—");
 
   const isOverdue =
     policy.reviewDate &&

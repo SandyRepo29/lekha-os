@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { getPrograms } from "@/lib/services/trust-verification/trust-verification-service";
-import { ShieldCheck, Star, Lock, Brain, AlertTriangle, Building2, ClipboardCheck, Award, Flag, ArrowRight, Plus } from "lucide-react";
+import { ShieldCheck, Star, Lock, Brain, AlertTriangle, Building2, ClipboardCheck, Award, Flag, ArrowRight } from "lucide-react";
 
 const BADGE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   "shield-check": ShieldCheck, "building-2": Building2, "lock": Lock, "brain": Brain,
@@ -79,9 +79,6 @@ export default async function ProgramsPage() {
       <div>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-[var(--color-ink-dim)] uppercase tracking-wider">Custom Programs</h2>
-          <button className="flex items-center gap-1.5 rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-1.5 text-xs font-medium hover:bg-[#F8F9FB]">
-            <Plus className="h-3.5 w-3.5" /> Create Program
-          </button>
         </div>
         {custom.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

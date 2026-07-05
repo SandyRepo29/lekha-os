@@ -9,10 +9,10 @@ import { AlertTriangle, Building2, Database, GitBranch, Shield, Zap } from "luci
 type ImpactLevel = "critical" | "high" | "medium" | "low";
 
 const IMPACT_STYLES: Record<ImpactLevel, string> = {
-  critical: "bg-red-500/15 border-red-500/30 text-red-400",
-  high:     "bg-orange-500/15 border-orange-500/30 text-orange-400",
-  medium:   "bg-amber-500/15 border-amber-500/30 text-amber-400",
-  low:      "bg-emerald-500/15 border-emerald-500/30 text-emerald-400",
+  critical: "bg-red-100 border-red-200 text-red-800",
+  high:     "bg-orange-100 border-orange-200 text-orange-700",
+  medium:   "bg-amber-100 border-amber-200 text-amber-700",
+  low:      "bg-emerald-100 border-emerald-200 text-emerald-700",
 };
 
 function assetImpact(assets: any[]): ImpactLevel {

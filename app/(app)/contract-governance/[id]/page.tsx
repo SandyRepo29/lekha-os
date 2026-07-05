@@ -28,15 +28,7 @@ import {
 } from "@/components/contract-governance/contract-ui";
 import { scoreTextColor, scoreBarGradient } from "@/lib/ui/colors";
 
-function formatDate(d: string | null | undefined) {
-  if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-}
-
-function daysUntil(d: string | null | undefined) {
-  if (!d) return null;
-  return Math.floor((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-}
+import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
 
 export default async function ContractDetailPage({
   params,

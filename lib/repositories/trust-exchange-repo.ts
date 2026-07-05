@@ -47,15 +47,6 @@ export async function updateProfile(orgId: string, data: Partial<typeof trustPro
   return row;
 }
 
-export async function getProfileByOrg(orgId: string) {
-  return db
-    .select()
-    .from(trustProfiles)
-    .where(eq(trustProfiles.organizationId, orgId))
-    .limit(1)
-    .then((r) => r[0] ?? null);
-}
-
 export async function getPublicDirectory(filters?: {
   industry?: string;
   country?: string;
@@ -165,11 +156,6 @@ export async function listQuestionnaires(orgId: string) {
     .orderBy(asc(trustQuestionnaires.title));
 }
 
-export async function createQuestionnaire(data: typeof trustQuestionnaires.$inferInsert) {
-  const [row] = await db.insert(trustQuestionnaires).values(data).returning();
-  return row;
-}
-
 export async function getAnswers(orgId: string, questionnaireId: string) {
   return db
     .select()
@@ -221,14 +207,6 @@ export async function createVerification(data: typeof trustVerifications.$inferI
   return row;
 }
 
-export async function listVerifications(orgId: string, docId: string) {
-  return db
-    .select()
-    .from(trustVerifications)
-    .where(and(eq(trustVerifications.organizationId, orgId), eq(trustVerifications.trustDocumentId, docId)))
-    .orderBy(desc(trustVerifications.createdAt));
-}
-
 // ─── Trust Relationships ──────────────────────────────────────
 
 export async function listRelationships(orgId: string) {
@@ -249,15 +227,6 @@ export async function createRelationship(data: typeof trustRelationships.$inferI
     .insert(trustRelationships)
     .values(data)
     .onConflictDoNothing()
-    .returning();
-  return row;
-}
-
-export async function updateRelationshipStatus(id: string, status: string, acceptedBy?: string) {
-  const [row] = await db
-    .update(trustRelationships)
-    .set({ status: status as any, acceptedBy: acceptedBy ?? null, updatedAt: new Date() })
-    .where(eq(trustRelationships.id, id))
     .returning();
   return row;
 }

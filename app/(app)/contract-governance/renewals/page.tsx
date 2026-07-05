@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { listContracts } from "@/lib/services/contract-governance/contract-service";
 import { ContractStat } from "@/components/contract-governance/contract-ui";
+import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
 
 type RenewalRec = "Renew" | "Review" | "Renegotiate" | "Exit";
 type TrustImpact = "High" | "Medium" | "Low";
@@ -45,16 +46,6 @@ const IMPACT_STYLES: Record<TrustImpact, string> = {
   Medium: "text-amber-400",
   Low:    "text-emerald-400",
 };
-
-function formatDate(d: string | null | undefined) {
-  if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-}
-
-function daysUntil(d: string | null | undefined) {
-  if (!d) return null;
-  return Math.floor((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-}
 
 /** Return Tailwind colour classes for days-until-expiry */
 function expiryColor(days: number | null): string {

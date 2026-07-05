@@ -43,11 +43,11 @@ export function AssetSubNav() {
 type Accent = "neutral" | "good" | "warn" | "danger" | "purple";
 
 const ACCENT_CLASSES: Record<Accent, { border: string; bg: string; text: string }> = {
-  neutral: { border: "border-l-slate-400",   bg: "bg-slate-400/[0.06]",   text: "text-slate-400"   },
-  good:    { border: "border-l-emerald-400",  bg: "bg-emerald-400/[0.06]", text: "text-emerald-400"  },
-  warn:    { border: "border-l-amber-400",    bg: "bg-amber-400/[0.06]",   text: "text-amber-400"    },
-  danger:  { border: "border-l-red-400",      bg: "bg-red-400/[0.06]",     text: "text-red-400"      },
-  purple:  { border: "border-l-purple-400",   bg: "bg-purple-400/[0.06]",  text: "text-purple-400"   },
+  neutral: { border: "border-l-slate-400",   bg: "bg-slate-50",    text: "text-slate-600"   },
+  good:    { border: "border-l-emerald-500", bg: "bg-emerald-50",  text: "text-emerald-600" },
+  warn:    { border: "border-l-amber-500",   bg: "bg-amber-50",    text: "text-amber-600"   },
+  danger:  { border: "border-l-red-500",     bg: "bg-red-50",      text: "text-red-600"     },
+  purple:  { border: "border-l-purple-500",  bg: "bg-purple-50",   text: "text-purple-600"  },
 };
 
 export function AssetStat({
@@ -66,16 +66,16 @@ export function AssetStat({
 // ─── Criticality Badge ────────────────────────────────────────────────────────
 
 const CRIT_STYLES: Record<string, string> = {
-  mission_critical: "bg-red-500/20 text-red-400 border-red-500/30",
-  critical:         "bg-red-400/20 text-red-300 border-red-400/30",
-  high:             "bg-orange-400/20 text-orange-300 border-orange-400/30",
-  medium:           "bg-amber-400/20 text-amber-300 border-amber-400/30",
-  low:              "bg-emerald-400/20 text-emerald-300 border-emerald-400/30",
+  mission_critical: "bg-red-100 text-red-800 border-red-200",
+  critical:         "bg-red-100 text-red-700 border-red-200",
+  high:             "bg-orange-100 text-orange-700 border-orange-200",
+  medium:           "bg-amber-100 text-amber-700 border-amber-200",
+  low:              "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
 export function CriticalityBadge({ level }: { level: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", CRIT_STYLES[level] ?? "bg-slate-400/20 text-slate-300 border-slate-400/30")}>
+    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", CRIT_STYLES[level] ?? "bg-slate-100 text-slate-600 border-slate-200")}>
       {level.replace("_", " ")}
     </span>
   );
@@ -84,17 +84,17 @@ export function CriticalityBadge({ level }: { level: string }) {
 // ─── Asset Status Badge ───────────────────────────────────────────────────────
 
 const STATUS_STYLES: Record<string, string> = {
-  active:       "bg-emerald-400/20 text-emerald-300 border-emerald-400/30",
-  inactive:     "bg-slate-400/20 text-slate-300 border-slate-400/30",
-  retired:      "bg-red-400/20 text-red-300 border-red-400/30",
-  planned:      "bg-blue-400/20 text-blue-300 border-blue-400/30",
-  deprecated:   "bg-orange-400/20 text-orange-300 border-orange-400/30",
-  under_review: "bg-purple-400/20 text-purple-300 border-purple-400/30",
+  active:       "bg-emerald-100 text-emerald-700 border-emerald-200",
+  inactive:     "bg-slate-100 text-slate-600 border-slate-200",
+  retired:      "bg-red-100 text-red-700 border-red-200",
+  planned:      "bg-blue-100 text-blue-700 border-blue-200",
+  deprecated:   "bg-orange-100 text-orange-700 border-orange-200",
+  under_review: "bg-purple-100 text-purple-700 border-purple-200",
 };
 
 export function AssetStatusBadge({ status }: { status: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", STATUS_STYLES[status] ?? "bg-slate-400/20 text-slate-300 border-slate-400/30")}>
+    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", STATUS_STYLES[status] ?? "bg-slate-100 text-slate-600 border-slate-200")}>
       {status.replace("_", " ")}
     </span>
   );
@@ -103,23 +103,23 @@ export function AssetStatusBadge({ status }: { status: string }) {
 // ─── Asset Type Badge ─────────────────────────────────────────────────────────
 
 const TYPE_STYLES: Record<string, string> = {
-  application:      "bg-blue-400/20 text-blue-300 border-blue-400/30",
-  database:         "bg-purple-400/20 text-purple-300 border-purple-400/30",
-  api:              "bg-cyan-400/20 text-cyan-300 border-cyan-400/30",
-  server:           "bg-orange-400/20 text-orange-300 border-orange-400/30",
-  cloud_resource:   "bg-sky-400/20 text-sky-300 border-sky-400/30",
-  data_asset:       "bg-amber-400/20 text-amber-300 border-amber-400/30",
-  business_process: "bg-green-400/20 text-green-300 border-green-400/30",
-  ai_system:        "bg-violet-400/20 text-violet-300 border-violet-400/30",
-  vendor_service:   "bg-indigo-400/20 text-indigo-300 border-indigo-400/30",
-  network_asset:    "bg-teal-400/20 text-teal-300 border-teal-400/30",
-  endpoint:         "bg-rose-400/20 text-rose-300 border-rose-400/30",
-  custom:           "bg-slate-400/20 text-slate-300 border-slate-400/30",
+  application:      "bg-blue-100 text-blue-700 border-blue-200",
+  database:         "bg-purple-100 text-purple-700 border-purple-200",
+  api:              "bg-cyan-100 text-cyan-700 border-cyan-200",
+  server:           "bg-orange-100 text-orange-700 border-orange-200",
+  cloud_resource:   "bg-sky-100 text-sky-700 border-sky-200",
+  data_asset:       "bg-amber-100 text-amber-700 border-amber-200",
+  business_process: "bg-green-100 text-green-700 border-green-200",
+  ai_system:        "bg-violet-100 text-violet-700 border-violet-200",
+  vendor_service:   "bg-indigo-100 text-indigo-700 border-indigo-200",
+  network_asset:    "bg-teal-100 text-teal-700 border-teal-200",
+  endpoint:         "bg-rose-100 text-rose-700 border-rose-200",
+  custom:           "bg-slate-100 text-slate-600 border-slate-200",
 };
 
 export function AssetTypeBadge({ type }: { type: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium", TYPE_STYLES[type] ?? "bg-slate-400/20 text-slate-300 border-slate-400/30")}>
+    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium", TYPE_STYLES[type] ?? "bg-slate-100 text-slate-600 border-slate-200")}>
       {type.replace("_", " ")}
     </span>
   );
@@ -129,7 +129,7 @@ export function AssetTypeBadge({ type }: { type: string }) {
 
 export function AssetTrustBadge({ score }: { score: number | null | undefined }) {
   if (score == null) return <span className="text-xs text-[var(--color-ink-dim)]">–</span>;
-  const color = score >= 90 ? "text-emerald-400" : score >= 70 ? "text-amber-400" : "text-red-400";
+  const color = score >= 90 ? "text-emerald-600" : score >= 70 ? "text-amber-600" : "text-red-600";
   const label = score >= 90 ? "Trusted" : score >= 70 ? "Moderate" : "At Risk";
   return (
     <span className={cn("text-xs font-semibold", color)}>
@@ -141,15 +141,15 @@ export function AssetTrustBadge({ score }: { score: number | null | undefined })
 // ─── Alert Severity Badge ─────────────────────────────────────────────────────
 
 const ALERT_STYLES: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-400 border-red-500/30",
-  high:     "bg-orange-400/20 text-orange-300 border-orange-400/30",
-  medium:   "bg-amber-400/20 text-amber-300 border-amber-400/30",
-  low:      "bg-emerald-400/20 text-emerald-300 border-emerald-400/30",
+  critical: "bg-red-100 text-red-800 border-red-200",
+  high:     "bg-orange-100 text-orange-700 border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border-amber-200",
+  low:      "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
 export function AlertSeverityBadge({ severity }: { severity: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", ALERT_STYLES[severity] ?? "bg-slate-400/20 text-slate-300 border-slate-400/30")}>
+    <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize", ALERT_STYLES[severity] ?? "bg-slate-100 text-slate-600 border-slate-200")}>
       {severity}
     </span>
   );

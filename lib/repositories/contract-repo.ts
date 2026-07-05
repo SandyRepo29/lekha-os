@@ -308,6 +308,20 @@ export async function getClauses(contractId: string): Promise<ContractClause[]> 
     .orderBy(asc(contractClauses.createdAt));
 }
 
+/** All clauses across an org's (non-deleted) contracts, with the contract title, for reporting. */
+export async function getClausesByOrg(
+  orgId: string
+): Promise<Array<ContractClause & { contractTitle: string }>> {
+  const rows = await db
+    .select({ clause: contractClauses, contractTitle: contracts.title })
+    .from(contractClauses)
+    .innerJoin(contracts, eq(contractClauses.contractId, contracts.id))
+    .where(and(eq(contracts.organizationId, orgId), isNull(contracts.deletedAt)))
+    .orderBy(desc(contracts.updatedAt), asc(contractClauses.createdAt));
+
+  return rows.map(({ clause, contractTitle }) => ({ ...clause, contractTitle: contractTitle ?? "" }));
+}
+
 export async function upsertClause(
   contractId: string,
   data: {

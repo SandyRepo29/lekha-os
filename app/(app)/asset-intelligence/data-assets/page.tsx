@@ -54,7 +54,7 @@ export default async function DataAssetsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium">{a.name}</p>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
                       <Shield className="h-3 w-3" />
                       PII
                     </span>
@@ -75,7 +75,7 @@ export default async function DataAssetsPage() {
           <Link href="/asset-intelligence/registry/new" className="text-xs text-[var(--color-blue)] hover:underline">+ Add Data Asset</Link>
         </div>
         {dataAssets.length === 0 ? (
-          <p className="text-sm text-[var(--color-ink-dim)] text-center py-8">No data assets registered yet. <Link href="/asset-intelligence/registry/new" className="text-[var(--color-blue)] hover:underline">Add one â†’</Link></p>
+          <p className="text-sm text-[var(--color-ink-dim)] text-center py-8">No data assets registered yet. <Link href="/asset-intelligence/registry/new" className="text-[var(--color-blue)] hover:underline">Add one →</Link></p>
         ) : (
           <div className="space-y-2">
             {dataAssets.map((a: any) => (
@@ -86,7 +86,7 @@ export default async function DataAssetsPage() {
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium truncate">{a.name}</p>
                     {(a.containsPii || (a.piiTypes && a.piiTypes.length > 0)) && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400 shrink-0">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 shrink-0">
                         <Shield className="h-3 w-3" />
                         PII
                       </span>
@@ -113,7 +113,7 @@ export default async function DataAssetsPage() {
           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">Link data assets to consent records, DSRs, and retention policies in DPDP Privacy™.</p>
         </div>
         <Link href="/dpdp-privacy" className="rounded-xl border border-[var(--color-blue)]/30 px-4 py-2 text-sm text-[var(--color-blue)] hover:bg-[var(--color-blue)]/10 transition-colors">
-          Go to DPDP â†’
+          Go to DPDP →
         </Link>
       </div>
     </div>

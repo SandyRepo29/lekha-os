@@ -9,10 +9,7 @@ import { generateExecutiveSummary } from "@/lib/services/contract-governance/ai-
 import { getDashboardMetrics, listContracts } from "@/lib/services/contract-governance/contract-service";
 import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS } from "@/lib/services/contract-health";
 
-function daysUntil(d: string | null | undefined) {
-  if (!d) return null;
-  return Math.floor((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-}
+import { daysUntil } from "@/lib/contract-governance/date-utils";
 
 export default async function ContractIntelligencePage() {
   const session = await requireUser();

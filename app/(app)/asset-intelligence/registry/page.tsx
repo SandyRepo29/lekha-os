@@ -98,7 +98,7 @@ export default async function AssetRegistryPage({ searchParams }: { searchParams
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs capitalize text-[var(--color-ink-dim)]">{(a as any).dataClass ?? "—"}</span>
                       {((a as any).containsPii || ((a as any).piiTypes && (a as any).piiTypes.length > 0)) && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
                           <Shield className="h-3 w-3" />
                           PII
                         </span>

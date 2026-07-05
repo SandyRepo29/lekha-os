@@ -232,6 +232,14 @@ export async function listAnswers(orgId: string) {
   return repo.listAnswers(orgId);
 }
 
+/** A single questionnaire plus this org's saved answer row (if any). */
+export async function getQuestionnaireDetail(orgId: string, questionnaireId: string) {
+  const questionnaires = await repo.listQuestionnaires(orgId);
+  const questionnaire = questionnaires.find((q) => q.id === questionnaireId) ?? null;
+  const answers = questionnaire ? await repo.getAnswers(orgId, questionnaireId) : null;
+  return { questionnaire, answers };
+}
+
 export async function saveAnswers(orgId: string, userId: string, questionnaireId: string, answers: Record<string, unknown>, visibility?: string) {
   const profile = await repo.getOrCreateProfile(orgId);
   const totalKeys = Object.keys(answers).length;

@@ -15,6 +15,7 @@ import {
   ControlPriorityBadge,
 } from "@/components/compliance/compliance-badges";
 import { EvidenceStatusSelect, DeleteEvidence } from "@/components/compliance/evidence-actions";
+import { formatDate } from "@/components/compliance/compliance-ui";
 import { EvidenceMapper } from "@/components/compliance/evidence-mapper";
 
 export default async function EvidenceDetailPage({
@@ -86,7 +87,7 @@ export default async function EvidenceDetailPage({
                       : "text-[var(--color-ink-faint)]"
                   }`}
                 >
-                  Expires {new Date(ev.expiresOn).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                  Expires {formatDate(ev.expiresOn)}
                 </span>
               )}
             </div>

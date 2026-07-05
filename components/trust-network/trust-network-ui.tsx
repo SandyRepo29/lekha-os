@@ -59,16 +59,11 @@ export function TrustNetworkStat({
 
 // ---- RelationshipTypeBadge ----
 
+// Values must match the trust_relationship_type pg enum (customer · vendor · partner).
 const RELATIONSHIP_TYPE_STYLES: Record<string, { label: string; classes: string }> = {
-  partner:    { label: "Partner",    classes: "bg-emerald-500/10 text-emerald-400" },
-  customer:   { label: "Customer",   classes: "bg-blue-500/10    text-blue-400"    },
-  supplier:   { label: "Supplier",   classes: "bg-purple-500/10  text-purple-400"  },
-  vendor:     { label: "Vendor",     classes: "bg-indigo-500/10  text-indigo-400"  },
-  auditor:    { label: "Auditor",    classes: "bg-yellow-500/10  text-yellow-400"  },
-  regulator:  { label: "Regulator",  classes: "bg-red-500/10     text-red-400"     },
-  subsidiary: { label: "Subsidiary", classes: "bg-teal-500/10    text-teal-400"    },
-  processor:  { label: "Processor",  classes: "bg-orange-500/10  text-orange-400"  },
-  consultant: { label: "Consultant", classes: "bg-pink-500/10    text-pink-400"    },
+  partner:  { label: "Partner",  classes: "bg-emerald-500/10 text-emerald-400" },
+  customer: { label: "Customer", classes: "bg-blue-500/10    text-blue-400"    },
+  vendor:   { label: "Vendor",   classes: "bg-indigo-500/10  text-indigo-400"  },
 };
 
 export function RelationshipTypeBadge({ type }: { type: string }) {
