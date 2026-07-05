@@ -2487,3 +2487,12 @@ See `.env.example` for full documentation.
 2. **Verify every agent finding against source** before fixing. False positives discarded this sweep: vendor `lifecycle_state` "missing" (exists in migration 0036); `frameworks` soft-delete "missing" (frameworks has no `deleted_at`); CC "incomplete AI functions" (agent read-limit artifacts); Control Center client `layout.tsx` `force-dynamic` (client layouts don't need it).
 3. Batch-verify the highest-impact class — "report/export page links to a route that doesn't exist" (404s) — with Glob + Grep; this recurred in Contract, Policy, Risk, DPDP, Regulatory.
 4. Badge sweep is scripted but MUST first `grep -rlE 'bg-\[#0|bg-black'` to exclude intentionally-dark pages (e.g. `app/verify/[id]`).
+
+### Functional QA sign-offs (live end-to-end, DB-verified)
+Method: log in as E2E user (`e2e@lekhaos.test` / `E2ETest123!`, org "E2E Workspace"), seed rich data by running `seed-demo.mjs` retargeted to that org, drive every flow in the browser preview, verify each write in the DB. API keys use `lk_live_` prefix. `/api/v1/*` is Bearer-auth (create a key in Settings to test).
+
+**Vendor Hub™ — ✅ PRODUCTION-READY (signed off 2026-07-05, commit `e801b3e`).**
+Validated live: list/filters/search/pagination · detail + all 13 tabs w/ data · create · edit · lifecycle transition (2-step select+submit) · add contact · assessment complete (scores) · trust recalc · renewal assessment · offboarding step completion · server-side validation · delete · NL search (Gemini) · CSV + audit-package PDF + executive-report PDF · REST API list/single/trust-score + 401.
+**5 bugs found & fixed during sign-off** (commit `e801b3e`): (1) assessment "Complete" never finalized — throwaway FormData; (2) renewal insert malformed `text[]` (JSON `[…]`); (3) offboarding `_at` columns for `final_assessment_done`/`archive_package_generated`; (4) offboarding note-less completion 42P18 untyped NULL; (5) NotificationPanel hydration mismatch (`timeAgo`, global).
+**Not exhaustively tested** (note for later): document upload (real file → AI extraction — hard to drive via preview), doc-request approve/reject, add-review inline form, role-based access (viewer).
+**Open global finding (not Vendor-Hub-specific):** RSC prefetch storm on `/` (`Failed to fetch RSC payload for /`, `ERR_INSUFFICIENT_RESOURCES`) — likely dev/preview artifact; reproduce on prod before fixing. Minor: `DeleteVendor` uses `window.confirm` + hard delete (not the `ArchiveDialog` archive-first convention); create redirects to list not detail.
