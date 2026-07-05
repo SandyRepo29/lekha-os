@@ -59,13 +59,13 @@ export default async function NetworkDirectoryPage() {
               </div>
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
                 {p.industry && (
-                  <span className="px-2 py-0.5 rounded-full bg-white/5 text-[var(--color-ink-dim)]">{p.industry}</span>
+                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[var(--color-ink-dim)]">{p.industry}</span>
                 )}
                 {p.country && (
-                  <span className="px-2 py-0.5 rounded-full bg-white/5 text-[var(--color-ink-dim)]">{p.country}</span>
+                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[var(--color-ink-dim)]">{p.country}</span>
                 )}
                 {(p.profileCompleteness ?? 0) >= 80 && (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 text-green-400">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                     <CheckCircle2 className="h-3 w-3" /> Complete Profile
                   </span>
                 )}
@@ -76,7 +76,7 @@ export default async function NetworkDirectoryPage() {
                     <span>Profile</span>
                     <span>{p.profileCompleteness}%</span>
                   </div>
-                  <div className="h-1 rounded-full bg-white/5 overflow-hidden">
+                  <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
                     <div className="h-full rounded-full bg-[var(--color-blue)]/60" style={{ width: `${p.profileCompleteness}%` }} />
                   </div>
                 </div>

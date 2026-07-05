@@ -47,10 +47,10 @@ export default async function ComplianceControlsPage() {
       {/* KPI strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <ComplianceStat label="Total Controls"   value={allControls.length} />
-        <ComplianceStat label="Implemented"      value={implemented}    color="text-emerald-400" accent="good" />
-        <ComplianceStat label="Partial"          value={partial}        color="text-amber-400"  accent="warn" />
-        <ComplianceStat label="Not Implemented"  value={notImplemented} color="text-red-400"    accent="danger" />
-        <ComplianceStat label="Evidence Coverage" value={`${coveragePct}%`} color={coveragePct >= 70 ? "text-emerald-400" : "text-amber-400"} accent={coveragePct >= 70 ? "good" : "warn"} />
+        <ComplianceStat label="Implemented"      value={implemented}    color="text-emerald-700" accent="good" />
+        <ComplianceStat label="Partial"          value={partial}        color="text-amber-700"  accent="warn" />
+        <ComplianceStat label="Not Implemented"  value={notImplemented} color="text-red-700"    accent="danger" />
+        <ComplianceStat label="Evidence Coverage" value={`${coveragePct}%`} color={coveragePct >= 70 ? "text-emerald-700" : "text-amber-700"} accent={coveragePct >= 70 ? "good" : "warn"} />
       </div>
 
       {allControls.length === 0 ? (
@@ -87,7 +87,7 @@ export default async function ComplianceControlsPage() {
                     <td className="px-5 py-3.5"><ControlStatusBadge status={c.status} /></td>
                     <td className="px-5 py-3.5"><ControlPriorityBadge priority={c.priority} /></td>
                     <td className="px-5 py-3.5 text-right">
-                      <span className={`text-sm font-medium ${c.evidenceCount > 0 ? "text-emerald-400" : "text-[var(--color-ink-faint)]"}`}>
+                      <span className={`text-sm font-medium ${c.evidenceCount > 0 ? "text-emerald-700" : "text-[var(--color-ink-faint)]"}`}>
                         {c.evidenceCount > 0 ? c.evidenceCount : "–"}
                       </span>
                     </td>

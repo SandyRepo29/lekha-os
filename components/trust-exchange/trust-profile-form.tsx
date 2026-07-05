@@ -90,8 +90,8 @@ export function TrustProfileForm({ profile, isPublished }: { profile: TrustProfi
             </div>
           </div>
 
-          {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
-          {state?.ok && <p className="text-sm text-green-400">Profile saved.</p>}
+          {state?.error && <p className="text-sm text-red-700">{state.error}</p>}
+          {state?.ok && <p className="text-sm text-green-700">Profile saved.</p>}
 
           <div className="flex items-center gap-3 pt-2">
             <Button type="submit" disabled={pending}>

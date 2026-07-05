@@ -40,7 +40,7 @@ export function PolicyWorkflowButtons({
       {currentStatus === "review" && (
         <>
           <Button variant="ghost" size="sm" disabled={pending} onClick={() => act("approved")}>
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" /> Approve
+            <CheckCircle2 className="h-4 w-4 text-emerald-700" /> Approve
           </Button>
           <Button variant="subtle" size="sm" disabled={pending} onClick={() => act("draft")}>
             Back to draft
@@ -52,7 +52,7 @@ export function PolicyWorkflowButtons({
           <Archive className="h-4 w-4" /> Archive
         </Button>
       )}
-      {error && <span className="text-xs text-red-400">{error}</span>}
+      {error && <span className="text-xs text-red-700">{error}</span>}
     </div>
   );
 }
@@ -90,7 +90,7 @@ export function DeletePolicy({
           {pending ? "Deleting…" : "Yes, delete"}
         </Button>
         <Button variant="subtle" size="sm" onClick={() => setConfirming(false)}>Cancel</Button>
-        {error && <span className="text-xs text-red-400">{error}</span>}
+        {error && <span className="text-xs text-red-700">{error}</span>}
       </div>
     );
   }

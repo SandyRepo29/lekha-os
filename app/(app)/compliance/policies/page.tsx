@@ -52,10 +52,10 @@ export default async function PoliciesPage() {
       {/* Stat strip */}
       {policies.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <ComplianceStat label="Approved"  value={approved} color="text-emerald-400" accent={approved > 0 ? "good" : undefined} />
+          <ComplianceStat label="Approved"  value={approved} color="text-emerald-700" accent={approved > 0 ? "good" : undefined} />
           <ComplianceStat label="In Review" value={review}   color="text-[var(--color-blue)]" />
           <ComplianceStat label="Draft"     value={draft} />
-          <ComplianceStat label="Expired"   value={expired}  color={expired > 0 ? "text-amber-400" : undefined} accent={expired > 0 ? "warn" : undefined} />
+          <ComplianceStat label="Expired"   value={expired}  color={expired > 0 ? "text-amber-700" : undefined} accent={expired > 0 ? "warn" : undefined} />
         </div>
       )}
 
@@ -121,7 +121,7 @@ export default async function PoliciesPage() {
 
                   <span
                     className={`text-xs ${
-                      overdue ? "font-medium text-amber-400" : "text-[var(--color-ink-dim)]"
+                      overdue ? "font-medium text-amber-700" : "text-[var(--color-ink-dim)]"
                     }`}
                   >
                     {p.reviewDate

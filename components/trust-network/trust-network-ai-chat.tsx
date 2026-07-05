@@ -56,7 +56,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="text-left text-xs px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
+                  className="text-left text-xs px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-100 text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] transition-colors"
                 >
                   {s}
                 </button>
@@ -67,7 +67,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
 
         {messages.map((m, i) => (
           <div key={i} className={`flex items-start gap-2.5 ${m.role === "user" ? "flex-row-reverse" : ""}`}>
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]" : "bg-white/10"}`}>
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]" : "bg-slate-100"}`}>
               {m.role === "user" ? <User className="h-3.5 w-3.5 text-white" /> : <Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" />}
             </div>
             <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm ${m.role === "user" ? "bg-[var(--color-blue)] text-white rounded-tr-sm" : "bg-[#F8F9FB] text-[var(--color-ink)] rounded-tl-sm"}`}>
@@ -78,7 +78,7 @@ export function TrustNetworkAiChat({ context }: { context: string }) {
 
         {isPending && (
           <div className="flex items-start gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
               <Bot className="h-3.5 w-3.5 text-[var(--color-blue)]" />
             </div>
             <div className="bg-[#F8F9FB] rounded-2xl rounded-tl-sm px-3.5 py-2.5">

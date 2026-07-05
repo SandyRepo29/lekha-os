@@ -40,9 +40,9 @@ export default async function MyTrustProfilePage() {
       <Card className="p-4 flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
           {metrics.isPublished ? (
-            <CheckCircle2 className="h-5 w-5 text-green-400" />
+            <CheckCircle2 className="h-5 w-5 text-green-700" />
           ) : (
-            <AlertCircle className="h-5 w-5 text-yellow-400" />
+            <AlertCircle className="h-5 w-5 text-yellow-700" />
           )}
           <div>
             <p className="text-sm font-medium">

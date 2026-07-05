@@ -8,8 +8,8 @@
 const FRAMEWORK_STATUS: Record<string, { label: string; cls: string }> = {
   not_started:  { label: "Not Started",  cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
   in_progress:  { label: "In Progress",  cls: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
-  ready:        { label: "Ready",        cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
-  certified:    { label: "Certified",    cls: "text-emerald-300 border-emerald-400/40 bg-emerald-500/15" },
+  ready:        { label: "Ready",        cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
+  certified:    { label: "Certified",    cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
   expired:      { label: "Expired",      cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
 };
 
@@ -25,8 +25,8 @@ export function FrameworkStatusBadge({ status }: { status: string }) {
 // ---- Control status ------------------------------------------
 
 const CONTROL_STATUS: Record<string, { label: string; cls: string }> = {
-  implemented:      { label: "Implemented",      cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
-  partial:          { label: "Partial",           cls: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
+  implemented:      { label: "Implemented",      cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
+  partial:          { label: "Partial",           cls: "text-amber-700 border-amber-200 bg-amber-100" },
   not_implemented:  { label: "Not Implemented",   cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
   not_applicable:   { label: "N/A",               cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white" },
 };
@@ -44,9 +44,9 @@ export function ControlStatusBadge({ status }: { status: string }) {
 
 const CONTROL_PRIORITY: Record<string, { label: string; cls: string }> = {
   low:      { label: "Low",      cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
-  medium:   { label: "Medium",   cls: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
-  high:     { label: "High",     cls: "text-red-400 border-red-500/30 bg-red-500/10" },
-  critical: { label: "Critical", cls: "text-red-300 border-red-500/40 bg-red-500/15" },
+  medium:   { label: "Medium",   cls: "text-amber-700 border-amber-200 bg-amber-100" },
+  high:     { label: "High",     cls: "text-red-700 border-red-200 bg-red-100" },
+  critical: { label: "Critical", cls: "text-red-700 border-red-200 bg-red-100" },
 };
 
 export function ControlPriorityBadge({ priority }: { priority: string }) {
@@ -63,8 +63,8 @@ export function ControlPriorityBadge({ priority }: { priority: string }) {
 const EVIDENCE_STATUS: Record<string, { label: string; cls: string }> = {
   draft:          { label: "Draft",          cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
   pending_review: { label: "Pending Review", cls: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
-  approved:       { label: "Approved",       cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
-  expired:        { label: "Expired",        cls: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
+  approved:       { label: "Approved",       cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
+  expired:        { label: "Expired",        cls: "text-amber-700 border-amber-200 bg-amber-100" },
   archived:       { label: "Archived",       cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white" },
 };
 
@@ -81,10 +81,10 @@ export function EvidenceStatusBadge({ status }: { status: string }) {
 
 const EVIDENCE_SOURCE: Record<string, { label: string; cls: string }> = {
   vendor_document:   { label: "Vendor Doc",   cls: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
-  vendor_assessment: { label: "Assessment",   cls: "text-purple-400 border-purple-500/30 bg-purple-500/10" },
-  vendor_review:     { label: "Review",       cls: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10" },
+  vendor_assessment: { label: "Assessment",   cls: "text-purple-700 border-purple-200 bg-purple-100" },
+  vendor_review:     { label: "Review",       cls: "text-indigo-700 border-indigo-200 bg-indigo-100" },
   manual:            { label: "Manual",       cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
-  policy:            { label: "Policy",       cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
+  policy:            { label: "Policy",       cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
 };
 
 export function EvidenceSourceBadge({ source }: { source: string }) {
@@ -101,9 +101,9 @@ export function EvidenceSourceBadge({ source }: { source: string }) {
 const POLICY_STATUS: Record<string, { label: string; cls: string }> = {
   draft:    { label: "Draft",    cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
   review:   { label: "Review",   cls: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10" },
-  approved: { label: "Approved", cls: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
+  approved: { label: "Approved", cls: "text-emerald-700 border-emerald-200 bg-emerald-100" },
   archived: { label: "Archived", cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-white" },
-  expired:  { label: "Expired",  cls: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
+  expired:  { label: "Expired",  cls: "text-amber-700 border-amber-200 bg-amber-100" },
 };
 
 export function PolicyStatusBadge({ status }: { status: string }) {
@@ -120,9 +120,9 @@ export function PolicyStatusBadge({ status }: { status: string }) {
 export function GapSeverityBadge({ severity }: { severity: string }) {
   const map: Record<string, { label: string; cls: string }> = {
     low:      { label: "Low",      cls: "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]" },
-    medium:   { label: "Medium",   cls: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
-    high:     { label: "High",     cls: "text-red-400 border-red-500/30 bg-red-500/10" },
-    critical: { label: "Critical", cls: "text-red-300 border-red-500/40 bg-red-500/15" },
+    medium:   { label: "Medium",   cls: "text-amber-700 border-amber-200 bg-amber-100" },
+    high:     { label: "High",     cls: "text-red-700 border-red-200 bg-red-100" },
+    critical: { label: "Critical", cls: "text-red-700 border-red-200 bg-red-100" },
   };
   const { label, cls } = map[severity] ?? map.medium;
   return (

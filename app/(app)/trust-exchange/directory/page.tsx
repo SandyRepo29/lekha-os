@@ -8,9 +8,9 @@ import Link from "next/link";
 
 function TrustScoreRing({ score }: { score: number | null }) {
   if (score === null) return (
-    <div className="w-12 h-12 rounded-full border-2 border-white/10 flex items-center justify-center text-xs text-[var(--color-ink-faint)]">—</div>
+    <div className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center text-xs text-[var(--color-ink-faint)]">—</div>
   );
-  const color = score >= 90 ? "border-green-500 text-green-400" : score >= 70 ? "border-yellow-500 text-yellow-400" : "border-red-500 text-red-400";
+  const color = score >= 90 ? "border-green-500 text-green-700" : score >= 70 ? "border-yellow-500 text-yellow-700" : "border-red-500 text-red-700";
   return (
     <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center text-sm font-bold ${color}`}>{score}</div>
   );
@@ -88,7 +88,7 @@ export default async function TrustDirectoryPage({
             <Card key={p.id} className="p-5 hover:border-[var(--color-blue)]/40 transition-colors">
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
                     {p.logoUrl ? (
                       <img src={p.logoUrl} alt="" className="w-8 h-8 rounded-lg object-contain" />
                     ) : (
@@ -104,15 +104,15 @@ export default async function TrustDirectoryPage({
 
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {p.industry && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[var(--color-ink-dim)] capitalize">{p.industry.replace(/_/g, " ")}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-[var(--color-ink-dim)] capitalize">{p.industry.replace(/_/g, " ")}</span>
                 )}
                 {p.riskLevel && p.riskLevel !== "unknown" && (
-                  <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${p.riskLevel === "low" ? "bg-green-500/20 text-green-400" : p.riskLevel === "medium" ? "bg-yellow-500/20 text-yellow-400" : "bg-red-500/20 text-red-400"}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${p.riskLevel === "low" ? "bg-green-100 text-green-700" : p.riskLevel === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700"}`}>
                     {p.riskLevel} risk
                   </span>
                 )}
                 {Array.isArray(p.certifications) && (p.certifications as string[]).slice(0, 2).map((cert: string) => (
-                  <span key={cert} className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">{cert}</span>
+                  <span key={cert} className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">{cert}</span>
                 ))}
               </div>
 

@@ -9,15 +9,15 @@ import { Star, Plus, X, ShieldCheck, Lock, Building2, Zap } from "lucide-react";
 import type { TrustBadge } from "@/lib/db/schema";
 
 const BADGE_TYPES = [
-  { value: "audt_verified", label: "AUDT Verified™", color: "bg-blue-500/20 text-blue-400", icon: ShieldCheck },
-  { value: "dpdp_ready", label: "DPDP Ready™", color: "bg-indigo-500/20 text-indigo-400", icon: Lock },
-  { value: "privacy_verified", label: "Privacy Verified™", color: "bg-purple-500/20 text-purple-400", icon: Lock },
-  { value: "vendor_trusted", label: "Vendor Trusted™", color: "bg-green-500/20 text-green-400", icon: ShieldCheck },
-  { value: "low_risk", label: "Low Risk Vendor™", color: "bg-emerald-500/20 text-emerald-400", icon: ShieldCheck },
-  { value: "enterprise_ready", label: "Enterprise Ready™", color: "bg-yellow-500/20 text-yellow-400", icon: Building2 },
-  { value: "iso_verified", label: "ISO Verified™", color: "bg-orange-500/20 text-orange-400", icon: ShieldCheck },
-  { value: "soc2_verified", label: "SOC2 Verified™", color: "bg-red-500/20 text-red-400", icon: ShieldCheck },
-  { value: "custom", label: "Custom Badge", color: "bg-slate-500/20 text-slate-400", icon: Zap },
+  { value: "audt_verified", label: "AUDT Verified™", color: "bg-blue-100 text-blue-700", icon: ShieldCheck },
+  { value: "dpdp_ready", label: "DPDP Ready™", color: "bg-indigo-100 text-indigo-700", icon: Lock },
+  { value: "privacy_verified", label: "Privacy Verified™", color: "bg-purple-100 text-purple-700", icon: Lock },
+  { value: "vendor_trusted", label: "Vendor Trusted™", color: "bg-green-100 text-green-700", icon: ShieldCheck },
+  { value: "low_risk", label: "Low Risk Vendor™", color: "bg-emerald-100 text-emerald-700", icon: ShieldCheck },
+  { value: "enterprise_ready", label: "Enterprise Ready™", color: "bg-yellow-100 text-yellow-700", icon: Building2 },
+  { value: "iso_verified", label: "ISO Verified™", color: "bg-orange-100 text-orange-700", icon: ShieldCheck },
+  { value: "soc2_verified", label: "SOC2 Verified™", color: "bg-red-100 text-red-700", icon: ShieldCheck },
+  { value: "custom", label: "Custom Badge", color: "bg-slate-100 text-slate-700", icon: Zap },
 ];
 
 function BadgeCard({ badge, onRevoke }: { badge: TrustBadge; onRevoke: () => void }) {
@@ -29,7 +29,7 @@ function BadgeCard({ badge, onRevoke }: { badge: TrustBadge; onRevoke: () => voi
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${def.color}`}>
           <Icon className="h-5 w-5" />
         </div>
-        <button onClick={onRevoke} className="text-[var(--color-ink-faint)] hover:text-red-400 transition-colors">
+        <button onClick={onRevoke} className="text-[var(--color-ink-faint)] hover:text-red-700 transition-colors">
           <X className="h-4 w-4" />
         </button>
       </div>
@@ -77,7 +77,7 @@ export function TrustBadgesClient({ badges }: { badges: TrustBadge[] }) {
               <label className="block text-xs font-medium mb-1">Description</label>
               <Input name="description" placeholder="Optional notes about this badge" />
             </div>
-            {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
+            {state?.error && <p className="text-sm text-red-700">{state.error}</p>}
             <div className="flex gap-2 pt-1">
               <Button type="submit" size="sm" disabled={pending}>{pending ? "Issuing…" : "Issue Badge"}</Button>
               <Button type="button" variant="outline" size="sm" onClick={() => setShowAdd(false)}>Cancel</Button>

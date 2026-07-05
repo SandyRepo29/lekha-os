@@ -16,7 +16,7 @@ function ScoreBar({ label, value, color }: { label: string; value: number; color
         <span className="text-[var(--color-ink-dim)]">{label}</span>
         <span className="font-semibold">{value}</span>
       </div>
-      <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+      <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${value}%` }} />
       </div>
     </div>
@@ -56,11 +56,11 @@ export default async function PublicTrustProfilePage() {
             <div className="flex items-center gap-3 flex-wrap">
               <h2 className="text-xl font-bold">{profile?.displayName ?? session.org.name}</h2>
               {profile?.isPublished ? (
-                <span className="flex items-center gap-1 text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full font-medium">
+                <span className="flex items-center gap-1 text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded-full font-medium">
                   <CheckCircle2 className="h-3 w-3" /> Published
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-xs text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded-full font-medium">
+                <span className="flex items-center gap-1 text-xs text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full font-medium">
                   <Lock className="h-3 w-3" /> Private
                 </span>
               )}
@@ -93,11 +93,11 @@ export default async function PublicTrustProfilePage() {
       {/* Profile stats row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {[
-          { icon: Eye, label: "Profile Views", value: metrics.profileViews30d, sub: "30 days", color: "text-blue-400" },
-          { icon: Users, label: "Network Followers", value: metrics.followerCount, sub: "Organizations", color: "text-purple-400" },
-          { icon: Award, label: "Trust Badges", value: metrics.activeBadges, sub: "Active", color: "text-yellow-400" },
-          { icon: Network, label: "Relationships", value: metrics.activeRelationships, sub: "Active", color: "text-indigo-400" },
-          { icon: Shield, label: "Documents", value: metrics.totalDocuments, sub: "Shared", color: "text-green-400" },
+          { icon: Eye, label: "Profile Views", value: metrics.profileViews30d, sub: "30 days", color: "text-blue-700" },
+          { icon: Users, label: "Network Followers", value: metrics.followerCount, sub: "Organizations", color: "text-purple-700" },
+          { icon: Award, label: "Trust Badges", value: metrics.activeBadges, sub: "Active", color: "text-yellow-700" },
+          { icon: Network, label: "Relationships", value: metrics.activeRelationships, sub: "Active", color: "text-indigo-700" },
+          { icon: Shield, label: "Documents", value: metrics.totalDocuments, sub: "Shared", color: "text-green-700" },
         ].map(({ icon: Icon, label, value, sub, color }) => (
           <Card key={label} className="p-4 text-center">
             <Icon className={`h-6 w-6 mx-auto mb-2 ${color}`} />
@@ -113,14 +113,14 @@ export default async function PublicTrustProfilePage() {
         {/* Trust Score */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Shield className="h-5 w-5 text-blue-400" />
+            <Shield className="h-5 w-5 text-blue-700" />
             <h3 className="font-semibold text-sm">Vendor Trust™</h3>
           </div>
           {sections.trustScore !== null ? (
             <>
-              <p className="text-4xl font-black text-blue-400">{sections.trustScore}</p>
+              <p className="text-4xl font-black text-blue-700">{sections.trustScore}</p>
               <p className="text-xs text-[var(--color-ink-dim)] mt-1">Trust Score™</p>
-              <div className="mt-3 h-2 rounded-full bg-white/5 overflow-hidden">
+              <div className="mt-3 h-2 rounded-full bg-slate-100 overflow-hidden">
                 <div className="h-full rounded-full bg-blue-400" style={{ width: `${sections.trustScore}%` }} />
               </div>
             </>
@@ -132,14 +132,14 @@ export default async function PublicTrustProfilePage() {
         {/* Privacy Trust */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Lock className="h-5 w-5 text-emerald-400" />
+            <Lock className="h-5 w-5 text-emerald-700" />
             <h3 className="font-semibold text-sm">Privacy Trust™</h3>
           </div>
           {sections.privacyScore !== null ? (
             <>
-              <p className="text-4xl font-black text-emerald-400">{sections.privacyScore}</p>
+              <p className="text-4xl font-black text-emerald-700">{sections.privacyScore}</p>
               <p className="text-xs text-[var(--color-ink-dim)] mt-1">Privacy Score™</p>
-              <div className="mt-3 h-2 rounded-full bg-white/5 overflow-hidden">
+              <div className="mt-3 h-2 rounded-full bg-slate-100 overflow-hidden">
                 <div className="h-full rounded-full bg-emerald-400" style={{ width: `${sections.privacyScore}%` }} />
               </div>
             </>
@@ -154,15 +154,15 @@ export default async function PublicTrustProfilePage() {
         {/* Governance Maturity */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="h-5 w-5 text-purple-400" />
+            <TrendingUp className="h-5 w-5 text-purple-700" />
             <h3 className="font-semibold text-sm">Governance Maturity™</h3>
           </div>
-          <p className="text-4xl font-black text-purple-400">{benchmarking.maturityLevel.level}</p>
-          <p className="text-sm font-semibold text-purple-400 mt-0.5">{benchmarking.maturityLevel.label}</p>
+          <p className="text-4xl font-black text-purple-700">{benchmarking.maturityLevel.level}</p>
+          <p className="text-sm font-semibold text-purple-700 mt-0.5">{benchmarking.maturityLevel.label}</p>
           <p className="text-xs text-[var(--color-ink-dim)] mt-2">Level {benchmarking.maturityLevel.level} of 6</p>
           <div className="mt-3 flex gap-1">
             {[1,2,3,4,5,6].map((l) => (
-              <div key={l} className={`flex-1 h-1.5 rounded-full ${l <= benchmarking.maturityLevel.level ? "bg-purple-400" : "bg-white/10"}`} />
+              <div key={l} className={`flex-1 h-1.5 rounded-full ${l <= benchmarking.maturityLevel.level ? "bg-purple-400" : "bg-slate-100"}`} />
             ))}
           </div>
         </Card>
@@ -170,15 +170,15 @@ export default async function PublicTrustProfilePage() {
         {/* Benchmark Position */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 className="h-5 w-5 text-yellow-400" />
+            <BarChart3 className="h-5 w-5 text-yellow-700" />
             <h3 className="font-semibold text-sm">Benchmark Position™</h3>
           </div>
           {benchmarking.percentile > 0 ? (
             <>
-              <p className="text-4xl font-black text-yellow-400">{benchmarking.percentile}th</p>
+              <p className="text-4xl font-black text-yellow-700">{benchmarking.percentile}th</p>
               <p className="text-xs text-[var(--color-ink-dim)] mt-1">Industry Percentile</p>
               {benchmarking.percentile >= 75 && (
-                <span className="inline-flex items-center gap-1 text-xs text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded-full font-medium mt-2">
+                <span className="inline-flex items-center gap-1 text-xs text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full font-medium mt-2">
                   <Star className="h-3 w-3" /> Top Quartile
                 </span>
               )}
@@ -195,7 +195,7 @@ export default async function PublicTrustProfilePage() {
       {/* Automation Transparency */}
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-5">
-          <Cpu className="h-5 w-5 text-pink-400" />
+          <Cpu className="h-5 w-5 text-pink-700" />
           <h3 className="font-semibold">Automation Transparency™</h3>
           <span className="text-xs text-[var(--color-ink-faint)] ml-1">Powered by Integration Hub™</span>
         </div>
@@ -206,10 +206,10 @@ export default async function PublicTrustProfilePage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: "Connected Systems", value: automation.connectedSystems, icon: Cpu, color: "text-pink-400" },
-              { label: "Evidence Auto %", value: `${automation.automationPct + 5}%`, icon: Shield, color: "text-blue-400" },
-              { label: "Controls Monitored", value: `${automation.monitoringCoverage}%`, icon: CheckCircle2, color: "text-emerald-400" },
-              { label: "Workflow Coverage", value: `${Math.max(0, automation.automationPct - 5)}%`, icon: TrendingUp, color: "text-purple-400" },
+              { label: "Connected Systems", value: automation.connectedSystems, icon: Cpu, color: "text-pink-700" },
+              { label: "Evidence Auto %", value: `${automation.automationPct + 5}%`, icon: Shield, color: "text-blue-700" },
+              { label: "Controls Monitored", value: `${automation.monitoringCoverage}%`, icon: CheckCircle2, color: "text-emerald-700" },
+              { label: "Workflow Coverage", value: `${Math.max(0, automation.automationPct - 5)}%`, icon: TrendingUp, color: "text-purple-700" },
             ].map(({ label, value, icon: Icon, color }) => (
               <div key={label} className="bg-white rounded-xl p-3 text-center">
                 <Icon className={`h-5 w-5 mx-auto mb-1.5 ${color}`} />
@@ -225,11 +225,11 @@ export default async function PublicTrustProfilePage() {
       <Card className="p-5">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h3 className="font-semibold">Profile Completeness</h3>
-          <span className={`text-sm font-semibold ${sections.profileCompleteness >= 80 ? "text-green-400" : sections.profileCompleteness >= 50 ? "text-yellow-400" : "text-red-400"}`}>
+          <span className={`text-sm font-semibold ${sections.profileCompleteness >= 80 ? "text-green-700" : sections.profileCompleteness >= 50 ? "text-yellow-700" : "text-red-700"}`}>
             {sections.profileCompleteness}%
           </span>
         </div>
-        <div className="h-3 rounded-full bg-white/5 overflow-hidden mb-4">
+        <div className="h-3 rounded-full bg-slate-100 overflow-hidden mb-4">
           <div
             className={`h-full rounded-full ${sections.profileCompleteness >= 80 ? "bg-green-400" : sections.profileCompleteness >= 50 ? "bg-yellow-400" : "bg-red-400"}`}
             style={{ width: `${sections.profileCompleteness}%` }}

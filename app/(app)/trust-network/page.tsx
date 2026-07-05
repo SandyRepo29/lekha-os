@@ -80,11 +80,11 @@ export default async function TrustNetworkDashboard() {
           </div>
           <div className="flex items-center gap-3">
             {metrics.isPublished ? (
-              <span className="flex items-center gap-1.5 text-sm text-green-400 font-medium">
+              <span className="flex items-center gap-1.5 text-sm text-green-700 font-medium">
                 <CheckCircle2 className="h-4 w-4" /> Published
               </span>
             ) : (
-              <Link href="/trust-exchange/my-profile" className="flex items-center gap-1.5 text-sm text-yellow-400 font-medium hover:opacity-80">
+              <Link href="/trust-exchange/my-profile" className="flex items-center gap-1.5 text-sm text-yellow-700 font-medium hover:opacity-80">
                 <AlertCircle className="h-4 w-4" /> Publish Profile
               </Link>
             )}
@@ -107,7 +107,7 @@ export default async function TrustNetworkDashboard() {
         {/* Governance Maturity */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="h-5 w-5 text-emerald-400" />
+            <TrendingUp className="h-5 w-5 text-emerald-700" />
             <h3 className="font-semibold text-sm">Governance Maturity™</h3>
           </div>
           <div className="space-y-2">
@@ -117,9 +117,9 @@ export default async function TrustNetworkDashboard() {
               return (
                 <div key={lvl} className="flex items-center gap-3">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0
-                    ${lvl < current ? "bg-emerald-500/20 text-emerald-400" :
+                    ${lvl < current ? "bg-emerald-100 text-emerald-700" :
                       lvl === current ? "bg-[var(--color-blue)] text-white shadow-[0_0_10px_rgba(99,102,241,.5)]" :
-                      "bg-white/5 text-[var(--color-ink-faint)]"}`}>
+                      "bg-slate-100 text-[var(--color-ink-faint)]"}`}>
                     {lvl}
                   </div>
                   <span className={`text-sm ${lvl === current ? "text-[var(--color-ink)] font-semibold" : "text-[var(--color-ink-dim)]"}`}>
@@ -135,7 +135,7 @@ export default async function TrustNetworkDashboard() {
         {/* Industry Ranking */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 className="h-5 w-5 text-blue-400" />
+            <BarChart3 className="h-5 w-5 text-blue-700" />
             <h3 className="font-semibold text-sm">Industry Ranking™</h3>
           </div>
           {benchmarking.percentile > 0 ? (
@@ -144,7 +144,7 @@ export default async function TrustNetworkDashboard() {
                 <p className="text-4xl font-black text-[var(--color-blue)]">{benchmarking.percentile}th</p>
                 <p className="text-sm text-[var(--color-ink-dim)] mt-1">Industry Percentile</p>
               </div>
-              <div className="w-full h-3 rounded-full bg-white/5 overflow-hidden">
+              <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
                 <div className="h-full rounded-full grad-brand" style={{ width: `${benchmarking.percentile}%` }} />
               </div>
               <div className="flex justify-between text-xs text-[var(--color-ink-faint)]">
@@ -173,7 +173,7 @@ export default async function TrustNetworkDashboard() {
         {/* Automation Transparency */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Cpu className="h-5 w-5 text-pink-400" />
+            <Cpu className="h-5 w-5 text-pink-700" />
             <h3 className="font-semibold text-sm">Automation Transparency™</h3>
           </div>
           <div className="space-y-4">
@@ -187,7 +187,7 @@ export default async function TrustNetworkDashboard() {
                   <span className="text-[var(--color-ink-dim)]">{label}</span>
                   <span className="font-semibold">{value}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
                   <div className={`h-full rounded-full ${color}`} style={{ width: `${value}%` }} />
                 </div>
               </div>
@@ -207,10 +207,10 @@ export default async function TrustNetworkDashboard() {
           <h2 className="text-base font-semibold mb-3">Network Modules</h2>
           <div className="grid grid-cols-1 gap-3">
             {[
-              { href: "/trust-network/profile", icon: Globe, title: "Public Trust Profile 2.0", desc: "Your verified trust story", color: "text-blue-400" },
-              { href: "/trust-network/relationships", icon: Users, title: "Trust Relationships™", desc: "Manage your trust network", color: "text-purple-400" },
-              { href: "/trust-network/directory", icon: Network, title: "Network Directory", desc: "Browse published profiles", color: "text-indigo-400" },
-              { href: "/trust-network/activity", icon: Activity, title: "Trust Activity Feed™", desc: "Network-wide events", color: "text-pink-400" },
+              { href: "/trust-network/profile", icon: Globe, title: "Public Trust Profile 2.0", desc: "Your verified trust story", color: "text-blue-700" },
+              { href: "/trust-network/relationships", icon: Users, title: "Trust Relationships™", desc: "Manage your trust network", color: "text-purple-700" },
+              { href: "/trust-network/directory", icon: Network, title: "Network Directory", desc: "Browse published profiles", color: "text-indigo-700" },
+              { href: "/trust-network/activity", icon: Activity, title: "Trust Activity Feed™", desc: "Network-wide events", color: "text-pink-700" },
               { href: "/trust-network/ai", icon: Zap, title: "AI Network Advisor™", desc: "Strategy & recommendations", color: "text-[var(--color-blue)]" },
             ].map(({ href, icon: Icon, title, desc, color }) => (
               <Link key={href} href={href}>

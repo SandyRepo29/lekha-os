@@ -136,7 +136,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
                 </span>
               </div>
               {mappedInFw > 0 && (
-                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-xs text-emerald-400">
+                <span className="rounded-full bg-emerald-100 border border-emerald-200 px-2 py-0.5 text-xs text-emerald-700">
                   {mappedInFw} mapped
                 </span>
               )}
@@ -199,7 +199,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
                         {isLoading ? (
                           <span className="text-xs text-[var(--color-ink-faint)]">Saving…</span>
                         ) : isMapped ? (
-                          <span className="flex items-center justify-end gap-1 text-xs text-emerald-400">
+                          <span className="flex items-center justify-end gap-1 text-xs text-emerald-700">
                             <Link2 className="h-3 w-3" /> Mapped
                           </span>
                         ) : (
@@ -207,7 +207,7 @@ export function EvidenceMapper({ evidenceId, frameworks, mappedControlIds }: Pro
                             <Unlink className="h-3 w-3" />
                           </span>
                         )}
-                        {err && <p className="text-xs text-red-400">{err}</p>}
+                        {err && <p className="text-xs text-red-700">{err}</p>}
                       </div>
                     </div>
                   );

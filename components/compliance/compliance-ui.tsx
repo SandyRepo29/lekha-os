@@ -17,9 +17,9 @@ import { scoreTextColor } from "@/lib/ui/colors";
 type StatAccent = "danger" | "warn" | "good";
 
 const ACCENT_BORDER: Record<StatAccent, string> = {
-  danger: "border-red-500/25",
-  warn:   "border-amber-500/25",
-  good:   "border-emerald-500/25",
+  danger: "border-red-200",
+  warn:   "border-amber-200",
+  good:   "border-emerald-200",
 };
 
 const ACCENT_LEFT_BAR: Record<StatAccent, string> = {

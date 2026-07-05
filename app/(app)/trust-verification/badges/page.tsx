@@ -8,15 +8,15 @@ import { CertificateStatusBadge } from "@/components/trust-verification/verifica
 
 // CSS var-friendly Tailwind class mappings (no hardcoded hex)
 const BADGE_TYPE_CLASSES: Record<string, { bg: string; text: string }> = {
-  audt_verified:    { bg: "bg-indigo-500/20",  text: "text-indigo-400" },
-  trusted_vendor:   { bg: "bg-emerald-500/20", text: "text-emerald-400" },
-  privacy_ready:    { bg: "bg-sky-500/20",      text: "text-sky-400" },
-  ai_governed:      { bg: "bg-purple-500/20",   text: "text-purple-400" },
-  enterprise_ready: { bg: "bg-pink-500/20",     text: "text-pink-400" },
-  risk_managed:     { bg: "bg-amber-500/20",    text: "text-amber-400" },
-  compliance_ready: { bg: "bg-orange-500/20",   text: "text-orange-400" },
-  trust_leader:     { bg: "bg-yellow-500/20",   text: "text-yellow-400" },
-  custom:           { bg: "bg-slate-500/20",    text: "text-slate-400" },
+  audt_verified:    { bg: "bg-indigo-100",  text: "text-indigo-700" },
+  trusted_vendor:   { bg: "bg-emerald-100", text: "text-emerald-700" },
+  privacy_ready:    { bg: "bg-sky-100",      text: "text-sky-700" },
+  ai_governed:      { bg: "bg-purple-100",   text: "text-purple-700" },
+  enterprise_ready: { bg: "bg-pink-100",     text: "text-pink-700" },
+  risk_managed:     { bg: "bg-amber-100",    text: "text-amber-700" },
+  compliance_ready: { bg: "bg-orange-100",   text: "text-orange-700" },
+  trust_leader:     { bg: "bg-yellow-100",   text: "text-yellow-700" },
+  custom:           { bg: "bg-slate-100",    text: "text-slate-700" },
 };
 
 export default async function BadgesPage() {
@@ -32,7 +32,7 @@ export default async function BadgesPage() {
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Badges™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Active trust badges issued as part of your verification programs.</p>
         </div>
-        <div className="text-sm font-semibold text-emerald-400">{active.length} Active Badges</div>
+        <div className="text-sm font-semibold text-emerald-700">{active.length} Active Badges</div>
       </div>
 
       {/* Badge lifecycle legend */}

@@ -82,9 +82,9 @@ export default async function GapsPage({
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <ComplianceStat label="Total"    value={summary.total} />
-        <ComplianceStat label="Critical" value={summary.critical} color="text-red-400"   accent={summary.critical > 0 ? "danger" : undefined} />
-        <ComplianceStat label="High"     value={summary.high}     color="text-red-300"   accent={summary.high > 0 ? "danger" : undefined} />
-        <ComplianceStat label="Medium"   value={summary.medium}   color="text-amber-400" accent={summary.medium > 0 ? "warn" : undefined} />
+        <ComplianceStat label="Critical" value={summary.critical} color="text-red-700"   accent={summary.critical > 0 ? "danger" : undefined} />
+        <ComplianceStat label="High"     value={summary.high}     color="text-red-700"   accent={summary.high > 0 ? "danger" : undefined} />
+        <ComplianceStat label="Medium"   value={summary.medium}   color="text-amber-700" accent={summary.medium > 0 ? "warn" : undefined} />
         <ComplianceStat label="Low"      value={summary.low}      color="text-[var(--color-ink-dim)]" />
       </div>
 
@@ -194,9 +194,9 @@ export default async function GapsPage({
 
       {/* Refresh hint */}
       {frameworks.length > 0 && (
-        <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.04] p-4">
+        <div className="rounded-xl border border-amber-200 bg-amber-500/[0.04] p-4">
           <div className="flex items-start gap-3">
-            <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+            <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
             <p className="text-sm text-[var(--color-ink-dim)]">
               <span className="font-medium text-[var(--color-ink)]">Gaps are not live. </span>
               Run gap analysis from a framework page to refresh. Resolved gaps are preserved;

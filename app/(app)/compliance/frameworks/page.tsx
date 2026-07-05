@@ -58,7 +58,7 @@ export default async function FrameworksPage() {
       {frameworks.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ComplianceStat label="Total"       value={frameworks.length} />
-          <ComplianceStat label="Certified"   value={certified}   accent={certified > 0 ? "good" : undefined} color={certified > 0 ? "text-emerald-400" : undefined} />
+          <ComplianceStat label="Certified"   value={certified}   accent={certified > 0 ? "good" : undefined} color={certified > 0 ? "text-emerald-700" : undefined} />
           <ComplianceStat label="In Progress" value={inProgress}  color="text-[var(--color-blue)]" />
           <ComplianceStat label="Avg Readiness" value={`${avgReadiness}%`} accent={totalGaps > 0 ? "warn" : "good"} />
         </div>
@@ -135,7 +135,7 @@ export default async function FrameworksPage() {
 
                   <span
                     className={`text-right text-sm font-medium ${
-                      fw.openGapCount > 0 ? "text-amber-400" : "text-[var(--color-ink-faint)]"
+                      fw.openGapCount > 0 ? "text-amber-700" : "text-[var(--color-ink-faint)]"
                     }`}
                   >
                     {fw.openGapCount}

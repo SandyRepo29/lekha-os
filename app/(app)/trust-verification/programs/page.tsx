@@ -85,8 +85,8 @@ export default async function ProgramsPage() {
             {custom.map((p: any) => (
               <div key={p.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-violet-500/10">
-                    <Star className="h-5 w-5 text-violet-400" />
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-violet-100">
+                    <Star className="h-5 w-5 text-violet-700" />
                   </span>
                   <div>
                     <div className="font-semibold text-sm">{p.name}</div>

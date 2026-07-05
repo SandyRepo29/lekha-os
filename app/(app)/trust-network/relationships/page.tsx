@@ -8,9 +8,9 @@ import { getTrustRelationships } from "@/lib/services/trust-network/trust-networ
 import { RelationshipTypeBadge, NetworkStatusBadge, TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const STATUS_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
-  active:     { icon: CheckCircle2, color: "text-emerald-400" },
-  pending:    { icon: Clock,        color: "text-amber-400"   },
-  terminated: { icon: XCircle,      color: "text-red-400"     },
+  active:     { icon: CheckCircle2, color: "text-emerald-700" },
+  pending:    { icon: Clock,        color: "text-amber-700"   },
+  terminated: { icon: XCircle,      color: "text-red-700"     },
 };
 
 export default async function TrustRelationshipsPage() {
@@ -87,11 +87,11 @@ export default async function TrustRelationshipsPage() {
               const SIcon = si.icon;
               return (
                 <div key={r.id} className="flex items-center gap-4 px-4 py-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
                     <Users className="h-4 w-4 text-[var(--color-ink-dim)]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{r.targetOrgId}</p>
+                    <p className="text-sm font-medium truncate">{r.targetName ?? r.targetOrgId}</p>
                     <div className="mt-0.5">
                       <RelationshipTypeBadge type={r.relationshipType} />
                     </div>

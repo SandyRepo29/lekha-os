@@ -9,15 +9,15 @@ import { ShieldCheck, FileText, ClipboardCheck, Award, Clock, CheckCircle, XCirc
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    pending: "bg-amber-500/10 text-amber-400",
+    pending: "bg-amber-100 text-amber-700",
     in_review: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
-    approved: "bg-emerald-500/10 text-emerald-400",
-    rejected: "bg-red-500/10 text-red-400",
-    suspended: "bg-orange-500/10 text-orange-400",
-    accepted: "bg-emerald-500/10 text-emerald-400",
-    requires_update: "bg-amber-500/10 text-amber-400",
+    approved: "bg-emerald-100 text-emerald-700",
+    rejected: "bg-red-100 text-red-700",
+    suspended: "bg-orange-100 text-orange-700",
+    accepted: "bg-emerald-100 text-emerald-700",
+    requires_update: "bg-amber-100 text-amber-700",
   };
-  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${map[status] ?? "bg-white/5 text-[var(--color-ink-faint)]"}`}>{status.replace(/_/g," ")}</span>;
+  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${map[status] ?? "bg-slate-100 text-[var(--color-ink-faint)]"}`}>{status.replace(/_/g," ")}</span>;
 }
 
 export default async function VerificationDetailPage({ params }: { params: Promise<{ id: string }> }) {

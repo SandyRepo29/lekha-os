@@ -83,7 +83,7 @@ export default async function EvidenceDetailPage({
                 <span
                   className={`text-xs ${
                     new Date(ev.expiresOn) < new Date()
-                      ? "text-amber-400"
+                      ? "text-amber-700"
                       : "text-[var(--color-ink-faint)]"
                   }`}
                 >

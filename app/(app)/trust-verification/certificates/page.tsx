@@ -18,9 +18,9 @@ export default async function CertificatesPage() {
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Certificates™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Issued trust certificates — each publicly verifiable with a unique certificate ID and QR code.</p>
         </div>
-        <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-2">
-          <CheckCircle className="h-4 w-4 text-emerald-400" />
-          <span className="text-sm font-semibold text-emerald-400">{active.length} Active</span>
+        <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-500/[0.06] px-4 py-2">
+          <CheckCircle className="h-4 w-4 text-emerald-700" />
+          <span className="text-sm font-semibold text-emerald-700">{active.length} Active</span>
         </div>
       </div>
 
@@ -31,9 +31,9 @@ export default async function CertificatesPage() {
             const isExpired = cert.status === "expired";
             return (
               <div key={cert.id} className={`rounded-2xl border p-5 ${
-                isActive ? "border-emerald-500/20 bg-emerald-500/[0.03]" :
+                isActive ? "border-emerald-200 bg-emerald-500/[0.03]" :
                 isExpired ? "border-[var(--color-line)] bg-[var(--color-bg-2)]/40 opacity-60" :
-                "border-red-500/20 bg-red-500/[0.03]"
+                "border-red-200 bg-red-500/[0.03]"
               }`}>
                 {/* Certificate header */}
                 <div className="flex items-start justify-between mb-4">

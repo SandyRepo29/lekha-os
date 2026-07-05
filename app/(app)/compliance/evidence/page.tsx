@@ -77,12 +77,12 @@ export default async function EvidencePage({
       {items.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ComplianceStat label="Total"    value={items.length} />
-          <ComplianceStat label="Approved" value={approved} color="text-emerald-400" />
+          <ComplianceStat label="Approved" value={approved} color="text-emerald-700" />
           <ComplianceStat label="Draft"    value={draft}    color="text-[var(--color-blue)]" />
           <ComplianceStat
             label="Expired"
             value={expired}
-            color={expired > 0 ? "text-amber-400" : undefined}
+            color={expired > 0 ? "text-amber-700" : undefined}
             accent={expired > 0 ? "warn" : undefined}
           />
         </div>
@@ -164,7 +164,7 @@ export default async function EvidencePage({
                     </td>
                     <td className="px-5 py-3.5 text-xs text-[var(--color-ink-dim)]">
                       {ev.expiresOn ? (
-                        <span className={isExpiredDate(ev.expiresOn) ? "text-amber-400" : ""}>
+                        <span className={isExpiredDate(ev.expiresOn) ? "text-amber-700" : ""}>
                           {formatDate(ev.expiresOn)}
                         </span>
                       ) : (
@@ -174,7 +174,7 @@ export default async function EvidencePage({
                     <td className="px-5 py-3.5 text-right">
                       <span
                         className={`text-sm font-medium ${
-                          ev.mappedCount > 0 ? "text-emerald-400" : "text-[var(--color-ink-faint)]"
+                          ev.mappedCount > 0 ? "text-emerald-700" : "text-[var(--color-ink-faint)]"
                         }`}
                       >
                         {ev.mappedCount}

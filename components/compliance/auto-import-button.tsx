@@ -27,7 +27,7 @@ export function AutoImportButton() {
       </Button>
 
       {result?.imported !== undefined && (
-        <span className="flex items-center gap-1.5 text-xs text-emerald-400">
+        <span className="flex items-center gap-1.5 text-xs text-emerald-700">
           <CheckCircle2 className="h-3.5 w-3.5" />
           {result.imported === 0
             ? "Already up to date"
@@ -35,7 +35,7 @@ export function AutoImportButton() {
         </span>
       )}
       {result?.error && (
-        <span className="text-xs text-red-400">{result.error}</span>
+        <span className="text-xs text-red-700">{result.error}</span>
       )}
     </div>
   );

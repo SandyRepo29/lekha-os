@@ -10,8 +10,8 @@ import {
 } from "@/lib/services/trust-network/ai-trust-network-service";
 import { TrustNetworkAiChat } from "@/components/trust-network/trust-network-ai-chat";
 
-const IMPACT_COLOR = { high: "text-red-400", medium: "text-yellow-400", low: "text-green-400" };
-const EFFORT_COLOR = { high: "text-red-400", medium: "text-yellow-400", low: "text-green-400" };
+const IMPACT_COLOR = { high: "text-red-700", medium: "text-yellow-700", low: "text-green-700" };
+const EFFORT_COLOR = { high: "text-red-700", medium: "text-yellow-700", low: "text-green-700" };
 
 export default async function TrustNetworkAiPage() {
   const session = await requireUser();
@@ -75,11 +75,11 @@ export default async function TrustNetworkAiPage() {
             <p className="text-xs text-[var(--color-ink-faint)]">Reputation Score</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-black text-purple-400">{benchmarking.percentile > 0 ? `${benchmarking.percentile}th` : "—"}</p>
+            <p className="text-2xl font-black text-purple-700">{benchmarking.percentile > 0 ? `${benchmarking.percentile}th` : "—"}</p>
             <p className="text-xs text-[var(--color-ink-faint)]">Industry Percentile</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-black text-pink-400">{automation.automationPct}%</p>
+            <p className="text-2xl font-black text-pink-700">{automation.automationPct}%</p>
             <p className="text-xs text-[var(--color-ink-faint)]">Automation Coverage</p>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default async function TrustNetworkAiPage() {
       {/* Improvement Plan */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="h-5 w-5 text-emerald-400" />
+          <TrendingUp className="h-5 w-5 text-emerald-700" />
           <h2 className="font-semibold">Network Improvement Plan™</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-4">

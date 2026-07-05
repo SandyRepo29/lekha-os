@@ -31,7 +31,7 @@ export function DeleteFramework({ frameworkId, frameworkName }: { frameworkId: s
           {pending ? "Deleting…" : "Yes, delete"}
         </Button>
         <Button variant="subtle" size="sm" onClick={() => setConfirming(false)}>Cancel</Button>
-        {error && <span className="text-xs text-red-400">{error}</span>}
+        {error && <span className="text-xs text-red-700">{error}</span>}
       </div>
     );
   }
@@ -73,7 +73,7 @@ export function RunGapAnalysisButton({ frameworkId }: { frameworkId: string }) {
           {result.detected} gap{result.detected !== 1 ? "s" : ""} detected
         </span>
       )}
-      {result?.error && <span className="text-xs text-red-400">{result.error}</span>}
+      {result?.error && <span className="text-xs text-red-700">{result.error}</span>}
     </div>
   );
 }
@@ -144,7 +144,7 @@ export function DeleteControl({ controlId, frameworkId }: { controlId: string; f
   }
   return (
     <button
-      className="text-xs text-[var(--color-ink-faint)] hover:text-red-400 transition-colors"
+      className="text-xs text-[var(--color-ink-faint)] hover:text-red-700 transition-colors"
       onClick={() => setConfirming(true)}
     >
       <Trash2 className="h-3.5 w-3.5" />

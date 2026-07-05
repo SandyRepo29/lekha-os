@@ -148,7 +148,7 @@ function MetaField({
   return (
     <div>
       <p className="text-xs text-[var(--color-ink-faint)]">{label}</p>
-      <p className={`mt-0.5 text-sm font-medium ${warn ? "text-amber-400" : "text-[var(--color-ink)]"}`}>
+      <p className={`mt-0.5 text-sm font-medium ${warn ? "text-amber-700" : "text-[var(--color-ink)]"}`}>
         {value}
         {warn && " ⚠"}
       </p>

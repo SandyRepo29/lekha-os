@@ -17,9 +17,9 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">Trust Registry™</h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Public searchable registry of AUDT-verified organizations.</p>
         </div>
-        <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-2">
-          <Globe className="h-4 w-4 text-emerald-400" />
-          <span className="text-sm font-semibold text-emerald-400">{registry.length} Verified</span>
+        <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-500/[0.06] px-4 py-2">
+          <Globe className="h-4 w-4 text-emerald-700" />
+          <span className="text-sm font-semibold text-emerald-700">{registry.length} Verified</span>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
                 <tr key={r.id} className="hover:bg-white">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+                      <ShieldCheck className="h-4 w-4 text-emerald-700 shrink-0" />
                       <span className="font-medium">{r.displayName}</span>
                     </div>
                     {r.industry && <div className="text-xs text-[var(--color-ink-faint)] mt-0.5 pl-6">{r.industry}</div>}
@@ -70,7 +70,7 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
                   <td className="px-4 py-3 text-xs text-[var(--color-ink-dim)]">{r.verificationLevel.replace("level_","Level ")}</td>
                   <td className="px-4 py-3">
                     {r.trustScore != null ? (
-                      <span className={`font-semibold ${r.trustScore >= 90 ? "text-emerald-400" : r.trustScore >= 80 ? "text-[var(--color-blue)]" : "text-amber-400"}`}>
+                      <span className={`font-semibold ${r.trustScore >= 90 ? "text-emerald-700" : r.trustScore >= 80 ? "text-[var(--color-blue)]" : "text-amber-700"}`}>
                         {r.trustScore}
                       </span>
                     ) : "—"}

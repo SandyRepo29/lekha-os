@@ -13,7 +13,7 @@ export function ResolveGapButton({ gapId }: { gapId: string }) {
 
   if (done) {
     return (
-      <span className="flex items-center gap-1 text-xs text-emerald-400">
+      <span className="flex items-center gap-1 text-xs text-emerald-700">
         <CheckCircle2 className="h-3.5 w-3.5" /> Resolved
       </span>
     );
@@ -33,11 +33,11 @@ export function ResolveGapButton({ gapId }: { gapId: string }) {
             }
           })
         }
-        className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20 disabled:opacity-50"
+        className="rounded-lg border border-emerald-200 bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:opacity-50"
       >
         {pending ? "…" : "Resolve"}
       </button>
-      {error && <span className="text-xs text-red-400">{error}</span>}
+      {error && <span className="text-xs text-red-700">{error}</span>}
     </div>
   );
 }

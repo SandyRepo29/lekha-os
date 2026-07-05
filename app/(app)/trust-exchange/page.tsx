@@ -33,8 +33,8 @@ export default async function TrustExchangeDashboard() {
   ]);
 
   const completionColor =
-    metrics.profileCompleteness >= 80 ? "text-green-400" :
-    metrics.profileCompleteness >= 50 ? "text-yellow-400" : "text-red-400";
+    metrics.profileCompleteness >= 80 ? "text-green-700" :
+    metrics.profileCompleteness >= 50 ? "text-yellow-700" : "text-red-700";
 
   return (
     <div className="space-y-6">
@@ -80,13 +80,13 @@ export default async function TrustExchangeDashboard() {
             <div className="text-center">
               {metrics.isPublished ? (
                 <>
-                  <CheckCircle2 className="h-5 w-5 text-green-400 mx-auto" />
-                  <p className="text-xs text-green-400 mt-0.5">Published</p>
+                  <CheckCircle2 className="h-5 w-5 text-green-700 mx-auto" />
+                  <p className="text-xs text-green-700 mt-0.5">Published</p>
                 </>
               ) : (
                 <>
-                  <AlertCircle className="h-5 w-5 text-yellow-400 mx-auto" />
-                  <p className="text-xs text-yellow-400 mt-0.5">Private</p>
+                  <AlertCircle className="h-5 w-5 text-yellow-700 mx-auto" />
+                  <p className="text-xs text-yellow-700 mt-0.5">Private</p>
                 </>
               )}
             </div>
@@ -113,9 +113,9 @@ export default async function TrustExchangeDashboard() {
       {/* Quick actions */}
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
         {[
-          { href: "/trust-exchange/documents", icon: FileText, title: "Evidence Exchange™", desc: "Upload and share trust documents", color: "text-blue-400" },
-          { href: "/trust-exchange/badges", icon: Star, title: "Trust Badges™", desc: "Manage earned trust badges", color: "text-yellow-400" },
-          { href: "/trust-exchange/questionnaires", icon: MessageSquare, title: "Questionnaire Exchange™", desc: "SIG, CAIQ and custom answers", color: "text-pink-400" },
+          { href: "/trust-exchange/documents", icon: FileText, title: "Evidence Exchange™", desc: "Upload and share trust documents", color: "text-blue-700" },
+          { href: "/trust-exchange/badges", icon: Star, title: "Trust Badges™", desc: "Manage earned trust badges", color: "text-yellow-700" },
+          { href: "/trust-exchange/questionnaires", icon: MessageSquare, title: "Questionnaire Exchange™", desc: "SIG, CAIQ and custom answers", color: "text-pink-700" },
           { href: "/trust-exchange/ai", icon: Zap, title: "AI Trust Analyst™", desc: "Ask about your trust posture", color: "text-[var(--color-blue)]" },
         ].map(({ href, icon: Icon, title, desc, color }) => (
           <Link key={href} href={href}>
@@ -171,8 +171,8 @@ export default async function TrustExchangeDashboard() {
               { done: metrics.isPublished, label: "Publish your profile", href: "/trust-exchange/my-profile" },
             ].map(({ done, label, href }) => (
               <Link key={label} href={href} className="flex items-center gap-3 group">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${done ? "bg-green-500/20" : "bg-white/5"}`}>
-                  {done ? <CheckCircle2 className="h-3.5 w-3.5 text-green-400" /> : <div className="w-2 h-2 rounded-full bg-white/20" />}
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${done ? "bg-green-100" : "bg-slate-100"}`}>
+                  {done ? <CheckCircle2 className="h-3.5 w-3.5 text-green-700" /> : <div className="w-2 h-2 rounded-full bg-slate-100" />}
                 </div>
                 <span className={`text-sm group-hover:text-[var(--color-ink)] transition-colors ${done ? "line-through text-[var(--color-ink-dim)]" : "text-[var(--color-ink-dim)]"}`}>{label}</span>
               </Link>

@@ -83,7 +83,7 @@ export function DeleteEvidence({
         <Button variant="subtle" size="sm" onClick={() => setConfirming(false)}>
           Cancel
         </Button>
-        {error && <span className="text-xs text-red-400">{error}</span>}
+        {error && <span className="text-xs text-red-700">{error}</span>}
       </div>
     );
   }

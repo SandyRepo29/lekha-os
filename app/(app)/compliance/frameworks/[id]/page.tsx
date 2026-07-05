@@ -110,8 +110,8 @@ export default async function FrameworkDetailPage({
 
       {/* Control status summary */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <ComplianceStat label="Implemented"     value={summary.implemented}   color="text-emerald-400" />
-        <ComplianceStat label="Partial"         value={summary.partial}       color="text-amber-400" />
+        <ComplianceStat label="Implemented"     value={summary.implemented}   color="text-emerald-700" />
+        <ComplianceStat label="Partial"         value={summary.partial}       color="text-amber-700" />
         <ComplianceStat label="Not Implemented" value={summary.notImplemented} />
         <ComplianceStat label="N/A"             value={summary.notApplicable} color="text-[var(--color-ink-faint)]" />
       </div>
@@ -212,7 +212,7 @@ export default async function FrameworkDetailPage({
                         <span
                           className={`text-sm font-medium ${
                             control.evidenceCount > 0
-                              ? "text-emerald-400"
+                              ? "text-emerald-700"
                               : "text-[var(--color-ink-faint)]"
                           }`}
                         >

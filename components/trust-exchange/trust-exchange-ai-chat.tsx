@@ -68,7 +68,7 @@ export function TrustExchangeAiChat({ context }: { context: Record<string, unkno
           ) : (
             messages.map((m, i) => (
               <div key={i} className={`flex gap-3 ${m.role === "user" ? "flex-row-reverse" : ""}`}>
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]/20" : "bg-white/5"}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user" ? "bg-[var(--color-blue)]/20" : "bg-slate-100"}`}>
                   {m.role === "user" ? <User className="h-3.5 w-3.5 text-[var(--color-blue)]" /> : <Bot className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />}
                 </div>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${m.role === "user" ? "bg-[var(--color-blue)]/20 text-[var(--color-ink)]" : "bg-[#F8F9FB] text-[var(--color-ink-dim)]"}`}>
@@ -79,7 +79,7 @@ export function TrustExchangeAiChat({ context }: { context: Record<string, unkno
           )}
           {pending && (
             <div className="flex gap-3">
-              <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
                 <Bot className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />
               </div>
               <div className="bg-[#F8F9FB] rounded-2xl px-4 py-2.5 text-sm text-[var(--color-ink-dim)]">Analysing…</div>

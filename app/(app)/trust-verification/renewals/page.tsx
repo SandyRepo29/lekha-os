@@ -8,13 +8,13 @@ import { RefreshCw, Clock, CheckCircle, AlertTriangle } from "lucide-react";
 function RenewalStatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
     upcoming:    "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
-    due_soon:    "bg-amber-500/10 text-amber-400",
-    in_progress: "bg-violet-500/10 text-violet-400",
-    renewed:     "bg-emerald-500/10 text-emerald-400",
-    expired:     "bg-white/5 text-[var(--color-ink-faint)]",
-    cancelled:   "bg-red-500/10 text-red-400",
+    due_soon:    "bg-amber-100 text-amber-700",
+    in_progress: "bg-violet-100 text-violet-700",
+    renewed:     "bg-emerald-100 text-emerald-700",
+    expired:     "bg-slate-100 text-[var(--color-ink-faint)]",
+    cancelled:   "bg-red-100 text-red-700",
   };
-  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${map[status] ?? "bg-white/5 text-[var(--color-ink-faint)]"}`}>{status.replace(/_/g," ")}</span>;
+  return <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${map[status] ?? "bg-slate-100 text-[var(--color-ink-faint)]"}`}>{status.replace(/_/g," ")}</span>;
 }
 
 function isDueSoon(dateStr: string) {
@@ -38,8 +38,8 @@ export default async function RenewalsPage() {
       <div className="grid grid-cols-3 gap-4">
         {[
           { label: "Total Renewals",  value: renewals.length,                                             icon: RefreshCw,    color: "text-[var(--color-blue)]" },
-          { label: "Due Soon",        value: dueSoon.length,                                              icon: AlertTriangle, color: "text-amber-400" },
-          { label: "Completed",       value: renewals.filter((r: any) => r.status === "renewed").length,  icon: CheckCircle,  color: "text-emerald-400" },
+          { label: "Due Soon",        value: dueSoon.length,                                              icon: AlertTriangle, color: "text-amber-700" },
+          { label: "Completed",       value: renewals.filter((r: any) => r.status === "renewed").length,  icon: CheckCircle,  color: "text-emerald-700" },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-5">
             <Icon className={`mb-3 h-5 w-5 ${color}`} />
@@ -51,10 +51,10 @@ export default async function RenewalsPage() {
 
       {/* Due soon alert */}
       {dueSoon.length > 0 && (
-        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.05] p-4 flex items-center gap-3">
-          <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0" />
+        <div className="rounded-2xl border border-amber-200 bg-amber-500/[0.05] p-4 flex items-center gap-3">
+          <AlertTriangle className="h-5 w-5 text-amber-700 shrink-0" />
           <div className="flex-1">
-            <span className="text-sm font-semibold text-amber-400">{dueSoon.length} renewal{dueSoon.length > 1 ? "s" : ""} due within 30 days.</span>
+            <span className="text-sm font-semibold text-amber-700">{dueSoon.length} renewal{dueSoon.length > 1 ? "s" : ""} due within 30 days.</span>
             <span className="ml-2 text-xs text-[var(--color-ink-dim)]">Start the renewal process to avoid certification lapse.</span>
           </div>
         </div>
@@ -79,11 +79,11 @@ export default async function RenewalsPage() {
                 return (
                   <tr key={r.id} className="hover:bg-white">
                     <td className="px-4 py-3">
-                      <div className={`font-medium ${soon && r.status === "upcoming" ? "text-amber-400" : ""}`}>
+                      <div className={`font-medium ${soon && r.status === "upcoming" ? "text-amber-700" : ""}`}>
                         {r.renewalDueDate}
                       </div>
                       {soon && r.status === "upcoming" && (
-                        <div className="text-[11px] text-amber-400">Due soon</div>
+                        <div className="text-[11px] text-amber-700">Due soon</div>
                       )}
                     </td>
                     <td className="px-4 py-3"><RenewalStatusBadge status={r.status} /></td>
@@ -102,7 +102,7 @@ export default async function RenewalsPage() {
                         </form>
                       )}
                       {r.status === "in_progress" && (
-                        <span className="flex items-center gap-1 text-xs text-violet-400">
+                        <span className="flex items-center gap-1 text-xs text-violet-700">
                           <Clock className="h-3 w-3" /> In Progress
                         </span>
                       )}

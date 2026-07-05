@@ -19,7 +19,7 @@ type AnswerRow = {
 function ProgressBar({ value }: { value: number }) {
   const color = value >= 80 ? "bg-green-500" : value >= 50 ? "bg-yellow-500" : "bg-red-500";
   return (
-    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
       <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${value}%` }} />
     </div>
   );
@@ -42,21 +42,21 @@ export function TrustQuestionnairesClient({
       {/* Summary strip */}
       <div className="grid md:grid-cols-3 gap-4">
         <Card className="p-4 flex items-center gap-3">
-          <MessageSquare className="h-8 w-8 text-pink-400" />
+          <MessageSquare className="h-8 w-8 text-pink-700" />
           <div>
             <p className="text-xl font-bold">{questionnaires.length}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Available questionnaires</p>
           </div>
         </Card>
         <Card className="p-4 flex items-center gap-3">
-          <CheckCircle2 className="h-8 w-8 text-green-400" />
+          <CheckCircle2 className="h-8 w-8 text-green-700" />
           <div>
             <p className="text-xl font-bold">{answers.length}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Completed</p>
           </div>
         </Card>
         <Card className="p-4 flex items-center gap-3">
-          <Clock className="h-8 w-8 text-yellow-400" />
+          <Clock className="h-8 w-8 text-yellow-700" />
           <div>
             <p className="text-xl font-bold">{questionnaires.length - answers.length}</p>
             <p className="text-xs text-[var(--color-ink-dim)]">Pending</p>
@@ -81,14 +81,14 @@ export function TrustQuestionnairesClient({
                   className="p-4 flex items-center gap-4 cursor-pointer hover:bg-white"
                   onClick={() => setExpanded(isExpanded ? null : q.id)}
                 >
-                  <div className="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center flex-shrink-0">
-                    <MessageSquare className="h-5 w-5 text-pink-400" />
+                  <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="h-5 w-5 text-pink-700" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <p className="font-medium text-sm">{q.title}</p>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[var(--color-ink-dim)] capitalize">{q.category}</span>
-                      {q.isGlobal && <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">Global</span>}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-[var(--color-ink-dim)] capitalize">{q.category}</span>
+                      {q.isGlobal && <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Global</span>}
                     </div>
                     {ans ? (
                       <div className="mt-1.5 flex items-center gap-3">
@@ -97,9 +97,9 @@ export function TrustQuestionnairesClient({
                         </div>
                         <span className="text-xs text-[var(--color-ink-dim)]">{ans.completionPercent}% complete</span>
                         {ans.visibility === "public" ? (
-                          <Globe className="h-3.5 w-3.5 text-green-400" />
+                          <Globe className="h-3.5 w-3.5 text-green-700" />
                         ) : (
-                          <Lock className="h-3.5 w-3.5 text-slate-400" />
+                          <Lock className="h-3.5 w-3.5 text-slate-700" />
                         )}
                       </div>
                     ) : (
@@ -108,11 +108,11 @@ export function TrustQuestionnairesClient({
                   </div>
                   <div className="flex items-center gap-2">
                     {ans ? (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 flex items-center gap-1">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3" /> Answered
                       </span>
                     ) : (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400">Pending</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">Pending</span>
                     )}
                     {isExpanded ? <ChevronUp className="h-4 w-4 text-[var(--color-ink-dim)]" /> : <ChevronDown className="h-4 w-4 text-[var(--color-ink-dim)]" />}
                   </div>

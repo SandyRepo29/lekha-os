@@ -7,14 +7,14 @@ import { VerificationStat } from "@/components/trust-verification/verification-u
 
 const EVENT_COLORS: Record<string, string> = {
   "verification.created":       "text-[var(--color-blue)]",
-  "verification.review_started":"text-amber-400",
-  "verification.approved":      "text-emerald-400",
-  "verification.rejected":      "text-red-400",
-  "verification.suspended":     "text-orange-400",
-  "certificate.issued":         "text-violet-400",
-  "certificate.revoked":        "text-red-400",
-  "evidence.submitted":         "text-teal-400",
-  "renewal.started":            "text-pink-400",
+  "verification.review_started":"text-amber-700",
+  "verification.approved":      "text-emerald-700",
+  "verification.rejected":      "text-red-700",
+  "verification.suspended":     "text-orange-700",
+  "certificate.issued":         "text-violet-700",
+  "certificate.revoked":        "text-red-700",
+  "evidence.submitted":         "text-teal-700",
+  "renewal.started":            "text-pink-700",
 };
 
 export default async function MonitoringPage() {
@@ -49,8 +49,8 @@ export default async function MonitoringPage() {
 
       {/* Expiring Soon */}
       {expiringSoon.length > 0 && (
-        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.05] p-5">
-          <h3 className="font-semibold text-sm text-amber-400 mb-3 flex items-center gap-2">
+        <div className="rounded-2xl border border-amber-200 bg-amber-500/[0.05] p-5">
+          <h3 className="font-semibold text-sm text-amber-700 mb-3 flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" /> Certifications Expiring Within 30 Days
           </h3>
           <div className="space-y-2">
@@ -83,7 +83,7 @@ export default async function MonitoringPage() {
                 <div className="text-sm font-medium">{r.label}</div>
                 <div className="text-xs text-[var(--color-ink-faint)]">{r.desc}</div>
               </div>
-              <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${r.active ? "bg-emerald-500/10 text-emerald-400" : "bg-white/5 text-[var(--color-ink-faint)]"}`}>
+              <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${r.active ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-[var(--color-ink-faint)]"}`}>
                 {r.active ? "Active" : "Inactive"}
               </span>
             </div>

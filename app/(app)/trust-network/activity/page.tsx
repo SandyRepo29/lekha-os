@@ -10,14 +10,14 @@ import { getNetworkActivity } from "@/lib/services/trust-network/trust-network-s
 import { TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const ACTIVITY_CONFIG: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  profile_created:       { icon: Globe,        color: "text-blue-400",   label: "Profile Created" },
-  profile_updated:       { icon: Globe,        color: "text-blue-400",   label: "Profile Updated" },
-  document_shared:       { icon: Shield,       color: "text-indigo-400", label: "Document Shared" },
-  document_verified:     { icon: CheckCircle2, color: "text-green-400",  label: "Document Verified" },
-  badge_issued:          { icon: Award,        color: "text-yellow-400", label: "Badge Issued" },
-  relationship_created:  { icon: Users,        color: "text-purple-400", label: "Relationship Created" },
-  questionnaire_answered:{ icon: MessageSquare,color: "text-pink-400",   label: "Questionnaire Answered" },
-  verification_requested:{ icon: Shield,       color: "text-orange-400", label: "Verification Requested" },
+  profile_created:       { icon: Globe,        color: "text-blue-700",   label: "Profile Created" },
+  profile_updated:       { icon: Globe,        color: "text-blue-700",   label: "Profile Updated" },
+  document_shared:       { icon: Shield,       color: "text-indigo-700", label: "Document Shared" },
+  document_verified:     { icon: CheckCircle2, color: "text-green-700",  label: "Document Verified" },
+  badge_issued:          { icon: Award,        color: "text-yellow-700", label: "Badge Issued" },
+  relationship_created:  { icon: Users,        color: "text-purple-700", label: "Relationship Created" },
+  questionnaire_answered:{ icon: MessageSquare,color: "text-pink-700",   label: "Questionnaire Answered" },
+  verification_requested:{ icon: Shield,       color: "text-orange-700", label: "Verification Requested" },
 };
 
 function activityDate(d: Date | string) {
@@ -76,7 +76,7 @@ export default async function TrustActivityPage() {
               const Icon = cfg.icon;
               return (
                 <div key={a.id} className="flex items-start gap-4 px-4 py-3.5">
-                  <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5 ${cfg.color}`}>
+                  <div className={`w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5 ${cfg.color}`}>
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="flex-1 min-w-0">

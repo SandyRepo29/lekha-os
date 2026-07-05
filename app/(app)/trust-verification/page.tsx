@@ -178,14 +178,14 @@ export default async function TrustVerificationPage() {
 
       {/* Expiring Certifications */}
       {(m?.expiringSoon ?? 0) > 0 && (
-        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/[0.06] p-5">
+        <div className="rounded-2xl border border-amber-200 bg-amber-500/[0.06] p-5">
           <div className="flex items-center gap-3">
-            <AlertTriangle className="h-5 w-5 text-amber-400" />
+            <AlertTriangle className="h-5 w-5 text-amber-700" />
             <div>
-              <div className="font-semibold text-sm text-amber-400">{m!.expiringSoon} certification{m!.expiringSoon > 1 ? "s" : ""} expiring within 30 days</div>
+              <div className="font-semibold text-sm text-amber-700">{m!.expiringSoon} certification{m!.expiringSoon > 1 ? "s" : ""} expiring within 30 days</div>
               <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">Start renewal to maintain your verified status without interruption.</p>
             </div>
-            <Link href="/trust-verification/renewals" className="ml-auto rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-400 hover:bg-amber-500/20">
+            <Link href="/trust-verification/renewals" className="ml-auto rounded-xl border border-amber-200 bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100">
               Manage Renewals →
             </Link>
           </div>

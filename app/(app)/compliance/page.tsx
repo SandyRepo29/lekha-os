@@ -58,7 +58,7 @@ export default async function ComplianceDashboardPage() {
   const frameworkReadiness = frameworks.map((fw) => {
     const score = fw.readiness?.overallScore ?? 0;
     const status = score >= 80 ? "Ready" : score >= 50 ? "Needs Review" : "Not Ready";
-    const color  = score >= 80 ? "text-emerald-400" : score >= 50 ? "text-amber-400" : "text-red-400";
+    const color  = score >= 80 ? "text-emerald-700" : score >= 50 ? "text-amber-700" : "text-red-700";
     return { name: fw.name, score, status, color };
   });
 
@@ -136,7 +136,7 @@ export default async function ComplianceDashboardPage() {
 
             <Card className="border-l-2 border-l-emerald-500/60 p-5">
               <div className="mb-2 flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                <CheckCircle2 className="h-5 w-5 text-emerald-700" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Controls</span>
               </div>
               <p className="font-[family-name:var(--font-display)] text-xl font-bold">
@@ -148,14 +148,14 @@ export default async function ComplianceDashboardPage() {
             <Card
               className={`border-l-2 p-5 ${
                 gapSummary.critical > 0
-                  ? "border-red-500/25 border-l-red-500/60"
+                  ? "border-red-200 border-l-red-500/60"
                   : gapSummary.total > 0
-                  ? "border-amber-500/25 border-l-amber-500/60"
-                  : "border-emerald-500/25 border-l-emerald-500/60"
+                  ? "border-amber-200 border-l-amber-500/60"
+                  : "border-emerald-200 border-l-emerald-500/60"
               }`}
             >
               <div className="mb-2 flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-amber-400" />
+                <AlertTriangle className="h-5 w-5 text-amber-700" />
                 <span className="text-xs text-[var(--color-ink-faint)]">Open Gaps</span>
               </div>
               <p className="font-[family-name:var(--font-display)] text-xl font-bold">
@@ -177,9 +177,9 @@ export default async function ComplianceDashboardPage() {
                 <Link href="/compliance/evidence" className="ml-auto text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <EvidenceHealthStat label="Valid"           value={validEvidence}   color="text-emerald-400" />
-                <EvidenceHealthStat label="Missing"         value={missingEvidence} color="text-red-400" />
-                <EvidenceHealthStat label="Expired"         value={expiredEvidence} color="text-amber-400" />
+                <EvidenceHealthStat label="Valid"           value={validEvidence}   color="text-emerald-700" />
+                <EvidenceHealthStat label="Missing"         value={missingEvidence} color="text-red-700" />
+                <EvidenceHealthStat label="Expired"         value={expiredEvidence} color="text-amber-700" />
                 <EvidenceHealthStat label="Pending Review"  value={pendingEvidence} color="text-[var(--color-blue)]" />
               </div>
               {totalEvidence > 0 && (
@@ -204,7 +204,7 @@ export default async function ComplianceDashboardPage() {
             {/* Audit Readiness Widget */}
             <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
               <div className="mb-4 flex items-center gap-2">
-                <BookCheck className="h-4 w-4 text-emerald-400" />
+                <BookCheck className="h-4 w-4 text-emerald-700" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Audit Readiness</h2>
               </div>
               {frameworkReadiness.length === 0 ? (
@@ -236,9 +236,9 @@ export default async function ComplianceDashboardPage() {
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <EvidenceHealthStat label="Total Evidence"    value={totalEvidence} color="text-[var(--color-blue)]" />
-                <EvidenceHealthStat label="Approved"          value={validEvidence} color="text-emerald-400" />
-                <EvidenceHealthStat label="Expired"           value={expiredEvidence} color="text-amber-400" />
-                <EvidenceHealthStat label="Controls Covered"  value={`${totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%`} color="text-emerald-400" />
+                <EvidenceHealthStat label="Approved"          value={validEvidence} color="text-emerald-700" />
+                <EvidenceHealthStat label="Expired"           value={expiredEvidence} color="text-amber-700" />
+                <EvidenceHealthStat label="Controls Covered"  value={`${totalControls ? Math.round((validEvidence / totalControls) * 100) : 0}%`} color="text-emerald-700" />
               </div>
               <div className="mt-3 flex gap-2">
                 <Link href="/compliance/evidence" className="text-xs text-[var(--color-blue)] hover:underline">Browse Evidence &rarr;</Link>
@@ -290,7 +290,7 @@ export default async function ComplianceDashboardPage() {
                         <FrameworkStat
                           label="Gaps"
                           value={fw.openGapCount}
-                          color={fw.openGapCount > 0 ? "text-amber-400" : "text-emerald-400"}
+                          color={fw.openGapCount > 0 ? "text-amber-700" : "text-emerald-700"}
                         />
                       </div>
 
@@ -319,16 +319,16 @@ export default async function ComplianceDashboardPage() {
           {gapSummary.total > 0 && (
             <Card className="p-5">
               <div className="mb-3 flex items-center gap-2">
-                <FileSearch className="h-4 w-4 text-amber-400" />
+                <FileSearch className="h-4 w-4 text-amber-700" />
                 <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">
                   Open Gaps
                 </h2>
                 <Link href="/compliance/gaps" className="ml-auto text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <GapCount label="Critical" value={gapSummary.critical} color="text-red-400" />
-                <GapCount label="High"     value={gapSummary.high}     color="text-red-300" />
-                <GapCount label="Medium"   value={gapSummary.medium}   color="text-amber-400" />
+                <GapCount label="Critical" value={gapSummary.critical} color="text-red-700" />
+                <GapCount label="High"     value={gapSummary.high}     color="text-red-700" />
+                <GapCount label="Medium"   value={gapSummary.medium}   color="text-amber-700" />
                 <GapCount label="Low"      value={gapSummary.low}      color="text-[var(--color-ink-dim)]" />
               </div>
             </Card>

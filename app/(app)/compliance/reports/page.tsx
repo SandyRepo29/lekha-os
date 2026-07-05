@@ -75,7 +75,7 @@ export default async function ComplianceReportsPage() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <ReportCard
-            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-400" />}
+            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-700" />}
             title="Controls Export"
             description="All controls across all frameworks with status, priority and category."
             href="/reports/compliance/controls"
@@ -83,7 +83,7 @@ export default async function ComplianceReportsPage() {
             download="lekha-controls.csv"
           />
           <ReportCard
-            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-400" />}
+            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-700" />}
             title="Evidence Export"
             description="All evidence items with source, status, expiry and mapped control count."
             href="/reports/compliance/evidence"
@@ -91,7 +91,7 @@ export default async function ComplianceReportsPage() {
             download="lekha-evidence.csv"
           />
           <ReportCard
-            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-400" />}
+            icon={<FileSpreadsheet className="h-5 w-5 text-emerald-700" />}
             title="Gaps Export"
             description="All open gaps with framework, type, severity and description."
             href="/reports/compliance/gaps"
@@ -130,7 +130,7 @@ function ReportCard({
           <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
             isPdf
               ? "border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10 text-[var(--color-blue)]"
-              : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+              : "border-emerald-200 bg-emerald-100 text-emerald-700"
           }`}>
             {format}
           </span>

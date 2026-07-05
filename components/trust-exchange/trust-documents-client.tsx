@@ -26,10 +26,10 @@ const VISIBILITY_ICONS: Record<string, React.ElementType> = {
 };
 
 const VISIBILITY_COLORS: Record<string, string> = {
-  private: "text-slate-400 bg-slate-500/20",
-  specific: "text-blue-400 bg-blue-500/20",
-  network: "text-indigo-400 bg-indigo-500/20",
-  public: "text-green-400 bg-green-500/20",
+  private: "text-slate-700 bg-slate-100",
+  specific: "text-blue-700 bg-blue-100",
+  network: "text-indigo-700 bg-indigo-100",
+  public: "text-green-700 bg-green-100",
 };
 
 function isExpired(expiryDate: string | null | undefined) {
@@ -113,7 +113,7 @@ export function TrustDocumentsClient({ docs }: { docs: TrustDocument[] }) {
                 </select>
               </div>
             </div>
-            {addState?.error && <p className="text-sm text-red-400">{addState.error}</p>}
+            {addState?.error && <p className="text-sm text-red-700">{addState.error}</p>}
             <div className="flex gap-2 pt-1">
               <Button type="submit" size="sm" disabled={addPending}>{addPending ? "Adding…" : "Add Document"}</Button>
               <Button type="button" variant="outline" size="sm" onClick={() => setShowAdd(false)}>Cancel</Button>
@@ -137,23 +137,23 @@ export function TrustDocumentsClient({ docs }: { docs: TrustDocument[] }) {
             const expiringSoon = isExpiringSoon(doc.expiryDate);
             return (
               <Card key={doc.id} className="p-4 flex items-center gap-4 flex-wrap">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <FileText className="h-5 w-5 text-blue-400" />
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <FileText className="h-5 w-5 text-blue-700" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="font-medium text-sm">{doc.title}</p>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[var(--color-ink-dim)]">{DOC_TYPE_LABELS[doc.docType] ?? doc.docType}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-[var(--color-ink-dim)]">{DOC_TYPE_LABELS[doc.docType] ?? doc.docType}</span>
                     {doc.isVerified && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 flex items-center gap-1">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3" /> Verified
                       </span>
                     )}
                     <span className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${VISIBILITY_COLORS[doc.visibility]}`}>
                       <VisIcon className="h-3 w-3" /> {doc.visibility}
                     </span>
-                    {expired && <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">Expired</span>}
-                    {expiringSoon && !expired && <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400">Expiring soon</span>}
+                    {expired && <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700">Expired</span>}
+                    {expiringSoon && !expired && <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">Expiring soon</span>}
                   </div>
                   <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                     {doc.issuer ? `${doc.issuer} · ` : ""}
@@ -177,7 +177,7 @@ export function TrustDocumentsClient({ docs }: { docs: TrustDocument[] }) {
                     variant="outline"
                     disabled={deleting}
                     onClick={() => { startDelete(async () => { await deleteDocumentAction(doc.id); }); }}
-                    className="text-red-400 hover:text-red-300"
+                    className="text-red-700 hover:text-red-700"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>

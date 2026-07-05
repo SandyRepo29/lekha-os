@@ -128,9 +128,11 @@ export async function getNetworkActivity(orgId: string, limit = 20) {
 // ─── Trust relationships detail ───────────────────────────────
 
 export async function getTrustRelationships(orgId: string) {
-  return db
-    .select()
+  const rows = await db
+    .select({ rel: trustRelationships, targetName: trustProfiles.displayName })
     .from(trustRelationships)
+    .leftJoin(trustProfiles, eq(trustProfiles.organizationId, trustRelationships.targetOrgId))
     .where(eq(trustRelationships.requesterOrgId, orgId))
     .orderBy(desc(trustRelationships.createdAt));
+  return rows.map(({ rel, targetName }) => ({ ...rel, targetName: targetName ?? null }));
 }

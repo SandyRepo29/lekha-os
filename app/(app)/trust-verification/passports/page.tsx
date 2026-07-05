@@ -32,15 +32,15 @@ export default async function PassportsPage() {
             </div>
           </div>
           {activeCerts.length > 0 && (
-            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">Verified ✓</span>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Verified ✓</span>
           )}
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {[
-            { label: "Active Certificates", value: activeCerts.length, icon: Award,       color: "text-violet-400" },
-            { label: "Active Badges",        value: activeBadges.length, icon: ShieldCheck, color: "text-emerald-400" },
+            { label: "Active Certificates", value: activeCerts.length, icon: Award,       color: "text-violet-700" },
+            { label: "Active Badges",        value: activeBadges.length, icon: ShieldCheck, color: "text-emerald-700" },
             { label: "Registry Entries",     value: registry.length,     icon: Globe,       color: "text-[var(--color-blue)]" },
           ].map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="rounded-xl bg-[#F8F9FB] p-3 text-center">
@@ -80,7 +80,7 @@ export default async function PassportsPage() {
             <div className="flex flex-wrap gap-2">
               {activeBadges.map((badge: any) => (
                 <span key={badge.id}
-                  className="flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
+                  className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
                   <ShieldCheck className="h-3 w-3" />
                   {badge.name}
                 </span>
@@ -112,9 +112,9 @@ export default async function PassportsPage() {
                 <div className="font-mono text-xs font-medium">{cert.certificateNumber}</div>
                 <div className="text-xs text-[var(--color-ink-dim)]">{new Date(cert.issuedAt).toLocaleDateString()} — {new Date(cert.expiresAt).toLocaleDateString()}</div>
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                  cert.status === "active"   ? "bg-emerald-500/10 text-emerald-400" :
-                  cert.status === "expired"  ? "bg-white/5 text-[var(--color-ink-faint)]" :
-                  "bg-red-500/10 text-red-400"
+                  cert.status === "active"   ? "bg-emerald-100 text-emerald-700" :
+                  cert.status === "expired"  ? "bg-slate-100 text-[var(--color-ink-faint)]" :
+                  "bg-red-100 text-red-700"
                 }`}>{cert.status}</span>
               </div>
             ))}
