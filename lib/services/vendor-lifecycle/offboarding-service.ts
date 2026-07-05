@@ -137,14 +137,25 @@ export async function completeStep(params: {
   notes?: string;
 }): Promise<void> {
   const col = params.step;
-  const colAt = `${params.step}_at`;
+  // NOTE: two _at columns are named inconsistently in the schema, so map explicitly
+  // rather than assume `${step}_at` (which is wrong for final_assessment_done / archive_package_generated).
+  const AT_COLUMN: Record<OffboardingStep, string> = {
+    access_disabled:           "access_disabled_at",
+    contracts_closed:          "contracts_closed_at",
+    documents_archived:        "documents_archived_at",
+    final_assessment_done:     "final_assessment_at",
+    evidence_verified:         "evidence_verified_at",
+    open_tasks_closed:         "open_tasks_closed_at",
+    lessons_captured:          "lessons_captured_at",
+    archive_package_generated: "archive_package_at",
+    lifecycle_updated:         "lifecycle_updated_at",
+  };
+  const colAt = AT_COLUMN[params.step];
 
   await db.execute(
     sql`UPDATE vendor_offboarding_checklists
         SET ${sql.raw(`"${col}" = true, "${colAt}" = NOW()`)},
-            lessons_learned = CASE WHEN ${params.notes ?? null} IS NOT NULL
-                               THEN ${params.notes ?? ""}
-                               ELSE lessons_learned END
+            lessons_learned = COALESCE(${params.notes ?? null}::text, lessons_learned)
         WHERE organization_id = ${params.orgId} AND vendor_id = ${params.vendorId}`
   );
 

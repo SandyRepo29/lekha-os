@@ -62,7 +62,7 @@ export function AssessmentForm({ assessmentId, vendorId, existingResponses, acti
       {state?.ok && <p className="text-sm text-emerald-400">Progress saved.</p>}
 
       <div className="flex gap-3">
-        <Button type="submit" variant="primary" disabled={pending} onClick={(e) => { const fd = new FormData(e.currentTarget.closest("form")!); fd.set("complete", "1"); }}>
+        <Button type="submit" name="complete" value="1" variant="primary" disabled={pending}>
           {pending ? "Submitting…" : "Complete assessment"}
         </Button>
         <Button type="submit" variant="subtle" disabled={pending}>

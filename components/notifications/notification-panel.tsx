@@ -97,7 +97,7 @@ function NotificationRow({
           >
             {item.title}
           </p>
-          <span className="shrink-0 text-xs text-[var(--color-ink-dim)]">
+          <span className="shrink-0 text-xs text-[var(--color-ink-dim)]" suppressHydrationWarning>
             {timeAgo(item.createdAt)}
           </span>
         </div>

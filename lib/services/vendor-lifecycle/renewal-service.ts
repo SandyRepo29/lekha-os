@@ -158,6 +158,9 @@ Write a concise 2-3 sentence board-ready renewal recommendation summary. Focus o
     }
   }
 
+  // Postgres text[] literal uses {…}, not JSON's [ … ]; build it explicitly.
+  const conditionsLiteral = `{${conditions.map((c) => `"${String(c).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(",")}}`;
+
   const rows = await db.execute<RenewalAssessmentRow>(
     sql`INSERT INTO vendor_renewal_assessments
           (organization_id, vendor_id, trust_score, compliance_score, open_risks, critical_risks,
@@ -167,7 +170,7 @@ Write a concise 2-3 sentence board-ready renewal recommendation summary. Focus o
           (${params.orgId}, ${params.vendorId}, ${params.inputs.trustScore ?? null},
            ${params.inputs.complianceScore}, ${params.inputs.openRisks}, ${params.inputs.criticalRisks},
            ${params.inputs.openFindings}, ${params.inputs.openCapas}, ${params.inputs.contractHealth ?? null},
-           ${recommendation}, ${confidence}, ${JSON.stringify(conditions)}::text[],
+           ${recommendation}, ${confidence}, ${conditionsLiteral}::text[],
            ${params.notes ?? null}, ${aiAnalysis}, ${params.actorId})
         RETURNING *`
   );
