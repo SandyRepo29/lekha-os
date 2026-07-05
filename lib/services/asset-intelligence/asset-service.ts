@@ -42,7 +42,7 @@ export async function getAsset(orgId: string, id: string) {
 
 export async function createAsset(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     name: string;
     description?: string;
@@ -74,7 +74,7 @@ export async function createAsset(
     status:           (data.status ?? "active") as any,
     environment:      (data.environment ?? "production") as any,
     criticality:      (data.criticality ?? "medium") as any,
-    dataClass:        data.dataClass as any,
+    dataClass:        (data.dataClass || undefined) as any,
     ownerId:          data.ownerId,
     businessUnit:     data.businessUnit,
     location:         data.location,

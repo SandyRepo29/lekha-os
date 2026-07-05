@@ -32,7 +32,7 @@ export async function getAssetAction(id: string) {
   return svc.getAsset(orgId, id);
 }
 
-export async function createAssetAction(formData: FormData) {
+export async function createAssetAction(_prev: unknown, formData: FormData) {
   const session = await requireUser();
   const orgId = getOrgId(session);
 
@@ -44,7 +44,7 @@ export async function createAssetAction(formData: FormData) {
     status:           (formData.get("status") as string) || "active",
     environment:      (formData.get("environment") as string) || "production",
     criticality:      (formData.get("criticality") as string) || "medium",
-    dataClass:        formData.get("dataClass") as string | undefined,
+    dataClass:        (formData.get("dataClass") as string) || undefined,
     ownerId:          formData.get("ownerId") as string | undefined || undefined,
     businessUnit:     formData.get("businessUnit") as string | undefined,
     location:         formData.get("location") as string | undefined,

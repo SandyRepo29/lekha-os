@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   if (!body?.name) return err("name is required", 400);
 
-  const asset = await createAsset(ctx.orgId, ctx.keyId, body);
+  // API keys have no associated user; created_by must be null (FK → profiles), not the key id.
+  const asset = await createAsset(ctx.orgId, null, body);
   return ok({ asset }, 201);
 }
