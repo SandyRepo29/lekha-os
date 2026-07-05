@@ -291,6 +291,7 @@ node scripts/seed-regulatory-intelligence.mjs       # 8 changes · 12 obligation
 node scripts/seed-asset-intelligence.mjs            # 30 assets · 4 alerts · 6 relationships (targets most-active org)
 node scripts/seed-security-command-center.mjs       # MFA settings · SSO provider · 5 sessions · 4 IP rules · 3 shares · 45 prompt logs · monitoring assets + alerts · trust center config
 node scripts/apply-sql.mjs supabase/migrations/0041_soft_delete.sql  # soft-delete columns on 7 tables ✅ APPLIED
+node scripts/seed-orgs-demo.mjs                     # 10 demo tenant orgs with users, subscriptions (varied statuses), invoices in USD
 node scripts/check-all-modules.mjs                  # verify all module table counts
 ```
 
@@ -1124,7 +1125,8 @@ GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 --- Platform Owner Console (internal AUDT staff only — NOT visible to tenants) ---
 /platform-admin/login                        Login page — separate dark auth form (no Supabase)
 /platform-admin                              Dashboard — KPI strip, recent signups, recent audit actions
-/platform-admin/orgs                         Organizations — list with search, member/vendor counts, plan status
+/platform-admin/orgs                         Organizations — list with search, member/vendor counts, plan name+price+status
+/platform-admin/orgs/[id]                   Org detail — 4-tab view (Overview/Users/Subscription/Billing); edit profile, manage subscription, view invoices
 /platform-admin/users                        All Users — cross-tenant user directory (stub)
 /platform-admin/subscriptions                Subscriptions — trial expirations, plan changes (stub)
 /platform-admin/billing                      Billing & Invoices — platform-wide billing (stub)
@@ -1629,6 +1631,7 @@ scripts/
   seed-executive-reporting.mjs  10 KPIs + 5 snapshots + 3 board reports + 2 schedules + 9 forecasts (3 metrics × 3 horizons)
   seed-regulatory-intelligence.mjs  8 regulatory changes · 12 obligations · 3 assessments · 5 alerts · 5 watchlists · 8 tasks · 4 updates (idempotent)
   seed-asset-intelligence.mjs      30 assets (apps/databases/cloud/data-assets/processes) · 4 alerts · 6 relationships (idempotent; targets most-active org via membership count query)
+  seed-orgs-demo.mjs             10 demo tenant orgs with users/subscriptions/invoices in USD; varied statuses (active/trial/grace_period/suspended/cancelled); password AudtDemo2026!
   SEED.md                       Complete inventory of all demo seed data across all modules
 ```
 
@@ -2176,6 +2179,7 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | Security Command Center™ | Enterprise security platform — MFA, SSO, sessions, IP allow lists, evidence protection, AI security, CMK, trust center, vendor monitoring | ✅ Complete (2026-06-16) |
 | Navigation V2 | Sidebar restructured into 8 customer-journey groups: Discover · Assess · Govern · Trust Operations Engine™ · Measure · Improve · Reports · Platform | ✅ Complete (2026-07-03) |
 | Platform Owner Console | Separate super-admin at /platform-admin/* — own auth, feature flags, org management, audit logs | ✅ Complete (2026-07-03) |
+| Platform Admin — Org Detail + Seed Data | 10 demo tenant orgs seeded with users/subscriptions/invoices in USD; org detail 4-tab view with subscription + billing data; plan name+price in orgs list | ✅ Complete (2026-07-05) |
 | Governance OS | Full category vision — system of record for organizational trust | Vision |
 
 ### Infrastructure (complete)
@@ -2311,6 +2315,13 @@ Enterprise security platform transforming AUDT into an enterprise-grade system f
 | **Feature flags seeded in migration 0042** | 15 built-in feature flags seeded with `enabled = true`. Toggle via `/platform-admin/flags`. Per-org overrides go in `tenant_feature_overrides` (not in `feature_flags` — that table is global). `FlagToggle` client component calls `toggleFeatureFlagAction()` which fires `flag_update` audit log. |
 | **Platform audit log is fire-and-forget** | `platform_audit_logs` writes use `.catch(() => {})`. Never await them in a request path. Unlike tenant `audit()` helper, platform audit requires `platform_user_id` (UUID) + `platform_user_email` both set — both are available from `getPlatformSession()`. |
 | **Navigation V2 sidebar (2026-07-03)** | 8 customer-journey groups: Discover · Assess · Govern · Trust Operations Engine™ · Measure · Improve · Reports · Platform. localStorage key bumped to `audt_sidebar_collapsed_v4`. Dashboard and Executive Center remain as top-level pinned items above the groups. `BadgeCheck` icon imported from lucide-react for Trust Verification™ item. |
+| **`subscriptions` table has NO `trial_ends_at`** | The column is `grace_period_ends_at`. Using `trial_ends_at` in any SQL query causes a silent throw (caught by action's try/catch) → returns `{ data: null }` → page shows "No subscription found" even when data exists. Always use `grace_period_ends_at`. |
+| **`invoices` table has NO `issued_at`** | Use `created_at` instead for both SELECT and ORDER BY. `issued_at` doesn't exist — querying it silently throws and returns an empty array. |
+| **Platform admin actions return `{ data: null }` on error** | All platform-admin server actions wrap DB calls in try/catch and return `{ data: null }` on failure. Bad column names are swallowed silently. If a tab shows "No data", check the SQL column names first — run `SELECT column_name FROM information_schema.columns WHERE table_name = 'your_table'` to verify. |
+| **`industry_type` DB enum — valid values** | `saas` · `it_services` · `fintech` · `healthcare` · `manufacturing` · `government` · `education` · `other`. NOT human-readable labels like "Financial Services" or "Technology". Seed scripts and org creation must use these exact snake_case values. |
+| **Demo seed script: `scripts/seed-orgs-demo.mjs`** | Seeds 10 realistic Indian tenant orgs with users, subscriptions, and invoices. All in USD cents (Growth=$25,000=250/mo, Business=$58,300=583/mo). Password for all demo users: `AudtDemo2026!`. Fetches plan IDs by name from `billing_plans` (not hardcoded). Fully idempotent via `ON CONFLICT DO NOTHING`. Run: `node scripts/seed-orgs-demo.mjs`. |
+| **`subscription-controls.tsx` plan dropdown** | Renders `$${price}/mo` (USD) via `Number(p.price_monthly).toLocaleString("en-US")`. Never use `₹` — the platform is USD-first matching the landing page pricing. |
+| **Platform admin org detail tabs use `?tab=` query param** | `/platform-admin/orgs/[id]` reads `searchParams.tab` to show Overview/Users/Subscription/Billing tabs. Server-side tab switch — not client-side state. Clicking tab links appends `?tab=subscription` etc. to the URL. |
 | **Badge colors — light theme** | Status/severity/priority badges must use light-theme styles: `bg-*-100 text-*-700` (e.g. `bg-red-100 text-red-700`). Dark-theme patterns `bg-*-500/20 text-*-300` are invisible/washed-out on white backgrounds. This applies to all module badge components including `components/toe/toe-ui.tsx`. |
 | **HTML entities in JS string literals** | `&#8482;` `&#8212;` etc. only render correctly inside JSX markup (`<span>&#8482;</span>`). In JS string values used as React text nodes (e.g. `label: "Foo&#8482;"`) they render as literal ampersand-hash text. Always use actual Unicode chars in string values: `™` `—` `→` `↑` `↓`. |
 
