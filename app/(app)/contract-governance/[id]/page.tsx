@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { getContractDetail, computeAndSaveScore } from "@/lib/services/contract-governance/contract-service";
 import { getLinkedRisks, getLinkedControls, getLinkedPolicies } from "@/lib/repositories/contract-repo";
-import { generateExecutiveSummary } from "@/lib/services/contract-governance/ai-contract-service";
 import {
   ContractStatusBadge,
   ObligationStatusBadge,
@@ -51,12 +50,12 @@ export default async function ContractDetailPage({
     computeAndSaveScore(session.org.id, id).catch(() => {});
   }
 
-  const [linkedRisks, linkedControls, linkedPolicies, aiSummary] = await Promise.all([
+  const [linkedRisks, linkedControls, linkedPolicies] = await Promise.all([
     getLinkedRisks(id),
     getLinkedControls(id),
     getLinkedPolicies(id),
-    generateExecutiveSummary(session.org.id).catch(() => null),
   ]);
+  const aiSummary = contract.aiSummary;
 
   const daysExp = daysUntil(contract.expiryDate);
 
@@ -102,10 +101,10 @@ export default async function ContractDetailPage({
           <p className="text-xs text-[var(--color-ink-dim)] mb-1 flex items-center gap-1">
             <Calendar className="h-3 w-3" /> Expiry Date
           </p>
-          <p className={`font-semibold ${daysExp !== null && daysExp <= 30 && daysExp >= 0 ? "text-red-400" : ""}`}>
+          <p className={`font-semibold ${daysExp !== null && daysExp <= 30 && daysExp >= 0 ? "text-red-700" : ""}`}>
             {formatDate(contract.expiryDate)}
             {daysExp !== null && daysExp >= 0 && daysExp <= 90 && (
-              <span className="ml-1 text-xs text-amber-400">({daysExp}d)</span>
+              <span className="ml-1 text-xs text-amber-700">({daysExp}d)</span>
             )}
           </p>
         </Card>
@@ -158,7 +157,7 @@ export default async function ContractDetailPage({
       {aiSummary && (
         <Card className="p-5">
           <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-purple-400" />
+            <Sparkles className="h-4 w-4 text-purple-700" />
             AI Contract Summary
           </h2>
           <p className="text-sm text-[var(--color-ink)] leading-relaxed whitespace-pre-wrap">{aiSummary}</p>
@@ -195,7 +194,7 @@ export default async function ContractDetailPage({
         <Card className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-700" />
               Obligations ({contract.obligations.length})
             </h2>
           </div>
@@ -209,9 +208,9 @@ export default async function ContractDetailPage({
                 return (
                   <div key={o.id} className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
-                      <p className={`text-sm truncate ${isOverdue ? "text-red-400" : ""}`}>{o.title}</p>
+                      <p className={`text-sm truncate ${isOverdue ? "text-red-700" : ""}`}>{o.title}</p>
                       {o.dueDate && (
-                        <p className={`text-xs ${isOverdue ? "text-red-400/70" : "text-[var(--color-ink-dim)]"}`}>
+                        <p className={`text-xs ${isOverdue ? "text-red-700/80" : "text-[var(--color-ink-dim)]"}`}>
                           Due {formatDate(o.dueDate)}
                           {isOverdue && days !== null && ` (${Math.abs(days)}d overdue)`}
                         </p>
@@ -233,7 +232,7 @@ export default async function ContractDetailPage({
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="p-5">
           <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-orange-400" />
+            <AlertTriangle className="h-4 w-4 text-orange-700" />
             Linked Risks ({linkedRisks.length})
           </h2>
           {linkedRisks.length === 0 ? (
@@ -269,7 +268,7 @@ export default async function ContractDetailPage({
 
         <Card className="p-5">
           <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <FileSignature className="h-4 w-4 text-purple-400" />
+            <FileSignature className="h-4 w-4 text-purple-700" />
             Linked Policies ({linkedPolicies.length})
           </h2>
           {linkedPolicies.length === 0 ? (
@@ -288,7 +287,7 @@ export default async function ContractDetailPage({
 
       {/* AI Advisor link */}
       <Card className="p-5 flex items-center gap-4">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400 flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-100 text-purple-700 flex-shrink-0">
           <Sparkles className="h-5 w-5" />
         </div>
         <div className="flex-1">

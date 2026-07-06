@@ -42,7 +42,7 @@ export async function PUT(
   if (!body) return err("Request body required", 400);
 
   try {
-    const contract = await updateContract(ctx.orgId, ctx.keyId, id, body);
+    const contract = await updateContract(ctx.orgId, null, id, body);
     return ok({ contract });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);
@@ -64,7 +64,7 @@ export async function DELETE(
 
   const { id } = await params;
   try {
-    await deleteContract(ctx.orgId, ctx.keyId, id);
+    await deleteContract(ctx.orgId, null, id);
     return ok({ deleted: true });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);

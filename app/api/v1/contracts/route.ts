@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
   if (!body?.title) return err("title is required", 400);
 
   try {
-    const contract = await createContract(ctx.orgId, ctx.keyId, body);
+    const contract = await createContract(ctx.orgId, null, body);
     return ok({ contract }, 201);
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);

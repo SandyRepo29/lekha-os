@@ -131,11 +131,11 @@ export default async function ContractLibraryPage({
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1.5">
                           <Calendar className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />
-                          <span className={days !== null && days <= 30 && days >= 0 ? "text-red-400" : ""}>
+                          <span className={days !== null && days <= 30 && days >= 0 ? "text-red-700" : ""}>
                             {formatDate(c.expiryDate)}
                           </span>
                           {days !== null && days >= 0 && days <= 90 && (
-                            <span className="text-xs text-amber-400">({days}d)</span>
+                            <span className="text-xs text-amber-700">({days}d)</span>
                           )}
                         </div>
                       </td>

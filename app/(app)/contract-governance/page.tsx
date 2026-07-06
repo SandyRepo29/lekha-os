@@ -127,7 +127,7 @@ export default async function ContractGovernanceDashboardPage() {
           </div>
         </Card>
         <Card className="p-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/20 text-purple-400 flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-100 text-purple-700 flex-shrink-0">
             <DollarSign className="h-5 w-5" />
           </div>
           <div>
@@ -144,13 +144,13 @@ export default async function ContractGovernanceDashboardPage() {
         <Card className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2">
-              <Clock className="h-4 w-4 text-amber-400" />
+              <Clock className="h-4 w-4 text-amber-700" />
               Expiring Contracts
             </h2>
             <Link href="/contract-governance/renewals" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
           </div>
           {metrics.expiringContracts.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-emerald-400">
+            <div className="flex items-center gap-2 text-sm text-emerald-700">
               <CheckCircle2 className="h-4 w-4" />
               No contracts expiring within 90 days.
             </div>
@@ -173,8 +173,8 @@ export default async function ContractGovernanceDashboardPage() {
                     <span
                       className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                         days !== null && days <= 30
-                          ? "bg-red-500/20 text-red-400"
-                          : "bg-amber-500/20 text-amber-400"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-amber-100 text-amber-700"
                       }`}
                     >
                       {days !== null ? `${days}d` : "—"}
@@ -190,13 +190,13 @@ export default async function ContractGovernanceDashboardPage() {
         <Card className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-orange-400" />
+              <AlertTriangle className="h-4 w-4 text-orange-700" />
               Open Obligations
             </h2>
             <Link href="/contract-governance/obligations" className="text-xs text-[var(--color-blue)] hover:underline">View all &rarr;</Link>
           </div>
           {metrics.recentObligations.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-emerald-400">
+            <div className="flex items-center gap-2 text-sm text-emerald-700">
               <CheckCircle2 className="h-4 w-4" />
               No open obligations.
             </div>
@@ -215,9 +215,9 @@ export default async function ContractGovernanceDashboardPage() {
                     <span
                       className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
                         isOverdue
-                          ? "bg-red-500/20 text-red-400"
+                          ? "bg-red-100 text-red-700"
                           : isDueSoon
-                          ? "bg-amber-500/20 text-amber-400"
+                          ? "bg-amber-100 text-amber-700"
                           : "bg-[var(--color-blue)]/20 text-[var(--color-blue)]"
                       }`}
                     >

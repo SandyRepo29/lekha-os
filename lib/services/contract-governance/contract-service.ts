@@ -25,7 +25,7 @@ export async function getDashboardMetrics(orgId: string) {
 
 export async function createContract(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     title: string;
     contractType?: string;
@@ -65,7 +65,7 @@ export async function createContract(
 
 export async function updateContract(
   orgId: string,
-  userId: string,
+  userId: string | null,
   contractId: string,
   data: Partial<{
     title: string;
@@ -93,11 +93,11 @@ export async function updateContract(
 
 // ─── Delete ──────────────────────────────────────────────────────────────────
 
-export async function deleteContract(orgId: string, userId: string, contractId: string) {
+export async function deleteContract(orgId: string, userId: string | null, contractId: string) {
   const existing = await repo.findContractById(orgId, contractId);
   if (!existing) throw new DomainError("Contract not found.");
 
-  await repo.deleteContract(orgId, contractId);
+  await repo.softDeleteContract(contractId, orgId);
   await logAction(orgId, userId, "contract_governance.contract_deleted", contractId, { title: existing.title });
 }
 
@@ -206,7 +206,7 @@ export async function unlinkPolicy(contractId: string, policyId: string) {
 
 async function logAction(
   orgId: string,
-  userId: string,
+  userId: string | null,
   action: string,
   entityId: string,
   meta?: Record<string, unknown>

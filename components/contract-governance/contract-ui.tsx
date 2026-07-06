@@ -87,13 +87,13 @@ export function ContractFilterChip({
 
 const STATUS_STYLES: Record<string, string> = {
   draft:        "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
-  review:       "text-amber-400 border-amber-500/30 bg-amber-500/10",
-  negotiation:  "text-orange-400 border-orange-500/30 bg-orange-500/10",
-  active:       "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
-  expiring:     "text-amber-400 border-amber-500/30 bg-amber-500/10",
-  expired:      "text-red-400 border-red-500/30 bg-red-500/10",
+  review:       "text-amber-700 border-amber-200 bg-amber-100",
+  negotiation:  "text-orange-700 border-orange-200 bg-orange-100",
+  active:       "text-emerald-700 border-emerald-200 bg-emerald-100",
+  expiring:     "text-amber-700 border-amber-200 bg-amber-100",
+  expired:      "text-red-700 border-red-200 bg-red-100",
   renewed:      "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10",
-  terminated:   "text-red-400 border-red-500/30 bg-red-500/10",
+  terminated:   "text-red-700 border-red-200 bg-red-100",
   archived:     "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
 };
 
@@ -109,10 +109,10 @@ export function ContractStatusBadge({ status }: { status: string }) {
 // ---- Obligation status badge ----
 
 const OBLIGATION_STATUS_STYLES: Record<string, string> = {
-  open:        "text-amber-400 border-amber-500/30 bg-amber-500/10",
+  open:        "text-amber-700 border-amber-200 bg-amber-100",
   in_progress: "text-[var(--color-blue)] border-[var(--color-blue)]/30 bg-[var(--color-blue)]/10",
-  completed:   "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
-  overdue:     "text-red-400 border-red-500/30 bg-red-500/10",
+  completed:   "text-emerald-700 border-emerald-200 bg-emerald-100",
+  overdue:     "text-red-700 border-red-200 bg-red-100",
   waived:      "text-[var(--color-ink-faint)] border-[var(--color-line)] bg-[#F8F9FB]",
 };
 
@@ -128,10 +128,10 @@ export function ObligationStatusBadge({ status }: { status: string }) {
 // ---- Clause risk badge ----
 
 const CLAUSE_RISK_STYLES: Record<string, string> = {
-  low:      "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
-  medium:   "text-amber-400 border-amber-500/30 bg-amber-500/10",
-  high:     "text-red-400 border-red-500/30 bg-red-500/10",
-  critical: "text-red-300 border-red-500/40 bg-red-500/15",
+  low:      "text-emerald-700 border-emerald-200 bg-emerald-100",
+  medium:   "text-amber-700 border-amber-200 bg-amber-100",
+  high:     "text-red-700 border-red-200 bg-red-100",
+  critical: "text-red-800 border-red-300 bg-red-200",
 };
 
 export function ClauseRiskBadge({ level }: { level: string }) {

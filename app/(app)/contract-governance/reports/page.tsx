@@ -18,21 +18,21 @@ const REPORTS = [
     description: "Export all contractual obligations with due dates, status and risk level.",
     href: "/api/v1/contracts/obligations/export/csv",
     iconBg: "bg-orange-500/20",
-    iconColor: "text-orange-400",
+    iconColor: "text-orange-700",
   },
   {
     title: "Renewals Report CSV",
     description: "Export contracts sorted by expiry date with notice periods and action deadlines.",
     href: "/api/v1/contracts/renewals/export/csv",
     iconBg: "bg-amber-500/20",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-700",
   },
   {
     title: "Clause Risk Report CSV",
     description: "Export all contract clauses with risk levels and AI analysis summaries.",
     href: "/api/v1/contracts/clauses/export/csv",
     iconBg: "bg-red-500/20",
-    iconColor: "text-red-400",
+    iconColor: "text-red-700",
   },
 ];
 

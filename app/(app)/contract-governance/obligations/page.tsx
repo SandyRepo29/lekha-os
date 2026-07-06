@@ -106,7 +106,7 @@ export default async function ObligationsPage({
                       className={`hover:bg-white transition-colors ${isOverdue ? "bg-red-500/[0.03]" : isDueSoon ? "bg-amber-500/[0.03]" : ""}`}
                     >
                       <td className="px-4 py-3">
-                        <p className={`font-medium ${isOverdue ? "text-red-400" : ""}`}>{o.title}</p>
+                        <p className={`font-medium ${isOverdue ? "text-red-700" : ""}`}>{o.title}</p>
                         {o.description && (
                           <p className="text-xs text-[var(--color-ink-dim)] mt-0.5 line-clamp-1">{o.description}</p>
                         )}
@@ -117,14 +117,14 @@ export default async function ObligationsPage({
                         </Link>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={isOverdue ? "text-red-400 font-medium" : isDueSoon ? "text-amber-400 font-medium" : ""}>
+                        <span className={isOverdue ? "text-red-700 font-medium" : isDueSoon ? "text-amber-700 font-medium" : ""}>
                           {formatDate(o.dueDate)}
                         </span>
                         {isOverdue && days !== null && (
-                          <span className="ml-1 text-xs text-red-400">({Math.abs(days)}d overdue)</span>
+                          <span className="ml-1 text-xs text-red-700">({Math.abs(days)}d overdue)</span>
                         )}
                         {isDueSoon && days !== null && (
-                          <span className="ml-1 text-xs text-amber-400">({days}d)</span>
+                          <span className="ml-1 text-xs text-amber-700">({days}d)</span>
                         )}
                       </td>
                       <td className="px-4 py-3">

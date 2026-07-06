@@ -35,33 +35,33 @@ function getRenewalIntelligence(
 }
 
 const REC_STYLES: Record<RenewalRec, string> = {
-  Renew:       "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  Review:      "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  Renegotiate: "bg-orange-500/15 text-orange-400 border-orange-500/30",
-  Exit:        "bg-red-500/15 text-red-400 border-red-500/30",
+  Renew:       "bg-emerald-100 text-emerald-700 border-emerald-200",
+  Review:      "bg-amber-100 text-amber-700 border-amber-200",
+  Renegotiate: "bg-orange-100 text-orange-700 border-orange-200",
+  Exit:        "bg-red-100 text-red-700 border-red-200",
 };
 
 const IMPACT_STYLES: Record<TrustImpact, string> = {
-  High:   "text-red-400",
-  Medium: "text-amber-400",
-  Low:    "text-emerald-400",
+  High:   "text-red-700",
+  Medium: "text-amber-700",
+  Low:    "text-emerald-700",
 };
 
 /** Return Tailwind colour classes for days-until-expiry */
 function expiryColor(days: number | null): string {
   if (days === null) return "";
-  if (days < 0) return "text-red-400 font-medium";
-  if (days <= 30) return "text-red-400 font-medium";
-  if (days <= 90) return "text-amber-400";
-  return "text-emerald-400";
+  if (days < 0) return "text-red-700 font-medium";
+  if (days <= 30) return "text-red-700 font-medium";
+  if (days <= 90) return "text-amber-700";
+  return "text-emerald-700";
 }
 
 function expiryBadge(days: number | null): { text: string; cls: string } | null {
   if (days === null) return null;
-  if (days < 0) return { text: `${Math.abs(days)}d ago`, cls: "bg-red-500/20 text-red-400" };
-  if (days <= 30) return { text: `${days}d`, cls: "bg-red-500/20 text-red-400" };
-  if (days <= 90) return { text: `${days}d`, cls: "bg-amber-500/20 text-amber-400" };
-  return { text: `${days}d`, cls: "bg-emerald-500/20 text-emerald-400" };
+  if (days < 0) return { text: `${Math.abs(days)}d ago`, cls: "bg-red-100 text-red-700" };
+  if (days <= 30) return { text: `${days}d`, cls: "bg-red-100 text-red-700" };
+  if (days <= 90) return { text: `${days}d`, cls: "bg-amber-100 text-amber-700" };
+  return { text: `${days}d`, cls: "bg-emerald-100 text-emerald-700" };
 }
 
 export default async function RenewalsPage() {
@@ -173,7 +173,7 @@ export default async function RenewalsPage() {
                         {c.noticePeriodDays} days
                       </td>
                       <td className="px-4 py-3">
-                        <span className={actionDays !== null && actionDays <= 0 ? "text-red-400" : actionDays !== null && actionDays <= 14 ? "text-amber-400" : ""}>
+                        <span className={actionDays !== null && actionDays <= 0 ? "text-red-700" : actionDays !== null && actionDays <= 14 ? "text-amber-700" : ""}>
                           {formatDate(actionDeadline)}
                         </span>
                       </td>

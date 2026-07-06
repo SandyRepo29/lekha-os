@@ -67,11 +67,12 @@ export async function updateContractAction(
     });
     revalidatePath("/contract-governance");
     revalidatePath(`/contract-governance/${id}`);
-    return { ok: true };
+    revalidatePath(`/contract-governance/${id}/edit`);
   } catch (err) {
     if (err instanceof DomainError) return { error: err.message };
     throw err;
   }
+  redirect(`/contract-governance/${id}`);
 }
 
 // ── Delete ───────────────────────────────────────────────────────────────────

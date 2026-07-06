@@ -210,12 +210,6 @@ export async function updateContract(
   return row;
 }
 
-export async function deleteContract(orgId: string, contractId: string): Promise<void> {
-  await db
-    .delete(contracts)
-    .where(and(eq(contracts.id, contractId), eq(contracts.organizationId, orgId)));
-}
-
 export async function getDashboardMetrics(orgId: string): Promise<ContractDashboardMetrics> {
   const today = new Date().toISOString().split("T")[0];
   const in90Days = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];

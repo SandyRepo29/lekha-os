@@ -36,7 +36,7 @@ export default async function ApiKeysPage() {
           <p><strong className="text-[var(--color-ink)]">Security notes:</strong></p>
           <p>· Keys are shown only once at creation. Store them in a secret manager immediately.</p>
           <p>· Rotate keys regularly. Revoked keys cannot be restored.</p>
-          <p>· Key format: <code className="font-mono text-[var(--color-blue)]">lk_live_*</code> — 64 hex characters after the prefix.</p>
+          <p>· Key format: <code className="font-mono text-[var(--color-blue)]">lk_live_*</code> — 48 hex characters after the prefix.</p>
           <p>· All key activity is recorded in Audit Logs.</p>
         </div>
       </div>

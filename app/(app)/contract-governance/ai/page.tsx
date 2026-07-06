@@ -58,7 +58,7 @@ export default async function ContractIntelligencePage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-[family-name:var(--font-display)] text-xl font-bold flex items-center gap-2">
-          <Sparkles className="h-6 w-6 text-purple-400" />
+          <Sparkles className="h-6 w-6 text-purple-700" />
           Contract Intelligence™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">
@@ -69,10 +69,10 @@ export default async function ContractIntelligencePage() {
       {/* Portfolio snapshot */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
-          { label: "Total Contracts", value: metrics.total, icon: FileSignature, color: "text-indigo-400" },
-          { label: "Active", value: metrics.active, icon: BarChart2, color: "text-green-400" },
-          { label: "Renewals Due (30d)", value: renewalDue, icon: RefreshCw, color: renewalDue > 0 ? "text-red-400" : "text-emerald-400" },
-          { label: "At Risk", value: atRisk, icon: AlertTriangle, color: atRisk > 0 ? "text-orange-400" : "text-emerald-400" },
+          { label: "Total Contracts", value: metrics.total, icon: FileSignature, color: "text-indigo-700" },
+          { label: "Active", value: metrics.active, icon: BarChart2, color: "text-green-700" },
+          { label: "Renewals Due (30d)", value: renewalDue, icon: RefreshCw, color: renewalDue > 0 ? "text-red-700" : "text-emerald-700" },
+          { label: "At Risk", value: atRisk, icon: AlertTriangle, color: atRisk > 0 ? "text-orange-700" : "text-emerald-700" },
         ].map((s) => (
           <Card key={s.label} className="p-4">
             <div className="flex items-center justify-between">
@@ -88,7 +88,7 @@ export default async function ContractIntelligencePage() {
       {contractsWithHealth.length > 0 && (
         <Card className="p-6">
           <h2 className="font-semibold mb-1 flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-indigo-400" />
+            <TrendingUp className="h-4 w-4 text-indigo-700" />
             Contract Health Analysis
           </h2>
           <p className="text-xs text-[var(--color-ink-faint)] mb-4">Contracts ranked by health — lowest first</p>
@@ -121,7 +121,7 @@ export default async function ContractIntelligencePage() {
       {/* Renewal Risk Analysis */}
       <Card className="p-6">
         <h2 className="font-semibold mb-1 flex items-center gap-2">
-          <RefreshCw className="h-4 w-4 text-amber-400" />
+          <RefreshCw className="h-4 w-4 text-amber-700" />
           Renewal Risk Summary
         </h2>
         <p className="text-xs text-[var(--color-ink-faint)] mb-4">Contracts requiring renewal attention in the next 90 days</p>
@@ -137,7 +137,7 @@ export default async function ContractIntelligencePage() {
                 return (
                   <div key={c.id} className="flex items-center justify-between rounded-lg border border-[var(--color-line)] bg-white px-4 py-2.5">
                     <span className="text-sm text-[var(--color-ink)]">{c.title}</span>
-                    <span className={`text-xs font-medium ${days !== null && days < 0 ? "text-red-400" : days !== null && days <= 30 ? "text-red-400" : "text-amber-400"}`}>
+                    <span className={`text-xs font-medium ${days !== null && days < 0 ? "text-red-700" : days !== null && days <= 30 ? "text-red-700" : "text-amber-700"}`}>
                       {days !== null && days < 0 ? `${Math.abs(days)}d expired` : `${days}d remaining`}
                     </span>
                   </div>
@@ -150,7 +150,7 @@ export default async function ContractIntelligencePage() {
       {/* Executive Summary */}
       <Card className="p-6">
         <h2 className="font-semibold mb-4 flex items-center gap-2">
-          <FileSignature className="h-4 w-4 text-indigo-400" />
+          <FileSignature className="h-4 w-4 text-indigo-700" />
           AI Executive Summary
         </h2>
         {summary ? (

@@ -30,7 +30,7 @@ function FieldGroup({ label, children }: { label: string; children: React.ReactN
 }
 
 const inputClass =
-  "w-full rounded-xl bg-white/5 border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 placeholder:text-[var(--color-ink-dim)]";
+  "w-full rounded-xl bg-[#F8F9FB] border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 placeholder:text-[var(--color-ink-dim)]";
 
 export function NewContractForm() {
   const [state, action, pending] = useActionState<ContractState, FormData>(
@@ -42,7 +42,7 @@ export function NewContractForm() {
     <Card className="p-6">
       <form action={action} className="space-y-5">
         {state?.error && (
-          <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
+          <div className="rounded-xl bg-red-100 border border-red-200 px-4 py-3 text-sm text-red-700">
             {state.error}
           </div>
         )}
