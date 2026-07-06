@@ -2504,6 +2504,13 @@ Validated live (DB-verified): all 9 routes render (hub · registry · registry/n
 **Functional gap (not a bug):** assets have **no edit or delete UI** (and no `/api/v1/assets/[id]` PUT/DELETE) — create-only. The `registry/[id]` detail page (built during the §14 audit) has no Edit button by design. Consider adding edit/delete before enterprise GA.
 **Note:** AI advisory shows "Configure your Gemini API key" locally (key not loaded in this dev run; set in prod) — graceful degradation, no crash.
 
+**Contract Governance™ — ✅ PRODUCTION-READY (signed off 2026-07-06, commit `6da9970`).**
+Validated live (DB-verified): all 6 routes render (dashboard · library · obligations · renewals · reports · AI advisor) · read-with-data · **create** (UI, persists, redirects to detail) · **edit/status transition** (UI, persists) · **delete** (via REST — no UI entry point) · library search + status filters (all filter-aware, including 0-result empty state) · all 4 CSV exports (contracts/obligations/renewals/clauses) · REST API GET list/single + 401 + invalid-key + **POST create (201)** + **PUT update** + **DELETE** + validation (400 on missing title) + 404 on unknown id + revoked-key rejection · AI Contract Advisor™ chat (multi-turn, coherent).
+**4 bugs found & fixed** (commit `6da9970`): (1) `POST/PUT/DELETE /api/v1/contracts` 500'd — `logAction()` inserted `ctx.keyId` (an `api_keys.id`) as `audit_logs.actor_id`, violating the `profiles(id)` FK (same class as the Regulatory Intelligence fix in §11 — pass `null` from API-key-authenticated routes); (2) `deleteContract` hard-deleted rows via `db.delete()` even though contracts have soft-delete columns (migration 0041) and an already-written `softDeleteContract()` sat unused in the repo — switched the service to call it and removed the dead hard-delete function; (3) the contract detail page's "AI Contract Summary" card actually rendered `generateExecutiveSummary(orgId)` — the same org-wide, cached portfolio narrative shown on the AI Advisor hub — so every contract displayed identical generic text; fixed to use the contract's own `aiSummary` field; (4) `EditContractForm`'s uncontrolled inputs showed the contract's *pre-edit* values after a successful save (one revision behind — e.g. saving status "Active" displayed "Draft") because `updateContractAction` stayed on the edit page returning `{ok:true}` instead of navigating; fixed to `redirect()` to the detail page on success, matching `createContractAction`.
+**Cross-cutting cleanup in the same commit:** swept dark-theme badge/text classes (`text-*-400/300`, `bg-*-500/1x-2x`) to the light-theme convention (`bg-*-100 text-*-700 border-*-200`) across all 6 pages + `contract-ui.tsx` badges + the AI chat's user-message bubble (was `text-indigo-100` on `bg-indigo-500/20` — nearly invisible) + form input backgrounds (`bg-white/5`→`bg-[#F8F9FB]`) — missed by the earlier Discover-group sweep; fixed a stale API-key security-note copy ("64 hex characters" → actual 48, `crypto.randomBytes(24)`).
+**Functional gap (not a bug):** contracts have **no Delete button anywhere in the UI** — `deleteContractAction` exists in `lib/contract-governance/actions.ts` but is never called from any component; only reachable via `DELETE /api/v1/contracts/[id]`. Matches the Asset Intelligence "create/edit-only" gap pattern.
+**RBAC (logged, not fixed — matches Track B scope):** no `role-guard` usage anywhere in Contract Governance; any org member (including `viewer`) can create/edit contracts via the UI. Consistent with the platform-wide pattern where RBAC is UI-only cosmetic gating in the few modules that have it at all (Vendor Hub, Risk, Settings) — full enforcement is Track B's cross-cutting RBAC matrix, not a per-module fix.
+
 ---
 
 ## 15. Platform QA → Production-Readiness — Master Plan & Tracker
@@ -2523,8 +2530,8 @@ Tooling: preview browser drives UI; DB queries confirm writes; `lk_live_` API ke
 |---|---|---|---|
 | 1 | Discover | Vendor Hub™ | ✅ signed off (`e801b3e`, 2026-07-05) |
 | 2 | Discover | Asset Intelligence™ | ✅ signed off (`eae3000`, 2026-07-05) — 3 bugs fixed |
-| 3 | Discover | Contract Governance™ | ⏳ **NEXT** |
-| 4 | Assess | Evidence Vault™ | ⏳ pending |
+| 3 | Discover | Contract Governance™ | ✅ signed off (`6da9970`, 2026-07-06) — 4 bugs fixed |
+| 4 | Assess | Evidence Vault™ | ⏳ **NEXT** |
 | 5 | Assess | Trust Exchange™ | ⏳ pending |
 | 6 | Assess | Trust Network™ | ⏳ pending |
 | 7 | Assess | Trust Verification™ | ⏳ pending |
