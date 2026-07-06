@@ -3,7 +3,7 @@
 > **End-to-end project brief for any AI session. Read this first.**
 > Rebranded from Lekha OS → AUDT on 2026-06-07. Domain: audt.tech.
 > **🔎 Journey-group audit sweep: see §14 (Module Audit & Remediation — Session Log).**
-> **✅ PRODUCTION-READINESS QA in progress — the standing charter, per-module playbook, and sign-off tracker are in §15 (Platform QA → Production-Readiness — Master Plan & Tracker). Vendor Hub is signed off; resume one-by-one at Asset Intelligence.**
+> **✅ PRODUCTION-READINESS QA in progress — the standing charter, per-module playbook, and sign-off tracker are in §15 (Platform QA → Production-Readiness — Master Plan & Tracker). Vendor Hub, Asset Intelligence, and Contract Governance are signed off (Discover group complete); resume one-by-one at Evidence Vault (Assess group).**
 
 ## Doc Structure — Read Before Every Session
 
