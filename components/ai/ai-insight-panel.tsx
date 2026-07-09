@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { Sparkles, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +24,13 @@ export function AiInsightPanel({
   const [text, setText] = useState<string | null>(content);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
+
+  // The parent Server Component re-fetches `content` after onGenerate()
+  // revalidates the route — sync it in, since useState(content) only
+  // seeds the initial render.
+  useEffect(() => {
+    setText(content);
+  }, [content]);
 
   const since = generatedAt
     ? new Date(generatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })

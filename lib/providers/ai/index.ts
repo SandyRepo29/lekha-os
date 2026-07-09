@@ -51,6 +51,10 @@ export async function generateText(
     config: {
       temperature: options.temperature ?? 0.4,
       maxOutputTokens: options.maxTokens ?? 400,
+      // Without this, gemini-2.5-flash's default "thinking" mode can consume
+      // nearly the entire maxOutputTokens budget on internal reasoning,
+      // truncating the visible answer to a few words (finishReason: MAX_TOKENS).
+      thinkingConfig: { thinkingBudget: 0 },
     },
   });
   return res.text?.trim() ?? "";
@@ -71,6 +75,7 @@ export async function generateJSON<T>(
       maxOutputTokens: options.maxTokens ?? 1000,
       responseMimeType: "application/json",
       responseSchema: schema,
+      thinkingConfig: { thinkingBudget: 0 },
     },
   });
   const raw = res.text?.trim() ?? "{}";

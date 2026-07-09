@@ -121,10 +121,10 @@ export default async function PolicyDetailPage({
                   <span className="font-mono text-sm text-[var(--color-ink)]">v{v.version}</span>
                   <span className="text-sm text-[var(--color-ink-dim)]">{v.notes ?? "—"}</span>
                   <span className="text-xs text-[var(--color-ink-dim)]">
-                    {v.approvedAt ? fmt(v.approvedAt.toString().split("T")[0]) : "—"}
+                    {v.approvedAt ? fmt(v.approvedAt.toISOString().split("T")[0]) : "—"}
                   </span>
                   <span className="text-xs text-[var(--color-ink-faint)]">
-                    {fmt(v.createdAt.toString().split("T")[0])}
+                    {fmt(v.createdAt.toISOString().split("T")[0])}
                   </span>
                 </div>
               ))}

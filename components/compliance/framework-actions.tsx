@@ -46,7 +46,13 @@ export function DeleteFramework({ frameworkId, frameworkName }: { frameworkId: s
 
 // ---- Run Gap Analysis ---------------------------------------
 
-export function RunGapAnalysisButton({ frameworkId }: { frameworkId: string }) {
+export function RunGapAnalysisButton({
+  frameworkId,
+  frameworkName,
+}: {
+  frameworkId: string;
+  frameworkName?: string;
+}) {
   const [pending, startTransition] = useTransition();
   const [result, setResult] = useState<{ detected?: number; error?: string } | null>(null);
   const router = useRouter();
@@ -57,6 +63,7 @@ export function RunGapAnalysisButton({ frameworkId }: { frameworkId: string }) {
         variant="ghost"
         size="sm"
         disabled={pending}
+        title={frameworkName ? `Run gap analysis — ${frameworkName}` : undefined}
         onClick={() =>
           startTransition(async () => {
             const res = await runGapAnalysisAction(frameworkId);
@@ -66,7 +73,7 @@ export function RunGapAnalysisButton({ frameworkId }: { frameworkId: string }) {
         }
       >
         <RefreshCw className={`h-4 w-4 ${pending ? "animate-spin" : ""}`} />
-        {pending ? "Analysing…" : "Run gap analysis"}
+        {pending ? "Analysing…" : frameworkName ? `Run: ${frameworkName}` : "Run gap analysis"}
       </Button>
       {result?.detected !== undefined && (
         <span className="text-xs text-[var(--color-ink-dim)]">

@@ -74,7 +74,7 @@ export default async function GapsPage({
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {frameworks.slice(0, 3).map((fw) => (
-            <RunGapAnalysisButton key={fw.id} frameworkId={fw.id} />
+            <RunGapAnalysisButton key={fw.id} frameworkId={fw.id} frameworkName={fw.name} />
           ))}
         </div>
       </div>

@@ -122,7 +122,12 @@ export async function extractDocumentFields(params: {
         { inlineData: { mimeType: params.mimeType, data: params.bytes.toString("base64") } },
       ],
     }],
-    config: { responseMimeType: "application/json", responseSchema, temperature: 0 },
+    config: {
+      responseMimeType: "application/json",
+      responseSchema,
+      temperature: 0,
+      thinkingConfig: { thinkingBudget: 0 },
+    },
   });
 
   const text = res.text ?? "{}";

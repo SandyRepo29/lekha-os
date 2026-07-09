@@ -91,16 +91,6 @@ export async function updateEvidence(
     .where(eq(evidence.id, id));
 }
 
-export async function deleteEvidence(
-  orgId: string,
-  id: string,
-  exec: Executor = db
-): Promise<void> {
-  await exec
-    .delete(evidence)
-    .where(and(eq(evidence.organizationId, orgId), eq(evidence.id, id)));
-}
-
 /** Evidence expiring within the next `days` days. */
 export async function findExpiring(orgId: string, days: number): Promise<Evidence[]> {
   const cutoff = new Date(Date.now() + days * 86_400_000).toISOString().split("T")[0];

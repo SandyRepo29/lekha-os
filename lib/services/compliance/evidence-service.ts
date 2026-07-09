@@ -140,7 +140,7 @@ export async function deleteEvidence(params: {
   }
 
   await db.transaction(async (tx) => {
-    await evidenceRepo.deleteEvidence(params.orgId, params.evidenceId, tx);
+    await evidenceRepo.softDeleteEvidence(params.evidenceId, params.orgId, tx);
     await recordAudit(
       {
         organizationId: params.orgId,

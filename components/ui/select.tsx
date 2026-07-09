@@ -9,7 +9,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 /**
- * Styled select that matches the Lekha OS dark design system.
+ * Styled select that matches the AUDT light design system.
  * The native <select> uses OS chrome; this wrapper overrides it fully.
  */
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -19,7 +19,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         ref={ref}
         className={cn(
           "h-11 w-full appearance-none rounded-xl border border-[var(--color-line-strong)]",
-          "bg-[#0d0f1a] px-4 pr-10 text-[15px] text-[var(--color-ink)]",
+          "bg-white px-4 pr-10 text-[15px] text-[var(--color-ink)]",
           "transition-colors focus:border-[var(--color-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--color-blue)]/30",
           "cursor-pointer",
           className
@@ -42,10 +42,10 @@ export function SelectGroup({
   label: string;
   children: React.ReactNode;
 }) {
-  return <optgroup label={label} style={{ background: "#0d0f1a", color: "#9aa0b5" }}>{children}</optgroup>;
+  return <optgroup label={label} style={{ background: "#ffffff", color: "#64748b" }}>{children}</optgroup>;
 }
 
-/** A single option, styled for the dark background */
+/** A single option, styled for the light background */
 export function SelectOption({
   value,
   children,
@@ -54,7 +54,7 @@ export function SelectOption({
   children: React.ReactNode;
 }) {
   return (
-    <option value={value} style={{ background: "#0d0f1a", color: "#e8eaf2" }}>
+    <option value={value} style={{ background: "#ffffff", color: "#0f172a" }}>
       {children}
     </option>
   );
