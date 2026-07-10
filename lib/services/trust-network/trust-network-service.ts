@@ -55,10 +55,10 @@ function getReputationLevel(score: number): string {
 }
 
 function getReputationColor(score: number): string {
-  if (score >= 80) return "text-emerald-400";
-  if (score >= 60) return "text-blue-400";
-  if (score >= 40) return "text-yellow-400";
-  return "text-red-400";
+  if (score >= 80) return "text-emerald-700";
+  if (score >= 60) return "text-blue-700";
+  if (score >= 40) return "text-yellow-700";
+  return "text-red-700";
 }
 
 // ─── Dashboard ────────────────────────────────────────────────
