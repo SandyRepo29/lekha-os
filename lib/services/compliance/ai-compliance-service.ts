@@ -257,7 +257,7 @@ Answer in 2-4 sentences. Be specific and use the data above.`;
   const res = await getAI().models.generateContent({
     model: AI_MODEL,
     contents,
-    config: { temperature: 0.5, maxOutputTokens: 400 },
+    config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
   });
   return res.text?.trim() ?? "I couldn't generate a response. Please try again.";
 }

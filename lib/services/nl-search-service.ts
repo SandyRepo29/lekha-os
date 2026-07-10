@@ -81,7 +81,7 @@ export async function parseNaturalLanguageSearch(query: string): Promise<NLSearc
   const res = await getAI().models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: `${PROMPT}\n\nUser query: "${query}"` }] }],
-    config: { responseMimeType: "application/json", responseSchema, temperature: 0 },
+    config: { thinkingConfig: { thinkingBudget: 0 }, responseMimeType: "application/json", responseSchema, temperature: 0 },
   });
 
   const parsed = JSON.parse(res.text ?? "{}") as NLSearchFilters;

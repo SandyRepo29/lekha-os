@@ -142,7 +142,7 @@ Return only the JSON array, no other text.`;
   const res = await getAI().models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    config: {
+    config: { thinkingConfig: { thinkingBudget: 0 },
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.ARRAY,
@@ -284,7 +284,7 @@ Return valid JSON with these exact keys:
   const res = await getAI().models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    config: {
+    config: { thinkingConfig: { thinkingBudget: 0 },
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,

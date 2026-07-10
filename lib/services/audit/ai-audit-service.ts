@@ -201,7 +201,7 @@ Answer in 2-4 sentences. If asked for a list, use plain text with commas. Do not
   const res = await getAI().models.generateContent({
     model: AI_MODEL,
     contents,
-    config: { temperature: 0.5, maxOutputTokens: 400 },
+    config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
   });
   return res.text?.trim() ?? "Could not generate response.";
 }

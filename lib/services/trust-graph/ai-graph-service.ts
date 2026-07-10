@@ -57,7 +57,8 @@ Write a concise executive insight (3-4 sentences) about the governance network s
 
 Be specific and governance-focused.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate summary.";
   await saveCache(orgId, "trust_graph_summary", orgId, text);
   return text;
@@ -86,6 +87,10 @@ Answer questions about governance relationships, dependencies, root causes, and 
     { role: "user" as const, parts: [{ text: message }] },
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
 }

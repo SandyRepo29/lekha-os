@@ -44,7 +44,8 @@ Concerns: ${health.concerns.join(", ") || "None identified"}
 
 Write a concise 2–3 paragraph executive narrative about this control's health, effectiveness, and recommended actions. Be specific and actionable.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   await saveCache(orgId, cacheKey, control.id, text);
   return text;
@@ -79,7 +80,8 @@ Control Metrics:
 
 Write 3–4 paragraphs covering: overall control posture, key strengths, critical gaps, and recommended priorities. Use executive language suitable for a board report.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   await saveCache(orgId, cacheKey, orgId, text);
   return text;
@@ -104,7 +106,8 @@ Controls not implemented: ${controls.filter((c) => c.status === "not_implemented
 
 List the top 5 gaps with specific recommended actions for each. Be concrete.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }
 
@@ -135,7 +138,11 @@ Answer questions about controls concisely and accurately. If asked about specifi
     ...messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate a response.";
 }
 

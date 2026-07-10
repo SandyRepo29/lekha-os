@@ -66,7 +66,8 @@ Write a concise executive summary (3–4 sentences) covering:
 Return plain text only, no markdown headers.`;
 
   try {
-    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate summary.";
     await saveCache(orgId, "integration_summary", text);
     return text;
@@ -106,7 +107,8 @@ Provide 3–5 specific connector recommendations that would most improve governa
 Format as a brief numbered list. Be practical and specific.`;
 
   try {
-    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate recommendations.";
     await saveCache(orgId, "integration_recommendations", text);
     return text;
@@ -140,7 +142,8 @@ Provide a brief gap analysis (3–4 sentences) identifying:
 Be specific and actionable. Plain text only.`;
 
   try {
-    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+    const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
     return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to analyze gaps.";
   } catch {
     return "Unable to generate gap analysis at this time.";
@@ -173,7 +176,8 @@ Answer questions about integrations, sync health, connector recommendations, evi
   ];
 
   try {
-    const result = await ai.models.generateContent({ model: AI_MODEL, contents: contextualHistory });
+    const result = await ai.models.generateContent({ model: AI_MODEL, contents: contextualHistory,
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
     return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to respond at this time.";
   } catch {
     return "Unable to respond at this time. Please try again.";

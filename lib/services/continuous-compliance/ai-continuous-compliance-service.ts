@@ -54,7 +54,8 @@ Compliance metrics:
 
 Focus on compliance posture, key risks, and top 2 recommended actions. Be direct and professional.`
       }]
-    }]
+    }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
@@ -87,7 +88,11 @@ Answer questions about compliance checks, signals, access reviews, attestations,
     })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
 }
 
@@ -107,7 +112,8 @@ Details: ${JSON.stringify(details)}
 
 Provide specific, actionable steps. Format as bullet points.`
       }]
-    }]
+    }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   return res.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }

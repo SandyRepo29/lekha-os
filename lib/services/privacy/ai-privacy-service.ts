@@ -51,6 +51,7 @@ Write 3–4 paragraphs covering: overall DPDP compliance posture, key strengths,
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   await saveCache(orgId, cacheKey, orgId, text);
@@ -105,6 +106,7 @@ Be specific and reference DPDP Act requirements (consent, purpose limitation, da
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -161,6 +163,7 @@ Focus on DPDP Act requirements: freely given consent, right to withdraw, consent
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "[]";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -214,7 +217,11 @@ You help Data Protection Officers, compliance teams, and privacy professionals m
     })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return (
     result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response."
   );

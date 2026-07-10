@@ -90,6 +90,7 @@ Be specific, data-driven, and board-appropriate. Avoid generic advice.`;
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const content = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   if (content) await saveCache(orgId, "benchmark_executive_report", content);
@@ -125,6 +126,7 @@ Keep each insight to 2-3 sentences. Be specific to the industry context.`;
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const content = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   if (content) await saveCache(orgId, "benchmark_industry_insights", content);
@@ -168,6 +170,7 @@ Respond ONLY with JSON array:
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
@@ -212,6 +215,10 @@ Answer questions about governance benchmarking, peer comparisons, industry posit
     ...messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "I couldn't generate a response.";
 }

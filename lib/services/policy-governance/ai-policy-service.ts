@@ -34,6 +34,7 @@ Use clear, authoritative language appropriate for an enterprise governance polic
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate policy draft.";
 }
@@ -82,6 +83,7 @@ Limit each array to 5 items maximum. Be specific and actionable.`;
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -127,6 +129,7 @@ Write 3–4 paragraphs covering: overall policy governance posture, key strength
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   await saveCache(orgId, cacheKey, orgId, text);
@@ -164,7 +167,11 @@ You help governance, risk, and compliance teams manage their policy library. Ans
     })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
 }
 

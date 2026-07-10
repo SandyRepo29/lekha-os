@@ -43,6 +43,7 @@ Limit to 15 clauses and 10 obligations. Focus on the most important items.`;
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -85,6 +86,7 @@ Return:
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -131,6 +133,7 @@ Suggest up to 8 concrete obligations. Return ONLY a JSON array (no markdown):
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "[]";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -196,6 +199,7 @@ Limit each array to 4 items.`;
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
     const clean = text.replace(/```json|```/g, "").trim();
@@ -239,6 +243,7 @@ Write 3–4 paragraphs covering: overall contract governance posture, key risks 
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   await saveCache(orgId, cacheKey, orgId, text);
@@ -274,7 +279,11 @@ You help legal and procurement teams manage contract risk, track obligations, an
     ...messages.map((m) => ({ role: m.role, parts: [{ text: m.content }] })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
 }
 

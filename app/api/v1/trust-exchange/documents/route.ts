@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   if (ctx.permissions === "read_only") return err("read_write permission required", 403);
   try {
     const body = await req.json();
-    const doc = await svc.addDocument(ctx.orgId, ctx.keyId, body);
+    const doc = await svc.addDocument(ctx.orgId, null, body);
     return ok({ document: doc }, 201);
   } catch (e: any) {
     return err(e.message, 400);

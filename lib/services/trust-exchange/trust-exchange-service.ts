@@ -3,7 +3,7 @@ import { auditLogs } from "@/lib/db/schema";
 import * as repo from "@/lib/repositories/trust-exchange-repo";
 import { DomainError } from "@/lib/services/errors";
 
-async function logAudit(orgId: string, userId: string, action: string, entityId: string) {
+async function logAudit(orgId: string, userId: string | null, action: string, entityId: string) {
   await db.insert(auditLogs).values({
     organizationId: orgId,
     actorId: userId,
@@ -90,7 +90,7 @@ export async function listDocuments(orgId: string) {
 
 export async function addDocument(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     docType: string;
     title: string;

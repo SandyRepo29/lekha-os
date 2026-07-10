@@ -66,6 +66,7 @@ Write a concise, professional summary for a board report. Highlight exposure, re
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const content = result.text ?? "Unable to generate summary.";
@@ -107,6 +108,7 @@ Return ONLY valid JSON:
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const raw = result.text ?? "{}";
@@ -150,6 +152,7 @@ Extract up to 10 clear, actionable obligations.`;
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const raw = result.text ?? "[]";
@@ -192,6 +195,7 @@ Suggest 3-5 controls.`;
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const raw = result.text ?? "[]";
@@ -238,6 +242,7 @@ Focus on AI regulation, privacy law, and financial regulation trends for 2025-20
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const raw = result.text ?? "{}";
@@ -283,6 +288,10 @@ export async function chat(
     { role: "user", parts: [{ text: message }] },
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.text ?? "Unable to generate a response. Please try again.";
 }

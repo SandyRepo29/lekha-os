@@ -59,6 +59,7 @@ Write a concise, professional executive summary suitable for a board report. Hig
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const content = result.text ?? "Unable to generate summary.";
@@ -132,6 +133,7 @@ Current governance agent context:
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   return result.text ?? "I was unable to generate a response. Please try again.";
@@ -198,6 +200,7 @@ Generate 2-4 observations and 2-3 recommendations based on the context. Be speci
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   const raw = result.text ?? "{}";
@@ -242,6 +245,7 @@ Write the reasoning from the perspective of a governance risk expert. Be specifi
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
 
   return result.text ?? "This recommendation addresses a governance gap that requires immediate attention.";

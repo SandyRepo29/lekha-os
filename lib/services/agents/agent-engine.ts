@@ -214,7 +214,7 @@ async function callGeminiWithTools(
 
 ${userPrompt}` }] },
     ],
-    config: {
+    config: { thinkingConfig: { thinkingBudget: 0 },
       temperature: 0.3,
       maxOutputTokens: 4096,
     },

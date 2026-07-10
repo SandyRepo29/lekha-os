@@ -49,7 +49,8 @@ Provide a concise 3-paragraph analysis:
 
 Keep each paragraph to 3–4 sentences. Write in a professional, advisory tone.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   const content = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Analysis unavailable.";
   await saveCache(orgId, orgId, `verification_eligibility_${context.programName}`, content);
   return content;
@@ -82,7 +83,8 @@ Write a 2-paragraph executive summary:
 
 Keep it board-ready: crisp, confident, under 100 words per paragraph.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   const content = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Summary unavailable.";
   await saveCache(orgId, orgId, "tva_platform_summary", content);
   return content;
@@ -109,7 +111,8 @@ Provide a structured review in 3 sections:
 
 Keep it concise: 2–3 sentences per section.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Analysis unavailable.";
 }
 
@@ -140,7 +143,8 @@ Generate a formal assessment with:
 
 Format with markdown headers. Be decisive and specific.`;
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }] });
+  const result = await ai.models.generateContent({ model: AI_MODEL, contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } }, });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Assessment unavailable.";
 }
 
@@ -168,6 +172,10 @@ Answer in 2–4 sentences. Be specific, helpful, and action-oriented.`;
     ...messages.map(m => ({ role: m.role, parts: [{ text: m.content }] })),
   ];
 
-  const result = await ai.models.generateContent({ model: AI_MODEL, contents });
+  const result = await ai.models.generateContent({
+    model: AI_MODEL,
+    contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to respond at this time.";
 }

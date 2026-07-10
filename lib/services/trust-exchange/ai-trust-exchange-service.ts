@@ -62,6 +62,7 @@ Provide a balanced, professional summary of this organization's trust posture an
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   const content = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
   if (content) await saveCache(orgId, "trust_exchange_summary", content);
@@ -103,6 +104,7 @@ Respond ONLY with JSON in this exact format:
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
@@ -128,6 +130,7 @@ Respond ONLY with a JSON array:
     const result = await ai.models.generateContent({
       model: AI_MODEL,
       contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: { thinkingConfig: { thinkingBudget: 0 } },
     });
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
@@ -157,6 +160,7 @@ You help users understand their trust posture, compare vendor profiles, identify
   const result = await ai.models.generateContent({
     model: AI_MODEL,
     contents,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
   });
   return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "I couldn't generate a response.";
 }
