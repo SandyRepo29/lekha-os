@@ -133,5 +133,9 @@ Be concise, strategic, and data-driven. Always reference specific metrics from t
   const lastUser = messages[messages.length - 1]?.content ?? "";
   const prompt = `${system}\n\nConversation:\n${history}\n\nRespond to: "${lastUser}"`;
 
-  return generateText(prompt);
+  try {
+    return await generateText(prompt);
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

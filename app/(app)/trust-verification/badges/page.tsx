@@ -68,7 +68,6 @@ export default async function BadgesPage() {
                   </span>
                   <div>
                     <div className="font-semibold text-sm">{badge.name}</div>
-                    <div className="text-[11px] text-[var(--color-ink-faint)] mt-0.5 capitalize">{badge.badgeType.replace(/_/g," ")}</div>
                   </div>
                   <span className="ml-auto"><CertificateStatusBadge status={badge.status} /></span>
                 </div>

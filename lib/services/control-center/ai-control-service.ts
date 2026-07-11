@@ -138,12 +138,16 @@ Answer questions about controls concisely and accurately. If asked about specifi
     ...messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
   ];
 
-  const result = await ai.models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 } },
-  });
-  return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate a response.";
+  try {
+    const result = await ai.models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 } },
+    });
+    return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate a response.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }
 
 // ─── Cache helpers ────────────────────────────────────────────────────────────

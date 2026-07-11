@@ -170,5 +170,9 @@ User question: "${message}"
 
 Answer in 2-4 sentences. Be specific, actionable, and governance-focused.`;
 
-  return generateText(prompt, { maxTokens: 300 });
+  try {
+    return await generateText(prompt, { maxTokens: 300 });
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

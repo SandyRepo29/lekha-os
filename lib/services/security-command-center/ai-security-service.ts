@@ -98,5 +98,9 @@ export async function chat(orgId: string, messages: Array<{ role: string; conten
   const last = messages[messages.length - 1];
 
   const fullPrompt = `${systemPrompt}\n\n${history}\nUser: ${last.content}\nAssistant:`;
-  return generateText(fullPrompt);
+  try {
+    return await generateText(fullPrompt);
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

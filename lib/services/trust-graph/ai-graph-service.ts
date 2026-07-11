@@ -87,10 +87,14 @@ Answer questions about governance relationships, dependencies, root causes, and 
     { role: "user" as const, parts: [{ text: message }] },
   ];
 
-  const result = await ai.models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 } },
-  });
-  return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
+  try {
+    const result = await ai.models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 } },
+    });
+    return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to generate response.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

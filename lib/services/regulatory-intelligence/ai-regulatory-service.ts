@@ -288,10 +288,14 @@ export async function chat(
     { role: "user", parts: [{ text: message }] },
   ];
 
-  const result = await ai.models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 } },
-  });
-  return result.text ?? "Unable to generate a response. Please try again.";
+  try {
+    const result = await ai.models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 } },
+    });
+    return result.text ?? "Unable to generate a response. Please try again.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

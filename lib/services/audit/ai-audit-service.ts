@@ -168,7 +168,7 @@ export async function chat(
   message: string,
   history: ChatMessage[] = []
 ): Promise<string> {
-  if (!isAIConfigured()) throw new Error("AI not configured.");
+  if (!isAIConfigured()) return "AI advisor is temporarily unavailable — configure GEMINI_API_KEY to enable.";
 
   const [statusCounts, openFindings, severityCounts, capasDue] = await Promise.all([
     auditRepo.countByStatus(orgId),
@@ -198,12 +198,16 @@ Answer in 2-4 sentences. If asked for a list, use plain text with commas. Do not
     contents.push({ role: h.role, parts: [{ text: h.text }] });
   }
 
-  const res = await getAI().models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
-  });
-  return res.text?.trim() ?? "Could not generate response.";
+  try {
+    const res = await getAI().models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
+    });
+    return res.text?.trim() ?? "Could not generate response.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }
 
 export async function getCachedSummary(

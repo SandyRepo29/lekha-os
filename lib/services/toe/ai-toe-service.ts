@@ -181,5 +181,9 @@ ${history}
 
 Answer the last user message. Be concise, specific, and action-oriented.`;
 
-  return generateText(prompt);
+  try {
+    return await generateText(prompt);
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

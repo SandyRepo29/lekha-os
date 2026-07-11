@@ -207,7 +207,7 @@ export async function chat(
   message: string,
   history: ChatMessage[] = []
 ): Promise<string> {
-  if (!isAIConfigured()) throw new Error("Gemini not configured.");
+  if (!isAIConfigured()) return "AI advisor is temporarily unavailable — configure GEMINI_API_KEY to enable.";
 
   const [frameworks, scores, allGaps, policies, evidence] = await Promise.all([
     frameworkRepo.findByOrg(orgId),
@@ -254,12 +254,16 @@ Answer in 2-4 sentences. Be specific and use the data above.`;
     );
   }
 
-  const res = await getAI().models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
-  });
-  return res.text?.trim() ?? "I couldn't generate a response. Please try again.";
+  try {
+    const res = await getAI().models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 }, temperature: 0.5, maxOutputTokens: 400 },
+    });
+    return res.text?.trim() ?? "I couldn't generate a response. Please try again.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }
 
 /* ============================================================

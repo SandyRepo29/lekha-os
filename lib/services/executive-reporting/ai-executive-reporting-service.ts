@@ -93,9 +93,13 @@ export async function chat(orgId: string, messages: { role: string; content: str
 
   const lastMessage = messages[messages.length - 1]?.content ?? "";
 
-  return generateText(
-    `You are the AI Executive Analyst™ for AUDT Governance OS. Current governance KPIs: ${kpiContext}.\n\nConversation:\n${history}\n\nAnswer the executive's latest question: "${lastMessage}"\n\nBe concise, data-driven, and board-appropriate. Reference specific KPI values when relevant.`
-  );
+  try {
+    return await generateText(
+      `You are the AI Executive Analyst™ for AUDT Governance OS. Current governance KPIs: ${kpiContext}.\n\nConversation:\n${history}\n\nAnswer the executive's latest question: "${lastMessage}"\n\nBe concise, data-driven, and board-appropriate. Reference specific KPI values when relevant.`
+    );
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }
 
 export async function generateTrendAnalysis(orgId: string, kpis: Record<string, number>): Promise<string> {

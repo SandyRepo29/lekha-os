@@ -68,7 +68,7 @@ Professional board-ready tone. No markdown formatting. No bullet points.`;
 
 /** AI Governance Copilot™ — contextual NL chat. */
 export async function chat(orgId: string, question: string, history: Array<{ role: "user" | "assistant"; content: string }> = []): Promise<string> {
-  if (!isAIConfigured()) throw new Error("AI not configured.");
+  if (!isAIConfigured()) return "AI advisor is temporarily unavailable — configure GEMINI_API_KEY to enable.";
 
   const overview = await getTrustIntelligenceOverview(orgId);
   const { orgTrustScore: score } = overview;
@@ -92,7 +92,11 @@ ${historyText ? `Conversation so far:\n${historyText}\n\n` : ""}User question: $
 
 Answer concisely (2-4 sentences) with actionable insight. Reference specific scores and metrics where relevant. No markdown.`;
 
-  return generate(prompt, 400);
+  try {
+    return await generate(prompt, 400);
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }
 
 /** Return cached executive summary without regenerating. */

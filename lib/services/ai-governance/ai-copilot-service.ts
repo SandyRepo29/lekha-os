@@ -320,6 +320,10 @@ Answer the governance officer's latest question: "${lastMessage}"
 
 Be concise, specific, and reference the governance context where relevant. Limit response to 3-5 sentences unless a list is clearly appropriate.`;
 
-  const reply = await generateText(prompt);
-  return { reply };
+  try {
+    const reply = await generateText(prompt);
+    return { reply };
+  } catch {
+    return { reply: "The AI advisor is temporarily unavailable — please try again in a moment." };
+  }
 }

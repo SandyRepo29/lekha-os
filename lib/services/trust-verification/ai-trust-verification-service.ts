@@ -32,7 +32,7 @@ export async function generateEligibilityAnalysis(orgId: string, context: {
   if (cached) return cached;
 
   const ai = getAI();
-  const prompt = `You are the AUDT Trust Verification Advisor™. Analyse the following organization's eligibility for the "${context.programName}" verification program.
+  const prompt = `You are the AUDT Trust Verification Advisor™. AUDT is an enterprise Governance, Risk & Compliance (GRC) platform — verification programs certify organizational governance practices (trust score, controls, evidence, risk posture), not blockchain, cryptocurrency, smart contracts, or digital assets. Analyse the following organization's eligibility for the "${context.programName}" verification program.
 
 Current metrics:
 - Trust Score: ${context.currentTrustScore}/100 (minimum required: ${context.minTrustScore})
@@ -96,10 +96,9 @@ export async function analyzeEvidenceQuality(orgId: string, evidence: Array<{
   title: string; evidenceType: string; status: string; freshnessDays?: number;
 }>): Promise<string> {
   if (!isAIConfigured()) return "AI analysis unavailable — configure GEMINI_API_KEY to enable.";
-  if (!isAIConfigured()) return "";
 
   const ai = getAI();
-  const prompt = `You are the AUDT AI Evidence Reviewer™. Analyze the following evidence submitted for a trust verification application.
+  const prompt = `You are the AUDT AI Evidence Reviewer™. AUDT is an enterprise Governance, Risk & Compliance (GRC) platform — this evidence review is about organizational governance documents (policies, audit reports, risk registers), not blockchain, cryptocurrency, or smart contracts. Analyze the following evidence submitted for a trust verification application.
 
 Evidence items (${evidence.length} total):
 ${evidence.map(e => `- ${e.title} (${e.evidenceType}) — Status: ${e.status}${e.freshnessDays ? `, Age: ${e.freshnessDays} days` : ""}`).join("\n")}
@@ -156,7 +155,7 @@ export async function chat(orgId: string, messages: Array<{ role: "user" | "mode
   if (!isAIConfigured()) return "AI chat unavailable — configure GEMINI_API_KEY to enable.";
 
   const ai = getAI();
-  const system = `You are the AUDT Trust Verification Authority™ AI Advisor. Help the user understand their verification status, certificates, and how to achieve or maintain trust verification.
+  const system = `You are the AUDT Trust Verification Authority™ AI Advisor. AUDT is an enterprise Governance, Risk & Compliance (GRC) platform — verification here means certifying organizational governance practices (trust score, controls, evidence, risk posture), not blockchain, cryptocurrency, smart contracts, or digital assets. Help the user understand their verification status, certificates, and how to achieve or maintain trust verification.
 
 Current context:
 - Total applications: ${context.totalVerifications}
@@ -172,10 +171,14 @@ Answer in 2–4 sentences. Be specific, helpful, and action-oriented.`;
     ...messages.map(m => ({ role: m.role, parts: [{ text: m.content }] })),
   ];
 
-  const result = await ai.models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 } },
-  });
-  return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to respond at this time.";
+  try {
+    const result = await ai.models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 } },
+    });
+    return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "Unable to respond at this time.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

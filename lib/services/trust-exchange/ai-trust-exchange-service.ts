@@ -157,10 +157,14 @@ You help users understand their trust posture, compare vendor profiles, identify
     ...messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
   ];
 
-  const result = await ai.models.generateContent({
-    model: AI_MODEL,
-    contents,
-    config: { thinkingConfig: { thinkingBudget: 0 } },
-  });
-  return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "I couldn't generate a response.";
+  try {
+    const result = await ai.models.generateContent({
+      model: AI_MODEL,
+      contents,
+      config: { thinkingConfig: { thinkingBudget: 0 } },
+    });
+    return result.candidates?.[0]?.content?.parts?.[0]?.text ?? "I couldn't generate a response.";
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

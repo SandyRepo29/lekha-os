@@ -160,5 +160,9 @@ Answer questions about asset governance, criticality, dependencies, regulatory m
   const lastUser = messages.at(-1)?.content ?? "";
 
   const prompt = `${systemContext}\n\nConversation:\n${history}\n\nRespond to the last user message in 2-4 sentences.`;
-  return generateText(prompt);
+  try {
+    return await generateText(prompt);
+  } catch {
+    return "The AI advisor is temporarily unavailable — please try again in a moment.";
+  }
 }

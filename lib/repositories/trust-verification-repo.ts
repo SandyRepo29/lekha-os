@@ -52,7 +52,13 @@ export async function getDashboardMetrics(orgId: string) {
     db.select({ c: sql<number>`count(*)::int` }).from(tvaVerifications).where(and(eq(tvaVerifications.organizationId, orgId), eq(tvaVerifications.status, "pending"))),
     db.select({ c: sql<number>`count(*)::int` }).from(verificationCertificates).where(and(eq(verificationCertificates.organizationId, orgId), eq(verificationCertificates.status, "active"), lte(verificationCertificates.expiresAt, soon))),
     db.select({ c: sql<number>`count(*)::int` }).from(tvaVerifications).where(and(eq(tvaVerifications.organizationId, orgId), eq(tvaVerifications.verificationLevel, "level_4"))),
-    db.select().from(tvaVerifications).where(eq(tvaVerifications.organizationId, orgId)).orderBy(desc(tvaVerifications.createdAt)).limit(5),
+    db
+      .select({ tv: tvaVerifications, programName: verificationPrograms.name })
+      .from(tvaVerifications)
+      .leftJoin(verificationPrograms, eq(tvaVerifications.programId, verificationPrograms.id))
+      .where(eq(tvaVerifications.organizationId, orgId))
+      .orderBy(desc(tvaVerifications.createdAt))
+      .limit(5),
     db.select().from(verificationCertificates).where(eq(verificationCertificates.organizationId, orgId)).orderBy(desc(verificationCertificates.issuedAt)).limit(5),
   ]);
 
@@ -65,7 +71,7 @@ export async function getDashboardMetrics(orgId: string) {
     pending: pending[0]?.c ?? 0,
     expiringSoon: expiringSoon[0]?.c ?? 0,
     trustLeaders: trustLeaders[0]?.c ?? 0,
-    recentApplications,
+    recentApplications: recentApplications.map(r => ({ ...r.tv, programName: r.programName ?? undefined })),
     recentCerts,
   };
 }

@@ -3,6 +3,7 @@
 import { requireUser } from "@/lib/auth/session";
 import { getPublicRegistry } from "@/lib/services/trust-verification/trust-verification-service";
 import { Globe, ExternalLink, ShieldCheck, Search } from "lucide-react";
+import { RegistryMinScoreFilter } from "@/components/trust-verification/registry-filter";
 
 export default async function RegistryPage({ searchParams }: { searchParams: Promise<{ minScore?: string }> }) {
   await requireUser();
@@ -30,16 +31,7 @@ export default async function RegistryPage({ searchParams }: { searchParams: Pro
           <input placeholder="Search by organization, certificate ID…"
             className="w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] py-2.5 pl-9 pr-4 text-sm focus:outline-none focus:border-[var(--color-blue)]/50" />
         </div>
-        <form>
-          <select name="minScore" defaultValue={params.minScore ?? ""}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => e.target.form?.submit()}
-            className="rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2.5 text-sm focus:outline-none">
-            <option value="">All scores</option>
-            <option value="80">Score ≥ 80</option>
-            <option value="85">Score ≥ 85</option>
-            <option value="90">Score ≥ 90</option>
-          </select>
-        </form>
+        <RegistryMinScoreFilter defaultValue={params.minScore ?? ""} />
       </div>
 
       {registry.length > 0 ? (

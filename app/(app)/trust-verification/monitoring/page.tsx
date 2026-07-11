@@ -103,7 +103,9 @@ export default async function MonitoringPage() {
                   <div className="text-xs font-medium font-mono">{ev.eventType}</div>
                   {ev.details && Object.keys(ev.details).length > 0 && (
                     <div className="text-[11px] text-[var(--color-ink-faint)] mt-0.5 truncate">
-                      {JSON.stringify(ev.details)}
+                      {Object.entries(ev.details as Record<string, unknown>)
+                        .map(([k, v]) => `${k.replace(/([A-Z])/g, " $1").toLowerCase()}: ${v}`)
+                        .join(" · ")}
                     </div>
                   )}
                 </div>
