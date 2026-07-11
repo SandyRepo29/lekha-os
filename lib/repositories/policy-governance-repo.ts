@@ -15,7 +15,7 @@ import {
   type PolicyReview,
   type PolicyAttestation,
 } from "@/lib/db/schema";
-import { and, eq, sql, desc, count, lt, lte } from "drizzle-orm";
+import { and, eq, sql, desc, count, lt, lte, isNull } from "drizzle-orm";
 
 export type PolicyWithMeta = Policy & {
   ownerName: string | null;
@@ -109,6 +109,7 @@ export async function findPoliciesByOrg(
     .where(
       and(
         eq(policies.organizationId, orgId),
+        isNull(policies.deletedAt),
         filters?.status ? sql`${policies.status} = ${filters.status}` : undefined,
         filters?.policyType ? eq(policies.policyType, filters.policyType) : undefined,
         filters?.search ? sql`${policies.name} ILIKE ${"%" + filters.search + "%"}` : undefined
@@ -313,13 +314,6 @@ export async function updatePolicy(
     .where(eq(policies.id, policyId))
     .returning();
   return row;
-}
-
-/** Delete a policy. */
-export async function deletePolicy(policyId: string, orgId: string): Promise<void> {
-  await db
-    .delete(policies)
-    .where(and(eq(policies.id, policyId), eq(policies.organizationId, orgId)));
 }
 
 /** Gather health computation inputs. */
@@ -556,7 +550,7 @@ export async function getDashboardMetrics(orgId: string): Promise<PolicyDashboar
     })
     .from(policies)
     .leftJoin(profiles, eq(policies.ownerId, profiles.id))
-    .where(eq(policies.organizationId, orgId));
+    .where(and(eq(policies.organizationId, orgId), isNull(policies.deletedAt)));
 
   const total = allPolicies.length;
   const countByStatus = (s: string) => allPolicies.filter((p) => p.policy.status === s).length;
@@ -618,7 +612,7 @@ export async function getDashboardMetrics(orgId: string): Promise<PolicyDashboar
   }
 
   const weakPolicies: PolicyWithMeta[] = allPolicies
-    .filter((p) => (p.policy.healthScore ?? 0) < 60 && !["retired", "archived"].includes(p.policy.status))
+    .filter((p) => (p.policy.healthScore ?? 0) > 0 && (p.policy.healthScore ?? 0) < 60 && !["retired", "archived"].includes(p.policy.status))
     .sort((a, b) => (a.policy.healthScore ?? 0) - (b.policy.healthScore ?? 0))
     .slice(0, 5)
     .map(({ policy, ownerName, ownerEmail }) => ({

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { policies, policyVersions, auditLogs } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import * as repo from "@/lib/repositories/policy-governance-repo";
+import { softDeletePolicy } from "@/lib/repositories/policy-repo";
 import { computePolicyHealth } from "@/lib/services/policy-health";
 import { DomainError } from "@/lib/services/errors";
 
@@ -26,7 +27,7 @@ export async function getDashboardMetrics(orgId: string) {
 
 export async function createPolicy(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     name: string;
     description?: string;
@@ -54,7 +55,7 @@ export async function createPolicy(
     nextReviewDate: data.nextReviewDate,
     attestationRequired: data.attestationRequired ?? false,
     audience: data.audience ?? "everyone",
-    createdBy: userId,
+    createdBy: userId ?? undefined,
   });
 
   await logAction(orgId, userId, "policy_governance.policy_created", policy.id, { name: policy.name });
@@ -65,7 +66,7 @@ export async function createPolicy(
 
 export async function updatePolicy(
   orgId: string,
-  userId: string,
+  userId: string | null,
   policyId: string,
   data: Partial<{
     name: string;
@@ -93,7 +94,7 @@ export async function updatePolicy(
       version: existing.version,
       storagePath: existing.storagePath ?? undefined,
       notes: data.changeSummary ?? "Content updated",
-      createdBy: userId,
+      createdBy: userId ?? undefined,
     });
   }
 
@@ -104,11 +105,11 @@ export async function updatePolicy(
 
 // ─── Delete ──────────────────────────────────────────────────────────────────
 
-export async function deletePolicy(orgId: string, userId: string, policyId: string): Promise<void> {
+export async function deletePolicy(orgId: string, userId: string | null, policyId: string): Promise<void> {
   const existing = await repo.findPolicyById(orgId, policyId);
   if (!existing) throw new DomainError("Policy not found.");
 
-  await repo.deletePolicy(policyId, orgId);
+  await softDeletePolicy(policyId, orgId);
   await logAction(orgId, userId, "policy_governance.policy_deleted", policyId, { name: existing.name });
 }
 
@@ -241,7 +242,7 @@ export async function unlinkFramework(orgId: string, policyId: string, framework
 
 async function logAction(
   orgId: string,
-  userId: string,
+  userId: string | null,
   action: string,
   entityId: string,
   meta: Record<string, unknown>

@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!body) return err("Invalid body", 400);
 
   try {
-    const updated = await updatePolicy(ctx.orgId, ctx.keyId, id, body);
+    const updated = await updatePolicy(ctx.orgId, null, id, body);
     return ok({ policy: updated });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);
@@ -46,7 +46,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
   const { id } = await params;
   try {
-    await deletePolicy(ctx.orgId, ctx.keyId, id);
+    await deletePolicy(ctx.orgId, null, id);
     return ok({ deleted: true });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);

@@ -61,7 +61,7 @@ export default async function PolicyDetailPage({
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold">{policy.name}</h1>
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <PolicyStatusBadge status={policy.status} />
-            <PolicyHealthBadge score={policy.healthScore ?? null} />
+            <PolicyHealthBadge score={policy.healthScore ? policy.healthScore : null} />
             <span className="text-xs text-[var(--color-ink-dim)]">v{policy.version}</span>
             {policy.policyType && (
               <span className="text-xs text-[var(--color-ink-dim)]">· {policy.policyType}</span>
@@ -164,7 +164,7 @@ export default async function PolicyDetailPage({
           <Card className="p-5 space-y-3">
             <h3 className="font-semibold">Policy Health™</h3>
             <div className="flex items-center justify-between mb-2">
-              <PolicyHealthBadge score={policy.healthScore ?? null} showScore />
+              <PolicyHealthBadge score={policy.healthScore ? policy.healthScore : null} showScore />
             </div>
             <div className="space-y-2">
               {healthComponents.map(({ key, label, weight }) => (

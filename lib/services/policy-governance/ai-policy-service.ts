@@ -65,9 +65,9 @@ ${policyList || "No policies found."}
 
 Based on common enterprise governance requirements (ISO 27001, SOC 2, DPDP, HIPAA, etc.), identify:
 1. MISSING policies — important policy types not present
-2. WEAK policies — policies with low control/framework linkage or problematic status
+2. WEAK policies — policies with problematic status (draft/expired) or genuinely low Controls/Frameworks counts shown above
 3. OUTDATED policies — policies likely needing review (check for common outdated types)
-4. UNMAPPED policies — policies not linked to frameworks or controls
+4. UNMAPPED policies — ONLY policies whose Controls count above is exactly 0 AND Frameworks count above is exactly 0. Use the exact Controls/Frameworks numbers given above, not general assumptions — never list a policy as unmapped or weak-by-linkage if its Controls or Frameworks count is greater than 0.
 
 Return ONLY a JSON object with this exact shape (no markdown, no explanation):
 {

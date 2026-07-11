@@ -143,7 +143,7 @@ export default async function PolicyLibraryPage({
                       {p.nextReviewDate ?? "—"}
                     </td>
                     <td className="px-4 py-3">
-                      <PolicyHealthBadge score={p.healthScore ?? null} />
+                      <PolicyHealthBadge score={p.healthScore ? p.healthScore : null} />
                     </td>
                   </tr>
                 ))}

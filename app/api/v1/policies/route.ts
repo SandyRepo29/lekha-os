@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   if (!body?.name) return err("name is required", 400);
 
   try {
-    const policy = await createPolicy(ctx.orgId, ctx.keyId, body);
+    const policy = await createPolicy(ctx.orgId, null, body);
     return ok({ policy }, 201);
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);
