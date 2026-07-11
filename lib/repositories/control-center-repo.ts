@@ -245,7 +245,8 @@ export async function getDashboardMetrics(orgId: string) {
   const healthy = rows.filter((r) => (r.health ?? 0) >= 80).length;
   const weak = rows.filter((r) => r.health !== null && (r.health ?? 0) < 60).length;
   const implemented = rows.filter((r) => r.status === "implemented").length;
-  const avgHealth = total === 0 ? 0 : Math.round(rows.reduce((s, r) => s + (r.health ?? 0), 0) / total);
+  const scoredHealth = rows.filter((r) => r.health !== null);
+  const avgHealth = scoredHealth.length === 0 ? 0 : Math.round(scoredHealth.reduce((s, r) => s + (r.health ?? 0), 0) / scoredHealth.length);
   const avgEffectiveness = total === 0 ? 0 : Math.round(rows.filter((r) => r.effectiveness !== null).reduce((s, r) => s + (r.effectiveness ?? 0), 0) / Math.max(1, rows.filter((r) => r.effectiveness !== null).length));
 
   // Overdue tests: next_test_date < today

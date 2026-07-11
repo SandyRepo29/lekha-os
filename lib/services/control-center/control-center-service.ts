@@ -104,9 +104,7 @@ export async function updateControl(params: {
 // ─── Delete ──────────────────────────────────────────────────────────────────
 
 export async function deleteControl(orgId: string, actorId: string, id: string) {
-  await db
-    .delete(controls)
-    .where(and(eq(controls.id, id), eq(controls.organizationId, orgId)));
+  await repo.softDeleteControl(id, orgId);
   await logAction(orgId, actorId, "control_center.control_deleted", id, { id });
 }
 
