@@ -14,7 +14,11 @@ export async function GET(request: NextRequest) {
   const rl = checkRateLimit(ctx.keyId, ctx.permissions);
   if (!rl.allowed) return withRateLimitHeaders(err("Rate limit exceeded.", 429), rl);
 
-  const treatments = await treatmentRepo.findByOrg(ctx.orgId);
+  const { searchParams } = request.nextUrl;
+  const treatments = await treatmentRepo.findByOrg(ctx.orgId, {
+    riskId: searchParams.get("riskId") ?? undefined,
+    status: searchParams.get("status") ?? undefined,
+  });
   return withRateLimitHeaders(ok(treatments), rl);
 }
 

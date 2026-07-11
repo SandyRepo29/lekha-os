@@ -72,7 +72,7 @@ export default async function RiskListPage({
           ))}
         </div>
         <div className="flex flex-wrap gap-1">
-          {["all", "operational", "cyber_security", "compliance", "vendor", "financial", "regulatory"].map((c) => (
+          {["all", ...Object.keys(RISK_CATEGORY_LABELS)].map((c) => (
             <RiskFilterChip
               key={c}
               label={c === "all" ? "All Categories" : RISK_CATEGORY_LABELS[c] ?? c}

@@ -29,6 +29,15 @@ const ACTION_MAP: Record<string, ActionDef> = {
   "team.role_changed":           { icon: Key,       color: "text-amber-400", label: (m) => `Changed role to ${m?.role ?? ""}` },
   "team.member_deactivated":     { icon: UserX,     color: "text-red-400", label: () => "Deactivated team member" },
   "team.member_reactivated":     { icon: UserCheck, color: "text-emerald-400", label: () => "Reactivated team member" },
+  "risk.created":                { icon: Plus,      color: "text-emerald-400", label: (m) => `Created risk "${m?.title ?? ""}"` },
+  "risk.updated":                { icon: Pencil,    color: "text-[var(--color-blue)]", label: (m) => (m?.status ? `Risk status changed to ${m.status}` : "Updated risk details") },
+  "risk.deleted":                { icon: Trash2,    color: "text-red-400", label: (m) => `Deleted risk "${m?.title ?? ""}"` },
+  "risk.closed":                 { icon: ArrowRightLeft, color: "text-emerald-400", label: () => "Risk closed" },
+  "risk.accepted":               { icon: ArrowRightLeft, color: "text-amber-400", label: () => "Risk accepted" },
+  "risk.transferred":            { icon: ArrowRightLeft, color: "text-amber-400", label: () => "Risk transferred" },
+  "risk.reviewed":                { icon: ClipboardCheck, color: "text-indigo-400", label: (m) => `Logged risk review: ${m?.outcome ?? ""}` },
+  "risk.treatment_created":      { icon: Plus,      color: "text-[var(--color-blue)]", label: (m) => `Added treatment: "${m?.action ?? ""}"` },
+  "risk.treatment_completed":    { icon: Shield,    color: "text-emerald-400", label: () => "Completed a treatment action" },
 };
 
 const FALLBACK: ActionDef = {

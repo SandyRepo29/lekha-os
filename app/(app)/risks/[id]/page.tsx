@@ -10,7 +10,7 @@ import { getRisk } from "@/lib/services/risk/risk-service";
 import { getCachedNarrative } from "@/lib/services/risk/ai-risk-service";
 import { db } from "@/lib/db";
 import { count, eq } from "drizzle-orm";
-import { riskVendors, riskControls, riskFindings, riskPolicies } from "@/lib/db/schema";
+import { riskVendors, riskControls, riskFindings, riskPolicies, riskFrameworks, riskEvidence } from "@/lib/db/schema";
 import { RiskStatusBadge, RiskScoreBadge, RiskCategoryBadge, TreatmentStatusBadge } from "@/components/risk/risk-status-badge";
 import { formatDate, isDueSoon, isOverdue } from "@/components/risk/risk-ui";
 import { RiskDetailActions } from "@/components/risk/risk-detail-actions";
@@ -22,19 +22,23 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
   const session = await requireUser();
   if (!session.org) return notFound();
 
-  const [risk, aiNarrative, vendorCountResult, controlCountResult, findingCountResult, policyCountResult] = await Promise.all([
+  const [risk, aiNarrative, vendorCountResult, controlCountResult, findingCountResult, policyCountResult, frameworkCountResult, evidenceCountResult] = await Promise.all([
     getRisk(session.org.id, id),
     getCachedNarrative(session.org.id, id),
     db.select({ count: count() }).from(riskVendors).where(eq(riskVendors.riskId, id)),
     db.select({ count: count() }).from(riskControls).where(eq(riskControls.riskId, id)),
     db.select({ count: count() }).from(riskFindings).where(eq(riskFindings.riskId, id)),
     db.select({ count: count() }).from(riskPolicies).where(eq(riskPolicies.riskId, id)),
+    db.select({ count: count() }).from(riskFrameworks).where(eq(riskFrameworks.riskId, id)),
+    db.select({ count: count() }).from(riskEvidence).where(eq(riskEvidence.riskId, id)),
   ]);
 
   const linkedVendorCount = vendorCountResult[0]?.count ?? 0;
   const linkedControlCount = controlCountResult[0]?.count ?? 0;
   const linkedFindingCount = findingCountResult[0]?.count ?? 0;
   const linkedPolicyCount = policyCountResult[0]?.count ?? 0;
+  const linkedFrameworkCount = frameworkCountResult[0]?.count ?? 0;
+  const linkedEvidenceCount = evidenceCountResult[0]?.count ?? 0;
 
   if (!risk) return notFound();
 
@@ -223,7 +227,7 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
       {/* Connected Entities */}
       <section className="rounded-2xl border border-[var(--color-line)] bg-white p-5 space-y-4">
         <h2 className="font-[family-name:var(--font-display)] text-base font-semibold">Connected Entities</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           <Link href="/vendors" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedVendorCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedVendorCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Vendors</div>
@@ -239,6 +243,14 @@ export default async function RiskDetailPage({ params }: { params: Promise<{ id:
           <Link href="/compliance/policies" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
             <div className={`text-2xl font-bold ${linkedPolicyCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedPolicyCount}</div>
             <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Policies</div>
+          </Link>
+          <Link href="/compliance/frameworks" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
+            <div className={`text-2xl font-bold ${linkedFrameworkCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedFrameworkCount}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Frameworks</div>
+          </Link>
+          <Link href="/compliance/evidence" className="rounded-xl border border-[var(--color-line)] p-3 hover:bg-[#F8F9FB] transition-colors">
+            <div className={`text-2xl font-bold ${linkedEvidenceCount > 0 ? "text-[var(--color-ink)]" : "text-[var(--color-ink-dim)]"}`}>{linkedEvidenceCount}</div>
+            <div className="text-xs text-[var(--color-ink-dim)] mt-0.5">Linked Evidence</div>
           </Link>
         </div>
         <p className="text-xs text-[var(--color-ink-dim)]">

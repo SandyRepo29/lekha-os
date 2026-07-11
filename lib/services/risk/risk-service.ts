@@ -40,7 +40,7 @@ export async function getRisk(orgId: string, riskId: string): Promise<RiskDetail
 
 export async function createRisk(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   input: {
     title: string;
     description?: string | null;
@@ -110,7 +110,7 @@ export async function createRisk(params: {
 
 export async function updateRisk(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
   input: Partial<{
     title: string;
@@ -159,7 +159,7 @@ export async function updateRisk(params: {
 
 export async function updateRiskStatus(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
   status: Risk["status"];
 }): Promise<void> {
@@ -191,7 +191,7 @@ export async function updateRiskStatus(params: {
 
 export async function deleteRisk(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
 }): Promise<void> {
   const existing = await riskRepo.findById(params.orgId, params.riskId);
@@ -215,7 +215,7 @@ export async function deleteRisk(params: {
 
 export async function addReview(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
   input: {
     reviewDate: string;
@@ -267,7 +267,7 @@ export async function addReview(params: {
 
 export async function addTreatment(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
   input: {
     action: string;
@@ -309,7 +309,7 @@ export async function addTreatment(params: {
 
 export async function completeTreatment(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   riskId: string;
   treatmentId: string;
 }): Promise<void> {

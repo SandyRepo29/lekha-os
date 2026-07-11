@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const { id } = await params;
   try {
     const body = await request.json();
-    await updateRisk({ orgId: ctx.orgId, actorId: ctx.orgId, riskId: id, input: body });
+    await updateRisk({ orgId: ctx.orgId, actorId: null, riskId: id, input: body });
     const updated = await getRisk(ctx.orgId, id);
     return withRateLimitHeaders(ok(updated), rl);
   } catch (e) {
@@ -51,7 +51,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
   const { id } = await params;
   try {
-    await deleteRisk({ orgId: ctx.orgId, actorId: ctx.orgId, riskId: id });
+    await deleteRisk({ orgId: ctx.orgId, actorId: null, riskId: id });
     return withRateLimitHeaders(ok({ deleted: true }), rl);
   } catch (e) {
     if (e instanceof DomainError) return withRateLimitHeaders(err(e.message, 422), rl);

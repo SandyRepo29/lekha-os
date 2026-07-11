@@ -35,11 +35,20 @@ export async function findByRisk(riskId: string): Promise<RiskTreatment[]> {
     .orderBy(desc(riskTreatments.createdAt));
 }
 
-export async function findByOrg(orgId: string): Promise<RiskTreatment[]> {
+export async function findByOrg(
+  orgId: string,
+  filters?: { riskId?: string; status?: string }
+): Promise<RiskTreatment[]> {
   return db
     .select()
     .from(riskTreatments)
-    .where(eq(riskTreatments.organizationId, orgId))
+    .where(
+      and(
+        eq(riskTreatments.organizationId, orgId),
+        filters?.riskId ? eq(riskTreatments.riskId, filters.riskId) : undefined,
+        filters?.status ? eq(riskTreatments.status, filters.status as RiskTreatment["status"]) : undefined
+      )
+    )
     .orderBy(desc(riskTreatments.createdAt));
 }
 

@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     const result = await createRisk({
       orgId: ctx.orgId,
-      actorId: ctx.orgId,
+      actorId: null,
       input: {
         title: body.title,
         description: body.description ?? null,
