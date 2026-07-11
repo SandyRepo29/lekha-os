@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     const result = await createAudit({
       orgId: ctx.orgId,
-      actorId: ctx.orgId,
+      actorId: null,
       input: {
         name:        body.name,
         auditType:   body.auditType,

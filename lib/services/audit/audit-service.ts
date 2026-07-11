@@ -74,7 +74,7 @@ export async function getAudit(
 
 export async function createAudit(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   input: {
     name: string;
     auditType?: "internal" | "external" | "vendor" | "security" | "compliance" | "regulatory";
@@ -131,7 +131,7 @@ export async function createAudit(params: {
 
 export async function updateAudit(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   auditId: string;
   input: Partial<{
     name: string;
@@ -167,7 +167,7 @@ export async function updateAudit(params: {
 
 export async function updateAuditStatus(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   auditId: string;
   status: "planned" | "in_progress" | "completed" | "cancelled";
 }): Promise<void> {
@@ -199,7 +199,7 @@ export async function updateAuditStatus(params: {
 
 export async function deleteAudit(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   auditId: string;
 }): Promise<void> {
   const existing = await auditRepo.findById(params.orgId, params.auditId);

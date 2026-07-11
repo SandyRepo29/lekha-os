@@ -29,7 +29,7 @@ export async function getFinding(
 
 export async function createFinding(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   input: {
     auditId: string;
     title: string;
@@ -79,7 +79,7 @@ export async function createFinding(params: {
 
 export async function updateFinding(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   findingId: string;
   input: Partial<{
     title: string;
@@ -110,7 +110,7 @@ export async function updateFinding(params: {
 
 export async function closeFinding(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   findingId: string;
 }): Promise<void> {
   const existing = await findingRepo.findById(params.orgId, params.findingId);

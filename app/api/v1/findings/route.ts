@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     const result = await createFinding({
       orgId: ctx.orgId,
-      actorId: ctx.orgId,
+      actorId: null,
       input: {
         auditId:        body.auditId,
         title:          body.title,

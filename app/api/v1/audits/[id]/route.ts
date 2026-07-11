@@ -55,7 +55,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    await updateAudit({ orgId: ctx.orgId, actorId: ctx.orgId, auditId: id, input: body });
+    await updateAudit({ orgId: ctx.orgId, actorId: null, auditId: id, input: body });
     const updated = await getAudit(ctx.orgId, id);
     return withRateLimitHeaders(ok(updated), rl);
   } catch (e) {
@@ -86,7 +86,7 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    await deleteAudit({ orgId: ctx.orgId, actorId: ctx.orgId, auditId: id });
+    await deleteAudit({ orgId: ctx.orgId, actorId: null, auditId: id });
     return withRateLimitHeaders(ok({ deleted: true }), rl);
   } catch (e) {
     if (e instanceof DomainError) return withRateLimitHeaders(err(e.message, 422), rl);

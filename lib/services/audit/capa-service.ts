@@ -26,7 +26,7 @@ export async function getCapa(
 
 export async function createCapa(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   input: {
     findingId: string;
     title: string;
@@ -80,7 +80,7 @@ export async function createCapa(params: {
 
 export async function updateCapa(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   capaId: string;
   input: Partial<{
     title: string;
@@ -112,7 +112,7 @@ export async function updateCapa(params: {
 
 export async function completeCorrectiveAction(params: {
   orgId: string;
-  actorId: string;
+  actorId: string | null;
   capaId: string;
   completionNotes?: string;
 }): Promise<void> {

@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     const result = await createCapa({
       orgId: ctx.orgId,
-      actorId: ctx.orgId,
+      actorId: null,
       input: {
         findingId:   body.findingId,
         title:       body.title,
