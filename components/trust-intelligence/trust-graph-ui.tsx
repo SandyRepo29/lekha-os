@@ -58,10 +58,10 @@ export function EntityLegend() {
 
 export function ImpactSeverityBadge({ severity }: { severity: string }) {
   const styles: Record<string, string> = {
-    Critical: "bg-red-500/15 text-red-400 border-red-500/25",
-    High: "bg-orange-500/15 text-orange-400 border-orange-500/25",
-    Medium: "bg-amber-500/15 text-amber-400 border-amber-500/25",
-    Low: "bg-blue-500/15 text-blue-400 border-blue-500/25",
+    Critical: "bg-red-100 text-red-700 border-red-200",
+    High: "bg-orange-100 text-orange-700 border-orange-200",
+    Medium: "bg-amber-100 text-amber-700 border-amber-200",
+    Low: "bg-blue-100 text-blue-700 border-blue-200",
   };
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold", styles[severity] ?? styles.Medium)}>

@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 type StatAccent = "danger" | "warn" | "good" | "neutral";
 
 const ACCENT_BORDER: Record<StatAccent, string> = {
-  danger:  "border-red-500/25",
-  warn:    "border-amber-500/25",
-  good:    "border-emerald-500/25",
+  danger:  "border-red-200",
+  warn:    "border-amber-200",
+  good:    "border-emerald-200",
   neutral: "border-[var(--color-line)]",
 };
 
@@ -74,10 +74,10 @@ export function TIStat({
 }) {
   const accentClass = {
     blue:   "text-[var(--color-blue)]",
-    green:  "text-green-400",
-    amber:  "text-amber-400",
-    red:    "text-red-400",
-    purple: "text-purple-400",
+    green:  "text-green-700",
+    amber:  "text-amber-700",
+    red:    "text-red-700",
+    purple: "text-purple-700",
   }[accent ?? "blue"];
 
   return (
@@ -127,9 +127,9 @@ export function ComponentBar({
 
 export function PriorityChip({ priority }: { priority: "high" | "medium" | "low" }) {
   const styles = {
-    high: "bg-red-500/10 border-red-500/30 text-red-400",
-    medium: "bg-amber-500/10 border-amber-500/30 text-amber-400",
-    low: "bg-blue-500/10 border-blue-500/30 text-blue-400",
+    high: "bg-red-100 border-red-200 text-red-700",
+    medium: "bg-amber-100 border-amber-200 text-amber-700",
+    low: "bg-blue-100 border-blue-200 text-blue-700",
   };
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide", styles[priority])}>
@@ -140,11 +140,11 @@ export function PriorityChip({ priority }: { priority: "high" | "medium" | "low"
 
 export function CategoryChip({ category }: { category: string }) {
   const styles: Record<string, string> = {
-    vendor: "bg-purple-500/10 border-purple-500/30 text-purple-400",
-    risk: "bg-red-500/10 border-red-500/30 text-red-400",
-    control: "bg-blue-500/10 border-blue-500/30 text-blue-400",
-    audit: "bg-amber-500/10 border-amber-500/30 text-amber-400",
-    compliance: "bg-green-500/10 border-green-500/30 text-green-400",
+    vendor: "bg-purple-100 border-purple-200 text-purple-700",
+    risk: "bg-red-100 border-red-200 text-red-700",
+    control: "bg-blue-100 border-blue-200 text-blue-700",
+    audit: "bg-amber-100 border-amber-200 text-amber-700",
+    compliance: "bg-green-100 border-green-200 text-green-700",
   };
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium capitalize", styles[category] ?? "bg-white/5 border-white/10 text-[var(--color-ink-dim)]")}>

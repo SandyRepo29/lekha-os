@@ -11,7 +11,8 @@ import {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-async function logAudit(orgId: string, userId: string, action: string) {
+async function logAudit(orgId: string, userId: string | null, action: string) {
+  if (!userId) return;
   await db
     .insert(auditLogs)
     .values({ organizationId: orgId, actorId: userId, action, entityType: "benchmarking", metadata: {} })
@@ -78,7 +79,7 @@ async function gatherOrgScores(orgId: string): Promise<Partial<Record<BenchmarkC
 
 // ─── Main compute function ────────────────────────────────────────────────────
 
-export async function computeAndSaveBenchmark(orgId: string, userId: string) {
+export async function computeAndSaveBenchmark(orgId: string, userId: string | null) {
   // 1. Get org profile for industry/size
   const orgRows = await db.query.organizations.findFirst({ where: (o, { eq }) => eq(o.id, orgId) });
   const industry = normalizeIndustry(orgRows?.industry);

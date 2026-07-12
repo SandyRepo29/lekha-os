@@ -28,7 +28,7 @@ export function TrendStatCard({
   const Icon = direction === "up" ? TrendingUp : direction === "down" ? TrendingDown : Minus;
   const trendColor = direction === "stable"
     ? "text-[var(--color-ink-faint)]"
-    : isPositive ? "text-emerald-400" : "text-red-400";
+    : isPositive ? "text-emerald-700" : "text-red-700";
 
   return (
     <div className="flex flex-col gap-1">

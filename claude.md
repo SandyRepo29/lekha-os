@@ -1133,6 +1133,19 @@ GET /api/v1/contracts/renewals/export/csv   Renewals CSV — expiry, notice peri
 GET /api/v1/contracts/clauses/export/csv    Clause Risk CSV — risk level + AI analysis per clause (session auth)
 GET /api/v1/assets/export/csv              Assets CSV export (session auth)
 
+--- Trust Operations Engine™ (Workflows, Approvals, Automation, AI) ---
+GET /api/v1/operations/dashboard           TOE dashboard — metrics, recent events, pending approvals, active instances
+GET /api/v1/operations/analytics           Workflow analytics — performance metrics, SLA compliance
+GET /api/v1/operations/events              Event stream (?event_type=, ?page=, ?pageSize=)
+POST /api/v1/operations/events             Publish event (read_write key)
+GET /api/v1/operations/workflows           Workflow list (?page=, ?pageSize=)
+POST /api/v1/operations/workflows          Create workflow (read_write key)
+GET /api/v1/operations/approvals           Approval list (?status=, ?assigneeId=, ?page=, ?pageSize=)
+POST /api/v1/operations/approvals          Create approval request (read_write key)
+GET /api/v1/operations/automation-rules    Automation rule list (?page=, ?pageSize=)
+POST /api/v1/operations/automation-rules   Create automation rule (read_write key)
+GET /api/v1/operations/ai-decisions        AI decision list (?status=, ?priority=, ?page=, ?pageSize=)
+
 --- Finance Console (admin-only) ---
 /finance                                     Dashboard — pending invoices, recent transactions, revenue KPIs
 /finance/invoices                            Invoice list (status/month filter, search, pagination)

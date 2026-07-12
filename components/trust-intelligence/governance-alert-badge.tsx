@@ -4,11 +4,11 @@ import { AlertTriangle, AlertCircle, Info, ShieldAlert, Zap } from "lucide-react
 type Severity = "info" | "low" | "medium" | "high" | "critical";
 
 const SEVERITY_CONFIG: Record<Severity, { label: string; icon: React.ElementType; className: string }> = {
-  info:     { label: "Info",     icon: Info,          className: "bg-blue-500/10 text-blue-300 border-blue-500/20" },
-  low:      { label: "Low",      icon: AlertCircle,   className: "bg-slate-500/10 text-slate-300 border-slate-500/20" },
-  medium:   { label: "Medium",   icon: AlertTriangle, className: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
-  high:     { label: "High",     icon: ShieldAlert,   className: "bg-orange-500/10 text-orange-300 border-orange-500/20" },
-  critical: { label: "Critical", icon: Zap,           className: "bg-red-500/10 text-red-300 border-red-500/20" },
+  info:     { label: "Info",     icon: Info,          className: "bg-blue-100 text-blue-700 border-blue-200" },
+  low:      { label: "Low",      icon: AlertCircle,   className: "bg-slate-100 text-slate-700 border-slate-200" },
+  medium:   { label: "Medium",   icon: AlertTriangle, className: "bg-amber-100 text-amber-700 border-amber-200" },
+  high:     { label: "High",     icon: ShieldAlert,   className: "bg-orange-100 text-orange-700 border-orange-200" },
+  critical: { label: "Critical", icon: Zap,           className: "bg-red-100 text-red-700 border-red-200" },
 };
 
 export function GovernanceAlertBadge({ severity }: { severity: Severity }) {

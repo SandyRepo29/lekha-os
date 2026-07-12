@@ -8,9 +8,9 @@ import { TrendingUp, TrendingDown, Minus, CheckCircle2, Clock, Archive, FileEdit
 type StatAccent = "danger" | "warn" | "good" | "neutral";
 
 const ACCENT_BORDER: Record<StatAccent, string> = {
-  danger:  "border-red-500/25",
-  warn:    "border-amber-500/25",
-  good:    "border-emerald-500/25",
+  danger:  "border-red-200",
+  warn:    "border-amber-200",
+  good:    "border-emerald-200",
   neutral: "border-[var(--color-line)]",
 };
 
@@ -78,9 +78,9 @@ export function KpiBadge({
   const Icon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
 
   const cls = isGood
-    ? "bg-emerald-500/10 text-emerald-400"
+    ? "bg-emerald-100 text-emerald-700"
     : isBad
-    ? "bg-red-500/10 text-red-400"
+    ? "bg-red-100 text-red-700"
     : "bg-[var(--color-line)] text-[var(--color-ink-dim)]";
 
   return (
@@ -99,12 +99,12 @@ type ReportStatus = "draft" | "ready" | "published" | "scheduled" | "archived" |
 
 const REPORT_STATUS_CFG: Record<ReportStatus, { label: string; cls: string; Icon: React.ComponentType<{ className?: string }> }> = {
   draft:      { label: "Draft",      cls: "bg-[var(--color-line)] text-[var(--color-ink-dim)]",  Icon: FileEdit },
-  ready:      { label: "Ready",      cls: "bg-emerald-500/15 text-emerald-400",                  Icon: CheckCircle2 },
-  published:  { label: "Published",  cls: "bg-emerald-500/15 text-emerald-400",                  Icon: CheckCircle2 },
+  ready:      { label: "Ready",      cls: "bg-emerald-100 text-emerald-700",                  Icon: CheckCircle2 },
+  published:  { label: "Published",  cls: "bg-emerald-100 text-emerald-700",                  Icon: CheckCircle2 },
   scheduled:  { label: "Scheduled",  cls: "bg-[var(--color-blue)]/15 text-[var(--color-blue)]", Icon: Clock },
   archived:   { label: "Archived",   cls: "bg-[var(--color-line)] text-[var(--color-ink-dim)]",  Icon: Archive },
-  generating: { label: "Generating", cls: "bg-amber-500/15 text-amber-400",                      Icon: Clock },
-  failed:     { label: "Failed",     cls: "bg-red-500/15 text-red-400",                          Icon: FileEdit },
+  generating: { label: "Generating", cls: "bg-amber-100 text-amber-700",                      Icon: Clock },
+  failed:     { label: "Failed",     cls: "bg-red-100 text-red-700",                          Icon: FileEdit },
 };
 
 export function ReportStatusBadge({ status }: { status: string }) {
@@ -125,9 +125,9 @@ type ForecastTrend = "improving" | "declining" | "stable";
 export function ForecastBadge({ trend }: { trend: ForecastTrend | string }) {
   const cfg =
     trend === "improving"
-      ? { label: "Improving", cls: "bg-emerald-500/10 text-emerald-400", Icon: TrendingUp }
+      ? { label: "Improving", cls: "bg-emerald-100 text-emerald-700", Icon: TrendingUp }
       : trend === "declining"
-      ? { label: "Declining", cls: "bg-red-500/10 text-red-400",         Icon: TrendingDown }
+      ? { label: "Declining", cls: "bg-red-100 text-red-700",         Icon: TrendingDown }
       : { label: "Stable",    cls: "bg-[var(--color-line)] text-[var(--color-ink-dim)]", Icon: Minus };
 
   const { label, cls, Icon } = cfg;
@@ -146,10 +146,10 @@ type ScorecardStatus = "on_track" | "monitor" | "attention";
 export function ScorecardStatusBadge({ status }: { status: ScorecardStatus | string }) {
   const cfg =
     status === "on_track" || status === "green"
-      ? { label: "On Track",  cls: "bg-emerald-500/10 text-emerald-400" }
+      ? { label: "On Track",  cls: "bg-emerald-100 text-emerald-700" }
       : status === "monitor" || status === "amber"
-      ? { label: "Monitor",   cls: "bg-amber-500/10 text-amber-400" }
-      : { label: "Attention", cls: "bg-red-500/10 text-red-400" };
+      ? { label: "Monitor",   cls: "bg-amber-100 text-amber-700" }
+      : { label: "Attention", cls: "bg-red-100 text-red-700" };
 
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold", cfg.cls)}>

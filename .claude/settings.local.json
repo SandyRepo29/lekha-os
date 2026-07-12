@@ -46,7 +46,9 @@
       "mcp__ccd_session__read_widget_context",
       "Skill(*)",
       "WebFetch(*)",
-      "WebSearch(*)"
+      "WebSearch(*)",
+      "Bash(npx tsc *)",
+      "mcp__claude-in-chrome__tabs_context_mcp"
     ]
   }
 }

@@ -17,7 +17,7 @@ export function MonitoringActions({ alertId, variant }: Props) {
   const [done, setDone] = useState(false);
 
   if (variant === "resolve" && alertId) {
-    if (done) return <span className="text-xs text-emerald-400">Resolved</span>;
+    if (done) return <span className="text-xs text-emerald-700">Resolved</span>;
     return (
       <Button
         variant="ghost"

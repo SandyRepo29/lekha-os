@@ -3,9 +3,9 @@ import * as repo from "@/lib/repositories/toe-repo";
 // ─── Events ───────────────────────────────────────────────────────────────────
 
 export async function publishEvent(orgId: string, eventType: string, opts?: {
-  entityType?: string; entityId?: string; actorId?: string; payload?: Record<string, unknown>;
+  entityType?: string; entityId?: string; actorId?: string | null; payload?: Record<string, unknown>;
 }) {
-  return repo.insertEvent({ orgId, eventType, ...opts });
+  return repo.insertEvent({ orgId, eventType, ...opts, actorId: opts?.actorId ?? undefined });
 }
 
 export async function getEventTypes() {
@@ -32,10 +32,10 @@ export async function getWorkflowById(id: string) {
   return repo.findWorkflowById(id);
 }
 
-export async function createWorkflow(orgId: string, userId: string, data: {
+export async function createWorkflow(orgId: string, userId: string | null, data: {
   name: string; description?: string; triggerEvent?: string; steps?: unknown[];
 }) {
-  return repo.insertWorkflow({ orgId, createdBy: userId, ...data });
+  return repo.insertWorkflow({ orgId, createdBy: userId ?? undefined, ...data });
 }
 
 export async function updateWorkflow(id: string, orgId: string, data: {
@@ -48,7 +48,7 @@ export async function deleteWorkflow(id: string, orgId: string) {
   return repo.deleteWorkflow(id, orgId);
 }
 
-export async function startWorkflow(orgId: string, userId: string, workflowId: string, opts?: {
+export async function startWorkflow(orgId: string, userId: string | null, workflowId: string, opts?: {
   triggerEventId?: string; context?: Record<string, unknown>;
 }) {
   const workflow = await repo.findWorkflowById(workflowId);
@@ -61,7 +61,7 @@ export async function startWorkflow(orgId: string, userId: string, workflowId: s
     triggerEventId: opts?.triggerEventId,
     totalSteps: steps.length,
     context: opts?.context ?? {},
-    createdBy: userId,
+    createdBy: userId ?? undefined,
   });
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i] as Record<string, unknown>;
@@ -74,12 +74,14 @@ export async function startWorkflow(orgId: string, userId: string, workflowId: s
     });
   }
   await repo.updateInstanceStatus(instance.id, orgId, "running", { currentStep: 0 });
-  await publishEvent(orgId, "workflow.started", {
-    entityId: instance.id as unknown as string,
-    entityType: "workflow_instance",
-    actorId: userId,
-    payload: { workflowName: workflow.name },
-  });
+  if (userId) {
+    await publishEvent(orgId, "workflow.started", {
+      entityId: instance.id as unknown as string,
+      entityType: "workflow_instance",
+      actorId: userId,
+      payload: { workflowName: workflow.name },
+    });
+  }
   return instance;
 }
 
@@ -127,7 +129,7 @@ export async function getApprovals(orgId: string, filters?: {
   return repo.findApprovals(orgId, filters);
 }
 
-export async function createApproval(orgId: string, userId: string, data: {
+export async function createApproval(orgId: string, userId: string | null, data: {
   entityType?: string; entityId?: string; requestType: string; title: string;
   description?: string; assigneeId?: string; context?: Record<string, unknown>;
   instanceId?: string; dueDays?: number;
@@ -135,11 +137,13 @@ export async function createApproval(orgId: string, userId: string, data: {
   const dueAt = data.dueDays
     ? new Date(Date.now() + data.dueDays * 86400000)
     : undefined;
-  await publishEvent(orgId, "approval.requested", {
-    actorId: userId,
-    payload: { title: data.title, requestType: data.requestType },
-  });
-  return repo.insertApproval({ orgId, requesterId: userId, dueAt, ...data });
+  if (userId) {
+    await publishEvent(orgId, "approval.requested", {
+      actorId: userId,
+      payload: { title: data.title, requestType: data.requestType },
+    });
+  }
+  return repo.insertApproval({ orgId, requesterId: userId ?? undefined, dueAt, ...data });
 }
 
 export async function resolveApproval(id: string, orgId: string, userId: string, status: "approved" | "rejected", notes?: string) {
@@ -152,11 +156,11 @@ export async function getAutomationRules(orgId: string) {
   return repo.findAutomationRules(orgId);
 }
 
-export async function createAutomationRule(orgId: string, userId: string, data: {
+export async function createAutomationRule(orgId: string, userId: string | null, data: {
   name: string; description?: string; triggerEvent: string;
   conditions?: Record<string, unknown>; actionType: string; actionConfig?: Record<string, unknown>;
 }) {
-  return repo.insertAutomationRule({ orgId, createdBy: userId, ...data });
+  return repo.insertAutomationRule({ orgId, createdBy: userId ?? undefined, ...data });
 }
 
 export async function toggleAutomationRule(id: string, orgId: string, active: boolean) {

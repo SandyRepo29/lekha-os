@@ -8,9 +8,9 @@ import type { BenchmarkMaturityLevel, BenchmarkRankingLabel } from "@/lib/servic
 type StatAccent = "danger" | "warn" | "good" | "neutral";
 
 const ACCENT_BORDER: Record<StatAccent, string> = {
-  danger:  "border-red-500/25",
-  warn:    "border-amber-500/25",
-  good:    "border-emerald-500/25",
+  danger:  "border-red-200",
+  warn:    "border-amber-200",
+  good:    "border-emerald-200",
   neutral: "border-[var(--color-line)]",
 };
 
@@ -61,12 +61,12 @@ export function BenchmarkStat({
 // ---- MaturityBadge ----
 
 const MATURITY_STYLES: Record<BenchmarkMaturityLevel, { text: string; bg: string; border: string }> = {
-  reactive:     { text: "text-red-400",    bg: "bg-red-500/10",     border: "border-red-500/20" },
-  managed:      { text: "text-orange-400", bg: "bg-orange-500/10",  border: "border-orange-500/20" },
-  defined:      { text: "text-amber-400",  bg: "bg-amber-500/10",   border: "border-amber-500/20" },
-  measured:     { text: "text-blue-400",   bg: "bg-blue-500/10",    border: "border-blue-500/20" },
-  optimized:    { text: "text-emerald-400",bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
-  trust_leader: { text: "text-purple-400", bg: "bg-purple-500/10",  border: "border-purple-500/20" },
+  reactive:     { text: "text-red-700",    bg: "bg-red-100",     border: "border-red-200" },
+  managed:      { text: "text-orange-700", bg: "bg-orange-100",  border: "border-orange-200" },
+  defined:      { text: "text-amber-700",  bg: "bg-amber-100",   border: "border-amber-200" },
+  measured:     { text: "text-blue-700",   bg: "bg-blue-100",    border: "border-blue-200" },
+  optimized:    { text: "text-emerald-700",bg: "bg-emerald-100", border: "border-emerald-200" },
+  trust_leader: { text: "text-purple-700", bg: "bg-purple-100",  border: "border-purple-200" },
 };
 
 const MATURITY_LABELS: Record<BenchmarkMaturityLevel, string> = {
@@ -105,11 +105,11 @@ export function MaturityBadge({
 
 function percentileAccent(pct: number | null): { text: string; bg: string; border: string } {
   if (pct === null) return { text: "text-[var(--color-ink-dim)]", bg: "bg-[#F8F9FB]", border: "border-[var(--color-line)]" };
-  if (pct >= 90) return { text: "text-purple-400",  bg: "bg-purple-500/10",  border: "border-purple-500/20" };
-  if (pct >= 75) return { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" };
-  if (pct >= 50) return { text: "text-blue-400",    bg: "bg-blue-500/10",    border: "border-blue-500/20" };
-  if (pct >= 25) return { text: "text-amber-400",   bg: "bg-amber-500/10",   border: "border-amber-500/20" };
-  return           { text: "text-red-400",    bg: "bg-red-500/10",    border: "border-red-500/20" };
+  if (pct >= 90) return { text: "text-purple-700",  bg: "bg-purple-100",  border: "border-purple-200" };
+  if (pct >= 75) return { text: "text-emerald-700", bg: "bg-emerald-100", border: "border-emerald-200" };
+  if (pct >= 50) return { text: "text-blue-700",    bg: "bg-blue-100",    border: "border-blue-200" };
+  if (pct >= 25) return { text: "text-amber-700",   bg: "bg-amber-100",   border: "border-amber-200" };
+  return           { text: "text-red-700",    bg: "bg-red-100",    border: "border-red-200" };
 }
 
 export function PercentileBadge({
@@ -139,14 +139,14 @@ export function PercentileBadge({
 // ---- RankingBadge — wraps BENCHMARK_RANKING_LABELS with colour ----
 
 const RANKING_STYLES: Record<BenchmarkRankingLabel, { text: string; bg: string; border: string }> = {
-  top_1_percent:  { text: "text-purple-400",  bg: "bg-purple-500/10",  border: "border-purple-500/20" },
-  top_5_percent:  { text: "text-purple-300",  bg: "bg-purple-500/10",  border: "border-purple-500/20" },
-  top_10_percent: { text: "text-blue-400",    bg: "bg-blue-500/10",    border: "border-blue-500/20" },
-  top_quartile:   { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
-  above_average:  { text: "text-emerald-300", bg: "bg-emerald-500/[0.07]", border: "border-emerald-500/15" },
-  average:        { text: "text-amber-400",   bg: "bg-amber-500/10",   border: "border-amber-500/20" },
-  below_average:  { text: "text-orange-400",  bg: "bg-orange-500/10",  border: "border-orange-500/20" },
-  at_risk:        { text: "text-red-400",     bg: "bg-red-500/10",     border: "border-red-500/20" },
+  top_1_percent:  { text: "text-purple-700",  bg: "bg-purple-100",  border: "border-purple-200" },
+  top_5_percent:  { text: "text-purple-700",  bg: "bg-purple-100",  border: "border-purple-200" },
+  top_10_percent: { text: "text-blue-700",    bg: "bg-blue-100",    border: "border-blue-200" },
+  top_quartile:   { text: "text-emerald-700", bg: "bg-emerald-100", border: "border-emerald-200" },
+  above_average:  { text: "text-emerald-700", bg: "bg-emerald-500/[0.07]", border: "border-emerald-200" },
+  average:        { text: "text-amber-700",   bg: "bg-amber-100",   border: "border-amber-200" },
+  below_average:  { text: "text-orange-700",  bg: "bg-orange-100",  border: "border-orange-200" },
+  at_risk:        { text: "text-red-700",     bg: "bg-red-100",     border: "border-red-200" },
 };
 
 export function RankingBadge({

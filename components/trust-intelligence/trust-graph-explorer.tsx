@@ -384,7 +384,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 onClick={handleRootCause}
                 disabled={isPending}
                 className={cn("flex flex-col items-center gap-1 rounded-xl border p-3 text-xs font-medium transition-colors",
-                  analysisTab === "root-cause" ? "border-purple-500/40 bg-purple-500/10 text-purple-300" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
+                  analysisTab === "root-cause" ? "border-purple-200 bg-purple-100 text-purple-700" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
               >
                 <GitBranch className="h-4 w-4" />
                 Root Cause
@@ -393,7 +393,7 @@ export function TrustGraphExplorer({ nodes, edges, onBuildGraph, building }: Gra
                 onClick={handleImpact}
                 disabled={isPending}
                 className={cn("flex flex-col items-center gap-1 rounded-xl border p-3 text-xs font-medium transition-colors",
-                  analysisTab === "impact" ? "border-orange-500/40 bg-orange-500/10 text-orange-300" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
+                  analysisTab === "impact" ? "border-orange-200 bg-orange-100 text-orange-700" : "border-[var(--color-line)] hover:bg-[#F8F9FB] text-[var(--color-ink-dim)]")}
               >
                 <Zap className="h-4 w-4" />
                 Impact
