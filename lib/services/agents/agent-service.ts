@@ -26,7 +26,7 @@ export async function getAgents(orgId: string) {
 
 export async function createAgent(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     name: string;
     description?: string;
@@ -46,7 +46,7 @@ export async function createAgent(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return repo.insertAgent({
     organizationId: orgId,
-    createdBy: userId,
+    createdBy: userId ?? undefined,
     slug,
     status: "draft",
     name: data.name,

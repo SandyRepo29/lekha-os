@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   if (!body?.title) return err("title is required", 400);
 
   try {
-    const issue = await createIssue(ctx.orgId, ctx.keyId, body);
+    const issue = await createIssue(ctx.orgId, null, body);
     return ok({ issue }, 201);
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);

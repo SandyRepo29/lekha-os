@@ -32,7 +32,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!body) return err("Invalid request body", 400);
 
   try {
-    const updated = await updateIssue(ctx.orgId, ctx.keyId, id, body);
+    const updated = await updateIssue(ctx.orgId, null, id, body);
     return ok({ issue: updated });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);
@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (ctx.permissions === "read_only") return err("read_write permission required", 403);
 
   try {
-    await deleteIssue(ctx.orgId, ctx.keyId, id);
+    await deleteIssue(ctx.orgId, null, id);
     return ok({ deleted: true });
   } catch (e: unknown) {
     if (e instanceof DomainError) return err(e.message, 400);

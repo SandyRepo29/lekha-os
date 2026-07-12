@@ -50,12 +50,12 @@ export function AgentSubNav() {
 type Accent = "good" | "warn" | "danger" | "neutral" | "blue" | "purple";
 
 const ACCENT: Record<Accent, { border: string; bg: string; text: string }> = {
-  good:    { border: "border-l-emerald-500",  bg: "bg-emerald-500/[0.06]",  text: "text-emerald-400" },
-  warn:    { border: "border-l-amber-500",    bg: "bg-amber-500/[0.06]",    text: "text-amber-400" },
-  danger:  { border: "border-l-red-500",      bg: "bg-red-500/[0.06]",      text: "text-red-400" },
+  good:    { border: "border-l-emerald-500",  bg: "bg-emerald-100",  text: "text-emerald-700" },
+  warn:    { border: "border-l-amber-500",    bg: "bg-amber-100",    text: "text-amber-700" },
+  danger:  { border: "border-l-red-500",      bg: "bg-red-100",      text: "text-red-700" },
   neutral: { border: "border-l-[var(--color-line)]", bg: "bg-white", text: "text-[var(--color-ink)]" },
   blue:    { border: "border-l-[var(--color-blue)]", bg: "bg-[var(--color-blue)]/[0.06]", text: "text-[var(--color-blue)]" },
-  purple:  { border: "border-l-purple-500",   bg: "bg-purple-500/[0.06]",   text: "text-purple-400" },
+  purple:  { border: "border-l-purple-500",   bg: "bg-purple-100",   text: "text-purple-700" },
 };
 
 export function AgentStat({
@@ -81,61 +81,61 @@ export function AgentStat({
 // ── Status badges ──────────────────────────────────────────────────────────────
 
 const AGENT_STATUS: Record<string, string> = {
-  active:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  paused:  "bg-amber-500/10 text-amber-400 border border-amber-500/20",
+  active:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  paused:  "bg-amber-100 text-amber-700 border border-amber-200",
   idle:    "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  error:   "bg-red-500/10 text-red-400 border border-red-500/20",
-  draft:   "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  error:   "bg-red-100 text-red-700 border border-red-200",
+  draft:   "bg-purple-100 text-purple-700 border border-purple-200",
 };
 
 const RUN_STATUS: Record<string, string> = {
-  running:   "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  completed: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  failed:    "bg-red-500/10 text-red-400 border border-red-500/20",
+  running:   "bg-blue-100 text-blue-700 border border-blue-200",
+  completed: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  failed:    "bg-red-100 text-red-700 border border-red-200",
   cancelled: "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
-  success:   "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  success:   "bg-emerald-100 text-emerald-700 border border-emerald-200",
 };
 
 const SEVERITY_STYLES: Record<string, string> = {
-  critical: "bg-red-500/10 text-red-400 border border-red-500/20",
-  high:     "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-  medium:   "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  low:      "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  critical: "bg-red-100 text-red-700 border border-red-200",
+  high:     "bg-orange-100 text-orange-700 border border-orange-200",
+  medium:   "bg-amber-100 text-amber-700 border border-amber-200",
+  low:      "bg-blue-100 text-blue-700 border border-blue-200",
   info:     "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const OBS_STATUS: Record<string, string> = {
-  new:       "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  reviewed:  "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  actioned:  "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  new:       "bg-amber-100 text-amber-700 border border-amber-200",
+  reviewed:  "bg-blue-100 text-blue-700 border border-blue-200",
+  actioned:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
   dismissed: "bg-[#F8F9FB] text-[var(--color-ink-faint)] border border-[var(--color-line)]",
 };
 
 const PRIORITY_STYLES: Record<string, string> = {
-  urgent: "bg-red-500/10 text-red-400 border border-red-500/20",
-  high:   "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-  medium: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  low:    "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  urgent: "bg-red-100 text-red-700 border border-red-200",
+  high:   "bg-orange-100 text-orange-700 border border-orange-200",
+  medium: "bg-amber-100 text-amber-700 border border-amber-200",
+  low:    "bg-blue-100 text-blue-700 border border-blue-200",
 };
 
 const ACTION_STATUS: Record<string, string> = {
-  pending_approval: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-  approved:         "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  rejected:         "bg-red-500/10 text-red-400 border border-red-500/20",
-  executed:         "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  failed:           "bg-red-500/10 text-red-400 border border-red-500/20",
+  pending_approval: "bg-amber-100 text-amber-700 border border-amber-200",
+  approved:         "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  rejected:         "bg-red-100 text-red-700 border border-red-200",
+  executed:         "bg-blue-100 text-blue-700 border border-blue-200",
+  failed:           "bg-red-100 text-red-700 border border-red-200",
 };
 
 const EXEC_MODE: Record<string, string> = {
-  autonomous:    "bg-purple-500/10 text-purple-400 border border-purple-500/20",
-  supervised:    "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  autonomous:    "bg-purple-100 text-purple-700 border border-purple-200",
+  supervised:    "bg-blue-100 text-blue-700 border border-blue-200",
   advisory:      "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  semi_autonomous: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+  semi_autonomous: "bg-indigo-100 text-indigo-700 border border-indigo-200",
 };
 
 function badge(styles: Record<string, string>, value: string) {
   return (
-    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium capitalize", styles[value] ?? styles["info"] ?? "bg-white/5 text-[var(--color-ink-faint)] border border-[var(--color-line)]")}>
+    <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium capitalize", styles[value] ?? styles["info"] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]")}>
       {value.replace(/_/g, " ")}
     </span>
   );

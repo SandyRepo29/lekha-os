@@ -86,11 +86,11 @@ export function WorkflowFilterChip({
 // ---- WorkflowStatusBadge ----
 
 const WORKFLOW_STATUS_STYLES: Record<string, string> = {
-  draft:       "bg-amber-500/15 text-amber-400 border border-amber-500/20",
-  active:      "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
-  paused:      "bg-sky-500/15 text-sky-400 border border-sky-500/20",
+  draft:       "bg-amber-100 text-amber-700 border border-amber-200",
+  active:      "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  paused:      "bg-sky-100 text-sky-700 border border-sky-200",
   archived:    "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  deprecated:  "bg-red-500/15 text-red-400 border border-red-500/20",
+  deprecated:  "bg-red-100 text-red-700 border border-red-200",
 };
 
 const WORKFLOW_STATUS_LABELS: Record<string, string> = {
@@ -114,13 +114,13 @@ export function WorkflowStatusBadge({ status }: { status: string }) {
 // ---- WorkflowRunStatusBadge ----
 
 const RUN_STATUS_STYLES: Record<string, string> = {
-  pending:    "bg-slate-500/15 text-slate-400 border border-slate-500/20",
-  running:    "bg-sky-500/15 text-sky-400 border border-sky-500/20",
-  completed:  "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
-  failed:     "bg-red-500/15 text-red-400 border border-red-500/20",
+  pending:    "bg-slate-100 text-slate-700 border border-slate-200",
+  running:    "bg-sky-100 text-sky-700 border border-sky-200",
+  completed:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  failed:     "bg-red-100 text-red-700 border border-red-200",
   cancelled:  "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  timed_out:  "bg-orange-500/15 text-orange-400 border border-orange-500/20",
-  waiting:    "bg-amber-500/15 text-amber-400 border border-amber-500/20",
+  timed_out:  "bg-orange-100 text-orange-700 border border-orange-200",
+  waiting:    "bg-amber-100 text-amber-700 border border-amber-200",
 };
 
 const RUN_STATUS_LABELS: Record<string, string> = {
@@ -146,12 +146,12 @@ export function WorkflowRunStatusBadge({ status }: { status: string }) {
 // ---- ApprovalStatusBadge ----
 
 const APPROVAL_STATUS_STYLES: Record<string, string> = {
-  pending:   "bg-amber-500/15 text-amber-400 border border-amber-500/20",
-  approved:  "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
-  rejected:  "bg-red-500/15 text-red-400 border border-red-500/20",
-  escalated: "bg-orange-500/15 text-orange-400 border border-orange-500/20",
+  pending:   "bg-amber-100 text-amber-700 border border-amber-200",
+  approved:  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  rejected:  "bg-red-100 text-red-700 border border-red-200",
+  escalated: "bg-orange-100 text-orange-700 border border-orange-200",
   expired:   "bg-[#F8F9FB] text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  delegated: "bg-sky-500/15 text-sky-400 border border-sky-500/20",
+  delegated: "bg-sky-100 text-sky-700 border border-sky-200",
 };
 
 const APPROVAL_STATUS_LABELS: Record<string, string> = {
@@ -176,14 +176,14 @@ export function ApprovalStatusBadge({ status }: { status: string }) {
 // ---- WorkflowTriggerBadge ----
 
 const TRIGGER_STYLES: Record<string, string> = {
-  manual:         "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20",
-  scheduled:      "bg-sky-500/15 text-sky-400 border border-sky-500/20",
-  event:          "bg-violet-500/15 text-violet-400 border border-violet-500/20",
-  webhook:        "bg-teal-500/15 text-teal-400 border border-teal-500/20",
-  api:            "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
-  record_created: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
-  score_threshold:"bg-orange-500/15 text-orange-400 border border-orange-500/20",
-  date_reached:   "bg-amber-500/15 text-amber-400 border border-amber-500/20",
+  manual:         "bg-indigo-100 text-indigo-700 border border-indigo-200",
+  scheduled:      "bg-sky-100 text-sky-700 border border-sky-200",
+  event:          "bg-violet-100 text-violet-700 border border-violet-200",
+  webhook:        "bg-teal-100 text-teal-700 border border-teal-200",
+  api:            "bg-cyan-100 text-cyan-700 border border-cyan-200",
+  record_created: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  score_threshold:"bg-orange-100 text-orange-700 border border-orange-200",
+  date_reached:   "bg-amber-100 text-amber-700 border border-amber-200",
 };
 
 const TRIGGER_LABELS: Record<string, string> = {

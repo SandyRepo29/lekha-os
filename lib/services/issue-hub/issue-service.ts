@@ -12,7 +12,8 @@ const SLA_BY_SEVERITY: Record<string, number> = {
   informational: 90,
 };
 
-async function logAudit(orgId: string, userId: string, action: string, entityId: string, meta?: Record<string, unknown>) {
+async function logAudit(orgId: string, userId: string | null, action: string, entityId: string, meta?: Record<string, unknown>) {
+  if (!userId) return;
   await db.insert(auditLogs).values({
     organizationId: orgId,
     actorId: userId,
@@ -41,7 +42,7 @@ export async function getDashboardMetrics(orgId: string) {
 
 export async function createIssue(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     title: string;
     description?: string;
@@ -77,7 +78,7 @@ export async function createIssue(
     assigneeId: data.assigneeId,
     dueDate,
     slaDays,
-    createdBy: userId,
+    createdBy: userId ?? undefined,
   });
   await logAudit(orgId, userId, "issue.created", issue.id, { title: issue.title, severity: issue.severity });
   return issue;
@@ -85,7 +86,7 @@ export async function createIssue(
 
 export async function updateIssue(
   orgId: string,
-  userId: string,
+  userId: string | null,
   issueId: string,
   data: Parameters<typeof repo.updateIssue>[2] & { title?: string }
 ) {
@@ -95,23 +96,25 @@ export async function updateIssue(
   const updated = await repo.updateIssue(orgId, issueId, data);
 
   // Track history for key fields
-  const tracked: Array<[string, string | null | undefined]> = [
-    ["status", existing.status],
-    ["severity", existing.severity],
-    ["priority", existing.priority],
-    ["assigneeId", existing.assigneeId],
-  ];
-  for (const [field, oldVal] of tracked) {
-    const newVal = (data as Record<string, unknown>)[field] as string | undefined;
-    if (newVal !== undefined && newVal !== oldVal) {
-      await repo.insertHistory({
-        issueId,
-        organizationId: orgId,
-        changedBy: userId,
-        fieldChanged: field,
-        oldValue: oldVal ?? undefined,
-        newValue: newVal,
-      });
+  if (userId) {
+    const tracked: Array<[string, string | null | undefined]> = [
+      ["status", existing.status],
+      ["severity", existing.severity],
+      ["priority", existing.priority],
+      ["assigneeId", existing.assigneeId],
+    ];
+    for (const [field, oldVal] of tracked) {
+      const newVal = (data as Record<string, unknown>)[field] as string | undefined;
+      if (newVal !== undefined && newVal !== oldVal) {
+        await repo.insertHistory({
+          issueId,
+          organizationId: orgId,
+          changedBy: userId,
+          fieldChanged: field,
+          oldValue: oldVal ?? undefined,
+          newValue: newVal,
+        });
+      }
     }
   }
 
@@ -119,7 +122,7 @@ export async function updateIssue(
   return updated;
 }
 
-export async function deleteIssue(orgId: string, userId: string, issueId: string) {
+export async function deleteIssue(orgId: string, userId: string | null, issueId: string) {
   const existing = await repo.findIssueById(orgId, issueId);
   if (!existing) throw new DomainError("Issue not found.");
   await repo.deleteIssue(orgId, issueId);

@@ -86,15 +86,15 @@ export function IssueFilterChip({
 // ---- IssueStatusBadge ----
 
 const ISSUE_STATUS_STYLES: Record<string, string> = {
-  open:           "bg-amber-500/15 text-amber-400 border border-amber-500/25",
+  open:           "bg-amber-100 text-amber-700 border border-amber-200",
   assigned:       "bg-[var(--color-blue)]/10 text-[var(--color-blue)] border border-[var(--color-blue)]/25",
-  in_progress:    "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25",
-  blocked:        "bg-red-500/15 text-red-400 border border-red-500/25",
-  pending_review: "bg-purple-500/15 text-purple-400 border border-purple-500/25",
-  resolved:       "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25",
-  closed:         "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  accepted_risk:  "bg-orange-500/15 text-orange-400 border border-orange-500/25",
-  deferred:       "bg-white/5 text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  in_progress:    "bg-indigo-100 text-indigo-700 border border-indigo-200",
+  blocked:        "bg-red-100 text-red-700 border border-red-200",
+  pending_review: "bg-purple-100 text-purple-700 border border-purple-200",
+  resolved:       "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  closed:         "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  accepted_risk:  "bg-orange-100 text-orange-700 border border-orange-200",
+  deferred:       "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
 };
 
 const ISSUE_STATUS_LABELS: Record<string, string> = {
@@ -110,7 +110,7 @@ const ISSUE_STATUS_LABELS: Record<string, string> = {
 };
 
 export function IssueStatusBadge({ status }: { status: string }) {
-  const style = ISSUE_STATUS_STYLES[status] ?? "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
+  const style = ISSUE_STATUS_STYLES[status] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
   const label = ISSUE_STATUS_LABELS[status] ?? status.replace(/_/g, " ");
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", style)}>
@@ -122,15 +122,15 @@ export function IssueStatusBadge({ status }: { status: string }) {
 // ---- IssueSeverityBadge ----
 
 const ISSUE_SEVERITY_STYLES: Record<string, string> = {
-  critical:      "bg-red-500/15 text-red-400 border border-red-500/25",
-  high:          "bg-orange-500/15 text-orange-400 border border-orange-500/25",
-  medium:        "bg-amber-500/15 text-amber-400 border border-amber-500/25",
+  critical:      "bg-red-100 text-red-700 border border-red-200",
+  high:          "bg-orange-100 text-orange-700 border border-orange-200",
+  medium:        "bg-amber-100 text-amber-700 border border-amber-200",
   low:           "bg-[var(--color-blue)]/10 text-[var(--color-blue)] border border-[var(--color-blue)]/25",
-  informational: "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  informational: "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
 };
 
 export function IssueSeverityBadge({ severity }: { severity: string }) {
-  const style = ISSUE_SEVERITY_STYLES[severity] ?? "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
+  const style = ISSUE_SEVERITY_STYLES[severity] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize", style)}>
       {severity}
@@ -141,11 +141,11 @@ export function IssueSeverityBadge({ severity }: { severity: string }) {
 // ---- IssuePriorityBadge ----
 
 const ISSUE_PRIORITY_STYLES: Record<string, string> = {
-  p1: "bg-red-500/15 text-red-400 border border-red-500/25",
-  p2: "bg-orange-500/15 text-orange-400 border border-orange-500/25",
-  p3: "bg-amber-500/15 text-amber-400 border border-amber-500/25",
+  p1: "bg-red-100 text-red-700 border border-red-200",
+  p2: "bg-orange-100 text-orange-700 border border-orange-200",
+  p3: "bg-amber-100 text-amber-700 border border-amber-200",
   p4: "bg-[var(--color-blue)]/10 text-[var(--color-blue)] border border-[var(--color-blue)]/25",
-  p5: "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  p5: "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
 };
 
 const ISSUE_PRIORITY_LABELS: Record<string, string> = {
@@ -157,7 +157,7 @@ const ISSUE_PRIORITY_LABELS: Record<string, string> = {
 };
 
 export function IssuePriorityBadge({ priority }: { priority: string }) {
-  const style = ISSUE_PRIORITY_STYLES[priority] ?? "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
+  const style = ISSUE_PRIORITY_STYLES[priority] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
   const label = ISSUE_PRIORITY_LABELS[priority] ?? priority.toUpperCase();
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", style)}>
@@ -169,15 +169,15 @@ export function IssuePriorityBadge({ priority }: { priority: string }) {
 // ---- TaskStatusBadge ----
 
 const TASK_STATUS_STYLES: Record<string, string> = {
-  open:        "bg-amber-500/15 text-amber-400 border border-amber-500/25",
-  in_progress: "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25",
-  blocked:     "bg-red-500/15 text-red-400 border border-red-500/25",
-  completed:   "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25",
-  cancelled:   "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  open:        "bg-amber-100 text-amber-700 border border-amber-200",
+  in_progress: "bg-indigo-100 text-indigo-700 border border-indigo-200",
+  blocked:     "bg-red-100 text-red-700 border border-red-200",
+  completed:   "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  cancelled:   "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
 };
 
 export function TaskStatusBadge({ status }: { status: string }) {
-  const style = TASK_STATUS_STYLES[status] ?? "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
+  const style = TASK_STATUS_STYLES[status] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", style)}>
       {status.replace(/_/g, " ")}
@@ -188,15 +188,15 @@ export function TaskStatusBadge({ status }: { status: string }) {
 // ---- ExceptionStatusBadge ----
 
 const EXCEPTION_STATUS_STYLES: Record<string, string> = {
-  pending:  "bg-amber-500/15 text-amber-400 border border-amber-500/25",
-  approved: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25",
-  rejected: "bg-red-500/15 text-red-400 border border-red-500/25",
-  expired:  "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
-  revoked:  "bg-white/5 text-[var(--color-ink-faint)] border border-[var(--color-line)]",
+  pending:  "bg-amber-100 text-amber-700 border border-amber-200",
+  approved: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  rejected: "bg-red-100 text-red-700 border border-red-200",
+  expired:  "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
+  revoked:  "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]",
 };
 
 export function ExceptionStatusBadge({ status }: { status: string }) {
-  const style = EXCEPTION_STATUS_STYLES[status] ?? "bg-white/5 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
+  const style = EXCEPTION_STATUS_STYLES[status] ?? "bg-slate-100 text-[var(--color-ink-dim)] border border-[var(--color-line)]";
   return (
     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize", style)}>
       {status}

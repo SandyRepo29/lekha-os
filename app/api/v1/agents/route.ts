@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!body.name)      return withRateLimitHeaders(err("name is required.", 400), rl);
     if (!body.agentType) return withRateLimitHeaders(err("agentType is required.", 400), rl);
 
-    const result = await svc.createAgent(ctx.orgId, ctx.orgId, {
+    const result = await svc.createAgent(ctx.orgId, null, {
       name:          String(body.name),
       agentType:     String(body.agentType),
       description:   body.description ? String(body.description) : undefined,
