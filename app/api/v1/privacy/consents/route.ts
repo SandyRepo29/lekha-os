@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     if (!body.subjectId) return withRateLimitHeaders(err("subjectId is required.", 400), rl);
     if (!body.purpose) return withRateLimitHeaders(err("purpose is required.", 400), rl);
 
-    const consent = await createConsent(ctx.orgId, ctx.orgId, {
+    const consent = await createConsent(ctx.orgId, null, {
       subjectId: body.subjectId,
       subjectName: body.subjectName,
       subjectEmail: body.subjectEmail,

@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (!body.subjectName) return withRateLimitHeaders(err("subjectName is required.", 400), rl);
     if (!body.subjectEmail) return withRateLimitHeaders(err("subjectEmail is required.", 400), rl);
 
-    const req = await createRequest(ctx.orgId, ctx.orgId, {
+    const req = await createRequest(ctx.orgId, null, {
       requestType: body.requestType,
       subjectName: body.subjectName,
       subjectEmail: body.subjectEmail,

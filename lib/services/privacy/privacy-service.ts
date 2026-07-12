@@ -40,7 +40,7 @@ export async function getAssetDetail(orgId: string, assetId: string) {
 
 export async function createAsset(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     name: string;
     description?: string;
@@ -57,13 +57,13 @@ export async function createAsset(
   if (!data.name?.trim()) throw new DomainError("Asset name is required.");
 
   const asset = await repo.createAsset({ organizationId: orgId, ...data, name: data.name.trim() });
-  await logAction(orgId, userId, "dpdp_privacy.asset_created", asset.id, { name: asset.name });
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.asset_created", asset.id, { name: asset.name });
   return asset;
 }
 
 export async function updateAsset(
   orgId: string,
-  userId: string,
+  userId: string | null,
   assetId: string,
   data: Parameters<typeof repo.updateAsset>[2]
 ) {
@@ -71,16 +71,16 @@ export async function updateAsset(
   if (!existing) throw new DomainError("Data asset not found.");
 
   const updated = await repo.updateAsset(assetId, orgId, data);
-  await logAction(orgId, userId, "dpdp_privacy.asset_updated", assetId, { name: updated.name });
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.asset_updated", assetId, { name: updated.name });
   return updated;
 }
 
-export async function deleteAsset(orgId: string, userId: string, assetId: string) {
+export async function deleteAsset(orgId: string, userId: string | null, assetId: string) {
   const existing = await repo.findAssetById(assetId, orgId);
   if (!existing) throw new DomainError("Data asset not found.");
 
   await repo.deleteAsset(assetId, orgId);
-  await logAction(orgId, userId, "dpdp_privacy.asset_deleted", assetId, { name: existing.name });
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.asset_deleted", assetId, { name: existing.name });
 }
 
 // ─── Consent Records ─────────────────────────────────────────────────────────
@@ -94,7 +94,7 @@ export async function listConsents(
 
 export async function createConsent(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     subjectId: string;
     subjectName?: string;
@@ -112,7 +112,7 @@ export async function createConsent(
   if (!data.purpose?.trim()) throw new DomainError("Purpose is required.");
 
   const consent = await repo.createConsent({ organizationId: orgId, ...data });
-  await logAction(orgId, userId, "dpdp_privacy.consent_created", consent.id, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.consent_created", consent.id, {
     subjectId: data.subjectId,
   });
   return consent;
@@ -120,12 +120,12 @@ export async function createConsent(
 
 export async function updateConsent(
   orgId: string,
-  userId: string,
+  userId: string | null,
   consentId: string,
   data: Parameters<typeof repo.updateConsent>[2]
 ) {
   const updated = await repo.updateConsent(consentId, orgId, data);
-  await logAction(orgId, userId, "dpdp_privacy.consent_updated", consentId, {});
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.consent_updated", consentId, {});
   return updated;
 }
 
@@ -144,7 +144,7 @@ export async function getRequestDetail(orgId: string, requestId: string) {
 
 export async function createRequest(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     requestType: string;
     subjectName: string;
@@ -166,7 +166,7 @@ export async function createRequest(
     ...data,
     dueDate,
   });
-  await logAction(orgId, userId, "dpdp_privacy.dsr_created", request.id, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.dsr_created", request.id, {
     type: data.requestType,
     subject: data.subjectEmail,
   });
@@ -175,7 +175,7 @@ export async function createRequest(
 
 export async function updateRequestStatus(
   orgId: string,
-  userId: string,
+  userId: string | null,
   requestId: string,
   status: string,
   notes?: string
@@ -189,7 +189,7 @@ export async function updateRequestStatus(
     resolutionNotes: notes,
     completedAt,
   });
-  await logAction(orgId, userId, "dpdp_privacy.dsr_status_updated", requestId, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.dsr_status_updated", requestId, {
     status,
   });
   return updated;
@@ -239,7 +239,7 @@ export async function getAssessmentDetail(orgId: string, assessmentId: string) {
 
 export async function createAssessment(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     title: string;
     scope?: string;
@@ -252,7 +252,7 @@ export async function createAssessment(
   if (!data.title?.trim()) throw new DomainError("Assessment title is required.");
 
   const assessment = await repo.createAssessment({ organizationId: orgId, ...data });
-  await logAction(orgId, userId, "dpdp_privacy.pia_created", assessment.id, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.pia_created", assessment.id, {
     title: assessment.title,
   });
   return assessment;
@@ -260,7 +260,7 @@ export async function createAssessment(
 
 export async function updateAssessment(
   orgId: string,
-  userId: string,
+  userId: string | null,
   assessmentId: string,
   data: Parameters<typeof repo.updateAssessment>[2]
 ) {
@@ -268,7 +268,7 @@ export async function updateAssessment(
   if (!existing) throw new DomainError("Assessment not found.");
 
   const updated = await repo.updateAssessment(assessmentId, orgId, data);
-  await logAction(orgId, userId, "dpdp_privacy.pia_updated", assessmentId, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.pia_updated", assessmentId, {
     title: updated.title,
   });
   return updated;
@@ -282,7 +282,7 @@ export async function listTransfers(orgId: string) {
 
 export async function createTransfer(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     dataAssetId?: string;
     destinationCountry: string;
@@ -297,7 +297,7 @@ export async function createTransfer(
   if (!data.transferBasis?.trim()) throw new DomainError("Transfer basis is required.");
 
   const transfer = await repo.createTransfer({ organizationId: orgId, ...data });
-  await logAction(orgId, userId, "dpdp_privacy.transfer_created", transfer.id, {
+  if (userId) await logAction(orgId, userId, "dpdp_privacy.transfer_created", transfer.id, {
     country: data.destinationCountry,
     recipient: data.recipientName,
   });
@@ -306,15 +306,15 @@ export async function createTransfer(
 
 export async function approveTransfer(
   orgId: string,
-  approverId: string,
+  approverId: string | null,
   transferId: string
 ) {
   const updated = await repo.updateTransfer(transferId, orgId, {
     status: "approved",
-    approvedBy: approverId,
+    approvedBy: approverId ?? undefined,
     approvedAt: new Date(),
   });
-  await logAction(orgId, approverId, "dpdp_privacy.transfer_approved", transferId, {});
+  if (approverId) await logAction(orgId, approverId, "dpdp_privacy.transfer_approved", transferId, {});
   return updated;
 }
 

@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     if (!body.title) return withRateLimitHeaders(err("title is required.", 400), rl);
 
-    const assessment = await createAssessment(ctx.orgId, ctx.orgId, {
+    const assessment = await createAssessment(ctx.orgId, null, {
       title: body.title,
       scope: body.scope,
       riskLevel: body.riskLevel,

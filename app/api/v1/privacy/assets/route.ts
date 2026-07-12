@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     if (!body.name) return withRateLimitHeaders(err("name is required.", 400), rl);
 
-    const asset = await createAsset(ctx.orgId, ctx.orgId, {
+    const asset = await createAsset(ctx.orgId, null, {
       name: body.name,
       description: body.description,
       dataCategory: body.dataCategory,
