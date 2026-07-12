@@ -60,9 +60,9 @@ export function TrustAPIStat({
 // ---- ApiKeyStatusBadge ----
 
 const API_KEY_STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  active:  { label: "Active",  cls: "bg-emerald-500/15 text-emerald-400" },
-  revoked: { label: "Revoked", cls: "bg-red-500/15 text-red-400" },
-  expired: { label: "Expired", cls: "bg-slate-500/15 text-slate-400" },
+  active:  { label: "Active",  cls: "bg-emerald-100 text-emerald-700" },
+  revoked: { label: "Revoked", cls: "bg-red-100 text-red-700" },
+  expired: { label: "Expired", cls: "bg-slate-100 text-slate-700" },
 };
 
 export function ApiKeyStatusBadge({ status }: { status: string }) {
@@ -77,9 +77,9 @@ export function ApiKeyStatusBadge({ status }: { status: string }) {
 // ---- WebhookStatusBadge ----
 
 const WEBHOOK_STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  active: { label: "Active", cls: "bg-emerald-500/15 text-emerald-400" },
-  paused: { label: "Paused", cls: "bg-amber-500/15 text-amber-400" },
-  error:  { label: "Error",  cls: "bg-red-500/15 text-red-400" },
+  active: { label: "Active", cls: "bg-emerald-100 text-emerald-700" },
+  paused: { label: "Paused", cls: "bg-amber-100 text-amber-700" },
+  error:  { label: "Error",  cls: "bg-red-100 text-red-700" },
 };
 
 export function WebhookStatusBadge({ status }: { status: string }) {
@@ -94,10 +94,10 @@ export function WebhookStatusBadge({ status }: { status: string }) {
 // ---- ApiPlanBadge ----
 
 const API_PLAN_MAP: Record<string, { label: string; cls: string }> = {
-  free:       { label: "Free",       cls: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20" },
-  growth:     { label: "Growth",     cls: "bg-blue-500/15 text-blue-400 border border-blue-500/20" },
-  business:   { label: "Business",   cls: "bg-violet-500/15 text-violet-400 border border-violet-500/20" },
-  enterprise: { label: "Enterprise", cls: "bg-amber-500/15 text-amber-400 border border-amber-500/20" },
+  free:       { label: "Free",       cls: "bg-emerald-100 text-emerald-700 border border-emerald-500/20" },
+  growth:     { label: "Growth",     cls: "bg-blue-100 text-blue-700 border border-blue-500/20" },
+  business:   { label: "Business",   cls: "bg-violet-100 text-violet-700 border border-violet-500/20" },
+  enterprise: { label: "Enterprise", cls: "bg-amber-100 text-amber-700 border border-amber-500/20" },
 };
 
 export function ApiPlanBadge({ plan }: { plan: string }) {

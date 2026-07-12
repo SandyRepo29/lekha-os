@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const user = await createExternalUser(
       ctx.orgId,
       { ...body, inviteToken: randomUUID(), inviteSentAt: new Date(), status: "invited" },
-      ctx.keyId
+      null
     );
     return ok({ data: user }, 201);
   } catch {

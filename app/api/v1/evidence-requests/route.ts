@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     if (!body.title) return err("title is required", 400);
     if (!body.roomId) return err("roomId is required", 400);
-    const req = await createEvidenceRequest(ctx.orgId, body.roomId, body, ctx.keyId);
+    const req = await createEvidenceRequest(ctx.orgId, body.roomId, body, null);
     return ok({ data: req }, 201);
   } catch {
     return err("Failed to create evidence request", 500);

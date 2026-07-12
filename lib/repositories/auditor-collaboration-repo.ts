@@ -71,7 +71,7 @@ export async function findAllAuditorOrgs(orgId: string): Promise<AuditorOrganiza
   return db.select().from(auditorOrganizations).where(eq(auditorOrganizations.organizationId, orgId)).orderBy(asc(auditorOrganizations.name));
 }
 
-export async function createAuditorOrg(orgId: string, data: Partial<AuditorOrganization>, createdBy: string): Promise<AuditorOrganization> {
+export async function createAuditorOrg(orgId: string, data: Partial<AuditorOrganization>, createdBy: string | null): Promise<AuditorOrganization> {
   const rows = await db.insert(auditorOrganizations).values({ ...data, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }
@@ -90,7 +90,7 @@ export async function findExternalUserById(orgId: string, id: string): Promise<E
   return rows[0] ?? null;
 }
 
-export async function createExternalUser(orgId: string, data: Partial<ExternalUser>, createdBy: string): Promise<ExternalUser> {
+export async function createExternalUser(orgId: string, data: Partial<ExternalUser>, createdBy: string | null): Promise<ExternalUser> {
   const rows = await db.insert(externalUsers).values({ ...data, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }
@@ -114,7 +114,7 @@ export async function findRoomById(orgId: string, id: string): Promise<AuditRoom
   return rows[0] ?? null;
 }
 
-export async function createRoom(orgId: string, data: Partial<AuditRoom>, createdBy: string): Promise<AuditRoom> {
+export async function createRoom(orgId: string, data: Partial<AuditRoom>, createdBy: string | null): Promise<AuditRoom> {
   const rows = await db.insert(auditRooms).values({ ...data, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }
@@ -163,7 +163,7 @@ export async function findEvidenceRequestById(orgId: string, id: string): Promis
   return rows[0] ?? null;
 }
 
-export async function createEvidenceRequest(orgId: string, roomId: string, data: Partial<EvidenceRequest>, createdBy: string): Promise<EvidenceRequest> {
+export async function createEvidenceRequest(orgId: string, roomId: string, data: Partial<EvidenceRequest>, createdBy: string | null): Promise<EvidenceRequest> {
   const rows = await db.insert(evidenceRequests).values({ ...data, roomId, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }
@@ -197,7 +197,7 @@ export async function findFindingById(orgId: string, id: string): Promise<Extern
   return rows[0] ?? null;
 }
 
-export async function createExternalFinding(orgId: string, roomId: string, data: Partial<ExternalFinding>, createdBy: string): Promise<ExternalFinding> {
+export async function createExternalFinding(orgId: string, roomId: string, data: Partial<ExternalFinding>, createdBy: string | null): Promise<ExternalFinding> {
   const rows = await db.insert(externalFindings).values({ ...data, roomId, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }
@@ -216,7 +216,7 @@ export async function findAllAssessments(orgId: string, filters?: { status?: str
   return db.select().from(externalAssessments).where(and(...conds)).orderBy(desc(externalAssessments.createdAt));
 }
 
-export async function createExternalAssessment(orgId: string, roomId: string, data: Partial<ExternalAssessment>, createdBy: string): Promise<ExternalAssessment> {
+export async function createExternalAssessment(orgId: string, roomId: string, data: Partial<ExternalAssessment>, createdBy: string | null): Promise<ExternalAssessment> {
   const rows = await db.insert(externalAssessments).values({ ...data, roomId, organizationId: orgId, createdBy } as any).returning();
   return rows[0];
 }

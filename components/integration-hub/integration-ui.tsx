@@ -61,9 +61,9 @@ export function IntegrationStat({
 
 const SYNC_STATUS: Record<string, { label: string; cls: string }> = {
   running:   { label: "Running",   cls: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]" },
-  completed: { label: "Completed", cls: "bg-emerald-500/10 text-emerald-400" },
-  failed:    { label: "Failed",    cls: "bg-red-500/10 text-red-400" },
-  partial:   { label: "Partial",   cls: "bg-amber-500/10 text-amber-400" },
+  completed: { label: "Completed", cls: "bg-emerald-100 text-emerald-700" },
+  failed:    { label: "Failed",    cls: "bg-red-100 text-red-700" },
+  partial:   { label: "Partial",   cls: "bg-amber-100 text-amber-700" },
   queued:    { label: "Queued",    cls: "bg-white/5 text-[var(--color-ink-dim)]" },
   pending:   { label: "Pending",   cls: "bg-white/5 text-[var(--color-ink-dim)]" },
   cancelled: { label: "Cancelled", cls: "bg-white/5 text-[var(--color-ink-faint)]" },
@@ -84,9 +84,9 @@ export function SyncStatusBadge({ status }: { status: string }) {
 // ---- WebhookStatusBadge ----
 
 const WEBHOOK_STATUS: Record<string, { label: string; cls: string }> = {
-  active:   { label: "Active",   cls: "bg-emerald-500/10 text-emerald-400" },
+  active:   { label: "Active",   cls: "bg-emerald-100 text-emerald-700" },
   inactive: { label: "Inactive", cls: "bg-white/5 text-[var(--color-ink-faint)]" },
-  error:    { label: "Error",    cls: "bg-red-500/10 text-red-400" },
+  error:    { label: "Error",    cls: "bg-red-100 text-red-700" },
 };
 
 export function WebhookStatusBadge({ isActive, hasError }: { isActive: boolean; hasError?: boolean }) {

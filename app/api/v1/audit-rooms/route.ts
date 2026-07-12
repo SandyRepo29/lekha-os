@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     if (!body.name) return err("name is required", 400);
-    const room = await createRoom(ctx.orgId, body, ctx.keyId);
+    const room = await createRoom(ctx.orgId, body, null);
     await addRoomActivity(ctx.orgId, room.id, {
       activityType: "audit_room.created",
       description: `Room "${room.name}" created via API.`,

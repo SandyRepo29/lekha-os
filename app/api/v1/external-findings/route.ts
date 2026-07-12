@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     if (!body.title) return err("title is required", 400);
     if (!body.roomId) return err("roomId is required", 400);
-    const finding = await createExternalFinding(ctx.orgId, body.roomId, body, ctx.keyId);
+    const finding = await createExternalFinding(ctx.orgId, body.roomId, body, null);
     return ok({ data: finding }, 201);
   } catch {
     return err("Failed to create finding", 500);

@@ -60,13 +60,13 @@ export function AuditorStat({
 // ---- EvidenceRequestStatusBadge ----
 
 const EVIDENCE_STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  pending:      { label: "Pending",      cls: "bg-amber-500/15 text-amber-400" },
-  submitted:    { label: "Submitted",    cls: "bg-blue-500/15 text-blue-400" },
-  under_review: { label: "Under Review", cls: "bg-purple-500/15 text-purple-400" },
-  accepted:     { label: "Accepted",     cls: "bg-emerald-500/15 text-emerald-400" },
-  rejected:     { label: "Rejected",     cls: "bg-red-500/15 text-red-400" },
+  pending:      { label: "Pending",      cls: "bg-amber-100 text-amber-700" },
+  submitted:    { label: "Submitted",    cls: "bg-blue-100 text-blue-700" },
+  under_review: { label: "Under Review", cls: "bg-purple-100 text-purple-700" },
+  accepted:     { label: "Accepted",     cls: "bg-emerald-100 text-emerald-700" },
+  rejected:     { label: "Rejected",     cls: "bg-red-100 text-red-700" },
   overdue:      { label: "Overdue",      cls: "bg-red-700/15 text-red-500" },
-  expired:      { label: "Expired",      cls: "bg-slate-500/15 text-slate-400" },
+  expired:      { label: "Expired",      cls: "bg-slate-100 text-slate-700" },
 };
 
 export function EvidenceRequestStatusBadge({ status }: { status: string }) {
@@ -81,12 +81,12 @@ export function EvidenceRequestStatusBadge({ status }: { status: string }) {
 // ---- ExternalFindingStatusBadge ----
 
 const FINDING_STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  open:             { label: "Open",             cls: "bg-red-500/15 text-red-400" },
-  in_remediation:   { label: "In Remediation",   cls: "bg-amber-500/15 text-amber-400" },
-  ready_for_review: { label: "Ready for Review",  cls: "bg-blue-500/15 text-blue-400" },
-  verified:         { label: "Verified",          cls: "bg-emerald-500/15 text-emerald-400" },
-  closed:           { label: "Closed",            cls: "bg-slate-500/15 text-slate-400" },
-  accepted:         { label: "Accepted",          cls: "bg-purple-500/15 text-purple-400" },
+  open:             { label: "Open",             cls: "bg-red-100 text-red-700" },
+  in_remediation:   { label: "In Remediation",   cls: "bg-amber-100 text-amber-700" },
+  ready_for_review: { label: "Ready for Review",  cls: "bg-blue-100 text-blue-700" },
+  verified:         { label: "Verified",          cls: "bg-emerald-100 text-emerald-700" },
+  closed:           { label: "Closed",            cls: "bg-slate-100 text-slate-700" },
+  accepted:         { label: "Accepted",          cls: "bg-purple-100 text-purple-700" },
 };
 
 export function ExternalFindingStatusBadge({ status }: { status: string }) {
@@ -101,12 +101,12 @@ export function ExternalFindingStatusBadge({ status }: { status: string }) {
 // ---- AuditRoomStatusBadge ----
 
 const ROOM_STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  planning:     { label: "Planning",     cls: "bg-slate-500/15 text-slate-400" },
-  active:       { label: "Active",       cls: "bg-emerald-500/15 text-emerald-400" },
-  under_review: { label: "Under Review", cls: "bg-amber-500/15 text-amber-400" },
-  completed:    { label: "Completed",    cls: "bg-blue-500/15 text-blue-400" },
+  planning:     { label: "Planning",     cls: "bg-slate-100 text-slate-700" },
+  active:       { label: "Active",       cls: "bg-emerald-100 text-emerald-700" },
+  under_review: { label: "Under Review", cls: "bg-amber-100 text-amber-700" },
+  completed:    { label: "Completed",    cls: "bg-blue-100 text-blue-700" },
   archived:     { label: "Archived",     cls: "bg-slate-600/15 text-slate-500" },
-  cancelled:    { label: "Cancelled",    cls: "bg-red-500/15 text-red-400" },
+  cancelled:    { label: "Cancelled",    cls: "bg-red-100 text-red-700" },
 };
 
 export function AuditRoomStatusBadge({ status }: { status: string }) {
@@ -121,16 +121,16 @@ export function AuditRoomStatusBadge({ status }: { status: string }) {
 // ---- ExternalUserTypeBadge ----
 
 const USER_TYPE_MAP: Record<string, { label: string; cls: string }> = {
-  iso_auditor:            { label: "ISO Auditor",        cls: "bg-indigo-500/15 text-indigo-400" },
+  iso_auditor:            { label: "ISO Auditor",        cls: "bg-indigo-100 text-indigo-700" },
   soc_auditor:            { label: "SOC Auditor",        cls: "bg-violet-500/15 text-violet-400" },
   dpdp_assessor:          { label: "DPDP Assessor",      cls: "bg-sky-500/15 text-sky-400" },
-  security_assessor:      { label: "Security Assessor",  cls: "bg-orange-500/15 text-orange-400" },
+  security_assessor:      { label: "Security Assessor",  cls: "bg-orange-100 text-orange-700" },
   privacy_consultant:     { label: "Privacy Consultant", cls: "bg-pink-500/15 text-pink-400" },
-  ai_governance_reviewer: { label: "AI Governance",      cls: "bg-purple-500/15 text-purple-400" },
+  ai_governance_reviewer: { label: "AI Governance",      cls: "bg-purple-100 text-purple-700" },
   customer_reviewer:      { label: "Customer Reviewer",  cls: "bg-teal-500/15 text-teal-400" },
-  third_party_reviewer:   { label: "Third Party",        cls: "bg-slate-500/15 text-slate-400" },
-  law_firm:               { label: "Law Firm",           cls: "bg-amber-500/15 text-amber-400" },
-  auditor:                { label: "Auditor",            cls: "bg-blue-500/15 text-blue-400" },
+  third_party_reviewer:   { label: "Third Party",        cls: "bg-slate-100 text-slate-700" },
+  law_firm:               { label: "Law Firm",           cls: "bg-amber-100 text-amber-700" },
+  auditor:                { label: "Auditor",            cls: "bg-blue-100 text-blue-700" },
 };
 
 export function ExternalUserTypeBadge({ userType }: { userType: string }) {
