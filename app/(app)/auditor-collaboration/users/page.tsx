@@ -19,10 +19,10 @@ const USER_TYPE_LABELS: Record<string, string> = {
 };
 
 const STATUS_BADGE: Record<string, string> = {
-  invited:   "bg-amber-500/20 text-amber-400",
-  active:    "bg-emerald-500/20 text-emerald-400",
-  suspended: "bg-orange-500/20 text-orange-400",
-  revoked:   "bg-red-500/20 text-red-400",
+  invited:   "bg-amber-100 text-amber-700",
+  active:    "bg-emerald-100 text-emerald-700",
+  suspended: "bg-orange-100 text-orange-700",
+  revoked:   "bg-red-100 text-red-700",
 };
 
 export default async function ExternalUsersPage() {
@@ -74,12 +74,12 @@ export default async function ExternalUsersPage() {
           <div>
             <label className="block text-xs text-[var(--color-ink-dim)] mb-1">Email *</label>
             <input name="email" type="email" required placeholder="auditor@firm.com"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
           <div>
             <label className="block text-xs text-[var(--color-ink-dim)] mb-1">Full Name *</label>
             <input name="fullName" required placeholder="John Smith"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
           <div>
             <label className="block text-xs text-[var(--color-ink-dim)] mb-1">User Type</label>
@@ -90,7 +90,7 @@ export default async function ExternalUsersPage() {
           <div>
             <label className="block text-xs text-[var(--color-ink-dim)] mb-1">Company</label>
             <input name="company" placeholder="Firm name"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
           <div className="sm:col-span-2 lg:col-span-4 flex justify-end">
             <button type="submit" className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-blue)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
@@ -139,7 +139,7 @@ export default async function ExternalUsersPage() {
                     {u.status !== "revoked" && (
                       <form action={revokeUser}>
                         <input type="hidden" name="id" value={u.id} />
-                        <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-red-500/10 px-2 py-1 text-xs text-red-400 hover:bg-red-500/20">
+                        <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2 py-1 text-xs text-red-700 hover:bg-red-100">
                           <ShieldOff className="h-3 w-3" /> Revoke
                         </button>
                       </form>

@@ -6,11 +6,11 @@ import Link from "next/link";
 import { Building2, Plus, Shield, Lock } from "lucide-react";
 
 const RISK_COLORS: Record<string, string> = {
-  low: "bg-emerald-500/10 text-emerald-400", moderate: "bg-yellow-500/10 text-yellow-400",
-  high: "bg-orange-500/10 text-orange-400", critical: "bg-red-500/10 text-red-400",
+  low: "bg-emerald-100 text-emerald-700", moderate: "bg-yellow-100 text-yellow-700",
+  high: "bg-orange-100 text-orange-700", critical: "bg-red-100 text-red-700",
 };
 const POSTURE_ICONS: Record<string, string> = {
-  strong: "text-emerald-400", adequate: "text-yellow-400", weak: "text-red-400", unknown: "text-[var(--color-ink-dim)]",
+  strong: "text-emerald-700", adequate: "text-yellow-700", weak: "text-red-700", unknown: "text-[var(--color-ink-dim)]",
 };
 
 export default async function AiVendorsPage() {

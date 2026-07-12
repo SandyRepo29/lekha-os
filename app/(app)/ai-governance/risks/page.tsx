@@ -15,8 +15,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   autonomous_decision_risk: "Autonomous Decision", other: "Other",
 };
 const STATUS_COLORS: Record<string, string> = {
-  open: "bg-red-500/10 text-red-400", mitigating: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
-  accepted: "bg-yellow-500/10 text-yellow-400", closed: "bg-emerald-500/10 text-emerald-400",
+  open: "bg-red-100 text-red-700", mitigating: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
+  accepted: "bg-yellow-100 text-yellow-700", closed: "bg-emerald-100 text-emerald-700",
 };
 
 export default async function AiRisksPage() {
@@ -33,7 +33,7 @@ export default async function AiRisksPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            <AlertTriangle className="h-6 w-6 text-orange-400" /> AI Risk Register™
+            <AlertTriangle className="h-6 w-6 text-orange-700" /> AI Risk Register™
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">AI-specific risks across hallucination, bias, privacy, security, and regulatory domains.</p>
         </div>

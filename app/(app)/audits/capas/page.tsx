@@ -102,7 +102,7 @@ export default async function AllCapasPage({
                     <div className="flex shrink-0 flex-col items-end gap-1.5">
                       <CapaStatusBadge status={c.status} />
                       {c.dueDate && (
-                        <span className={`text-xs ${overdue ? "text-red-400" : dueSoon ? "text-amber-400" : "text-[var(--color-ink-faint)]"}`}>
+                        <span className={`text-xs ${overdue ? "text-red-700" : dueSoon ? "text-amber-700" : "text-[var(--color-ink-faint)]"}`}>
                           Due {formatDate(c.dueDate)}
                         </span>
                       )}

@@ -67,7 +67,7 @@ export default async function AuditDetailPage({
             </h1>
             <AuditStatusBadge status={audit.status} />
             {audit.isOverdue && (
-              <span className="rounded-full bg-red-500/10 border border-red-500/20 px-2 py-0.5 text-xs font-medium text-red-400">
+              <span className="rounded-full bg-red-100 border border-red-200 px-2 py-0.5 text-xs font-medium text-red-700">
                 Overdue
               </span>
             )}
@@ -219,9 +219,9 @@ export default async function AuditDetailPage({
                     <CheckSquare
                       className={`h-4 w-4 shrink-0 ${
                         p.status === "passed"
-                          ? "text-emerald-400"
+                          ? "text-emerald-700"
                           : p.status === "failed"
-                          ? "text-red-400"
+                          ? "text-red-700"
                           : "text-[var(--color-ink-faint)]"
                       }`}
                     />

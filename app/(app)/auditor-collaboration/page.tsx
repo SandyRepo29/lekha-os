@@ -21,7 +21,7 @@ const NAV = [
 ];
 
 const SEVERITY_COLORS: Record<string, string> = {
-  low: "text-emerald-400", medium: "text-amber-400", high: "text-orange-400", critical: "text-red-400",
+  low: "text-emerald-700", medium: "text-amber-700", high: "text-orange-700", critical: "text-red-700",
 };
 
 export default async function AuditorCollaborationPage() {
@@ -109,7 +109,7 @@ export default async function AuditorCollaborationPage() {
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold flex items-center gap-2 text-sm">
-              <AlertTriangle className="h-4 w-4 text-orange-400" /> Recent Findings
+              <AlertTriangle className="h-4 w-4 text-orange-700" /> Recent Findings
             </h2>
             <Link href="/auditor-collaboration/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all</Link>
           </div>
@@ -121,7 +121,7 @@ export default async function AuditorCollaborationPage() {
                 <div key={f.id} className="rounded-lg border border-[var(--color-line)] p-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="font-medium text-sm truncate">{f.title}</div>
-                    <span className={`text-xs font-semibold shrink-0 ${SEVERITY_COLORS[f.severity] ?? "text-slate-400"}`}>
+                    <span className={`text-xs font-semibold shrink-0 ${SEVERITY_COLORS[f.severity] ?? "text-slate-600"}`}>
                       {f.severity}
                     </span>
                   </div>

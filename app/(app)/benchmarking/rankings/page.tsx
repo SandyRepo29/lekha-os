@@ -24,14 +24,14 @@ const MATURITY_DESCRIPTIONS: Record<BenchmarkMaturityLevel, string> = {
 };
 
 const RANKING_META: Record<BenchmarkRankingLabel, { icon: React.ElementType; color: string }> = {
-  top_1_percent:  { icon: Crown,  color: "text-purple-400" },
-  top_5_percent:  { icon: Crown,  color: "text-blue-400" },
-  top_10_percent: { icon: Medal,  color: "text-blue-400" },
-  top_quartile:   { icon: Medal,  color: "text-emerald-400" },
-  above_average:  { icon: Star,   color: "text-emerald-400" },
-  average:        { icon: Star,   color: "text-amber-400" },
-  below_average:  { icon: Award,  color: "text-orange-400" },
-  at_risk:        { icon: Award,  color: "text-red-400" },
+  top_1_percent:  { icon: Crown,  color: "text-purple-700" },
+  top_5_percent:  { icon: Crown,  color: "text-blue-700" },
+  top_10_percent: { icon: Medal,  color: "text-blue-700" },
+  top_quartile:   { icon: Medal,  color: "text-emerald-700" },
+  above_average:  { icon: Star,   color: "text-emerald-700" },
+  average:        { icon: Star,   color: "text-amber-700" },
+  below_average:  { icon: Award,  color: "text-orange-700" },
+  at_risk:        { icon: Award,  color: "text-red-700" },
 };
 
 const MATURITY_ORDER: BenchmarkMaturityLevel[] = [
@@ -107,7 +107,7 @@ export default async function RankingsPage() {
                 return (
                   <div
                     key={level}
-                    className={`flex-1 h-2 rounded-full ${i <= current ? "bg-[var(--color-blue)]" : "bg-white/10"}`}
+                    className={`flex-1 h-2 rounded-full ${i <= current ? "bg-[var(--color-blue)]" : "bg-slate-100"}`}
                     title={BENCHMARK_MATURITY_LABELS[level]}
                   />
                 );

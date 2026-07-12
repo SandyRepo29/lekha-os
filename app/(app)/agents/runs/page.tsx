@@ -68,7 +68,7 @@ export default async function AgentRunsPage() {
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.observationCount}</td>
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.recommendationCount}</td>
                     <td className="px-4 py-3 text-[var(--color-ink-dim)]">{r.actionCount}</td>
-                    <td className="px-4 py-3 text-red-400 max-w-[160px] truncate">{r.errorMessage ?? "-"}</td>
+                    <td className="px-4 py-3 text-red-700 max-w-[160px] truncate">{r.errorMessage ?? "-"}</td>
                   </tr>
                 ))}
               </tbody>

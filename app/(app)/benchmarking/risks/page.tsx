@@ -20,10 +20,10 @@ function accentForPercentile(pct: number | null): "good" | "warn" | "danger" | "
 }
 
 const CAT_META: Record<string, { icon: React.ElementType; iconColor: string; bg: string }> = {
-  risk_posture:     { icon: AlertTriangle, iconColor: "text-orange-400",  bg: "bg-orange-500/20" },
-  control_health:   { icon: Shield,        iconColor: "text-blue-400",    bg: "bg-blue-500/20" },
-  audit_readiness:  { icon: Shield,        iconColor: "text-emerald-400", bg: "bg-emerald-500/20" },
-  issue_resolution: { icon: AlertTriangle, iconColor: "text-purple-400",  bg: "bg-purple-500/20" },
+  risk_posture:     { icon: AlertTriangle, iconColor: "text-orange-700",  bg: "bg-orange-100" },
+  control_health:   { icon: Shield,        iconColor: "text-blue-700",    bg: "bg-blue-100" },
+  audit_readiness:  { icon: Shield,        iconColor: "text-emerald-700", bg: "bg-emerald-100" },
+  issue_resolution: { icon: AlertTriangle, iconColor: "text-purple-700",  bg: "bg-purple-100" },
 };
 
 export default async function RiskControlsBenchmarkPage() {
@@ -89,7 +89,7 @@ export default async function RiskControlsBenchmarkPage() {
                     <PercentileBar percentile={s.percentile} />
                     {s.deltaVsIndustry !== null && s.deltaVsIndustry !== undefined && (
                       <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
-                        <p className={`text-xs font-semibold ${s.deltaVsIndustry >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                        <p className={`text-xs font-semibold ${s.deltaVsIndustry >= 0 ? "text-emerald-700" : "text-red-700"}`}>
                           {s.deltaVsIndustry >= 0 ? "+" : ""}{s.deltaVsIndustry} vs industry average · Top quartile: {s.topQuartile ?? "—"}
                         </p>
                       </div>

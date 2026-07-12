@@ -7,16 +7,16 @@ import { AssetSubNav, AssetTypeBadge } from "@/components/asset-intelligence/ass
 import { GitBranch, ArrowRight } from "lucide-react";
 
 const REL_COLORS: Record<string, string> = {
-  depends_on:   "text-blue-400",
-  uses:         "text-cyan-400",
-  stores:       "text-amber-400",
-  processes:    "text-purple-400",
-  connects_to:  "text-green-400",
-  owned_by:     "text-indigo-400",
-  provided_by:  "text-orange-400",
-  supports:     "text-teal-400",
-  protected_by: "text-emerald-400",
-  governed_by:  "text-slate-400",
+  depends_on:   "text-blue-700",
+  uses:         "text-cyan-700",
+  stores:       "text-amber-700",
+  processes:    "text-purple-700",
+  connects_to:  "text-green-700",
+  owned_by:     "text-indigo-700",
+  provided_by:  "text-orange-700",
+  supports:     "text-teal-700",
+  protected_by: "text-emerald-700",
+  governed_by:  "text-slate-600",
 };
 
 export default async function RelationshipsPage() {
@@ -38,15 +38,15 @@ export default async function RelationshipsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-blue-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Total Relationships</p>
-          <p className="text-2xl font-bold text-blue-400">{relationships.length}</p>
+          <p className="text-2xl font-bold text-blue-700">{relationships.length}</p>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-red-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Critical Links</p>
-          <p className="text-2xl font-bold text-red-400">{(relationships as any[]).filter((r: any) => r.isCritical).length}</p>
+          <p className="text-2xl font-bold text-red-700">{(relationships as any[]).filter((r: any) => r.isCritical).length}</p>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-purple-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Assets Mapped</p>
-          <p className="text-2xl font-bold text-purple-400">{assets.length}</p>
+          <p className="text-2xl font-bold text-purple-700">{assets.length}</p>
         </div>
       </div>
 
@@ -84,7 +84,7 @@ export default async function RelationshipsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <ArrowRight className="h-3.5 w-3.5 text-[var(--color-ink-dim)]" />
-                        <span className={`text-xs font-medium capitalize ${REL_COLORS[r.relationshipType] ?? "text-slate-400"}`}>
+                        <span className={`text-xs font-medium capitalize ${REL_COLORS[r.relationshipType] ?? "text-slate-600"}`}>
                           {r.relationshipType?.replace(/_/g," ")}
                         </span>
                       </div>
@@ -102,7 +102,7 @@ export default async function RelationshipsPage() {
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      {r.isCritical ? <span className="text-xs text-red-400 font-medium">Yes</span> : <span className="text-xs text-[var(--color-ink-dim)]">No</span>}
+                      {r.isCritical ? <span className="text-xs text-red-700 font-medium">Yes</span> : <span className="text-xs text-[var(--color-ink-dim)]">No</span>}
                     </td>
                   </tr>
                 );

@@ -23,7 +23,7 @@ export default async function NewAuditRoomPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/auditor-collaboration/rooms" className="rounded-lg p-1.5 hover:bg-white/5">
+        <Link href="/auditor-collaboration/rooms" className="rounded-lg p-1.5 hover:bg-slate-100">
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <h1 className="text-xl font-bold flex items-center gap-2">
@@ -36,7 +36,7 @@ export default async function NewAuditRoomPage() {
           <div className="sm:col-span-2">
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Room Name *</label>
             <input name="name" required placeholder="e.g. ISO 27001 Audit 2026"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
 
           <div>
@@ -57,31 +57,31 @@ export default async function NewAuditRoomPage() {
           <div className="sm:col-span-2">
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Description</label>
             <textarea name="description" rows={3} placeholder="Brief description of this audit engagement..."
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none resize-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none resize-none" />
           </div>
 
           <div className="sm:col-span-2">
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Scope</label>
             <textarea name="scope" rows={2} placeholder="Define the audit scope..."
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none resize-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none resize-none" />
           </div>
 
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">Start Date</label>
             <input type="date" name="startDate"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
 
           <div>
             <label className="block text-xs font-medium text-[var(--color-ink-dim)] mb-1.5">End Date</label>
             <input type="date" name="endDate"
-              className="w-full rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
+              className="w-full rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none" />
           </div>
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
           <Link href="/auditor-collaboration/rooms"
-            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm hover:bg-white/5">
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm hover:bg-slate-100">
             Cancel
           </Link>
           <button type="submit"

@@ -24,19 +24,19 @@ export default async function DataAssetsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-blue-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Data Assets</p>
-          <p className="text-2xl font-bold text-blue-400">{dataAssets.length}</p>
+          <p className="text-2xl font-bold text-blue-700">{dataAssets.length}</p>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-amber-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Contains PII</p>
-          <p className="text-2xl font-bold text-amber-400">{piiAssets.length}</p>
+          <p className="text-2xl font-bold text-amber-700">{piiAssets.length}</p>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-red-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Cross-Border</p>
-          <p className="text-2xl font-bold text-red-400">{piiAssets.filter((x: any) => x.isCrossB).length}</p>
+          <p className="text-2xl font-bold text-red-700">{piiAssets.filter((x: any) => x.isCrossB).length}</p>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-white border-l-2 border-l-purple-400 p-4">
           <p className="text-xs text-[var(--color-ink-dim)]">Sensitive</p>
-          <p className="text-2xl font-bold text-purple-400">{piiAssets.filter((x: any) => x.containsSensitive).length}</p>
+          <p className="text-2xl font-bold text-purple-700">{piiAssets.filter((x: any) => x.containsSensitive).length}</p>
         </div>
       </div>
 
@@ -44,8 +44,8 @@ export default async function DataAssetsPage() {
       {piiAssets.length > 0 && (
         <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.03] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <ShieldAlert className="h-4 w-4 text-amber-400" />
-            <h2 className="font-semibold text-sm text-amber-400">Assets Containing PII</h2>
+            <ShieldAlert className="h-4 w-4 text-amber-700" />
+            <h2 className="font-semibold text-sm text-amber-700">Assets Containing PII</h2>
           </div>
           <div className="space-y-2">
             {piiAssets.map((a: any) => (
@@ -81,7 +81,7 @@ export default async function DataAssetsPage() {
             {dataAssets.map((a: any) => (
               <Link key={a.id} href={`/asset-intelligence/registry/${a.id}`}
                 className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] p-3 hover:bg-white transition-colors">
-                <FileText className="h-4 w-4 text-amber-400 shrink-0" />
+                <FileText className="h-4 w-4 text-amber-700 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium truncate">{a.name}</p>

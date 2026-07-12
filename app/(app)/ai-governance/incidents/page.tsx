@@ -12,9 +12,9 @@ const TYPE_LABELS: Record<string, string> = {
   prompt_injection: "Prompt Injection", compliance_violation: "Compliance Violation", other: "Other",
 };
 const STATUS_COLORS: Record<string, string> = {
-  open: "bg-red-500/10 text-red-400", investigating: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
-  contained: "bg-yellow-500/10 text-yellow-400", resolved: "bg-emerald-500/10 text-emerald-400",
-  closed: "bg-white/5 text-[var(--color-ink-faint)]",
+  open: "bg-red-100 text-red-700", investigating: "bg-[var(--color-blue)]/10 text-[var(--color-blue)]",
+  contained: "bg-yellow-100 text-yellow-700", resolved: "bg-emerald-100 text-emerald-700",
+  closed: "bg-slate-100 text-[var(--color-ink-faint)]",
 };
 
 export default async function AiIncidentsPage() {
@@ -31,7 +31,7 @@ export default async function AiIncidentsPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Bug className="h-6 w-6 text-red-400" /> AI Incidents™
+            <Bug className="h-6 w-6 text-red-700" /> AI Incidents™
           </h1>
           <p className="mt-1 text-sm text-[var(--color-ink-dim)]">Track hallucinations, bias events, data exposure, prompt injection, and compliance violations.</p>
         </div>

@@ -41,7 +41,7 @@ export default async function AiCopilotPage() {
               <ul className="space-y-1">
                 {summary.riskHighlights.map((h: string, i: number) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
-                    <AlertTriangle className="h-3.5 w-3.5 mt-0.5 text-orange-400 shrink-0" />
+                    <AlertTriangle className="h-3.5 w-3.5 mt-0.5 text-orange-700 shrink-0" />
                     {h}
                   </li>
                 ))}
@@ -54,7 +54,7 @@ export default async function AiCopilotPage() {
               <ul className="space-y-1">
                 {summary.recommendations.map((r: string, i: number) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
-                    <ShieldCheck className="h-3.5 w-3.5 mt-0.5 text-emerald-400 shrink-0" />
+                    <ShieldCheck className="h-3.5 w-3.5 mt-0.5 text-emerald-700 shrink-0" />
                     {r}
                   </li>
                 ))}

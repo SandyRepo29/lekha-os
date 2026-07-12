@@ -21,8 +21,8 @@ const NAV = [
 ];
 
 const RISK_COLORS: Record<string, string> = {
-  low: "text-emerald-400", moderate: "text-yellow-400",
-  high: "text-orange-400", critical: "text-red-400", prohibited: "text-purple-400",
+  low: "text-emerald-700", moderate: "text-yellow-700",
+  high: "text-orange-700", critical: "text-red-700", prohibited: "text-purple-700",
 };
 
 export default async function AiGovernancePage() {
@@ -114,7 +114,7 @@ export default async function AiGovernancePage() {
                   <div className="font-medium">{i.title}</div>
                   <div className="text-xs text-[var(--color-ink-dim)]">{i.incidentType?.replace(/_/g, " ")}</div>
                 </div>
-                <span className={`text-xs font-medium ${i.severity === "critical" ? "text-red-400" : i.severity === "high" ? "text-orange-400" : "text-yellow-400"}`}>
+                <span className={`text-xs font-medium ${i.severity === "critical" ? "text-red-700" : i.severity === "high" ? "text-orange-700" : "text-yellow-700"}`}>
                   {i.severity}
                 </span>
               </div>

@@ -14,14 +14,14 @@ const CAT_LABELS: Record<string, string> = {
   content_filtering: "Content Filtering", red_team_testing: "Red Team Testing", other: "Other",
 };
 const STATUS_COLORS: Record<string, string> = {
-  implemented: "bg-emerald-500/10 text-emerald-400",
-  partially_implemented: "bg-yellow-500/10 text-yellow-400",
-  planned: "bg-blue-500/10 text-blue-400",
+  implemented: "bg-emerald-100 text-emerald-700",
+  partially_implemented: "bg-yellow-100 text-yellow-700",
+  planned: "bg-blue-100 text-blue-700",
   not_applicable: "bg-gray-500/10 text-gray-400",
 };
 const EFFECT_COLORS: Record<string, string> = {
-  effective: "text-emerald-400", partially_effective: "text-yellow-400",
-  ineffective: "text-red-400", not_tested: "text-[var(--color-ink-dim)]",
+  effective: "text-emerald-700", partially_effective: "text-yellow-700",
+  ineffective: "text-red-700", not_tested: "text-[var(--color-ink-dim)]",
 };
 
 export default async function AiControlsPage() {

@@ -13,7 +13,7 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const RISK_COLORS: Record<string, string> = {
-  critical: "text-red-400", high: "text-orange-400", medium: "text-amber-400", low: "text-emerald-400",
+  critical: "text-red-700", high: "text-orange-700", medium: "text-amber-700", low: "text-emerald-700",
 };
 
 export default async function AccessReviewsPage() {
@@ -92,11 +92,11 @@ export default async function AccessReviewsPage() {
                   <div className="text-[10px] text-[var(--color-ink-faint)]">Reviewed</div>
                 </div>
                 <div className="rounded-lg bg-white px-3 py-2">
-                  <div className="text-sm font-semibold text-emerald-400">{review.approvedCount}</div>
+                  <div className="text-sm font-semibold text-emerald-700">{review.approvedCount}</div>
                   <div className="text-[10px] text-[var(--color-ink-faint)]">Approved</div>
                 </div>
                 <div className="rounded-lg bg-white px-3 py-2">
-                  <div className="text-sm font-semibold text-red-400">{review.revokedCount}</div>
+                  <div className="text-sm font-semibold text-red-700">{review.revokedCount}</div>
                   <div className="text-[10px] text-[var(--color-ink-faint)]">Revoked</div>
                 </div>
               </div>

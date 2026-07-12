@@ -51,10 +51,10 @@ export default async function AuditsDashboardPage() {
   // ── Audit Pipeline™ stages ──────────────────────────────────────
   const pipelineStages = [
     { label: "Planned",   count: metrics.planned,    color: "text-[var(--color-blue)]",  href: "/audits/list?status=planned"     },
-    { label: "Fieldwork", count: metrics.inProgress, color: "text-amber-400",            href: "/audits/list?status=in_progress" },
-    { label: "Review",    count: 0,                  color: "text-purple-400",           href: "/audits/list"                    },
-    { label: "Reporting", count: 0,                  color: "text-cyan-400",             href: "/audits/list"                    },
-    { label: "Closed",    count: metrics.completed,  color: "text-emerald-400",          href: "/audits/list?status=completed"   },
+    { label: "Fieldwork", count: metrics.inProgress, color: "text-amber-700",            href: "/audits/list?status=in_progress" },
+    { label: "Review",    count: 0,                  color: "text-purple-700",           href: "/audits/list"                    },
+    { label: "Reporting", count: 0,                  color: "text-cyan-700",             href: "/audits/list"                    },
+    { label: "Closed",    count: metrics.completed,  color: "text-emerald-700",          href: "/audits/list?status=completed"   },
   ];
 
   // ── Evidence Requests™ ─────────────────────────────────────────
@@ -95,8 +95,8 @@ export default async function AuditsDashboardPage() {
     readinessScore >= 65 ? "Needs Attention" :
     "Not Ready";
   const readinessColor =
-    readinessScore >= 85 ? "text-emerald-400" :
-    readinessScore >= 65 ? "text-amber-400" : "text-red-400";
+    readinessScore >= 85 ? "text-emerald-700" :
+    readinessScore >= 65 ? "text-amber-700" : "text-red-700";
 
   // ── Audit Intelligence™ derived insights ───────────────────────
   const totalFindings = (severityCounts["critical"] ?? 0) + (severityCounts["high"] ?? 0) + (severityCounts["medium"] ?? 0) + (severityCounts["low"] ?? 0);
@@ -172,7 +172,7 @@ export default async function AuditsDashboardPage() {
           <div className="mt-4 pt-4 border-t border-[var(--color-line)] grid grid-cols-2 gap-3">
             <div>
               <p className="text-[10px] text-[var(--color-ink-faint)]">Overdue</p>
-              <p className={`text-lg font-bold ${metrics.overdue > 0 ? "text-red-400" : "text-emerald-400"}`}>{metrics.overdue}</p>
+              <p className={`text-lg font-bold ${metrics.overdue > 0 ? "text-red-700" : "text-emerald-700"}`}>{metrics.overdue}</p>
             </div>
             <div>
               <p className="text-[10px] text-[var(--color-ink-faint)]">Cancelled</p>
@@ -185,17 +185,17 @@ export default async function AuditsDashboardPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileSearch className="h-4 w-4 text-amber-400" />
+              <FileSearch className="h-4 w-4 text-amber-700" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Evidence Requests™</h2>
             </div>
             <Link href="/auditor-collaboration/evidence" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: "Open Requests",       value: openRequests,      color: openRequests > 0      ? "text-amber-400"  : "text-emerald-400" },
-              { label: "Overdue Requests",    value: overdueRequests,   color: overdueRequests > 0   ? "text-red-400"    : "text-emerald-400" },
-              { label: "Completed",           value: completedRequests, color: "text-emerald-400" },
-              { label: "Pending Review",      value: pendingReview,     color: pendingReview > 0     ? "text-[var(--color-blue)]" : "text-emerald-400" },
+              { label: "Open Requests",       value: openRequests,      color: openRequests > 0      ? "text-amber-700"  : "text-emerald-700" },
+              { label: "Overdue Requests",    value: overdueRequests,   color: overdueRequests > 0   ? "text-red-700"    : "text-emerald-700" },
+              { label: "Completed",           value: completedRequests, color: "text-emerald-700" },
+              { label: "Pending Review",      value: pendingReview,     color: pendingReview > 0     ? "text-[var(--color-blue)]" : "text-emerald-700" },
             ].map(({ label, value, color }) => (
               <div key={label} className="rounded-xl border border-[var(--color-line)] p-3">
                 <p className="text-[10px] text-[var(--color-ink-faint)]">{label}</p>
@@ -221,17 +221,17 @@ export default async function AuditsDashboardPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-orange-400" />
+              <AlertTriangle className="h-4 w-4 text-orange-700" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Findings by Severity</h2>
             </div>
             <Link href="/audits/findings" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="space-y-3">
             {[
-              { label: "Critical", value: severityCounts["critical"] ?? 0, color: "text-red-400",    bg: "bg-red-500"    },
-              { label: "High",     value: severityCounts["high"]     ?? 0, color: "text-orange-400", bg: "bg-orange-500" },
-              { label: "Medium",   value: severityCounts["medium"]   ?? 0, color: "text-amber-400",  bg: "bg-amber-500"  },
-              { label: "Low",      value: severityCounts["low"]      ?? 0, color: "text-yellow-400", bg: "bg-yellow-500" },
+              { label: "Critical", value: severityCounts["critical"] ?? 0, color: "text-red-700",    bg: "bg-red-500"    },
+              { label: "High",     value: severityCounts["high"]     ?? 0, color: "text-orange-700", bg: "bg-orange-500" },
+              { label: "Medium",   value: severityCounts["medium"]   ?? 0, color: "text-amber-700",  bg: "bg-amber-500"  },
+              { label: "Low",      value: severityCounts["low"]      ?? 0, color: "text-yellow-700", bg: "bg-yellow-500" },
             ].map(({ label, value, color, bg }) => (
               <div key={label} className="flex items-center gap-3">
                 <span className="w-14 text-xs text-[var(--color-ink-dim)]">{label}</span>
@@ -253,16 +253,16 @@ export default async function AuditsDashboardPage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-700" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">CAPA Health™</h2>
             </div>
             <Link href="/audits/capas" className="text-xs text-[var(--color-blue)] hover:underline">View all →</Link>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Open CAPAs",         value: openCapas,                   color: openCapas > 0      ? "text-amber-400"  : "text-emerald-400" },
-              { label: "Overdue CAPAs",      value: overdueCapas,                color: overdueCapas > 0   ? "text-red-400"    : "text-emerald-400" },
-              { label: "Completed CAPAs",    value: completedCapas,              color: "text-emerald-400" },
+              { label: "Open CAPAs",         value: openCapas,                   color: openCapas > 0      ? "text-amber-700"  : "text-emerald-700" },
+              { label: "Overdue CAPAs",      value: overdueCapas,                color: overdueCapas > 0   ? "text-red-700"    : "text-emerald-700" },
+              { label: "Completed CAPAs",    value: completedCapas,              color: "text-emerald-700" },
               { label: "Avg Closure",        value: avgClosureDays != null ? `${avgClosureDays}d` : "—", color: "text-[var(--color-ink)]" },
             ].map(({ label, value, color }) => (
               <div key={label} className="rounded-xl border border-[var(--color-line)] p-3">
@@ -326,7 +326,7 @@ export default async function AuditsDashboardPage() {
                         )}
                         {/* P7 relationship hints */}
                         {a.openFindings > 0 && (
-                          <span className="text-xs text-amber-400">{a.openFindings} finding{a.openFindings !== 1 ? "s" : ""}</span>
+                          <span className="text-xs text-amber-700">{a.openFindings} finding{a.openFindings !== 1 ? "s" : ""}</span>
                         )}
                       </div>
                     </div>
@@ -349,10 +349,10 @@ export default async function AuditsDashboardPage() {
             </div>
             <div className="space-y-2.5">
               {[
-                { label: "Critical findings open",    value: severityCounts["critical"] ?? 0, color: (severityCounts["critical"] ?? 0) > 0 ? "text-red-400"    : "text-emerald-400" },
-                { label: "High findings open",        value: severityCounts["high"]     ?? 0, color: (severityCounts["high"] ?? 0) > 0     ? "text-orange-400" : "text-emerald-400" },
-                { label: "CAPAs overdue",             value: overdueCapas,                    color: overdueCapas > 0 ? "text-red-400" : "text-emerald-400" },
-                { label: "Audits in fieldwork",       value: metrics.inProgress,              color: "text-amber-400" },
+                { label: "Critical findings open",    value: severityCounts["critical"] ?? 0, color: (severityCounts["critical"] ?? 0) > 0 ? "text-red-700"    : "text-emerald-700" },
+                { label: "High findings open",        value: severityCounts["high"]     ?? 0, color: (severityCounts["high"] ?? 0) > 0     ? "text-orange-700" : "text-emerald-700" },
+                { label: "CAPAs overdue",             value: overdueCapas,                    color: overdueCapas > 0 ? "text-red-700" : "text-emerald-700" },
+                { label: "Audits in fieldwork",       value: metrics.inProgress,              color: "text-amber-700" },
                 { label: "Audit readiness score",     value: `${readinessScore}%`,            color: readinessColor },
               ].map(({ label, value, color }) => (
                 <div key={label} className="flex items-center justify-between">
@@ -371,7 +371,7 @@ export default async function AuditsDashboardPage() {
           {/* Trust Impact™ */}
           <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
-              <Target className="h-4 w-4 text-purple-400" />
+              <Target className="h-4 w-4 text-purple-700" />
               <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold">Trust Impact™</h2>
             </div>
             <p className="text-xs text-[var(--color-ink-dim)] mb-3">Audit Readiness feeds 15% of Org Trust Score™</p>
@@ -379,7 +379,7 @@ export default async function AuditsDashboardPage() {
               <div>
                 <div className="mb-1 flex justify-between text-xs">
                   <span className="text-[var(--color-ink-dim)]">Current contribution</span>
-                  <span className="font-bold text-purple-400">{currentTrustContrib}/15 pts</span>
+                  <span className="font-bold text-purple-700">{currentTrustContrib}/15 pts</span>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className="h-full rounded-full bg-purple-500" style={{ width: `${(currentTrustContrib / 15) * 100}%` }} />
@@ -388,7 +388,7 @@ export default async function AuditsDashboardPage() {
               <div>
                 <div className="mb-1 flex justify-between text-xs">
                   <span className="text-[var(--color-ink-dim)]">Projected (all closed)</span>
-                  <span className="font-bold text-emerald-400">15/15 pts</span>
+                  <span className="font-bold text-emerald-700">15/15 pts</span>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F8F9FB]">
                   <div className="h-full rounded-full bg-emerald-500" style={{ width: "100%" }} />

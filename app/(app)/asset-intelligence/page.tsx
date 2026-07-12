@@ -117,7 +117,7 @@ export default async function AssetIntelligencePage() {
                       <p className="text-sm font-medium truncate">{a.name}</p>
                       <p className="text-xs text-[var(--color-ink-dim)] truncate">
                         {a.businessUnit ?? a.category ?? a.assetType}
-                        {a.containsPii && <span className="ml-1.5 text-amber-400">· PII</span>}
+                        {a.containsPii && <span className="ml-1.5 text-amber-700">· PII</span>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -136,15 +136,15 @@ export default async function AssetIntelligencePage() {
           {/* Asset Risk Insights */}
           <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
             <h2 className="font-semibold text-sm mb-3 flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-400" />
+              <AlertTriangle className="h-4 w-4 text-amber-700" />
               Asset Risk Insights
             </h2>
             <div className="space-y-2.5">
               {[
-                { label: "Critical Assets At Risk",    value: Math.min(metrics.criticalAssets, alerts.length), color: "text-red-400"    },
-                { label: "Assets With Regulated Data", value: assetsWithRegulatedData,                         color: "text-amber-400"  },
-                { label: "With Vendor Dependencies",   value: assetsWithVendorDeps,                            color: "text-orange-400" },
-                { label: "Open Governance Alerts",     value: metrics.openAlerts,                              color: "text-yellow-400" },
+                { label: "Critical Assets At Risk",    value: Math.min(metrics.criticalAssets, alerts.length), color: "text-red-700"    },
+                { label: "Assets With Regulated Data", value: assetsWithRegulatedData,                         color: "text-amber-700"  },
+                { label: "With Vendor Dependencies",   value: assetsWithVendorDeps,                            color: "text-orange-700" },
+                { label: "Open Governance Alerts",     value: metrics.openAlerts,                              color: "text-yellow-700" },
               ].map(({ label, value, color }) => (
                 <div key={label} className="flex items-center justify-between">
                   <span className="text-xs text-[var(--color-ink-dim)]">{label}</span>
@@ -201,7 +201,7 @@ export default async function AssetIntelligencePage() {
 
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
           <h2 className="font-semibold text-sm mb-3 flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-amber-400" /> Assets by Criticality
+            <TrendingUp className="h-4 w-4 text-amber-700" /> Assets by Criticality
           </h2>
           {byCriticality.length === 0 ? (
             <p className="text-xs text-[var(--color-ink-dim)]">No data yet</p>

@@ -8,8 +8,8 @@ import { AlertTriangle } from "lucide-react";
 import { AuditorStat, ExternalFindingStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const SEV_BADGE: Record<string, string> = {
-  low: "bg-emerald-500/20 text-emerald-400", medium: "bg-amber-500/20 text-amber-400",
-  high: "bg-orange-500/20 text-orange-400", critical: "bg-red-500/20 text-red-400",
+  low: "bg-emerald-100 text-emerald-700", medium: "bg-amber-100 text-amber-700",
+  high: "bg-orange-100 text-orange-700", critical: "bg-red-100 text-red-700",
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -38,7 +38,7 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-orange-400" /> Shared Findings™
+          <AlertTriangle className="h-5 w-5 text-orange-700" /> Shared Findings™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Findings raised by external auditors and assessors across all rooms.</p>
       </div>
@@ -53,17 +53,17 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        <a href="/auditor-collaboration/findings" className={`rounded-full px-3 py-1 text-xs font-medium ${!params.status && !params.severity ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>All</a>
+        <a href="/auditor-collaboration/findings" className={`rounded-full px-3 py-1 text-xs font-medium ${!params.status && !params.severity ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>All</a>
         {["open","in_remediation","ready_for_review","verified","closed"].map(s => (
           <a key={s} href={`/auditor-collaboration/findings?status=${s}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+            className={`rounded-full px-3 py-1 text-xs font-medium ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
             {s.replace(/_/g, " ")}
           </a>
         ))}
         <span className="text-[var(--color-line)]">|</span>
         {["critical","high","medium","low"].map(s => (
           <a key={s} href={`/auditor-collaboration/findings?severity=${s}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${params.severity === s ? "bg-orange-500 text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+            className={`rounded-full px-3 py-1 text-xs font-medium ${params.severity === s ? "bg-orange-500 text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
             {s}
           </a>
         ))}
@@ -85,7 +85,7 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
                     <h3 className="font-semibold text-sm">{f.title}</h3>
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${SEV_BADGE[f.severity] ?? ""}`}>{f.severity}</span>
                     <ExternalFindingStatusBadge status={f.status} />
-                    {f.findingType && <span className="rounded-full px-2 py-0.5 text-[10px] bg-white/5 text-[var(--color-ink-dim)]">{TYPE_LABEL[f.findingType] ?? f.findingType}</span>}
+                    {f.findingType && <span className="rounded-full px-2 py-0.5 text-[10px] bg-slate-100 text-[var(--color-ink-dim)]">{TYPE_LABEL[f.findingType] ?? f.findingType}</span>}
                   </div>
                   {f.description && <p className="mt-1 text-xs text-[var(--color-ink-dim)] line-clamp-2">{f.description}</p>}
                   <div className="mt-1 flex flex-wrap gap-3 text-xs text-[var(--color-ink-dim)]">
@@ -94,7 +94,7 @@ export default async function ExternalFindingsPage({ searchParams }: { searchPar
                     {f.dueDate && <span>· Due {f.dueDate}</span>}
                   </div>
                   {f.recommendation && (
-                    <p className="mt-2 text-xs text-sky-300 italic">Recommendation: {f.recommendation}</p>
+                    <p className="mt-2 text-xs text-sky-700 italic">Recommendation: {f.recommendation}</p>
                   )}
                 </div>
 

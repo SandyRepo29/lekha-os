@@ -25,12 +25,12 @@ import {
 function DeltaBadge({ delta }: { delta: number | null }) {
   if (delta === null) return <span className="text-xs text-[var(--color-ink-faint)]">—</span>;
   if (delta > 0) return (
-    <span className="flex items-center gap-0.5 text-xs text-emerald-400">
+    <span className="flex items-center gap-0.5 text-xs text-emerald-700">
       <ArrowUpRight className="h-3 w-3" />+{delta}
     </span>
   );
   if (delta < 0) return (
-    <span className="flex items-center gap-0.5 text-xs text-red-400">
+    <span className="flex items-center gap-0.5 text-xs text-red-700">
       <ArrowDownRight className="h-3 w-3" />{delta}
     </span>
   );
@@ -205,7 +205,7 @@ export default async function BenchmarkingDashboard() {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-emerald-400" /> Top Strengths™
+                <TrendingUp className="h-4 w-4 text-emerald-700" /> Top Strengths™
               </h2>
               <div className="space-y-2">
                 {strengths.length === 0 && (
@@ -214,14 +214,14 @@ export default async function BenchmarkingDashboard() {
                 {strengths.map((s) => (
                   <Card key={s.id} className="p-3 flex items-center justify-between">
                     <p className="text-sm font-medium">{BENCHMARK_CATEGORY_LABELS[s.category as BenchmarkCategory]}</p>
-                    <span className="text-xs font-semibold text-emerald-400">+{s.deltaVsIndustry} vs industry</span>
+                    <span className="text-xs font-semibold text-emerald-700">+{s.deltaVsIndustry} vs industry</span>
                   </Card>
                 ))}
               </div>
             </div>
             <div>
               <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-orange-400" /> Improvement Opportunities™
+                <Zap className="h-4 w-4 text-orange-700" /> Improvement Opportunities™
               </h2>
               <div className="space-y-2">
                 {weaknesses.length === 0 && (
@@ -230,7 +230,7 @@ export default async function BenchmarkingDashboard() {
                 {weaknesses.map((s) => (
                   <Card key={s.id} className="p-3 flex items-center justify-between">
                     <p className="text-sm font-medium">{BENCHMARK_CATEGORY_LABELS[s.category as BenchmarkCategory]}</p>
-                    <span className="text-xs font-semibold text-orange-400">{s.deltaVsIndustry} vs industry</span>
+                    <span className="text-xs font-semibold text-orange-700">{s.deltaVsIndustry} vs industry</span>
                   </Card>
                 ))}
               </div>

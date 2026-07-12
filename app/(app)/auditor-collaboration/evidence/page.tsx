@@ -8,8 +8,8 @@ import { FileCheck, CheckCircle, XCircle } from "lucide-react";
 import { AuditorStat, EvidenceRequestStatusBadge } from "@/components/auditor-collaboration/auditor-ui";
 
 const PRIORITY_BADGE: Record<string, string> = {
-  low: "bg-slate-500/20 text-slate-400", medium: "bg-amber-500/20 text-amber-400",
-  high: "bg-orange-500/20 text-orange-400", critical: "bg-red-500/20 text-red-400",
+  low: "bg-slate-100 text-slate-600", medium: "bg-amber-100 text-amber-700",
+  high: "bg-orange-100 text-orange-700", critical: "bg-red-100 text-red-700",
 };
 
 export default async function EvidenceRequestsPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
@@ -57,12 +57,12 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
       {/* Filter */}
       <div className="flex flex-wrap gap-2">
         <a href="/auditor-collaboration/evidence"
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
           All ({requests.length})
         </a>
         {statuses.map(s => (
           <a key={s} href={`/auditor-collaboration/evidence?status=${s}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
             {s.replace("_", " ")}
           </a>
         ))}
@@ -96,13 +96,13 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
                   <div className="flex gap-2 shrink-0">
                     <form action={acceptEvidence}>
                       <input type="hidden" name="requestId" value={r.id} />
-                      <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20">
+                      <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-emerald-100 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
                         <CheckCircle className="h-3 w-3" /> Accept
                       </button>
                     </form>
                     <form action={rejectEvidence}>
                       <input type="hidden" name="requestId" value={r.id} />
-                      <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20">
+                      <button type="submit" className="inline-flex items-center gap-1 rounded-lg bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100">
                         <XCircle className="h-3 w-3" /> Reject
                       </button>
                     </form>
@@ -111,12 +111,12 @@ export default async function EvidenceRequestsPage({ searchParams }: { searchPar
               </div>
 
               {r.reviewerNotes && (
-                <div className="mt-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 text-xs text-emerald-300">
+                <div className="mt-3 rounded-lg bg-emerald-100 border border-emerald-200 px-3 py-2 text-xs text-emerald-700">
                   Notes: {r.reviewerNotes}
                 </div>
               )}
               {r.rejectionReason && (
-                <div className="mt-3 rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs text-red-300">
+                <div className="mt-3 rounded-lg bg-red-100 border border-red-200 px-3 py-2 text-xs text-red-700">
                   Rejection reason: {r.rejectionReason}
                 </div>
               )}

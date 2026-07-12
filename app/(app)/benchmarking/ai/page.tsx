@@ -74,7 +74,7 @@ export default async function BenchmarkAiPage() {
           {insights && (
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="h-4 w-4 text-green-400" />
+                <TrendingUp className="h-4 w-4 text-green-700" />
                 <p className="text-sm font-semibold">AI Industry Insights™</p>
               </div>
               <p className="text-sm text-[var(--color-ink-dim)] leading-relaxed whitespace-pre-line">{insights}</p>
@@ -85,7 +85,7 @@ export default async function BenchmarkAiPage() {
           {plan.length > 0 && (
             <Card className="p-5">
               <div className="flex items-center gap-2 mb-4">
-                <Zap className="h-4 w-4 text-orange-400" />
+                <Zap className="h-4 w-4 text-orange-700" />
                 <p className="text-sm font-semibold">AI Improvement Planner™</p>
               </div>
               <div className="space-y-3">
@@ -99,10 +99,10 @@ export default async function BenchmarkAiPage() {
                       <p className="text-sm text-[var(--color-ink)]">{item.action}</p>
                     </div>
                     <div className="flex flex-col gap-1 flex-shrink-0 text-right">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${item.impact === "high" ? "bg-green-500/20 text-green-400" : item.impact === "medium" ? "bg-yellow-500/20 text-yellow-400" : "bg-white/10 text-[var(--color-ink-dim)]"}`}>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${item.impact === "high" ? "bg-green-100 text-green-700" : item.impact === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-slate-100 text-[var(--color-ink-dim)]"}`}>
                         {item.impact} impact
                       </span>
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${item.effort === "low" ? "bg-green-500/20 text-green-400" : item.effort === "medium" ? "bg-yellow-500/20 text-yellow-400" : "bg-red-500/20 text-red-400"}`}>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${item.effort === "low" ? "bg-green-100 text-green-700" : item.effort === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700"}`}>
                         {item.effort} effort
                       </span>
                     </div>

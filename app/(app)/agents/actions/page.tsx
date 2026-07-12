@@ -42,18 +42,18 @@ export default async function AgentActionsPage() {
       {pending.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-amber-400" />
-            <h2 className="font-semibold text-sm text-amber-300">Awaiting Approval ({pending.length})</h2>
+            <Clock className="h-4 w-4 text-amber-700" />
+            <h2 className="font-semibold text-sm text-amber-700">Awaiting Approval ({pending.length})</h2>
           </div>
           <div className="space-y-3">
             {pending.map(a => (
-              <div key={a.id} className="rounded-2xl border border-amber-500/30 bg-amber-500/[0.04] p-4">
+              <div key={a.id} className="rounded-2xl border border-amber-200 bg-amber-500/[0.04] p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm">{a.title}</p>
                     <p className="mt-1 text-xs text-[var(--color-ink-dim)] leading-relaxed">{a.description}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-[var(--color-ink-faint)]">
-                      <span className="rounded-full bg-white/5 border border-[var(--color-line)] px-2 py-0.5">{a.targetModule}</span>
+                      <span className="rounded-full bg-slate-100 border border-[var(--color-line)] px-2 py-0.5">{a.targetModule}</span>
                       {a.targetEntityId && <span>- {a.targetEntityId}</span>}
                       <span>- by {a.agentName}</span>
                       <span>- {fmtDate(a.requestedAt)}</span>
@@ -102,7 +102,7 @@ export default async function AgentActionsPage() {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-bg-2)]/40 flex flex-col items-center py-16 gap-4">
-          <CheckCircle className="h-10 w-10 text-emerald-400 opacity-40" />
+          <CheckCircle className="h-10 w-10 text-emerald-700 opacity-40" />
           <div className="text-center">
             <p className="font-semibold text-sm">No actions yet</p>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)]">Agents will propose actions once activated and observations are generated.</p>

@@ -8,36 +8,36 @@ import { AgentStat, AgentSubNav } from "@/components/agents/agent-ui";
 const INSIGHT_CARDS = [
   {
     icon: TrendingUp,
-    color: "text-emerald-400",
+    color: "text-emerald-700",
     bg: "bg-emerald-500/[0.06]",
-    border: "border-emerald-500/20",
+    border: "border-emerald-200",
     title: "Risk Sentinel™ Performance",
     stat: "97% success rate",
     detail: "142 runs in the last 30 days. Detected 18 critical risk gaps before they escalated.",
   },
   {
     icon: Zap,
-    color: "text-blue-400",
+    color: "text-blue-700",
     bg: "bg-blue-500/[0.06]",
-    border: "border-blue-500/20",
+    border: "border-blue-200",
     title: "Automation Coverage",
     stat: "62% automated",
     detail: "38% of governance runs are triggered autonomously on schedule or event. Rest are manual.",
   },
   {
     icon: Clock,
-    color: "text-purple-400",
+    color: "text-purple-700",
     bg: "bg-purple-500/[0.06]",
-    border: "border-purple-500/20",
+    border: "border-purple-200",
     title: "Time Saved",
     stat: "34 hrs / month",
     detail: "Agents handle routine governance checks, reviews, and alerting that previously required manual effort.",
   },
   {
     icon: Shield,
-    color: "text-amber-400",
+    color: "text-amber-700",
     bg: "bg-amber-500/[0.06]",
-    border: "border-amber-500/20",
+    border: "border-amber-200",
     title: "Issues Prevented",
     stat: "18 issues",
     detail: "Governance risks identified and actioned before becoming audit findings or compliance violations.",
@@ -131,7 +131,7 @@ export default async function AgentAnalyticsPage() {
                 <tr key={row.name} className="hover:bg-white">
                   <td className="py-2 font-medium">{row.name}</td>
                   <td className="py-2 text-[var(--color-ink-dim)]">{row.runs}</td>
-                  <td className="py-2"><span className={row.success >= 95 ? "text-emerald-400" : row.success >= 80 ? "text-amber-400" : "text-red-400"}>{row.success}%</span></td>
+                  <td className="py-2"><span className={row.success >= 95 ? "text-emerald-700" : row.success >= 80 ? "text-amber-700" : "text-red-700"}>{row.success}%</span></td>
                   <td className="py-2 text-[var(--color-ink-dim)]">{row.obs}</td>
                   <td className="py-2 text-[var(--color-ink-dim)]">{row.actions}</td>
                   <td className="py-2 text-[var(--color-ink-faint)]">{row.dur}</td>

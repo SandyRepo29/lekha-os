@@ -8,12 +8,12 @@ import { AgentStat, SeverityBadge, ObsStatusBadge, AgentSubNav } from "@/compone
 import { fmtDate } from "@/lib/agents/utils";
 
 const MODULE_COLORS: Record<string, string> = {
-  "Risk Lens™":        "bg-red-500/10 text-red-400",
-  "Vendor Hub™":       "bg-orange-500/10 text-orange-400",
-  "Control Center™":   "bg-blue-500/10 text-blue-400",
-  "Evidence Vault™":   "bg-emerald-500/10 text-emerald-400",
-  "Audit Management™": "bg-purple-500/10 text-purple-400",
-  "Policy Governance™":"bg-indigo-500/10 text-indigo-400",
+  "Risk Lens™":        "bg-red-100 text-red-700",
+  "Vendor Hub™":       "bg-orange-100 text-orange-700",
+  "Control Center™":   "bg-blue-100 text-blue-700",
+  "Evidence Vault™":   "bg-emerald-100 text-emerald-700",
+  "Audit Management™": "bg-purple-100 text-purple-700",
+  "Policy Governance™":"bg-indigo-100 text-indigo-700",
 };
 
 export default async function ObservationsPage() {
@@ -54,12 +54,12 @@ export default async function ObservationsPage() {
             <div key={o.id} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-bg-2)]/60 p-4">
               <div className="flex items-start gap-4">
                 <div className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl ${
-                  o.severity === "critical" ? "bg-red-500/10" :
-                  o.severity === "high" ? "bg-orange-500/10" : "bg-amber-500/10"
+                  o.severity === "critical" ? "bg-red-100" :
+                  o.severity === "high" ? "bg-orange-100" : "bg-amber-100"
                 }`}>
                   <AlertTriangle className={`h-4 w-4 ${
-                    o.severity === "critical" ? "text-red-400" :
-                    o.severity === "high" ? "text-orange-400" : "text-amber-400"
+                    o.severity === "critical" ? "text-red-700" :
+                    o.severity === "high" ? "text-orange-700" : "text-amber-700"
                   }`} />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -72,7 +72,7 @@ export default async function ObservationsPage() {
                   <p className="mt-1.5 text-xs text-[var(--color-ink-dim)] leading-relaxed">{o.detail}</p>
                   <div className="mt-2.5 flex flex-wrap items-center gap-2">
                     <SeverityBadge severity={o.severity} />
-                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${MODULE_COLORS[o.sourceModule] ?? "bg-white/5 text-[var(--color-ink-dim)]"}`}>
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${MODULE_COLORS[o.sourceModule] ?? "bg-slate-100 text-[var(--color-ink-dim)]"}`}>
                       {o.sourceModule}
                     </span>
                     {o.sourceEntityName && (
@@ -89,7 +89,7 @@ export default async function ObservationsPage() {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-bg-2)]/40 flex flex-col items-center py-16 gap-4">
-          <CheckCircle className="h-10 w-10 text-emerald-400 opacity-40" />
+          <CheckCircle className="h-10 w-10 text-emerald-700 opacity-40" />
           <div className="text-center">
             <p className="font-semibold text-sm">No observations yet</p>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)]">

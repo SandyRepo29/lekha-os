@@ -10,16 +10,16 @@ import { fmtDate } from "@/lib/agents/utils";
 import { RecommendationActions } from "@/components/agents/recommendation-actions";
 
 const IMPACT_STYLES: Record<string, string> = {
-  Critical: "text-red-400",
-  High:     "text-orange-400",
-  Medium:   "text-amber-400",
-  Low:      "text-blue-400",
+  Critical: "text-red-700",
+  High:     "text-orange-700",
+  Medium:   "text-amber-700",
+  Low:      "text-blue-700",
 };
 
 const EFFORT_STYLES: Record<string, string> = {
-  Low:    "text-emerald-400",
-  Medium: "text-amber-400",
-  High:   "text-red-400",
+  Low:    "text-emerald-700",
+  Medium: "text-amber-700",
+  High:   "text-red-700",
 };
 
 export default async function RecommendationsPage() {
@@ -58,8 +58,8 @@ export default async function RecommendationsPage() {
         <div className="space-y-4">
           {recs.map(rec => (
             <div key={rec.id} className={`rounded-2xl border bg-[var(--color-bg-2)]/60 p-5 ${
-              rec.priority === "urgent" ? "border-red-500/30" :
-              rec.priority === "high"   ? "border-orange-500/20" :
+              rec.priority === "urgent" ? "border-red-200" :
+              rec.priority === "high"   ? "border-orange-200" :
               "border-[var(--color-line)]"
             }`}>
               <div className="flex items-start gap-4">
@@ -98,7 +98,7 @@ export default async function RecommendationsPage() {
                   )}
                   {rec.status !== "open" && (
                     <div className="mt-2 text-[11px] text-[var(--color-ink-faint)] capitalize">
-                      Status: <span className={rec.status === "accepted" ? "text-emerald-400" : "text-red-400"}>{rec.status}</span>
+                      Status: <span className={rec.status === "accepted" ? "text-emerald-700" : "text-red-700"}>{rec.status}</span>
                     </div>
                   )}
                 </div>
@@ -108,7 +108,7 @@ export default async function RecommendationsPage() {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-bg-2)]/40 flex flex-col items-center py-16 gap-4">
-          <CheckCircle className="h-10 w-10 text-emerald-400 opacity-40" />
+          <CheckCircle className="h-10 w-10 text-emerald-700 opacity-40" />
           <div className="text-center">
             <p className="font-semibold text-sm">No recommendations yet</p>
             <p className="mt-1 text-xs text-[var(--color-ink-dim)]">Agents generate recommendations after analyzing governance data.</p>

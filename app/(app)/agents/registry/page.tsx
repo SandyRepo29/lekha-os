@@ -81,7 +81,7 @@ export default async function AgentRegistryPage() {
                       <td className="px-4 py-3 capitalize text-[var(--color-ink-dim)]">{a.triggerType}</td>
                       <td className="px-4 py-3 text-[var(--color-ink-dim)]">{a.totalRuns}</td>
                       <td className="px-4 py-3">
-                        <span className={successRate >= 90 ? "text-emerald-400" : successRate >= 70 ? "text-amber-400" : "text-red-400"}>
+                        <span className={successRate >= 90 ? "text-emerald-700" : successRate >= 70 ? "text-amber-700" : "text-red-700"}>
                           {successRate}%
                         </span>
                       </td>

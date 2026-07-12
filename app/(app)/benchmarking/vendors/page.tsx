@@ -77,7 +77,7 @@ export default async function VendorBenchmarkPage() {
                 <PercentileBar percentile={vendorScore.percentile} />
               </div>
               {vendorScore.deltaVsIndustry !== null && (
-                <div className={`mt-3 inline-flex items-center gap-1 text-sm font-semibold ${vendorScore.deltaVsIndustry >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                <div className={`mt-3 inline-flex items-center gap-1 text-sm font-semibold ${vendorScore.deltaVsIndustry >= 0 ? "text-emerald-700" : "text-red-700"}`}>
                   {vendorScore.deltaVsIndustry >= 0 ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                   {vendorScore.deltaVsIndustry >= 0 ? "+" : ""}{vendorScore.deltaVsIndustry} points vs industry average
                 </div>

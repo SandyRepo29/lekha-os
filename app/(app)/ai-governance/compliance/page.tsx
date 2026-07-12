@@ -5,19 +5,19 @@ import { findAllCompliance } from "@/lib/repositories/ai-governance-repo";
 import { ShieldCheck } from "lucide-react";
 
 const FRAMEWORK_META: Record<string, { label: string; desc: string; color: string }> = {
-  iso_42001:        { label: "ISO 42001", desc: "AI Management System Standard", color: "text-blue-400" },
-  nist_ai_rmf:      { label: "NIST AI RMF", desc: "AI Risk Management Framework", color: "text-indigo-400" },
-  eu_ai_act:        { label: "EU AI Act", desc: "European AI Regulation", color: "text-purple-400" },
-  oecd_ai_principles: { label: "OECD AI Principles", desc: "International AI Guidelines", color: "text-cyan-400" },
-  dpdp_ai:          { label: "DPDP AI Requirements", desc: "India DPDP Act AI compliance", color: "text-orange-400" },
-  internal:         { label: "Internal Policy", desc: "Organization-defined AI governance", color: "text-emerald-400" },
+  iso_42001:        { label: "ISO 42001", desc: "AI Management System Standard", color: "text-blue-700" },
+  nist_ai_rmf:      { label: "NIST AI RMF", desc: "AI Risk Management Framework", color: "text-indigo-700" },
+  eu_ai_act:        { label: "EU AI Act", desc: "European AI Regulation", color: "text-purple-700" },
+  oecd_ai_principles: { label: "OECD AI Principles", desc: "International AI Guidelines", color: "text-cyan-700" },
+  dpdp_ai:          { label: "DPDP AI Requirements", desc: "India DPDP Act AI compliance", color: "text-orange-700" },
+  internal:         { label: "Internal Policy", desc: "Organization-defined AI governance", color: "text-emerald-700" },
 };
 const STATUS_COLORS: Record<string, string> = {
   not_started: "bg-gray-500/10 text-gray-400",
-  in_progress: "bg-blue-500/10 text-blue-400",
-  compliant: "bg-emerald-500/10 text-emerald-400",
-  partial: "bg-yellow-500/10 text-yellow-400",
-  non_compliant: "bg-red-500/10 text-red-400",
+  in_progress: "bg-blue-100 text-blue-700",
+  compliant: "bg-emerald-100 text-emerald-700",
+  partial: "bg-yellow-100 text-yellow-700",
+  non_compliant: "bg-red-100 text-red-700",
 };
 
 export default async function AiCompliancePage() {

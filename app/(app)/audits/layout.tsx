@@ -32,7 +32,7 @@ export default function AuditsLayout({ children }: { children: React.ReactNode }
                 className="flex shrink-0 cursor-not-allowed items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium text-[var(--color-ink-faint)] opacity-50"
               >
                 {label}
-                <span className="rounded-full bg-white/5 px-1.5 py-0.5 text-[10px]">Soon</span>
+                <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px]">Soon</span>
               </span>
             );
           }

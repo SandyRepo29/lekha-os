@@ -37,12 +37,12 @@ export default async function AuditRoomsPage({ searchParams }: { searchParams: P
       {/* Status filter */}
       <div className="flex flex-wrap gap-2">
         <Link href="/auditor-collaboration/rooms"
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
           All
         </Link>
         {statuses.map(s => (
           <Link key={s} href={`/auditor-collaboration/rooms?status=${s}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
             {s.replace("_", " ")}
           </Link>
         ))}
@@ -83,7 +83,7 @@ export default async function AuditRoomsPage({ searchParams }: { searchParams: P
                 <div className="flex items-center justify-between text-xs text-[var(--color-ink-dim)] mb-1">
                   <span>Progress</span><span>{room.completionPct}%</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/5">
+                <div className="h-1.5 rounded-full bg-slate-100">
                   <div className="h-full rounded-full bg-[var(--color-blue)]" style={{ width: `${room.completionPct}%` }} />
                 </div>
               </div>

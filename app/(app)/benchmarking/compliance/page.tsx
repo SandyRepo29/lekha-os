@@ -17,10 +17,10 @@ const COMPLIANCE_CATEGORIES: {
   color: string;
   bg: string;
 }[] = [
-  { cat: "compliance_coverage", label: "Compliance Coverage",  icon: ShieldCheck,   color: "text-emerald-400", bg: "bg-emerald-500/20" },
-  { cat: "privacy_trust",       label: "Privacy Trust™",       icon: Lock,          color: "text-purple-400",  bg: "bg-purple-500/20" },
-  { cat: "contract_trust",      label: "Contract Trust™",      icon: FileSignature, color: "text-blue-400",    bg: "bg-blue-500/20" },
-  { cat: "workflow_automation", label: "Workflow Automation™", icon: FileText,      color: "text-orange-400",  bg: "bg-orange-500/20" },
+  { cat: "compliance_coverage", label: "Compliance Coverage",  icon: ShieldCheck,   color: "text-emerald-700", bg: "bg-emerald-100" },
+  { cat: "privacy_trust",       label: "Privacy Trust™",       icon: Lock,          color: "text-purple-700",  bg: "bg-purple-100" },
+  { cat: "contract_trust",      label: "Contract Trust™",      icon: FileSignature, color: "text-blue-700",    bg: "bg-blue-100" },
+  { cat: "workflow_automation", label: "Workflow Automation™", icon: FileText,      color: "text-orange-700",  bg: "bg-orange-100" },
 ];
 
 export default async function ComplianceBenchmarkPage() {
@@ -82,7 +82,7 @@ export default async function ComplianceBenchmarkPage() {
                     <PercentileBar percentile={s.percentile} />
                     {s.deltaVsIndustry !== null && s.deltaVsIndustry !== undefined && (
                       <div className="mt-3 pt-3 border-t border-[var(--color-line)]">
-                        <p className={`text-xs font-semibold ${s.deltaVsIndustry >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                        <p className={`text-xs font-semibold ${s.deltaVsIndustry >= 0 ? "text-emerald-700" : "text-red-700"}`}>
                           {s.deltaVsIndustry >= 0 ? "+" : ""}{s.deltaVsIndustry} vs industry average
                         </p>
                       </div>

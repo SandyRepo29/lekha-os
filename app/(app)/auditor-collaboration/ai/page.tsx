@@ -7,7 +7,7 @@ import { Brain, Sparkles, AlertTriangle, FileCheck, MessageSquare } from "lucide
 import AuditorAiChat from "@/components/auditor-collaboration/auditor-ai-chat";
 
 const SEV_COLORS: Record<string, string> = {
-  low: "text-emerald-400", medium: "text-yellow-400", high: "text-orange-400", critical: "text-red-400",
+  low: "text-emerald-700", medium: "text-yellow-700", high: "text-orange-700", critical: "text-red-700",
 };
 
 export default async function AuditAssistantPage() {
@@ -50,7 +50,7 @@ export default async function AuditAssistantPage() {
           {summary.keyRisks.length > 0 && (
             <div>
               <div className="text-xs font-semibold text-[var(--color-ink-dim)] mb-2 flex items-center gap-1">
-                <AlertTriangle className="h-3 w-3 text-orange-400" /> Key Risks
+                <AlertTriangle className="h-3 w-3 text-orange-700" /> Key Risks
               </div>
               <ul className="space-y-1">
                 {summary.keyRisks.map((r, i) => (
@@ -83,16 +83,16 @@ export default async function AuditAssistantPage() {
       {gaps && gaps.gaps.length > 0 && (
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 space-y-4">
           <h2 className="font-semibold flex items-center gap-2 text-sm">
-            <FileCheck className="h-4 w-4 text-yellow-400" /> AI Evidence Gap Analysis™
+            <FileCheck className="h-4 w-4 text-yellow-700" /> AI Evidence Gap Analysis™
           </h2>
           <div className="space-y-2">
             {gaps.gaps.map((g, i) => (
               <div key={i} className="rounded-lg border border-[var(--color-line)] p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="font-medium text-sm">{g.title}</div>
-                  <span className={`text-xs font-semibold shrink-0 ${SEV_COLORS[g.severity] ?? "text-slate-400"}`}>{g.severity}</span>
+                  <span className={`text-xs font-semibold shrink-0 ${SEV_COLORS[g.severity] ?? "text-slate-600"}`}>{g.severity}</span>
                 </div>
-                <p className="mt-1 text-xs text-sky-300">{g.action}</p>
+                <p className="mt-1 text-xs text-sky-700">{g.action}</p>
               </div>
             ))}
           </div>

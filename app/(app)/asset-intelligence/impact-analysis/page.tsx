@@ -87,10 +87,10 @@ export default async function ImpactAnalysisPage() {
       {/* Summary Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "Vendor Failure Scenarios",   value: vendorScenarios.length,  color: "text-red-400"    },
-          { label: "Critical Assets Exposed",    value: criticalAssets.length,   color: "text-orange-400" },
-          { label: "Regulated Data Assets",      value: piiAssets.length,        color: "text-amber-400"  },
-          { label: "Total Asset Dependencies",   value: relationships.length,    color: "text-blue-400"   },
+          { label: "Vendor Failure Scenarios",   value: vendorScenarios.length,  color: "text-red-700"    },
+          { label: "Critical Assets Exposed",    value: criticalAssets.length,   color: "text-orange-700" },
+          { label: "Regulated Data Assets",      value: piiAssets.length,        color: "text-amber-700"  },
+          { label: "Total Asset Dependencies",   value: relationships.length,    color: "text-blue-700"   },
         ].map(({ label, value, color }) => (
           <div key={label} className="rounded-xl border border-[var(--color-line)] bg-white p-4">
             <p className="text-xs text-[var(--color-ink-dim)] mb-1">{label}</p>
@@ -102,7 +102,7 @@ export default async function ImpactAnalysisPage() {
       {/* Vendor Failure Scenarios */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Building2 className="h-4 w-4 text-red-400" />
+          <Building2 className="h-4 w-4 text-red-700" />
           <h2 className="font-semibold text-sm">Vendor Failure Impact Scenarios</h2>
           <span className="ml-auto text-xs text-[var(--color-ink-dim)]">What happens if this vendor becomes unavailable?</span>
         </div>
@@ -128,7 +128,7 @@ export default async function ImpactAnalysisPage() {
                       <p className="font-medium text-sm">{scenario.vendorName}</p>
                       <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                         {scenario.assets.length} dependent asset{scenario.assets.length !== 1 ? "s" : ""}
-                        {hasPii && <span className="ml-2 text-amber-400">· Contains PII</span>}
+                        {hasPii && <span className="ml-2 text-amber-700">· Contains PII</span>}
                       </p>
                     </div>
                     <span className={`inline-flex shrink-0 items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize ${IMPACT_STYLES[impact]}`}>
@@ -155,7 +155,7 @@ export default async function ImpactAnalysisPage() {
       {/* Critical Asset Failure Scenarios */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="h-4 w-4 text-orange-400" />
+          <AlertTriangle className="h-4 w-4 text-orange-700" />
           <h2 className="font-semibold text-sm">Critical Asset Failure Scenarios</h2>
           <span className="ml-auto text-xs text-[var(--color-ink-dim)]">What governance gaps exist if this asset fails?</span>
         </div>
@@ -178,8 +178,8 @@ export default async function ImpactAnalysisPage() {
                       </Link>
                       <p className="text-xs text-[var(--color-ink-dim)] mt-0.5">
                         {asset.businessUnit ?? asset.assetType}
-                        {asset.containsPii && <span className="ml-2 text-amber-400">· PII</span>}
-                        {asset.containsSensitive && <span className="ml-2 text-orange-400">· Sensitive Data</span>}
+                        {asset.containsPii && <span className="ml-2 text-amber-700">· PII</span>}
+                        {asset.containsSensitive && <span className="ml-2 text-orange-700">· Sensitive Data</span>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -215,7 +215,7 @@ export default async function ImpactAnalysisPage() {
       {/* Regulated Data Exposure Scenarios */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Shield className="h-4 w-4 text-amber-400" />
+          <Shield className="h-4 w-4 text-amber-700" />
           <h2 className="font-semibold text-sm">Regulated Data Exposure Scenarios</h2>
           <span className="ml-auto text-xs text-[var(--color-ink-dim)]">What PII &amp; regulated data is at risk?</span>
         </div>
@@ -255,7 +255,7 @@ export default async function ImpactAnalysisPage() {
                       </td>
                       <td className="px-4 py-3"><AssetTypeBadge type={asset.assetType} /></td>
                       <td className="px-4 py-3">
-                        <span className="text-xs capitalize text-amber-400 font-medium">
+                        <span className="text-xs capitalize text-amber-700 font-medium">
                           {asset.dataClass ?? "PII"}
                         </span>
                       </td>
@@ -287,7 +287,7 @@ export default async function ImpactAnalysisPage() {
           },
           {
             icon:  Database,
-            color: "text-amber-400",
+            color: "text-amber-700",
             title: "Review Data Classifications",
             desc:  "Ensure all PII and regulated data assets are properly classified.",
             href:  "/asset-intelligence/data-assets",
@@ -295,7 +295,7 @@ export default async function ImpactAnalysisPage() {
           },
           {
             icon:  Shield,
-            color: "text-emerald-400",
+            color: "text-emerald-700",
             title: "Add Controls to Critical Assets",
             desc:  "Improve governance coverage by linking controls to critical assets.",
             href:  "/controls/library",

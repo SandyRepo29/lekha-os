@@ -125,8 +125,8 @@ export default async function AgentsPage() {
               {obs.slice(0, 5).map(o => (
                 <div key={o.id} className="flex items-start gap-3 rounded-xl border border-[var(--color-line)]/60 bg-white px-3 py-2.5">
                   <AlertTriangle className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${
-                    o.severity === "critical" ? "text-red-400" :
-                    o.severity === "high" ? "text-orange-400" : "text-amber-400"
+                    o.severity === "critical" ? "text-red-700" :
+                    o.severity === "high" ? "text-orange-700" : "text-amber-700"
                   }`} />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-xs font-medium">{o.title}</div>
@@ -141,7 +141,7 @@ export default async function AgentsPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center py-8 gap-3">
-              <CheckCircle className="h-8 w-8 text-emerald-400 opacity-40" />
+              <CheckCircle className="h-8 w-8 text-emerald-700 opacity-40" />
               <p className="text-xs text-[var(--color-ink-faint)]">No observations yet. All clear!</p>
             </div>
           )}
@@ -150,15 +150,15 @@ export default async function AgentsPage() {
 
       {/* Quick actions callout */}
       {(m?.pendingApprovals ?? 0) > 0 && (
-        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/[0.05] p-4 flex items-center justify-between gap-4">
+        <div className="rounded-2xl border border-amber-200 bg-amber-500/[0.05] p-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Clock className="h-5 w-5 text-amber-400 shrink-0" />
+            <Clock className="h-5 w-5 text-amber-700 shrink-0" />
             <div>
-              <p className="text-sm font-semibold text-amber-300">{m?.pendingApprovals} agent action{(m?.pendingApprovals ?? 0) > 1 ? "s" : ""} awaiting your approval</p>
-              <p className="text-xs text-amber-400/70">Review and approve or reject proposed governance actions.</p>
+              <p className="text-sm font-semibold text-amber-700">{m?.pendingApprovals} agent action{(m?.pendingApprovals ?? 0) > 1 ? "s" : ""} awaiting your approval</p>
+              <p className="text-xs text-amber-700/70">Review and approve or reject proposed governance actions.</p>
             </div>
           </div>
-          <Link href="/agents/actions" className="shrink-0 rounded-xl bg-amber-500/20 border border-amber-500/30 px-4 py-2 text-sm font-medium text-amber-300 hover:bg-amber-500/30 transition-colors">
+          <Link href="/agents/actions" className="shrink-0 rounded-xl bg-amber-100 border border-amber-200 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-500/30 transition-colors">
             Review Actions
           </Link>
         </div>

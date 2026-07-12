@@ -11,9 +11,9 @@ const SWEEP_STEPS = [
     name: "Risk Sentinel™",
     desc: "Scans Risk Lens™ for critical/high risks overdue for review or without treatment plans.",
     output: "Observations → Risk Gaps",
-    color: "text-red-400",
+    color: "text-red-700",
     bg: "bg-red-500/[0.08]",
-    border: "border-red-500/20",
+    border: "border-red-200",
   },
   {
     icon: Eye,
@@ -21,9 +21,9 @@ const SWEEP_STEPS = [
     name: "Vendor Watch™",
     desc: "Checks all active vendors for trust score decline, expired evidence, overdue assessments.",
     output: "Observations → Vendor Alerts",
-    color: "text-orange-400",
+    color: "text-orange-700",
     bg: "bg-orange-500/[0.08]",
-    border: "border-orange-500/20",
+    border: "border-orange-200",
   },
   {
     icon: Shield,
@@ -31,9 +31,9 @@ const SWEEP_STEPS = [
     name: "Compliance Guardian™",
     desc: "Validates control effectiveness, checks evidence freshness against active frameworks.",
     output: "Observations → Compliance Gaps",
-    color: "text-blue-400",
+    color: "text-blue-700",
     bg: "bg-blue-500/[0.08]",
-    border: "border-blue-500/20",
+    border: "border-blue-200",
   },
   {
     icon: Lightbulb,
@@ -41,9 +41,9 @@ const SWEEP_STEPS = [
     name: "Recommendation Engine™",
     desc: "Aggregates all observations, applies priority scoring, generates ranked action list.",
     output: "Recommendations → Action Queue",
-    color: "text-amber-400",
+    color: "text-amber-700",
     bg: "bg-amber-500/[0.08]",
-    border: "border-amber-500/20",
+    border: "border-amber-200",
   },
   {
     icon: Zap,
@@ -51,9 +51,9 @@ const SWEEP_STEPS = [
     name: "Action Executor™",
     desc: "Evaluates each action against approval mode. Auto-executes low-risk; queues rest for approval.",
     output: "Actions → Executed / Pending Approval",
-    color: "text-emerald-400",
+    color: "text-emerald-700",
     bg: "bg-emerald-500/[0.08]",
-    border: "border-emerald-500/20",
+    border: "border-emerald-200",
   },
   {
     icon: Bot,
@@ -61,9 +61,9 @@ const SWEEP_STEPS = [
     name: "Copilot™ Summary",
     desc: "Governance Copilot™ generates a run summary and updates its context window for NL queries.",
     output: "Context → Copilot Answers",
-    color: "text-purple-400",
+    color: "text-purple-700",
     bg: "bg-purple-500/[0.08]",
-    border: "border-purple-500/20",
+    border: "border-purple-200",
   },
 ];
 
@@ -120,7 +120,7 @@ export default async function OrchestrationPage() {
                 <p className="font-semibold text-sm">{p.name}</p>
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium border ${
                   p.status === "active"
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                    ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                     : "bg-[#F8F9FB] text-[var(--color-ink-faint)] border-[var(--color-line)]"
                 }`}>
                   {p.status}
@@ -153,7 +153,7 @@ export default async function OrchestrationPage() {
             <h3 className="font-semibold text-sm">Governance Sweep™ — Pipeline Flow</h3>
             <p className="mt-0.5 text-xs text-[var(--color-ink-dim)]">Default orchestration pipeline. Runs every 6 hours.</p>
           </div>
-          <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 text-xs text-emerald-400 font-medium">Active</span>
+          <span className="rounded-full bg-emerald-100 border border-emerald-200 px-2.5 py-1 text-xs text-emerald-700 font-medium">Active</span>
         </div>
 
         <div className="space-y-2">

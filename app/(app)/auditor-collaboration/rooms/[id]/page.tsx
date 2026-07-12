@@ -9,17 +9,17 @@ import { ArrowLeft, FileCheck, AlertTriangle, ClipboardList, Activity, FileText,
 import { revalidatePath } from "next/cache";
 
 const STATUS_BADGE: Record<string, string> = {
-  planning: "bg-slate-500/20 text-slate-400", active: "bg-emerald-500/20 text-emerald-400",
-  under_review: "bg-yellow-500/20 text-yellow-400", completed: "bg-blue-500/20 text-blue-400",
-  archived: "bg-slate-600/20 text-slate-500", cancelled: "bg-red-500/20 text-red-400",
+  planning: "bg-slate-100 text-slate-600", active: "bg-emerald-100 text-emerald-700",
+  under_review: "bg-yellow-100 text-yellow-700", completed: "bg-blue-100 text-blue-700",
+  archived: "bg-slate-600/20 text-slate-500", cancelled: "bg-red-100 text-red-700",
 };
 const SEV_COLORS: Record<string, string> = {
-  low: "text-emerald-400", medium: "text-yellow-400", high: "text-orange-400", critical: "text-red-400",
+  low: "text-emerald-700", medium: "text-yellow-700", high: "text-orange-700", critical: "text-red-700",
 };
 const REQ_STATUS_BADGE: Record<string, string> = {
-  pending: "bg-yellow-500/20 text-yellow-400", submitted: "bg-blue-500/20 text-blue-400",
-  under_review: "bg-purple-500/20 text-purple-400", accepted: "bg-emerald-500/20 text-emerald-400",
-  rejected: "bg-red-500/20 text-red-400", expired: "bg-slate-500/20 text-slate-400",
+  pending: "bg-yellow-100 text-yellow-700", submitted: "bg-blue-100 text-blue-700",
+  under_review: "bg-purple-100 text-purple-700", accepted: "bg-emerald-100 text-emerald-700",
+  rejected: "bg-red-100 text-red-700", expired: "bg-slate-100 text-slate-600",
 };
 
 export default async function AuditRoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -59,7 +59,7 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start gap-3">
-        <Link href="/auditor-collaboration/rooms" className="mt-1 rounded-lg p-1.5 hover:bg-white/5">
+        <Link href="/auditor-collaboration/rooms" className="mt-1 rounded-lg p-1.5 hover:bg-slate-100">
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div className="flex-1 min-w-0">
@@ -95,20 +95,20 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
           <span className="font-medium">Overall Progress</span>
           <span className="font-bold text-[var(--color-blue)]">{room.completionPct}%</span>
         </div>
-        <div className="h-2 rounded-full bg-white/5">
+        <div className="h-2 rounded-full bg-slate-100">
           <div className="h-full rounded-full bg-[var(--color-blue)] transition-all" style={{ width: `${room.completionPct}%` }} />
         </div>
         <div className="mt-3 grid grid-cols-3 gap-3 text-center text-xs">
           <div>
-            <div className="text-lg font-bold text-yellow-400">{evidenceReqs.filter(r => r.status === "pending").length}</div>
+            <div className="text-lg font-bold text-yellow-700">{evidenceReqs.filter(r => r.status === "pending").length}</div>
             <div className="text-[var(--color-ink-dim)]">Pending Evidence</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-orange-400">{findings.filter(f => f.status === "open").length}</div>
+            <div className="text-lg font-bold text-orange-700">{findings.filter(f => f.status === "open").length}</div>
             <div className="text-[var(--color-ink-dim)]">Open Findings</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-emerald-400">{documents.length}</div>
+            <div className="text-lg font-bold text-emerald-700">{documents.length}</div>
             <div className="text-[var(--color-ink-dim)]">Documents</div>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
 
           {/* Add request form */}
           <form action={addEvidenceRequest} className="flex gap-2">
-            <input name="title" required placeholder="Request title..." className="flex-1 rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
+            <input name="title" required placeholder="Request title..." className="flex-1 rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
             <select name="priority" className="rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-2)] px-2 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none">
               <option value="medium">Medium</option>
               <option value="high">High</option>
@@ -153,11 +153,11 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
         {/* Findings */}
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 space-y-4">
           <h2 className="font-semibold flex items-center gap-2 text-sm">
-            <AlertTriangle className="h-4 w-4 text-orange-400" /> Findings ({findings.length})
+            <AlertTriangle className="h-4 w-4 text-orange-700" /> Findings ({findings.length})
           </h2>
 
           <form action={addFinding} className="flex gap-2">
-            <input name="title" required placeholder="Finding title..." className="flex-1 rounded-lg border border-[var(--color-line)] bg-white/5 px-3 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
+            <input name="title" required placeholder="Finding title..." className="flex-1 rounded-lg border border-[var(--color-line)] bg-slate-100 px-3 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none" />
             <select name="severity" className="rounded-lg border border-[var(--color-line)] bg-[var(--color-bg-2)] px-2 py-1.5 text-xs focus:border-[var(--color-blue)] focus:outline-none">
               <option value="medium">Medium</option>
               <option value="high">High</option>
@@ -185,7 +185,7 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
         {/* Assessments */}
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 space-y-3">
           <h2 className="font-semibold flex items-center gap-2 text-sm">
-            <ClipboardList className="h-4 w-4 text-sky-400" /> Assessments ({assessments.length})
+            <ClipboardList className="h-4 w-4 text-sky-700" /> Assessments ({assessments.length})
           </h2>
           {assessments.length === 0 ? (
             <p className="text-xs text-[var(--color-ink-dim)]">No assessments in this room yet.</p>
@@ -195,7 +195,7 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
                 <div className="text-xs font-medium">{a.name}</div>
                 <span className="text-xs text-[var(--color-ink-dim)]">{a.completionPct}%</span>
               </div>
-              <div className="mt-1.5 h-1 rounded-full bg-white/5">
+              <div className="mt-1.5 h-1 rounded-full bg-slate-100">
                 <div className="h-full rounded-full bg-sky-500" style={{ width: `${a.completionPct}%` }} />
               </div>
             </div>
@@ -205,7 +205,7 @@ export default async function AuditRoomDetailPage({ params }: { params: Promise<
         {/* Activity Timeline */}
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-2)] p-5 space-y-3">
           <h2 className="font-semibold flex items-center gap-2 text-sm">
-            <Activity className="h-4 w-4 text-purple-400" /> Activity
+            <Activity className="h-4 w-4 text-purple-700" /> Activity
           </h2>
           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
             {activities.length === 0 ? (

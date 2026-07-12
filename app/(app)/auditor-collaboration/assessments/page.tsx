@@ -6,10 +6,10 @@ import { ClipboardList } from "lucide-react";
 import { AuditorStat } from "@/components/auditor-collaboration/auditor-ui";
 
 const STATUS_BADGE: Record<string, string> = {
-  planning:    "bg-slate-500/20 text-slate-400",
-  in_progress: "bg-blue-500/20 text-blue-400",
-  completed:   "bg-emerald-500/20 text-emerald-400",
-  cancelled:   "bg-red-500/20 text-red-400",
+  planning:    "bg-slate-100 text-slate-600",
+  in_progress: "bg-blue-100 text-blue-700",
+  completed:   "bg-emerald-100 text-emerald-700",
+  cancelled:   "bg-red-100 text-red-700",
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -38,7 +38,7 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <ClipboardList className="h-5 w-5 text-sky-400" /> Assessment Projects™
+          <ClipboardList className="h-5 w-5 text-sky-700" /> Assessment Projects™
         </h1>
         <p className="text-sm text-[var(--color-ink-dim)] mt-0.5">Track ISO, SOC 2, DPDP, AI Governance and custom assessment engagements.</p>
       </div>
@@ -52,10 +52,10 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
 
       {/* Filter */}
       <div className="flex flex-wrap gap-2">
-        <a href="/auditor-collaboration/assessments" className={`rounded-full px-3 py-1 text-xs font-medium ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>All</a>
+        <a href="/auditor-collaboration/assessments" className={`rounded-full px-3 py-1 text-xs font-medium ${!params.status ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>All</a>
         {["planning","in_progress","completed","cancelled"].map(s => (
           <a key={s} href={`/auditor-collaboration/assessments?status=${s}`}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-white/5 text-[var(--color-ink-dim)] hover:bg-white/10"}`}>
+            className={`rounded-full px-3 py-1 text-xs font-medium ${params.status === s ? "bg-[var(--color-blue)] text-white" : "bg-slate-100 text-[var(--color-ink-dim)] hover:bg-slate-100"}`}>
             {s.replace("_", " ")}
           </a>
         ))}
@@ -79,7 +79,7 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
               </div>
 
               <div className="flex items-center gap-2 text-xs text-[var(--color-ink-dim)]">
-                <span className="rounded-full bg-white/5 px-2 py-0.5">{TYPE_LABELS[a.assessmentType] ?? a.assessmentType}</span>
+                <span className="rounded-full bg-slate-100 px-2 py-0.5">{TYPE_LABELS[a.assessmentType] ?? a.assessmentType}</span>
                 {a.startDate && <span>{a.startDate} → {a.endDate ?? "TBD"}</span>}
               </div>
 
@@ -87,24 +87,24 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
               <div>
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="text-[var(--color-ink-dim)]">Completion</span>
-                  <span className="font-medium text-sky-400">{a.completionPct}%</span>
+                  <span className="font-medium text-sky-700">{a.completionPct}%</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/5">
+                <div className="h-1.5 rounded-full bg-slate-100">
                   <div className="h-full rounded-full bg-sky-500" style={{ width: `${a.completionPct}%` }} />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="rounded-lg bg-white/5 p-2">
-                  <div className="font-bold text-red-400">{a.openFindings}</div>
+                <div className="rounded-lg bg-slate-100 p-2">
+                  <div className="font-bold text-red-700">{a.openFindings}</div>
                   <div className="text-[var(--color-ink-dim)] text-[10px]">Findings</div>
                 </div>
-                <div className="rounded-lg bg-white/5 p-2">
-                  <div className="font-bold text-yellow-400">{a.pendingEvidence}</div>
+                <div className="rounded-lg bg-slate-100 p-2">
+                  <div className="font-bold text-yellow-700">{a.pendingEvidence}</div>
                   <div className="text-[var(--color-ink-dim)] text-[10px]">Pending</div>
                 </div>
-                <div className="rounded-lg bg-white/5 p-2">
-                  <div className="font-bold text-blue-400">{a.completedMilestones}/{a.totalMilestones}</div>
+                <div className="rounded-lg bg-slate-100 p-2">
+                  <div className="font-bold text-blue-700">{a.completedMilestones}/{a.totalMilestones}</div>
                   <div className="text-[var(--color-ink-dim)] text-[10px]">Milestones</div>
                 </div>
               </div>
@@ -112,7 +112,7 @@ export default async function AssessmentProjectsPage({ searchParams }: { searchP
               {a.aiReadinessScore !== null && a.aiReadinessScore !== undefined && (
                 <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-3 py-2 text-xs">
                   <span className="text-[var(--color-ink-dim)]">AI Readiness Score: </span>
-                  <span className="font-bold text-sky-400">{Number(a.aiReadinessScore).toFixed(0)}</span>
+                  <span className="font-bold text-sky-700">{Number(a.aiReadinessScore).toFixed(0)}</span>
                 </div>
               )}
             </div>
