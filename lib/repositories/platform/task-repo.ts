@@ -84,13 +84,13 @@ export async function findOrgTasks(
     SELECT *
     FROM platform_tasks
     WHERE organization_id = ${orgId}
-      AND (${opts?.status ?? null} IS NULL OR status = ${opts?.status ?? null})
-      AND (${opts?.priority ?? null} IS NULL OR priority = ${opts?.priority ?? null})
-      AND (${opts?.assignedTo ?? null} IS NULL OR assigned_to = ${opts?.assignedTo ?? null})
-      AND (${opts?.entityType ?? null} IS NULL OR entity_type = ${opts?.entityType ?? null})
-      AND (${opts?.entityId ?? null} IS NULL OR entity_id = ${opts?.entityId ?? null})
+      AND (${opts?.status === undefined ? true : false} OR status = ${opts?.status ?? ""})
+      AND (${opts?.priority === undefined ? true : false} OR priority = ${opts?.priority ?? ""})
+      AND (${opts?.assignedTo === undefined ? true : false} OR assigned_to = ${opts?.assignedTo ?? ""})
+      AND (${opts?.entityType === undefined ? true : false} OR entity_type = ${opts?.entityType ?? ""})
+      AND (${opts?.entityId === undefined ? true : false} OR entity_id = ${opts?.entityId ?? ""})
       AND (
-        ${opts?.overdue ? sql`true` : sql`false`} = false
+        ${opts?.overdue === true} = false
         OR (due_date IS NOT NULL AND due_date < NOW() AND status NOT IN ('completed', 'cancelled'))
       )
     ORDER BY

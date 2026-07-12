@@ -86,12 +86,12 @@ export async function findOrgActivity(
       severity, metadata, created_at
     FROM platform_activity
     WHERE organization_id = ${orgId}
-      AND (${opts?.entityType ?? null} IS NULL OR entity_type = ${opts?.entityType ?? null})
-      AND (${opts?.entityId ?? null} IS NULL OR entity_id = ${opts?.entityId ?? null})
-      AND (${opts?.actorId ?? null} IS NULL OR actor_id = ${opts?.actorId ?? null})
-      AND (${opts?.eventType ?? null} IS NULL OR event_type = ${opts?.eventType ?? null})
-      AND (${opts?.from ? opts.from.toISOString() : null}::timestamptz IS NULL OR created_at >= ${opts?.from ? opts.from.toISOString() : null}::timestamptz)
-      AND (${opts?.to ? opts.to.toISOString() : null}::timestamptz IS NULL OR created_at <= ${opts?.to ? opts.to.toISOString() : null}::timestamptz)
+      AND (${opts?.entityType === undefined ? true : false} OR entity_type = ${opts?.entityType ?? ""})
+      AND (${opts?.entityId === undefined ? true : false} OR entity_id = ${opts?.entityId ?? ""})
+      AND (${opts?.actorId === undefined ? true : false} OR actor_id = ${opts?.actorId ?? ""})
+      AND (${opts?.eventType === undefined ? true : false} OR event_type = ${opts?.eventType ?? ""})
+      AND (${opts?.from === undefined ? true : false} OR created_at >= ${opts?.from?.toISOString() ?? ""})
+      AND (${opts?.to === undefined ? true : false} OR created_at <= ${opts?.to?.toISOString() ?? ""})
     ORDER BY created_at DESC
     LIMIT ${limit} OFFSET ${offset}
   `);

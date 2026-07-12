@@ -19,7 +19,7 @@ export async function getDashboardMetrics(orgId: string) {
 
 export async function createWorkflow(
   orgId: string,
-  userId: string,
+  userId: string | null,
   data: {
     name: string;
     description?: string;
@@ -30,37 +30,41 @@ export async function createWorkflow(
   if (!data.name?.trim()) throw new DomainError("Workflow name is required.");
   const wf = await repo.insertWorkflow({
     organizationId: orgId,
-    createdBy: userId,
+    createdBy: userId ?? undefined,
     ...data,
   });
-  await db.insert(auditLogs).values({
-    organizationId: orgId,
-    actorId: userId,
-    action: "workflow.created",
-    entityType: "workflow",
-    entityId: wf.id,
-    metadata: { name: wf.name },
-  }).catch(() => {});
+  if (userId) {
+    await db.insert(auditLogs).values({
+      organizationId: orgId,
+      actorId: userId,
+      action: "workflow.created",
+      entityType: "workflow",
+      entityId: wf.id,
+      metadata: { name: wf.name },
+    }).catch(() => {});
+  }
   return wf;
 }
 
 export async function updateWorkflow(
   orgId: string,
-  userId: string,
+  userId: string | null,
   id: string,
   data: Partial<{ name: string; description: string; module: string; status: string; triggerType: string }>
 ) {
   const existing = await repo.findWorkflowById(orgId, id);
   if (!existing) throw new DomainError("Workflow not found.");
   const wf = await repo.updateWorkflow(orgId, id, data);
-  await db.insert(auditLogs).values({
-    organizationId: orgId,
-    actorId: userId,
-    action: "workflow.updated",
-    entityType: "workflow",
-    entityId: id,
-    metadata: { name: wf.name },
-  }).catch(() => {});
+  if (userId) {
+    await db.insert(auditLogs).values({
+      organizationId: orgId,
+      actorId: userId,
+      action: "workflow.updated",
+      entityType: "workflow",
+      entityId: id,
+      metadata: { name: wf.name },
+    }).catch(() => {});
+  }
   return wf;
 }
 
@@ -80,18 +84,20 @@ export async function publishWorkflow(orgId: string, userId: string, id: string)
   return wf;
 }
 
-export async function deleteWorkflow(orgId: string, userId: string, id: string) {
+export async function deleteWorkflow(orgId: string, userId: string | null, id: string) {
   const existing = await repo.findWorkflowById(orgId, id);
   if (!existing) throw new DomainError("Workflow not found.");
   await repo.deleteWorkflow(orgId, id);
-  await db.insert(auditLogs).values({
-    organizationId: orgId,
-    actorId: userId,
-    action: "workflow.deleted",
-    entityType: "workflow",
-    entityId: id,
-    metadata: { name: existing.name },
-  }).catch(() => {});
+  if (userId) {
+    await db.insert(auditLogs).values({
+      organizationId: orgId,
+      actorId: userId,
+      action: "workflow.deleted",
+      entityType: "workflow",
+      entityId: id,
+      metadata: { name: existing.name },
+    }).catch(() => {});
+  }
 }
 
 export async function startWorkflow(

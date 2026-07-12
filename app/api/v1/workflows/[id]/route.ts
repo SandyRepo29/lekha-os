@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   try {
     const body = await req.json();
-    const wf = await updateWorkflow(ctx.orgId, ctx.keyId, id, body);
+    const wf = await updateWorkflow(ctx.orgId, null, id, body);
     return ok({ workflow: wf });
   } catch (e) {
     if (e instanceof DomainError) return err(e.message, 422);
@@ -55,7 +55,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
   const { id } = await params;
   try {
-    await deleteWorkflow(ctx.orgId, ctx.keyId, id);
+    await deleteWorkflow(ctx.orgId, null, id);
     return ok({ deleted: true });
   } catch (e) {
     if (e instanceof DomainError) return err(e.message, 422);

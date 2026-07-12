@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const wf = await createWorkflow(ctx.orgId, ctx.keyId, {
+    const wf = await createWorkflow(ctx.orgId, null, {
       name: body.name,
       description: body.description,
       module: body.module,
