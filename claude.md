@@ -100,6 +100,18 @@ Browser / API client
 - **Provider rule:** External SDKs (`@supabase/supabase-js`, `@google/genai`) are imported ONLY inside `lib/providers/`. Services import provider interfaces, never SDKs directly.
 - **Encryption rule:** Integration configs (third-party API keys, webhooks, passwords) must always pass through `encryptConfig()`/`decryptConfig()` in `integration-repo.ts`. Never store plaintext credentials.
 
+### Architecture Refactoring Progress (2026-07-12)
+
+**Phase 1: Schema Relocation — ✅ COMPLETE (commit 4ec159b)**
+
+Established `/backend/src/schemas/` as the canonical home for database schema definitions. Moved 5,958-line `lib/db/schema.ts` (223 tables, 50+ enums) to `backend/src/schemas/schema.ts` with re-export index for backward compatibility. All imports updated; `npm run build` passes.
+
+**Rationale:** Schema file is a monolithic bottleneck (280KB, tight coupling across all modules). Establishing backend home first enables per-module extraction in Phases 2-8 without disrupting existing code.
+
+**What's in Phases 2-8 (future):** Extract individual module schemas (vendor.schema.ts, audit.schema.ts, risk.schema.ts, etc.) one at a time as business requirements demand. Module mapping and roadmap documented in earlier refactoring proposal.
+
+**Impact on codebase:** Zero breaking changes. All existing code continues to work. `lib/db/index.ts` imports from new location; Drizzle Proxy pattern unchanged.
+
 ---
 
 ## 4. Supabase Sandbox
