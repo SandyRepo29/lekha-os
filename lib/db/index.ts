@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import * as schema from "./schema";
+import * as schema from "@/backend/src/schemas";
 
 /**
  * Drizzle client over Supabase Postgres — lazily initialised.
