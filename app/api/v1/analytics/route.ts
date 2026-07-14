@@ -1,6 +1,6 @@
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { computeKpis, getAnalyticsOverview, getReports } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { computeKpis, getAnalyticsOverview, getReports } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 
 export async function GET(request: Request) {
   let ctx;

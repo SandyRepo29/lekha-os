@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listContracts } from "@/lib/services/contract-governance/contract-service";
+import { listContracts } from "@/backend/src/modules/contract-governance/contract-service";
 import {
   ContractFilterChip,
   ContractStatusBadge,
@@ -26,7 +26,7 @@ const TYPE_LABELS: Record<string, string> = {
   custom: "Custom",
 };
 
-import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
+import { formatDate, daysUntil } from "@/backend/src/modules/contract-governance/date-utils";
 
 const FILTER_STATUSES = ["", "active", "expiring", "expired", "draft", "review"];
 

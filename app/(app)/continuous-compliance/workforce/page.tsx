@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getWorkforceEvents } from "@/lib/services/continuous-compliance/continuous-compliance-service";
+import { getWorkforceEvents } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
 import { Users, UserCheck, UserX } from "lucide-react";
 import { StatusBadge, CcStat, HealthBar, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

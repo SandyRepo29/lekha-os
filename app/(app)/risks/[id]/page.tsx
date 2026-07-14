@@ -6,15 +6,15 @@ import { ArrowLeft, Edit, Sparkles, ShieldCheck, Calendar, User, Tag } from "luc
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getRisk } from "@/lib/services/risk/risk-service";
-import { getCachedNarrative } from "@/lib/services/risk/ai-risk-service";
+import { getRisk } from "@/backend/src/modules/risk-lens/risk-service";
+import { getCachedNarrative } from "@/backend/src/modules/risk-lens/ai-risk-service";
 import { db } from "@/lib/db";
 import { count, eq } from "drizzle-orm";
 import { riskVendors, riskControls, riskFindings, riskPolicies, riskFrameworks, riskEvidence } from "@/lib/db/schema";
 import { RiskStatusBadge, RiskScoreBadge, RiskCategoryBadge, TreatmentStatusBadge } from "@/components/risk/risk-status-badge";
 import { formatDate, isDueSoon, isOverdue } from "@/components/risk/risk-ui";
 import { RiskDetailActions } from "@/components/risk/risk-detail-actions";
-import { RISK_CATEGORY_LABELS, RISK_SOURCE_LABELS, TREATMENT_STRATEGY_LABELS, computeRiskScore } from "@/lib/services/risk-scoring";
+import { RISK_CATEGORY_LABELS, RISK_SOURCE_LABELS, TREATMENT_STRATEGY_LABELS, computeRiskScore } from "@/backend/src/modules/risk-lens/risk-scoring";
 import { cn } from "@/lib/utils";
 
 export default async function RiskDetailPage({ params }: { params: Promise<{ id: string }> }) {

@@ -3,10 +3,10 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { getAudit } from "@/lib/services/audit/audit-service";
-import { listCapas } from "@/lib/services/audit/capa-service";
-import { listFindings } from "@/lib/services/audit/finding-service";
-import { findProfile } from "@/lib/services/settings-service";
+import { getAudit } from "@/backend/src/modules/audit-management/audit-service";
+import { listCapas } from "@/backend/src/modules/audit-management/capa-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { AuditCapaReport } from "@/lib/reports/audit-capa-pdf";
 
 export async function GET(

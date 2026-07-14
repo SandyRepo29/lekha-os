@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Users, Network, ArrowRight, CheckCircle2, Clock, XCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getTrustRelationships } from "@/lib/services/trust-network/trust-network-service";
+import { getTrustRelationships } from "@/backend/src/modules/trust-network/trust-network-service";
 import { RelationshipTypeBadge, NetworkStatusBadge, TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const STATUS_ICONS: Record<string, { icon: React.ElementType; color: string }> = {

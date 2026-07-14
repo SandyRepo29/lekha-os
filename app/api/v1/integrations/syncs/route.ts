@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getSyncs } from "@/lib/services/integration-hub/integration-service";
+import { getSyncs } from "@/backend/src/modules/integration-hub/integration-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

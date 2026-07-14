@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { organizations, memberships } from "@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";
-import { ensureDailySnapshot } from "@/lib/services/governance-trends/trends-service";
-import { runMonitoringRules } from "@/lib/services/governance-trends/monitoring-service";
+import { ensureDailySnapshot } from "@/backend/src/modules/trust-intelligence/trends-service";
+import { runMonitoringRules } from "@/backend/src/modules/trust-intelligence/monitoring-service";
 
 export const dynamic = "force-dynamic";
 

@@ -3,11 +3,11 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
-import { listGaps } from "@/lib/services/compliance/gap-service";
-import { listPolicies } from "@/lib/services/compliance/policy-service";
-import { getCachedInsight } from "@/lib/services/compliance/ai-compliance-service";
-import { findProfile } from "@/lib/services/settings-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
+import { listGaps } from "@/backend/src/modules/compliance/gap-service";
+import { listPolicies } from "@/backend/src/modules/compliance/policy-service";
+import { getCachedInsight } from "@/backend/src/modules/compliance/ai-compliance-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { ComplianceExecutiveReport } from "@/lib/reports/compliance-executive-pdf";
 
 export async function GET() {

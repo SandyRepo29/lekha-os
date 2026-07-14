@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { requireUser } from "@/lib/auth/session";
 import { ok, err } from "@/lib/api/response";
-import * as repo from "@/lib/repositories/agents-repo";
-import { generateCopilotResponse } from "@/lib/services/agents/ai-agent-service";
+import * as repo from "@/backend/src/modules/governance-agents/agents-repo";
+import { generateCopilotResponse } from "@/backend/src/modules/governance-agents/ai-agent-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(request: NextRequest) {

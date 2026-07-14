@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { findContractsByOrg } from "@/lib/repositories/contract-repo";
+import { findContractsByOrg } from "@/backend/src/modules/contract-governance/contract-repo";
 import { NextResponse } from "next/server";
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;

@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { disableMfa } from "@/lib/services/auth/mfa-service";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { disableMfa } from "@/backend/src/modules/enterprise-security/mfa-service";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /** POST /api/auth/mfa/disable — Disable MFA for the current user. */
 export async function POST(req: NextRequest) {

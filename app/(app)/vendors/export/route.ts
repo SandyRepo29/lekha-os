@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { listVendors } from "@/lib/services/vendor-service";
+import { listVendors } from "@/backend/src/modules/vendor-hub/vendor-service";
 
 export async function GET() {
   const session = await requireUser();

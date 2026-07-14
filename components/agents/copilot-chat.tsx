@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import { copilotChatAction } from "@/lib/agents/actions";
+import { copilotChatAction } from "@/backend/src/modules/governance-agents/actions";
 import { Bot, Send, User, Loader2 } from "lucide-react";
 
 interface Message {

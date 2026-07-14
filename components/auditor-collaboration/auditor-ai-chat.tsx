@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { chatAction } from "@/lib/auditor-collaboration/actions";
+import { chatAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { Send, Loader2 } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };

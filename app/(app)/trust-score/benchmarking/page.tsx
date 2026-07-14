@@ -4,8 +4,8 @@ import Link from "next/link";
 import { BarChart3, TrendingUp, Award } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getLatestSnapshot } from "@/lib/repositories/trust-intelligence-repo";
-import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_LEVEL_BG, PLATFORM_TRUST_LEVEL_COLORS } from "@/lib/services/platform-trust-score";
+import { getLatestSnapshot } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
+import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_LEVEL_BG, PLATFORM_TRUST_LEVEL_COLORS } from "@/backend/src/modules/trust-score/platform-trust-score";
 
 // Industry baseline trust scores (same pattern as benchmarking module)
 const BASELINES: Record<string, { avg: number; top25: number; label: string }> = {

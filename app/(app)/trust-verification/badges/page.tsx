@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
+import { getDashboardData } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { ShieldCheck } from "lucide-react";
 import { CertificateStatusBadge } from "@/components/trust-verification/verification-ui";
 

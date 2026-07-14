@@ -6,8 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listEvidence } from "@/lib/services/compliance/evidence-service";
-import * as evidenceRepo from "@/lib/repositories/evidence-repo";
+import { listEvidence } from "@/backend/src/modules/compliance/evidence-service";
+import * as evidenceRepo from "@/backend/src/modules/compliance/evidence-repo";
 import {
   EvidenceStatusBadge,
   EvidenceSourceBadge,

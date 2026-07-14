@@ -1,6 +1,6 @@
 "use client";
 
-import { getHealthLevel, HEALTH_LEVEL_LABELS, HEALTH_LEVEL_BG, HEALTH_LEVEL_COLORS } from "@/lib/services/policy-health";
+import { getHealthLevel, HEALTH_LEVEL_LABELS, HEALTH_LEVEL_BG, HEALTH_LEVEL_COLORS } from "@/backend/src/modules/policy-governance/policy-health";
 import { cn } from "@/lib/utils";
 
 interface PolicyHealthBadgeProps {

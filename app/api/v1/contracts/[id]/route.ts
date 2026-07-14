@@ -5,7 +5,7 @@ import {
   getContractDetail,
   updateContract,
   deleteContract,
-} from "@/lib/services/contract-governance/contract-service";
+} from "@/backend/src/modules/contract-governance/contract-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(

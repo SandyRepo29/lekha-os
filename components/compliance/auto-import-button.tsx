@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Download, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { autoImportFromVendorsAction } from "@/lib/compliance/actions";
+import { autoImportFromVendorsAction } from "@/backend/src/modules/compliance/actions";
 
 export function AutoImportButton() {
   const [pending, startTransition] = useTransition();

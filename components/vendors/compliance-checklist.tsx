@@ -1,5 +1,5 @@
 import { CheckCircle2, Circle, AlertTriangle, XCircle, ChevronDown } from "lucide-react";
-import type { ChecklistResult } from "@/lib/services/template-service";
+import type { ChecklistResult } from "@/backend/src/modules/vendor-hub/template-service";
 
 export function ComplianceChecklist({ checklist }: { checklist: ChecklistResult }) {
   const { templateName, items, requiredTotal, requiredDone, completionScore } = checklist;

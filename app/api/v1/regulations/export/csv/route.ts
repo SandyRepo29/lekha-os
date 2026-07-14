@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { findAllRegulations } from "@/lib/repositories/regulatory-intelligence-repo";
+import { findAllRegulations } from "@/backend/src/modules/regulatory-intelligence/regulatory-intelligence-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

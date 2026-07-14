@@ -4,7 +4,7 @@ export const metadata = { title: 'Asset Intelligence™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/asset-intelligence/asset-service";
+import { getDashboardData } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav, AssetStat, CriticalityBadge, AssetTypeBadge, AssetStatusBadge, AlertSeverityBadge } from "@/components/asset-intelligence/asset-ui";
 import { Database, Monitor, Cloud, FileText, GitBranch, Brain, Zap, Server, Network, Shield, AlertTriangle, TrendingUp, Activity, Download } from "lucide-react";
 

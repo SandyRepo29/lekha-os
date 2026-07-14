@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getTrustScoreData } from "@/lib/services/trust-api/trust-api-service";
-import { recordUsage } from "@/lib/repositories/trust-api-repo";
+import { getTrustScoreData } from "@/backend/src/modules/trust-api/trust-api-service";
+import { recordUsage } from "@/backend/src/modules/trust-api/trust-api-repo";
 
 export async function GET(request: NextRequest) {
   const start = Date.now();

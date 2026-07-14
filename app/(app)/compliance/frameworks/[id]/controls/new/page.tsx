@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getFramework } from "@/lib/services/compliance/framework-service";
+import { getFramework } from "@/backend/src/modules/compliance/framework-service";
 import { NewControlForm } from "@/components/compliance/new-control-form";
 
 export default async function NewControlPage({

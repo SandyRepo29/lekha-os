@@ -3,8 +3,8 @@
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { updateControlAction } from "@/lib/control-center/actions";
-import type { ControlWithMeta } from "@/lib/repositories/control-center-repo";
+import { updateControlAction } from "@/backend/src/modules/control-center/actions";
+import type { ControlWithMeta } from "@/backend/src/modules/control-center/control-center-repo";
 
 const TYPES = [
   ["preventive", "Preventive"], ["detective", "Detective"], ["corrective", "Corrective"],

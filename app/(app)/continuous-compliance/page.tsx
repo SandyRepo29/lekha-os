@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { getDashboardMetrics as getControlMetrics } from "@/lib/services/control-center/control-center-service";
-import { getOrgTrustMetrics } from "@/lib/repositories/trust-score-repo";
-import { getHealthHistory } from "@/lib/repositories/continuous-compliance-repo";
-import * as findingRepo from "@/lib/repositories/audit-finding-repo";
+import { getDashboardData } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { getDashboardMetrics as getControlMetrics } from "@/backend/src/modules/control-center/control-center-service";
+import { getOrgTrustMetrics } from "@/backend/src/modules/trust-score/trust-score-repo";
+import { getHealthHistory } from "@/backend/src/modules/continuous-compliance/continuous-compliance-repo";
+import * as findingRepo from "@/backend/src/modules/audit-management/audit-finding-repo";
 import {
   CheckCircle, AlertTriangle, TrendingDown, TrendingUp, Bot,
   Shield, BarChart3, Activity, Network, Clock, RefreshCw,

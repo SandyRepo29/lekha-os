@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAiDecisionsAction, generateAdvisoryAction, generateRecommendationsAction } from "@/lib/toe/actions";
+import { getAiDecisionsAction, generateAdvisoryAction, generateRecommendationsAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav, PriorityBadge } from "@/components/toe/toe-ui";
 import { Bot, Sparkles, RefreshCw } from "lucide-react";
 import { ToeAiChat } from "@/components/toe/toe-ai-chat";

@@ -1,12 +1,12 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getOrgTags } from "@/lib/services/platform/tag-service";
+import { getOrgTags } from "@/backend/src/modules/platform/tag-service";
 import {
   createTagAction,
   updateTagAction,
   deleteTagAction,
-} from "@/lib/platform/tag-actions";
+} from "@/backend/src/modules/platform/tag-actions";
 import { isAdminOrOwner } from "@/lib/ui/role-guard";
 import { Card } from "@/components/ui/card";
 import { Tag, Plus, Trash2, Edit2 } from "lucide-react";

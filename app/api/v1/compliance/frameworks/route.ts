@@ -13,7 +13,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

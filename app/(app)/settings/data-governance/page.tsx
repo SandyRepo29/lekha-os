@@ -22,7 +22,7 @@ import { requireUser } from "@/lib/auth/session";
 import {
   getDataGovernanceStats,
   getRecentAuditEvents,
-} from "@/lib/services/data-governance-service";
+} from "@/backend/src/modules/vendor-hub/data-governance-service";
 import { DataExportButton } from "./data-export-button";
 import { DeletionRequestButton } from "./deletion-request-button";
 

@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getMfaOverview, getSsoOverview } from "@/lib/services/security-command-center/security-service";
+import { getMfaOverview, getSsoOverview } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, EnforcementBadge, MfaCoverageBar, ProviderBadge, StatusBadge } from "@/components/security-command-center/sec-ui";
 import { SsoToggleButton, DeleteSsoButton } from "@/components/security-command-center/sec-actions";
 import { CheckCircle, XCircle, Users, Shield, Key } from "lucide-react";

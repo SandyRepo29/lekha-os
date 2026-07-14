@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/toe/actions";
+import { chatAction } from "@/backend/src/modules/toe/actions";
 import { Bot, Send, User } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };

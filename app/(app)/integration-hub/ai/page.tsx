@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { Sparkles, RefreshCw, Target, Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { generateIntegrationSummary, getConnectorRecommendations, analyzeCoverageGaps } from "@/lib/services/integration-hub/ai-integration-service";
+import { generateIntegrationSummary, getConnectorRecommendations, analyzeCoverageGaps } from "@/backend/src/modules/integration-hub/ai-integration-service";
 import { IntegrationAiChat } from "@/components/integration-hub/integration-ai-chat";
 
 export default async function IntegrationAiPage() {

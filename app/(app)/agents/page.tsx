@@ -4,10 +4,10 @@ export const metadata = { title: 'Governance Agent Framework™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardDataAction, getRunsAction, getObservationsAction } from "@/lib/agents/actions";
+import { getDashboardDataAction, getRunsAction, getObservationsAction } from "@/backend/src/modules/governance-agents/actions";
 import { Cpu, Play, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { AgentStat, RunStatusBadge, SeverityBadge, AgentSubNav } from "@/components/agents/agent-ui";
-import { fmtDate, fmtDuration } from "@/lib/agents/utils";
+import { fmtDate, fmtDuration } from "@/backend/src/modules/governance-agents/utils";
 
 export default async function AgentsPage() {
   await requireUser();

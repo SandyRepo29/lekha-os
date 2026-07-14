@@ -6,7 +6,7 @@ import { ok, err } from "@/lib/api/response";
 import { db } from "@/lib/db";
 import { benchmarkSnapshots, benchmarkScores } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
-import { recordUsage } from "@/lib/repositories/trust-api-repo";
+import { recordUsage } from "@/backend/src/modules/trust-api/trust-api-repo";
 
 export async function GET(request: NextRequest) {
   const start = Date.now();

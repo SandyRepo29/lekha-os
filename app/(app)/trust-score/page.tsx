@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Bot, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getOrgTrustMetrics } from "@/lib/repositories/trust-score-repo";
-import { getSnapshotHistory, getLatestSnapshot, getComplianceMetrics, getControlMetrics, getRiskMetrics } from "@/lib/repositories/trust-intelligence-repo";
-import * as findingRepo from "@/lib/repositories/audit-finding-repo";
+import { getOrgTrustMetrics } from "@/backend/src/modules/trust-score/trust-score-repo";
+import { getSnapshotHistory, getLatestSnapshot, getComplianceMetrics, getControlMetrics, getRiskMetrics } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
+import * as findingRepo from "@/backend/src/modules/audit-management/audit-finding-repo";
 import {
   computePlatformTrustScore,
   findingsToScore,
@@ -17,7 +17,7 @@ import {
   PLATFORM_TRUST_LEVEL_BG,
   PLATFORM_TRUST_SCORE_BAR,
   PLATFORM_TRUST_LEVEL_COLORS,
-} from "@/lib/services/platform-trust-score";
+} from "@/backend/src/modules/trust-score/platform-trust-score";
 
 function scoreBar(s: number) {
   const lvl = getPlatformTrustLevel(s);

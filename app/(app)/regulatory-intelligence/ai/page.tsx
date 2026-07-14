@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";
-import { generateRegulatoryAdvisorySummary } from "@/lib/services/regulatory-intelligence/ai-regulatory-service";
+import { getDashboardData } from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
+import { generateRegulatoryAdvisorySummary } from "@/backend/src/modules/regulatory-intelligence/ai-regulatory-service";
 import { RegSubNav, RegStat } from "@/components/regulatory-intelligence/reg-ui";
 import { RegAiAdvisorClient } from "@/components/regulatory-intelligence/reg-ai-chat";
 import { Bot, Sparkles } from "lucide-react";

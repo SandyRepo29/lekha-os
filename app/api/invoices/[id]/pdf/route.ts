@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { findInvoiceById } from "@/lib/repositories/billing-repo";
+import { findInvoiceById } from "@/backend/src/modules/billing/billing-repo";
 import { InvoicePdf } from "@/lib/reports/invoice-pdf";
 import type { InvoicePdfData } from "@/lib/reports/invoice-pdf";
 

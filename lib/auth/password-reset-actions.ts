@@ -48,7 +48,7 @@ export async function resetPasswordAction(
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { findActiveOrgByUser } = await import("@/lib/repositories/org-repo");
+      const { findActiveOrgByUser } = await import("@/backend/src/modules/orgs/org-repo");
       const { audit, AuditEvent } = await import("@/lib/audit/audit-events");
       const activeOrg = await findActiveOrgByUser(user.id);
       if (activeOrg) {

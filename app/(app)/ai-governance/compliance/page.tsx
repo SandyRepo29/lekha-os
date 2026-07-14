@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllCompliance } from "@/lib/repositories/ai-governance-repo";
+import { findAllCompliance } from "@/backend/src/modules/ai-governance/ai-governance-repo";
 import { ShieldCheck } from "lucide-react";
 
 const FRAMEWORK_META: Record<string, { label: string; desc: string; color: string }> = {

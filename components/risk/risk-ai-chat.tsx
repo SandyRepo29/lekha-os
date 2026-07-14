@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { SendHorizonal, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { riskAiChatAction } from "@/lib/risk/actions";
+import { riskAiChatAction } from "@/backend/src/modules/risk-lens/actions";
 
 type Message = { role: "user" | "model"; text: string };
 

@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import * as repo from "@/lib/repositories/agents-repo";
+import * as repo from "@/backend/src/modules/governance-agents/agents-repo";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

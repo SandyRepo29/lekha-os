@@ -3,7 +3,7 @@
 import { RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getSyncs } from "@/lib/services/integration-hub/integration-service";
+import { getSyncs } from "@/backend/src/modules/integration-hub/integration-service";
 import { IntegrationStat, SyncStatusBadge } from "@/components/integration-hub/integration-ui";
 
 function duration(start: Date, end: Date | null) {

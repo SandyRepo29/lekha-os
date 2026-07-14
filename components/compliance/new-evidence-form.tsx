@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { createEvidenceAction, type ComplianceState } from "@/lib/compliance/actions";
+import { createEvidenceAction, type ComplianceState } from "@/backend/src/modules/compliance/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";

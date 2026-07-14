@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { createAgentAction } from "@/lib/agents/actions";
+import { createAgentAction } from "@/backend/src/modules/governance-agents/actions";
 import { Sparkles } from "lucide-react";
 import { AgentSubNav } from "@/components/agents/agent-ui";
 import { AgentStudioForm } from "@/components/agents/agent-studio-form";

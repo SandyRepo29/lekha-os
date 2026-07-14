@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { VENDOR_DOCS_BUCKET, buildVendorDocPath } from "@/lib/storage/paths";
-import { registerDocument } from "@/lib/documents/actions";
+import { registerDocument } from "@/backend/src/modules/vendor-hub/documents-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";

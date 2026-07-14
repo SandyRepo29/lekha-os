@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Shield } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getAsset } from "@/lib/services/asset-intelligence/asset-service";
+import { getAsset } from "@/backend/src/modules/asset-intelligence/asset-service";
 import {
   AssetSubNav,
   CriticalityBadge,

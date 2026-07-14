@@ -6,14 +6,14 @@ import { FileText, ArrowLeft, Shield, Users, BookOpen, Activity, GitBranch, Aler
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getPolicyDetail } from "@/lib/services/policy-governance/policy-governance-service";
+import { getPolicyDetail } from "@/backend/src/modules/policy-governance/policy-governance-service";
 import { PolicyHealthBadge } from "@/components/policy-governance/policy-health-badge";
 import { PolicyStatusBadge, AttestationStatusBadge } from "@/components/policy-governance/policy-status-badge";
 import { PolicyDetailActions } from "@/components/policy-governance/policy-detail-actions";
 import {
   POLICY_HEALTH_COMPONENT_LABELS,
   POLICY_HEALTH_COMPONENT_WEIGHTS,
-} from "@/lib/services/policy-health";
+} from "@/backend/src/modules/policy-governance/policy-health";
 
 export default async function PolicyDetailPage({
   params,

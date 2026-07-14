@@ -1,7 +1,7 @@
 ﻿import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { BenchmarkMaturityLevel, BenchmarkRankingLabel } from "@/lib/services/benchmarking-score";
+import type { BenchmarkMaturityLevel, BenchmarkRankingLabel } from "@/backend/src/modules/benchmarking/benchmarking-score";
 
 // ---- BenchmarkStat — accent stat card (border-l-2 pattern) ----
 

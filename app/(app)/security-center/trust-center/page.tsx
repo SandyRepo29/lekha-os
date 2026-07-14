@@ -1,9 +1,9 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getTrustCenterOverview } from "@/lib/services/security-command-center/security-service";
+import { getTrustCenterOverview } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, StatusBadge } from "@/components/security-command-center/sec-ui";
-import { updateTrustCenterAction } from "@/lib/security-command-center/actions";
+import { updateTrustCenterAction } from "@/backend/src/modules/security-command-center/actions";
 import { Globe, Shield, FileText, Star, CheckCircle } from "lucide-react";
 
 export default async function TrustCenterPage() {

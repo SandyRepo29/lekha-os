@@ -7,7 +7,7 @@ import {
   deleteIpRuleAction, toggleSsoAction, deleteSsoAction,
   revokeShareAction, acknowledgeAlertAction, resolveAlertAction,
   removeEncryptionProviderAction,
-} from "@/lib/security-command-center/actions";
+} from "@/backend/src/modules/security-command-center/actions";
 
 // ─── Revoke Session Button ────────────────────────────────────────────────────
 

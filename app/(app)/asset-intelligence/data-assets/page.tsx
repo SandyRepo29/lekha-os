@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAssets } from "@/lib/services/asset-intelligence/asset-service";
+import { getAssets } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav, CriticalityBadge, AssetStatusBadge } from "@/components/asset-intelligence/asset-ui";
 import { FileText, ShieldAlert, Shield } from "lucide-react";
 

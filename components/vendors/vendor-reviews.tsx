@@ -3,7 +3,7 @@
 import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ClipboardCheck, ChevronDown, CheckCircle2 } from "lucide-react";
-import { createVendorReview, changeReviewStatus, type ReviewState } from "@/lib/reviews/actions";
+import { createVendorReview, changeReviewStatus, type ReviewState } from "@/backend/src/modules/vendor-hub/reviews-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";

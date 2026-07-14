@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
-import { getPrograms } from "@/lib/services/trust-verification/trust-verification-service";
-import { applyForVerificationAction } from "@/lib/trust-verification/actions";
+import { getPrograms } from "@/backend/src/modules/trust-verification/trust-verification-service";
+import { applyForVerificationAction } from "@/backend/src/modules/trust-verification/actions";
 import { ShieldCheck } from "lucide-react";
 
 export default async function NewApplicationPage({ searchParams }: { searchParams: { programId?: string } }) {

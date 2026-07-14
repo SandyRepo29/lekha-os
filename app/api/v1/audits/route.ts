@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listAudits, createAudit } from "@/lib/services/audit/audit-service";
+import { listAudits, createAudit } from "@/backend/src/modules/audit-management/audit-service";
 import { DomainError } from "@/lib/services/errors";
 import { parseBody } from "@/lib/api/validate";
 import { CreateAuditSchema } from "@/lib/api/schemas/audit-schemas";

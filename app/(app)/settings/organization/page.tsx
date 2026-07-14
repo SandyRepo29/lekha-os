@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { Building2, Palette } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getOrgWithMemberCount, getOrgSettings } from "@/lib/services/settings-service";
+import { getOrgWithMemberCount, getOrgSettings } from "@/backend/src/modules/settings/settings-service";
 import { OrgProfileForm, BrandingForm } from "@/components/settings/org-settings-form";
 import { db } from "@/lib/db";
 import { organizations } from "@/lib/db/schema";

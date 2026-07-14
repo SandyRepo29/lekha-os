@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
-import { createVendor, type VendorState } from "@/lib/vendors/actions";
+import { createVendor, type VendorState } from "@/backend/src/modules/vendor-hub/vendors-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";

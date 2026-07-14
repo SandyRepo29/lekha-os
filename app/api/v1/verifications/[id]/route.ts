@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getVerificationById } from "@/lib/services/trust-verification/trust-verification-service";
+import { getVerificationById } from "@/backend/src/modules/trust-verification/trust-verification-service";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await validateApiKey(req).catch(() => null);

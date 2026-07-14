@@ -4,9 +4,9 @@ import { Bot, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { generateExecutiveSummary, chat } from "@/lib/services/trust-intelligence/ai-trust-intelligence-service";
-import { getLatestSnapshot } from "@/lib/repositories/trust-intelligence-repo";
-import { getOrgTrustMetrics } from "@/lib/repositories/trust-score-repo";
+import { generateExecutiveSummary, chat } from "@/backend/src/modules/trust-intelligence/ai-trust-intelligence-service";
+import { getLatestSnapshot } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
+import { getOrgTrustMetrics } from "@/backend/src/modules/trust-score/trust-score-repo";
 
 const CAPABILITIES = [
   { title: "Explain Trust Score",       desc: "Break down why your score is what it is and which factors drive it most." },

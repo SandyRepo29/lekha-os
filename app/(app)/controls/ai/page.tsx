@@ -3,9 +3,9 @@
 import { Bot, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { findAllControls } from "@/lib/repositories/control-center-repo";
-import { getDashboardMetrics } from "@/lib/services/control-center/control-center-service";
-import { generateExecutiveSummary, detectControlGaps } from "@/lib/services/control-center/ai-control-service";
+import { findAllControls } from "@/backend/src/modules/control-center/control-center-repo";
+import { getDashboardMetrics } from "@/backend/src/modules/control-center/control-center-service";
+import { generateExecutiveSummary, detectControlGaps } from "@/backend/src/modules/control-center/ai-control-service";
 import { ControlAiChat } from "@/components/controls/control-ai-chat";
 
 export default async function ControlAiPage() {

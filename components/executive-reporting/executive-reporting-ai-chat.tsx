@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/executive-reporting/actions";
+import { chatAction } from "@/backend/src/modules/executive-reporting/actions";
 import { Brain, Send, Loader2 } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };

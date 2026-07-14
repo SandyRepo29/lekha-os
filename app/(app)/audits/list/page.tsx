@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listAudits } from "@/lib/services/audit/audit-service";
+import { listAudits } from "@/backend/src/modules/audit-management/audit-service";
 import {
   AuditStatusBadge,
   AuditTypeBadge,

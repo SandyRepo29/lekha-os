@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getEncryptionOverview } from "@/lib/services/security-command-center/security-service";
+import { getEncryptionOverview } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, ProviderBadge, StatusBadge } from "@/components/security-command-center/sec-ui";
 import { RemoveEncProviderButton } from "@/components/security-command-center/sec-actions";
-import { addEncryptionProviderAction } from "@/lib/security-command-center/actions";
+import { addEncryptionProviderAction } from "@/backend/src/modules/security-command-center/actions";
 import { KeyRound, Lock, CheckCircle } from "lucide-react";
 
 export default async function EncryptionPage() {

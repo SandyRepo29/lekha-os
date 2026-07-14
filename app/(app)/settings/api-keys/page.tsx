@@ -2,7 +2,7 @@
 
 import { Key } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { listKeys } from "@/lib/services/api-key-service";
+import { listKeys } from "@/backend/src/modules/settings/api-key-service";
 import { ApiKeyManager } from "@/components/settings/api-key-manager";
 
 export default async function ApiKeysPage() {

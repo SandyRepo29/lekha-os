@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Link2, Copy, CheckCheck } from "lucide-react";
-import { generatePortalLink } from "@/lib/vendors/portal-actions";
+import { generatePortalLink } from "@/backend/src/modules/vendor-hub/vendors-portal-actions";
 import { Button } from "@/components/ui/button";
 
 export function PortalLink({ vendorId }: { vendorId: string }) {

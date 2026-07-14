@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { resolveAiDecisionAction, generateRecommendationsAction } from "@/lib/toe/actions";
+import { resolveAiDecisionAction, generateRecommendationsAction } from "@/backend/src/modules/toe/actions";
 import { Check, X, Sparkles } from "lucide-react";
 
 export function DecisionActions({ decisionId }: { decisionId: string }) {

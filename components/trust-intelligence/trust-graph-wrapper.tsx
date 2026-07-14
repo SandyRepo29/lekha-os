@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { buildGraphAction } from "@/lib/trust-graph/actions";
+import { buildGraphAction } from "@/backend/src/modules/trust-graph/actions";
 import { toast } from "@/components/ui/toast-simple";
 import { TrustGraphExplorer } from "./trust-graph-explorer";
 import type { GraphNode, GraphEdge } from "@/lib/db/schema";
@@ -32,7 +32,7 @@ export function TrustGraphWrapper({ initialNodes, initialEdges }: Props) {
       }
       if (res.data) {
         setBuildResult(res.data);
-        const { getGraphDataAction } = await import("@/lib/trust-graph/actions");
+        const { getGraphDataAction } = await import("@/backend/src/modules/trust-graph/actions");
         const graphRes = await getGraphDataAction();
         if (graphRes.data) {
           setNodes(graphRes.data.nodes as GraphNode[]);

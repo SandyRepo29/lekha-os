@@ -28,8 +28,8 @@ export async function GET(request: NextRequest) {
       const res = NextResponse.redirect(`${origin}${next}`);
       // Create AUDT session record asynchronously (fire-and-forget on error)
       try {
-        const { findActiveOrgByUser } = await import("@/lib/repositories/org-repo");
-        const { createSession } = await import("@/lib/services/auth/session-service");
+        const { findActiveOrgByUser } = await import("@/backend/src/modules/orgs/org-repo");
+        const { createSession } = await import("@/backend/src/modules/enterprise-security/session-service");
         const org = await findActiveOrgByUser(data.user.id);
         if (org) {
           const { sessionId } = await createSession({

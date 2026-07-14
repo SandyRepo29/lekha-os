@@ -6,8 +6,8 @@ import { AlertCircle, GitBranch, Play, Pencil, Zap, CheckCircle2, Clock, ArrowRi
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getWorkflowDetail, listRuns } from "@/lib/services/workflow-studio/workflow-service";
-import { publishWorkflowAction, startWorkflowAction } from "@/lib/workflow-studio/actions";
+import { getWorkflowDetail, listRuns } from "@/backend/src/modules/workflow-studio/workflow-service";
+import { publishWorkflowAction, startWorkflowAction } from "@/backend/src/modules/workflow-studio/actions";
 import {
   WorkflowStatusBadge,
   WorkflowRunStatusBadge,

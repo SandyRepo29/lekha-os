@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, History } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getPolicy } from "@/lib/services/compliance/policy-service";
+import { getPolicy } from "@/backend/src/modules/compliance/policy-service";
 import { PolicyStatusBadge } from "@/components/compliance/policy-status-badge";
 import { PolicyWorkflowButtons, DeletePolicy } from "@/components/compliance/policy-actions";
 import { formatDate } from "@/components/compliance/compliance-ui";

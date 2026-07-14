@@ -18,10 +18,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/contract-governance/contract-service";
+import { getDashboardMetrics } from "@/backend/src/modules/contract-governance/contract-service";
 import { ContractStat } from "@/components/contract-governance/contract-ui";
 
-import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
+import { formatDate, daysUntil } from "@/backend/src/modules/contract-governance/date-utils";
 
 export default async function ContractGovernanceDashboardPage() {
   const session = await requireUser();

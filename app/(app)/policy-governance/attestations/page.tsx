@@ -5,7 +5,7 @@ import { Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { findAttestationsByOrg } from "@/lib/repositories/policy-governance-repo";
+import { findAttestationsByOrg } from "@/backend/src/modules/policy-governance/policy-governance-repo";
 import { AttestationStatusBadge } from "@/components/policy-governance/policy-status-badge";
 
 export default async function PolicyAttestationsPage({

@@ -4,8 +4,8 @@ import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getWorkflowDetail } from "@/lib/services/workflow-studio/workflow-service";
-import { updateWorkflowAction } from "@/lib/workflow-studio/actions";
+import { getWorkflowDetail } from "@/backend/src/modules/workflow-studio/workflow-service";
+import { updateWorkflowAction } from "@/backend/src/modules/workflow-studio/actions";
 import { GitBranch } from "lucide-react";
 
 const MODULE_OPTIONS = [

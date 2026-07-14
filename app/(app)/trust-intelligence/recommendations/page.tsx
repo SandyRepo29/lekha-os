@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Zap, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { generateRecommendations } from "@/lib/services/trust-intelligence/trust-intelligence-service";
+import { generateRecommendations } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
 import { PriorityChip, CategoryChip, TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 
 export default async function RecommendationsPage() {

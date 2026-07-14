@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/trust-api/trust-api-service";
+import { getDashboardData } from "@/backend/src/modules/trust-api/trust-api-service";
 import {
   Zap, Key, Webhook, BarChart3, Code2, BookOpen, Bot, ArrowRight,
   Globe, TrendingUp, Activity, Sparkles,

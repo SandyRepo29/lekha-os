@@ -8,10 +8,10 @@ import {
   Sparkles, BookOpen, Activity, Info,
 } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getTrustIntelligenceOverview } from "@/lib/services/trust-intelligence/trust-intelligence-service";
-import { getSnapshotHistory } from "@/lib/repositories/trust-intelligence-repo";
-import { countByLifecycleStage, listVendors, getMetrics } from "@/lib/services/vendor-service";
-import { findContractsByOrg } from "@/lib/repositories/contract-repo";
+import { getTrustIntelligenceOverview } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
+import { getSnapshotHistory } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
+import { countByLifecycleStage, listVendors, getMetrics } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { findContractsByOrg } from "@/backend/src/modules/contract-governance/contract-repo";
 import { cn } from "@/lib/utils";
 import { type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
 

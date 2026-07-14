@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Shield, CheckCircle2, XCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listExceptions } from "@/lib/services/issue-hub/issue-service";
-import { approveExceptionAction } from "@/lib/issue-hub/actions";
+import { listExceptions } from "@/backend/src/modules/issue-hub/issue-service";
+import { approveExceptionAction } from "@/backend/src/modules/issue-hub/actions";
 import { IssueStat, ExceptionStatusBadge, IssueSeverityBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {

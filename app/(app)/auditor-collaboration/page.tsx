@@ -3,7 +3,7 @@
 export const metadata = { title: 'Auditor Collaboration™ — AUDT' };
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/auditor-collaboration/auditor-collaboration-service";
+import { getDashboardData } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-service";
 import Link from "next/link";
 import {
   Users, DoorOpen, FileCheck, AlertTriangle, Brain,

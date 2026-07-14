@@ -1,7 +1,7 @@
 ﻿import { CheckCircle2, XCircle, AlertTriangle, Circle } from "lucide-react";
 import type { VendorDocument } from "@/lib/db/schema";
 import { DOCS_TO_SCORE_90, DOCUMENT_TYPES } from "@/lib/constants/vendor-options";
-import { computeScore, type DocCounts, type Risk } from "@/lib/services/scoring";
+import { computeScore, type DocCounts, type Risk } from "@/backend/src/modules/vendor-hub/scoring";
 
 type Props = {
   risk: string;

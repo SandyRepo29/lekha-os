@@ -9,7 +9,7 @@ import {
   generateFrameworkSummaryAction,
   generateReadinessExplanationAction,
   generateGapNarrativeAction,
-} from "@/lib/compliance/actions";
+} from "@/backend/src/modules/compliance/actions";
 
 interface InsightProps {
   frameworkId: string;

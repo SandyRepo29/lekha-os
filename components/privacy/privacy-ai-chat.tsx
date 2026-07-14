@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, Bot, User } from "lucide-react";
-import { chatAction } from "@/lib/privacy/actions";
+import { chatAction } from "@/backend/src/modules/privacy/actions";
 import { cn } from "@/lib/utils";
 
 type Message = { role: "user" | "model"; content: string };

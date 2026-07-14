@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { createRegulationAction } from "@/lib/regulatory-intelligence/actions";
+import { createRegulationAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 import { RegNewForm, type RegField } from "@/components/regulatory-intelligence/reg-new-form";
 
 const FIELDS: RegField[] = [

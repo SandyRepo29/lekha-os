@@ -4,8 +4,8 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { getAudit, updateAudit, deleteAudit } from "@/lib/services/audit/audit-service";
-import { listFindings } from "@/lib/services/audit/finding-service";
+import { getAudit, updateAudit, deleteAudit } from "@/backend/src/modules/audit-management/audit-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(

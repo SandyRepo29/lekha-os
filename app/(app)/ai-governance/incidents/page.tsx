@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllIncidents } from "@/lib/repositories/ai-governance-repo";
+import { findAllIncidents } from "@/backend/src/modules/ai-governance/ai-governance-repo";
 import Link from "next/link";
 import { Bug, Plus } from "lucide-react";
 import { AIGovStat, AIIncidentSeverityBadge } from "@/components/ai-governance/ai-governance-ui";

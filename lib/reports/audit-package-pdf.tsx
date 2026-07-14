@@ -2,7 +2,7 @@ import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import { styles } from "./pdf-styles";
 import type { Vendor, VendorDocument, VendorReview, Assessment } from "@/lib/db/schema";
-import type { ChecklistResult } from "@/lib/services/template-service";
+import type { ChecklistResult } from "@/backend/src/modules/vendor-hub/template-service";
 
 type Props = {
   orgName: string;

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { listQuestionnaires, listAnswers } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { listQuestionnaires, listAnswers } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustQuestionnairesClient } from "@/components/trust-exchange/trust-questionnaires-client";
 
 export default async function TrustQuestionnairesPage() {

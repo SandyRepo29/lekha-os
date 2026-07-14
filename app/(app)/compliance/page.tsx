@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ScoreRing } from "@/components/app-shell/score-ring";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
-import { getGapSummary } from "@/lib/services/compliance/gap-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
+import { getGapSummary } from "@/backend/src/modules/compliance/gap-service";
 import { FrameworkStatusBadge } from "@/components/compliance/compliance-badges";
 import { ComplianceStat, CoverageBar } from "@/components/compliance/compliance-ui";
 import { scoreTextColor, scoreLabel } from "@/lib/ui/colors";
-import { listEvidence } from "@/lib/services/compliance/evidence-service";
+import { listEvidence } from "@/backend/src/modules/compliance/evidence-service";
 
 export default async function ComplianceDashboardPage() {
   const session = await requireUser();

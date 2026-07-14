@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { findAllControls } from "@/lib/repositories/control-center-repo";
+import { findAllControls } from "@/backend/src/modules/control-center/control-center-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

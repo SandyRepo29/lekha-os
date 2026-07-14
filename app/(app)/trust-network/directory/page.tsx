@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Globe, Network, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getNetworkDirectory } from "@/lib/services/trust-network/trust-network-service";
+import { getNetworkDirectory } from "@/backend/src/modules/trust-network/trust-network-service";
 
 export default async function NetworkDirectoryPage() {
   const session = await requireUser();

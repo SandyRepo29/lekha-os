@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   mapEvidenceToControlAction,
   unmapEvidenceFromControlAction,
-} from "@/lib/compliance/actions";
+} from "@/backend/src/modules/compliance/actions";
 
 type Control = {
   id: string;

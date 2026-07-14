@@ -3,9 +3,9 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import React from "react";
 import { requireUser } from "@/lib/auth/session";
-import { listVendors, getMetrics } from "@/lib/services/vendor-service";
+import { listVendors, getMetrics } from "@/backend/src/modules/vendor-hub/vendor-service";
 import { VendorComplianceReport } from "@/lib/reports/vendor-compliance-pdf";
-import { findProfile } from "@/lib/services/settings-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 
 export async function GET() {
   try {

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { STANDARD_QUESTIONS, groupByCategory } from "@/lib/constants/assessment-questions";
 import { Button } from "@/components/ui/button";
 import type { AssessmentResponse } from "@/lib/db/schema";
-import type { AssessmentState } from "@/lib/assessments/actions";
+import type { AssessmentState } from "@/backend/src/modules/vendor-hub/assessments-actions";
 
 const ANSWER_OPTIONS = [
   { value: "yes",     label: "Yes",     color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/[0.08]" },

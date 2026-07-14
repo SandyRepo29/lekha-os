@@ -6,9 +6,9 @@ import { ArrowLeft, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getAudit } from "@/lib/services/audit/audit-service";
-import { listFindings } from "@/lib/services/audit/finding-service";
-import { listCapas } from "@/lib/services/audit/capa-service";
+import { getAudit } from "@/backend/src/modules/audit-management/audit-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
+import { listCapas } from "@/backend/src/modules/audit-management/capa-service";
 import {
   SeverityBadge,
   FindingStatusBadge,

@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
-import { connectIntegration, disconnectIntegration, type IntegrationState } from "@/lib/settings/actions";
+import { connectIntegration, disconnectIntegration, type IntegrationState } from "@/backend/src/modules/settings/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";

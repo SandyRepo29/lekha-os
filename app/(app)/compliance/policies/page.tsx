@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listPolicies } from "@/lib/services/compliance/policy-service";
+import { listPolicies } from "@/backend/src/modules/compliance/policy-service";
 import { PolicyStatusBadge } from "@/components/compliance/compliance-badges";
 import { ComplianceStat } from "@/components/compliance/compliance-ui";
 

@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
-import { resolveGapAction } from "@/lib/compliance/actions";
+import { resolveGapAction } from "@/backend/src/modules/compliance/actions";
 
 export function ResolveGapButton({ gapId }: { gapId: string }) {
   const [pending, startTransition] = useTransition();

@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getUsageSummary } from "@/lib/repositories/trust-api-repo";
+import { getUsageSummary } from "@/backend/src/modules/trust-api/trust-api-repo";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

@@ -5,9 +5,9 @@ import { RefreshCw, Building2, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listContracts } from "@/lib/services/contract-governance/contract-service";
+import { listContracts } from "@/backend/src/modules/contract-governance/contract-service";
 import { ContractStat } from "@/components/contract-governance/contract-ui";
-import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
+import { formatDate, daysUntil } from "@/backend/src/modules/contract-governance/date-utils";
 
 type RenewalRec = "Renew" | "Review" | "Renegotiate" | "Exit";
 type TrustImpact = "High" | "Medium" | "Low";

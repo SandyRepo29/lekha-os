@@ -2,10 +2,10 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { verifyTotpCode, useRecoveryCode } from "@/lib/services/auth/mfa-service";
-import { trustDevice, buildDeviceFingerprint } from "@/lib/services/auth/device-trust-service";
-import { updateSessionMfaVerified } from "@/lib/repositories/security-command-center-repo";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { verifyTotpCode, useRecoveryCode } from "@/backend/src/modules/enterprise-security/mfa-service";
+import { trustDevice, buildDeviceFingerprint } from "@/backend/src/modules/enterprise-security/device-trust-service";
+import { updateSessionMfaVerified } from "@/backend/src/modules/security-command-center/security-command-center-repo";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /**
  * POST /api/auth/mfa/verify

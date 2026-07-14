@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Globe, Calendar, User, Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getAssetDetail } from "@/lib/services/privacy/privacy-service";
+import { getAssetDetail } from "@/backend/src/modules/privacy/privacy-service";
 import { SensitivityBadge } from "@/components/privacy/privacy-badges";
 
 export default async function AssetDetailPage({

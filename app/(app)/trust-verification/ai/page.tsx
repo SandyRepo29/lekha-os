@@ -1,8 +1,8 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
-import { generatePlatformSummary } from "@/lib/services/trust-verification/ai-trust-verification-service";
+import { getDashboardData } from "@/backend/src/modules/trust-verification/trust-verification-service";
+import { generatePlatformSummary } from "@/backend/src/modules/trust-verification/ai-trust-verification-service";
 import { Bot, Sparkles, ShieldCheck, FileSearch, ClipboardCheck, RefreshCw } from "lucide-react";
 import TrustVerificationChat from "./chat";
 

@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getSessionOverview } from "@/lib/services/security-command-center/security-service";
+import { getSessionOverview } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, StatusBadge } from "@/components/security-command-center/sec-ui";
 import { RevokeSessionButton, RevokeAllSessionsButton } from "@/components/security-command-center/sec-actions";
 import { Monitor, Globe, Clock } from "lucide-react";

@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
-import { BENCHMARK_RANKING_LABELS, BENCHMARK_MATURITY_LABELS } from "@/lib/services/benchmarking-score";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
+import { BENCHMARK_RANKING_LABELS, BENCHMARK_MATURITY_LABELS } from "@/backend/src/modules/benchmarking/benchmarking-score";
 
 export async function GET(req: NextRequest) {
   let ctx;

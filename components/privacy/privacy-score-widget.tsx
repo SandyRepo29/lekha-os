@@ -10,8 +10,8 @@ import {
   PRIVACY_LEVEL_LABELS,
   PRIVACY_LEVEL_COLORS,
   PRIVACY_LEVEL_BG,
-} from "@/lib/services/privacy-score";
-import { computePrivacyScoreAction } from "@/lib/privacy/actions";
+} from "@/backend/src/modules/privacy/privacy-score";
+import { computePrivacyScoreAction } from "@/backend/src/modules/privacy/actions";
 import { cn } from "@/lib/utils";
 
 type Props = {

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getObligations } from "@/lib/repositories/contract-repo";
+import { getObligations } from "@/backend/src/modules/contract-governance/contract-repo";
 
 export async function GET(req: NextRequest) {
   let ctx;

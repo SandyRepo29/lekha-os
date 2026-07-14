@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { createRoomAction } from "@/lib/auditor-collaboration/actions";
+import { createRoomAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, DoorOpen } from "lucide-react";

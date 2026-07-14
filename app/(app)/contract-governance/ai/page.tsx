@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { ContractAiChat } from "@/components/contract-governance/contract-ai-chat";
-import { generateExecutiveSummary } from "@/lib/services/contract-governance/ai-contract-service";
-import { getDashboardMetrics, listContracts } from "@/lib/services/contract-governance/contract-service";
-import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS } from "@/lib/services/contract-health";
+import { generateExecutiveSummary } from "@/backend/src/modules/contract-governance/ai-contract-service";
+import { getDashboardMetrics, listContracts } from "@/backend/src/modules/contract-governance/contract-service";
+import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS } from "@/backend/src/modules/contract-governance/contract-health";
 
-import { daysUntil } from "@/lib/contract-governance/date-utils";
+import { daysUntil } from "@/backend/src/modules/contract-governance/date-utils";
 
 export default async function ContractIntelligencePage() {
   const session = await requireUser();

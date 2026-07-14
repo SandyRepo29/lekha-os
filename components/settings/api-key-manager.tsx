@@ -7,14 +7,14 @@ import {
   revokeApiKey,
   rotateApiKey,
   type ApiKeyState,
-} from "@/lib/settings/actions";
+} from "@/backend/src/modules/settings/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Select, SelectOption } from "@/components/ui/select";
 import { CheckCircle2, Copy, Eye, EyeOff, Plus, RefreshCw, Trash2, Key } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { SafeApiKey } from "@/lib/repositories/api-key-repo";
+import type { SafeApiKey } from "@/backend/src/modules/settings/api-key-repo";
 
 const PERMISSION_LABELS: Record<string, string> = {
   read_only: "Read Only",

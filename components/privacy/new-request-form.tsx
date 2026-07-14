@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { createRequestAction } from "@/lib/privacy/actions";
+import { createRequestAction } from "@/backend/src/modules/privacy/actions";
 
 const REQUEST_TYPES = [
   { value: "access", label: "Right to Access" },

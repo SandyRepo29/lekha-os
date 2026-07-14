@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAllRooms, createRoom, addRoomActivity } from "@/lib/repositories/auditor-collaboration-repo";
+import { findAllRooms, createRoom, addRoomActivity } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

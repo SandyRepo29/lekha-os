@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/asset-intelligence/actions";
+import { chatAction } from "@/backend/src/modules/asset-intelligence/actions";
 import { Brain, Send } from "lucide-react";
 
 type Msg = { role: "user" | "model"; content: string };

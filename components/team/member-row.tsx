@@ -2,10 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateRole, deactivateMember, reactivateMember, transferOwnership, resendInvite } from "@/lib/team/actions";
+import { updateRole, deactivateMember, reactivateMember, transferOwnership, resendInvite } from "@/backend/src/modules/team/actions";
 import { Select, SelectOption } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import type { TeamMember } from "@/lib/services/team-service";
+import type { TeamMember } from "@/backend/src/modules/team/team-service";
 
 const ROLE_LABELS: Record<string, string> = {
   owner: "Owner",

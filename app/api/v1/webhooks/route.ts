@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAllWebhooks, recordWebhookDelivery } from "@/lib/repositories/trust-api-repo";
+import { findAllWebhooks, recordWebhookDelivery } from "@/backend/src/modules/trust-api/trust-api-repo";
 
 const ALLOWED_EVENTS = [
   "trust.score.updated", "vendor.verified", "badge.issued", "risk.created",

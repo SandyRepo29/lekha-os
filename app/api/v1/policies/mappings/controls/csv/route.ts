@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { getPolicyControlMappingsByOrg } from "@/lib/repositories/policy-governance-repo";
+import { getPolicyControlMappingsByOrg } from "@/backend/src/modules/policy-governance/policy-governance-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

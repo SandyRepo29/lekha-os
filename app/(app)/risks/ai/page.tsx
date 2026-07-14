@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { Bot, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getCachedExecutiveSummary } from "@/lib/services/risk/ai-risk-service";
+import { getCachedExecutiveSummary } from "@/backend/src/modules/risk-lens/ai-risk-service";
 import { RiskAiChat } from "@/components/risk/risk-ai-chat";
 import { ExecutiveSummaryPanel } from "@/components/risk/executive-summary-panel";
 import { formatDate } from "@/components/risk/risk-ui";

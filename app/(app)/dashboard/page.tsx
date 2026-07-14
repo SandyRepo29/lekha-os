@@ -16,15 +16,15 @@ import { requireUser } from "@/lib/auth/session";
 import {
   getMetrics, listVendors, countByLifecycleStage,
   type VendorRow, type VendorMetrics,
-} from "@/lib/services/vendor-service";
+} from "@/backend/src/modules/vendor-hub/vendor-service";
 import { type VendorLifecycleStage } from "@/lib/constants/vendor-lifecycle";
-import { getTrustIntelligenceOverview } from "@/lib/services/trust-intelligence/trust-intelligence-service";
-import { listOrgActivity } from "@/lib/repositories/activity-repo";
-import { findContractsByOrg } from "@/lib/repositories/contract-repo";
+import { getTrustIntelligenceOverview } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
+import { listOrgActivity } from "@/backend/src/modules/vendor-hub/activity-repo";
+import { findContractsByOrg } from "@/backend/src/modules/contract-governance/contract-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
 import { demoMetrics, demoVendors } from "@/lib/demo-data";
 import { scoreBarGradient } from "@/lib/ui/colors";
-import { getOrgTrustLevel } from "@/lib/services/org-trust-score";
+import { getOrgTrustLevel } from "@/backend/src/modules/trust-intelligence/org-trust-score";
 import { Suspense } from "react";
 import { WelcomeBanner } from "@/components/onboarding/welcome-banner";
 import { OnboardingChecklist } from "@/components/onboarding/onboarding-checklist";

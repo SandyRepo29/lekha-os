@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useTransition } from "react";
-import { draftPolicyAction, generateGapAnalysisAction, generateExecutiveSummaryAction } from "@/lib/policy-governance/actions";
+import { draftPolicyAction, generateGapAnalysisAction, generateExecutiveSummaryAction } from "@/backend/src/modules/policy-governance/actions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FileText, Search, BarChart2, Loader2 } from "lucide-react";

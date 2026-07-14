@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { listGaps } from "@/lib/services/compliance/gap-service";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { listGaps } from "@/backend/src/modules/compliance/gap-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
 
 function esc(v: string | null | undefined) {
   return `"${(v ?? "").replace(/"/g, '""')}"`;

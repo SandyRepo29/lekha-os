@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { createControlAction } from "@/lib/control-center/actions";
+import { createControlAction } from "@/backend/src/modules/control-center/actions";
 
 const TYPES = [
   ["preventive", "Preventive"],

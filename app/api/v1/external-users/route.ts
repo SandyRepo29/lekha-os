@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAllExternalUsers, createExternalUser } from "@/lib/repositories/auditor-collaboration-repo";
+import { findAllExternalUsers, createExternalUser } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
 import { randomUUID } from "crypto";
 
 export async function GET(request: NextRequest) {

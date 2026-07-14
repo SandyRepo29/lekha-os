@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { computeBenchmarkAction } from "@/lib/benchmarking/actions";
+import { computeBenchmarkAction } from "@/backend/src/modules/benchmarking/actions";
 
 export function ComputeBenchmarkButton({ className }: { className?: string }) {
   const [isPending, startTransition] = useTransition();

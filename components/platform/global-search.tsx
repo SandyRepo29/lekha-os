@@ -20,7 +20,7 @@ import {
   getSuggestionsAction,
   saveSearchAction,
   getRecentSearchesAction,
-} from "@/lib/platform/search-actions";
+} from "@/backend/src/modules/platform/search-actions";
 
 type EntityType =
   | "all"

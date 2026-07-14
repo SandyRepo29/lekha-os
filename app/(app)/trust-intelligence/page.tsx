@@ -8,11 +8,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { getTrustIntelligenceOverview, getGovernanceTimeline } from "@/lib/services/trust-intelligence/trust-intelligence-service";
-import { getSnapshotHistory } from "@/lib/repositories/trust-intelligence-repo";
+import { getTrustIntelligenceOverview, getGovernanceTimeline } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
+import { getSnapshotHistory } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
 import { OrgTrustScoreRing, OrgTrustBadge } from "@/components/trust-intelligence/org-trust-badge";
 import { ComponentBar, TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
-import { ORG_TRUST_COMPONENT_LABELS, ORG_TRUST_COMPONENT_WEIGHTS } from "@/lib/services/org-trust-score";
+import { ORG_TRUST_COMPONENT_LABELS, ORG_TRUST_COMPONENT_WEIGHTS } from "@/backend/src/modules/trust-intelligence/org-trust-score";
 
 export default async function TrustIntelligencePage() {
   const session = await requireUser();

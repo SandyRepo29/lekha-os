@@ -5,8 +5,8 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { isGeminiConfigured } from "@/lib/ai/gemini";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
-import { getCachedInsight } from "@/lib/services/compliance/ai-compliance-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
+import { getCachedInsight } from "@/backend/src/modules/compliance/ai-compliance-service";
 import { AiInsightPanel } from "@/components/ai/ai-insight-panel";
 import {
   FrameworkSummaryPanel,
@@ -16,7 +16,7 @@ import {
 import { AiComplianceChat } from "@/components/compliance/ai-chat";
 import {
   generateExecutiveSummaryAction,
-} from "@/lib/compliance/actions";
+} from "@/backend/src/modules/compliance/actions";
 
 export default async function AiOfficerPage() {
   const session = await requireUser();

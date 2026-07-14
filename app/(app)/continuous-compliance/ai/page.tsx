@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { generateComplianceSummary } from "@/lib/services/continuous-compliance/ai-continuous-compliance-service";
+import { getDashboardData } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { generateComplianceSummary } from "@/backend/src/modules/continuous-compliance/ai-continuous-compliance-service";
 import { Bot, Sparkles } from "lucide-react";
 import { CcAiChat } from "@/components/continuous-compliance/cc-ai-chat";
 import { CcSubNav } from "@/components/continuous-compliance/cc-ui";

@@ -3,12 +3,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-vi.mock("@/lib/vendors/actions", () => ({
+vi.mock("@/backend/src/modules/vendor-hub/vendors-actions", () => ({
   updateVendorStatus: vi.fn().mockResolvedValue({ ok: true }),
 }));
 
 import { VendorStatus } from "./vendor-status";
-import { updateVendorStatus } from "@/lib/vendors/actions";
+import { updateVendorStatus } from "@/backend/src/modules/vendor-hub/vendors-actions";
 
 const mockUpdate = vi.mocked(updateVendorStatus);
 

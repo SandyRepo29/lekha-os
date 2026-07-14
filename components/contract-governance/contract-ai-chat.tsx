@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Sparkles, Send, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { chatAction } from "@/lib/contract-governance/actions";
+import { chatAction } from "@/backend/src/modules/contract-governance/actions";
 
 type Message = { role: "user" | "model"; content: string };
 

@@ -4,9 +4,9 @@ import { useActionState, useState } from "react";
 import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, ChevronRight, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { startRenewalAction, finaliseRenewalAction } from "@/lib/vendors/renewal-actions";
-import type { RenewalActionState } from "@/lib/vendors/renewal-actions";
-import type { RenewalRecommendation } from "@/lib/services/vendor-lifecycle/renewal-service";
+import { startRenewalAction, finaliseRenewalAction } from "@/backend/src/modules/vendor-hub/vendors-renewal-actions";
+import type { RenewalActionState } from "@/backend/src/modules/vendor-hub/vendors-renewal-actions";
+import type { RenewalRecommendation } from "@/backend/src/modules/vendor-hub/renewal-service";
 
 const RECOMMENDATION_CONFIG: Record<RenewalRecommendation, {
   label: string;

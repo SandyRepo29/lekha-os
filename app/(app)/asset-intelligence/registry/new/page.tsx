@@ -1,7 +1,7 @@
 ﻿﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAssetTypes } from "@/lib/services/asset-intelligence/asset-service";
+import { getAssetTypes } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav } from "@/components/asset-intelligence/asset-ui";
 import { NewAssetForm } from "@/components/asset-intelligence/new-asset-form";
 

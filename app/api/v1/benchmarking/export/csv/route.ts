@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/auth/session";
-import { getLatestSnapshot, getLatestScoresByCategory } from "@/lib/repositories/benchmarking-repo";
-import { BENCHMARK_CATEGORY_LABELS, type BenchmarkCategory } from "@/lib/services/benchmarking-score";
+import { getLatestSnapshot, getLatestScoresByCategory } from "@/backend/src/modules/benchmarking/benchmarking-repo";
+import { BENCHMARK_CATEGORY_LABELS, type BenchmarkCategory } from "@/backend/src/modules/benchmarking/benchmarking-score";
 import { NextResponse } from "next/server";
 
 export async function GET() {

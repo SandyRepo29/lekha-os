@@ -3,7 +3,7 @@
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getMarketplace, getConnections } from "@/lib/services/integration-hub/integration-service";
+import { getMarketplace, getConnections } from "@/backend/src/modules/integration-hub/integration-service";
 import { ConnectorStatusBadge } from "@/components/integration-hub/connector-status-badge";
 import { ConnectButton } from "@/components/integration-hub/connect-button";
 

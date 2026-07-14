@@ -25,15 +25,15 @@ export default defineConfig({
       // Add more entries as new tests are written.
       include: [
         // Pure functions — 100% covered
-        "lib/services/scoring.ts",
-        "lib/services/risk-engine.ts",
+        "backend/src/modules/vendor-hub/scoring.ts",
+        "backend/src/modules/risk-lens/risk-engine.ts",
         "lib/ui/colors.ts",
         "lib/email/templates.ts",
         "lib/constants/assessment-questions.ts",
         // Service layer — key services tested with mocked repos
-        "lib/services/vendor-service.ts",
-        "lib/services/document-service.ts",
-        "lib/services/notification-service.ts",
+        "backend/src/modules/vendor-hub/vendor-service.ts",
+        "backend/src/modules/vendor-hub/document-service.ts",
+        "backend/src/modules/vendor-hub/notification-service.ts",
         // Components with RTL tests
         "components/ui/tabs.tsx",
         "components/ui/status-badge.tsx",

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getControlMetrics } from "@/lib/repositories/trust-intelligence-repo";
+import { getControlMetrics } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
 import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 

@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAiSecurityOverview } from "@/lib/services/security-command-center/security-service";
+import { getAiSecurityOverview } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, StatusBadge } from "@/components/security-command-center/sec-ui";
 import SecAiChat from "@/components/security-command-center/sec-ai-chat";
-import { generateSecuritySummaryAction } from "@/lib/security-command-center/actions";
+import { generateSecuritySummaryAction } from "@/backend/src/modules/security-command-center/actions";
 import { Cpu, AlertTriangle, Bot } from "lucide-react";
 
 export default async function AiSecurityPage() {

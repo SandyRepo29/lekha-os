@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
 import { FrameworkStatusBadge } from "@/components/compliance/compliance-badges";
 import { ComplianceStat } from "@/components/compliance/compliance-ui";
 import { scoreTextColor } from "@/lib/ui/colors";

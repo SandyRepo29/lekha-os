@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Bell, Send, CheckCircle2 } from "lucide-react";
-import { updateNotificationPreferences, sendTestEmail, type NotifState } from "@/lib/settings/notification-actions";
+import { updateNotificationPreferences, sendTestEmail, type NotifState } from "@/backend/src/modules/settings/notification-actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/input";
 import type { NotificationPreferences } from "@/lib/db/schema";

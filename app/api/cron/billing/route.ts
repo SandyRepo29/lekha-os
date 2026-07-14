@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 import { NextResponse } from "next/server";
-import { runBillingCron } from "@/lib/services/billing-service";
+import { runBillingCron } from "@/backend/src/modules/billing/billing-service";
 
 /** Daily billing cron — expire trials, send warnings, process cancellations. */
 export async function GET(request: Request) {

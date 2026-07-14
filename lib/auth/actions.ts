@@ -21,7 +21,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
   try {
     const userId = data.user?.id;
     if (userId) {
-      const { findActiveOrgByUser } = await import("@/lib/repositories/org-repo");
+      const { findActiveOrgByUser } = await import("@/backend/src/modules/orgs/org-repo");
       const activeOrg = await findActiveOrgByUser(userId);
       if (activeOrg) {
         audit({
@@ -67,7 +67,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   try {
     const userId = data.user?.id;
     if (userId) {
-      const { findActiveOrgByUser } = await import("@/lib/repositories/org-repo");
+      const { findActiveOrgByUser } = await import("@/backend/src/modules/orgs/org-repo");
       const activeOrg = await findActiveOrgByUser(userId);
       // orgId may be null on first signup (org not yet created) — skip if so
       if (activeOrg) {
@@ -101,7 +101,7 @@ export async function signOut() {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { findActiveOrgByUser } = await import("@/lib/repositories/org-repo");
+      const { findActiveOrgByUser } = await import("@/backend/src/modules/orgs/org-repo");
       const activeOrg = await findActiveOrgByUser(user.id);
       if (activeOrg) {
         audit({

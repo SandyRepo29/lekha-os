@@ -11,7 +11,7 @@ import {
   addTreatmentAction,
   completeTreatmentAction,
   addReviewAction,
-} from "@/lib/risk/actions";
+} from "@/backend/src/modules/risk-lens/actions";
 import type { Risk } from "@/lib/db/schema";
 import { useRouter } from "next/navigation";
 

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getImpactAnalysis } from "@/lib/services/trust-graph/graph-service";
+import { getImpactAnalysis } from "@/backend/src/modules/trust-graph/graph-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

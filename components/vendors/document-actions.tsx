@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw, Trash2 } from "lucide-react";
-import { reextractDocument, deleteDocument } from "@/lib/documents/actions";
+import { reextractDocument, deleteDocument } from "@/backend/src/modules/vendor-hub/documents-actions";
 
 export function DocumentActions({ documentId }: { documentId: string }) {
   const router = useRouter();

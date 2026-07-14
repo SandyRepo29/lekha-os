@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, Bot, User } from "lucide-react";
-import { chatAction } from "@/lib/control-center/actions";
+import { chatAction } from "@/backend/src/modules/control-center/actions";
 
 interface Message {
   role: "user" | "model";

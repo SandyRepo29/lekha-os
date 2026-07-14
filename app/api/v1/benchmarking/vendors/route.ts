@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getDashboardData, computeAndSaveBenchmark } from "@/lib/services/benchmarking/benchmarking-service";
+import { getDashboardData, computeAndSaveBenchmark } from "@/backend/src/modules/benchmarking/benchmarking-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

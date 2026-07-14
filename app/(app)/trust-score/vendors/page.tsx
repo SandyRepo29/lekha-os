@@ -4,9 +4,9 @@ import Link from "next/link";
 import { TrendingUp, TrendingDown, Building2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getOrgTrustMetrics } from "@/lib/repositories/trust-score-repo";
-import { findVendorsByOrg } from "@/lib/repositories/vendor-repo";
-import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_LEVEL_BG, PLATFORM_TRUST_SCORE_BAR, PLATFORM_TRUST_LEVEL_COLORS } from "@/lib/services/platform-trust-score";
+import { getOrgTrustMetrics } from "@/backend/src/modules/trust-score/trust-score-repo";
+import { findVendorsByOrg } from "@/backend/src/modules/vendor-hub/vendor-repo";
+import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_LEVEL_BG, PLATFORM_TRUST_SCORE_BAR, PLATFORM_TRUST_LEVEL_COLORS } from "@/backend/src/modules/trust-score/platform-trust-score";
 
 function sc(s: number) { return PLATFORM_TRUST_LEVEL_COLORS[getPlatformTrustLevel(s)]; }
 function sb(s: number) { return PLATFORM_TRUST_SCORE_BAR[getPlatformTrustLevel(s)]; }

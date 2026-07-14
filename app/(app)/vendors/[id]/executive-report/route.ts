@@ -3,9 +3,9 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import React from "react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { findProfile } from "@/lib/services/settings-service";
-import { generateExecutiveSummaryReport } from "@/lib/services/ai-insights-service";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
+import { generateExecutiveSummaryReport } from "@/backend/src/modules/vendor-hub/ai-insights-service";
 import { isGeminiConfigured } from "@/lib/ai/gemini";
 import { ExecutiveSummaryPdf } from "@/lib/reports/executive-summary-pdf";
 

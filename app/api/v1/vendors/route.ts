@@ -18,7 +18,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listVendorsPaged } from "@/lib/services/vendor-service";
+import { listVendorsPaged } from "@/backend/src/modules/vendor-hub/vendor-service";
 
 export async function GET(request: NextRequest) {
   // Auth

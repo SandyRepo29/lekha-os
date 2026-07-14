@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics, getOrCreateProfile } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { getDashboardMetrics, getOrCreateProfile } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustExchangeAiChat } from "@/components/trust-exchange/trust-exchange-ai-chat";
 
 export default async function TrustExchangeAiPage() {

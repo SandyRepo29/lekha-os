@@ -4,8 +4,8 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { getLatestPrivacyScore, getScoreHistory } from "@/lib/repositories/privacy-repo";
-import { computeAndSavePrivacyScore } from "@/lib/services/privacy/privacy-service";
+import { getLatestPrivacyScore, getScoreHistory } from "@/backend/src/modules/privacy/privacy-repo";
+import { computeAndSavePrivacyScore } from "@/backend/src/modules/privacy/privacy-service";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

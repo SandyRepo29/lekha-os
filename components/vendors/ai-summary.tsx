@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles, RefreshCw } from "lucide-react";
-import { refreshVendorSummary } from "@/lib/vendors/summary-actions";
+import { refreshVendorSummary } from "@/backend/src/modules/vendor-hub/vendors-summary-actions";
 
 export function AiSummary({
   vendorId,

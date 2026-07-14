@@ -8,7 +8,7 @@ import { Select, SelectOption } from "@/components/ui/select";
 import {
   updateEvidenceStatusAction,
   deleteEvidenceAction,
-} from "@/lib/compliance/actions";
+} from "@/backend/src/modules/compliance/actions";
 
 // ---- Inline status selector ----------------------------------
 

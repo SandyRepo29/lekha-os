@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { createAssetAction } from "@/lib/asset-intelligence/actions";
+import { createAssetAction } from "@/backend/src/modules/asset-intelligence/actions";
 
 type AssetTypeRow = { id: string; name: string };
 

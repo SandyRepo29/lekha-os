@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { isGeminiConfigured } from "@/lib/ai/gemini";
-import { getDashboardMetrics } from "@/lib/services/audit/audit-service";
+import { getDashboardMetrics } from "@/backend/src/modules/audit-management/audit-service";
 import { AuditAiChat } from "@/components/audit/audit-ai-chat";
 
 export default async function AiAuditorPage() {

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listPolicies } from "@/lib/services/policy-governance/policy-governance-service";
+import { listPolicies } from "@/backend/src/modules/policy-governance/policy-governance-service";
 import { PolicyHealthBadge } from "@/components/policy-governance/policy-health-badge";
 import { PolicyStatusBadge } from "@/components/policy-governance/policy-status-badge";
 import { NewPolicyForm } from "@/components/policy-governance/new-policy-form";

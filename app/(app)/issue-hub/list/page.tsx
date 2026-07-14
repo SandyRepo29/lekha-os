@@ -5,7 +5,7 @@ import { Plus, AlertCircle, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { listIssues } from "@/lib/services/issue-hub/issue-service";
+import { listIssues } from "@/backend/src/modules/issue-hub/issue-service";
 import {
   IssueStatusBadge,
   IssueSeverityBadge,

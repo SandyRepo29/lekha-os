@@ -4,7 +4,7 @@ import { Bell, CheckCircle, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { EmptyState } from "@/components/ui/empty-state";
-import { findAlerts, countAlerts } from "@/lib/repositories/governance-alerts-repo";
+import { findAlerts, countAlerts } from "@/backend/src/modules/trust-intelligence/governance-alerts-repo";
 import { GovernanceAlertBadge, AlertTypeLabel } from "@/components/trust-intelligence/governance-alert-badge";
 import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { MonitoringActions } from "@/components/trust-intelligence/monitoring-actions";

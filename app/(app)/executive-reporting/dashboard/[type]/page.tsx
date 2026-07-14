@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData, computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { getDashboardData, computeKpis } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {

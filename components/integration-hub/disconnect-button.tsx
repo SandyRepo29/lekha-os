@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { Unplug } from "lucide-react";
-import { disconnectAction } from "@/lib/integration-hub/actions";
+import { disconnectAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 export function DisconnectButton({ instanceId, connectorName }: { instanceId: string; connectorName: string }) {

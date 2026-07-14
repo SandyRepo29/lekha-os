@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getPrograms } from "@/lib/services/trust-verification/trust-verification-service";
+import { getPrograms } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { ShieldCheck, Star, Lock, Brain, AlertTriangle, Building2, ClipboardCheck, Award, Flag, ArrowRight } from "lucide-react";
 
 const BADGE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

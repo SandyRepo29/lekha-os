@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useActionState } from "react";
-import { updateOrgProfile, updateOrgBranding, type SettingsState } from "@/lib/settings/actions";
+import { updateOrgProfile, updateOrgBranding, type SettingsState } from "@/backend/src/modules/settings/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";

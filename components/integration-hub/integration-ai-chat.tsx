@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { Send, Loader2, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { chatAction } from "@/lib/integration-hub/actions";
+import { chatAction } from "@/backend/src/modules/integration-hub/actions";
 
 type Message = { role: "user" | "model"; text: string };
 

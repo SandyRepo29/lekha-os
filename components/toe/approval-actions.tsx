@@ -2,7 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { resolveApprovalAction } from "@/lib/toe/actions";
+import { resolveApprovalAction } from "@/backend/src/modules/toe/actions";
 import { Check, X } from "lucide-react";
 
 export function ResolveApprovalButtons({ approvalId }: { approvalId: string }) {

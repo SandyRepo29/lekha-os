@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { toggleAutomationRuleAction, deleteAutomationRuleAction, createAutomationRuleAction } from "@/lib/toe/actions";
+import { toggleAutomationRuleAction, deleteAutomationRuleAction, createAutomationRuleAction } from "@/backend/src/modules/toe/actions";
 import { Power, Trash2 } from "lucide-react";
 
 export function ToggleRuleButton({ ruleId, active }: { ruleId: string; active: boolean }) {

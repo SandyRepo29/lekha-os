@@ -5,7 +5,7 @@ import { Network, Shield, GitBranch, FileText, AlertTriangle } from "lucide-reac
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { findPoliciesByOrg } from "@/lib/repositories/policy-governance-repo";
+import { findPoliciesByOrg } from "@/backend/src/modules/policy-governance/policy-governance-repo";
 import { PolicyStatusBadge } from "@/components/policy-governance/policy-status-badge";
 
 export default async function PolicyMappingsPage() {

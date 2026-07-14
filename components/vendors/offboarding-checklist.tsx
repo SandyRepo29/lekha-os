@@ -4,9 +4,9 @@ import { useActionState } from "react";
 import { CheckCircle2, Circle, AlertTriangle, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { completeOffboardingStepAction } from "@/lib/vendors/offboarding-actions";
-import type { OffboardingActionState } from "@/lib/vendors/offboarding-actions";
-import type { OffboardingStep } from "@/lib/services/vendor-lifecycle/offboarding-service";
+import { completeOffboardingStepAction } from "@/backend/src/modules/vendor-hub/vendors-offboarding-actions";
+import type { OffboardingActionState } from "@/backend/src/modules/vendor-hub/vendors-offboarding-actions";
+import type { OffboardingStep } from "@/backend/src/modules/vendor-hub/offboarding-service";
 
 const STEP_LABELS: Record<OffboardingStep, string> = {
   access_disabled:            "Disable vendor access",

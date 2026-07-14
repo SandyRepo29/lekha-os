@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { Sparkles, RefreshCw, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
-import { refreshRecommendedActions } from "@/lib/vendors/ai-insights-actions";
-import type { RecommendedAction } from "@/lib/services/ai-insights-service";
+import { refreshRecommendedActions } from "@/backend/src/modules/vendor-hub/vendors-ai-insights-actions";
+import type { RecommendedAction } from "@/backend/src/modules/vendor-hub/ai-insights-service";
 import { cn } from "@/lib/utils";
 
 const PRIORITY_STYLES: Record<string, { badge: string; bar: string }> = {

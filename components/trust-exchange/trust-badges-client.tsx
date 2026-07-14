@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useActionState, useTransition } from "react";
-import { issueBadgeAction, revokeBadgeAction } from "@/lib/trust-exchange/actions";
+import { issueBadgeAction, revokeBadgeAction } from "@/backend/src/modules/trust-exchange/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

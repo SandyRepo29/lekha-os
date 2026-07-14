@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getWorkflowsAction, getWorkflowInstancesAction } from "@/lib/toe/actions";
+import { getWorkflowsAction, getWorkflowInstancesAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav, InstanceStatusBadge, fmtDt } from "@/components/toe/toe-ui";
 import { GitBranch, Play, Plus, Clock } from "lucide-react";
 import { StartWorkflowButton, CreateWorkflowButton } from "@/components/toe/workflow-actions";

@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { resolveAlertAction } from "@/lib/asset-intelligence/actions";
+import { resolveAlertAction } from "@/backend/src/modules/asset-intelligence/actions";
 
 export function ResolveAlertButton({ id }: { id: string }) {
   const [pending, startTransition] = useTransition();

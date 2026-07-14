@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getVerifications } from "@/lib/services/trust-verification/trust-verification-service";
+import { getVerifications } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { FileText, Plus, Eye, ShieldCheck } from "lucide-react";
 import { VerificationStat, VerificationStatusBadge } from "@/components/trust-verification/verification-ui";
 

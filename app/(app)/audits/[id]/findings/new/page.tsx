@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getAudit } from "@/lib/services/audit/audit-service";
+import { getAudit } from "@/backend/src/modules/audit-management/audit-service";
 import { NewFindingForm } from "@/components/audit/new-finding-form";
 
 export default async function NewFindingPage({

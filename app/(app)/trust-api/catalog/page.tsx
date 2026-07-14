@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getApiCatalog } from "@/lib/services/trust-api/trust-api-service";
+import { getApiCatalog } from "@/backend/src/modules/trust-api/trust-api-service";
 import { Globe, Zap, Shield, Brain, BarChart3, Network, FileCheck, TrendingUp } from "lucide-react";
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

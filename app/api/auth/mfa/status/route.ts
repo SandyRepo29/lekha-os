@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getMfaStatusForUser } from "@/lib/repositories/security-command-center-repo";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { getMfaStatusForUser } from "@/backend/src/modules/security-command-center/security-command-center-repo";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /** GET /api/auth/mfa/status — Returns current MFA status for the authenticated user. */
 export async function GET() {

@@ -1,8 +1,8 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getOrgTasks, getTaskDashboard } from "@/lib/services/platform/task-service";
-import { completeTaskAction, deleteTaskAction } from "@/lib/platform/task-actions";
+import { getOrgTasks, getTaskDashboard } from "@/backend/src/modules/platform/task-service";
+import { completeTaskAction, deleteTaskAction } from "@/backend/src/modules/platform/task-actions";
 import { Card } from "@/components/ui/card";
 import { CheckSquare, Plus, AlertCircle, Clock, User } from "lucide-react";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllRooms } from "@/lib/repositories/auditor-collaboration-repo";
+import { findAllRooms } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
 import Link from "next/link";
 import { DoorOpen, Plus, ArrowRight } from "lucide-react";
 import { AuditRoomStatusBadge } from "@/components/auditor-collaboration/auditor-ui";

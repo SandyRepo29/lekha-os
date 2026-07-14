@@ -3,7 +3,7 @@
 export const metadata = { title: 'Executive Reporting™ — AUDT' };
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData, computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { getDashboardData, computeKpis } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import {
   BarChart3, TrendingUp, FileText, Clock, Brain, Building2,

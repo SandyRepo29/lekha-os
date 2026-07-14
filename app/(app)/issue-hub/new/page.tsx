@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { createIssueAction } from "@/lib/issue-hub/actions";
+import { createIssueAction } from "@/backend/src/modules/issue-hub/actions";
 
 export default async function NewIssuePage() {
   await requireUser();

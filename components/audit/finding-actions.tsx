@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { closeFindingAction } from "@/lib/audit/actions";
+import { closeFindingAction } from "@/backend/src/modules/audit-management/actions";
 import { Button } from "@/components/ui/button";
 import type { AuditFinding } from "@/lib/db/schema";
 

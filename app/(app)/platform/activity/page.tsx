@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/auth/session";
 import {
   getActivityFeed,
   getActivityStats,
-} from "@/lib/services/platform/activity-service";
+} from "@/backend/src/modules/platform/activity-service";
 import { ActivityFeed } from "@/components/platform/activity-feed";
 import { Card } from "@/components/ui/card";
 import { Activity } from "lucide-react";

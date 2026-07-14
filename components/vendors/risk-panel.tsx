@@ -1,5 +1,5 @@
 import { ShieldAlert, ShieldCheck, AlertTriangle, TrendingUp } from "lucide-react";
-import type { RiskScore } from "@/lib/services/risk-engine";
+import type { RiskScore } from "@/backend/src/modules/risk-lens/risk-engine";
 
 const LEVEL_STYLES = {
   low:      { bar: "#10b981", badge: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30", label: "Low Risk" },

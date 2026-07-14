@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getAssets, createAsset } from "@/lib/services/asset-intelligence/asset-service";
+import { getAssets, createAsset } from "@/backend/src/modules/asset-intelligence/asset-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

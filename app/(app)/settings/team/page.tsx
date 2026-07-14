@@ -3,7 +3,7 @@
 import { Users } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listTeam } from "@/lib/services/team-service";
+import { listTeam } from "@/backend/src/modules/team/team-service";
 import { InviteForm } from "@/components/team/invite-form";
 import { MemberRow } from "@/components/team/member-row";
 

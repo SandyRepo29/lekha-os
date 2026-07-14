@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { confirmTotpEnrollment } from "@/lib/services/auth/mfa-service";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { confirmTotpEnrollment } from "@/backend/src/modules/enterprise-security/mfa-service";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /** POST /api/auth/mfa/confirm — Confirm TOTP enrollment with the first token. Returns recovery codes. */
 export async function POST(req: NextRequest) {

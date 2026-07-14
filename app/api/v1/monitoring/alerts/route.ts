@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAlerts, countAlerts } from "@/lib/repositories/governance-alerts-repo";
+import { findAlerts, countAlerts } from "@/backend/src/modules/trust-intelligence/governance-alerts-repo";
 
 export const dynamic = "force-dynamic";
 

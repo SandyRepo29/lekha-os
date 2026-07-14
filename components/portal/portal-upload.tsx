@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UploadCloud, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { VENDOR_DOCS_BUCKET, buildVendorDocPath } from "@/lib/storage/paths";
-import { registerDocument } from "@/lib/documents/actions";
+import { registerDocument } from "@/backend/src/modules/vendor-hub/documents-actions";
 import { DOCUMENT_TYPES } from "@/lib/constants/vendor-options";
 import { Select, SelectOption } from "@/components/ui/select";
 

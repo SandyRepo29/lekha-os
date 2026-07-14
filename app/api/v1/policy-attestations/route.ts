@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAttestationsByOrg, addAttestation } from "@/lib/repositories/policy-governance-repo";
+import { findAttestationsByOrg, addAttestation } from "@/backend/src/modules/policy-governance/policy-governance-repo";
 
 export async function GET(req: NextRequest) {
   let ctx;

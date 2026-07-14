@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { triggerAgentAction, pauseAgentAction, activateAgentAction } from "@/lib/agents/actions";
+import { triggerAgentAction, pauseAgentAction, activateAgentAction } from "@/backend/src/modules/governance-agents/actions";
 import { Play, Pause, RotateCcw, CheckCircle } from "lucide-react";
 
 export function AgentRegistryActions({ agentId, status }: { agentId: string; status: string }) {

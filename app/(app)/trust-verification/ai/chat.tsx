@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useTransition } from "react";
-import { chatAction } from "@/lib/trust-verification/actions";
+import { chatAction } from "@/backend/src/modules/trust-verification/actions";
 import { Bot, Send, User } from "lucide-react";
 
 interface Message { role: "user" | "model"; content: string }

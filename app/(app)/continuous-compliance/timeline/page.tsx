@@ -3,7 +3,7 @@
 import { Clock, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getHealthHistory } from "@/lib/repositories/continuous-compliance-repo";
+import { getHealthHistory } from "@/backend/src/modules/continuous-compliance/continuous-compliance-repo";
 import { CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 function scoreColor(s: number) {

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getTraining } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { createTrainingAction } from "@/lib/continuous-compliance/actions";
+import { getTraining } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { createTrainingAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { GraduationCap, Plus } from "lucide-react";
 import { StatusBadge, CcStat, HealthBar, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

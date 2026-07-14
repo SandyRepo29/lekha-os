@@ -5,7 +5,7 @@ import { AlertCircle, Plus, GitBranch, Zap, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { listWorkflows } from "@/lib/services/workflow-studio/workflow-service";
+import { listWorkflows } from "@/backend/src/modules/workflow-studio/workflow-service";
 import {
   WorkflowStatusBadge,
   WorkflowTriggerBadge,

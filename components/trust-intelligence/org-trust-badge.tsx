@@ -7,7 +7,7 @@ import {
   ORG_TRUST_LEVEL_BG,
   ORG_TRUST_LEVEL_COLORS,
   type OrgTrustLevel,
-} from "@/lib/services/org-trust-score";
+} from "@/backend/src/modules/trust-intelligence/org-trust-score";
 
 type Props = { score: number; showScore?: boolean; className?: string };
 

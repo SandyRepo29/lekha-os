@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getRoomDetail } from "@/lib/services/auditor-collaboration/auditor-collaboration-service";
-import { updateRoomAction, createEvidenceRequestAction, createExternalFindingAction } from "@/lib/auditor-collaboration/actions";
+import { getRoomDetail } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-service";
+import { updateRoomAction, createEvidenceRequestAction, createExternalFindingAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, FileCheck, AlertTriangle, ClipboardList, Activity, FileText, CheckCircle2, Clock } from "lucide-react";

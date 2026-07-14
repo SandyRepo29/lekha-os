@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Globe, Lock, Users, CheckCircle2 } from "lucide-react";
-import { saveAnswersAction } from "@/lib/trust-exchange/actions";
+import { saveAnswersAction } from "@/backend/src/modules/trust-exchange/actions";
 
 type Props = {
   questionnaireId: string;

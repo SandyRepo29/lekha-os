@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateChangeStatusAction } from "@/lib/regulatory-intelligence/actions";
+import { updateChangeStatusAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 
 const NEXT_STATUS: Record<string, string> = {
   new: "under_review",

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { computeKpis } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, Shield, AlertTriangle, ShieldCheck, Building2, FileText, Target } from "lucide-react";
 import { ExecStat, ScorecardStatusBadge } from "@/components/executive-reporting/executive-ui";

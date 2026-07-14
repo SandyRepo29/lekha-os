@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useActionState, useState } from "react";
-import { createFindingAction, generateFindingFromObservationAction } from "@/lib/audit/actions";
+import { createFindingAction, generateFindingFromObservationAction } from "@/backend/src/modules/audit-management/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";

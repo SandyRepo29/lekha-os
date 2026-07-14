@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   Search, X, CalendarClock, ShieldAlert, Sparkles,
 } from "lucide-react";
-import type { VendorRow } from "@/lib/services/vendor-service";
-import type { NLSearchFilters } from "@/lib/services/nl-search-service";
+import type { VendorRow } from "@/backend/src/modules/vendor-hub/vendor-service";
+import type { NLSearchFilters } from "@/backend/src/modules/vendor-hub/nl-search-service";
 import { VendorListTable } from "@/components/vendors/vendor-list-table";
 
 const ALL = "all";

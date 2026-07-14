@@ -23,22 +23,22 @@ import { AiSummary } from "./ai-summary";
 import { RiskPanel } from "./risk-panel";
 import { AiInsightPanel } from "@/components/ai/ai-insight-panel";
 import { AiRecommendedActions } from "@/components/ai/ai-recommended-actions";
-import { refreshScoreExplanation } from "@/lib/vendors/ai-insights-actions";
-import type { RecommendedAction } from "@/lib/services/ai-insights-service";
+import { refreshScoreExplanation } from "@/backend/src/modules/vendor-hub/vendors-ai-insights-actions";
+import type { RecommendedAction } from "@/backend/src/modules/vendor-hub/ai-insights-service";
 import { VendorNotes } from "./vendor-notes";
 import { VendorReviews } from "./vendor-reviews";
 import { PortalLink } from "./portal-link";
 import { ActivityFeed } from "@/components/activity/activity-feed";
 import { StatusBadge } from "@/components/ui/status-badge";
 import type { Vendor, VendorDocument, DocumentRequest, Assessment, VendorReview } from "@/lib/db/schema";
-import type { ChecklistResult } from "@/lib/services/template-service";
-import type { RiskScore } from "@/lib/services/risk-engine";
-import type { ActivityItem } from "@/lib/repositories/activity-repo";
-import type { DocCounts } from "@/lib/services/vendor-service";
+import type { ChecklistResult } from "@/backend/src/modules/vendor-hub/template-service";
+import type { RiskScore } from "@/backend/src/modules/risk-lens/risk-engine";
+import type { ActivityItem } from "@/backend/src/modules/vendor-hub/activity-repo";
+import type { DocCounts } from "@/backend/src/modules/vendor-hub/vendor-service";
 import { TrustScoreWidget } from "./trust-score-widget";
 import { ScoreRing } from "@/components/app-shell/score-ring";
-import { getTrustLevel, TRUST_LEVEL_COLORS } from "@/lib/services/trust-score";
-import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS } from "@/lib/services/contract-health";
+import { getTrustLevel, TRUST_LEVEL_COLORS } from "@/backend/src/modules/trust-score/trust-score";
+import { computeContractHealth, CONTRACT_HEALTH_BG, CONTRACT_HEALTH_LABELS } from "@/backend/src/modules/contract-governance/contract-health";
 
 export type VendorTabProps = {
   vendor: Omit<Vendor, "aiRecommendedActions"> & {

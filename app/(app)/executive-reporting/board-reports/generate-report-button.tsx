@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { generateReportAction } from "@/lib/executive-reporting/actions";
+import { generateReportAction } from "@/backend/src/modules/executive-reporting/actions";
 import { Loader2, Plus } from "lucide-react";
 
 export function GenerateReportButton({ reportType, label = "Generate" }: { reportType: string; label?: string }) {

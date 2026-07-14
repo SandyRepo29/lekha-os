@@ -1,8 +1,8 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/ai-governance/ai-governance-service";
-import { generateAiGovernanceSummary } from "@/lib/services/ai-governance/ai-copilot-service";
+import { getDashboardData } from "@/backend/src/modules/ai-governance/ai-governance-service";
+import { generateAiGovernanceSummary } from "@/backend/src/modules/ai-governance/ai-copilot-service";
 import { Brain, AlertTriangle, ShieldCheck, Bot } from "lucide-react";
 import { AiGovernanceChat } from "@/components/ai-governance/ai-governance-chat";
 import { AIGovStat } from "@/components/ai-governance/ai-governance-ui";

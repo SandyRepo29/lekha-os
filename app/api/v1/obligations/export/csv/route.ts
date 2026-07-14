@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { findObligationsByOrg } from "@/lib/repositories/regulatory-intelligence-repo";
+import { findObligationsByOrg } from "@/backend/src/modules/regulatory-intelligence/regulatory-intelligence-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

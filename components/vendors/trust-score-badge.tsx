@@ -1,4 +1,4 @@
-import { getTrustLevel, TRUST_LEVEL_LABELS, TRUST_LEVEL_BG } from "@/lib/services/trust-score";
+import { getTrustLevel, TRUST_LEVEL_LABELS, TRUST_LEVEL_BG } from "@/backend/src/modules/trust-score/trust-score";
 
 interface TrustScoreBadgeProps {
   score: number | null;

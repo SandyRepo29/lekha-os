@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { createAssetAction } from "@/lib/privacy/actions";
+import { createAssetAction } from "@/backend/src/modules/privacy/actions";
 
 const DATA_CATEGORIES = [
   { value: "customer", label: "Customer" },

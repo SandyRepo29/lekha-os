@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { generateExecutiveSummaryAction } from "@/lib/risk/actions";
+import { generateExecutiveSummaryAction } from "@/backend/src/modules/risk-lens/actions";
 import { useRouter } from "next/navigation";
 
 export function ExecutiveSummaryPanel() {

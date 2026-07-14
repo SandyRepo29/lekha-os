@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { startTotpEnrollment } from "@/lib/services/auth/mfa-service";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { startTotpEnrollment } from "@/backend/src/modules/enterprise-security/mfa-service";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /** POST /api/auth/mfa/enroll — Begin TOTP enrollment. Returns QR code data URL. */
 export async function POST() {

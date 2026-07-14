@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getPendingActionsAction } from "@/lib/agents/actions";
+import { getPendingActionsAction } from "@/backend/src/modules/governance-agents/actions";
 import { Zap, Clock, CheckCircle } from "lucide-react";
 import { AgentStat, ActionStatusBadge, AgentSubNav } from "@/components/agents/agent-ui";
-import { fmtDate } from "@/lib/agents/utils";
+import { fmtDate } from "@/backend/src/modules/governance-agents/utils";
 import { AgentActionButtons } from "@/components/agents/agent-action-buttons";
 
 export default async function AgentActionsPage() {

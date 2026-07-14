@@ -3,9 +3,9 @@
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { updateRiskAction } from "@/lib/risk/actions";
-import { computeRiskScore, RISK_CATEGORY_LABELS, TREATMENT_STRATEGY_LABELS, RISK_STATUS_LABELS } from "@/lib/services/risk-scoring";
-import type { RiskWithOwner } from "@/lib/services/risk/risk-service";
+import { updateRiskAction } from "@/backend/src/modules/risk-lens/actions";
+import { computeRiskScore, RISK_CATEGORY_LABELS, TREATMENT_STRATEGY_LABELS, RISK_STATUS_LABELS } from "@/backend/src/modules/risk-lens/risk-scoring";
+import type { RiskWithOwner } from "@/backend/src/modules/risk-lens/risk-service";
 
 const CATEGORIES = Object.entries(RISK_CATEGORY_LABELS);
 const STRATEGIES = Object.entries(TREATMENT_STRATEGY_LABELS);

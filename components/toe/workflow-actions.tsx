@@ -2,7 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { startWorkflowAction, deleteWorkflowAction } from "@/lib/toe/actions";
+import { startWorkflowAction, deleteWorkflowAction } from "@/backend/src/modules/toe/actions";
 import { Play, Plus, Trash2 } from "lucide-react";
 
 export function StartWorkflowButton({ workflowId, name }: { workflowId: string; name: string }) {
@@ -50,7 +50,7 @@ export function CreateWorkflowButton() {
         e.preventDefault();
         const fd = new FormData(e.currentTarget);
         startTransition(async () => {
-          const res = await import("@/lib/toe/actions").then(m => m.createWorkflowAction(null, fd));
+          const res = await import("@/backend/src/modules/toe/actions").then(m => m.createWorkflowAction(null, fd));
           if (!res.error) { setOpen(false); router.refresh(); }
         });
       }}

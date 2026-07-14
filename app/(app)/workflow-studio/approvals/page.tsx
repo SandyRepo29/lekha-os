@@ -4,8 +4,8 @@ import { AlertCircle, ThumbsUp, ThumbsDown, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { listApprovals } from "@/lib/services/workflow-studio/workflow-service";
-import { decideApprovalAction } from "@/lib/workflow-studio/actions";
+import { listApprovals } from "@/backend/src/modules/workflow-studio/workflow-service";
+import { decideApprovalAction } from "@/backend/src/modules/workflow-studio/actions";
 import { ApprovalStatusBadge } from "@/components/workflow-studio/workflow-ui";
 
 function formatDate(d: Date | string | null | undefined) {

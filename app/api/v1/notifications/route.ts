@@ -1,7 +1,7 @@
 ﻿import { NextRequest } from "next/server";
 import { requireUser } from "@/lib/auth/session";
 import { ok, err } from "@/lib/api/response";
-import { findAlerts } from "@/lib/repositories/governance-alerts-repo";
+import { findAlerts } from "@/backend/src/modules/trust-intelligence/governance-alerts-repo";
 
 function severityToType(severity: string): "alert" | "warning" | "info" | "success" {
   if (severity === "critical" || severity === "high") return "alert";

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import * as orgService from "@/lib/services/org-service";
-import type { ActiveOrg } from "@/lib/services/org-service";
+import * as orgService from "@/backend/src/modules/orgs/org-service";
+import type { ActiveOrg } from "@/backend/src/modules/orgs/org-service";
 
 export type AuthUser = { id: string; email: string; demo: boolean };
 export type Session = AuthUser & { org: ActiveOrg | null; orgName: string };

@@ -6,7 +6,7 @@ import {
   getPolicyDetail,
   updatePolicy,
   deletePolicy,
-} from "@/lib/services/policy-governance/policy-governance-service";
+} from "@/backend/src/modules/policy-governance/policy-governance-service";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   let ctx;

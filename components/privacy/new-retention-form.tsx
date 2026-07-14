@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { Plus, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createRetentionPolicyAction } from "@/lib/privacy/actions";
+import { createRetentionPolicyAction } from "@/backend/src/modules/privacy/actions";
 
 const inputCls =
   "w-full rounded-xl border border-[var(--color-line)] bg-[#F8F9FB] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50";

@@ -3,11 +3,11 @@ export const dynamic = "force-dynamic";
 import { Zap, Network, TrendingUp, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getNetworkDashboard } from "@/lib/services/trust-network/trust-network-service";
+import { getNetworkDashboard } from "@/backend/src/modules/trust-network/trust-network-service";
 import {
   generateNetworkSummary,
   generateNetworkRecommendations,
-} from "@/lib/services/trust-network/ai-trust-network-service";
+} from "@/backend/src/modules/trust-network/ai-trust-network-service";
 import { TrustNetworkAiChat } from "@/components/trust-network/trust-network-ai-chat";
 
 const IMPACT_COLOR = { high: "text-red-700", medium: "text-yellow-700", low: "text-green-700" };

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { updateContractAction, type ContractState } from "@/lib/contract-governance/actions";
+import { updateContractAction, type ContractState } from "@/backend/src/modules/contract-governance/actions";
 import type { Contract } from "@/lib/db/schema";
 
 const CONTRACT_TYPES = [

@@ -6,11 +6,11 @@ import { ArrowLeft, Plus, Sparkles, AlertTriangle, CheckSquare } from "lucide-re
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getAudit } from "@/lib/services/audit/audit-service";
-import { listFindings } from "@/lib/services/audit/finding-service";
-import { listCapas } from "@/lib/services/audit/capa-service";
-import { getCachedSummary } from "@/lib/services/audit/ai-audit-service";
-import * as programRepo from "@/lib/repositories/audit-program-repo";
+import { getAudit } from "@/backend/src/modules/audit-management/audit-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
+import { listCapas } from "@/backend/src/modules/audit-management/capa-service";
+import { getCachedSummary } from "@/backend/src/modules/audit-management/ai-audit-service";
+import * as programRepo from "@/backend/src/modules/audit-management/audit-program-repo";
 import {
   AuditStatusBadge,
   AuditTypeBadge,
@@ -242,7 +242,7 @@ function AuditGenerateSummaryButton({ auditId }: { auditId: string }) {
     <form
       action={async () => {
         "use server";
-        const { generateAuditSummaryAction } = await import("@/lib/audit/actions");
+        const { generateAuditSummaryAction } = await import("@/backend/src/modules/audit-management/actions");
         await generateAuditSummaryAction(auditId);
       }}
     >

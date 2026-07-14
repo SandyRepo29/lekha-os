@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 import { NextResponse } from "next/server";
-import { runWeeklyDigest } from "@/lib/services/notification-service";
+import { runWeeklyDigest } from "@/backend/src/modules/vendor-hub/notification-service";
 
 /** Secured with CRON_SECRET. Called weekly by Vercel Cron (Monday 9am IST). */
 export async function GET(request: Request) {

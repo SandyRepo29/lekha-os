@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAgentsAction } from "@/lib/agents/actions";
+import { getAgentsAction } from "@/backend/src/modules/governance-agents/actions";
 import { Bot, Plus } from "lucide-react";
 import {
   AgentStat, AgentStatusBadge, AgentTypeBadge, ExecModeBadge, AgentSubNav,
 } from "@/components/agents/agent-ui";
-import { fmtDate } from "@/lib/agents/utils";
+import { fmtDate } from "@/backend/src/modules/governance-agents/utils";
 import { AgentRegistryActions } from "@/components/agents/agent-registry-actions";
 
 export default async function AgentRegistryPage() {

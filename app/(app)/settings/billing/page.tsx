@@ -16,13 +16,13 @@ import {
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getSubscriptionStatus } from "@/lib/services/billing/subscription-engine";
+import { getSubscriptionStatus } from "@/backend/src/modules/billing/subscription-engine";
 import {
   listInvoicesByOrg,
   getOrgCredits,
   getPrimaryBankDetails,
-} from "@/lib/repositories/billing-engine-repo";
-import { getBillingOverview, seedDefaultPlans, ensureStarterSubscription } from "@/lib/services/billing-service";
+} from "@/backend/src/modules/billing/billing-engine-repo";
+import { getBillingOverview, seedDefaultPlans, ensureStarterSubscription } from "@/backend/src/modules/billing/billing-service";
 
 // ─── Plan highlights ──────────────────────────────────────────────────────────
 

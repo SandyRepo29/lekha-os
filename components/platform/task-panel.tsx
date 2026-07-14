@@ -2,7 +2,7 @@
 
 import { useActionState, useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTaskAction, completeTaskAction, deleteTaskAction } from "@/lib/platform/task-actions";
+import { createTaskAction, completeTaskAction, deleteTaskAction } from "@/backend/src/modules/platform/task-actions";
 
 type TaskRow = {
   id: string; title: string; description: string | null; status: string; priority: string;

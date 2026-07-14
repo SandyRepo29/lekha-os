@@ -5,7 +5,7 @@ import { FileText, Download, FileSpreadsheet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
 import { SectionLabel } from "@/components/compliance/compliance-ui";
 
 export default async function ComplianceReportsPage() {

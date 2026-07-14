@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getUsageAnalytics } from "@/lib/services/trust-api/trust-api-service";
+import { getUsageAnalytics } from "@/backend/src/modules/trust-api/trust-api-service";
 import { BarChart3, TrendingUp, AlertTriangle, Activity, CheckCircle } from "lucide-react";
 
 export default async function UsagePage() {

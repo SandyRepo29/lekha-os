@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
-import { updateProfileAction, publishProfileAction, unpublishProfileAction } from "@/lib/trust-exchange/actions";
+import { updateProfileAction, publishProfileAction, unpublishProfileAction } from "@/backend/src/modules/trust-exchange/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

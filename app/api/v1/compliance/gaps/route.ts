@@ -16,7 +16,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { findByOrg } from "@/lib/repositories/gap-repo";
+import { findByOrg } from "@/backend/src/modules/compliance/gap-repo";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

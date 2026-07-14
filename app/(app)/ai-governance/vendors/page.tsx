@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllVendors } from "@/lib/repositories/ai-governance-repo";
+import { findAllVendors } from "@/backend/src/modules/ai-governance/ai-governance-repo";
 import Link from "next/link";
 import { Building2, Plus, Shield, Lock } from "lucide-react";
 

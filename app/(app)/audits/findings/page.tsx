@@ -5,8 +5,8 @@ import { AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listFindings } from "@/lib/services/audit/finding-service";
-import { listAudits } from "@/lib/services/audit/audit-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
+import { listAudits } from "@/backend/src/modules/audit-management/audit-service";
 import { SeverityBadge, FindingStatusBadge } from "@/components/audit/audit-status-badge";
 import { AuditFilterChip } from "@/components/audit/audit-ui";
 

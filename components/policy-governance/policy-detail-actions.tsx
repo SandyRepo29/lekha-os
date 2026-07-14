@@ -8,7 +8,7 @@ import {
   deletePolicyAction,
   computeHealthAction,
   addReviewAction,
-} from "@/lib/policy-governance/actions";
+} from "@/backend/src/modules/policy-governance/actions";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Archive, Trash2, Activity, ClipboardCheck } from "lucide-react";
 

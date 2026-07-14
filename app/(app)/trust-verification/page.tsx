@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/trust-verification/trust-verification-service";
+import { getDashboardData } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import {
   ShieldCheck, Award, CheckCircle, Clock, XCircle, AlertTriangle,
   RefreshCw, Globe, Bot, FileText, ArrowRight,

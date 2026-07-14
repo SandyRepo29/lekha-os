@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
-import type { UsageWarning } from "@/lib/billing/usage";
+import type { UsageWarning } from "@/backend/src/modules/billing/usage";
 
 interface UsageWarningBannerProps {
   warnings: UsageWarning[];

@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAccessControl } from "@/lib/services/security-command-center/security-service";
+import { getAccessControl } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, StatusBadge } from "@/components/security-command-center/sec-ui";
 import { DeleteIpRuleButton } from "@/components/security-command-center/sec-actions";
-import { addIpRuleAction } from "@/lib/security-command-center/actions";
+import { addIpRuleAction } from "@/backend/src/modules/security-command-center/actions";
 import { Shield, Lock, CheckCircle } from "lucide-react";
 
 export default async function AccessControlPage() {

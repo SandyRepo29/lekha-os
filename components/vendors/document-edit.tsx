@@ -3,7 +3,7 @@
 import { useState, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Check, X } from "lucide-react";
-import { updateDocument, type DocState } from "@/lib/documents/actions";
+import { updateDocument, type DocState } from "@/backend/src/modules/vendor-hub/documents-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";

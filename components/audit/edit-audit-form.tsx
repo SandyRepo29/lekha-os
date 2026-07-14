@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { updateAuditAction, deleteAuditAction } from "@/lib/audit/actions";
+import { updateAuditAction, deleteAuditAction } from "@/backend/src/modules/audit-management/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";

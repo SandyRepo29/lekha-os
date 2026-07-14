@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import { chatAction } from "@/lib/regulatory-intelligence/actions";
+import { chatAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 import { Bot, Send, User } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };

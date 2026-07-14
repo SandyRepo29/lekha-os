@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Upload } from "lucide-react";
 import { ImportModal } from "@/components/ui/import-modal";
-import { importVendorsAction } from "@/lib/vendors/import-actions";
+import { importVendorsAction } from "@/backend/src/modules/vendor-hub/vendors-import-actions";
 import { useRouter } from "next/navigation";
 
 export function VendorImportButton() {

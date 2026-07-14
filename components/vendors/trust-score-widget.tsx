@@ -11,8 +11,8 @@ import {
   TRUST_LEVEL_COLORS,
   TRUST_COMPONENT_WEIGHTS,
   TRUST_COMPONENT_LABELS,
-} from "@/lib/services/trust-score";
-import type { TrustScoreBreakdown } from "@/lib/services/trust-score";
+} from "@/backend/src/modules/trust-score/trust-score";
+import type { TrustScoreBreakdown } from "@/backend/src/modules/trust-score/trust-score";
 import { recalculateTrustScore, generateTrustNarrativeAction } from "@/app/(app)/vendors/trust-score-actions";
 
 interface TrustScoreWidgetProps {

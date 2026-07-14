@@ -1,7 +1,7 @@
 import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import { styles } from "./pdf-styles";
-import { RISK_CATEGORY_LABELS, scoreToLevel } from "@/lib/services/risk-scoring";
+import { RISK_CATEGORY_LABELS, scoreToLevel } from "@/backend/src/modules/risk-lens/risk-scoring";
 
 export type ExecTopRisk = { id: string; title: string; category: string; inherentScore: number };
 

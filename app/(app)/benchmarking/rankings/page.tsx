@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
 import {
   BENCHMARK_CATEGORY_LABELS,
   BENCHMARK_MATURITY_LABELS,
@@ -10,7 +10,7 @@ import {
   type BenchmarkCategory,
   type BenchmarkMaturityLevel,
   type BenchmarkRankingLabel,
-} from "@/lib/services/benchmarking-score";
+} from "@/backend/src/modules/benchmarking/benchmarking-score";
 import { Award, Crown, Medal, Star } from "lucide-react";
 import { MaturityBadge, PercentileBadge, RankingBadge, PercentileBar } from "@/components/benchmarking/benchmark-ui";
 

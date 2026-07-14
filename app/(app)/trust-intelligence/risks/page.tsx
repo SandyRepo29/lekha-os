@@ -4,10 +4,10 @@ import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getRiskMetrics } from "@/lib/repositories/trust-intelligence-repo";
+import { getRiskMetrics } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
 import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
 import { RiskScoreBadge, RiskCategoryBadge } from "@/components/risk/risk-status-badge";
-import { RISK_CATEGORY_LABELS } from "@/lib/services/risk-scoring";
+import { RISK_CATEGORY_LABELS } from "@/backend/src/modules/risk-lens/risk-scoring";
 
 export default async function RiskInsightsPage() {
   const session = await requireUser();

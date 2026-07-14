@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CheckCircle2, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listTasksByOrg } from "@/lib/services/issue-hub/issue-service";
+import { listTasksByOrg } from "@/backend/src/modules/issue-hub/issue-service";
 import { IssueStat, TaskStatusBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {

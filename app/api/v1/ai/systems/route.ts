@@ -6,7 +6,7 @@ import { ok, err } from "@/lib/api/response";
 import {
   findAllSystems,
   createSystem,
-} from "@/lib/repositories/ai-governance-repo";
+} from "@/backend/src/modules/ai-governance/ai-governance-repo";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(req: NextRequest) {

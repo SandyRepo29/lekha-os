@@ -2,15 +2,15 @@
 
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
-import { generateBenchmarkReport, generateIndustryInsights, generateImprovementPlan } from "@/lib/services/benchmarking/ai-benchmarking-service";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
+import { generateBenchmarkReport, generateIndustryInsights, generateImprovementPlan } from "@/backend/src/modules/benchmarking/ai-benchmarking-service";
 import { BenchmarkAiChat } from "@/components/benchmarking/benchmark-ai-chat";
 import { Bot, Sparkles, TrendingUp, Zap } from "lucide-react";
 import {
   BENCHMARK_CATEGORY_LABELS,
   BENCHMARK_MATURITY_LABELS,
   type BenchmarkCategory,
-} from "@/lib/services/benchmarking-score";
+} from "@/backend/src/modules/benchmarking/benchmarking-score";
 
 export default async function BenchmarkAiPage() {
   const session = await requireUser();

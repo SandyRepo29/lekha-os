@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { requireUser } from "@/lib/auth/session";
 import { ok, err } from "@/lib/api/response";
-import * as svc from "@/lib/services/agents/agent-service";
+import * as svc from "@/backend/src/modules/governance-agents/agent-service";
 import { DomainError } from "@/lib/services/errors";
 
 // Security-critical: approve agent actions requires an authenticated

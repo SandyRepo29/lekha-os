@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getRelationships } from "@/lib/services/asset-intelligence/asset-service";
+import { getRelationships } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav, AssetTypeBadge } from "@/components/asset-intelligence/asset-ui";
 import { GitBranch, ArrowRight } from "lucide-react";
 

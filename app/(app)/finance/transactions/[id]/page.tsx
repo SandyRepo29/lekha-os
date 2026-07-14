@@ -3,8 +3,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { findInvoiceById } from "@/lib/repositories/billing-repo";
-import { getSubscription } from "@/lib/repositories/billing-repo";
+import { findInvoiceById } from "@/backend/src/modules/billing/billing-repo";
+import { getSubscription } from "@/backend/src/modules/billing/billing-repo";
 import { db } from "@/lib/db";
 import { organizations, subscriptions, billingPlans } from "@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAttestations } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { createAttestationAction } from "@/lib/continuous-compliance/actions";
+import { getAttestations } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { createAttestationAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { BookOpen, Plus } from "lucide-react";
 import { StatusBadge, CcStat, HealthBar, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

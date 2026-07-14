@@ -2,10 +2,10 @@ export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import { FileText, Upload, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { resolveToken } from "@/lib/repositories/portal-repo";
-import { findById } from "@/lib/repositories/vendor-repo";
-import { listByVendor } from "@/lib/repositories/document-repo";
-import { listByVendor as listRequests } from "@/lib/repositories/request-repo";
+import { resolveToken } from "@/backend/src/modules/vendor-hub/portal-repo";
+import { findById } from "@/backend/src/modules/vendor-hub/vendor-repo";
+import { listByVendor } from "@/backend/src/modules/vendor-hub/document-repo";
+import { listByVendor as listRequests } from "@/backend/src/modules/vendor-hub/request-repo";
 import { PortalUpload } from "@/components/portal/portal-upload";
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {

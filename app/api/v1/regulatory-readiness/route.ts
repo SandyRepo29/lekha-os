@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import * as svc from "@/lib/services/regulatory-intelligence/regulatory-service";
+import * as svc from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
 
 export async function GET(request: NextRequest) {
   const ctx = await validateApiKey(request).catch(() => null);

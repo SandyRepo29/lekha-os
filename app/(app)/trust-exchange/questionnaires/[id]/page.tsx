@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getQuestionnaireDetail } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { getQuestionnaireDetail } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustQuestionnaireAnswerForm } from "@/components/trust-exchange/trust-questionnaire-answer-form";
 
 export default async function TrustQuestionnaireDetailPage({ params }: { params: Promise<{ id: string }> }) {

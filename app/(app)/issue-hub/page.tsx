@@ -10,10 +10,10 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/issue-hub/issue-service";
-import { findIssuesByOrg } from "@/lib/repositories/issue-repo";
-import * as findingRepo from "@/lib/repositories/audit-finding-repo";
-import * as capaRepo from "@/lib/repositories/corrective-action-repo";
+import { getDashboardMetrics } from "@/backend/src/modules/issue-hub/issue-service";
+import { findIssuesByOrg } from "@/backend/src/modules/issue-hub/issue-repo";
+import * as findingRepo from "@/backend/src/modules/audit-management/audit-finding-repo";
+import * as capaRepo from "@/backend/src/modules/audit-management/corrective-action-repo";
 import { IssueStat, IssueSeverityBadge, IssueStatusBadge } from "@/components/issue-hub/issue-ui";
 
 function formatDate(d: string | null | undefined) {

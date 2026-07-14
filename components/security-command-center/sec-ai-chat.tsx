@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Bot, Send, User } from "lucide-react";
-import { securityChatAction } from "@/lib/security-command-center/actions";
+import { securityChatAction } from "@/backend/src/modules/security-command-center/actions";
 
 type Msg = { role: "user" | "assistant"; content: string };
 

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { cn } from "@/lib/utils";
-import { ENTITY_COLORS, ENTITY_LABELS } from "@/lib/services/trust-graph/graph-constants";
+import { ENTITY_COLORS, ENTITY_LABELS } from "@/backend/src/modules/trust-graph/graph-constants";
 
 export function EntityTypeBadge({ type, className }: { type: string; className?: string }) {
   const color = ENTITY_COLORS[type];

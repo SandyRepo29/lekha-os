@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { Webhook, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getWebhooks } from "@/lib/services/integration-hub/integration-service";
+import { getWebhooks } from "@/backend/src/modules/integration-hub/integration-service";
 import { CreateWebhookButton } from "@/components/integration-hub/create-webhook-button";
 import { DeleteWebhookButton } from "@/components/integration-hub/delete-webhook-button";
 import { ToggleWebhookButton } from "@/components/integration-hub/toggle-webhook-button";

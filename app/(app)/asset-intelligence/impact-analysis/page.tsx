@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAssets, getRelationships } from "@/lib/services/asset-intelligence/asset-service";
+import { getAssets, getRelationships } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav, CriticalityBadge, AssetTypeBadge } from "@/components/asset-intelligence/asset-ui";
 import { AlertTriangle, Building2, Database, GitBranch, Shield, Zap } from "lucide-react";
 

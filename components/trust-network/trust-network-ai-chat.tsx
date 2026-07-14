@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useTransition } from "react";
 import { Send, Bot, User, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { chatAction } from "@/lib/trust-network/actions";
+import { chatAction } from "@/backend/src/modules/trust-network/actions";
 
 type Message = { role: "user" | "assistant"; content: string };
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RefreshCw, ShieldCheck, CheckCircle, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { computeAiTrustScoreAction } from "@/lib/ai-governance/actions";
+import { computeAiTrustScoreAction } from "@/backend/src/modules/ai-governance/actions";
 import { AiTrustLevelBadge } from "@/components/ai-governance/ai-status-badges";
 
 // ---------------------------------------------------------------------------

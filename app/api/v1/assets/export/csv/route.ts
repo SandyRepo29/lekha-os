@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { findAllAssets } from "@/lib/repositories/asset-intelligence-repo";
+import { findAllAssets } from "@/backend/src/modules/asset-intelligence/asset-intelligence-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

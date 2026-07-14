@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { createAccessReviewAction } from "@/lib/continuous-compliance/actions";
+import { createAccessReviewAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { ArrowLeft } from "lucide-react";
 
 export default async function NewAccessReviewPage() {

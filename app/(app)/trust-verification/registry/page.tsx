@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getPublicRegistry } from "@/lib/services/trust-verification/trust-verification-service";
+import { getPublicRegistry } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { Globe, ExternalLink, ShieldCheck, Search } from "lucide-react";
 import { RegistryMinScoreFilter } from "@/components/trust-verification/registry-filter";
 

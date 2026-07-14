@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { ok, err } from "@/lib/api/response";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
-import { getWorkflowDetail, updateWorkflow, deleteWorkflow } from "@/lib/services/workflow-studio/workflow-service";
+import { getWorkflowDetail, updateWorkflow, deleteWorkflow } from "@/backend/src/modules/workflow-studio/workflow-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

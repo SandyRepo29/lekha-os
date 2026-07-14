@@ -4,12 +4,12 @@ import Link from "next/link";
 import { Sparkles, Bot } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getTrustIntelligenceOverview, generateRecommendations } from "@/lib/services/trust-intelligence/trust-intelligence-service";
-import { getCachedSummary, generateExecutiveSummary } from "@/lib/services/trust-intelligence/ai-trust-intelligence-service";
-import { getVendorTrustMetrics } from "@/lib/repositories/trust-intelligence-repo";
+import { getTrustIntelligenceOverview, generateRecommendations } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
+import { getCachedSummary, generateExecutiveSummary } from "@/backend/src/modules/trust-intelligence/ai-trust-intelligence-service";
+import { getVendorTrustMetrics } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
 import { OrgTrustScoreRing, OrgTrustBadge } from "@/components/trust-intelligence/org-trust-badge";
 import { ComponentBar, PriorityChip, CategoryChip, TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
-import { ORG_TRUST_COMPONENT_LABELS, ORG_TRUST_COMPONENT_WEIGHTS } from "@/lib/services/org-trust-score";
+import { ORG_TRUST_COMPONENT_LABELS, ORG_TRUST_COMPONENT_WEIGHTS } from "@/backend/src/modules/trust-intelligence/org-trust-score";
 import { TrustAIChat } from "@/components/trust-intelligence/trust-ai-chat";
 
 export default async function ExecutiveViewPage() {

@@ -2,9 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { getAudit } from "@/lib/services/audit/audit-service";
-import { listCapas } from "@/lib/services/audit/capa-service";
-import { listFindings } from "@/lib/services/audit/finding-service";
+import { getAudit } from "@/backend/src/modules/audit-management/audit-service";
+import { listCapas } from "@/backend/src/modules/audit-management/capa-service";
+import { listFindings } from "@/backend/src/modules/audit-management/finding-service";
 
 export async function GET(
   _req: Request,

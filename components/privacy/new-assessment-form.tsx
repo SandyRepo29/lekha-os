@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { createAssessmentAction } from "@/lib/privacy/actions";
+import { createAssessmentAction } from "@/backend/src/modules/privacy/actions";
 
 const RISK_LEVELS = [
   { value: "low", label: "Low" },

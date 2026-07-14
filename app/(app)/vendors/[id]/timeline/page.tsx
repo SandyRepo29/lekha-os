@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { findVendorTimeline } from "@/lib/repositories/vendor-timeline-repo";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { findVendorTimeline } from "@/backend/src/modules/vendor-hub/vendor-timeline-repo";
 import { VendorTimeline } from "@/components/vendors/vendor-timeline";
 import type { TimelineEvent } from "@/components/vendors/vendor-timeline";
 

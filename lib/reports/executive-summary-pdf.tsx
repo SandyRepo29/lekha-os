@@ -1,6 +1,6 @@
 import React from "react";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import type { ExecutiveSummaryReport } from "@/lib/services/ai-insights-service";
+import type { ExecutiveSummaryReport } from "@/backend/src/modules/vendor-hub/ai-insights-service";
 import type { Vendor } from "@/lib/db/schema";
 
 const s = StyleSheet.create({

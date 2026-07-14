@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllExternalFindings } from "@/lib/repositories/auditor-collaboration-repo";
-import { updateFindingStatusAction } from "@/lib/auditor-collaboration/actions";
+import { findAllExternalFindings } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
+import { updateFindingStatusAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { AlertTriangle } from "lucide-react";
 import { AuditorStat, ExternalFindingStatusBadge } from "@/components/auditor-collaboration/auditor-ui";

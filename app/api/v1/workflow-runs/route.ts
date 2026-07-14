@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { ok, err } from "@/lib/api/response";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
-import { listRuns } from "@/lib/services/workflow-studio/workflow-service";
+import { listRuns } from "@/backend/src/modules/workflow-studio/workflow-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

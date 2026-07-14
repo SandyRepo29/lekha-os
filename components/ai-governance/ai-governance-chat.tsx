@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { Send, Sparkles, User } from "lucide-react";
-import { chatAction } from "@/lib/ai-governance/actions";
+import { chatAction } from "@/backend/src/modules/ai-governance/actions";
 import { Button } from "@/components/ui/button";
 
 type Message = { role: "user" | "model"; text: string };

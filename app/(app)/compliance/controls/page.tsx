@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ShieldCheck, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
-import { listControls } from "@/lib/services/compliance/control-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
+import { listControls } from "@/backend/src/modules/compliance/control-service";
 import { ControlStatusBadge, ControlPriorityBadge } from "@/components/compliance/compliance-badges";
 import { ComplianceStat } from "@/components/compliance/compliance-ui";
 

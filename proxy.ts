@@ -107,13 +107,13 @@ async function enforceEnterpriseAuth(
     // Get org ID from audt-sid cookie (set when session was created) or look up
     const sidCookie = request.cookies.get("audt-sid")?.value;
     if (sidCookie) {
-      const { getSessionById } = await import("@/lib/repositories/security-command-center-repo");
+      const { getSessionById } = await import("@/backend/src/modules/security-command-center/security-command-center-repo");
       const session = await getSessionById(sidCookie);
       if (session) {
         orgId = session.organizationId;
 
         // Check idle timeout
-        const { getMfaSettings } = await import("@/lib/repositories/security-command-center-repo");
+        const { getMfaSettings } = await import("@/backend/src/modules/security-command-center/security-command-center-repo");
         const settings = await getMfaSettings(orgId);
         const idleMinutes = settings?.idleTimeoutMinutes ?? 60;
         const absoluteHours = settings?.absoluteTimeoutHours ?? 8;
@@ -122,7 +122,7 @@ async function enforceEnterpriseAuth(
         const absoluteExpired = Date.now() - session.createdAt.getTime() > absoluteHours * 3_600_000;
 
         if (idleExpired || absoluteExpired) {
-          const { revokeSession } = await import("@/lib/repositories/security-command-center-repo");
+          const { revokeSession } = await import("@/backend/src/modules/security-command-center/security-command-center-repo");
           await revokeSession(orgId, sidCookie, userId).catch(() => {});
           const loginUrl = new URL("/login", request.url);
           loginUrl.searchParams.set("expired", "1");
@@ -133,7 +133,7 @@ async function enforceEnterpriseAuth(
         }
 
         // Check IP allowlist (non-blocking if DB fails)
-        const { isIpAllowed, extractRequestIp } = await import("@/lib/services/auth/ip-check-service");
+        const { isIpAllowed, extractRequestIp } = await import("@/backend/src/modules/enterprise-security/ip-check-service");
         const ip = extractRequestIp(Object.fromEntries(request.headers.entries()));
         if (ip) {
           const allowed = await isIpAllowed(orgId, ip, "all").catch(() => true);
@@ -146,13 +146,13 @@ async function enforceEnterpriseAuth(
         }
 
         // Update lastActive (fire-and-forget)
-        const { updateSessionLastActive } = await import("@/lib/repositories/security-command-center-repo");
+        const { updateSessionLastActive } = await import("@/backend/src/modules/security-command-center/security-command-center-repo");
         updateSessionLastActive(sidCookie).catch(() => {});
 
         // Check MFA gate
         const mfaVerifiedCookie = request.cookies.get("audt-mfa")?.value;
         if (!mfaVerifiedCookie && settings) {
-          const { getMfaStatusForUser } = await import("@/lib/repositories/security-command-center-repo");
+          const { getMfaStatusForUser } = await import("@/backend/src/modules/security-command-center/security-command-center-repo");
           const mfaStatus = await getMfaStatusForUser(userId, orgId);
 
           if (mfaStatus?.enabled && !session.mfaVerified) {

@@ -2,11 +2,11 @@ export const dynamic = "force-dynamic";
 
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
 import {
   BENCHMARK_RANKING_LABELS,
   type BenchmarkCategory,
-} from "@/lib/services/benchmarking-score";
+} from "@/backend/src/modules/benchmarking/benchmarking-score";
 import { ShieldCheck, Lock, FileText, FileSignature } from "lucide-react";
 import { PercentileBadge, RankingBadge, PercentileBar } from "@/components/benchmarking/benchmark-ui";
 

@@ -1,7 +1,7 @@
 ﻿﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAlerts } from "@/lib/services/asset-intelligence/asset-service";
+import { getAlerts } from "@/backend/src/modules/asset-intelligence/asset-service";
 import { AssetSubNav, AlertSeverityBadge } from "@/components/asset-intelligence/asset-ui";
 import { ResolveAlertButton } from "@/components/asset-intelligence/alert-actions";
 

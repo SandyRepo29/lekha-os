@@ -5,8 +5,8 @@ import { AlertCircle, Plus, CheckCircle2, Filter } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import * as findingRepo from "@/lib/repositories/audit-finding-repo";
-import { findIssuesByOrg } from "@/lib/repositories/issue-repo";
+import * as findingRepo from "@/backend/src/modules/audit-management/audit-finding-repo";
+import { findIssuesByOrg } from "@/backend/src/modules/issue-hub/issue-repo";
 import { IssueSeverityBadge } from "@/components/issue-hub/issue-ui";
 import { SeverityBadge, FindingStatusBadge } from "@/components/audit/audit-status-badge";
 

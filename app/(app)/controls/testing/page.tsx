@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { findAllTests } from "@/lib/repositories/control-center-repo";
+import { findAllTests } from "@/backend/src/modules/control-center/control-center-repo";
 import { TestResultBadge } from "@/components/controls/control-status-badge";
 import { ControlStat } from "@/components/controls/control-ui";
 

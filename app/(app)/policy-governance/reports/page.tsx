@@ -5,7 +5,7 @@ import { Download, FileText, Shield, GitBranch } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/policy-governance/policy-governance-service";
+import { getDashboardMetrics } from "@/backend/src/modules/policy-governance/policy-governance-service";
 
 export default async function PolicyReportsPage() {
   const session = await requireUser();

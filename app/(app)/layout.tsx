@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { Sidebar } from "@/components/app-shell/sidebar";
 import { Topbar } from "@/components/app-shell/topbar";
 import { requireUser } from "@/lib/auth/session";
-import { findProfile } from "@/lib/services/settings-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { ToastContainer } from "@/components/ui/toast-simple";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {

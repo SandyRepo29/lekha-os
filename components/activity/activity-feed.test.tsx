@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ActivityFeed } from "./activity-feed";
-import type { ActivityItem } from "@/lib/repositories/activity-repo";
+import type { ActivityItem } from "@/backend/src/modules/vendor-hub/activity-repo";
 
 function makeItem(overrides: Partial<ActivityItem> = {}): ActivityItem {
   return {

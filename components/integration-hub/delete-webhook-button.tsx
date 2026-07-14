@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { Trash2 } from "lucide-react";
-import { deleteWebhookAction } from "@/lib/integration-hub/actions";
+import { deleteWebhookAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 export function DeleteWebhookButton({ webhookId, name }: { webhookId: string; name: string }) {

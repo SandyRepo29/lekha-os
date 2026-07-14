@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { createWatchlistAction } from "@/lib/regulatory-intelligence/actions";
+import { createWatchlistAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 import { RegNewForm, type RegField } from "@/components/regulatory-intelligence/reg-new-form";
 
 export default async function NewWatchlistPage({

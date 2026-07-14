@@ -4,17 +4,17 @@ export const metadata = { title: 'Risk Lens™ — AUDT' };
 
 import Link from "next/link";
 import { AlertTriangle, Plus, Sparkles, Clock } from "lucide-react";
-import { RiskImportButton } from "@/components/risks/risk-import-button";
+import { RiskImportButton } from "@/components/risk/risk-import-button";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/risk/risk-service";
+import { getDashboardMetrics } from "@/backend/src/modules/risk-lens/risk-service";
 import { RiskScoreBadge, RiskCategoryBadge, RiskStatusBadge } from "@/components/risk/risk-status-badge";
 import { RiskStat, formatDate } from "@/components/risk/risk-ui";
 import { RiskHeatMap } from "@/components/risk/risk-heat-map";
-import { RISK_CATEGORY_LABELS } from "@/lib/services/risk-scoring";
-import { listModuleActivity } from "@/lib/repositories/activity-repo";
+import { RISK_CATEGORY_LABELS } from "@/backend/src/modules/risk-lens/risk-scoring";
+import { listModuleActivity } from "@/backend/src/modules/vendor-hub/activity-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
 
 export default async function RisksDashboardPage() {

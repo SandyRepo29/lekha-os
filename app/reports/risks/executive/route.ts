@@ -3,9 +3,9 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/risk/risk-service";
-import { getCachedExecutiveSummary } from "@/lib/services/risk/ai-risk-service";
-import { findProfile } from "@/lib/services/settings-service";
+import { getDashboardMetrics } from "@/backend/src/modules/risk-lens/risk-service";
+import { getCachedExecutiveSummary } from "@/backend/src/modules/risk-lens/ai-risk-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { RiskExecutiveReport } from "@/lib/reports/risk-executive-pdf";
 
 export async function GET() {

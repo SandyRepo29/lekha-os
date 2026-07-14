@@ -17,7 +17,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/privacy/privacy-service";
+import { getDashboardData } from "@/backend/src/modules/privacy/privacy-service";
 import {
   PrivacyRequestStatusBadge,
   PrivacyRequestTypeBadge,

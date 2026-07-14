@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllRisks } from "@/lib/repositories/ai-governance-repo";
+import { findAllRisks } from "@/backend/src/modules/ai-governance/ai-governance-repo";
 import Link from "next/link";
 import { AlertTriangle, Plus } from "lucide-react";
 import { AIGovStat, AIRiskLevelBadge } from "@/components/ai-governance/ai-governance-ui";

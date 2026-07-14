@@ -3,7 +3,7 @@
 export const metadata = { title: 'AI Governance™ — AUDT' };
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/ai-governance/ai-governance-service";
+import { getDashboardData } from "@/backend/src/modules/ai-governance/ai-governance-service";
 import Link from "next/link";
 import {
   Bot, Shield, AlertTriangle, Bug, Building2, ShieldCheck,

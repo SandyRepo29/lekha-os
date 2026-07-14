@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getChecks } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { runCheckAction } from "@/lib/continuous-compliance/actions";
+import { getChecks } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { runCheckAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { Shield, Play } from "lucide-react";
 import { CheckResultBadge, SeverityBadge, CategoryIcon, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

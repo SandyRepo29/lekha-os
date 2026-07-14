@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { createPolicyAction } from "@/lib/policy-governance/actions";
+import { createPolicyAction } from "@/backend/src/modules/policy-governance/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

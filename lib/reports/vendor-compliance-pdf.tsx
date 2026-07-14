@@ -1,8 +1,8 @@
 import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import { styles } from "./pdf-styles";
-import type { VendorRow } from "@/lib/services/vendor-service";
-import type { VendorMetrics } from "@/lib/services/vendor-service";
+import type { VendorRow } from "@/backend/src/modules/vendor-hub/vendor-service";
+import type { VendorMetrics } from "@/backend/src/modules/vendor-hub/vendor-service";
 
 function StatusBadge({ status }: { status: string }) {
   const style = status === "active" ? styles.badgeGreen : status === "inactive" ? styles.badgeGray : styles.badgeYellow;

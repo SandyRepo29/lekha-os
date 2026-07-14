@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import * as attachmentService from "@/lib/services/platform/attachment-service";
+import * as attachmentService from "@/backend/src/modules/platform/attachment-service";
 
 export async function POST(request: NextRequest) {
   try {

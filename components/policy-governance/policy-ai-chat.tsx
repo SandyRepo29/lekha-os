@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/policy-governance/actions";
+import { chatAction } from "@/backend/src/modules/policy-governance/actions";
 import { Button } from "@/components/ui/button";
 import { Send, Bot, User } from "lucide-react";
 import { cn } from "@/lib/utils";

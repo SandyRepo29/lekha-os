@@ -5,7 +5,7 @@ import { requireUser } from "@/lib/auth/session";
 import {
   getDashboardDataAction,
   generateAdvisoryAction,
-} from "@/lib/toe/actions";
+} from "@/backend/src/modules/toe/actions";
 import {
   ToeStat, ToeSubNav, InstanceStatusBadge, ApprovalStatusBadge,
   EventSeverityBadge, PriorityBadge, fmtDt,

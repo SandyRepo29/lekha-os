@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getNetworkDashboard, getNetworkActivity } from "@/lib/services/trust-network/trust-network-service";
+import { getNetworkDashboard, getNetworkActivity } from "@/backend/src/modules/trust-network/trust-network-service";
 import { TrustNetworkStat } from "@/components/trust-network/trust-network-ui";
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {

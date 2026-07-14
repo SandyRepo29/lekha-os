@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDirectory } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { getDirectory } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { Card } from "@/components/ui/card";
 import { Globe, ShieldCheck, TrendingUp, Building2, MapPin } from "lucide-react";
 import Link from "next/link";

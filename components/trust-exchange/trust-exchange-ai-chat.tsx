@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/trust-exchange/actions";
+import { chatAction } from "@/backend/src/modules/trust-exchange/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

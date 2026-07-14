@@ -12,9 +12,9 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { getVendor } from "@/lib/services/vendor-service";
-import { computeAndSaveTrustScore, getTrustHistory } from "@/lib/services/trust-score-service";
-import { getTrustLevel, TRUST_LEVEL_LABELS } from "@/lib/services/trust-score";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { computeAndSaveTrustScore, getTrustHistory } from "@/backend/src/modules/trust-score/trust-score-service";
+import { getTrustLevel, TRUST_LEVEL_LABELS } from "@/backend/src/modules/trust-score/trust-score";
 
 export async function GET(
   request: NextRequest,

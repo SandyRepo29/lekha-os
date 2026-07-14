@@ -3,7 +3,7 @@
   Mail, Key, UserX, UserCheck, StickyNote, ArrowRightLeft,
   ClipboardCheck, Shield, Link2, Send,
 } from "lucide-react";
-import type { ActivityItem } from "@/lib/repositories/activity-repo";
+import type { ActivityItem } from "@/backend/src/modules/vendor-hub/activity-repo";
 import type { LucideIcon } from "lucide-react";
 
 type ActionDef = { icon: LucideIcon; color: string; label: (m: any) => string };

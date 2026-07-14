@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Plug, X, Loader2 } from "lucide-react";
-import { connectAction, disconnectAction } from "@/lib/integration-hub/actions";
+import { connectAction, disconnectAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 type AuthField = { key: string; label: string; type: string; required: boolean };

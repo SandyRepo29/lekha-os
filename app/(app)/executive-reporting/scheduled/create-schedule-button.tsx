@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { createScheduleAction } from "@/lib/executive-reporting/actions";
+import { createScheduleAction } from "@/backend/src/modules/executive-reporting/actions";
 import { Plus, X, Loader2 } from "lucide-react";
 
 const REPORT_TYPES = [

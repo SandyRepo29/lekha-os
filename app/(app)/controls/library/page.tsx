@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { canCreate } from "@/lib/ui/role-guard";
-import { findAllControls } from "@/lib/repositories/control-center-repo";
+import { findAllControls } from "@/backend/src/modules/control-center/control-center-repo";
 import { ControlHealthBadge } from "@/components/controls/control-health-badge";
 import { ControlStatusBadge, ControlTypeBadge, AutomationBadge } from "@/components/controls/control-status-badge";
 

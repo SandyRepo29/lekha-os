@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
 import { EditVendorForm } from "@/components/vendors/edit-vendor-form";
 import { TemplateSelect } from "@/components/vendors/template-select";
 

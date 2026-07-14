@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { toggleWebhookAction } from "@/lib/integration-hub/actions";
+import { toggleWebhookAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 export function ToggleWebhookButton({ webhookId, isActive }: { webhookId: string; isActive: boolean }) {

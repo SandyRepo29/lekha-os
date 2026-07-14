@@ -3,8 +3,8 @@
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Loader2 } from "lucide-react";
-import { createRiskAction } from "@/lib/risk/actions";
-import { computeRiskScore, RISK_CATEGORY_LABELS, TREATMENT_STRATEGY_LABELS } from "@/lib/services/risk-scoring";
+import { createRiskAction } from "@/backend/src/modules/risk-lens/actions";
+import { computeRiskScore, RISK_CATEGORY_LABELS, TREATMENT_STRATEGY_LABELS } from "@/backend/src/modules/risk-lens/risk-scoring";
 
 const CATEGORIES = Object.entries(RISK_CATEGORY_LABELS);
 const STRATEGIES = Object.entries(TREATMENT_STRATEGY_LABELS);
@@ -166,7 +166,7 @@ export function AiRiskGenerator({ onGenerated }: { onGenerated: (data: Record<st
     setLoading(true);
     setError(null);
     try {
-      const { generateRiskFromObservationAction } = await import("@/lib/risk/actions");
+      const { generateRiskFromObservationAction } = await import("@/backend/src/modules/risk-lens/actions");
       const result = await generateRiskFromObservationAction(observation);
       if (result?.ok && result.data) {
         onGenerated(result.data as Record<string, unknown>);

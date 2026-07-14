@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import Link from "next/link";
 import type { Vendor } from "@/lib/db/schema";
-import { updateVendor, type VendorState } from "@/lib/vendors/actions";
+import { updateVendor, type VendorState } from "@/backend/src/modules/vendor-hub/vendors-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectGroup, SelectOption } from "@/components/ui/select";

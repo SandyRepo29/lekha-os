@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData, computeSecurityReadiness } from "@/lib/services/security-command-center/security-service";
+import { getDashboardData, computeSecurityReadiness } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, ReadinessRing } from "@/components/security-command-center/sec-ui";
 import { FileText, Download, Shield, Users, Key, Globe, Cpu, Lock } from "lucide-react";
 

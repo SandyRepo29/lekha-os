@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listRisks, createRisk } from "@/lib/services/risk/risk-service";
+import { listRisks, createRisk } from "@/backend/src/modules/risk-lens/risk-service";
 import { DomainError } from "@/lib/services/errors";
 import { parseBody } from "@/lib/api/validate";
 import { CreateRiskSchema } from "@/lib/api/schemas/risk-schemas";

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { listDocuments } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { listDocuments } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustDocumentsClient } from "@/components/trust-exchange/trust-documents-client";
 
 export default async function TrustDocumentsPage() {

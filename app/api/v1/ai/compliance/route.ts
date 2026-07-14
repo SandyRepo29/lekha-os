@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { findAllCompliance } from "@/lib/repositories/ai-governance-repo";
+import { findAllCompliance } from "@/backend/src/modules/ai-governance/ai-governance-repo";
 
 export async function GET(req: NextRequest) {
   let ctx;

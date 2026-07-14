@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { regenerateRecoveryCodes } from "@/lib/services/auth/mfa-service";
-import * as orgRepo from "@/lib/repositories/org-repo";
+import { regenerateRecoveryCodes } from "@/backend/src/modules/enterprise-security/mfa-service";
+import * as orgRepo from "@/backend/src/modules/orgs/org-repo";
 
 /** POST /api/auth/mfa/recovery — Regenerate recovery codes. Returns plaintext codes once. */
 export async function POST(req: NextRequest) {

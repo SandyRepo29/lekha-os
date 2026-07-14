@@ -3,8 +3,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getVerificationById, getPrograms } from "@/lib/services/trust-verification/trust-verification-service";
-import { startReviewAction, makeDecisionAction, submitEvidenceAction } from "@/lib/trust-verification/actions";
+import { getVerificationById, getPrograms } from "@/backend/src/modules/trust-verification/trust-verification-service";
+import { startReviewAction, makeDecisionAction, submitEvidenceAction } from "@/backend/src/modules/trust-verification/actions";
 import { ShieldCheck, FileText, ClipboardCheck, Award, Clock, CheckCircle, XCircle, Play, Gavel } from "lucide-react";
 
 function StatusBadge({ status }: { status: string }) {

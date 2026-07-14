@@ -11,7 +11,7 @@ import { BulkActionBar } from "@/components/ui/bulk-action-bar";
 import { Badge } from "@/components/ui/badge";
 import { riskTone } from "@/lib/ui-maps";
 import { scoreTextColor } from "@/lib/ui/colors";
-import type { VendorRow } from "@/lib/services/vendor-service";
+import type { VendorRow } from "@/backend/src/modules/vendor-hub/vendor-service";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   discover:  "border-slate-500/30 bg-slate-500/10 text-slate-400",

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import type { TeamMember } from "@/lib/repositories/team-repo";
+import type { TeamMember } from "@/backend/src/modules/team/team-repo";
 
 type LogEntry = {
   id: string;

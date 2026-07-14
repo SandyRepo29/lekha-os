@@ -5,7 +5,7 @@ import {
   getOrgTriggers,
   getTriggerStats,
   getTriggerRuns,
-} from "@/lib/services/platform/workflow-trigger-service";
+} from "@/backend/src/modules/platform/workflow-trigger-service";
 import { isAdminOrOwner } from "@/lib/ui/role-guard";
 import { Card } from "@/components/ui/card";
 import {

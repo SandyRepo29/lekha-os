@@ -1,7 +1,7 @@
 // Public verification page — no auth required
 export const dynamic = "force-dynamic";
 
-import { lookupCertificate } from "@/lib/services/trust-verification/trust-verification-service";
+import { lookupCertificate } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { ShieldCheck, Award, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {

@@ -3,7 +3,7 @@
 import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Send, ChevronDown } from "lucide-react";
-import { createDocumentRequest, updateRequestStatus, type RequestState } from "@/lib/requests/actions";
+import { createDocumentRequest, updateRequestStatus, type RequestState } from "@/backend/src/modules/vendor-hub/requests-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";

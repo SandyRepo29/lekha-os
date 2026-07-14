@@ -4,7 +4,7 @@ import { Clock, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { listRetentionPolicies } from "@/lib/services/privacy/privacy-service";
+import { listRetentionPolicies } from "@/backend/src/modules/privacy/privacy-service";
 import { NewRetentionForm } from "@/components/privacy/new-retention-form";
 
 export default async function RetentionPage() {

@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import * as treatmentRepo from "@/lib/repositories/risk-treatment-repo";
+import * as treatmentRepo from "@/backend/src/modules/risk-lens/risk-treatment-repo";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(request: NextRequest) {

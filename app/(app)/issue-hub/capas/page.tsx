@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Shield, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import * as capaRepo from "@/lib/repositories/corrective-action-repo";
+import * as capaRepo from "@/backend/src/modules/audit-management/corrective-action-repo";
 import { CapaStatusBadge } from "@/components/audit/audit-status-badge";
 
 function formatDate(d: string | Date | null | undefined) {

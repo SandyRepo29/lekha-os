@@ -5,9 +5,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getEvidence } from "@/lib/services/compliance/evidence-service";
-import { listFrameworksWithControls } from "@/lib/services/compliance/framework-service";
-import * as controlRepo from "@/lib/repositories/control-repo";
+import { getEvidence } from "@/backend/src/modules/compliance/evidence-service";
+import { listFrameworksWithControls } from "@/backend/src/modules/compliance/framework-service";
+import * as controlRepo from "@/backend/src/modules/compliance/control-repo";
 import {
   EvidenceStatusBadge,
   EvidenceSourceBadge,

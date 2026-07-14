@@ -1,8 +1,8 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllExternalUsers } from "@/lib/repositories/auditor-collaboration-repo";
-import { inviteExternalUserAction, revokeExternalUserAction } from "@/lib/auditor-collaboration/actions";
+import { findAllExternalUsers } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
+import { inviteExternalUserAction, revokeExternalUserAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { Users, UserPlus, ShieldOff } from "lucide-react";
 import { AuditorStat, ExternalUserTypeBadge } from "@/components/auditor-collaboration/auditor-ui";

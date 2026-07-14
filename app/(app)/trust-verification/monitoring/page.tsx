@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getMonitoringData } from "@/lib/services/trust-verification/trust-verification-service";
+import { getMonitoringData } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { Activity, AlertTriangle, ShieldCheck } from "lucide-react";
 import { VerificationStat } from "@/components/trust-verification/verification-ui";
 

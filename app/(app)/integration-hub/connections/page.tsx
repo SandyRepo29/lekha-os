@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Link2, AlertTriangle, Settings2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getConnections, getEvents } from "@/lib/services/integration-hub/integration-service";
+import { getConnections, getEvents } from "@/backend/src/modules/integration-hub/integration-service";
 import { ConnectorStatusBadge } from "@/components/integration-hub/connector-status-badge";
 import { TriggerSyncButton } from "@/components/integration-hub/trigger-sync-button";
 import { DisconnectButton } from "@/components/integration-hub/disconnect-button";

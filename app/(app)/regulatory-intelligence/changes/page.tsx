@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getChanges, getAlerts } from "@/lib/services/regulatory-intelligence/regulatory-service";
+import { getChanges, getAlerts } from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
 import {
   RegSubNav, RegStat, SeverityBadge, ChangeStatusBadge, AlertIcon,
 } from "@/components/regulatory-intelligence/reg-ui";

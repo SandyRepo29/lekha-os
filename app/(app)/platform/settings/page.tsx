@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAllOrgSettings } from "@/lib/services/platform/platform-settings-service";
+import { getAllOrgSettings } from "@/backend/src/modules/platform/platform-settings-service";
 import { isAdminOrOwner } from "@/lib/ui/role-guard";
 import { Card } from "@/components/ui/card";
 import {

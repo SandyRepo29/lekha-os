@@ -11,13 +11,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics, listAudits } from "@/lib/services/audit/audit-service";
+import { getDashboardMetrics, listAudits } from "@/backend/src/modules/audit-management/audit-service";
 import { AuditStatusBadge, AuditTypeBadge, SeverityBadge } from "@/components/audit/audit-status-badge";
 import { AuditStat, formatDate } from "@/components/audit/audit-ui";
-import * as findingRepo from "@/lib/repositories/audit-finding-repo";
-import * as capaRepo from "@/lib/repositories/corrective-action-repo";
-import * as collabRepo from "@/lib/repositories/auditor-collaboration-repo";
-import { listModuleActivity } from "@/lib/repositories/activity-repo";
+import * as findingRepo from "@/backend/src/modules/audit-management/audit-finding-repo";
+import * as capaRepo from "@/backend/src/modules/audit-management/corrective-action-repo";
+import * as collabRepo from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
+import { listModuleActivity } from "@/backend/src/modules/vendor-hub/activity-repo";
 import { ActivityFeed } from "@/components/activity/activity-feed";
 
 export default async function AuditsDashboardPage() {

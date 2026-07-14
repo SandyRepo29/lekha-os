@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/auth/session";
-import { getObligations } from "@/lib/repositories/contract-repo";
+import { getObligations } from "@/backend/src/modules/contract-governance/contract-repo";
 import { NextResponse } from "next/server";
 
 export async function GET() {

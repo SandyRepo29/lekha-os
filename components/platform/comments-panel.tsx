@@ -11,8 +11,8 @@ import {
   resolveCommentAction,
   deleteCommentAction,
   addReactionAction,
-} from "@/lib/platform/comment-actions";
-import type { CommentActionState } from "@/lib/platform/comment-actions";
+} from "@/backend/src/modules/platform/comment-actions";
+import type { CommentActionState } from "@/backend/src/modules/platform/comment-actions";
 
 export type CommentRow = {
   id: string; organization_id?: string; entity_type: string; entity_id: string;

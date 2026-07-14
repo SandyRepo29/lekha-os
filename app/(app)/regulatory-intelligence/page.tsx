@@ -4,7 +4,7 @@ export const metadata = { title: 'Regulatory Intelligence™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/regulatory-intelligence/regulatory-service";
+import { getDashboardData } from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
 import {
   RegSubNav, RegStat, SeverityBadge, ChangeStatusBadge,
   AlertIcon, ReadinessBar, ReadinessLabel,

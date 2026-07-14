@@ -8,7 +8,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/workflow-studio/workflow-service";
+import { getDashboardMetrics } from "@/backend/src/modules/workflow-studio/workflow-service";
 import { WorkflowStat, WorkflowRunStatusBadge } from "@/components/workflow-studio/workflow-ui";
 
 function formatDate(d: Date | string | null | undefined) {

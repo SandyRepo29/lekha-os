@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { getRenewalAssessments } from "@/lib/services/vendor-lifecycle/renewal-service";
-import { getVendorLifecycleState } from "@/lib/services/vendor-lifecycle/lifecycle-service";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { getRenewalAssessments } from "@/backend/src/modules/vendor-hub/renewal-service";
+import { getVendorLifecycleState } from "@/backend/src/modules/vendor-hub/lifecycle-service";
 import { canEdit as canEditRole } from "@/lib/ui/role-guard";
 import { RenewalWorkspace } from "@/components/vendors/renewal-workspace";
 

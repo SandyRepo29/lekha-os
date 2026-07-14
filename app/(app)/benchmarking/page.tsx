@@ -6,13 +6,13 @@ import Link from "next/link";
 import { BarChart3, TrendingUp, Award, Zap, ArrowUpRight, ArrowDownRight, Sparkles, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
 import {
   BENCHMARK_CATEGORY_LABELS,
   BENCHMARK_MATURITY_LABELS,
   BENCHMARK_RANKING_LABELS,
   type BenchmarkCategory,
-} from "@/lib/services/benchmarking-score";
+} from "@/backend/src/modules/benchmarking/benchmarking-score";
 import { ComputeBenchmarkButton } from "@/components/benchmarking/compute-button";
 import {
   BenchmarkStat,

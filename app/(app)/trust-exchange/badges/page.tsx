@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { listBadges } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { listBadges } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustBadgesClient } from "@/components/trust-exchange/trust-badges-client";
 
 export default async function TrustBadgesPage() {

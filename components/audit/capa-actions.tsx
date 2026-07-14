@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { completeCapaAction } from "@/lib/audit/actions";
+import { completeCapaAction } from "@/backend/src/modules/audit-management/actions";
 import { Button } from "@/components/ui/button";
 import type { CorrectiveAction } from "@/lib/db/schema";
 

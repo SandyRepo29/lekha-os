@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { generateRecommendations } from "@/lib/services/trust-intelligence/trust-intelligence-service";
+import { generateRecommendations } from "@/backend/src/modules/trust-intelligence/trust-intelligence-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

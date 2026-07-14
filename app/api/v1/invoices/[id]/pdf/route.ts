@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import * as billingRepo from "@/lib/repositories/billing-repo";
+import * as billingRepo from "@/backend/src/modules/billing/billing-repo";
 import type { InvoicePdfData } from "@/lib/reports/invoice-pdf";
 
 export async function GET(

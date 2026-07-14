@@ -4,13 +4,13 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { getVendorLifecycleState } from "@/lib/services/vendor-lifecycle/lifecycle-service";
-import { findLifecycleHistory } from "@/lib/repositories/lifecycle-repo";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { getVendorLifecycleState } from "@/backend/src/modules/vendor-hub/lifecycle-service";
+import { findLifecycleHistory } from "@/backend/src/modules/vendor-hub/lifecycle-repo";
 import { canEdit as canEditRole } from "@/lib/ui/role-guard";
 import { LifecycleBadge } from "@/components/vendors/lifecycle-badge";
 import { LifecyclePanel } from "@/components/vendors/lifecycle-panel";
-import type { VendorState } from "@/lib/services/vendor-lifecycle/lifecycle-service";
+import type { VendorState } from "@/backend/src/modules/vendor-hub/lifecycle-service";
 
 interface Props { params: Promise<{ id: string }> }
 

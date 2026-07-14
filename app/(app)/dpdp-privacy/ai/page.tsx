@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
 import { PrivacyAiChat } from "@/components/privacy/privacy-ai-chat";
-import { generatePrivacySummaryAction } from "@/lib/privacy/actions";
+import { generatePrivacySummaryAction } from "@/backend/src/modules/privacy/actions";
 
 async function PrivacySummarySection({ orgId }: { orgId: string }) {
   return (

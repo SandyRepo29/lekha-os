@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getRisk } from "@/lib/services/risk/risk-service";
+import { getRisk } from "@/backend/src/modules/risk-lens/risk-service";
 import { EditRiskForm } from "@/components/risk/edit-risk-form";
 
 export default async function EditRiskPage({ params }: { params: Promise<{ id: string }> }) {

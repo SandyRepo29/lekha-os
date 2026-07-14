@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { ok, err } from "@/lib/api/response";
-import { getPublicRegistry } from "@/lib/services/trust-verification/trust-verification-service";
+import { getPublicRegistry } from "@/backend/src/modules/trust-verification/trust-verification-service";
 
 // Public endpoint — no auth required
 export async function GET(req: NextRequest) {

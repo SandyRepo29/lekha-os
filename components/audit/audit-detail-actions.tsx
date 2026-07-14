@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArchiveDialog } from "@/components/ui/archive-dialog";
-import { updateAuditStatusAction, deleteAuditAction } from "@/lib/audit/actions";
+import { updateAuditStatusAction, deleteAuditAction } from "@/backend/src/modules/audit-management/actions";
 import type { Audit } from "@/lib/db/schema";
 
 export function AuditDetailActions({ audit }: { audit: Audit }) {

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Sparkles, RefreshCw } from "lucide-react";
-import { refreshAssessmentSummary } from "@/lib/assessments/ai-actions";
+import { refreshAssessmentSummary } from "@/backend/src/modules/vendor-hub/assessments-ai-actions";
 import { cn } from "@/lib/utils";
 
 interface Props {

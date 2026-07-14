@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listFindings, createFinding } from "@/lib/services/audit/finding-service";
+import { listFindings, createFinding } from "@/backend/src/modules/audit-management/finding-service";
 import { DomainError } from "@/lib/services/errors";
 import { parseBody } from "@/lib/api/validate";
 import { CreateFindingSchema } from "@/lib/api/schemas/audit-schemas";

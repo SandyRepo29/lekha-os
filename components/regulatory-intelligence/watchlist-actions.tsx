@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { deleteWatchlistAction } from "@/lib/regulatory-intelligence/actions";
+import { deleteWatchlistAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 import { Trash2 } from "lucide-react";
 
 export function DeleteWatchlistButton({ watchlistId }: { watchlistId: string }) {

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getGraphForOrg } from "@/lib/repositories/trust-graph-repo";
+import { getGraphForOrg } from "@/backend/src/modules/trust-graph/trust-graph-repo";
 
 export async function GET(req: NextRequest) {
   let ctx;

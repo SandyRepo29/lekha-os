@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 min — Vercel Pro max
 
 import { NextResponse } from "next/server";
-import { runExpiryAlerts } from "@/lib/services/notification-service";
+import { runExpiryAlerts } from "@/backend/src/modules/vendor-hub/notification-service";
 
 /** Secured with CRON_SECRET. Called daily by Vercel Cron. */
 export async function GET(request: Request) {

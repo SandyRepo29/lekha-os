@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { createContractAction, type ContractState } from "@/lib/contract-governance/actions";
+import { createContractAction, type ContractState } from "@/backend/src/modules/contract-governance/actions";
 
 const CONTRACT_TYPES = [
   { value: "vendor_agreement", label: "Vendor Agreement" },

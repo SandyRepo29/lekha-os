@@ -1,7 +1,7 @@
 ﻿import { redirect } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getFinanceDashboardAction } from "@/lib/billing/actions";
+import { getFinanceDashboardAction } from "@/backend/src/modules/billing/actions";
 
 export const dynamic = "force-dynamic";
 

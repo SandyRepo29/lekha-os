@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   Key, Plus, Copy, Check, Trash2, Shield, X,
 } from "lucide-react";
-import { getClientsAction, getApiKeysAction, createClientAction, issueApiKeyAction, revokeApiKeyAction, deleteClientAction } from "@/lib/trust-api/actions";
+import { getClientsAction, getApiKeysAction, createClientAction, issueApiKeyAction, revokeApiKeyAction, deleteClientAction } from "@/backend/src/modules/trust-api/actions";
 import { useEffect } from "react";
 import { ApiKeyStatusBadge, ApiPlanBadge } from "@/components/trust-api/trust-api-ui";
 

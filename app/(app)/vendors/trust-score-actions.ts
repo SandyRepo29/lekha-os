@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
-import { computeAndSaveTrustScore, generateTrustNarrative } from "@/lib/services/trust-score-service";
+import { computeAndSaveTrustScore, generateTrustNarrative } from "@/backend/src/modules/trust-score/trust-score-service";
 
 export async function recalculateTrustScore(vendorId: string): Promise<{ score?: number; error?: string }> {
   const session = await requireUser();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { inviteMember, type TeamState } from "@/lib/team/actions";
+import { inviteMember, type TeamState } from "@/backend/src/modules/team/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Select, SelectOption } from "@/components/ui/select";

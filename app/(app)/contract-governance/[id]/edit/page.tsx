@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getContractDetail } from "@/lib/services/contract-governance/contract-service";
+import { getContractDetail } from "@/backend/src/modules/contract-governance/contract-service";
 import { EditContractForm } from "@/components/contract-governance/edit-contract-form";
 
 export default async function EditContractPage({

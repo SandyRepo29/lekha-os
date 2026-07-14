@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { generateAuditReadinessSummary, analyzeEvidenceGaps } from "@/lib/services/auditor-collaboration/ai-auditor-service";
-import { chatAction, generateFindingDraftAction } from "@/lib/auditor-collaboration/actions";
+import { generateAuditReadinessSummary, analyzeEvidenceGaps } from "@/backend/src/modules/auditor-collaboration/ai-auditor-service";
+import { chatAction, generateFindingDraftAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { Brain, Sparkles, AlertTriangle, FileCheck, MessageSquare } from "lucide-react";
 import AuditorAiChat from "@/components/auditor-collaboration/auditor-ai-chat";
 

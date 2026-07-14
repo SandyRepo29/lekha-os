@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
-import { generateExecutiveSummary } from "@/lib/services/executive-reporting/ai-executive-reporting-service";
+import { computeKpis } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
+import { generateExecutiveSummary } from "@/backend/src/modules/executive-reporting/ai-executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, Brain, Sparkles, TrendingUp, FileText } from "lucide-react";
 import { ExecutiveReportingAiChat } from "@/components/executive-reporting/executive-reporting-ai-chat";

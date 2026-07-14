@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllAssessments } from "@/lib/repositories/auditor-collaboration-repo";
+import { findAllAssessments } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
 import { ClipboardList } from "lucide-react";
 import { AuditorStat } from "@/components/auditor-collaboration/auditor-ui";
 

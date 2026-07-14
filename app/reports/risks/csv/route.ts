@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import * as riskRepo from "@/lib/repositories/risk-repo";
-import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS, TREATMENT_STRATEGY_LABELS, scoreToLevel } from "@/lib/services/risk-scoring";
+import * as riskRepo from "@/backend/src/modules/risk-lens/risk-repo";
+import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS, TREATMENT_STRATEGY_LABELS, scoreToLevel } from "@/backend/src/modules/risk-lens/risk-scoring";
 
 export async function GET() {
   const session = await requireUser();

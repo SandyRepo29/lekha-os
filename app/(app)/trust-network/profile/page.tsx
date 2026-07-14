@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getPublicProfile } from "@/lib/services/trust-network/trust-network-service";
+import { getPublicProfile } from "@/backend/src/modules/trust-network/trust-network-service";
 
 function ScoreBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (

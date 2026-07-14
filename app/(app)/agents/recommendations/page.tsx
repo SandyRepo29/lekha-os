@@ -1,12 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getRecommendationsAction } from "@/lib/agents/actions";
+import { getRecommendationsAction } from "@/backend/src/modules/governance-agents/actions";
 import { Lightbulb, CheckCircle, ChevronRight } from "lucide-react";
 import {
   AgentStat, PriorityBadge, ConfidenceRing, AgentSubNav,
 } from "@/components/agents/agent-ui";
-import { fmtDate } from "@/lib/agents/utils";
+import { fmtDate } from "@/backend/src/modules/governance-agents/utils";
 import { RecommendationActions } from "@/components/agents/recommendation-actions";
 
 const IMPACT_STYLES: Record<string, string> = {

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { generateForecasts } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { generateForecasts } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, TrendingUp } from "lucide-react";
 import { GenerateForecastsButton } from "./generate-forecasts-button";

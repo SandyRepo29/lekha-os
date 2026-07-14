@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { findContactsByVendor } from "@/lib/repositories/vendor-contacts-repo";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { findContactsByVendor } from "@/backend/src/modules/vendor-hub/vendor-contacts-repo";
 import { canEdit as canEditRole } from "@/lib/ui/role-guard";
 import { ContactsPanel } from "@/components/vendors/contacts-panel";
 

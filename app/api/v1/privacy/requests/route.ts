@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listRequests, createRequest } from "@/lib/services/privacy/privacy-service";
+import { listRequests, createRequest } from "@/backend/src/modules/privacy/privacy-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(request: NextRequest) {

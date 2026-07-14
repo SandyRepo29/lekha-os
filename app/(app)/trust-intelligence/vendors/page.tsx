@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getVendorTrustMetrics } from "@/lib/repositories/trust-intelligence-repo";
+import { getVendorTrustMetrics } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
 import { OrgTrustBadge } from "@/components/trust-intelligence/org-trust-badge";
 import { TrustStat } from "@/components/trust-intelligence/trust-intelligence-ui";
-import { TRUST_LEVEL_LABELS, getTrustLevel } from "@/lib/services/trust-score";
+import { TRUST_LEVEL_LABELS, getTrustLevel } from "@/backend/src/modules/trust-score/trust-score";
 
 export default async function VendorTrustPage() {
   const session = await requireUser();

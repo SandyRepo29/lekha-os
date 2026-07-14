@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
-import { createFrameworkAction, type ComplianceState } from "@/lib/compliance/actions";
+import { createFrameworkAction, type ComplianceState } from "@/backend/src/modules/compliance/actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 

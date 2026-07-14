@@ -1,4 +1,4 @@
-import { getHealthLevel, HEALTH_LEVEL_LABELS, HEALTH_LEVEL_COLORS, HEALTH_LEVEL_BG } from "@/lib/services/control-health";
+import { getHealthLevel, HEALTH_LEVEL_LABELS, HEALTH_LEVEL_COLORS, HEALTH_LEVEL_BG } from "@/backend/src/modules/control-center/control-health";
 
 interface Props {
   score: number | null;

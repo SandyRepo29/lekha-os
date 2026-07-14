@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { generateForecastsAction } from "@/lib/executive-reporting/actions";
+import { generateForecastsAction } from "@/backend/src/modules/executive-reporting/actions";
 import { RefreshCw, Loader2 } from "lucide-react";
 
 export function GenerateForecastsButton() {

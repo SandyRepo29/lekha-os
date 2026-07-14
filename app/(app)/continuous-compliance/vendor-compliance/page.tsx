@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Network, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getOrgTrustMetrics } from "@/lib/repositories/trust-score-repo";
+import { getOrgTrustMetrics } from "@/backend/src/modules/trust-score/trust-score-repo";
 import { CcSubNav } from "@/components/continuous-compliance/cc-ui";
 
 function scoreColor(s: number) {

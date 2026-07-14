@@ -18,8 +18,8 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getContractDetail, computeAndSaveScore } from "@/lib/services/contract-governance/contract-service";
-import { getLinkedRisks, getLinkedControls, getLinkedPolicies } from "@/lib/repositories/contract-repo";
+import { getContractDetail, computeAndSaveScore } from "@/backend/src/modules/contract-governance/contract-service";
+import { getLinkedRisks, getLinkedControls, getLinkedPolicies } from "@/backend/src/modules/contract-governance/contract-repo";
 import {
   ContractStatusBadge,
   ObligationStatusBadge,
@@ -27,7 +27,7 @@ import {
 } from "@/components/contract-governance/contract-ui";
 import { scoreTextColor, scoreBarGradient } from "@/lib/ui/colors";
 
-import { formatDate, daysUntil } from "@/lib/contract-governance/date-utils";
+import { formatDate, daysUntil } from "@/backend/src/modules/contract-governance/date-utils";
 
 export default async function ContractDetailPage({
   params,

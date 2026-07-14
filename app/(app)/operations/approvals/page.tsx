@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getApprovalsAction } from "@/lib/toe/actions";
+import { getApprovalsAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav, ApprovalStatusBadge, fmtDt } from "@/components/toe/toe-ui";
 import { CheckSquare } from "lucide-react";
 import { ResolveApprovalButtons } from "@/components/toe/approval-actions";

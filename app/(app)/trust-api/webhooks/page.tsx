@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
 import { Webhook, Plus, Pause, Play, Trash2, X, Zap } from "lucide-react";
-import { getWebhooksAction, createWebhookAction, toggleWebhookAction, deleteWebhookAction } from "@/lib/trust-api/actions";
+import { getWebhooksAction, createWebhookAction, toggleWebhookAction, deleteWebhookAction } from "@/backend/src/modules/trust-api/actions";
 import { WebhookStatusBadge } from "@/components/trust-api/trust-api-ui";
 
 const ALL_EVENTS = [

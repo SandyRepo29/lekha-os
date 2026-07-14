@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import * as riskRepo from "@/lib/repositories/risk-repo";
-import { findProfile } from "@/lib/services/settings-service";
+import * as riskRepo from "@/backend/src/modules/risk-lens/risk-repo";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { RiskRegisterReport } from "@/lib/reports/risk-register-pdf";
 
 export async function GET() {

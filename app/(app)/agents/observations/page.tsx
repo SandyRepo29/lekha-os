@@ -2,10 +2,10 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getObservationsAction } from "@/lib/agents/actions";
+import { getObservationsAction } from "@/backend/src/modules/governance-agents/actions";
 import { Eye, AlertTriangle, CheckCircle } from "lucide-react";
 import { AgentStat, SeverityBadge, ObsStatusBadge, AgentSubNav } from "@/components/agents/agent-ui";
-import { fmtDate } from "@/lib/agents/utils";
+import { fmtDate } from "@/backend/src/modules/governance-agents/utils";
 
 const MODULE_COLORS: Record<string, string> = {
   "Risk Lens™":        "bg-red-100 text-red-700",

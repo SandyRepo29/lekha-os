@@ -4,7 +4,7 @@ export const metadata = { title: 'Security Command Center™ — AUDT' };
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData, computeSecurityReadiness } from "@/lib/services/security-command-center/security-service";
+import { getDashboardData, computeSecurityReadiness } from "@/backend/src/modules/security-command-center/security-service";
 import { SecSubNav, SecStat, ReadinessRing, SeverityBadge, FeatureRow } from "@/components/security-command-center/sec-ui";
 import { Shield, Bot, Eye, Lock, Users, Globe, Cpu, KeyRound, AlertTriangle } from "lucide-react";
 

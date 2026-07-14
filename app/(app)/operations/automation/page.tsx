@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAutomationRulesAction, getEventTypesAction } from "@/lib/toe/actions";
+import { getAutomationRulesAction, getEventTypesAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav } from "@/components/toe/toe-ui";
 import { Zap, Plus } from "lucide-react";
 import { ToggleRuleButton, DeleteRuleButton, CreateRuleForm } from "@/components/toe/automation-actions";

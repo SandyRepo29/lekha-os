@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import * as treatmentRepo from "@/lib/repositories/risk-treatment-repo";
-import * as riskRepo from "@/lib/repositories/risk-repo";
+import * as treatmentRepo from "@/backend/src/modules/risk-lens/risk-treatment-repo";
+import * as riskRepo from "@/backend/src/modules/risk-lens/risk-repo";
 
 export async function GET() {
   const session = await requireUser();

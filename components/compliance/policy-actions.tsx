@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   updatePolicyStatusAction,
   deletePolicyAction,
-} from "@/lib/compliance/actions";
+} from "@/backend/src/modules/compliance/actions";
 
 // ---- Workflow buttons (Draft → Review → Approved) -----------
 

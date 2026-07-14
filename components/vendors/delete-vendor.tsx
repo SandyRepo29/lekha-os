@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
-import { deleteVendor } from "@/lib/vendors/actions";
+import { deleteVendor } from "@/backend/src/modules/vendor-hub/vendors-actions";
 import { Button } from "@/components/ui/button";
 
 export function DeleteVendor({ vendorId, vendorName }: { vendorId: string; vendorName: string }) {

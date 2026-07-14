@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { requireUser } from "@/lib/auth/session";
 import { canCreate, canEdit, canDelete } from "@/lib/ui/role-guard";
-import { listRisks } from "@/lib/services/risk/risk-service";
+import { listRisks } from "@/backend/src/modules/risk-lens/risk-service";
 import { RiskFilterChip } from "@/components/risk/risk-ui";
-import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS } from "@/lib/services/risk-scoring";
-import { RiskListTable } from "@/components/risks/risk-list-table";
+import { RISK_CATEGORY_LABELS, RISK_STATUS_LABELS } from "@/backend/src/modules/risk-lens/risk-scoring";
+import { RiskListTable } from "@/components/risk/risk-list-table";
 
 const STATUS_FILTERS = [
   "all", "identified", "under_assessment", "open", "mitigating", "accepted", "transferred", "closed",

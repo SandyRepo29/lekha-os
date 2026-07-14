@@ -4,12 +4,12 @@ import { Sparkles, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/issue-hub/issue-service";
+import { getDashboardMetrics } from "@/backend/src/modules/issue-hub/issue-service";
 import {
   generateExecutiveSummary,
   generateIssueFromObservation,
   chat,
-} from "@/lib/services/issue-hub/ai-issue-service";
+} from "@/backend/src/modules/issue-hub/ai-issue-service";
 
 export default async function IssueAiPage({
   searchParams,

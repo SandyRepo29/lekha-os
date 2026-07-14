@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAutomationRules } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { createRuleAction, toggleRuleAction } from "@/lib/continuous-compliance/actions";
+import { getAutomationRules } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { createRuleAction, toggleRuleAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { Zap, Plus } from "lucide-react";
 import { StatusBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

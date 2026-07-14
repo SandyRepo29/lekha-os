@@ -1,6 +1,6 @@
 import { Select, SelectOption } from "@/components/ui/select";
 import { Label } from "@/components/ui/input";
-import { listTemplates } from "@/lib/services/template-service";
+import { listTemplates } from "@/backend/src/modules/vendor-hub/template-service";
 
 export async function TemplateSelect({ orgId, currentId }: { orgId: string; currentId?: string | null }) {
   const templates = await listTemplates(orgId);

@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getWatchlists } from "@/lib/services/regulatory-intelligence/regulatory-service";
+import { getWatchlists } from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
 import { RegSubNav, RegStat } from "@/components/regulatory-intelligence/reg-ui";
 import { Bell, Plus, Eye } from "lucide-react";
 import { DeleteWatchlistButton } from "@/components/regulatory-intelligence/watchlist-actions";

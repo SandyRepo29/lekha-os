@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { computeRiskScore, scoreToLevel, type RiskScoreLevel } from "@/lib/services/risk-scoring";
+import { computeRiskScore, scoreToLevel, type RiskScoreLevel } from "@/backend/src/modules/risk-lens/risk-scoring";
 
 // ---- Risk Status Badge ----
 

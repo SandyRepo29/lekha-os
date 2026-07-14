@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { RefreshCw } from "lucide-react";
-import { triggerSyncAction } from "@/lib/integration-hub/actions";
+import { triggerSyncAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 export function TriggerSyncButton({ instanceId }: { instanceId: string }) {

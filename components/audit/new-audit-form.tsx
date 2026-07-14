@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useActionState } from "react";
-import { createAuditAction } from "@/lib/audit/actions";
+import { createAuditAction } from "@/backend/src/modules/audit-management/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";

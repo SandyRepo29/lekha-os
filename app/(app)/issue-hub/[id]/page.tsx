@@ -16,8 +16,8 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getIssueDetail } from "@/lib/services/issue-hub/issue-service";
-import { generateIssueNarrative } from "@/lib/services/issue-hub/ai-issue-service";
+import { getIssueDetail } from "@/backend/src/modules/issue-hub/issue-service";
+import { generateIssueNarrative } from "@/backend/src/modules/issue-hub/ai-issue-service";
 import {
   updateIssueStatusAction,
   deleteIssueAction,
@@ -25,7 +25,7 @@ import {
   addTaskAction,
   completeTaskAction,
   escalateIssueAction,
-} from "@/lib/issue-hub/actions";
+} from "@/backend/src/modules/issue-hub/actions";
 import { redirect } from "next/navigation";
 import {
   IssueStatusBadge,

@@ -5,7 +5,7 @@ import { TrendingUp, BarChart2, Calendar, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
 import { EmptyState } from "@/components/ui/empty-state";
-import { getTrends } from "@/lib/services/governance-trends/trends-service";
+import { getTrends } from "@/backend/src/modules/trust-intelligence/trends-service";
 import { TrendStatCard } from "@/components/trust-intelligence/trend-stat-card";
 import { Sparkline } from "@/components/trust-intelligence/sparkline";
 

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { listIssues, createIssue } from "@/lib/services/issue-hub/issue-service";
+import { listIssues, createIssue } from "@/backend/src/modules/issue-hub/issue-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(req: NextRequest) {

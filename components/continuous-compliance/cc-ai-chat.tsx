@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
-import { chatAction } from "@/lib/continuous-compliance/actions";
+import { chatAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { Bot, Send, Loader2 } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };

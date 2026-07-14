@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { Link2, Plug, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getIntegrations } from "@/lib/services/integration-service";
+import { getIntegrations } from "@/backend/src/modules/settings/integration-service";
 import { IntegrationGrid } from "@/components/settings/integration-grid";
 
 export default async function IntegrationsPage() {

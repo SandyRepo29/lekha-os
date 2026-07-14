@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { listIssues } from "@/lib/services/issue-hub/issue-service";
+import { listIssues } from "@/backend/src/modules/issue-hub/issue-service";
 
 export const dynamic = "force-dynamic";
 

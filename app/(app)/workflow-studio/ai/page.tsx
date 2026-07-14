@@ -4,13 +4,13 @@ import { Sparkles, AlertCircle, GitBranch, TrendingUp, MessageSquare } from "luc
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/lib/services/workflow-studio/workflow-service";
+import { getDashboardMetrics } from "@/backend/src/modules/workflow-studio/workflow-service";
 import {
   generateExecutiveSummary,
   generateWorkflowFromPrompt,
   analyzeWorkflowBottlenecks,
   chat,
-} from "@/lib/services/workflow-studio/ai-workflow-service";
+} from "@/backend/src/modules/workflow-studio/ai-workflow-service";
 
 export default async function WorkflowAIPage({
   searchParams,

@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { StickyNote, Check, X } from "lucide-react";
-import { updateVendorNotes } from "@/lib/vendors/actions";
+import { updateVendorNotes } from "@/backend/src/modules/vendor-hub/vendors-actions";
 import { Button } from "@/components/ui/button";
 
 export function VendorNotes({ vendorId, notes }: { vendorId: string; notes: string | null }) {

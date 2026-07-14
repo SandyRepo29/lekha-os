@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getVerifications, applyForVerification } from "@/lib/services/trust-verification/trust-verification-service";
-import { findOwner } from "@/lib/repositories/team-repo";
+import { getVerifications, applyForVerification } from "@/backend/src/modules/trust-verification/trust-verification-service";
+import { findOwner } from "@/backend/src/modules/team/team-repo";
 
 export async function GET(req: NextRequest) {
   const ctx = await validateApiKey(req).catch(() => null);

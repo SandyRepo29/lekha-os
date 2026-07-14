@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { findAllEvidenceRequests } from "@/lib/repositories/auditor-collaboration-repo";
-import { reviewEvidenceAction } from "@/lib/auditor-collaboration/actions";
+import { findAllEvidenceRequests } from "@/backend/src/modules/auditor-collaboration/auditor-collaboration-repo";
+import { reviewEvidenceAction } from "@/backend/src/modules/auditor-collaboration/actions";
 import { revalidatePath } from "next/cache";
 import { FileCheck, CheckCircle, XCircle } from "lucide-react";
 import { AuditorStat, EvidenceRequestStatusBadge } from "@/components/auditor-collaboration/auditor-ui";

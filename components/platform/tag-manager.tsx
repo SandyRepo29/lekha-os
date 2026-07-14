@@ -2,12 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { TagRow } from "@/lib/services/platform/tag-service";
+import { TagRow } from "@/backend/src/modules/platform/tag-service";
 import {
   tagEntityAction,
   untagEntityAction,
   findOrCreateTagAction,
-} from "@/lib/platform/tag-actions";
+} from "@/backend/src/modules/platform/tag-actions";
 
 interface Props {
   entityType: string;

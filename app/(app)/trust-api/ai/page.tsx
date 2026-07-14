@@ -3,8 +3,8 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { Bot, Send, Sparkles, Code2, BookOpen, Zap, RefreshCw } from "lucide-react";
-import { generatePlatformSummaryAction, generateApiDocsAction, chatAction } from "@/lib/trust-api/actions";
-import type { ApiPlatformSummary, ApiDocs } from "@/lib/services/trust-api/ai-trust-api-service";
+import { generatePlatformSummaryAction, generateApiDocsAction, chatAction } from "@/backend/src/modules/trust-api/actions";
+import type { ApiPlatformSummary, ApiDocs } from "@/backend/src/modules/trust-api/ai-trust-api-service";
 
 const PRODUCTS = [
   { slug: "trust-score",       name: "Trust Score API™" },

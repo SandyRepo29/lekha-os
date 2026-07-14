@@ -3,7 +3,7 @@
 import { Shield } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
 import { listByOrg, countByOrg } from "@/lib/repositories/audit-repo";
-import { listMembers } from "@/lib/repositories/team-repo";
+import { listMembers } from "@/backend/src/modules/team/team-repo";
 import { AuditLogTable } from "@/components/settings/audit-log-table";
 
 const PAGE_SIZE = 50;

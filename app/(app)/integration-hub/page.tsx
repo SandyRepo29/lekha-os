@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Plug, CheckCircle2, AlertTriangle, RefreshCw, Shield, Zap, Activity, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/integration-hub/integration-service";
+import { getDashboardData } from "@/backend/src/modules/integration-hub/integration-service";
 import { ConnectorStatusBadge } from "@/components/integration-hub/connector-status-badge";
 import { TriggerSyncButton } from "@/components/integration-hub/trigger-sync-button";
 import { ResolveEventButton } from "@/components/integration-hub/resolve-event-button";

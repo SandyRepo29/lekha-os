@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getWorkflowAnalyticsAction, getWorkflowInstancesAction } from "@/lib/toe/actions";
+import { getWorkflowAnalyticsAction, getWorkflowInstancesAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav } from "@/components/toe/toe-ui";
 import { BarChart3, TrendingUp, Clock, CheckCircle } from "lucide-react";
 

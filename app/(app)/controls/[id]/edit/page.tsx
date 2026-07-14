@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth/session";
-import { findControlById } from "@/lib/repositories/control-center-repo";
+import { findControlById } from "@/backend/src/modules/control-center/control-center-repo";
 import { EditControlForm } from "@/components/controls/edit-control-form";
 
 export default async function EditControlPage({ params }: { params: Promise<{ id: string }> }) {

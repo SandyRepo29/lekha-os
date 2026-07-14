@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardMetrics, getOrCreateProfile, listActivity } from "@/lib/services/trust-exchange/trust-exchange-service";
+import { getDashboardMetrics, getOrCreateProfile, listActivity } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
 import { TrustExchangeStat } from "@/components/trust-exchange/trust-exchange-ui";
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {

@@ -3,7 +3,7 @@
 import { AlertCircle, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listRuns } from "@/lib/services/workflow-studio/workflow-service";
+import { listRuns } from "@/backend/src/modules/workflow-studio/workflow-service";
 import Link from "next/link";
 import { WorkflowRunStatusBadge, WorkflowFilterChip } from "@/components/workflow-studio/workflow-ui";
 

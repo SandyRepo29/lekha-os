@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { PlusCircle, X, Loader2, Webhook } from "lucide-react";
-import { createWebhookAction } from "@/lib/integration-hub/actions";
+import { createWebhookAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 

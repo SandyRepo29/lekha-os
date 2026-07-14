@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardDataAction } from "@/lib/agents/actions";
+import { getDashboardDataAction } from "@/backend/src/modules/governance-agents/actions";
 import { BarChart3, TrendingUp, Zap, Clock, Shield } from "lucide-react";
 import { AgentStat, AgentSubNav } from "@/components/agents/agent-ui";
 

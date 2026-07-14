@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getSchedules } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { getSchedules } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, Clock, Mail, CheckCircle, XCircle } from "lucide-react";
 import { CreateScheduleButton } from "./create-schedule-button";

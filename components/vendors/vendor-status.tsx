@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateVendorStatus } from "@/lib/vendors/actions";
+import { updateVendorStatus } from "@/backend/src/modules/vendor-hub/vendors-actions";
 
 const STATUS_OPTIONS = [
   { value: "active",   label: "Active",   color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },

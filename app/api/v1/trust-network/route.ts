@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { validateApiKey, ApiAuthError } from "@/lib/auth/api-key-auth";
 import { ok, err } from "@/lib/api/response";
-import { getNetworkDashboard, getNetworkDirectory, getTrustRelationships } from "@/lib/services/trust-network/trust-network-service";
+import { getNetworkDashboard, getNetworkDirectory, getTrustRelationships } from "@/backend/src/modules/trust-network/trust-network-service";
 
 export async function GET(req: NextRequest) {
   let ctx;

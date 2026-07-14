@@ -9,7 +9,7 @@ import {
   computeHealthAction,
   addTestAction,
   deleteTestAction,
-} from "@/lib/control-center/actions";
+} from "@/backend/src/modules/control-center/actions";
 import { TestResultBadge } from "@/components/controls/control-status-badge";
 
 // ─── Delete control ──────────────────────────────────────────────────────────

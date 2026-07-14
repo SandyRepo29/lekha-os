@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/session";
-import { listEvidence } from "@/lib/services/compliance/evidence-service";
-import * as evidenceRepo from "@/lib/repositories/evidence-repo";
+import { listEvidence } from "@/backend/src/modules/compliance/evidence-service";
+import * as evidenceRepo from "@/backend/src/modules/compliance/evidence-repo";
 
 function esc(v: string | null | undefined) {
   return `"${(v ?? "").replace(/"/g, '""')}"`;

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardDataAction } from "@/lib/toe/actions";
+import { getDashboardDataAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav, InstanceStatusBadge, ApprovalStatusBadge, PriorityBadge, fmtDt } from "@/components/toe/toe-ui";
 import { Terminal, Activity, GitBranch, CheckSquare, Zap, Bot, AlertTriangle, CheckCircle, Clock, TrendingUp } from "lucide-react";
 import { db } from "@/lib/db";

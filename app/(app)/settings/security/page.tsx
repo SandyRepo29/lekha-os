@@ -4,7 +4,7 @@ import { Shield, KeyRound, Clock, ShieldAlert, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listByUser } from "@/lib/repositories/login-history-repo";
+import { listByUser } from "@/backend/src/modules/settings/login-history-repo";
 import { PasswordForm } from "@/components/settings/password-form";
 import { MfaPanel } from "@/components/settings/mfa-panel";
 

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getAssessmentDetail } from "@/lib/services/privacy/privacy-service";
+import { getAssessmentDetail } from "@/backend/src/modules/privacy/privacy-service";
 import {
   AssessmentStatusBadge,
   PrivacyRiskLevelBadge,

@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateObligationStatusAction } from "@/lib/regulatory-intelligence/actions";
+import { updateObligationStatusAction } from "@/backend/src/modules/regulatory-intelligence/actions";
 
 const NEXT_STATUS: Record<string, string> = {
   not_started: "in_progress",

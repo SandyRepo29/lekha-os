@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { createWorkflowAction } from "@/lib/workflow-studio/actions";
+import { createWorkflowAction } from "@/backend/src/modules/workflow-studio/actions";
 import { GitBranch } from "lucide-react";
 
 const MODULE_OPTIONS = [

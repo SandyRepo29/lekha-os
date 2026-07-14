@@ -2,8 +2,8 @@
 
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { requireUser } from "@/lib/auth/session";
-import { getSnapshotHistory } from "@/lib/repositories/trust-intelligence-repo";
-import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_SCORE_BAR, PLATFORM_TRUST_LEVEL_COLORS } from "@/lib/services/platform-trust-score";
+import { getSnapshotHistory } from "@/backend/src/modules/trust-intelligence/trust-intelligence-repo";
+import { getPlatformTrustLevel, PLATFORM_TRUST_LEVEL_LABELS, PLATFORM_TRUST_SCORE_BAR, PLATFORM_TRUST_LEVEL_COLORS } from "@/backend/src/modules/trust-score/platform-trust-score";
 import { Card } from "@/components/ui/card";
 
 function sc(s: number) { return PLATFORM_TRUST_LEVEL_COLORS[getPlatformTrustLevel(s)]; }

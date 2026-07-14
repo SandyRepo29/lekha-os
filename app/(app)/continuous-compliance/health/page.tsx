@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { computeHealthAction } from "@/lib/continuous-compliance/actions";
-import * as repo from "@/lib/repositories/continuous-compliance-repo";
+import { computeHealthAction } from "@/backend/src/modules/continuous-compliance/actions";
+import * as repo from "@/backend/src/modules/continuous-compliance/continuous-compliance-repo";
 import { BarChart3, RefreshCw } from "lucide-react";
 import { HealthLevelBadge, HealthBar, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

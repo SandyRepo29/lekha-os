@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getAnalyticsOverview, computeKpis } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { getAnalyticsOverview, computeKpis } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, BarChart3 } from "lucide-react";
 import { ExecStat, KpiBadge } from "@/components/executive-reporting/executive-ui";

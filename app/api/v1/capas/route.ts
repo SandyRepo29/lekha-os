@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders, buildMeta } from "@/lib/api/response";
-import { listCapas, createCapa } from "@/lib/services/audit/capa-service";
+import { listCapas, createCapa } from "@/backend/src/modules/audit-management/capa-service";
 import { DomainError } from "@/lib/services/errors";
 import { parseBody } from "@/lib/api/validate";
 import { CreateCapaSchema } from "@/lib/api/schemas/audit-schemas";

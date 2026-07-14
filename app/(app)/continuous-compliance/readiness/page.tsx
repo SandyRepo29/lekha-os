@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import * as repo from "@/lib/repositories/continuous-compliance-repo";
+import * as repo from "@/backend/src/modules/continuous-compliance/continuous-compliance-repo";
 import { CheckCircle } from "lucide-react";
 import { HealthBar, HealthLevelBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getAccessReviews } from "@/lib/services/continuous-compliance/continuous-compliance-service";
-import { startAccessReviewAction } from "@/lib/continuous-compliance/actions";
+import { getAccessReviews } from "@/backend/src/modules/continuous-compliance/continuous-compliance-service";
+import { startAccessReviewAction } from "@/backend/src/modules/continuous-compliance/actions";
 import { Users, Plus, PlayCircle } from "lucide-react";
 import { StatusBadge, CcStat, CcSubNav } from "@/components/continuous-compliance/cc-ui";
 

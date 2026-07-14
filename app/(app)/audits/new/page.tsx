@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { listFrameworks } from "@/lib/services/compliance/framework-service";
+import { listFrameworks } from "@/backend/src/modules/compliance/framework-service";
 import { NewAuditForm } from "@/components/audit/new-audit-form";
 
 export default async function NewAuditPage() {

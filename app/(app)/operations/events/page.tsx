@@ -1,7 +1,7 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getOrgEventsAction, getEventTypesAction } from "@/lib/toe/actions";
+import { getOrgEventsAction, getEventTypesAction } from "@/backend/src/modules/toe/actions";
 import { ToeSubNav, EventSeverityBadge, fmtDt } from "@/components/toe/toe-ui";
 import { Activity } from "lucide-react";
 

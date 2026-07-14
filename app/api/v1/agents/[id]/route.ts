@@ -4,8 +4,8 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import * as svc from "@/lib/services/agents/agent-service";
-import * as repo from "@/lib/repositories/agents-repo";
+import * as svc from "@/backend/src/modules/governance-agents/agent-service";
+import * as repo from "@/backend/src/modules/governance-agents/agents-repo";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(

@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth/api-key-auth";
 import { checkRateLimit } from "@/lib/providers/rate-limit";
 import { ok, err, withRateLimitHeaders } from "@/lib/api/response";
-import { getRisk, updateRisk, deleteRisk } from "@/lib/services/risk/risk-service";
+import { getRisk, updateRisk, deleteRisk } from "@/backend/src/modules/risk-lens/risk-service";
 import { DomainError } from "@/lib/services/errors";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

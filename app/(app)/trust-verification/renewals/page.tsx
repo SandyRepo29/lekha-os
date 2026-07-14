@@ -1,8 +1,8 @@
 ﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getRenewals } from "@/lib/services/trust-verification/trust-verification-service";
-import { startRenewalAction } from "@/lib/trust-verification/actions";
+import { getRenewals } from "@/backend/src/modules/trust-verification/trust-verification-service";
+import { startRenewalAction } from "@/backend/src/modules/trust-verification/actions";
 import { RefreshCw, Clock, CheckCircle, AlertTriangle } from "lucide-react";
 
 function RenewalStatusBadge({ status }: { status: string }) {

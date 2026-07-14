@@ -4,7 +4,7 @@ import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { runMonitoringAction, resolveAlertAction } from "@/lib/trust-intelligence/actions";
+import { runMonitoringAction, resolveAlertAction } from "@/backend/src/modules/trust-intelligence/actions";
 
 type Props = {
   alertId?: string;

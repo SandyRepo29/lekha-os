@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getRegulations } from "@/lib/services/regulatory-intelligence/regulatory-service";
+import { getRegulations } from "@/backend/src/modules/regulatory-intelligence/regulatory-service";
 import { RegSubNav, RegStat, CategoryBadge } from "@/components/regulatory-intelligence/reg-ui";
 import { BookOpen, Plus, Globe, Shield, Lock, Brain } from "lucide-react";
 import { SearchInput } from "@/components/ui/search-input";

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import { graphChatAction } from "@/lib/trust-graph/actions";
+import { graphChatAction } from "@/backend/src/modules/trust-graph/actions";
 import { Bot, Send, User, Loader2 } from "lucide-react";
 
 interface Message { role: "user" | "model"; text: string }

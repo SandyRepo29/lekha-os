@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getOrCreateProfile, getDashboardMetrics } from "@/lib/services/trust-exchange/trust-exchange-service";
-import { generateTrustSummary } from "@/lib/services/trust-exchange/ai-trust-exchange-service";
+import { getOrCreateProfile, getDashboardMetrics } from "@/backend/src/modules/trust-exchange/trust-exchange-service";
+import { generateTrustSummary } from "@/backend/src/modules/trust-exchange/ai-trust-exchange-service";
 import { TrustProfileForm } from "@/components/trust-exchange/trust-profile-form";
 import { Card } from "@/components/ui/card";
 import { Globe, CheckCircle2, AlertCircle } from "lucide-react";

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { deleteFrameworkAction, runGapAnalysisAction } from "@/lib/compliance/actions";
+import { deleteFrameworkAction, runGapAnalysisAction } from "@/backend/src/modules/compliance/actions";
 
 // ---- Delete Framework ---------------------------------------
 
@@ -107,7 +107,7 @@ export function ControlStatusSelect({
       onChange={(e) => {
         const status = e.target.value as "implemented" | "partial" | "not_implemented" | "not_applicable";
         startTransition(async () => {
-          const { updateControlStatusAction } = await import("@/lib/compliance/actions");
+          const { updateControlStatusAction } = await import("@/backend/src/modules/compliance/actions");
           await updateControlStatusAction(controlId, frameworkId, status);
           router.refresh();
         });
@@ -137,7 +137,7 @@ export function DeleteControl({ controlId, frameworkId }: { controlId: string; f
           disabled={pending}
           onClick={() =>
             startTransition(async () => {
-              const { deleteControlAction } = await import("@/lib/compliance/actions");
+              const { deleteControlAction } = await import("@/backend/src/modules/compliance/actions");
               await deleteControlAction(controlId, frameworkId);
               router.refresh();
             })

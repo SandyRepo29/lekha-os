@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createOrganization } from "@/lib/orgs/actions";
-import { inviteTeamMembersOnboarding, type OnboardingInvite } from "@/lib/orgs/onboarding-actions";
+import { createOrganization } from "@/backend/src/modules/orgs/actions";
+import { inviteTeamMembersOnboarding, type OnboardingInvite } from "@/backend/src/modules/orgs/onboarding-actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 

@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { resolveEventAction } from "@/lib/integration-hub/actions";
+import { resolveEventAction } from "@/backend/src/modules/integration-hub/actions";
 import { useRouter } from "next/navigation";
 
 export function ResolveEventButton({ eventId }: { eventId: string }) {

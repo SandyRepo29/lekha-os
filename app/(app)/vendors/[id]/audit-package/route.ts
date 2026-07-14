@@ -3,13 +3,13 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import React from "react";
 import { requireUser } from "@/lib/auth/session";
-import { getVendor } from "@/lib/services/vendor-service";
-import { listForVendor } from "@/lib/services/document-service";
-import { listReviews } from "@/lib/services/review-service";
-import { listAssessments } from "@/lib/services/assessment-service";
-import { getChecklistForVendor } from "@/lib/services/template-service";
-import { findProfile } from "@/lib/services/settings-service";
-import { computeRiskScore } from "@/lib/services/risk-engine";
+import { getVendor } from "@/backend/src/modules/vendor-hub/vendor-service";
+import { listForVendor } from "@/backend/src/modules/vendor-hub/document-service";
+import { listReviews } from "@/backend/src/modules/vendor-hub/review-service";
+import { listAssessments } from "@/backend/src/modules/vendor-hub/assessment-service";
+import { getChecklistForVendor } from "@/backend/src/modules/vendor-hub/template-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
+import { computeRiskScore } from "@/backend/src/modules/risk-lens/risk-engine";
 import { AuditPackagePdf } from "@/lib/reports/audit-package-pdf";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {

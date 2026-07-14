@@ -6,7 +6,7 @@ import { eq, and, lte } from "drizzle-orm";
 import { requireUser } from "@/lib/auth/session";
 import { db } from "@/lib/db";
 import { vendorDocuments, vendors } from "@/lib/db/schema";
-import { findProfile } from "@/lib/services/settings-service";
+import { findProfile } from "@/backend/src/modules/settings/settings-service";
 import { ExpiryReport, type ExpiryDocRow } from "@/lib/reports/expiry-pdf";
 
 export async function GET() {

@@ -1,8 +1,8 @@
 ﻿﻿export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/asset-intelligence/asset-service";
-import { generateAdvisorySummary } from "@/lib/services/asset-intelligence/ai-asset-service";
+import { getDashboardData } from "@/backend/src/modules/asset-intelligence/asset-service";
+import { generateAdvisorySummary } from "@/backend/src/modules/asset-intelligence/ai-asset-service";
 import { AssetSubNav } from "@/components/asset-intelligence/asset-ui";
 import { AssetAiChat } from "@/components/asset-intelligence/asset-ai-chat";
 import { Brain } from "lucide-react";

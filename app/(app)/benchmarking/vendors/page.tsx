@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { getDashboardData } from "@/lib/services/benchmarking/benchmarking-service";
-import { BENCHMARK_RANKING_LABELS } from "@/lib/services/benchmarking-score";
+import { getDashboardData } from "@/backend/src/modules/benchmarking/benchmarking-service";
+import { BENCHMARK_RANKING_LABELS } from "@/backend/src/modules/benchmarking/benchmarking-score";
 import { ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
 import { BenchmarkStat, PercentileBadge, RankingBadge, PercentileBar } from "@/components/benchmarking/benchmark-ui";
 

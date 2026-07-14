@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { approveActionAction, rejectActionAction } from "@/lib/agents/actions";
+import { approveActionAction, rejectActionAction } from "@/backend/src/modules/governance-agents/actions";
 import { CheckCircle, XCircle } from "lucide-react";
 
 export function AgentActionButtons({ actionId }: { actionId: string }) {

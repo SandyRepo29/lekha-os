@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { requireUser } from "@/lib/auth/session";
-import { getReports } from "@/lib/services/executive-reporting/executive-reporting-service";
+import { getReports } from "@/backend/src/modules/executive-reporting/executive-reporting-service";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { GenerateReportButton } from "./generate-report-button";

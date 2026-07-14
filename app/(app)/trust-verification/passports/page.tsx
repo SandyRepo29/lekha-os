@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
-import { getTrustPassport } from "@/lib/services/trust-verification/trust-verification-service";
+import { getTrustPassport } from "@/backend/src/modules/trust-verification/trust-verification-service";
 import { Lock, ShieldCheck, Award, Globe, ExternalLink, Star } from "lucide-react";
 
 export default async function PassportsPage() {
